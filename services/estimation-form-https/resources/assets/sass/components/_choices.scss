@@ -1,0 +1,338 @@
+.choices {
+    // Flexbox layout
+    ng-transclude, [ng-transclude] {
+        @include flexbox;
+
+        @include media-breakpoint-down(md) {
+            @include flex-direction(column);
+        }
+
+        radio, checkbox {
+            @include flex(1 0);
+        }
+
+        radio {
+            // Border collapse
+            margin-left: -1px;
+
+            // Rounded borders
+            .choice {
+                @include border-radius(0);
+                height: 100%;
+                align-items: center;
+            }
+            &:first-child {
+                margin-left: 0;
+
+                .choice {
+                    @include border-radius-left();
+                }
+            }
+
+            &:last-child {
+                .choice {
+                    @include border-radius-right();
+                }
+            }
+
+            &:only-child {
+                .choice {
+                    @include border-radius();
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                // Border collapse
+                margin-top:  -1px;
+                margin-left: 0;
+
+                &:first-child {
+                    margin-top: 0;
+
+                    .choice {
+                        @include border-radius-left(0);
+                        @include border-radius-top();
+                    }
+                }
+
+                &:last-child {
+                    .choice {
+                        @include border-radius-right(0);
+                        @include border-radius-bottom();
+                    }
+                }
+            }
+        }
+
+        checkbox + checkbox {
+            margin-left: $choice-checkbox-gap;
+
+            @include media-breakpoint-down(md) {
+                margin-top:  $choice-checkbox-gap;
+                margin-left: 0;
+            }
+        }
+    }
+
+    & + .choices {
+        margin-top: $choice-gap;
+    }
+}
+
+radio, checkbox {
+    display: block;
+
+    & + .expandable {
+        display: block;
+
+        .form-group {
+            margin-top: -1px;
+
+            .form-control {
+                @include border-radius-top(0);
+                @include border-radius-bottom();
+            }
+        }
+    }
+}
+
+.choice {
+    @include border-radius();
+    @include flexbox;
+    @include transition;
+    background: $choice-bg;
+    border:     $choice-border-width solid $choice-border-color;
+    font-size:  $choice-font-size;
+    margin:     0;
+    overflow:   hidden;
+    position:   relative;
+
+    &:hover {
+        border-color: $choice-border-color-hover;
+        z-index:      2;
+    }
+
+    // Pressed state
+    &:active {
+        .title:before {
+            background: $choice-control-bg-active;
+            background: radial-gradient(ellipse at center, #fff 0%, $choice-control-bg-active 100%);
+        }
+    }
+
+    // Checked state
+    &.active, &.active2 {
+        border-color: $choice-border-color-checked;
+        z-index:      4;
+
+        .title {
+            &:before {
+                border-color: $choice-control-border-color-checked;
+            }
+            &:after {
+                transform:  scale($choice-control-scale-checked);
+                visibility: visible;
+            }
+        }
+    }
+
+    // Has an expandable element
+    &.open {
+        @include border-radius-top();
+        @include border-radius-bottom(0);
+        z-index: 5;
+    }
+
+    // Font-Awesome Icon
+    .fa {
+        font-size: 1.1em;
+        padding:   1.1em 1em 1em;
+    }
+
+    // Set of Icons
+    .icon {
+        font-family: FontAwesome, sans-serif;
+        padding:     $choice-icon-padding;
+        position:    absolute;
+        right: 0;
+        top: 0;
+
+        &.image {
+            padding-left: 1.2em;
+
+            &.concrete {
+                background:      url('../img/icons/concrete.png') no-repeat 90% 50%;
+                background-size: 50%;
+            }
+            &.brick {
+                background:      url('../img/icons/brick.png') no-repeat 100% 50%;
+                background-size: 80%;
+            }
+            &.stone {
+                background:      url('../img/icons/stone.png') no-repeat 100% 50%;
+                background-size: 80%;
+            }
+        }
+
+        &.star {
+            padding-right: 1em;
+            padding-left:  1em;
+        }
+
+        &.stars-2, &.stars-3 {
+            padding-right: 0.7em;
+            padding-left:  1.3em;
+
+            &:before, &:after {
+                content:     '\f005';
+                position:    absolute;
+                text-shadow: 0 -1px #fff, 1px 0 #fff, 0 1px #fff, -1px 0 #fff;
+                top:         1em;
+            }
+            &:before {
+                left: 1em;
+            }
+            &:after {
+                right: 0.5em;
+            }
+        }
+
+        &.stars-2 {
+            &:after {
+                display: none;
+            }
+        }
+
+        &.stars-3 {
+            padding-top:    0.8em;
+            padding-bottom: 1.2em;
+
+            &:before, &:after {
+                top: 1.2em;
+            }
+        }
+
+        .fa {
+            padding: 0;
+        }
+    }
+
+    // Radio & Checkbox
+    input[type="radio"], input[type="checkbox"] {
+        display: none;
+
+        // Checked state
+        &:checked + .title {
+            &:before {
+                border-color: $choice-control-border-color-checked;
+            }
+            &:after {
+                transform:  scale($choice-control-scale-checked);
+                visibility: visible;
+            }
+            &.checkbox {
+                &:after {
+                    transform: scale($choice-checkbox-scale-checked);
+                }
+            }
+        }
+    }
+
+    // Title
+    .title {
+        @include flex(1 0);
+        font-size:  1.1rem;
+        margin:     0;
+        padding:    $choice-title-padding;
+        position:   relative;
+        text-align: left;
+        margin-left: 30px;
+
+        &:before, &:after {
+            @include transition;
+            bottom:   0;
+            content:  '';
+            margin:   auto 0;
+            position: absolute;
+            right:    $choice-control-right-gap;
+            top:      0;
+        }
+
+        &:before {
+            background: $choice-control-bg;
+            border:     $choice-border-width solid $choice-border-color;
+            height:     $choice-control-size;
+            width:      $choice-control-size;
+        }
+
+        &:after {
+            content:    '';
+            height:     $choice-control-size;
+            text-align: center;
+            transform:  scale(0);
+            visibility: hidden;
+            width:      $choice-control-size;
+        }
+
+        &.radio {
+            &:before, &:after {
+                @include border-radius(50%);
+                left: -17px;
+            }
+
+            &:after {
+                background: $choice-radio-bg;
+                background: linear-gradient($choice-radio-bg, darken($choice-radio-bg, 3%));
+            }
+        }
+
+        &.checkbox {
+            &:before, &:after {
+                @include border-radius();
+                left: -17px;
+            }
+
+            &:after {
+                bottom:  $choice-checkbox-bottom-gap;
+                color:   $choice-checkbox-color;
+                content: '\2713';
+                right:   $choice-checkbox-right-gap;
+            }
+        }
+    }
+}
+
+.form-group.characteristics {
+    > .choices {
+        checkbox {
+            @include media-breakpoint-between(sm, lg) {
+                min-width: calc(50% - 0.5em);
+
+                &:last-of-type {
+                    @include flex-basis(50%);
+                    margin-top:  1em;
+                    margin-left: 0;
+                }
+            }
+             @include media-breakpoint-only(lg) {
+                &:last-of-type {
+                    max-width: calc(50% - 0.5em);
+                }
+            }
+        }
+    }
+}
+
+.form-group.terrace {
+    @include media-breakpoint-between(md, lg) {
+        .choice {
+            .icon {
+                padding-right: 0.5em;
+                padding-left:  0.8em;
+            }
+            .title {
+                padding-right: 0;
+            }
+        }
+    }
+}
