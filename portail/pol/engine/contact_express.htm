@@ -1,0 +1,99 @@
+$$E:E3:CAT:159012:SLPRO$$
+$$A:CSS_AV=1$$
+$$A:CSS_LISTEANN=1$$
+$$A:JS_AV=1$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:4:~url:slpro_regions.htm$$
+
+$$E:SLPRO:AGENCE-CONTACTEXPRESS:ALIAS:AGCEX$$
+
+
+$$IF0:AGCEX:SIPRODUITCONTACTEXPRESS$$	
+	<div class="erre"><span>Vous n'avez pas souscrit cette option.</span></div>
+$$END$$
+$$IF:AGCEX:SIPRODUITCONTACTEXPRESS$$	
+
+	$$IF:SLPRO:CONTACTEXPRESS-DELETEMAIL:CODEERREUR$$
+			<div class="noerre"><span>Le message a été supprimé avec succès !</span></div>
+	$$END$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<thead>
+			<tr><th>Activation Contact Express </th></tr>
+		</thead>
+		<tr>
+			<td>
+	        <form method="post">	        
+						<input type="hidden" name="page_ok" value="/$$REP:URI$$"/>
+	          <input type="hidden" name="page_err" value="/$$REP:URI$$"/>
+	          <input type="hidden" name="u" value="SLPRO:AGENCE-ACCEPTCONTACTEXPRESS"/>
+	          <p style="float:left">Activer la possibilité de recevoir des messages venant des internautes : </p>
+	          <div style="float:left; margin:7px 0 0 5px;">
+	          	<input style="float:left; margin:3px 0 0 0;" type="radio" name="siAcceptContactExpress" $$IF:AGCEX:SIACCEPTCONTACTEXPRESS$$checked="checked"$$END$$ value="1" id="oui"><label style="float:left; margin:2px 5px 0 0;" for="oui">Oui</label>
+	          	<input type="radio" style="float:left" name="siAcceptContactExpress" $$IF0:AGCEX:SIACCEPTCONTACTEXPRESS$$checked="checked"$$END$$ value="0" id="non"><label style="float:left;" for="non">Non</label>
+	        	</div>
+	          <!--<select name="siAcceptContactExpress">
+	          	<option $$IF:AGCEX:SIACCEPTCONTACTEXPRESS$$selected="selected"$$END$$ value="1">Oui</option>
+	      			<option $$IF0:AGCEX:SIACCEPTCONTACTEXPRESS$$selected="selected"$$END$$ value="0">Non</option>      			
+						</select>-->
+	          <div class="btn">
+							<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+						</div>
+	        </form>
+			</td>
+		</tr>
+	</table>
+		<form method="post">
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$"/>
+	    <input type="hidden" name="page_err" value="/$$REP:URI$$"/>
+			<input type="hidden" name="u" value="SLPRO:CONTACTEXPRESS-DELETEMAIL" />
+	$$IF=:1:AGCEX:SIPRODUITCONTACTEXPRESS$$		
+		$$IF:AGCEX:SIACCEPTCONTACTEXPRESS$$
+			$$B:SLPRO:CONTACTEXPRESS-AGENCEMAILS:ALIAS:BCEX$$
+			$$BIF:BCEX$$
+				<table class="tabinfo" cellpadding="0" cellspacing="0">	
+				<thead>
+				<tr>				
+					<th style="width:110px" class="bdr">Date</th>	
+					<th style="width:110px" class="bdr">Nom</th>						
+					<th style="width:120px"class="bdr">Prénom</th>	
+					<th class="bdr">Recherche</th>					
+					<th style="width:70px" class="bdr">Supprimer</th>		
+				</tr>
+				</thead>
+			$$DO$$
+				$$A:CLICKVISU=onclick="javascript:id3_go('@@XDOM@@/contactexpress_detail.htm?idcontactexpress=@@BCEX:IDCONTACTEXPRESS@@');"$$
+				<tr class="line_$$IF=:0:BCEX:I mod2 0 1$$pair$$END$$$$IF!:0:BCEX:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:BCEX:I mod2 0 1$$pair$$END$$$$IF!:0:BCEX:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:BCEX:I mod2 0 1$$pair$$END$$$$IF!:0:BCEX:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+					onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:BCEX:I mod2 0 1$$pair$$END$$$$IF!:0:BCEX:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:BCEX:I mod2 0 1$$pair$$END$$$$IF!:0:BCEX:I mod2 0 1$$impair$$END$$_new');"
+					$$END$$ id="line_recherche_$$BCEX:I$$">				
+					<td class="bdr" $$CLICKVISU$$ title="header=[$$BCEX:DTCREATION$$] body=[]"><input type="hidden" name="dtEnvoi" value="$$BCEX:DTCREATION$$">$$BCEX:DTCREATION$$</td>
+					<td class="bdr" $$CLICKVISU$$ title="header=[$$BCEX:NOM$$] body=[]"><input type="hidden" name="nom" value="$$BCEX:NOM$$">$$BCEX:NOM$$</td>
+					<td class="bdr" $$CLICKVISU$$ title="header=[$$BCEX:PRENOM$$] body=[]"><input type="hidden" name="prenom" value="$$BCEX:PRENOM$$">$$BCEX:PRENOM$$</td>
+					<td class="bdr" $$CLICKVISU$$ title="header=[$$BCEX:RECHERCHEPHRASE$$] body=[]"><input type="hidden" name="recherchephrase" value="$$BCEX:RECHERCHEPHRASE$$">$$BCEX:RECHERCHEPHRASE$$</td>
+					<td class="bdr"><input type="checkbox" name="del_$$BCEX:IDMAILCONTACTEXPRESS$$"/>	</td>
+				</tr>
+				$$LOOP$$
+				</table>
+				<input style="float:right" type="image" id="btn_supprimer" name="Submit" src="$$_$$i/dyn/btnsupprimer.png" />
+			$$BFIN$$
+			
+		</form>
+			$$BIF0:BCEX$$
+				<div class="erre"><span>Aucun email Contact Express</span></div>
+			$$BFIN$$
+		
+		$$END$$
+		$$IF0:AGCEX:SIACCEPTCONTACTEXPRESS$$
+			<div class="erre"><span>Vous ne souhaitez pas être contacté.</span></div>
+		$$END$$
+		<div class="info">
+			<span>Le produit Contact Express est disposé en dessous des <b>résultats de recherche</b> sur SeLoger.com. Vous apparaissez dans une liste d'agences quand vos annonces sont dans le <b>périmètre de recherche de l'internaute.</b></span>
+		</div>
+	
+		
+	$$END$$
+$$END$$
+	
+$$INCL:BASX.HTM$$ 

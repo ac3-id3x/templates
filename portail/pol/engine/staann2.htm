@@ -1,0 +1,94 @@
+$$E:E3:CAT:stat_visu_detail:SLPRO$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$B:SLPRO:STATMOISPUBLICATION:~iIdTypePublication:REP:1:ALIAS:STATMOIS$$
+$$B:SLPRO:STATANNTOT:ALIAS:STATTOT$$
+
+$$B:SLPRO:STATTRANSAC:~iIdTypePublication:REP:1:ALIAS:STATRANSAC$$
+$$B:SLPRO:STATMOISTRANSAC:~iIdTypePublication:REP:1:~iLimMois:12:ALIAS:STATMT$$
+
+$$INCL:STAANN.HTM$$
+
+$$BIF:STATRANSAC$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td class="alignleft">Lectures par type de transaction<br />(12 derniers mois)</td>	
+		<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+		<td $$BO_DETAIL$$ class="alignright">Détail</td>
+		<td $$BO_RATIO$$ class="alignright">Ratio</td>
+		<td $$BO_MAILS$$ class="alignright">Mails</td>
+		<td $$BO_TELEPHONE$$ class="alignright">Téléphone</td>
+	</tr>
+
+	$$DO:1:100$$
+	<tr $$IF=:TOTAL:STATRANSAC:TT$$class="total"$$END$$>
+		<td>$$IF!:TOTAL:STATRANSAC:TT$$dont $$END$$$$STATRANSAC:TT lcase$$</td>
+		<td class="alignright">$$STATRANSAC:L formatnumber 0$$</td>
+		<td class="alignright">$$STATRANSAC:D formatnumber 0$$</td>
+		<td class="alignright">$$STATRANSAC:POURCENT formatnumber 0$$&nbsp;%</td>
+		<td class="alignright">$$STATRANSAC:MAG formatnumber 0$$</td>
+		<td class="alignright">$$STATRANSAC:TEL formatnumber 0$$</td>
+	</tr>
+	<tr class="tabsep"><td colspan="6"></td></tr> 
+	$$LOOP$$
+	$$BFIN$$
+</table>
+
+
+$$BIF:STATMT$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td class="alignleft">Lectures<br />(12 derniers mois)</td>	
+		<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+		<td $$BO_DETAIL$$ class="alignright">Détail</td>
+		<td $$BO_RATIO$$ class="alignright">Ratio</td>
+		<td $$BO_MAILS$$ class="alignright">Mails</td>
+		<td $$BO_TELEPHONE$$ class="alignright">Téléphone</td>
+	</tr>
+
+	$$DO:1:99$$
+	$$IF:STATMT:MOIS$$ $$IF!:TOTAL:STATMT:TT$$
+	<tr>
+		<td colspan="6" class="groupe">$$STATMT:MOIS$$</td>
+	</tr>
+	$$END$$ $$END$$
+	<tr $$IF=:TOTAL:STATMT:TT$$ class="total" $$END$$>			
+		<td >$$IF!:TOTAL:STATMT:TT$$dont $$END$$$$STATMT:TT lcase$$</td>		
+		<td class="alignright">$$STATMT:L formatnumber 0$$</td>
+		<td class="alignright">$$STATMT:D formatnumber 0$$</td>
+		<td class="alignright">$$STATMT:POURCENT formatnumber 0$$&nbsp;%</td>
+		<td class="alignright">$$STATMT:MAG formatnumber 0$$</td>
+		<td class="alignright">$$STATMT:TEL formatnumber 0$$</td>
+	</tr>
+	<tr class="tabsep"><td colspan="6"></td></tr>
+	$$LOOP$$
+</table>
+$$BFIN$$
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td colspan="6">Télécharger les statistiques, par annonce, de vos consultations d'annonces en ligne au format csv</td>
+	</tr>
+	<tr>
+		<td class="alignright" valign="top">
+			<a href="/statsgen.csv?sep=t">Séparateurs<br/>tabulations</a>
+		</td>
+		<td valign="right" valign="top">
+			<a href="/statsgen.csv?sep=t"><img src="$$_$$engine/images/ic_csv.gif" border="0"></a>
+		</td>
+		<td class="alignright" valign="top">
+			<a href="/statsgen.csv?sep=p">Séparateurs<br/>points-virgules</a>
+		</td>
+		<td valign="right" valign="top">
+			<a href="/statsgen.csv?sep=p"><img src="$$_$$engine/images/ic_csv.gif" border="0"></a>
+		</td>
+		<td class="alignright" valign="top">
+			<a href="/statsgen.csv?sep=v">Séparateurs<br/>virgules</a>
+		</td>
+		<td valign="right" valign="top">
+			<a href="/statsgen.csv?sep=v"><img src="$$_$$engine/images/ic_csv.gif" border="0"></a>
+		</td>	
+	</tr>
+</table>
+
+$$INCL:BASX.HTM$$

@@ -1,0 +1,55 @@
+$$A:MANDATS=1$$
+$$INIT:AUTH=login.htm$$ $$INCL:HAUT.HTM$$ 
+
+<a href="/mandats,index.htm$$IF:FORM:REF$$?$$FORM:REF$$$$END$$#$$FORM:ID$$" class=button> &lt; Revenir à la base des demandes</a><br><br>
+
+<h2>Historique des visualisations mandats de votre agence</h2>
+
+$$B:ABO:HISTORIQUE:ALIAS:HIS$$
+$$BIF:HIS$$
+<style>
+.tbr {border:1px solid black; border-collapse:collapse;}
+.tbr td {font-size:10pt; text-align:right;}
+.tbr td a {text-decoration:underline;}
+.tbr thead td {font-size:10pt; text-align:left; font-weight:bold;}
+.tbr thead {background-color:#EEEEEE;}
+.tbr td {border:1px solid #DDDDDD;padding:4px;}
+</style>
+<table class=tbr width=100%>
+<thead>
+<tr>
+<td>Libelle</td>
+<td>Achete le</td>
+<td>Acheteur</td>
+<td>Mode</td>
+<td>Prix</td>
+</tr>
+</thead>
+$$DO$$
+<tr>
+<td>
+<a href="/mandats,visu.htm?id=$$HIS:IDABO_EMAIL_SPOOL$$&rp=$$REP:NOM$$">$$HIS:ABOTYPEACTION pcase$$<br>
+$$HIS:IDABO_EMAIL_SPOOL getabotransaction pcase$$
+$$HIS:IDABO_EMAIL_SPOOL getabobien pcase$$
+$$HIS:IDABO_EMAIL_SPOOL getabocp pcase$$
+</a>
+</td>
+<td>$$HIS:DATEATTRIBUTION date 2$$
+<small><br>$$HIS:DATEATTRIBUTION date 4$$</small>
+</td>
+<td>$$HIS:NOM ucase$$ $$HIS:PRENOM pcase$$</td>
+<td>$$HIS:LIBELLE$$</td>
+<td>$$HIS:PRIX formatnumber 2$$ &euro;</td>
+
+</tr>
+$$LOOP$$
+$$IF>:1:HIS:NBR$$
+<tr>
+<td colspan=4><b>Total</b></td>
+<td>$$HISTORIQUETOTAL formatnumber 2$$ &euro;</td>
+
+$$END$$
+</table>
+$$BFIN$$
+
+$$INCL:BAS.HTM$$

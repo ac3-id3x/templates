@@ -1,0 +1,64 @@
+
+$$B:SLPRO:OFPH-LISTEANNONCEAG:ALIAS:OFPHLSTANN$$
+    <div style="float:left;" >
+		$$IF:OFPHLSTANN:NBR$$ Vous avez $$OFPHLSTANN:NBR$$ annonce(s) en Vedette $$END$$
+		$$IF0:OFPHLSTANN:NBR$$ Vous n'avez pas d'annonces $$END$$
+	</div>
+    <div style="float:right;" >
+		<input type="button" onclick="self.location.href='/offrephare_addannop.htm?idoffrephare=$$OFPHLSTANN:IDOFFREPHARE$$'" value="Ajouter une /des annonces" />
+	</div>
+	<form method="post" action="offrephare_visu.htm?idtypepublication=$$OFPHLSTANN:IDOFFREPHARETYPESPUBLICATIONS$$&idciblage=$$OFPHLSTANN:IDCIBLAGE$$" class="formacces" 
+            onsubmit="return confirm('Confirmez-vous la suppression des annonces diffusées en annonce En Vedette ?');" >
+		<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="offrephare_visu.htm" />
+		<input type="hidden" id="page_err_form_field_add" name="page_err" value="offrephare_visu.htm" />
+		<input type="hidden" name="tabidannonce" value="$$OFPHLSTANN:TABIDANNONCE$$" />
+		<input type="hidden" name="idoffrephare" value="$$OFPHLSTANN:IDOFFREPHARE$$" />
+		<input type="hidden" name="idtypepublication" value="$$OFPHLSTANN:IDOFFREPHARETYPESPUBLICATIONS$$" />
+		<input type="hidden" name="u" value="SLPRO:OFPH-DELANNONCEVEDETTE" />
+		
+	<br/>
+	$$BIF:OFPHLSTANN$$
+	<table class="tabinfo" cellpadding="0" cellspacing="0" >
+		<tr>
+			<th>Ref Annonce</th>
+            <th>Type Transaction</th>
+            <th>Type Bien</th>
+            <th>CP</th>
+            <th>Ville</th>
+            <th>Prix</th>
+            <th>Nb Visuels</th>
+            <th>Publication<br/> validée</th>
+            <th>Mode de sélection</th>
+            <th>Annonces <br/>en vedette</th>
+	    </tr>
+		$$DO$$
+			<tr class="line_$$IF=:0:OFPHLSTANN:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHLSTANN:I mod2 0 1$$impair$$END$$_new" >
+				<td>
+					<a href=""  tooltip="Voir annonce"  onclick="javascript:openext('$$XDOM$$/$$OFPHLSTANN:IDANNONCE$$/p_visuann.htm','visuann',600,500,'yes'); return false;" >$$OFPHLSTANN:REFANNONCE$$</a>
+				</td>				
+				<td>$$OFPHLSTANN:TYPETRANSACTION$$</td>
+				<td>$$OFPHLSTANN:TYPEBIEN$$</td>
+				
+				<td>$$OFPHLSTANN:CP$$</td>
+				<td>$$OFPHLSTANN:VILLE$$</td>
+				<td>$$OFPHLSTANN:PX$$</td>
+                <td>$$OFPHLSTANN:NBVISUELS$$</td>
+				<td>$$IF=:TRUE:OFPHLSTANN:ISVALID$$Oui$$END$$$$IF=:FALSE:OFPHLSTANN:ISVALID$$En attente$$END$$</td>
+				<td>$$IF=:TRUE:OFPHLSTANN:AJOUTAUTO$$Automatique$$END$$$$IF=:FALSE:OFPHLSTANN:AJOUTAUTO$$Manuel$$END$$</td>
+				<td>
+					$$IF=:TRUE:OFPHLSTANN:AJOUTAUTO$$-$$END$$
+					$$IF=:FALSE:OFPHLSTANN:AJOUTAUTO$$
+					<input type="checkbox" value="$$OFPHLSTANN:IDANNONCE$$" name="delete_annonce" >
+				<!--	<a href="" onclick="document.formDelAnn$$OFPHLSTANN:IDOFFREPHARE$$_$$OFPHLSTANN:IDANNONCE$$.submit();return false;">Supprimer</a> -->
+					$$END$$
+				</td>
+			</tr>
+		$$LOOP$$
+	</table>
+    $$BFIN$$
+	$$IF:OFPHLSTANN:NBR$$	
+	    <div align="right" >
+	    <input type="submit" value="Valider les suppressions dans votre sélection manuelle" />
+	    </div>
+    $$END$$
+	</form>

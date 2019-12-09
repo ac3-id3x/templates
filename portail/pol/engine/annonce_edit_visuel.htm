@@ -1,0 +1,651 @@
+$$A:CAT=annonce_edit_visuel$$
+$$INCL:HAUT.HTM$$ 
+
+<!-- $$REP:SRV$$ //-->
+
+<script type="text/javascript">
+<!--
+	$$IF=:www.selogerpro.com:REP:SRV$$
+		id3_go('/index.htm');
+	$$END$$
+//-->
+</script>
+
+$$E:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$E:SLPRO:ANNONCE:REP:1$$
+$$E:SLPRO:360PREVISITE:REP:1$$ 
+$$B:SLPRO:3DZOOM:REP:1$$
+$$B:SLPRO:EGG:REP:1$$
+$$B:SLPRO:VIRTUALEYE:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:1:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:7:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:5:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:11:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:12:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:13:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:14:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:15:REP:1$$
+$$B:SLPRO:ANNONCEVISUELS:16:REP:1$$
+$$E:SLPRO:EXISTPUB:VAL:AUTH_CHECK*LOGIN_IDAGENCE::116$$
+$$IF:SLPRO:ANNONCE:IDANNONCE$$
+$$A:SIVV=0$$
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete">Photos</td></tr>
+<tr>
+	<td>
+		<script language="javascript" type="text/javascript">
+		<!--  
+		$$E:ID3:PROGRESSGETID$$
+		ProgressID = $$ID3:PROGRESSGETID:ID$$;
+		function Upload(FormName)
+		{
+			objForm = MM_findObj(FormName);
+			w = window.open('/cgi/progressbar.asp?uplid='+ProgressID, 'progress'+ProgressID, 'scrollbars=no,resizable=no,toolbar=no,status=no,menubar=no,width=360,height=80,top=' + (window.screen.Height/2 - 40)+',left=' + (window.screen.Width/2 - 180));
+			var p = objForm.action.indexOf('?');
+			if (p >= 0) objForm.action = objForm.action.substr(0, p);
+			objForm.action += '?uplid=$$ID3:PROGRESSGETID:ID$$';
+			objForm.submit();
+		}
+		//affichage du formulaire
+		function AddVV()
+		{
+			objVV = MM_findObj("selvv");
+			if(objVV) {
+		
+				if(objVV.value != ""){
+					for(i=0;i<objVV.length;i++) {
+						showHide(objVV[i].value,'H');
+					}
+					showHide(objVV.value,'S');
+				}
+			}
+		}
+		//$$FORM:RAFRAICH$$ $$FORM:OK$$
+		$$IF=:1:FORM:RAFRAICH$$ $$IF=:1:OK$$
+		var tmp = document.location;
+		document.location = tmp;
+		$$END$$ $$END$$
+		// --></script>
+
+
+<!-- *************************************** Photos - begin *********************************** -->
+
+<a name="photos"></a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	$$IF:ERRE$$<tr><td class="errmsg" colspan="2">$$ERRE$$</td></tr>$$END$$
+	$$BIF:SLPRO:ANNONCEVISUELS:1$$
+	<tr><td class="pucephoto">$$SLPRO:ANNONCEVISUELS:1:NBR$$ photo$$SLPRO:ANNONCEVISUELS:1:NBR pluriel$$</td></tr>
+	<tr><td class="help">Cliquez sur l'image pour l'agrandir - utilisez les boutons pour changer l'ordre</td></tr>
+	<tr><td align="center">
+		
+		$$DO:1:999$$
+			<div class="annonce_edit_photo"> 
+					$$IF+:2:SLPRO:ANNONCEVISUELS:1:NBR$$ 
+					$$IF!:1:SLPRO:ANNONCEVISUELS:1:I$$
+						<input type="button" value="<<" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:1:IDVISUEL$$/visuel_changeordre.htm?step=-1&url=/$$REP:URI urlencode$$%23photos';" />
+					$$END$$
+					$$IF=:1:SLPRO:ANNONCEVISUELS:1:I$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$END$$
+					&nbsp;$$SLPRO:ANNONCEVISUELS:1:I$$&nbsp;
+					$$IF!:SLPRO_ANNONCEVISUELS_1_NBR:SLPRO:ANNONCEVISUELS:1:I$$
+						<input type="button" value=">>" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:1:IDVISUEL$$/visuel_changeordre.htm?step=1&url=/$$REP:URI urlencode$$%23photos'" />
+					$$END$$ <br />
+				$$END:UNSEULDANSLABOUCLE$$
+			
+					<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:1:IDVISUEL$$')"; class="del">Supprimer</a>
+				<br />
+					<a href="javascript:PopUP('$$SLPRO:ANNONCEVISUELS:1:IDVISUEL$$/p_visuel.htm','Visuel',$$SLPRO:ANNONCEVISUELS:1:WIDTH exec XX+100$$,$$SLPRO:ANNONCEVISUELS:1:HEIGHT exec XX+210$$,0,0,'yes','yes')"><img width="$$SLPRO:ANNONCEVISUELS:1:THUMB_WIDTH$$" height="$$SLPRO:ANNONCEVISUELS:1:THUMB_HEIGHT$$" src="$$SLPRO:ANNONCEVISUELS:1:THUMB_URL$$?$$RND:1:10000$$" ALT="$$SLPRO:ANNONCEVISUELS:1:ORDRE$$" border="0" /></a>
+			<br />
+					
+					Maj : $$SLPRO:ANNONCEVISUELS:1:DT date sql$$
+			 $$A:MAXPHOTO=@@SLPRO:ANNONCEVISUELS:1:I@@$$
+			 
+
+		
+			
+		</div>
+			
+			$$LOOP$$ 
+		
+		</td>
+	</tr>
+	$$BFIN$$ 
+	<tr>
+		<td class="help" colspan="3"><a href="javascript:showHide('HelpAddPhoto','S');">Comment ajouter une photo ?</a>
+		<div id="HelpAddPhoto" class="formoff">Pour ajouter une photo vous devez cliquer sur "Parcourir" afin d'indiquer où se trouve la photo sur votre ordinateur, le format accepté est .jpg, la taille maximale est de 800px sur 600px, le poid maximal de 512Ko.<br/>
+		Le chemin du fichier doit s'afficher à gauche du bouton "Parcourir"<br/>
+		Vous devez ensuite cliquer sur "Envoyer la photo".<br/>
+		La page principale de l'annonce affichera alors, durant quelques secondes, votre photo sous la forme d'une image "PHOTO DISPONIBLE PROCHAINEMENT"<br/>
+		<input type="button" value="Masquer l'aide" onclick="showHide('HelpAddPhoto','H');" />
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+			<!-- ajouter photo - begin -->
+			<form method="post" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_uplphoto">
+			<input type="hidden" name="u" value="slpro:visuel_add" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			<input type="hidden" name="idtypevisuel" value="1" />
+			<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$" />
+			<input type="hidden" name="rafraich" value="1" />
+			<table cellspacing="10" width="100%" >
+				<tr>
+					<td valign="top" class="add">Ajouter une photo</td>
+					<td><input type="file" value="Parcourir" name="visuel" /></td>
+					<td><input type="button" value="Envoyer la photo" onclick="Upload('f_uplphoto');" /></td>
+				</tr>
+			</table>
+			</form>	
+			<!-- ajouter photo - end -->
+		</td>
+	</tr>
+	
+</table>
+
+</table>
+
+
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">	
+<tr><td class="tabentete">Visite virtuelle</td></tr>
+<!-- *************************************** WebVisium - begin *********************************** -->
+$$IF=:1:SLPRO:EXISTPUB:EXIST$$	
+	<tr>
+		<td>
+		<table width="100%">
+			<tr>
+				<td align="left" valign="top"><img src="$$_$$images/ic_visite.gif" alt="" /></td>
+				<td valign="middle">
+					<form action="$$XDOM$$/" name="f_webvisium" method="post">
+					$$A:WEBVISIUM=0$$
+					$$BIF:SLPRO:ANNONCEVISUELS:14$$ $$A:SIVV=1$$
+					$$DO:1:99$$ $$A:WEBVISIUM=1$$
+						<!--<a href="javascript:PopUP('$$SLPRO:ANNONCEVISUELS:14:URL$$','WebVisium',450,400,0,0,'yes','yes');">Voir la visite</a><br />-->
+						<nolayer>
+						<iframe name="webvisium" src="$$SLPRO:ANNONCEVISUELS:14:URL$$" width="450" height="300" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+						</nolayer>
+						<layer src="$$SLPRO:ANNONCEVISUELS:14:URL$$" id="webvisium" top="195" left="200" width="450" height="300"></layer>
+					$$LOOP$$
+					$$BFIN$$
+					<input type="hidden" name="u" value="immobc:hvvisite" />
+					<input type="hidden" name="page_ok" value="webvisium,visite.htm" />
+					<input type="hidden" name="page_err" value="webvisium,visite.htm" />
+					<input type="hidden" name="rafraich" value="1" />
+					<input type="hidden" name="refannonce" value="$$SLPRO:ANNONCE:REFANNONCE$$" />
+					<input type="hidden" name="libelle" value="$$SLPRO:ANNONCE:LIBELLE_FR$$" />
+					<a href="javascript:WebVisiumAdd();">$$IF=:0:WEBVISIUM$$Ajouter une$$END$$$$IF=:1:WEBVISIUM$$Modifier ou supprimer la$$END$$ visite.</a>
+					</form>
+				</td>
+				$$IF=:0:WEBVISIUM$$
+				<td align="right" valign="middle"><a href="/webvisium/pro.htm"><img src="$$_$$images/webvisium.gif" alt="" border="0" /></a>
+				<br /><a href="/webvisium/pro.htm">Plus d'informations sur webvisium</a></td>
+				$$END$$
+			</tr>
+		</table>
+		</td>
+	</tr>
+$$END$$
+<!-- *************************************** virtual eye - begin *********************************** -->
+$$BIF:SLPRO:VIRTUALEYE:REP$$ $$A:SIVV=1$$
+<tr><td class="pucephoto">Virtual Eye</td></tr>
+<tr>
+	<td align="left">
+	<ul>
+	<li><a href="javascript:PupOpenVirtualEye('$$DO:1:999$$$$SLPRO:VIRTUALEYE:REP:URLVIRTUALEYE$$$$SLPRO:VIRTUALEYE:REP:URL$$$$LOOP$$','voir');">Voir</a></b>
+	<li><a href="javascript:DelVisu('$$DO:1:999$$$$SLPRO:VIRTUALEYE:REP:IDVISUEL$$$$LOOP$$')"; class="del">Supprimer</a>
+	</ul>
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** Egg - Visites virtuelles 360° - idtypevisuel 12 - begin ******************************** -->
+$$BIF:SLPRO:EGG:REP$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td class="pucephoto"><a name="egg"></a>Fichier Egg</td>
+</tr>
+$$DO:1:999$$
+<tr>
+	<td align="left">
+		<ul><li><a href="javascript:DelVisu('$$SLPRO:EGG:REP:IDVISUEL$$')"; class="del">Supprimer</a></ul>
+	</td>
+</tr>
+<tr>
+	<td align="center">
+		<applet code="EggApplet.class" archive="$$SLPRO:EGG:REP:URLABS$$e3D.jar" codebase="$$SLPRO:EGG:REP:URLABS$$" width="403" height="255" name="EGGPhoto" >
+			<param name="Album" value="$$SLPRO:EGG:REP:URLABS$$$$SLPRO:EGG:REP:URL$$">
+			<param name="Icons" value="$$SLPRO:EGG:REP:URLABS$$applet.ear">
+		</applet>
+	</td>
+</tr>
+$$LOOP$$
+$$BFIN$$
+<!-- ********************************** RealTour (egg) - idtypevisuel 12 - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:12$$ $$A:SIVV=1$$
+
+<tr>
+	<td class="pucephoto"><a name="Realtour"></a><b>Realtour</td>
+</tr>
+<tr>
+	<td align="center">
+		$$DO:1:999$$
+		<nolayer>
+		<iframe name="realtour" src="$$SLPRO:ANNONCEVISUELS:12:URL$$" width="450" height="350" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+		</nolayer>
+		<layer src="$$SLPRO:ANNONCEVISUELS:12:URL$$" id="realtour" top="195" left="200" width="450" height="350"></layer>
+		<br />
+		<ul>
+		<li><a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:12:IDVISUEL$$')"; class="del">Supprimer</a><br />
+		Maj : $$SLPRO:ANNONCEVISUELS:12:DT date sql$$<br />
+		$$LOOP$$
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** QuickTour (idtypevisuel 13) - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:13$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td class="pucephoto"><a name="quicktour"></a>Quicktour</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+	$$DO:1:999$$
+		<nolayer>
+			<iframe name="quicktour" src="$$SLPRO:ANNONCEVISUELS:13:URL$$" width="450" height="350" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+		</nolayer>
+		<layer src="$$SLPRO:ANNONCEVISUELS:13:URL$$" id="quicktour" top="195" left="200" width="450" height="350"></layer>
+		<br />
+		<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:13:IDVISUEL$$')"; class="del">Supprimer</a><br />
+		Maj : $$SLPRO:ANNONCEVISUELS:13:DT date sql$$<br />
+	$$LOOP$$
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** VisualClic (idtypevisuel 16) - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:16$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td class="pucephoto"><a name="visualclic"></a>VisualClic</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+	$$DO:1:999$$
+		<nolayer>
+			<iframe name="visualclic" src="$$SLPRO:ANNONCEVISUELS:16:URL$$" width="450" height="400" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+		</nolayer>
+		<layer src="$$SLPRO:ANNONCEVISUELS:16:URL$$" id="visualclic" top="195" left="200" width="450" height="400"></layer>
+		<br />
+		<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:16:IDVISUEL$$')"; class="del">Supprimer</a><br />
+		Maj : $$SLPRO:ANNONCEVISUELS:16:DT date sql$$<br />
+	$$LOOP$$
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** MagicVisit (idtypevisuel 15) - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:15$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td class="pucephoto"><a name="MagicVisit"></a>MagicVisit</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+	$$DO:1:999$$
+		<nolayer>
+			<iframe name="magicvisit" src="$$SLPRO:ANNONCEVISUELS:15:URL$$" width="450" height="350" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+		</nolayer>
+		<layer src="$$SLPRO:ANNONCEVISUELS:15:URL$$" id="magicvisit" top="195" left="200" width="450" height="350"></layer>
+		<br />
+		<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:15:IDVISUEL$$')"; class="del">Supprimer</a><br />
+		Maj : $$SLPRO:ANNONCEVISUELS:15:DT date sql$$<br />
+	$$LOOP$$
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** lien360 (idtypevisuel 11) - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:11$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr><td class="pucephoto"><a name="liens360"></a>$$SLPRO:ANNONCEVISUELS:11:NBR$$ Lien$$SLPRO:ANNONCEVISUELS:11:NBR pluriel$$ 360°</td></tr>
+<tr>
+	<td align="center">
+	<table>
+		<tr>
+			<td>
+			$$DO:1:999$$
+			$$IF+:2:SLPRO:ANNONCEVISUELS:11:NBR$$ $$IF!:1:SLPRO:ANNONCEVISUELS:11:I$$
+			<input type="button" value="<<" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:11:IDVISUEL$$/p_visuel_changeordre.htm?step=-1&url=/$$REP:URI urlencode$$#liens'">
+			$$END$$ 
+			&nbsp;$$SLPRO:ANNONCEVISUELS:11:I$$&nbsp; 
+			$$IF!:SLPRO_ANNONCEVISUELS_11_NBR:SLPRO:ANNONCEVISUELS:11:I$$
+			<input type="button" value=">>" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:11:IDVISUEL$$/p_visuel_changeordre.htm?step=1&url=/$$REP:URI urlencode$$#liens'">
+			$$END$$<br />
+			$$END:UNSEULDANSLABOUCLE$$ 
+			Lien : <a href="$$SLPRO:ANNONCEVISUELS:11:URL$$" target="$$SITE:TARGET$$">$$SLPRO:ANNONCEVISUELS:11:URL$$</a><br />
+			Description : $$SLPRO:ANNONCEVISUELS:11:DESCRIPTIF_FR$$<br />
+			Dernière mise à jour : $$SLPRO:ANNONCEVISUELS:11:DT date sql$$<br />
+			<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:11:IDVISUEL$$')"; class="del">Supprimer</a><br />
+			<br />
+			$$LOOP$$
+			</td>
+		</tr>
+	</table>
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** lien (idtypevisuel 5) - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:5$$ $$A:SIVV=1$$
+<tr>
+	<td><a name="liens"></a>&nbsp;</td>
+</tr>
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td class="pucephoto"><b>$$SLPRO:ANNONCEVISUELS:5:NBR$$ lien$$SLPRO:ANNONCEVISUELS:5:NBR pluriel$$</b></td>
+</tr>
+<tr>
+	<td align="center">
+	$$DO:1:999$$
+			$$IF+:2:SLPRO:ANNONCEVISUELS:5:NBR$$ $$IF!:1:SLPRO:ANNONCEVISUELS:5:I$$
+			<input type="button" value="<<" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:5:IDVISUEL$$/p_visuel_changeordre.htm?step=-1&url=/$$REP:URI urlencode$$#liens'">
+			$$END$$ &nbsp;$$SLPRO:ANNONCEVISUELS:5:I$$&nbsp; $$IF!:SLPRO_ANNONCEVISUELS_5_NBR:SLPRO:ANNONCEVISUELS:5:I$$
+			<input type="button" value=">>" onclick="document.location.href='/$$SLPRO:ANNONCEVISUELS:5:IDVISUEL$$/p_visuel_changeordre.htm?step=1&url=/$$REP:URI urlencode$$#liens'">
+			$$END$$ <br />
+			$$END:UNSEULDANSLABOUCLE$$
+			<a href="javascript:DelVisu('$$SLPRO:ANNONCEVISUELS:5:IDVISUEL$$');" class="del">Supprimer</a>
+			<br />
+			<b><a href="$$SLPRO:ANNONCEVISUELS:5:URL$$" target="$$SITE:TARGET$$">$$SLPRO:ANNONCEVISUELS:5:URL$$$$SLPRO:ANNONCEVISUELS:5:DESCRIPTIF_FR$$</a></b><br />
+			<br />
+			Maj : $$SLPRO:ANNONCEVISUELS:5:DT date sql$$<br />
+	$$LOOP$$
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** 3DZOMM (idtypevisuel 3) - begin ******************************** -->
+$$BIF:SLPRO:3DZOOM:REP$$	$$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr><td class="pucephoto"><a name="3dzoom"></a>$$IF!:0:SLPRO:3DZOOM:REP:NBR$$$$SLPRO:3DZOOM:REP:NBR$$ $$END$$Photo$$SLPRO:3DZOOM:REP:NBR pluriel$$ 360&deg;</td></tr>
+<tr>
+	<td align="center">
+	$$DO:1:999$$
+		$$IF+:2:SLPRO:3DZOOM:REP:NBR$$ 
+			$$IF!:1:SLPRO:3DZOOM:REP:I$$
+				<input type="button" value="<<" onclick="document.location.href='/$$SLPRO:3DZOOM:REP:IDVISUEL$$/p_visuel_changeordre.htm?step=-1&url=/$$REP:URI urlencode$$#photos'" />
+			$$END$$ &nbsp;
+			$$SLPRO:3DZOOM:REP:I$$&nbsp; 
+			$$IF!:SLPRO_3DZOOM_REP_NBR:SLPRO:3DZOOM:REP:I$$
+				<input type="button" value=">>" onclick="document.location.href='/$$SLPRO:3DZOOM:REP:IDVISUEL$$/p_visuel_changeordre.htm?step=1&url=/$$REP:URI urlencode$$#photos'" />
+			$$END$$ <br />
+		$$END:UNSEULDANSLABOUCLE$$ 
+		$$IF=:1:SLPRO:3DZOOM:REP:PRET$$<a href="javascript:DelVisu('$$SLPRO:3DZOOM:REP:IDVISUEL$$');" class="del">Supprimer</a><br />$$END$$<br />
+		$$IF=:1:SLPRO:3DZOOM:REP:ENATTENTE$$En cours de réalisation<br />$$END$$
+		<font class="help">Cliquez sur l'image pour l'agrandir</font><br />
+		$$IF=:1:SLPRO:3DZOOM:REP:PRET$$<a href="javascript:PopUP('$$SLPRO:3DZOOM:REP:IDVISUEL$$/p_visuelzoom.htm','visuel',600,600,0,0,'yes','yes');"><img src="$$_$$images/visiteVirtuelle2.gif" border="0" alt="$$SLPRO:3DZOOM:REP:ORDRE$$"></a><br />
+		Maj : $$SLPRO:3DZOOM:REP:DT date sql$$<br />
+		$$END$$
+	$$LOOP$$
+
+	</td>
+</tr>
+$$BFIN$$
+<!-- ********************************** Previsite (lecture seule, idtypevisuel 4) - begin ******************************** -->
+$$IF:SLPRO:360PREVISITE:IDVISUEL$$ $$A:SIVV=1$$
+<tr class="tabsep"><td></td></tr>
+<tr><td class="pucephoto">Prévisite</td></tr>	
+<tr>
+	<td>
+	<!--div id="360previsite" class="formoff" -->
+	<table>		
+		<tr>
+			<td align="left">
+			<ul><li><a href="javascript:DelVisu('$$SLPRO:360PREVISITE:IDVISUEL$$');" class="del">Supprimer</a></ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<nolayer><iframe name="previsite" src="$$SLPRO:360PREVISITE:URLABS$$$$SLPRO:360PREVISITE:URL$$" width="450" height="276" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe></nolayer>
+				<layer src="$$SLPRO:360PREVISITE:URLABS$$$$SLPRO:360PREVISITE:URL$$" id="previsite" top="195" left="200" width="450" height="276"></layer>
+			</td>
+		</tr>
+	</table>
+	<!-- /div -->
+	</td>
+</tr>
+$$END:360PREVISITE$$
+<!-- ********************************** Erreurs - begin ******************************** -->
+$$BIF:SLPRO:ANNONCEVISUELS:7$$
+<tr>
+	<td><a name="erreurs">&nbsp;</a></td>
+</tr>
+<tr>
+	<td class="pucephoto"><b>$$SLPRO:ANNONCEVISUELS:7:NBR$$ erreur$$SLPRO:ANNONCEVISUELS:7:NBR pluriel$$ dans l'historique</b></td>
+</tr>
+<tr>
+	<td align="center">
+	<table border="0" cellspacing="0" cellpadding="0">
+	$$DO:1:999$$
+		<tr>
+			<td>
+			<a href="javascript:PopUP('/$$SLPRO:ANNONCEVISUELS:7:IDVISUEL$$/visuel_delete.htm?url=/$$REP:URI urlencode$$%23erreurs','SuppressionVisuel',600,600,0,0,'yes','yes')"; class="del">Supprimer</a><br />
+			$$SLPRO:ANNONCEVISUELS:7:DESCRIPTIF_FR htmlencode$$
+			</td>
+		</tr>
+	$$LOOP$$
+	</table>
+	</td>
+</tr>
+$$BFIN$$
+<!-- *************************************** Ajout [une seule vv par annonce] - begin *********************************** -->
+$$IF=:0:SIVV$$
+<tr class="tabsep"><td></td></tr>
+<tr>
+	<td>
+	<div id="addvv" class="formon">
+	<table>
+		<tr>
+			<td align="left" class="add">
+			$$REM$$ realtour, quicktour, prévisite uniquement en visualisation / suppression $$END$$
+			Ajouter une visite virtuelle
+			<select name="selvv" id="selvv" onchange="AddVV()">
+				<option value="">----------------</option>
+				<option value="virtualeyeAdd">Virtualeye</option>
+				<option value="eggAdd">Fichier Egg</option>
+				$$BIF0:SLPRO:3DZOOM:REP$$<option value="3dzommAdd">Photo 360°</option>$$BFIN$$
+				$$IF:SLPRO:AGENCECORE:SI_SAISIE_VISUEL5$$<option value="lien360Add">Lien 360°</option><option value="lienvideoAdd">Lien video</option>$$END$$
+			</select>
+			</td>
+		</tr>
+	</table>
+	</div>
+	</td>
+</tr>
+$$END$$
+<!-- *************************************** Ajout Virtual eye - begin *********************************** -->
+$$BIF0:SLPRO:VIRTUALEYE:REP$$
+<tr><td>
+	<div id="virtualeyeAdd" class="formoff">
+	<form action="$$REP:0$$" method="post" name="f_virtualeye">
+	<input type="hidden" name="u" value="slpro:virtualeye_add" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtypevisuel" value="10" />
+	<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$" />
+	<input type="hidden" name="idagence" value="$$SLPRO:ANNONCE:IDAGENCE$$" />
+	<input type="hidden" name="rafraich" value="1" />
+	<table width="100%">
+		<tr class="tabsep"><td colspan="2"></td></tr>
+		<tr><td class="pucephoto" colspan="2">Virtualeye</td></tr>
+		<tr>
+			<td>Veuillez saisir l'identifiant de la visite.<br />
+				<input type="text" value="$$FORM:ID$$"  size="64" name="id">
+			</td>
+			<td valign="bottom">
+				<input type="button" value="Enregistrer" OnClick="ValiderVirtualEye();" />
+			</td>
+		</tr>
+	</table>
+	</form>
+	</div>
+	</td>
+</tr>
+$$BFIN$$
+<!-- *************************************** Ajout Egg Prévisite - begin *********************************** -->
+$$BIF0:SLPRO:EGG:REP$$
+<tr><td>
+	<div id="eggAdd" class="formoff">
+	<form method="post" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_uplegg">
+	<input type="hidden" name="u" value="slpro:egg_add">
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+	<input type="hidden" name="page_err" value="/$$REP:URI$$">
+	<input type="hidden" name="idtypevisuel" value="9">
+	<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$">
+	<input type="hidden" name="rafraich" value="1" />
+	<table cellspacing="10" width="100%" >
+		<tr class="tabsep"><td colspan="2"></td></tr>
+		<tr><td colspan="2" class="pucephoto">Fichier Egg</td></tr>
+		<tr>
+			<td class="help" colspan="3"><a href="javascript:showHide('HelpAddEgg','S');">Comment ajouter un fichier Egg ?</a>
+			<div id="HelpAddEgg" class="formoff">
+			Pour ajouter un fichier Egg vous devez cliquer sur "Parcourir" afin d'indiquer où il se trouve sur votre ordinateur.<br />
+			Le chemin du fichier doit s'afficher à gauche du bouton "Parcourir".<br />
+			Vous devez ensuite cliquer sur "Envoyer le fichier".<br />
+			<input type="button" value="Masquer l'aide" onclick="showHide('HelpAddEgg','H');" />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<input type="file" name="visuel" />
+			</td><td>
+			<input type="button" value="Envoyer le fichier" OnClick="Upload('f_uplegg');" />
+			</td>
+		</tr>
+	</table>
+	</form>	
+	</div>
+	</td>
+</tr>
+$$BFIN$$
+<!-- *************************************** Ajout 3DZOOM - begin *********************************** -->
+$$BIF0:SLPRO:3DZOOM:REP$$
+<tr><td>
+	<div id="3dzommAdd" class="formoff">
+	<form method="post" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_upl3dzomm">
+	<input type="hidden" name="u" value="slpro:visuel360_add" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtypevisuel" value="3" />
+	<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$"  />
+	<input type="hidden" name="rafraich" value="1" />
+	<table width="100%">		
+		<tr class="tabsep"><td colspan="3"></td></tr>
+		<tr><td class="pucephoto" colspan="3">Photo 360°</td></tr>
+		<tr>
+			<td class="help" colspan="3"><a href="javascript:showHide('HelpAdd3dzomm','S');">Comment ajouter une photo 360° ?</a>
+			<div id="HelpAdd3dzomm" class="formoff">Pour ajouter une photo 360° vous devez cliquer sur "Parcourir" afin d'indiquer où se trouve la photo sur votre ordinateur, le format accepté est .jpg, le rapport hauteur/largeur doit être de 16/9.<br/>
+			Le chemin du fichier doit s'afficher à gauche du bouton "Parcourir"<br/>
+			Vous devez préciser si l'image est de type "cylindre" ou "sphère"<br/>
+			Vous devez ensuite cliquer sur "Envoyer la photo".<br/>
+			<input type="button" value="Masquer l'aide" onclick="showHide('HelpAdd3dzomm','H');" />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="bottom">			
+				<input type="file" name="visuel" size="25" /><br />
+			</td>
+			<td valign="bottom">
+				Type<br />
+				<select name="type">
+					<option value="1">CYLINDRE
+					<option value="0">SPHERE
+				</select>
+			</td>
+			<td valign="bottom">
+				<input type="button" value="Envoyer la photo" onclick="Upload('f_upl3dzomm');">			
+			</td>
+		</tr>
+	</table>
+	</form>
+	</div>	
+	</td>
+</tr>
+$$BFIN$$
+<!-- *************************************** Ajout Lien - begin *********************************** -->
+$$IF:SLPRO:AGENCECORE:SI_SAISIE_VISUEL5$$
+<tr>
+	<td>
+	<div id="lien360Add" class="formoff">
+	<form method="post" action="/$$REP:URI$$" name="f_upl" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtypevisuel" value="11" />
+	<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$" />
+	<input type="hidden" name="u" value="slpro:lien_add" />
+	<input type="hidden" name="rafraich" value="1" />
+	<table>
+		<tr class="tabsep"><td colspan="3"></td></tr>
+		<tr><td colspan="3" class="pucephoto">Lien 360°</td></tr>
+		<tr>
+			<td>
+				Description<br /><input type="text" name="descriptif_fr" size="40" maxlength="256" value="$$FORM:DESCRIPTIF_FR$$" />
+			</td>
+			<td>
+				Url<br /><input type="text" name="url" size="40" maxlength="128" value="$$FORM:URL$$" />
+			</td>
+			<td valign="bottom">
+				<input type="submit" value="Enregistrer le lien">
+			</td>
+		</tr>
+	</table>
+	</form>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td>
+	<div id="lienvideoAdd" class="formoff">
+	<form method="post" action="/$$REP:URI$$" name="f_upl" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtypevisuel" value="6" />
+	<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$" />
+	<input type="hidden" name="u" value="slpro:lien_add" />
+	<input type="hidden" name="rafraich" value="1" />
+	<table>
+		<tr class="tabsep"><td colspan="3"></td></tr>
+		<tr><td colspan="3" class="pucephoto">Lien vidéo</td></tr>
+		<tr>
+			<td>
+				Description<br /><input type="text" name="descriptif_fr" size="40" maxlength="256" value="$$FORM:DESCRIPTIF_FR$$" />
+			</td>
+			<td>
+				Url<br /><input type="text" name="url" size="40" maxlength="128" value="$$FORM:URL$$" />
+			</td>
+			<td valign="bottom">
+				<input type="submit" value="Enregistrer le lien">
+			</td>
+		</tr>
+	</table>
+	</form>
+	</div>
+	</td>
+</tr>
+$$END:SI_SAISIE_VISUEL5$$
+</table>
+	<!-- *************************************** Suppression - end *********************************** -->
+	<form action="$$REP:0$$" method="post" name="form_delvisu">
+	<input type="hidden" name="u" value="slpro:visuel_del" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idvisuel" value="" />
+	<input type="hidden" name="rafraich" value="1" />
+	</form>
+$$END:IDANNONCE$$
+
+
+
+			</td>
+		</tr>
+</table>
+$$INCL:BAS.HTM$$

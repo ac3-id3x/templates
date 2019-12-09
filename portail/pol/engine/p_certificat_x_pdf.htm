@@ -1,0 +1,333 @@
+$$DYN:ID3:NOCACHE$$
+$$DYN:ID3:NOCACHE:FULL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE:~ignorecookie:true$$
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title></title></head><body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;">
+$$INCL:VARIABLES.HTM$$
+
+<style>
+
+.certiftable {
+	border-color: #678ba5;
+	border-width: 1px;
+	border-style: solid;
+	width: 100%;
+
+}
+.certiftable td {
+	
+}
+.certifpx {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#0b363d;
+	font-weight: bold;
+}
+.certifpxi {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#0b363d;
+	font-weight: bold;
+	font-style: italic;
+}
+.certiftitre {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:17px;
+	color:#0b363d;
+	font-weight: bold;
+}
+.certifdesc {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:15px;
+	color:#0b363d;
+}
+.certifbottom {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#0b363d;
+	font-weight: bold;
+}
+.reference{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#0f5d9b;
+}
+.nonreference{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#808080;
+}
+
+.formon {
+position:relative; 
+visibility: visible;
+}
+
+.formoff {
+position:relative; 
+visibility: hidden; 
+display: none;
+}
+
+.nb_visuann {
+	font-size: 14px;
+}
+
+.nb_visuannred {
+	color: #d2180c;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.nb_visupays {
+	font-size: 13px;
+}
+
+.p_pagebreak {
+	page-break-before :always;
+}
+
+</style>
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td valign="top" bgcolor="#FFFFFF" align="center" width="100%">
+			$$E:SLPRO:AGENCECORE:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+			$$E:SLPRO:INFOSAGENCE:ALIAS:INFOAG$$ 
+			$$E:IMMOBC:ANNONCE:QRY:IDANNONCE:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+			$$E:IMMOBC:STATIS:VAL:AUTH_CHECK*LOGIN_IDAGENCE:QRY:IDANNONCE$$
+			$$E:IMMOBC:STATIS:VAL:AUTH_CHECK*LOGIN_IDAGENCE:QRY:IDANNONCE:164:ALIAS:STATSPP$$  
+			$$B:IMMOBC:ANNONCEVISUELS-INTERNE:~idannonce:QRY:IDANNONCE:ALIAS:ANNVISUELS$$ 
+			$$B:IMMOBC:STATANNTOTLANG:QRY:IDANNONCE$$
+			$$INIT:PAGE_PRINT=0$$ $$INIT:PAGE_CLOSE=0$$
+		</td>
+	</tr>
+</table>
+
+<table width="100%">
+	<tr>
+		<td align="left" width="100%">
+		$$IF:INFOAG:SI_LOGO$$
+			<table cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+$$REM$$
+alex.N 2010-02-12
+Remarque sur le logo: on crée directement l'URL sur le serveur physique. C'est un problème technique dû au fait qu'un frontal
+ne peut pas requêter une ip virtuelle load-balancée (ça arrive sur sa loopback).
+$$END$$					
+					<td width="33%"><img src="http://popol1.poliris.net/logosAgences/tny/$$INFOAG:IDAGENCE right 1$$/$$INFOAG:IDAGENCE$$.gif" vspace="2" hspace="2" /></td>
+					<td width="34%" align="center" class="certiftitre">Certificat de parution</td>
+					<td width="33%" align="right"  class="legende">Emis le $$ID3:DATE:VAL date jour$$ $$ID3:DATE:VAL date nommois$$ $$ID3:DATE:VAL date yyyy$$</td>
+				</tr>
+			</table>
+		$$END$$
+		</td>
+	</tr>
+	$$IF0:IMMOBC:ANNONCE:IDANNONCE$$<tr><td class="errmsg">L'annonce n'est pas diffusée<br /></td></tr>$$END$$
+	$$IF:IMMOBC:ANNONCE:IDANNONCE$$
+	<tr>
+		<td align="center">
+		<table class="certiftable">
+			<tr>
+				<td colspan="2" align="center" class="certifpxi" width="100%">Annonce de r&eacute;f&eacute;rence $$IMMOBC:ANNONCE:REFANNONCE$$</td>
+			</tr>	
+			<tr>
+				<td class="certifpx" align="left">
+				$$BIF:ANNVISUELS$$
+				<table style="float: right">
+					<tr>
+						<td>
+						$$DO:1:3$$
+						$$IF=:1:ANNVISUELS:I$$
+						    $$IF:ANNVISUELS:THUMB_URL$$
+						   <img alt="$$ANNVISUELS:1:DESCRIPTIF_FR$$" src="$$ANNVISUELS:THUMB_URL$$" vspace="10" border="0" />
+						    $$END$$
+						</td>
+						<td align="center">
+						$$END$$
+						$$LOOP$$
+					    $$IF>:2:ANNVISUELS:I$$
+					    <table class="testtbl2">
+					    	<tr>
+					    		<td width="100%" align="center">
+					    $$END$$
+					    $$DO:1:3$$ 
+							$$IF!:1:ANNVISUELS:I$$
+								$$IF:ANNVISUELS:THUMB_URL$$
+							    	<img alt="$$ANNVISUELS:DESCRIPTIF_FR$$" src="$$ANNVISUELS:THUMB_URL$$" border="0" />
+								</td>
+							</tr>
+							<tr>
+								<td align="center">
+							    $$END$$
+							$$END$$
+					    $$LOOP$$	
+						$$IF>:2:ANNVISUELS:I$$
+								</td>
+							</tr>
+						</table>
+						$$END$$		
+						</td>
+					</tr>
+				</table>				
+				$$BFIN$$
+				$$IMMOBC:ANNONCE:LIBELLE_FR htmlencode$$
+				$$IF:IMMOBC:ANNONCE:SURFACE$$&nbsp;$$IMMOBC:ANNONCE:SURFACE$$ m&sup2; environ$$END$$
+				$$IF:IMMOBC:ANNONCE:SURFACE_TERRAIN$$&nbsp;$$IMMOBC:ANNONCE:SURFACE_TERRAIN$$ m&sup2; environ$$END$$
+				<br /><br />
+				$$A:ANNPX=0$$
+				$$IF:IMMOBC:ANNONCE:PX$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX@@$$ $$END$$
+				$$IF:IMMOBC:ANNONCE:PX_LOYER$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX_LOYER@@$$ $$END$$
+				$$IF:IMMOBC:ANNONCE:PX_BOUQUET$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX_BOUQUET@@$$ $$END$$
+				$$IF:IMMOBC:ANNONCE:PX_BS_SEMAINE$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX_BS_SEMAINE@@$$ $$END$$
+				$$IF:IMMOBC:ANNONCE:PX_VALEUR_A_LACHAT$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX_VALEUR_A_LACHAT@@$$ $$END$$
+				$$IF:IMMOBC:ANNONCE:PX_CESSION$$ $$A:ANNPX=@@IMMOBC:ANNONCE:PX_CESSION@@$$ $$END$$
+				<!-- $$ANNPX$$ -->
+				$$IF!:0:ANNPX$$
+					$$IF=:4:IMMOBC:ANNONCE:IDTYPETRANSACTION$$
+						à partir de
+					$$END:loc vac$$
+					$$ANNPX formatnumber 0$$&nbsp;&euro;
+					<br />
+					<font class="certifpxi">soit $$ANNPX formatnumber 0 tofrancs 0$$&nbsp;FF</font>
+					<br /><br />
+					$$IF=:1:IMMOBC:ANNONCE:IDTYPETRANSACTION$$
+						$$IF:IMMOBC:ANNONCE:HONORAIRES$$Honoraires:$$IMMOBC:ANNONCE:HONORAIRES$$<br />$$END$$
+					$$END:si location$$
+					$$IF!:1:IMMOBC:ANNONCE:IDTYPETRANSACTION$$
+						$$IF:IMMOBC:ANNONCE:PX_CHARGES$$Charges:$$IMMOBC:ANNONCE:PX_CHARGES$$ &euro;<br />$$END:charges$$
+					$$END:si pas location$$
+				$$END: si prix$$
+				$$IMMOBC:ANNONCE:VILLE htmlencode$$<font class="certifpxi">&nbsp;($$IMMOBC:ANNONCE:ACP$$)</font>
+				$$IF:IMMOBC:ANNONCE:PROX_FR$$<br />Proximité: $$IMMOBC:ANNONCE:PROX_FR htmlencode$$ $$END$$<br /><br />
+				<span class="desc_ann">$$IMMOBC:ANNONCE:DESCRIPTIF_FR htmlencode left 400$$$$IF+:400:IMMOBC:ANNONCE:DESCRIPTIF_FR len$$...$$END$$</span>
+				</td>
+			</tr>
+			$$IF:IMMOBC:ANNONCE:DT_MAJ$$
+			<tr><td colspan="2" align="right" class="legende">Date de mise à jour&nbsp;:&nbsp;$$IMMOBC:ANNONCE:DT_MAJ date 2$$<br /></td></tr>
+			$$END$$ 
+		</table>
+		</td>
+	</tr>	
+	<tr>
+		<td align="center">
+		<table class="certiftable">
+			<tr><td colspan="2" align="left" class="certifpxi">Agence en charge de cette annonce</td></tr>
+			<tr>
+				<td width="50%" align="left"><font class="certifpx">$$INFOAG:NOM htmlencode$$</font><br />$$INFOAG:ADRESSE htmlencode$$</td>
+				<td width="50%" class="certifpx" align="right">
+				$$IF:INFOAG:TEL$$Tél.&nbsp;:&nbsp;$$INFOAG:TEL formattel$$<br />$$END$$
+				$$IF:INFOAG:FAX$$Fax&nbsp;:&nbsp;$$INFOAG:FAX formattel$$<br />$$END$$
+				$$IF:INFOAG:EMAIL$$$$INFOAG:EMAIL$$$$END$$
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table width="100%">	
+    <tr>
+      	<td align="center">		
+			$$IF=:1$11$1,11:FORM:IDTP$$
+			<table class="certiftable"><!-- $$FORM:IDTP$$ -->
+				<tr>
+					<td>
+			      	$$IF=:1$11:FORM:IDTP$$Le présent document certifie que l'annonce (réf : $$IMMOBC:ANNONCE:REFANNONCE$$) est diffus&eacute;e sur le site $$IF=:1:FORM:IDTP$$seloger.com$$END$$$$IF=:11:FORM:IDTP$$immostreet.com$$END$$ ainsi que sur les sites de ses partenaires :$$END$$
+					$$IF!:1$11:FORM:IDTP$$Le présent document certifie que l'annonce (réf : $$IMMOBC:ANNONCE:REFANNONCE$$)  est diffus&eacute;e sur les sites seloger.com et immostreet.com ainsi que sur les sites de leurs partenaires.$$END$$
+			      	</td>
+			    </tr>
+			    $$IF=:1$11$1,11:FORM:IDTP$$
+				<tr>
+					<td align="center">
+						<img src="$$_$$engine/images/img_schemadiff_$$IF=:1:FORM:IDTP$$sl$$END$$$$IF=:11:FORM:IDTP$$is$$END$$$$IF=:1,11:FORM:IDTP$$slis$$END$$.jpg" alt="" align="center" border="0" />
+					</td>
+				</tr>$$END$$
+				<tr>
+					<td class="legende" align="right">
+						$$IF=:1$11:FORM:IDTP$$Liste indicative et non contractuelle - $$END$$$$E:ID3:DATE:2$$ $$ID3:DATE:VAL date nommois$$ $$ID3:DATE:VAL date yyyy$$
+					</td>
+				</tr>
+			</table>
+			$$END$$
+		</table>
+		</td>
+	</tr>	
+	
+$$END:IDANNONCE$$
+</table>
+
+	<!-- $$FORM:AFFICHSTATS$$ -->
+	$$IF:IMMOBC:STATIS:TOTAL$$ $$IF=:1:FORM:AFFICHSTATS$$
+	<table width="100%">
+		<tr>
+			<td align="center">
+			<table class="certiftable">
+				<tr>
+					<td colspan="2" align="center" class="certifpxi">Visibilité de votre annonce<br /></td>
+				</tr>
+				<tr>
+					<td width="38%" align="left">
+					<b>sur $$IMMOBC:ANNONCE:SUPPORTS$$&nbsp;:&nbsp;</b>
+					</td>
+					<td width="62%" class="nb_visuann" valign="bottom" align="left">
+						<span class="nb_visuannred">$$IMMOBC:STATIS:TOTAL formatnumber 0$$ fois</span> &nbsp;depuis&nbsp;sa&nbsp;mise&nbsp;en&nbsp;ligne.
+					</td>
+				</tr>
+				$$IF!:1:IMMOBC:STATANNTOTLANG:NBR$$
+				<tr>
+					<td align="left">Votre annonce a été consultée<br />dans les langues suivantes&nbsp;:&nbsp;</td>
+					<td align="left">
+						$$BIF:IMMOBC:STATANNTOTLANG:QRY$$
+						<table $$IF!:1:IMMOBC:STATANNTOTLANG:QRY:NBR$$width="400"$$END$$ cellspacing="0" cellpadding="0">
+						<tr>
+						$$DO:1:999$$
+							$$IF:IMMOBC:STATANNTOTLANG:QRY:TOTAL$$
+								<td align="left" width="120" nowrap>
+								<img src="i/flags/$$IMMOBC:STATANNTOTLANG:QRY:LANGUECD lcase$$.gif" /> $$IMMOBC:STATANNTOTLANG:QRY:LANGUE$$&nbsp;:</td>
+								<td align="left" class="nb_visupays">$$IMMOBC:STATANNTOTLANG:QRY:TOTAL formatnumber 0$$</td>
+								$$IF=:2$4$6$8$10$12$14$16$18$20:IMMOBC:STATANNTOTLANG:QRY:I$$</tr><tr>$$END$$
+							$$END$$
+						$$LOOP$$
+						</tr>
+						</table>
+						$$BFIN$$
+					</td>
+				</tr>
+				$$END$$
+			</table>
+			</td>
+		</tr>
+	</table>
+	$$END:JAFFICHELESSTATS$$ $$END:ILYADESSTATS$$
+	
+	$$IF=:1:FORM:AFFICHSTATS$$
+	$$IF:STATSPP:TOTAL$$ 
+	<table width="100%">
+		<tr>
+			<td align="center">
+			<table class="certiftable">
+				<tr>
+					<td colspan="2" align="center" class="certifpxi">Visibilité de votre annonce en Pole Position<br /></td>
+				</tr>
+				<tr>
+					<td width="38%" align="left">
+					<b>sur SELOGER&nbsp;:&nbsp;</b>
+					</td>
+					<td width="62%" class="nb_visuann" valign="bottom" align="left">
+						<span class="nb_visuannred">$$STATSPP:TOTAL formatnumber 0$$ fois</span> &nbsp;depuis&nbsp;sa&nbsp;mise&nbsp;en&nbsp;ligne.
+					</td>
+				</tr>
+				
+				
+				
+			</table>
+			</td>
+		</tr>
+	</table>
+	$$END:ILYADESSTATS$$
+	$$END$$
+
+<table width="100%"><tr><td align="center" class="certifbottom">$$SITE:PRESSIMMOADR2$$</td></tr></table>
+
+</table>
+
+</body></html>

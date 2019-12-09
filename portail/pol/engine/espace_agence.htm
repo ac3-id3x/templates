@@ -1,0 +1,184 @@
+$$INCL:AUTH.HTM$$
+$$DYN:ID3:NOCACHE$$
+$$A:CAT=espace_agence$$
+$$E:E3:CAT:PRO3:SLPRO$$
+$$A:CSS_ESPAG=1$$
+$$INCL:HAUTX.HTM$$ 
+<script type="text/javascript">
+	<!--	
+	document.write('<sc'+'ript type="text/javascript" src="$$_$$js/jquery.carousellite_1.0.1_md2.js"></scri'+'pt>');
+	//-->
+	</script>
+
+<script type="text/javascript">
+<!--
+
+$j(document).ready(function() {
+	$j("#cnt_blc_art").show();
+	$j("#actusite").jCarouselLite({
+	    btnNext: "#go-next",
+	    btnPrev: "#go-prev",
+	    visible: 1,
+		jsCss: false,
+		auto: 4500,
+		liSize: 693
+	});
+	
+	$j("#actusite").find('li').click(function(){ 
+		if($j(this).attr('rel')!= "") {id3_go($j(this).attr('rel'));}
+   }); 
+   
+   
+});
+
+//-->
+</script> 
+$$B:SLPRO:GETANNBYTT:ALIAS:DATATT$$	
+$$B:SLPRO:GETANNBYTB:ALIAS:DATATB$$	
+$$B:SLPRO:GETANNBYPUBLICATION:ALIAS:DATAPUB$$	
+
+$$B:SLPRO:TYPESTRANSACTION:ALIAS:TT$$	
+$$B:SLPRO:TYPESBIEN:ALIAS:TB$$
+
+$$E:SLPRO:PUBLICATIONS:~si_web:1:ALIAS:PUBL$$
+$$IF=:6:PUBL:PUBNB1_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB2_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB3_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB4_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB5_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB6_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB7_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB8_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+$$IF=:6:PUBL:PUBNB9_IDTYPEPUBLICATION$$$$A:SITEAGOK=1$$$$END$$
+
+$$IF=:1$11$34:PUBL:PUBNB1_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB2_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB3_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB4_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB5_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB6_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB7_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB8_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+$$IF=:1$11$34:PUBL:PUBNB9_IDTYPEPUBLICATION$$$$A:SITEGPOK=1$$$$END$$
+
+$$IF0:SITEGPOK$$ 
+	$$IF0:SITEAGOK$$
+		$$A:AUCUNESTATS=1$$
+	$$END$$
+$$END$$
+
+<!-- ******** BEGIN gestion de l'affichage du message si publication en veille ******** //-->
+$$BIF:DATAPUB$$	
+	$$A:AFFMSGVEILLEPUB=0$$
+	$$A:AFFMSGVEILLEPUBAG=0$$
+	$$DO:1:999$$ 
+		$$IF:DATAPUB:SI_VEILLE$$ 
+			$$A:AFFMSGVEILLEPUB=@@AFFMSGVEILLEPUB exec XX+1@@$$
+			$$IF:MSGVEILLEPUB$$$$A:MSGVEILLEPUB=@@MSGVEILLEPUB@@, @@DATAPUB:PUBLICATION pcase@@$$$$END$$
+			$$IF0:MSGVEILLEPUB$$$$A:MSGVEILLEPUB=@@DATAPUB:PUBLICATION pcase@@$$$$END$$			
+		$$END$$
+		$$IF=:WEB AGENCE:DATAPUB:PUBLICATION$$
+			$$IF0:DATAPUB:SI_VEILLE$$
+				$$A:AFFMSGVEILLEPUBAG=1$$
+			$$END$$
+		$$END$$
+		$$IF=:1227:DATAPUB:IDTYPEPUBLICATION$$
+			$$A:AFFMSGVEILLEPUBAG=1$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+
+$$IF=:0:AFFMSGVEILLEPUBAG$$
+	$$IF!:0:AFFMSGVEILLEPUB$$
+		<div class="erre"><span>Attention, $$IF+:2:AFFMSGVEILLEPUB$$les publications $$MSGVEILLEPUB$$ sont suspendues$$END$$$$IF=:1:AFFMSGVEILLEPUB$$la publication $$MSGVEILLEPUB$$ est suspendue$$END$$. Merci de contacter le service comptabilité au 01 53 38 80 00 <font class="legende">(Appel non surtaxé)</font>.</span></div>
+		<br clear="all" />
+	$$END$$
+$$END$$                
+
+<!-- ******** END gestion de l'affichage du message si publication en veille ******** //-->
+	
+<div class="cnt" id="cnt_visu">
+
+	<div class="tab_mea espagleft">
+		<div class="line">
+			$$IF:PUBL:PUBNB1_IDTYPEPUBLICATION$$<div class="link"><a href="$$XDOM$$/$$PUBL:PUBNB1_IDTYPEPUBLICATION$$/staann.htm">Plus de Stats</a></div>$$END$$
+			<div class="title">Statistiques</div>
+		</div>	
+		<div class="line_easy3">
+			<div id="onglet_stat">
+				$$IF:SITEAGOK$$<div class="stat_on" id="statsag" onclick="javascript:stats(this);"><span class="img_stats"></span>&nbsp;Site Agence</div>$$END$$
+				$$IF:SITEGPOK$$<div class="stat_off" id="statgsl" onclick="javascript:stats(this)"><span class="img_stats"></span>&nbsp;Portail(s) Groupe SeLoger.com</div>$$END$$
+			</div>
+			$$IF:SITEAGOK$$<div id="statsag_g">$$INCL:AGENCE_GRAPHSTAT.HTM$$</div>$$END$$
+			$$IF:SITEGPOK$$<div id="statgsl_g" $$IF0:SITEAGOK$$style="display: block"$$END$$>
+				$$A:PORTAIL=1$$$$INCL:AGENCE_GRAPHSTAT.HTM$$
+			</div>
+			$$END$$
+			$$IF:AUCUNESTATS$$<div class="minierre"><div class="erre">Aucune donnée</div></div>$$END$$
+		</div>
+	</div>
+	
+	<div class="tab_visu">
+		<div class="line">
+			<div class="title_tab">	
+				<div class="img_puce_title">&nbsp;</div>Rechercher une ou plusieurs annonce(s)
+			</div>
+		</div>
+		<div class="line_easy_cr">
+			$$INCL:ESPACE_AG_MINIENGINE.HTM$$
+		</div>	
+		
+		$$IF:AUTH:CHECK_LOGIN:DROIT_GESTION_PA$$ $$A:AFFCREA=1$$ $$END$$
+		$$IF:AUTH:CHECK_LOGIN:DROIT_TOUT_ACCES$$ $$A:AFFCREA=1$$ $$END$$
+		
+		$$IF=:1:AFFCREA$$		
+		<div class="line">
+			<div class="title_tab">	
+				<div class="img_puce_title">&nbsp;</div>Ajouter une nouvelle annonce</div>
+		</div>
+		<div class="line_easy_cr">
+			<div class="line_box_add">
+				<div class="box_add" onClick="javascript:id3_go('/new/annonce_add.htm?idtypetransaction=1&idtypebien=1');">Location appartement</div>
+				<!--<div class="box_add" onClick="javascript:id3_go('/new/annonce_add.htm?idtypetransaction=1&idtypebien=2');">Location maison</div>-->
+				<div class="box_add" onClick="javascript:id3_go('/new/annonce_add.htm?idtypetransaction=1&idtypebien=2');">Location maison</div>
+			</div>
+			<div class="line_box_add">
+					<div class="box_add" onClick="javascript:id3_go('/new/annonce_add.htm?idtypetransaction=2&idtypebien=1');">Vente appartement</div>
+					<div class="box_add" onClick="javascript:id3_go('/new/annonce_add.htm?idtypetransaction=2&idtypebien=2');">Vente maison</div>
+			</div>
+			<div class="line_box_add">
+					<div class="box_add" onClick="javascript:id3_go('/annonce_edit_choix.htm');">Autres</div>
+			</div>				
+		</div>
+		$$END$$
+
+		$$IF:AUTH:CHECK_LOGIN:DROIT_WEB_VISIUM$$ $$A:AFFWV=1$$ $$END$$
+		$$IF:AUTH:CHECK_LOGIN:DROIT_TOUT_ACCES$$ $$A:AFFWV=1$$ $$END$$
+			
+		$$IF:AFFWV$$
+			$$INCL:ESPACE_AG_WV.HTM$$
+		$$END$$
+	
+		
+	</div>
+</div>
+$$INCL:ESPACE_AG_SYNTHESE.HTM$$
+<!-- Google Code for Visiteur_Commercial Remarketing List -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1005888149;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "EBbXCLPJ8QIQlcXS3wM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1005888149/?label=EBbXCLPJ8QIQlcXS3wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+$$INCL:BASX.HTM$$

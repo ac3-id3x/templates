@@ -1,0 +1,182 @@
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+$$E:E3:CAT:ANNONCE_EDIT_PHOTO:SLPRO$$
+$$INCL:HAUTX.HTM$$
+
+
+
+<script type="text/javascript">
+<!--  
+		
+	function editlegend(idvisuel,legende,num) {
+		var o = document.getElementById('tabeditlegend');
+		var o1 = document.getElementById('descriptif_fr');
+		var o2 = document.getElementById('idvisuel');
+		var o3 = document.getElementById('numphoto');
+		o1.value = legende;
+		o.style.display = "block";
+		o2.value = idvisuel;
+		o3.innerHTML = num;
+	}
+	
+	
+function ShowDelVisuel(idvisuel) {
+		
+			 if (confirm("Supprimer le visuel?")) {
+					javascript:id3_go('$$XDOM$$/visuel_delete.htm?idvisuel='+idvisuel+'&redirect=$$REP:URI$$');					
+				}
+	
+		return false;
+	}
+	
+	
+	//-->	
+</script>
+
+
+$$E:SLPRO:ANNONCE:~idannonce:REP:1:ALIAS:EANN$$
+$$IF:EANN:IDANNONCE$$
+		
+		$$IF:IMMOBC:VISUEL_ADD:ERRE$$		
+			<div class="$$IF:IMMOBC:VISUEL_ADD:OK$$no$$END$$erre"><span>$$IMMOBC:VISUEL_ADD:ERRE$$</span></div>	
+		$$END$$
+		
+	
+
+		$$B:SLPRO:ANNONCEVISUELS:1:REP:1:ALIAS:BVISU$$
+		
+		$$BIF:BVISU$$
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+			<tr><td class="tabentete">Photo$$BVISU:NBR pluriel$$($$BVISU:NBR$$)</td></tr>
+			<tr>
+				<td>
+					$$DO$$
+					<div class="annonce_edit_photo"> 
+						<div class="line1">
+							$$IF+:2:BVISU:NBR$$ 
+								$$IF=:1:BVISU:I$$<div class="img_blank"></div>$$END$$
+								$$IF!:1:BVISU:I$$
+									<div class="img_arrow_left" onclick="document.location.href='/$$BVISU:IDVISUEL$$/visuel_changeordre.htm?step=-1&idannonce=$$BVISU:IDANNONCE$$&url=/$$REP:URI urlencode$$%23photos';"></div>
+								$$END$$
+						
+								<div class="nb_photo">$$BVISU:I$$</div>
+								
+								$$IF!:BVISU_NBR:BVISU:I$$
+									<div class="img_arrow_right" onclick="document.location.href='/$$BVISU:IDVISUEL$$/visuel_changeordre.htm?step=1&idannonce=$$BVISU:IDANNONCE$$&url=/$$REP:URI urlencode$$%23photos'"></div>
+								$$END$$
+							$$END:UNSEULDANSLABOUCLE$$
+						</div>						
+						
+						<div class="img_bien" title="header=[<img src='$$BVISU:URL$$'>] body=[Photo $$BVISU:I$$] mode=[auto]">
+							$$REM$$<a href="javascript:PopUP('$$BVISU:IDVISUEL$$/p_visuel.htm','Visuel',$$BVISU:WIDTH exec XX+100$$,$$BVISU:HEIGHT exec XX+210$$,0,0,'yes','yes')">$$END$$<img width="$$BVISU:THUMB_WIDTH$$" height="$$BVISU:THUMB_HEIGHT$$" src="$$BVISU:THUMB_URL$$?$$RND:1:10000$$" border="0" />$$REM$$</a>$$END$$
+						</div>
+													
+						<div class="line3">
+							$$A:MAXPHOTO=@@BVISU:I@@$$
+								$$BVISU:DT date dt$$<br/>
+								<small>$$BVISU:NOMFICHIERORIGINAL$$</small><br/>
+							
+							$$IF:BVISU:DESCRIPTIF_FR$$Légende: <a href="javascript:editlegend('$$BVISU:IDVISUEL$$','$$BVISU:DESCRIPTIF_FR escape htmlattributeencode$$','$$BVISU:I$$');" title="Modifier légende"> $$BVISU:DESCRIPTIF_FR$$</a>$$END$$
+							$$IF0:BVISU:DESCRIPTIF_FR$$<a href="javascript:editlegend('$$BVISU:IDVISUEL$$','$$BVISU:DESCRIPTIF_FR escape htmlattributeencode$$','$$BVISU:I$$');" title="Ajouter une légende">Ajouter une légende</a>$$END$$							
+					 		
+					 			<div class="img_sup" onclick="ShowDelVisuel($$BVISU:IDVISUEL$$);" title="Supprimer le visuel"></div>	
+					 	</div>
+					 								
+				</div>	
+					$$LOOP$$ 
+		</td>
+		</tr>	
+		</table>
+		$$BFIN$$ 
+
+<div id="tabeditlegend" style="display: none;">
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr><th width="100%">Modification de la légende de la photo <span id="numphoto"></span></th></tr>
+	</thead>
+	<tr>
+			<td width="100%">
+				<form method="post" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_uplphotoleg" id="f_uplphotoleg">
+					<input type="hidden" name="idvisuel" id="idvisuel" value="" />
+					<input type="hidden" name="idannonce" value="$$EANN:IDANNONCE$$" />
+					<input type="hidden" name="u" value="immobc:visuel_mod_comment" />
+					<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+					<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+
+					<strong>Légende :</strong><br /> 
+					<input type="text" name="descriptif_fr" id="descriptif_fr" size="30" maxlength="256">
+
+					<div class="btn"><input type="image" src="$$_$$i/dyn/btnmodifier.png" /></div>	
+				</form>	
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<form action="$$REP:0$$" method="post" name="form_delvisu">
+	<input type="hidden" name="u" value="slpro:visuel_del" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idvisuel" value="" />
+	<input type="hidden" name="rafraich" value="1" />
+</form>
+
+<form method="post" enctype="multipart/form-data" name="f_uplphoto" id="f_uplphoto">
+	<input type="hidden" name="u" value="immobc:visuel_add" />
+				<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+				<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+				<input type="hidden" name="idtypevisuel" value="1" />
+				<input type="hidden" name="idannonce" value="$$EANN:IDANNONCE$$" />
+				<input type="hidden" name="rafraich" value="1" />
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete" colspan="2">Ajouter une nouvelle photo</td></tr>
+<tr>
+	
+		<td align="center">			
+				<strong>Fichier: </strong><input type="file" name="visuel" />
+		</td>	
+		<td>
+				<strong>Légende :</strong> <span class="legende">(Cuisine, Salon,... )</span>
+				<input type="text" name="descriptif_fr" size="30" maxlength="256"><br />		
+				</td>
+			</tr>
+			<tr>
+					<td colspan="2">
+				<div class="btn"><input type="image" src="$$_$$i/dyn/btnenvoyerlaphoto.png" /></div>						
+		</td>
+	</tr>
+</table>
+	</form>	
+			$$END$$		
+	
+		$$INCL:ANNONCE_EDIT_VV_ERREUR.HTM$$
+<br/><br/><br/>
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete">Aide</td></tr>
+<tr>
+		<td>
+	<strong>Comment ajouter une photo ?</strong>
+	<br /><br />
+	Pour ajouter une photo vous devez cliquer sur "<strong>Parcourir...</strong>" afin d'indiquer où se trouve la photo sur votre ordinateur.<br/>Le chemin du fichier doit s'afficher à gauche du bouton "<strong>Parcourir...</strong>".<br/>Vous devez ensuite cliquer sur "<strong>Envoyer la photo</strong>".<br/>
+Durant quelques secondes, votre photo sera sous la forme d'une image avec le message "<strong>PHOTO DISPONIBLE PROCHAINEMENT</strong>".
+<br /><br />
+<strong>Caractéristiques</strong>
+	<br /><br />   
+	<ul>
+		<li>Format : jpg</li>
+		<li>Autres formats acceptés : jpeg, gif, bmp, tif, tiff et png</li>
+		<li>Tailles min : 100 pixels * 100 pixels </li> 
+		<li>Tailles max : 800 pixels * 600 pixels </li> 
+		<li>Poid max : 512Ko</li>
+	</ul>
+</td>
+</tr>
+</table>
+
+
+
+
+$$INCL:BASX.HTM$$

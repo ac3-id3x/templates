@@ -1,0 +1,79 @@
+$$A:COPRO=1$$
+$$IF=:2$6$9:IDTYPETRANSACTION$$
+$$IF=:15:IDTYPEBIEN$$
+	$$A:COPRO=0$$
+$$END$$ 
+$$END$$
+
+<table class="tabbasic" cellpadding="4" cellspacing="0">
+<tr>
+	<td valign="top">Bien en copropri&eacute;t&eacute; :<br/>
+	<!-- putChampsObli : Ajoute la classe oblig_input et la propriété required si valeur à 1, sinon supprimes la classe oblig_input et la propriété required -->
+		<input type="radio" name="si_copropriete" onclick="javascript:putChampsObli(1, 'copro');" value="1"$$IF:FORM:PAGE_OK$$$$IF=:1:FORM:SI_COPROPRIETE$$ CHECKED$$END$$$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:True:ANNONCE:SI_COPROPRIETE$$ CHECKED$$END$$$$END$$/> Oui
+		<input type="radio" name="si_copropriete" onclick="javascript:putChampsObli(2, 'copro');" value="0"$$IF:FORM:PAGE_OK$$$$IF=:0:FORM:SI_COPROPRIETE$$ CHECKED$$END$$$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:False:ANNONCE:SI_COPROPRIETE$$ CHECKED$$END$$$$END$$ /> Non
+		<input type="radio" name="si_copropriete" onclick="javascript:putChampsObli(2, 'copro');" value=""$$IF:FORM:PAGE_OK$$$$IFNULL:FORM:SI_COPROPRIETE$$ CHECKED$$END:IFNULL$$$$END:PAGE_OK$$ $$IF0:FORM:PAGE_OK$$$$IFNULL:ANNONCE:SI_COPROPRIETE$$ CHECKED$$END$$$$END$$ /> N/C<font class="legende"><sup>N/C</sup></font>
+	</td>
+	<td>
+		<span class="picto_info_alur" title="Articles 29-1 A et 29-1 de la loi n&deg;65-557 du 10 juillet 1965 et article L.615-6 du Code de la construction"></span>
+	<td>
+</tr>
+<tr>
+	<td colspan="2" valign="top">Nombre de lots :<br/>
+		<input type="text" name="nb_lots_copropriete" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:NB_LOTS_COPROPRIETE$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:NB_LOTS_COPROPRIETE$$$$END$$" maxlength="10" />
+	</td>
+</tr>
+$$IF=:1:COPRO$$
+<tr>
+	<td colspan="2" valign="top">Le syndicat des copropri&eacute;taires fait-il l'objet d'une proc&eacute;dure :<br/>
+	<!-- putChampsObli : Ajoute la classe oblig_input et la propriété required si valeur à 1, sinon supprimes la classe oblig_input et la propriété required -->
+		<input type="radio" name="si_procedure_syndicat" onclick="javascript:putChampsObli(1, 'syndicat');" value="1"$$IF:FORM:PAGE_OK$$$$IF=:1:FORM:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END$$$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:True:ANNONCE:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END$$$$END$$ /> Oui
+		<input type="radio" name="si_procedure_syndicat" onclick="javascript:putChampsObli(2, 'syndicat');" value="0"$$IF=:0:FORM:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:False:ANNONCE:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END$$$$END$$ /> Non
+		<input type="radio" name="si_procedure_syndicat" onclick="javascript:putChampsObli(2, 'syndicat');" value=""$$IF:FORM:PAGE_OK$$$$IFNULL:FORM:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END:IFNULL$$$$END:PAGE_OK$$ $$IF0:FORM:PAGE_OK$$$$IFNULL:ANNONCE:SI_PROCEDURE_SYNDICAT$$ CHECKED$$END$$$$END$$ /> N/C<font class="legende"><sup>N/C</sup></font>
+	</td>
+</tr>
+<tr>
+	<td colspan="2" valign="top">D&eacute;tails proc&eacute;dure :<br/>
+		<textarea name="description_procedure_syndicat" rows="4" cols="80" maxlength="128" wrap="soft">$$IF0:FORM:PAGE_OK$$$$ANNONCE:DESCRIPTION_PROCEDURE_SYNDICAT htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:DESCRIPTION_PROCEDURE_SYNDICAT htmlencode$$$$END$$</textarea>
+	</td>
+</tr>
+<tr>
+	<td colspan="2" valign="top">Montant moyen annuel de la quote-part du budget pr&eacute;visionnel des d&eacute;penses courantes :<br/>
+		<input type="text" name="charges_annuelles" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:CHARGES_ANNUELLES$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:CHARGES_ANNUELLES$$$$END$$" maxlength="10" />&nbsp;&euro;
+	</td>
+</tr>
+$$END$$
+<tr>
+	<td colspan="2" class="legende">
+		<sup>N/C</sup>N/C : Non communiqu&eacute;
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+	function putChampsObli(i, where) {
+		var input1;
+		var input2;
+		if (where == 'copro') {
+			input1 = document.getElementsByName('nb_lots_copropriete');
+			input2 = document.getElementsByName('charges_annuelles');
+		} else if (where == 'syndicat') {
+			input1 = document.getElementsByName('description_procedure_syndicat');
+		}
+		
+		if (i == 1) {
+			input1[0].className = 'oblig_input';
+			input1[0].required = 'false';
+			if (where == 'copro') {
+				input2[0].required = 'false';			
+				input2[0].className = 'oblig_input';
+			}
+		} else if (i == 2) {
+			input1[0].className = '';
+			input1[0].removeAttribute("required");
+			if (where == 'copro') {
+				input2[0].removeAttribute("required");
+				input2[0].className = '';
+			}
+		}
+	}
+</script>

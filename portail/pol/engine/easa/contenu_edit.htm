@@ -1,0 +1,293 @@
+$$E:E3:CAT:157439:SLPRO$$
+$$A:CSS_EASA=1$$
+$$A:JS_EASA=1$$
+$$A:JS_EASA_LOAD=1$$
+$$A:JS_FCKEDITOR=1$$
+
+$$INCL:HAUTX.HTM$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:ID3:NOCACHE:FULL$$
+$$E:EASA:BO-EASA:ALIAS:INFOSITE$$
+$$E:EASA:BO-TEXTE:~IdCategorie:REP:1:~idTexte:QRY:IdTexte$$
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+
+<div id="easa_chemin">
+	<a href="$$XDOM$$/easa,cat_list.htm">Racine</a>
+	$$B:EASA:BO-CATPATH:~IdCategorie:REP:1:~allPath:1:ALIAS:CATPATH$$ 
+	$$BIF:CATPATH$$
+	$$DO$$
+	  <img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" /><a href="$$XDOM$$/easa,cat_edit.htm?idcategorie=$$CATPATH:IDCATEGORIE$$">$$CATPATH:LIBELLE$$</a>
+	$$LOOP$$
+	$$BFIN$$
+	<img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" />
+	$$IF=:True:FORM:ACTIF$$
+		<span class="active"><i>$$FORM:TITRE htmlencode$$</i></span>
+	$$END$$
+	$$IF=:False:FORM:ACTIF$$
+		<span class="inactive"><i>$$FORM:TITRE htmlencode$$</i></span>
+	$$END$$		
+</div>
+
+$$IF:EASA:BO-TEXTE:ERRMSG$$<div class="erre"><span>$$EASA:BO-TEXTE:ERRMSG$$</span></div>$$END$$
+$$IF:EASA:BO-EDITTEXTE:ERRMSG$$<div class="erre"><span>$$EASA:BO-EDITTEXTE:ERRMSG$$</span></div>$$END$$
+
+$$IF0:FORM:IDTEXTE$$
+	$$A:FORM:ACTIF=False$$
+$$END$$
+
+<div id="edit_haut">
+	<div class="right">
+		$$E:EASA:BO-CATACTIF:~IdCategorie:REP:1$$
+		$$IF:FORM:IDTEXTE$$
+			$$IF:EASA:BO-CATACTIF:ACTIFCP$$ 
+				$$IF=:False:FORM:ACTIF$$
+				<input type="image" name="img" src="$$_$$i/dyn/btnxedy_active_texte.png" onclick="return Activer(1);" />   
+				$$END$$	
+				$$IF=:True:FORM:ACTIF$$
+					<input type="image" name="img" src="$$_$$i/dyn/btnxedy_desactive_texte.png" onclick="return Activer(0);" />  
+				$$END$$	
+			$$END$$
+			$$IF0:EASA:BO-CATACTIF:ACTIFCP$$ 
+				<div class="erre"><span>L'activation du texte n'est pas possible car la catégorie parent est désactivé.</span></div>
+			$$END$$
+		$$END$$
+			
+		$$IF:FORM:IDTEXTE$$
+      <input type="image" name="img" src="$$_$$i/dyn/btnxedy_copier_texte.png" onclick="openext('$$XDOM$$/easa,cat_arbo.htm?idCategorie=$$REP:1$$&idTexte=$$FORM:IDTEXTE$$','arbo',500,300,'yes');" />        
+    $$END$$
+			
+
+			</div>
+		</div>
+
+        
+<form name="sauve" action="/$$REP:URI$$" method="post" id="sauve">      
+  <input type="hidden" name="u" value="EASA:BO-EDITTEXTE" />
+  <input type="hidden" name="firstPosition" value="false" id="frm_firstPosition">
+  <input type="hidden" name="idCategorie" value="$$REP:1$$" />		        
+  <input type="hidden" name="idTexte" value="$$FORM:IDTEXTE$$" /> 			
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" /> 
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+  <input type="hidden" name="actif" value="$$IF0:FORM:IDTEXTE$$$$EASA:BO-CATACTIF:ACTIFCP$$$$END$$$$IF:FORM:IDTEXTE$$$$FORM:ACTIF$$$$END$$" />	     
+      
+  <table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+	<tr><td class="tabentete">
+		$$REM$$$$IF=:True:FORM:ACTIF$$<span class="picto_world" onclick="javascript:id3_go_blank('http://$$INFOSITE:URL$$/$$FORM:IDCATEGORIE$$/$$FORM:IDTEXTE$$/infos.htm?tol=1')"></span>$$END$$$$END$$Informations principales</td></tr>
+	<tr><td>
+		<div id="form_data">
+			$$IF0:FORM:IDTEXTE$$
+				<small><i>La fonctionnalité d'ajout d'image n'est pas disponible lors de la création d'un article. Veuillez d'abord créer l'article et l'enregistrer. Vous pourrez ensuite ajouter des images ou autres documents joints.</i></small>
+				<br /> <br />
+			$$END$$
+			<strong>Titre :</strong><br />
+			<input type="text" name="TITRE" id="title_text" value="$$FORM:TITRE$$">                
+			 <br />  <br />
+			<strong>Description courte :</strong>
+		   $$REM$$ <a id="setinitDescrHtml" href="javascript:initDescrHtml()">Html</a>$$END$$
+			<textarea name="Description">$$FORM:DESCRIPTION$$</textarea>
+			  <br />  <br />
+				<span cibles="[1]">
+			<strong>Texte :</strong>
+			<textarea name="Texte">$$FORM:TEXTE$$</textarea>
+			</span>
+		</div>
+   </td></tr>
+	</table>  
+	
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr><td class="tabentete">Informations complémentaires</td></tr>
+	<tr><td>
+		<div class="line150"><div>Etat :</div>	
+			$$IF:FORM:IDTEXTE$$
+				$$IF=:True:FORM:ACTIF$$<span class="active">Texte actif</span>$$END$$
+				$$IF=:False:FORM:ACTIF$$<span class="inactive">Texte inactif</span>$$END$$
+			$$END$$
+			$$IF0:FORM:IDTEXTE$$
+				<span class="inactive">édition</span>
+			$$END$$
+		</div>
+			$$IF:FORM:IDTEXTE$$<div class="line150"><div>Identifiant texte :</div> <input type="text" value="$$FORM:IDTEXTE$$" /></div>$$END$$
+		
+		
+		
+		
+
+
+		$$IF:FORM:DTCREATE$$<div class="line150"><div>Création :</div>$$FORM:DTCREATE$$</div>$$END$$
+    $$IF:FORM:DTMAJ$$<div class="line150"><div>Mise à jour :</div>$$FORM:DTMAJ$$</div>$$END$$
+    <div class="line150"><div>URL de redirection :</div>
+    	<input type="text" id="urltexte" name="url" value="$$FORM:URL$$" />
+    	  
+    </div>
+		<div class="line150"><div>&nbsp;</div>
+    	<span class="legende">L'URL doit être de la sorte : http://www.monagence.com/ma_mape.htm </span>
+    	  
+    </div>
+ 
+     
+  <div class="line150"><div>Date affichée :</div>
+   <input type="text" name="dtAffiche" id="dtaffiche" value="$$FORM:DTAFFICHE  date sql$$">
+   $$IF:FORM:DTCREATE$$<a href="javascript:setdate('dtaffiche','$$FORM:DTCREATE date sql$$');">&laquo; Date de création</a> |$$END$$
+   $$IF:FORM:DTMAJ$$<a href="javascript:setdate('dtaffiche','$$FORM:DTMAJ date sql$$');">&laquo;Date de 
+   	<acronym title="Mise à jour">MAJ</acronym></a> |$$END$$
+   <a href="javascript:setdate('dtaffiche','$$E:ID3:DATE:2$$$$ID3:DATE:VAL date sql$$');">&laquo;
+   	Date du jour</a>
+              
+   </div>
+ 
+            <div class="line150"><div>Date de mise en ligne (au matin) :</div>
+            <input type="text" name="dtOnLine" value="$$FORM:DTONLINE left 10 date yyyy-MM-dd$$" maxlength="10" style="width:70px;"/>
+            </div>
+          <div class="line150"><div> Date de désactivation (au soir) :</div>
+            <input type="text" name="dtOffLine" value="$$FORM:DTOFFLINE left 10 date yyyy-MM-dd$$" maxlength="10" style="width:70px;"/></div>
+
+	    	</td>
+		</tr>
+		</table>  	
+		
+		<div id="line_btn_ann">
+			<div class="btn_left">
+					$$IF:FORM:IDTEXTE$$<div onclick="return ShowDel();">
+					<img src="$$_$$i/dyn/btnsupprimer.png"></div>$$END$$
+			</div>
+			
+			<div class="btn_right">$$IF:MODEDEV$$<img src="$$_$$i/dyn/btnenregistrer_first.png" onclick="DoSaveUp();">$$END$$ <img src="$$_$$i/dyn/btnenregistrer.png" onclick="DoSave();"></div>
+		</div>
+</form>
+        
+
+
+
+	$$IF:FORM:URL$$
+		<!--#include virtual="/easa/incl_cat_dispo.htm"-->
+	$$END$$
+
+
+
+
+
+<div id="form_edit" class="volet" style="display: none;">
+	
+	<script>
+		$$IF:FORM:IDTEXTE$$
+			var addpicurl="/$$FORM:IDTEXTE$$/cat_pic.htm";
+		$$END$$
+
+		var sBasePath = '/z/backoffice/fckeditor/';
+		
+		function initDescrHtml(){
+	  	var oFCKdescription = new FCKeditor( 'Description' ) ;
+	    oFCKdescription.BasePath	= sBasePath ;
+		$$IF:FORM:IDTEXTE$$
+			oFCKdescription.ToolbarSet="zed";
+			oFCKdescription.Config['ImageBrowserURL'] = addpicurl;
+		$$END$$
+		$$IF0:FORM:IDTEXTE$$
+			oFCKdescription.ToolbarSet="nopic";
+		$$END$$
+		oFCKdescription.Config.HtmlEncodeOutput = true;
+		oFCKdescription.Config.Entities = false;
+	    oFCKdescription.Config['ToolbarStartExpanded'] = false ;
+	    oFCKdescription.ReplaceTextarea() ;
+	   // var o = document.getElementById('setinitDescrHtml');
+	  //  o.style.display='none';
+	  }
+	      
+	  function init_fck(){
+	  	 initDescrHtml();
+	  	var oFCKtexte=new FCKeditor( 'Texte' ) ;
+	    oFCKtexte.BasePath	= sBasePath ;
+		$$IF:FORM:IDTEXTE$$
+		$$IF:FORM:IDTEXTE$$
+			oFCKtexte.ToolbarSet="zed";
+			oFCKtexte.Config['ImageBrowserURL'] = addpicurl;
+		$$END$$
+		$$IF0:FORM:IDTEXTE$$
+			oFCKtexte.ToolbarSet="nopic";
+		$$END$$
+		oFCKtexte.Config.HtmlEncodeOutput = true;
+		oFCKtexte.Config.Entities = false;
+	    oFCKtexte.Config['ToolbarStartExpanded'] = false ;
+	    oFCKtexte.ReplaceTextarea() ;
+	   
+	   }
+	   
+		
+		$j(document).ready(function() {
+			init_fck();
+		});			   
+	   
+	  function DoSaveUp(){
+			// récupération du champ
+			var inputHidden = document.getElementById("frm_firstPosition");
+			
+			// modification de sa valeur.
+			inputHidden.value = "true";
+			
+			// post du formulaire
+			document.forms['sauve'].submit();
+		}
+	              
+	   function DoSave(){
+	   	document.forms['sauve'].submit();
+	   }
+	</script>
+</div>      
+<br clear="all" />
+
+$$B:EASA:BO-REFTEXTE:~idTexte:QRY:IDTEXTE:ALIAS:CLIST$$ 
+$$BIF:CLIST$$ 
+<h3>Rubrique$$CLIST:NBR pluriel$$ ou ce texte est présent :</h3>
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+<thead>
+<tr>
+	<th class="bdr">Nom</th>	
+	<th id="ed_cat">Edition</th>	
+</tr>
+</thead>
+$$DO$$
+$$A:CLICKVISU=onclick="javascript:id3_go('@@XDOM@@/easa,cat_edit.htm?idcategorie=@@CLIST:IDCATEGORIE@@');"$$
+<tr class="line_$$IF=:0:CLIST:I mod2 0 1$$pair$$END$$$$IF!:0:CLIST:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:CLIST:I mod2 0 1$$pair$$END$$$$IF!:0:CLIST:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:CLIST:I mod2 0 1$$pair$$END$$$$IF!:0:CLIST:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+	onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:CLIST:I mod2 0 1$$pair$$END$$$$IF!:0:CLIST:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:CLIST:I mod2 0 1$$pair$$END$$$$IF!:0:CLIST:I mod2 0 1$$impair$$END$$_new');"
+	$$END$$ id="line_ann_$$CLIST:I$$">
+<td $$CLICKVISU$$ class="bdr">$$CLIST:LIBELLE$$</td>
+<td $$CLICKVISU$$><a href="$$XDOM$$/easa,cat_edit.htm?idcategorie=$$CLIST:IDCATEGORIE$$"><div class="picto_center"><div class="img_edit"></div></div></a></td>
+</tr>
+$$LOOP$$ 
+</table>
+$$BFIN$$         
+          
+          
+    
+	    
+          
+          
+    
+              
+<script>
+	
+function setdate(iddate,valuedate){
+	var o = document.getElementById(iddate);
+	o.value = valuedate;
+}	
+	
+function ShowDel () {	
+	if (confirm("Confirmez-vous la suppression du texte [ $$FORM:TITRE$$ ] ?"))
+		location.href="$$XDOM$$/easa,txt_del.htm?idcategorie=$$FORM:IDCATEGORIE$$&idTexte=$$FORM:IDTEXTE$$&redirect=/easa,cat_edit.htm?idcategorie=$$FORM:IDCATEGORIE$$"
+		
+	return false;		
+}
+function Activer (actif) {
+		
+	if (confirm("Confirmez-vous la modification du texte [ $$FORM:TITRE$$ ] ?"))
+		location.href="$$XDOM$$/easa,txt_active.htm?idcategorie=$$FORM:IDCATEGORIE$$&idTexte=$$FORM:IDTEXTE$$&redirect=$$XDOM$$/$$REP:PAGE$$&actif="+actif		
+		
+	return false;	
+}
+
+</script>
+     
+
+
+$$INCL:BASX.HTM$$

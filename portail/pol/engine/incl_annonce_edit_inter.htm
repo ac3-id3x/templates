@@ -1,0 +1,81 @@
+<table class="tabbasic" cellpadding="4" cellspacing="0">
+	<tr class="tabentete">
+		<td align="left" colspan="2">Orientation Internationale&nbsp;<font class="legendeb">-&nbsp;Uniquement pour internet</font></td>
+	</tr>
+	<tr>
+	<td id="tdInter">
+	</tr>
+	<tr>
+		<td align="left">
+			<table width="100%">
+				<tr>
+					<td align="left"><!--a href="#" onclick="Update(); return false;"><strong>Raffraichir la section langue</strong></a--></td>
+					$$IF:ANNONCE:IDANNONCE$$
+					<td align="right">
+						<div style="float: right"><a href="" id="hrefPopup"><div class="img_lang_inter"></div><strong>Definisez les langues pour cette annonce</strong></a></div>$$END$$
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+		</td>
+	</tr>
+
+</table>
+
+
+<script>
+	var popup;
+	var timer;
+	
+	// Permet d'activer un timer pour checker si la popup est fermée, afin de mettre à jour tdInternational
+	jQuery('#hrefPopup').click(function(e){
+		e.preventDefault();
+		var h = 600;
+		var l = 900;
+		var hauteur=Math.round((screen.availHeight-h)/2);
+		var largeur=Math.round((screen.availWidth-l)/2);
+		popup  = window.open('$$ID3DOM$$/$$ANNONCE:IDANNONCE$$/p_languesparlees.htm','PlusLangues',"toolbar=0,location=0,directories=0,status=0,scrollbars=yes,resizable=1,menubar=0,top="+hauteur+",left="+largeur+",width="+l+",height="+h);
+		timer = setInterval(function() {
+			try {
+				if(popup.closed) {  
+					clearInterval(timer);  
+					Update()
+				}
+			}
+			catch(e) { }
+		}, 1000); 
+	});
+
+	//var premierAffichage = true;
+	
+	// Fonction pour mettre à jour tdInternational
+	function Update(){
+		jQuery.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "incl_annonce_edit_inter_form.htm",
+			data:{
+				imgcnxweb: '$$IMGCNXWEB$$',
+				'ie_fix' : new Date().getTime()
+			},
+			success: function(code_html, statut) {
+				window.document.getElementById("tdInter").innerHTML = code_html;
+				$("#tdInter").find("script").each(function(i) {
+					eval($(this).text());
+				});
+
+				/*if(!premierAffichage)
+					alert ("La section langue a été rechargée.");
+				else
+					premierAffichage = false;*/
+			},
+			error : function(resultat, statut, erreur){
+				alert('Un problème est survenu dans le chargement des langues.');
+			}
+		});
+	}
+	
+	// On charge une première fois tdInternational
+	Update();
+</script>

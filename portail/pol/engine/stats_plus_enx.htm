@@ -1,0 +1,135 @@
+
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$B:SLPRO:STATMOISPUBLICATION:~idannonce:REP:1:ALIAS:SMOISPUB$$  $$INIT:PAGE_CLOSE=1$$ $$SET:OVERDIV=1$$
+$$E:SLPRO:STATANNTOT:~idannonce:REP:1$$ 
+$$E:SLPRO:ANNONCE:~idannonce:REP:1$$
+$$B:SLPRO:STATLANGUE:~idannonce:REP:1$$ 
+$$INCL:HAUTX.HTM$$ 
+
+
+$$INIT:PAGE_PRINT=1$$
+
+<h3>Statistiques mensuelles de consultation de votre annonce</h3>
+
+$$IF0:SLPRO:STATANNTOT:TOTAL$$
+	<div class="erre"><span>Aucune visualisation de votre annonce n'a encore été enregistrée</span></div>
+$$END$$
+<br clear="all" />
+$$IF:SLPRO:STATANNTOT:TOTAL$$
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td width="70%">$$INCL:RESUMANX.HTM$$</td>
+			<td width="5%">&nbsp;</td> 
+			<td width="25%" style="vertical-align: top;"> 
+				<table class="tabbasic" cellpadding="0" cellspacing="0">
+					<tr class="tabentete">
+						<td>Total des lectures de votre annonce</td>
+					</tr>
+					<tr>
+						<td align="center">$$SLPRO:STATANNTOT:TOTAL formatnumber 0$$</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
+	
+	$$A:BO_lISTE=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Liste] body=[Annonces affichées dans le<br>résultat d'une recherche]"$$
+	$$A:BO_DETAIL=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Détail] body=[Détail de l'annonce affiché <br>à partir du lien 'plus d'infos']"$$
+	$$A:BO_RATIO=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Ratio] body=[Détail / Liste en pourcentage,<br>Taux de conversion]"$$
+	$$A:BO_MAILS=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Mails] body=[Mails envoyés à votre agence]"$$
+	$$A:BO_MAILSAMI=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Mails à ami] body=[Mails envoyés 	à un ami]"$$
+	
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td>Détail des lectures</td>					
+			<td width="10%" $$BO_lISTE$$ class="alignright">Liste</td>
+			<td width="10%" $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td width="10%" $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td width="10%" $$BO_MAILS$$ class="alignright">Mails</td>
+			<td width="10%" $$BO_MAILSAMI$$ class="alignright">Mails à ami</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>			
+			<td class="alignright">$$SLPRO:STATANNTOT:L formatnumber 0$$</td>
+			<td class="alignright">$$SLPRO:STATANNTOT:D formatnumber 0$$</td>
+			<td class="alignright">$$SLPRO:STATANNTOT:POURCENT$$</td>
+			<td class="alignright">$$SLPRO:STATANNTOT:MAG formatnumber 0$$$$IFNULL:SLPRO:STATANNTOT:MAG$$0$$END$$</td>
+			<td class="alignright">$$SLPRO:STATANNTOT:MAMIS formatnumber 0$$$$IFNULL:SLPRO:STATANNTOT:MAMIS$$0$$END$$</td>
+		</tr>
+	</table>
+	
+	$$BIF:SLPRO:SMOISPUB$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td>Statistiques détaillées par mois</td>	
+			
+			<td width="10%" $$BO_lISTE$$ class="alignright">Liste</td>
+			<td width="10%" $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td width="10%" $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td width="10%" $$BO_MAILS$$ class="alignright">Mails</td>
+			<td width="10%" $$BO_MAILSAMI$$ class="alignright">Mails à ami</td>
+		</tr>
+		$$A:GGPUB=0$$
+		$$DO:1:99$$
+		$$IF:SLPRO:SMOISPUB:PUBLICATION$$
+			$$IF0:SLPRO:SMOISPUB:MOIS$$$$IF:SLPRO:SMOISPUB:L$$$$A:GGPUB=1$$$$END$$$$END$$
+			<tr>
+				<td colspan="6" class="$$IF=:0:GGPUB$$groupe$$END$$$$IF=:1:GGPUB$$total$$END$$">
+					$$IF=:0:GGPUB$$$$SLPRO:SMOISPUB:PUBLICATION$$$$END$$
+					$$IF=:1:GGPUB$$$$SLPRO:SMOISPUB:PUBLICATION pcase$$$$END$$
+					$$A:GGPUB=0$$
+					</td>
+			</tr>
+		$$END$$
+		<tr>
+			<td>$$SLPRO:SMOISPUB:MOIS$$</td>			
+			<td class="alignright">$$SLPRO:SMOISPUB:L$$</td>
+			<td class="alignright">$$SLPRO:SMOISPUB:D$$</td>
+			<td class="alignright">$$SLPRO:SMOISPUB:POURCENT$$</td>
+			<td class="alignright">$$SLPRO:STATMOISPUBLICATION:MAG formatnumber 0$$$$IFNULL:SLPRO:STATMOISPUBLICATION:MAG$$0$$END$$</td>
+			<td class="alignright">$$SLPRO:STATMOISPUBLICATION:MAMIS formatnumber 0$$$$IFNULL:SLPRO:STATMOISPUBLICATION:MAMIS$$0$$END$$</td>
+		</tr>
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+	$$REM$$
+	$$BIF:SLPRO:STATLANGUE:REP$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td>Statistiques détaillées par langue de consultation</td>	
+			<td width="10%" class="important alignright" $$BO_lISTE$$>Global</td>
+			<td width="10%" $$BO_lISTE$$ class="alignright">Liste</td>
+			<td width="10%" $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td width="10%" $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td width="10%" $$BO_MAILS$$ class="alignright">Mails</td>
+			<td width="10%" $$BO_MAILSAMI$$ class="alignright">Mails à ami</td>
+		</tr>
+		$$A:GGPUB=0$$
+		$$DO:1:99$$
+		$$IF:SLPRO:STATLANGUE:REP:PUBLICATION$$
+			$$IF0:SLPRO:STATLANGUE:REP:MOIS$$$$IF:SLPRO:STATLANGUE:REP:L$$$$A:GGPUB=1$$$$END$$$$END$$
+
+			<tr>
+				<td colspan="6" class="$$IF=:0:GGPUB$$groupe$$END$$$$IF=:1:GGPUB$$total$$END$$">
+					$$IF=:0:GGPUB$$$$SLPRO:STATLANGUE:REP:PUBLICATION$$$$END$$
+					$$IF=:1:GGPUB$$$$SLPRO:STATLANGUE:REP:PUBLICATION pcase$$$$END$$
+					$$A:GGPUB=0$$
+					</td>
+			</tr>
+		$$END$$	
+		<tr>
+			<td>$$SLPRO:STATLANGUE:REP:LANGUE$$</td>
+			<td class="alignright">$$SLPRO:STATLANGUE:REP:L$$</td>
+			<td class="alignright">$$SLPRO:STATLANGUE:REP:D$$</td>
+			<td class="alignright">$$IF!:0:SLPRO:STATLANGUE:REP:POURCENT$$$$SLPRO:STATLANGUE:REP:POURCENT$$$$END$$</td>
+			<td class="alignright">$$SLPRO:STATLANGUE:REP:MAG$$</td>
+			<td class="alignright">$$SLPRO:STATLANGUE:REP:MAMIS$$</td>
+		</tr>
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+	$$END$$
+$$END$$
+
+$$INCL:BASX.HTM$$

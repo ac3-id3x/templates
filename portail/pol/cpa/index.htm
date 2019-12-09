@@ -1,0 +1,284 @@
+$$E:E3:CAT:158764:SLPRO$$
+$$INCL:AUTH.HTM$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$E:PAUNIT:CPA-GETCONF:~PAUNITCONF:REP:1$$
+<script type="text/javascript">
+    <!--
+    function validation_creation_annonce() {
+        if(document.forms["AjoutAnnonce"].elements["idtypetransaction"].selectedIndex == 0 || document.forms["AjoutAnnonce"].elements["idtypebien"].selectedIndex == 0)
+        {
+            alert('Veuillez sélectionner un bien et un type de transaction.');
+            return false;
+        }
+    }
+
+
+
+    $$IF0:REP:1$$
+    document.location = '/$$PAUNIT:CPA-GETCONF:PAUNITCONF$$/index.htm';
+    $$END$$
+
+    //-->
+</script>
+
+<script charset="utf-8" type="text/javascript" src="/z/portail/pol/cpa/js/cpa.js"></script>
+
+<style>
+    div.LienAide {
+        text-align: right;
+        margin: 0;
+        padding: 0;
+    }
+
+    div.LienAide a {
+        margin: 0;
+        padding: 0;
+    }
+
+    div.LienAide div {
+        float: right;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+$$E:PAUNIT:CPA-ANNONCE-MESSAGE:ALIAS:MESSAGES$$
+
+
+$$IF:MESSAGES:OKMSG$$
+<div class="noerre"><span>
+        $$MESSAGES:OKMSG$$
+    </span></div>
+$$END$$
+
+$$IF:MESSAGES:ERRMSG$$
+<div class="erre"><span>
+        $$MESSAGES:ERRMSG$$
+    </span></div>
+$$END$$
+
+
+<div class="LienAide">
+    <a href="/zi/flmkt/carnetpa/BellesDemeuresAlaCarte_MonManuelUtilisation.pdf" target="new" title="T&eacute;l&eacute;chargez une pr&eacute;sentation rapide de votre espace professionnel Belles Demeures &agrave; la carte">
+        <div style="text-decoration: none;"><img src="/z/portail/pol/cpa/img/trombone.png" alt="manuel d'aide en pi&egrave;ce jointe" /></div>
+        <div style="text-decoration: underline;">Besoin d'&ecirc;tre guid&eacute; ?</div>
+    </a>
+</div>
+
+
+$$B:PAUNIT:LISTE_ANNONCES_PERSONNE:ALIAS:LISTEANNONCES$$
+
+$$BIF:LISTEANNONCES$$
+
+<div id="line_res" class="line_tab">
+    <div class="title_tabfull"><div class="img_puce_title">&nbsp;</div>$$IF+:6:LISTEANNONCES:NBR$$<span style="float: left;text-align: left;">Vos 5 derniéres annonces</span><span style="float: right;text-align: right;">total : $$END$$$$LISTEANNONCES:NBR$$ annonce$$LISTEANNONCES:NBR pluriel$$$$IF+:6:LISTEANNONCES:NBR$$</span>$$END$$</div>
+</div>
+
+<table class="tabinfo" cellpadding="0" cellspacing="0">
+    <tr>
+
+        <th  id="" class="bdr">Référence</th>
+        <th id="" class="bdr">Date création</th>
+        <th id="" class="bdr">Fin publication</th>
+        <th id="liste_cp" class="bdr">CP</th>
+        <th id="liste_ville" class="bdr">Ville</th>
+        <th id="" class="bdr">Prix</th>
+        <th id="" class="bdr">Type de bien</th>
+        <th id="" class="lst_transac" >Transaction</th>
+
+        <th class="lst_detail" ><div class="picto_center"><div class="img_go"></div></div></th>
+</tr>
+
+$$DO:1:5$$
+<tr class="line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:LISTEANNONCES:PUBNB1$$_green$$END$$$$END$$" onmouseover="this.className='line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new_hover';" onmouseout="this.className='line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:LISTEANNONCES:PUBNB1$$_green$$END$$$$END$$'">
+    <td class="bdr">
+        $$IF=:1:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_green" title="Publiée"></span>$$END$$
+        $$IF=:2:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_yellow" title="En cours de validation pour la publication"></span>$$END$$
+        $$IF=:3:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_red" title="Non publiée"></span>$$END$$
+
+        $$LISTEANNONCES:REFANNONCE$$</td>
+    <td class="bdr">$$LISTEANNONCES:DT_CREA date 2$$</td>
+    <td class="bdr">$$IF0:LISTEANNONCES:PAUNIT_FIN_PUBLICATION$$ N/A $$END$$ $$LISTEANNONCES:PAUNIT_FIN_PUBLICATION date 2$$</td>
+    <td class="bdr">$$LISTEANNONCES:CP$$</td>
+    <td class="bdr" title="$$LISTEANNONCES:VILLE$$">$$LISTEANNONCES:VILLE truncate 16 ...$$</td>
+    <td class="bdr">$$LISTEANNONCES:PX formatnumber 0$$&nbsp;&euro;&nbsp;</td>
+    <td class="bdr">&nbsp;$$LISTEANNONCES:TYPEBIEN$$<br /></td>
+      <td class="bdr" title="$$LISTEANNONCES:TYPETRANSACTION$$">&nbsp;$$LISTEANNONCES:TYPETRANSACTION$$</td>
+
+    <td class="lst_detail">
+
+        <div>
+            <span class="lst_cel"><a href="/$$LISTEANNONCES:IDANNONCE$$/$$REP:1$$/annonce_edit.htm" title="Détail de l'annonce">Voir / Modifier</a></span> 
+            <span class="lst_cel">   <form method="POST">
+                    <input type="hidden" class="idannonce" name="idannonce" value="$$LISTEANNONCES:IDANNONCE$$"/>
+                    <input type="hidden" class="idtypeproduit" name="idtypeproduit" value="28"/>
+                    <input type="hidden" class="idetatannonce" name="idetatannonce" value="$$LISTEANNONCES:CPA_ETAT$$"/>
+                    <input type="hidden" name="page_err" value="ajax_post_cpa_publish.htm" />
+                    <input type="hidden" name="page_ok" value="ajax_post_cpa_publish.htm" />
+                    <input type="hidden" name="u" value="PAUNIT:PUBLICATION_ANNONCES" />
+                    <a href="#" class="publie_cpa" title="Mettre en ligne l'annonce">Publier</a>
+                </form>
+            </span> 
+        </div>
+        <div><span class="lst_cel">
+                <a href="/$$LISTEANNONCES:IDANNONCE$$/$$REP:1$$/gestion_visuel.htm" title="Ajouter une ou plusieurs photos">Ajout photo(s)</a>
+
+            </span>
+            <span>
+                <form method="POST">
+                    <input type="hidden" class="del" name="del" value="$$LISTEANNONCES:IDANNONCE$$" />
+                    <input type="hidden" class="idetatannoncedel" name="idetatannoncedel" value="$$LISTEANNONCES:CPA_ETAT$$"/>
+                    <input type="hidden" name="page_err" value="ajax_post_cpa_supp.htm" />
+                    <input type="hidden" name="page_ok" value="ajax_post_cpa_supp.htm" />
+                    <input type="hidden" name="u" value="PAUNIT:CPA-SUPPRIME-ANNONCES" />
+                    <a href="#" class="supp_cpa" title="Supprimer / Dépublier l'annonce">Désactiver</a>
+                </form>
+            </span>
+        </div>
+    </td>
+
+</tr>
+$$LOOP$$
+</table>
+
+<div id="legend_list">
+    <div><span class="img_puce_green"></span>&nbsp;Annonce publiée</div>
+    <div><span class="img_puce_yellow"></span>&nbsp;Annonce en cours de validation</div>
+    <div><span class="img_puce_red"></span>&nbsp;Annonce non publiée</div>
+    <div><span class="img_picture"></span>&nbsp;Une photo</div>
+    <div><span class="img_pictures"></span>&nbsp;Plusieurs photos</div>
+</div>
+
+$$IF+:5:LISTEANNONCES:NBR$$
+<br />
+<div class="btn"><a href="/liste_annonces.htm"><img src="/z/portail/pol/i/dyn/btnlistedesannonces.png" title="voir toutes les annonces"></a></div>
+<br /><br />
+$$END$$
+$$BFIN$$
+
+$$BIF0:LISTEANNONCES$$
+Aucune annonce à lister.
+$$BFIN$$
+
+
+
+
+<table cellspacing="0" cellpadding="0" class="tabbasic">
+    <tbody>
+        <tr class="tabentete">
+            <td>Ajouter une Annonce</td>
+        </tr>
+        <tr>
+            <td>
+                <form name="AjoutAnnonce" method="GET" action="/new/$$REP:1$$/annonce_edit.htm">
+                    <select name="idtypetransaction">
+                        <option value="">Type de transaction</option>
+                        <option value="1">location</option>
+                        $$IF=:12:REP:1$$
+                        <option value="8">vente de prestige</option>
+                        $$END$$
+                        $$IF!:12:REP:1$$
+                        <option value="2">vente</option>
+                        $$END$$
+                    </select>
+                    <select name="idtypebien">
+                        <option value="">Type de bien</option>
+                        <option value="1">appartement</option>
+                        <option value="13">château</option>
+                        <option value="14">hôtel particulier</option>
+                        <option value="9">loft/atelier/surface</option>
+                        <option value="2">maison/villa</option>
+                        $$IF!:12:REP:1$$
+                        <option value="4">terrain</option>
+                        $$END$$
+                    </select>
+                    <div class="btn"><input type="image" src="/z/portail/pol/i/dyn/btnajouter.png" onClick="return validation_creation_annonce();" title="ajouter une nouvelle annonce"></div>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+$$B:PAUNIT:CPA-GETCONTRATS:~idpaunitconf:REP:1:ALIAS:GETCONTRATS$$
+$$BIF:GETCONTRATS$$
+
+<div id="line_res" class="line_tab">
+    <div class="title_tabfull"><div class="img_puce_title">&nbsp;</div>$$IF+:6:GETCONTRATS:NBR$$span style="float: left;text-align: left;">Vos 5 derniers carnets</span><span style="float: right;text-align: right;">total : $$END$$$$GETCONTRATS:NBR$$ carnet$$GETCONTRATS:NBR pluriel$$$$IF+:6:GETCONTRATS:NBR$$</span>$$END$$</div>
+</div>
+
+<table  class="tabinfo" cellpadding="0" cellspacing="0" >
+    <tr>
+        <th id="liste_status"></th>
+        <th class="bdr">Référence</th>
+        <th class="bdr">Début du contrat</th>
+        <th class="bdr">Tickets restants</th>
+        <th class="bdr">Fin du contrat</th>
+        <th>Détail</th>
+    </tr>
+    $$DO:1:5$$
+    <tr class="line_$$IF=:0:GETCONTRATS:I mod2 0 1$$pair$$END$$$$IF!:0:GETCONTRATS:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:GETCONTRATS:PUBNB1$$_green$$END$$$$END$$" onmouseover="this.className='line_$$IF=:0:GETCONTRATS:I mod2 0 1$$pair$$END$$$$IF!:0:GETCONTRATS:I mod2 0 1$$impair$$END$$_new_hover';" onmouseout="this.className='line_$$IF=:0:GETCONTRATS:I mod2 0 1$$pair$$END$$$$IF!:0:GETCONTRATS:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:GETCONTRATS:PUBNB1$$_green$$END$$$$END$$'">
+        <td>
+            $$IF=:Actif:GETCONTRATS:TEXTEISACTIF$$<span class="img_puce_green" title="Actif"></span>$$END$$
+            $$IF!:Actif:GETCONTRATS:TEXTEISACTIF$$<span class="img_puce_red" title="Inactif"></span>$$END$$
+        </td>
+        <td class="bdr">$$GETCONTRATS:IDCONTRAT$$</td>
+        <td class="bdr">$$GETCONTRATS:DATEDEBUT$$</td>
+        <td class="bdr">$$GETCONTRATS:TICKETSRESTANTS$$</td>
+        <td class="bdr">$$GETCONTRATS:DATEFIN$$</td>
+        <td>
+            <a href="/$$REP:1$$/carnet.htm?idcontrat=$$GETCONTRATS:IDCONTRAT$$" title="Détail du contrat"><img src="$$-$$img/loupe.png" alt="Voir le détail" /></a>
+        </td>
+    </tr>
+    $$LOOP$$
+</table>
+
+<div id="legend_list">
+    <div><span class="img_puce_green"></span>&nbsp;Carnet actif</div>
+    <div><span class="img_puce_red"></span>&nbsp;Carnet inactif</div>
+</div>
+
+$$IF+:5:GETCONTRATS:NBR$$
+<br />
+<div class="btn"><a href="/liste_carnet.htm"><img src="/z/portail/pol/i/dyn/btntoutafficher.png" title="voir tous les carnets"></a></div>
+<br />
+$$END$$
+
+$$BFIN$$
+
+$$BIF0:GETCONTRATS$$
+Aucun Contrat à lister.
+$$BFIN$$
+
+<br /><br />
+<!--
+<table class="tabinfo" cellpadding="0" cellspacing="0">
+        <tr>
+<th colspan="2">Légende</th>
+</tr>
+<tr>
+        <td><img src="$$-$$img/vert.png"></td>
+        <td>Votre annonce est valide, et est publiée.</td>
+</tr>
+<tr>
+        <td><img src="$$-$$img/jaune.png"></td>
+        <td>Votre annonce est en cours de validation par notre service qualité.</td>
+</tr>
+<tr>
+        <td><img src="$$-$$img/rouge.png"></td>
+        <td>Votre annonce a été saisie, vous n'avez pas demandé à publier l'annonce.</td>
+</tr>
+<tr>
+        <td><img src="$$-$$img/loupe.png"></td>
+        <td>Cliquer pour voir le détail.</td>
+</tr>
+<tr>
+        <td><img src="$$-$$img/publier.png"></td>
+        <td>Cliquer pour effectuer une demande de publication.</td>
+</tr>
+<tr>
+        <td><img src="$$-$$img/poubelle.png"></td>
+        <td>Cliquer pour supprimer l'annonce.</td>
+</tr>
+</table>-->
+$$INCL:BASX.HTM$$

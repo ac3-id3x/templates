@@ -1,0 +1,92 @@
+﻿$$INCL:COMMON.INC$$<?xml version="1.0" encoding="UTF-8"?>
+<recherche><!--#include virtual="search_b.inc" -->
+<resume>$$SEARCH:PHRASE htmlattributeencode$$</resume>
+<resumeSansTri>$$SEARCH:PHRASESTRI htmlattributeencode$$</resumeSansTri>
+<nbTrouvees>$$SEARCH:NBRESULT$$</nbTrouvees>
+<nbAffichables>$$SEARCH:NBR$$</nbAffichables>
+$$IF:SEARCH:PAGE$$<pageCourante>$$SEARCH:PAGE$$</pageCourante>$$END$$
+$$IF:SEARCH:NBRPAGES$$<pageMax>$$SEARCH:NBRPAGES$$</pageMax>$$END$$
+$$IF:SEARCH:LIENARRIERE$$<pagePrecedente>http://$$REP:RSRV$$/$$SEARCH:LIENARRIERE htmlattributeencode$$</pagePrecedente>$$END$$
+$$IF:SEARCH:LIENAVANT$$<pageSuivante>http://$$REP:RSRV$$/$$SEARCH:LIENAVANT htmlattributeencode$$</pageSuivante>$$END$$
+$$IF:SEARCH:DTCREATIONMAX$$<dtCreationMax>$$SEARCH:DTCREATIONMAX date yyyy-MM-ddTHH:mm:ss$$</dtCreationMax>$$END$$
+$$BIF:SEARCH$$
+<annonces>
+$$DO:1:query:50$$
+<annonce>
+	<idAnnonce>$$SEARCH:IDANNONCE$$</idAnnonce>
+	<idPublication>$$SEARCH:IDPUBLICATION$$</idPublication>
+	<idTypeTransaction>$$SEARCH:IDTYPETRANSACTIONORI$$</idTypeTransaction>
+	<idTypeBien>$$SEARCH:IDTYPEBIEN$$</idTypeBien>
+	$$IF:SEARCH:IDSOUSTYPEBIEN$$<idSousTypeBien>$$SEARCH:IDSOUSTYPEBIEN$$</idSousTypeBien>$$END$$
+	<dtFraicheur>$$SEARCH:DT_FRAICHEUR date yyyy-MM-ddTHH:mm:ss$$</dtFraicheur>
+	<dtCreation>$$SEARCH:DT_CREA date yyyy-MM-ddTHH:mm:ss$$</dtCreation>
+	<titre>$$SEARCH:TITRE htmlattributeencode$$</titre>
+	<libelle>$$SEARCH:LIBELLE htmlattributeencode$$</libelle>
+	$$IF:SEARCH:PROX$$<proximite>$$SEARCH:PROX htmlattributeencode$$</proximite>$$END$$
+	<descriptif>$$SEARCH:DESCRIPTIF htmlattributeencode$$</descriptif>
+$$IF0:SEARCH:SITRANCHEPRIX$$
+$$IF:SEARCH:PRIXRAW$$
+	<prix>$$SEARCH:PRIXRAW round 2$$</prix>
+	<prixUnite>$$SEARCH:PRIX_UNITE$$$$IF:SEARCH:SI_LOYER_CC$$*$$END:SI_LOYER_CC$$$$IF:SEARCH:SI_FAI$$ FAI*$$END:SI_FAI$$</prixUnite>
+$$END:PRIXRAW$$
+$$END:SITRANCHEPRIX$$
+$$IF:SEARCH:SITRANCHEPRIX$$
+$$REM$$ <!-- Virer ces deux lignes prix et prixUnite à partir du 01/04/2011. Confirmer avec Fred (appli iPhone BD). --> $$END:REM$$
+	<prix>$$SEARCH:TRANCHEPRIX htmldecode htmlattributeencode$$</prix>
+	<prixUnite>$$IF:SEARCH:SI_FAI$$FAI*$$END:SI_FAI$$</prixUnite>
+	<tranchePrix>$$SEARCH:TRANCHEPRIX htmldecode htmlattributeencode$$$$IF:SEARCH:SI_FAI$$ FAI*$$END:SI_FAI$$</tranchePrix>
+$$END:SITRANCHEPRIX$$
+	<prixMention>$$IF:SEARCH:SI_LOYER_CC$$* Loyer mensuel charges comprises$$END:SI_LOYER_CC$$$$IF:SEARCH:SI_FAI$$* Prix net, hors frais notariés, d'enregistrement et de publicité foncière$$END:SI_FAI$$</prixMention>
+$$IF=:11:SEARCH:IDTYPETRANSACTIONORI$$
+	<loyer>$$SEARCH:PX_LOYER round 2$$</loyer>
+	$$A:SI_LOYER_CC=0$$ $$IF:SEARCH:SI_LOYER_CC$$ $$A:SI_LOYER_CC=1$$ $$END$$ $$IF=:OUI:SEARCH:XML xml si_loyer_annuel_cc trim$$ $$A:SI_LOYER_CC=1$$ $$END$$
+	$$A:SI_LOYER_HT=0$$ $$IF:SEARCH:SI_LOYER_HT$$ $$A:SI_LOYER_HT=1$$ $$END$$ $$IF=:OUI:SEARCH:XML xml si_loyer_annuel_ht trim$$ $$A:SI_LOYER_HT=1$$ $$END$$
+	<loyerUnite>€$$IF:SI_LOYER_CC$$cc$$END:SI_LOYER_CC$$$$IF:SI_LOYER_HT$$HT$$END:SI_LOYER_HT$$</loyerUnite>
+$$END:IDTYPETRANSACTIONORI$$
+$$IF=:1$11:SEARCH:IDTYPETRANSACTIONORI$$
+	$$IF:SEARCH:XML xml loyer_annuel_metre$$
+	<loyerAnnuelM2>$$SEARCH:XML xml loyer_annuel_metre round 2$$</loyerAnnuelM2>
+	<loyerAnnuelM2Unite>€$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_metre_cc trim$$cc$$END$$$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_metre_ht trim$$HT$$END$$</loyerAnnuelM2Unite>
+	$$END$$
+	$$IF:SEARCH:XML xml loyer_annuel_global$$
+	<loyerAnnuel>$$SEARCH:XML xml loyer_annuel_global round 2$$</loyerAnnuel>
+	<loyerAnnuelUnite>€$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_cc trim$$cc$$END$$$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_ht trim$$HT$$END$$</loyerAnnuelUnite>
+	$$END$$
+$$END:IDTYPETRANSACTIONORI$$
+	$$IF:SEARCH:NB_PIECES$$<nbPiece>$$SEARCH:NB_PIECES$$</nbPiece>$$END$$
+	$$IF:SEARCH:NB_CHAMBRES$$<nbChambre>$$SEARCH:NB_CHAMBRES$$</nbChambre>$$END$$
+	$$IF:SEARCH:SURFACE$$<surface>$$SEARCH:SURFACE round 2$$</surface>
+	<surfaceUnite>m²</surfaceUnite>$$END$$
+	<idPays>$$SEARCH:IDPAYS$$</idPays>
+	<pays>$$SEARCH:IDPAYS getpays$$</pays>
+	$$IF:SEARCH:ACP$$<cp>$$SEARCH:ACP$$</cp>$$END$$
+	$$IF:SEARCH:CODEINSEE$$<codeInsee>$$SEARCH:CODEINSEE$$</codeInsee>$$END$$
+	<ville>$$SEARCH:AVILLE htmlattributeencode$$</ville>
+	<nbPhotos>$$SEARCH:NB_PHOTOS$$</nbPhotos>
+	$$IF:SEARCH:CARREURL0$$<firstThumb>$$SEARCH:CARREURL0$$</firstThumb>$$END$$$$REM$$On n'utilise pas CARRE_URL car elle peut contenir une imagette de video, ce qui ne nous arrange pas pour ce webservice$$END$$
+
+	<detailsAnnonce>$$SEARCH:LIEN-DETAIL-ODYSEE htmlencode$$</detailsAnnonce>
+
+	<latitude>$$SEARCH:PUBLICLAT round 6$$</latitude>
+	<longitude>$$SEARCH:PUBLICLNG round 6$$</longitude>
+	<llPrecision>$$SEARCH:LATLNGTYPE$$</llPrecision>
+	<contact>
+$$IF:FORM:NOAUDIOTEL$$
+	$$A:NOAUDIOTEL=1$$
+$$END$$
+$$IF0:SEARCH:SI_AUDIOTEL$$
+	$$A:NOAUDIOTEL=1$$
+$$END$$
+$$IF:NOAUDIOTEL$$
+		<siAudiotel>false</siAudiotel>
+		<idPublication>$$SEARCH:IDPUBLICATION$$</idPublication>
+		<nom>$$IF:SEARCH:COOR-NOM$$$$SEARCH:COOR-NOM htmlattributeencode$$$$END:COOR-NOM$$$$IF0:SEARCH:COOR-NOM$$$$SEARCH:COOR-CONTACT htmlattributeencode$$$$END:COOR-NOM$$</nom>
+		$$IF:SEARCH:RCS_SIREN$$<rcsSiren>$$SEARCH:RCS_SIREN$$</rcsSiren>
+		$$IF:SEARCH:RCS_NIC$$<rcsNic>$$SEARCH:RCS_NIC$$</rcsNic>$$END$$$$END$$
+$$END:NOAUDIOTEL$$
+	</contact>
+</annonce>
+$$LOOP$$
+</annonces>
+$$BFIN$$
+</recherche>

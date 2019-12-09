@@ -1,0 +1,112 @@
+	$$B:E3:CNT:ARTICLE:REP:1:ALIAS:ACQT$$
+	$$BIF:ACQT$$
+	$$DO$$
+	
+	
+	$$LOOP$$
+	$$BFIN$$
+
+$$IF=:OK:REP:3$$
+
+	<div class="noerre"><span>
+								$$IF:2_ACQT:DESCRIPTIF$$
+							$$2_ACQT:DESCRIPTIF$$
+							$$A:CAT_ID=@@2_ACQT:CAT_ID@@$$
+							$$A:CNT_ID=@@2_ACQT:CNT_ID@@$$
+							$$INCL:XEDY_LINK.HTM$$
+						$$END$$
+	</span></div>
+$$END$$
+
+$$IF!:OK:REP:3$$
+	$$IF:MANDATVENTE:ENVOI_QUESTIONNAIRE:ERRE$$<div class="erre"><span>$$MANDATVENTE:ENVOI_QUESTIONNAIRE:ERRE$$</span></div>$$END$$
+	
+	$$IF:FORM:ACT$$	
+		$$A:VACT=@@FORM:ACT@@$$
+	$$END$$
+		
+	$$IF0:FORM:ACT$$
+		$$IF:REP:1$$
+			$$A:VACT=@@REP:1@@$$
+			$$E:E3:CAT:REP:1:ALIAS:CATCTC$$
+			$$A:NVACT=@@CATCTC:LIBELLE@@$$
+		$$END$$
+	$$END$$
+	
+	$$A:CAT_ID=@@CATCTC:CAT_ID@@$$
+	$$A:CNT_ID=@@CATCTC:CNT_ID@@$$
+	$$INCL:XEDY_LINK.HTM$$
+	
+	$$IF:CATCTC:IMG_PATH$$<div class="bann740_135"><img src="$$CATCTC:IMG_PATH$$" border="0" /></div>$$END$$
+	
+		$$B:E3:SFLD:REP:1:ALIAS:EQL$$
+		$$BIF:EQL$$
+		$$DO$$
+		$$LOOP$$
+		$$BFIN$$
+	
+
+		<div id="cnt_col">
+		<div class="left">
+			<div id="cnt_blc_art">
+				<div class="line_art"> 
+					<div class="cnt">
+						
+						
+					
+					
+						<form name="form_contact" method="post" action="#">
+						$$IF:1_ACQT:TITRE$$
+							<h2>$$1_ACQT:TITRE$$</h2>
+						$$END$$
+							
+						$$IF:1_ACQT:DESCRIPTIF$$
+							$$1_ACQT:DESCRIPTIF$$
+							$$A:CAT_ID=@@1_ACQT:CAT_ID@@$$
+							$$A:CNT_ID=@@1_ACQT:CNT_ID@@$$
+							$$INCL:XEDY_LINK.HTM$$<br />
+						$$END$$
+						
+							<input type="hidden" name="u" value="MANDATVENTE:ENVOI_QUESTIONNAIRE" />
+							<input type="hidden" name="page_ok" value="/OK/$$REP:2$$/$$REP:1$$/$$REP:0$$" />
+							<input type="hidden" name="page_err" value="/$$REP:2$$/$$REP:1$$/$$REP:0$$" />
+							<input type="hidden" name="cfg_form" value="gen" />
+							<input type="hidden" name="act" value="$$IF0:NVACT$$$$VACT$$$$END$$$$IF:NVACT$$$$NVACT$$$$END$$" />
+							<input type="hidden" name="cfg_emails" value="formmail_$$IF!:156833:VACT$$gen$$END$$$$IF=:156833:VACT$$marielyn$$END$$" />
+							<input type="hidden" name="idclient" value="$$FORM:IDCLIENT$$">
+  						<input type="hidden" name="idtiers"  value="$$FORM:IDTIERS$$">
+																										
+							$$SET:CC=checked="checked"$$							
+							$$B:E3:CNT:ARTICLE:VAL:1*EQL_CAT*ID:ALIAS:QT$$
+							$$BIF:QT$$
+							$$DO$$
+							$$A:IT=@@QT:I@@$$
+							<div class="line100_2"><div>$$QT:I$$) $$QT:TITRE$$</div></div>
+							<div class="line100_3">
+									 <span><input type="radio" name="r$$QT:I$$" value="1" $$A:ITE=1$$ $$INCL:EQ_SATISFACTION_FORM.HTM$$ /> Très mauvais(e)</span>
+									 <span><input type="radio" name="r$$QT:I$$" value="2" $$A:ITE=2$$ $$INCL:EQ_SATISFACTION_FORM.HTM$$ /> Mauvais(e)</span>
+									 <span><input type="radio" name="r$$QT:I$$" value="3" $$A:ITE=3$$ $$INCL:EQ_SATISFACTION_FORM.HTM$$ /> Bien</span>
+									 <span><input type="radio" name="r$$QT:I$$" value="4" $$A:ITE=4$$ $$INCL:EQ_SATISFACTION_FORM.HTM$$ /> Très bien</span>
+							</div>
+							$$LOOP$$
+							$$BFIN$$
+								
+
+							
+							<div class="btn">
+								<input type="image" src="$$_$$i/dyn/btnpro1valider.png" />
+							</div>
+							
+						
+							
+							
+							
+						</form>
+						
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	$$END$$

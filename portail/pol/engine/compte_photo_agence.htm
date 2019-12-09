@@ -1,0 +1,86 @@
+$$INCL:AUTH.HTM$$
+$$E:E3:CAT:158592:SLPRO$$
+$$INCL:HAUTX.HTM$$
+
+<!-- $$REP:SRV$$ //-->
+
+
+$$E:SLPRO:AGENCE-PHOTO-ACCES:ALIAS:MODIFPH$$
+
+$$IF:MODIFPH:OK$$
+
+
+$$SLPRO:PHOTO-AGENCE:ERRE$$
+	$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+  $$IF:OK$$<div class="noerre"><span>$$OK$$</span></div>$$END$$
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr class="tabentete"><td>Votre photo agence</td></tr>
+
+
+<tr>
+	<td>
+	<div id="compte_logo">
+	$$E:SLPRO:INFOSAGENCE:ALIAS:PHAG$$
+		$$IF:PHAG:SIPHOTOAGENCE$$
+			<img src="$$PHAG:URLPHOTOAGENCE$$?$$DYN:ID3:RND:1:9999$$" border="0" />
+			$$A:PG:ACTLOGO=Modifier$$
+		$$END:SIPHOTOAGENCE$$		
+		$$IF0:PHAG:SIPHOTOAGENCE$$
+			Photo<br />non transmise
+			$$A:PG:ACTLOGO=Envoyer$$
+		$$END:SIPHOTOAGENCE$$
+	</div>
+	</td>
+</tr>
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr class="tabentete"><td>$$PG:ACTLOGO pcase$$ la photo de votre agence</td></tr>
+<tr>
+	<td>
+		<form method="post" enctype="multipart/form-data">
+		<input type="hidden" name="u" value="SLPRO:PHOTO-AGENCE" />
+		<input type="hidden" name="page_ok" value="$$IF0:FORM:URL$$/$$REP:URI$$$$END$$$$IF:FORM:URL$$/redirect.htm$$END$$">
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	
+		
+			<input type="file" name="photo" />			
+	
+		<div class="btn"><input type="image" src="$$_$$i/dyn/btnvalider.png" /></div>
+		</form>
+		
+	</td>
+</tr>
+
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete"><td>Supprimer la photo de votre agence</td></tr>
+	<tr>
+		<td>
+			$$IF:PHAG:SIPHOTOAGENCE$$
+				<a href="/delete_photo_agence.htm?r=$$REP:PAGE urlencode$$">Supprimer la photo</a>
+			$$END:SIPHOTOAGENCE$$
+		</td>
+	</tr>
+</table>
+
+<div class="info">
+	<span>
+		Format supporté : JPG<br />
+		Dimension minimum de la photo : 200 pixels de largeur sur 200 pixels de hauteur<br />
+		Dimension maximum de la photo : 4000 pixels de largeur sur 3000 pixels de hauteur<br />
+		Taille maximum du fichier : 6 Mo
+	</span>
+</div>
+
+
+$$END:IDPUBLICATION$$
+$$IF0:MODIFPH:OK$$
+<div class="erre"><span>Le produit n'est pas disponible. Vous n'avez pas souscrit cette option</span></div>
+$$END:IDPUBLICATION$$
+
+
+$$INCL:BASX.HTM$$

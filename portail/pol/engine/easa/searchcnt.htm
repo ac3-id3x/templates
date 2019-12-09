@@ -1,0 +1,53 @@
+$$E:E3:CAT:158198:SLPRO$$
+$$A:CSS_EASA=1$$
+$$A:CSS_LISTEANN=1$$
+$$A:JS_EASA=1$$
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:ID3:NOCACHE:FULL$$
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+
+$$B:EASA:BO-SEARCHTEXTES:~IDTEXTE:QRY:IDTEXTE:ALIAS:TXLIST$$ 
+
+
+$$BIF:TXLIST$$ 
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+<thead>
+<tr>
+	<th id="etatrub"></th>	
+	<th class="bdr">Texte</th>	
+	<th class="bdr" id="cat_desc_cat">Rubrique</th>
+	<th id="ed_cat">Edition</th>	
+</tr>
+</thead>
+$$DO$$
+
+
+$$A:LIENCAT=@@XDOM@@/@@TXLIST:IDCATEGORIE@@/easa,contenu_edit.htm?idtexte=@@TXLIST:IDTEXTE@@$$
+
+$$A:CLICKVISU=onclick="javascript:id3_go('@@LIENCAT@@');"$$
+
+<tr class="line_$$IF=:0:TXLIST:I mod2 0 1$$pair$$END$$$$IF!:0:TXLIST:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:TXLIST:I mod2 0 1$$pair$$END$$$$IF!:0:TXLIST:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:TXLIST:I mod2 0 1$$pair$$END$$$$IF!:0:TXLIST:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+	onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:TXLIST:I mod2 0 1$$pair$$END$$$$IF!:0:TXLIST:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:TXLIST:I mod2 0 1$$pair$$END$$$$IF!:0:TXLIST:I mod2 0 1$$impair$$END$$_new');"
+	$$END$$ id="line_ann_$$TXLIST:I$$">
+	
+<td $$CLICKVISU$$>
+	$$IF0:TXLIST:ACTIF$$<span class="img_puce_red" title="header=[] body=[Non active]"></span>$$END$$$$IF:TXLIST:ACTIF$$<span class="img_puce_green" title="header=[] body=[Active]"></span>$$END$$
+</td>	
+
+<td $$CLICKVISU$$ class="bdr">$$TXLIST:TITRE htmlencode$$</td>
+<td $$CLICKVISU$$ class="bdr">$$TXLIST:LIBELLE$$ ($$TXLIST:IDCATEGORIE$$)</td>
+<td $$CLICKVISU$$><a href="$$LIENCAT$$"><div class="picto_center"><div class="img_edit"></div></div></a></td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$   
+ 
+$$BIF0:TXLIST$$
+<div class="erre"><div>Aucun texte trouvé portant l'identifiant $$FORM:IDTEXTE$$</div></div>
+$$BFIN$$ 
+
+<!--#include virtual="/easa/incl_cat_search.htm"-->
+ 
+$$INCL:BASX.HTM$$

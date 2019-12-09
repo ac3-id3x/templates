@@ -1,0 +1,168 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : statistique TDL tête de liste</summary>
+//// <remarks>
+//// </remarks>
+//// <update date="2008-01-08" author="ext-christian.malheiro">Création</update>
+//// <update date="2010-04-21" author="amine.daghmouri">Modification</update>
+//// <update date="2011-07-25" author="florian.adam">Modification</update>
+===============
+$$END:REM$$
+
+
+$$IF:REP:1$$
+<style text="text/css">
+	<!--
+	.bdr{border: none;}
+	//-->
+	</style>
+
+        <table class="tabinfo" cellspacing="0" cellpadding="0" width="100% align="left">
+            <!-- Import automatique -->
+            $$B:GDP2:LISTE_FOURNISSEUR_TDL:1,4:ALIAS:LISTE_FOURNISSEUR_TDL$$
+            $$BIF:LISTE_FOURNISSEUR_TDL$$
+               <caption align="bottom" >
+                 	<div align="left" style="text-align:left">*impr. : Nombre d'affichages de votre lien sur les moteurs de recherche
+                  </div> 	     
+                 </caption>  
+            <tr align="center">
+	            
+	            <th class="bdr" rowspan="2" colspan="2">&nbsp;Mois&nbsp;</th>
+              $$DO:1:999$$
+	               <th class="bdr" $$IF=:1:PPCTDL:IDFOURNISSEUR$$colspan="4"$$END$$ $$IF=:4:PPCTDL:IDFOURNISSEUR$$colspan="3"$$END$$ align="center">$$LISTE_FOURNISSEUR_TDL:NOMFOURNISSEUR$$</th>
+              $$LOOP$$
+                
+
+             	<th class="bdr" rowspan="2">Nb Clics<br />Restants</th>
+	            <th class="bdr" rowspan="2">% Mois</th>
+              <th rowspan="2" width="150px;" style="height:100%; border: none;">
+              	<!--
+            	<div style="width:100px;text-align:inherit;  height:100%; border-right:red thin solid">
+              Performance&nbsp; <br/>100%&nbsp;
+            	</div>
+            	-->
+							<div align="left" style="position: relative; height: 100%;">
+			         	
+								<div style="
+										position: absolute;
+				         		left: 20px;
+				        "><!-- -->
+				         		<br/>
+				         	Performance
+				         		</div>
+								<div style="
+										position: absolute;
+				         		left: 100px;
+				         		width: 2px;
+				         		height: 120%;
+				         		background: red;
+				         		"><!-- -->
+				         		</div>
+              </div>				         	
+            	</th>
+          
+            </tr>
+            $$BFIN:LISTE_FOURNISSEUR_TDL$$
+
+            
+            <tr align="center">
+
+	          	<th>Nb. clics</th>
+		        	<th>Tx clic</th>
+		        	<th>Impr.*</th>
+		        	<th>Co&ucirc;t total</th>
+		        	<th>Nb. clics</th>
+		        	<th>Tx clic</th>
+		        	<th>Impr.*</th>
+
+            </tr>
+
+            $$B:GDP2:PPC_BILANTDL_DATE:REP:1:2:1,4:ALIAS:PPCTDL$$
+            $$BIF:PPCTDL$$
+            
+            
+            $$DO:1:999$$
+            $$IF!:0:PPCTDL:IDFOURNISSEUR$$
+	          $$IFPREV:PPCTDL:DT_SUIVI$$
+            <tr align="left" class="line_$$IF=:0:PPCTDL:I mod2 0 1$$pair$$END$$$$IF!:0:PPCTDL:I mod2 0 1$$impair$$END$$">
+	            
+	            <td colspan="2" nowrap="nowrap" class="bdralignleft">
+		        <span title="Co&ucirc;t moyen Google Adword&nbsp;:&nbsp;$$PPCTDL:COUT_MOYEN_CLICK formatnumber 2$$ &euro;">$$IFNOTNULL:PPCTDL:DT_SUIVI$$$$PPCTDL:DT_SUIVI date MMMM_yyyy$$$$END$$
+		      $$IFNULL:PPCTDL:DT_SUIVI$$ -	$$END$$</span>
+	            </td>
+            $$END:IFPREV$$
+	              <td align="center" >
+		            $$IFNOTNULL:PPCTDL:NB_CLICK$$
+		            $$PPCTDL:NB_CLICK$$
+		            $$END$$
+		            $$IFNULL:PPCTDL:NB_CLICK$$
+		            -
+		            $$END$$
+	    	      
+	    	      </td>
+	            <td align="center">
+		            $$IFNOTNULL:PPCTDL:TAUX_CLICK$$$$PPCTDL:TAUX_CLICK formatnumber 2$$&nbsp;%$$END$$
+		            $$IFNULL:PPCTDL:TAUX_CLICK$$$$PPCTDL:TAUX_CLICK formatnumber 2$$-$$END$$
+		          
+		          </td>
+	            <td $$IF=:4:PPCTDL:IDFOURNISSEUR$$class="bdraligncenter"$$END$$>
+		            $$IFNOTNULL:PPCTDL:NB_IMPRESSION$$$$PPCTDL:NB_IMPRESSION$$$$END$$
+		            $$IFNULL:PPCTDL:NB_IMPRESSION$$$$PPCTDL:NB_IMPRESSION$$-$$END$$
+		          </td>
+		          $$IF=:1:PPCTDL:IDFOURNISSEUR$$
+		          <td align="center"  class="bdraligncenter" class="bdr">
+		          	$$IFNOTNULL:PPCTDL:COUT_GLOBAL_CLICK$$$$PPCTDL:COUT_GLOBAL_CLICK formatnumber 2$$&nbsp;&euro;$$END$$
+		            $$IFNULL:PPCTDL:COUT_GLOBAL_CLICK$$$$PPCTDL:COUT_GLOBAL_CLICK$$-$$END$$
+		          </td>
+		          $$END$$
+	          
+               $$IFNEXT:PPCTDL:DT_SUIVI$$
+	            <td nowrap="nowrap" class="bdraligncenter">
+		            $$IFNOTNULL:PPCTDL:NB_CLICK_RESTANT$$$$PPCTDL:NB_CLICK_RESTANT$$$$END$$
+		            $$IFNULL:PPCTDL:NB_CLICK_RESTANT$$-$$END$$
+	            </td>
+	            <td nowrap="nowrap" class="bdraligncenter" >
+		            $$IFNOTNULL:PPCTDL:POURCENTAGEJOURNALIER$$$$PPCTDL:POURCENTAGEJOURNALIER formatnumber 2$$&nbsp;%$$END$$
+		            $$IFNULL:PPCTDL:POURCENTAGEJOURNALIER$$-$$END$$
+	            </td>
+			         <td style="">
+			         	<div style="position: relative; height: 100%;">
+			         		<!-- il est en levitation pas toucher -->
+				         	<div style="
+				         		position: absolute;
+				         		left: 100px;
+				         		width: 2px;
+				         		height: 100%;
+				         		background: red;
+				         		"><!-- --></div>
+				         		
+				         		$$IFNOTNULL:PPCTDL:POURCENTAGEJOURNALIER$$
+				         		<div style="position: absolute; top: 7px; _top: 9px; width: 153px; _width: 148px; overflow: hidden;">
+			              	<div style="height: 10px; width:$$PPCTDL:POURCENTAGEJOURNALIER formatnumber 2 replace , .$$; background: #c62b31;">
+			                  <!-- -->
+                      </div>
+                    </div>
+			              $$END$$
+			         		</div>
+			         	
+			         	<!--
+			             <div style="top:0;float:left; position:relative;width:100px; height: 100%; background: #ffffff; border-right: red thin solid">
+			             	</div>
+	                 
+			              $$IFNOTNULL:PPCTDL:POURCENTAGEJOURNALIER$$
+			              	<div style="top:7; position:relative; width:$$PPCTDL:POURCENTAGEJOURNALIER formatnumber 2 replace , .$$; height: 10px; background: #c62b31;">
+			                  <div style="width:100px; height: 100%;  border-right:red thin solid">
+                        </div>
+                      </div>
+			              $$END$$
+			              -->
+	             </td>
+            </tr> 
+            $$END:IFNEXT$$           
+            $$END$$
+            $$LOOP$$
+            $$BFIN:PPCTDL$$
+          
+        </table>
+
+$$END$$

@@ -1,0 +1,147 @@
+ $$DYN:ID3:REDIRECT:http://www.selogerpro.com/liste_annonces.htm$$
+
+$$E:E3:CAT:157231:SLPRO$$
+$$A:JS_VIDEO=1$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+<script type="text/javascript">
+<!--
+	$$IF=:1:FORM:RAFRAICH$$ 
+		var tmp = document.location;
+		window.location.href = tmp;
+	$$END$$
+	
+	function videochange(idvisuel,legende){
+		var o = document.getElementById('video_change');
+		o.style.display = "inline";
+		var o2 = document.getElementById('idvisuel');
+		o2.value = idvisuel;
+		var o3 = document.getElementById('legende');
+		o3.value = legende;
+	}
+	
+//-->
+</script>
+
+$$IF:SLPRO:VIDEOEDITION:ERRMSG$$
+	<div class="erre"><span>$$SLPRO:VIDEOEDITION:ERRMSG htmlencode crlf2br$$</span></div>
+$$END$$
+$$IF0:SLPRO:VIDEOEDITION:ERRMSG$$
+	$$IF:FORM:PAGE_OK$$<div class="noerre"><span>Vidéo téléchargée</span></div>$$END$$
+$$END$$
+
+$$B:SLPRO:ANNONCE-VISUELS:~idannonce:REP:1:~idtypevisuel:19:~url:1:ALIAS:VIDEO$$
+$$BIF:VIDEO$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete">Vidéo$$VIDEO:NBR pluriel$$ ($$VIDEO:NBR$$)</td></tr>
+<tr>
+	<td>	
+		$$DO:1:999$$	
+		<div>
+			<div class="img_video"></div>Descriptif : <strong>$$VIDEO:DESCRIPTIF_FR$$</strong>&nbsp;<a href="javascript:videochange('$$VIDEO:IDVISUEL$$','$$VIDEO:DESCRIPTIF_FR$$');">Modifier</a>&nbsp;<a href="$$XDOM$$/video_delete.htm?idvisuel=$$VIDEO:IDVISUEL$$&pg=/$$REP:URI urlencode$$">Supprimer</a>
+		</div>
+		
+			$$IF=:1:VIDEO:IDETATVISUEL$$
+				<div class="noerre"><span>Vidéo encodée</span></div>
+			$$END$$
+			$$IF=:2:VIDEO:IDETATVISUEL$$
+				<div class="noerre"><span>Vidéo en attente ou en cours de traitement</span></div>
+			$$END$$
+			$$IF=:3:VIDEO:IDETATVISUEL$$
+				<div class="erre"><span>Erreur d'encodage</span></div>
+			$$END$$
+		
+		<br />		  
+			<embed src="$$_$$flash/mediaplayer.swf" width="400"	height="300" allowscriptaccess="always" allowfullscreen="true" flashvars="height=300&width=400&file=$$IF=:00000000-0000:VIDEO:FICHIER$$$$VIDEO:URL$$.flv$$END$$$$IF!:00000000-0000:VIDEO:FICHIER$$$$VIDEO:URL$$$$END$$&image=$$IF=:00000000-0000:VIDEO:FICHIER$$$$VIDEO:URL$$-std.jpg$$END$$$$IF!:00000000-0000:VIDEO:FICHIER$$$$VIDEO:URL replace .flv -std.jpg$$$$END$$&frontcolor=0x000000&lightcolor=0xc51b22&screencolor=0x000000&showstop=true&thumbsinplaylist=false" />
+		<br /><br />
+		$$LOOP$$
+	</td>
+</tr>
+</table> 
+$$BFIN$$
+
+$$IF0:VIDEO:NBR$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete">Ajouter une vidéo à l'annonce</td></tr>
+<tr>
+	<td>
+		<form method="POST" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_upl">
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			<input type="hidden" name="idtypevisuel" value="19" />
+			<input type="hidden" name="idannonce" value="$$REP:1$$" />
+			<input type="hidden" name="u" value="slpro:videoedition" />
+			<input type="hidden" name="rafraich" value="1" />
+			<strong>Fichier :</strong><br /> 
+			<input type="file" name="visuel" size="30" />
+			<br />
+			<strong>Descriptif :</strong><br /> 
+			<input type="text" name="legende" size="30" maxlength="256" />
+			<div class="legende">Descriptif, Plan, Plaquette</div>	
+			<div class="btn"><input type="image" src="$$_$$i/dyn/btnvalider.png" /></div>
+		</form>
+	</td>
+</tr>
+</table>
+<div class="info"><span>
+	<strong>Taille maximale de la video : </strong> 50 Mo<br />
+	<strong>Formats supportés (extension/codec) :</strong><br />
+	&nbsp; .avi : Mjpeg, Mpeg1, Mpeg2, Mpeg4<br />
+	&nbsp; .mov : Mjpeg, Mpeg4<br />
+	&nbsp; .mp4 : Mpeg4<br />
+	&nbsp; .vob : Mpeg2<br />
+	&nbsp; .flv : FLV<br />
+	&nbsp; .wmv : Windows Media Video<br />
+	<strong>Temps de traitement interne de la vidéo : </strong>1 à 3 min<br />
+	<strong>Temps de mise en ligne sur les portails Internet : </strong>environ 30 min à 45 min
+</span></div>
+$$END$$
+
+<script type="text/javascript">
+<!--
+function reDirect(target, fieldName,index)
+{
+document.attributes.action="modif_all_params.jsp";
+document.attributes.submit();
+}
+//-->
+</script>
+<div id="video_change" style="display: none;">
+<table class="tabbasic" cellpadding="0" cellspacing="0" ">
+<tr><td class="tabentete">Modifier la vidéo</td></tr>
+<tr>
+	<td>
+		<form method="POST" action="" enctype="multipart/form-data" name="f_upl" onSubmit="submit()">
+			<input type="hidden" name="page_ok" value="/$$REP:1$$/temp,video.htm" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			<input type="hidden" name="idtypevisuel" value="19" />
+			<input type="hidden" name="idannonce" value="$$REP:1$$" />
+			<input type="hidden" name="idvisuel" id="idvisuel" value="$$FORM:IDVISUEL$$" />
+			<input type="hidden" name="u" value="slpro:videoedition" />
+			<input type="hidden" name="rafraich" value="1" />
+			<strong>Fichier :</strong><br /> 
+			<input type="file" name="fichier" size="30" />
+			<br />
+			<strong>Descriptif :</strong><br /> 
+			<input type="text" name="legende" id="legende" size="30" maxlength="256" />
+			<div class="legende">Descriptif, Plan, Plaquette</div>	
+			<div class="btn"><input type="image" src="$$_$$i/dyn/btnvalider.png" /></div>
+		</form>
+	</td>
+</tr>
+</table>
+<div class="info"><span>
+	<strong>Taille maximale de la video : </strong> 50 Mo<br />
+	<strong>Formats supportés (extension/codec) :</strong><br />
+	&nbsp; .avi : Mjpeg, Mpeg1, Mpeg2, Mpeg4<br />
+	&nbsp; .mov : Mjpeg, Mpeg4<br />
+	&nbsp; .mp4 : Mpeg4<br />
+	&nbsp; .vob : Mpeg2<br />
+	&nbsp; .flv : FLV<br />
+	&nbsp; .wmv : Windows Media Video<br />
+	<strong>Temps de traitement interne de la vidéo : </strong>1 à 3 min<br />
+	<strong>Temps de mise en ligne sur les portails Internet : </strong>environ 30 min à 45 min
+</span></div>
+</div>
+$$INCL:BASX.HTM$$

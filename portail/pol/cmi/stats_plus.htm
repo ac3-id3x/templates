@@ -1,0 +1,95 @@
+$$INCL:AUTH.HTM$$
+$$E:E3:CAT:157207:SLPRO$$
+
+$$INCL:HAUTX.HTM$$ 
+$$B:CMI:BO-STATSANNONCE:~idannonce:REP:1:ALIAS:STATLNGANN$$ 
+$$E:CMI:BO-ANNONCE:~idannonce:REP:1:ALIAS:ANN$$
+
+$$INIT:PAGE_PRINT=1$$
+
+$$A:BO_lISTE=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Liste de résultat] body=[Annonces affichées dans le<br>résultat d'une recherche]"$$
+$$A:BO_DETAIL=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Détail] body=[Détail de l'annonce affiché <br>à partir du lien 'plus d'infos']"$$
+$$A:BO_RATIO=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Ratio] body=[Détail / Liste en pourcentage,<br>Taux de conversion]"$$
+$$A:BO_DEMDOC=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Demande de documentation] body=[Nombre de demandes de documentation envoyées au bureau.]"$$
+$$A:BO_TELEPHONE=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Téléphone] body=[Intention d'appel]"$$
+
+
+<h3>Statistiques mensuelles de consultation de votre annonce</h3>
+
+$$IF0:STATLNGANN:NBVUESLISTEDETAIL$$
+	<div class="erre"><span>Aucune visualisation de votre annonce n'a encore été enregistrée</span></div>
+$$END$$
+$$IF:STATLNGANN:NBVUESLISTEDETAIL$$
+<br clear="all" />
+
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td width="70%">$$INCL:RESUMANX.HTM$$</td>
+			<td width="5%">&nbsp;</td> 
+			<td width="25%" style="vertical-align: top;"> 
+				<table class="tabbasic" cellpadding="0" cellspacing="0">
+					<tr class="tabentete">
+						<td>Total des lectures de votre annonce</td>
+					</tr>
+					<tr>
+						<td align="center">$$STATLNGANN:NBVUESLISTEDETAIL formatnumber 0$$</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td>Détail des lectures</td>					
+			<td width="10%" $$BO_lISTE$$ class="alignright">Liste&nbsp;de&nbsp;résultat</td>
+			<td width="10%" $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td width="10%" $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td width="10%" $$BO_DEMDOC$$ class="alignright">Demande de documentation</td>
+			<td width="10%" $$BO_TELEPHONE$$ class="alignright">Téléphone</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>			
+			<td class="alignright">$$STATLNGANN:NBVUESLISTE formatnumber 0$$</td>
+			<td class="alignright">$$STATLNGANN:NBVUESDETAIL formatnumber 0$$</td>
+			<td class="alignright">$$STATLNGANN:RATIODETAILLISTE formatnumber 0$$%</td>
+			<td class="alignright">$$STATLNGANN:NBDEMDOC formatnumber 0$$</td>
+			<td class="alignright">$$STATLNGANN:NBINTENTIONSAPPEL formatnumber 0$$</td>
+		</tr>
+	</table>
+
+	
+	$$BIF:STATLNGANN$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td>Statistiques détaillées par mois</td>		
+			<td width="10%" $$BO_lISTE$$ class="alignright">Liste&nbsp;de&nbsp;résultat</td>
+			<td width="10%" $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td width="10%" $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td width="10%" $$BO_DEMDOC$$ class="alignright">Demande de documentation</td>
+			<td width="10%" $$BO_TELEPHONE$$ class="alignright">Téléphone</td>
+		</tr>
+	
+		$$DO:1:99$$
+		<tr>
+			<td>$$STATLNGANN:NOMMOIS$$ $$STATLNGANN:ANNEE$$</td>			
+			<td class="alignright">$$STATLNGANN:NBVUESLISTE formatnumber 0$$</td>
+			<td class="alignright">$$STATLNGANN:NBVUESDETAIL formatnumber 0$$</td>
+			<td class="alignright">$$IFNOTNULL:STATLNGANN:RATIODETAILLISTE$$$$STATLNGANN:RATIODETAILLISTE formatnumber 0$$%$$END$$</td>
+			<td class="alignright">$$STATLNGANN:NBDEMDOC formatnumber 0$$</td>
+			<td class="alignright">$$STATLNGANN:NBINTENTIONSAPPEL formatnumber 0$$</td>
+		</tr>
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+	
+	
+$$END$$
+
+<div id="line_btn_ann">
+	<div class="btn_right"><a href="$$XDOM$$/annonce_visu.htm?idannonce=$$REP:1$$"><img  src="$$_$$i/dyn/btnvoirlannonce.png" /></div>
+</div>
+	
+	
+$$INCL:BASX.HTM$$

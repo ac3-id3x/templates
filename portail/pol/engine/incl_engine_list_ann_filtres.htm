@@ -1,0 +1,174 @@
+
+	$$IF+:0:FORM:IDTYPETRANSACTION indexOf 10$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+	
+	$$IF+:0:FORM:IDTYPETRANSACTION indexOf 11$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+	
+	$$IF+:0:FORM:IDTYPEBIEN indexOf 12$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:FORM:IDTYPEBIEN indexOf 6$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:FORM:IDTYPEBIEN indexOf 8$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:FORM:IDTYPEBIEN indexOf 11$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:FORM:IDTYPEBIEN indexOf 7$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+		
+	
+	$$IF:AGORABIZ$$
+	
+	
+	
+
+	$$A:VALSKIPBXAB=_editannlist$$
+	<div id="info_agorabiz">
+		<div id="info_agorabiz_cookie">
+			$$INCL:BX_AB.HTM$$
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+		function skipmsg(namecookie){
+			EcrireCookie("skipmsg"+namecookie,"1");
+			var info_agorabiz = document.getElementById('info_agorabiz');
+			info_agorabiz.style.display = 'none';	
+		}
+
+		var skipmsg_editann = LireCookie("skipmsg_editannlist");	
+		var info_agorabiz_cookie = document.getElementById('info_agorabiz_cookie');
+		if(skipmsg_editann == "1"){
+			if(info_agorabiz_cookie){info_agorabiz_cookie.style.display = "none";}
+		}
+	//-->
+	</script>
+	$$END$$
+
+
+
+
+$$B:SLPRO:TYPESTRANSACTION:ALIAS:TT$$	
+$$B:SLPRO:TYPESBIEN:ALIAS:TB$$
+
+
+$$A:TITLETAB=Recherche$$
+$$INCL:TITLE_TAB.HTM$$
+<form action="/$$REP:0$$" method="get" style="display: inline;" name="annonces" id="annonces">
+<table class="tabengine" cellpadding="0" cellspacing="0">	
+	<tr>
+		<td class="bdr alignleft" colspan="2">
+			$$BIF:TT$$						
+				$$DO:2:999$$
+				<label for="idtypetransaction_$$TT:I$$"><input type="checkbox" name="idtypetransaction" id="idtypetransaction_$$TT:I$$" value="$$TT:IDTYPETRANSACTION$$" $$IF(:FORM_IDTYPETRANSACTION:TT:IDTYPETRANSACTION$$checked="checked"$$END$$>$$TT:TYPETRANSACTION replace vente¤fonds¤de¤commerce fonds¤de¤commerce replace vente¤de¤prestige prestige replace location¤vacances loc.¤vacances replace location¤de¤prestige loc.¤de¤prestige replace ¤ &nbsp; replace produit&nbsp;d'investissement investissement$$</label>
+				$$LOOP$$		
+			$$BFIN$$
+			
+			<div class="sepa_engine"></div>
+			
+		<div id="ref_engine">&nbsp;Référence :&nbsp;&nbsp;<input type="text" id="refannonce" name="refannonce" value="$$FORM:REFANNONCE$$" /></div>
+			
+		</td>
+		<td class="bdralignleft" colspan="2">
+			$$BIF:TB$$					
+				$$DO:2:999$$
+					<label for="idtypebien_$$TB:I$$"><input type="checkbox" name="idtypebien" id="idtypebien_$$TB:I$$" value="$$TB:IDTYPEBIEN$$" $$IF(:FORM_IDTYPEBIEN:TB:IDTYPEBIEN$$checked="checked"$$END$$>$$TB:DESCRIPTION$$</label>
+				$$LOOP$$ 			
+			$$BFIN$$ 			
+		</td>
+		<td class="bdralignleft" width="70px">
+			<table border="0" width="100%" ><tbody><tr><td valign="top">
+			<strong>Nbr. de pièces</strong><br />
+			$$B:ID3:LOOP:,:1,2,3,4,5,5et+:ALIAS:NBP$$
+			$$BIF:NBP$$
+			$$DO$$
+			<label for="nbpieces_$$NBP:I$$"><input type="checkbox" name="nbpieces" id="nbpieces_$$NBP:I$$" value="$$NBP:1$$" $$IF(:FORM_NBPIECES:NBP:1$$checked="checked"$$END$$>$$NBP:1$$</label>		
+			$$LOOP$$
+			$$BFIN$$
+			</td></tr></tbody></table> 
+		</td>
+		<td class="bdralignleft">
+			<strong>Localisation</strong><br />
+			<input type="text" size="10" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 1$$$$END$$"><br />
+			<input type="text" size="10" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 2$$$$END$$"><br />
+			<input type="text" size="10" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 3$$$$END$$"><br />
+			<i>Code postal, Ville<br /> ou Département</i>
+		</td>		
+		<td class="alignleft">
+			<strong>Statut annonce</strong><br />
+			<label for="statut_active"><input type="radio" name="censure" id="statut_active" value="0" $$IF=:0:FORM:CENSURE$$checked="checked"$$END$$>Valide</label>
+			<label for="statut_censure"><input type="radio" name="censure" id="statut_censure" value="1" $$IF=:1:FORM:CENSURE$$checked="checked"$$END$$>Non valide</label>			
+			<label for="statut_all"><input type="radio" name="censure" id="statut_all" value="" $$IF!:1:FORM:CENSURE$$$$IF!:0:FORM:CENSURE$$checked="checked"$$END$$$$END$$>Toutes</label>			
+		</td>
+	<tr>
+</table>
+<table>
+	<tr>
+		<td>
+			$$IF:PUBL:NB$$
+			<strong>Canal de diffusion  $$FORM:PUBLICATION$$</strong> 
+			<select name="publication">
+			$$IF>:1:PUBL:NB$$
+				<option value="$$PUBL:PUBNB1_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB1_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB1_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+
+			$$IF>:2:PUBL:NB$$
+				<option value="$$PUBL:PUBNB2_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB2_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB2_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+
+			$$IF>:3:PUBL:NB$$
+				<option value="$$PUBL:PUBNB3_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB3_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB3_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+						
+			$$IF>:4:PUBL:NB$$
+				<option value="$$PUBL:PUBNB4_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB4_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB4_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+
+			$$IF>:5:PUBL:NB$$
+				<option value="$$PUBL:PUBNB5_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB5_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB5_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+			
+			$$IF>:6:PUBL:NB$$
+				<option value="$$PUBL:PUBNB6_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB6_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB6_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+			
+			$$IF>:7:PUBL:NB$$
+				<option value="$$PUBL:PUBNB7_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB7_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB7_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+			
+			$$IF>:8:PUBL:NB$$
+				<option value="$$PUBL:PUBNB8_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB8_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB8_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+
+			$$IF>:9:PUBL:NB$$
+				<option value="$$PUBL:PUBNB9_IDTYPEPUBLICATION$$"  $$IF=:FORM_PUBLICATION:PUBL:PUBNB9_IDTYPEPUBLICATION$$SELECTED$$END$$>$$PUBL:PUBNB9_PUBLICATION replace Immoflash FlashAgence ncase$$
+			$$END$$
+			
+			<br />
+		$$END$$
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="tri" value="$$FORM:TRI$$"/>
+$$IF:FORM:AGANNONCESPI$$
+<input type="hidden" name="AGANNONCESPI" value="$$FORM:AGANNONCESPI$$"/>
+$$END$$
+<div class="btn_engine">
+	<input type="image" src="$$_$$i/dyn/btnrechercher.png" />
+</div>
+</form>
+
+
+$$INCL:LISTE_ANN_COOKIES.HTM$$

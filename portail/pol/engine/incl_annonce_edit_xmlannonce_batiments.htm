@@ -1,0 +1,195 @@
+$$B:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:batiment:ALIAS:XML_BATIMENTS$$
+$$A:IDANN=@@FORM:IDANNONCE@@$$
+
+<script src="$$_$$js/jquery-1.2.6.js"></script>
+
+<script type="text/javascript">
+
+	var isModif = false;
+	
+	function displayLots(pId, pIdAnnonce, pIdBatiment){
+		$.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "annonce_edit_xmlannonce_lots.htm",
+			data: { idannonce: pIdAnnonce,
+					idbatiment: pIdBatiment,
+					'ie_fix' : new Date().getTime()
+					},
+			success: function(msg) {
+				window.document.getElementById(pId).innerHTML = msg;
+				$("#" + pId).find("script").each(function(i) {
+					eval($(this).text());
+				});
+			}
+		});
+	}
+
+	function displayFormLot(pIdBat, pIdLot){
+
+	// bouton: dispFormLot_$$IDBAT$$_' + newId + '
+	// tr: trLotForm_$$IDBAT$$_' + newId + '
+	
+
+		var disphtml = $("#dispFormLot_" + pIdBat + "_" + pIdLot).html();
+		if(disphtml.indexOf("Editer") == 0) {
+			$("#tbLotForm_" + pIdBat + "_" + pIdLot).css('display', 'block');
+			$("#dispFormLot_" + pIdBat + "_" + pIdLot).html('Fermer');
+		}
+		else {
+			$("#tbLotForm_" + pIdBat + "_" + pIdLot).css('display', 'none');
+			$("#dispFormLot_" + pIdBat + "_" + pIdLot).html('Editer');
+		}
+	}	
+	
+	function getMaxIdBatiment(){
+		var max = 0;
+		$$BIF:XML_BATIMENTS$$
+			$$DO$$
+				$$IF:XML_BATIMENTS:ID$$
+					if(max < $$XML_BATIMENTS:ID$$) max = $$XML_BATIMENTS:ID$$;
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		return max;	
+	}
+	var newIdBat;
+	function getNewIdBatiment(){
+		if(newIdBat == null)
+			newIdBat = getMaxIdBatiment();
+		newIdBat += 1;
+		return newIdBat;
+	}
+
+	function addBatiment(){
+		isModif = true;
+		var newId = getNewIdBatiment();
+
+		var strHtml = '<table class="tabbasic" border="1" cellpadding="0" cellspacing="0" width="100%" id="trBatData_' + newId + '">'
+			+ '<tr>'
+			+ '<th><b>B&acirc;timent - Id: ' + newId + ' - Nom: <input type="text" name="batiment_' + newId + '_nom" value="" /></b>'
+			+ '<input type="hidden" name="batiment_' + newId + '_id" value="' + newId + '">'
+			+ '</th>'
+			+ '</tr>'
+			+ '<tr id="trBatData2_' + newId + '">'
+			+ '<td id="tdLot_' + newId + '">'
+				+ '<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%" id="tableLot_' + newId + '">'
+				+ '<tr>'
+				+ '<th>Id</th>'
+				+ '<th>Etage</th>'
+				+ '<th>Type de bien</th>'
+				+ '<th>Date de dispo</th>'
+				+ '<th>Action</th>'
+				+ '</tr>'
+				+ '</table>'
+				+ '<a href="#tableLot_' + newId + '" id="" onclick="javascript:addLot(' + newId + ')">Ajouter un lot</a>'
+				+ ' - <a href="#tableBat" onclick="javascript:CancelBat(' + newId + ');">Annuler b&acirc;timent</a>'
+			+ '</td>'
+			+ '</tr>';
+			+ '</table>';
+		$("#tableBat").append(strHtml);
+	}
+	
+	var batLot = [];
+	
+	function getNewIdLot(idBat){
+		var newId = 0;
+		
+		for(var i = 0; i < batLot.length; i++){
+			if(batLot[i][0] == idBat)
+				if(batLot[i][1] > newId)
+					newId = batLot[i][1];
+		}
+		newId++;
+		var x = [];
+		x.push(idBat);
+		x.push(newId);
+		batLot.push(x);
+		return newId;
+	}
+	
+	function addLot(idBat){
+		isModif = true;
+		var newId = getNewIdLot(idBat);
+		
+		var  intitulePrix = "Prix";
+		
+		$$IF=:1:FORM:IDTYPETRANSACTION$$
+			intitulePrix = "Loyer annuel";
+		$$END$$
+		
+		var strHtml = 
+		'<tr id="trLotData_' + idBat + '_' + newId + '">'
+		+ '	<td>' + newId + '</td>'
+		+ '	<td>(nouveau)</td>'
+		+ '	<td>(nouveau)</td>'
+		+ '	<td>(nouveau)</td>'
+		+ '	<td>'
+		+ '		<a href="#trLotData_' + idBat + '_' + newId + '" id= "dispFormLot_' + idBat + '_' + newId + '" onclick="javascript:displayFormLot(' + idBat + ', ' + newId + ');">Editer</a>'
+		+ '		- <a href="#tableLot_' + idBat + '" onclick="javascript:CancelLot(' + idBat + ', ' + newId + ');">Annuler lot</a>'
+		+ '	</td>'
+		+ '</tr>'
+		+ '<tr id="trLotData2_' + idBat + '_' + newId + '">'
+		+ '	<td colspan="5">'
+		+ '		<table id="tbLotForm_' + idBat + '_' + newId + '">'
+		+ '			<tr>'
+		+ '				<td>Etage <input type="texte" name="lot_' + idBat + '_' + newId + '_etage" value="$$XML_LOTS:ETAGE$$"/></td>'
+		+ '				<td>Type de bien <input type="texte" name="lot_' + idBat + '_' + newId + '_typebien" value="$$XML_LOTS:TYPEBIEN$$"/></td>'	
+		+ '             <td>Date de disponibilit&eacute; <input type="texte" name="lot_' + idBat + '_' + newId + '_datedispo" value="$$XML_LOTS:DATEDISPO$$"/></td>'
+		+ '				<td>'+intitulePrix+' au m² <input type="texte" name="lot_' + idBat + '_' + newId + '_loyerannuelm2" value="$$XML_LOTS:LOYERANNUELM2$$"/></td>'
+		+ '			</tr>'
+		+ '			<tr>'
+		+ '				<td>Valeur energétique <input type="texte" name="lot_' + idBat + '_' + newId + '_valeurenergetique" value="$$XML_LOTS:VALEURENERGETIQUE$$"/></td>'
+		+ '				<td>Grade energétique <input type="texte" name="lot_' + idBat + '_' + newId + '_lettreenergetique" value="$$XML_LOTS:LETTREENERGETIQUE$$"/></td>'
+		+ '				<td>Surface totale <input type="texte" name="lot_' + idBat + '_' + newId + '_surfacetotale" value="$$XML_LOTS:SURFACETOTALE$$"/></td>'
+		+ '				<td>Hauteur sous plafond <input type="texte" name="lot_' + idBat + '_' + newId + '_HSP" value="$$XML_LOTS:HSP$$"/></td>'
+		+ '			</tr>'
+		+ '		</table>'
+		+ '	</td>'
+		+ '</tr>'
+		$("#tableLot_" + idBat).append(strHtml);
+		$("#tbLotForm_" + idBat + "_" + newId).css('display', 'none');
+	}
+	
+	function CancelBat(idBat){
+		$('#trBatData_' + idBat).remove();
+		$('#trBatData2_' + idBat).remove();
+	}
+	function CancelLot(idBat, idLot){
+		$('#trLotData_' + idBat + '_' + idLot).remove();
+		$('#trLotData2_' + idBat + '_' + idLot).remove();
+	}
+</script>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<th colspan=2 >Tableau de surfaces</th>
+	</tr>
+	<tr>
+		<td id="tableBat">
+			$$BIF:XML_BATIMENTS$$
+				$$DO$$
+				<table class="tabbasic" border="1" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<th><b>B&acirc;timent - Id: $$XML_BATIMENTS:ID$$ - Nom: <input type="text" name="batiment_$$XML_BATIMENTS:ID$$_nom" value="$$XML_BATIMENTS:NOM$$" /></b>
+							<input type="hidden" name="batiment_$$XML_BATIMENTS:ID$$_id" value="$$XML_BATIMENTS:ID$$">
+						</th>
+					</tr>
+					<tr>
+						<td id="tdLot_$$XML_BATIMENTS:ID$$">
+							<script type="text/javascript">
+								displayLots('tdLot_$$XML_BATIMENTS:ID$$', $$IDANN$$, $$XML_BATIMENTS:ID$$);
+							</script>
+						</td>
+					</tr>
+				</table>
+				$$LOOP$$
+			$$BFIN$$
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="#tableBat" id="" onclick="javascript:addBatiment()">Ajouter un b&acirc;timent</a>
+		</td>
+	</tr>
+</table>

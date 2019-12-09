@@ -1,0 +1,210 @@
+$$A:TITLEPOPUP=Choix d'activités pour un fond de commerce$$
+$$INCL:HAUTPOP.HTM$$  
+$$SET:CLOSEONESC=1$$ 
+<!-- $$FORM:COMMERCES_ANNONCES$$ --> 
+$$SET:PAGE:CLOSE=1$$
+$$B:IMMOBC:MATCH_ACTIVITES:QRY:TEXT_TYPEACTIVITE:QRY:COMMERCES_ANNONCES$$
+$$B:IMMOBC:SOUSTYPESCOMMERCES$$
+$$B:IMMOBC:TYPESACTIVITE:ACT:QRY:COMMERCES_ANNONCES$$
+<script type="text/javascript" language="javascript"><!--
+function focusfield() {
+	var elt = MM_findObj( "typeactivite" );
+	if( elt ) {
+		elt.focus();
+	}
+}
+/****************************************************************
+ * Ferme la fenêtre courante si appui sur ESCape				*
+ * Auteur : Ludovic LANGE										*
+ * Date   : 27/05/2003											*
+ * Params : e l'évènement passé par le browser					*
+ * Algo	  : 													*
+ *http://www.xs4all.nl/~ppk/js/index.html?/~ppk/js/events_properties.html*
+ *																*
+ *Pour utiliser, faire dans un popup :							*
+ *$$SET:BODY:ATTRIBUTES=onkeypress="javascript:close_on_escape(event);"$$ *
+ ****************************************************************/
+function store() {
+	var i;
+	var ids, txt, pfx_id, elt, first;
+	var nb1 = $$IF:IMMOBC:TYPESACTIVITE:ACT:NBR$$$$IMMOBC:TYPESACTIVITE:ACT:NBR$$$$END$$$$IF0:IMMOBC:TYPESACTIVITE:ACT:NBR$$0$$END$$
+	var nb2 = $$IF:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$$$IMMOBC:MATCH_ACTIVITES:QRY:NBR$$$$END$$$$IF0:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$0$$END$$
+	ids = "";
+	txt = "";
+	first = true;
+	for( i=1; i<= nb1 + nb2 ; i++ ) {
+		if( i > nb1 ) {
+			pfx_id = "2_" + ( i - nb1 ) ;
+		} else {
+			pfx_id = "1_" + i;
+		}
+		elt_id = MM_findObj( "ck" + pfx_id );
+		elt_txt = MM_findObj( "txt" + pfx_id );
+		//alert( "i= " + i + "elt_id = " + elt_id + ", elt_txt = " + elt_txt );
+		if( elt_id && elt_txt ) {
+			if( elt_id.checked ) {
+				if( !first ) {
+					ids = ids + ",";
+					txt = txt + ", ";
+				}
+				ids = ids + elt_id.value;
+				txt = txt + elt_txt.firstChild.nodeValue;
+				first = false;
+			}
+		}
+	}
+	elt_id = MM_findObj( "idtypeactivite" );
+	if( elt_id ) {
+		if( elt_id.selectedIndex > 0 ) {
+			if( !first ) {
+				ids = ids + ",";
+				txt = txt + ", ";
+			}
+			ids = ids + elt_id.options[ elt_id.selectedIndex ].value;
+			txt = txt + elt_id.options[ elt_id.selectedIndex ].text;
+		}
+	}
+<!--$$FORM:DISPDOM$$-->
+
+	var mother = top.opener;
+	if( mother && mother.store ) {
+		mother.store( ids, txt );
+		self.close();
+	} else {
+		alert( "Impossible de stocker le type d'activité. Prévenez le support technique SeLoger hotline@poliris.com. Merci !");
+	}
+	
+}
+// --></script>
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+
+
+$$BIF:IMMOBC:MATCH_ACTIVITES:QRY$$
+<div class="erre"><span>
+	<!-- Nbre : $$IMMOBC:MATCH_ACTIVITES:QRY:NBR$$<br /> -->
+		$$IF=:1:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$
+			$$DO:1:999$$
+				$$IF0:IMMOBC:MATCH_ACTIVITES:QRY:IDTYPEACTIVITE$$
+					Cette activité ( $$FORM:TEXT_TYPEACTIVITE$$ ) n'est pas reconnue par nos systèmes !<br />Merci d'en choisir une autre.
+				$$END$$
+				$$IF:IMMOBC:MATCH_ACTIVITES:QRY:IDTYPEACTIVITE$$
+					Activité reconnue ( $$FORM:TEXT_TYPEACTIVITE$$ => $$IMMOBC:MATCH_ACTIVITES:QRY:SOUSTYPECOMMERCE$$ <!-- / $$IMMOBC:MATCH_ACTIVITES:QRY:IDTYPEACTIVITE$$ --> ) !
+				$$END$$
+			$$LOOP$$
+		$$END$$
+		$$IF!:1:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$
+			$$IF:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$
+				Liste des activités reconnues :
+			$$DO:1:999$$
+				$$IF>:2:IMMOBC:MATCH_ACTIVITES:QRY:I$$,$$END$$ <b>$$IMMOBC:MATCH_ACTIVITES:QRY:SOUSTYPECOMMERCE$$</b>
+			$$LOOP$$
+				.<br /> Merci de cocher la (ou les) activités retenues.
+			$$END$$
+		$$END$$	
+</span></div>
+$$BFIN$$
+
+
+
+
+
+<form>
+<table class="tabbasic" cellspacing="0" cellpadding="0">
+	<thead>
+	<tr>
+		<th>Choisir une activité la dans la liste</th>
+	</tr>
+	</thead>
+	<tr>
+		<td>		
+		$$BIF:IMMOBC:SOUSTYPESCOMMERCES$$
+		<select name="commerces_annonces" id="idtypeactivite">
+		<option value="NULL">-- Choisir une activité --</option>
+			$$DO:1:999$$
+			<option value="$$IMMOBC:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$">$$IMMOBC:SOUSTYPESCOMMERCES:SOUSTYPECOMMERCE$$</option>
+			$$LOOP$$
+		</select>
+		$$BFIN$$
+		</td>
+	</tr>
+</table>	
+
+
+	$$A:HELPMODIF=0$$
+	$$BIF:IMMOBC:TYPESACTIVITE:ACT$$ $$A:HELPMODIF=1$$ $$BFIN$$
+	$$BIF:IMMOBC:MATCH_ACTIVITES:QRY$$ $$A:HELPMODIF=1$$ $$BFIN$$
+
+<table class="tabbasic" cellspacing="0" cellpadding="0">
+	<thead>
+	<tr>
+		<th>
+			$$IF=:1:HELPMODIF$$Activité(s) sélectionnée(s)$$END$$
+			$$IF=:0:HELPMODIF$$Ou ajouter une nouvelle activité$$END$$
+		</th>
+	</tr>
+	</thead>
+	<tr>
+		<td>	
+		$$IF=:1:FORM:DISPDOM$$
+			<input type="hidden" name="dispdom" value="1">
+		$$END$$
+
+		$$IF:FORM:COMMERCES_ANNONCES$$
+		<table width="100%" cellpadding="0" cellpadding="0">
+		$$BIF:IMMOBC:TYPESACTIVITE:ACT$$
+			$$DO:1:999$$
+				<tr>
+					<td align="right" width="20%"><input type="checkbox" name="commerces_annonces" id="ck1_$$IMMOBC:TYPESACTIVITE:ACT:I$$" value="$$IMMOBC:TYPESACTIVITE:ACT:IDTYPEACTIVITE$$" checked="checked" /></td>
+					<td id="txt1_$$IMMOBC:TYPESACTIVITE:ACT:I$$">$$IMMOBC:TYPESACTIVITE:ACT:SOUSTYPECOMMERCE$$</td>
+				</tr>
+			$$A:BTMODIF=1$$
+			$$LOOP$$
+		$$BFIN$$		
+		$$BIF:IMMOBC:MATCH_ACTIVITES:QRY$$
+			$$DO:1:999$$
+				$$IF:IMMOBC:MATCH_ACTIVITES:QRY:IDTYPEACTIVITE$$
+				<tr>
+					<td align="right" width="20%"><input type="checkbox" name="commerces_annonces" id="ck2_$$IMMOBC:MATCH_ACTIVITES:QRY:I$$"  value="$$IMMOBC:MATCH_ACTIVITES:QRY:IDTYPEACTIVITE$$" $$IF=:1:IMMOBC:MATCH_ACTIVITES:QRY:NBR$$checked="checked"$$END$$ /></td>
+					<td><b id="txt2_$$IMMOBC:MATCH_ACTIVITES:QRY:I$$">$$IMMOBC:MATCH_ACTIVITES:QRY:SOUSTYPECOMMERCE$$</b></td>
+				</tr>
+				$$A:BTMODIF=1$$
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$	
+			$$IF=:1:BTMODIF$$
+			
+			<tr><td colspan="2">
+			<div class="btn">
+				<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+			</div>
+			</td></tr>
+			$$END$$
+		</table>
+		$$END:FORM:COMMERCES_ANNONCES$$
+		
+		$$IF=:0:HELPMODIF$$
+		<input type="text" name="text_typeactivite" id="typeactivite" width="20" /><br />
+			<div class="btn">
+				<input type="image" name="Submit" src="$$_$$i/dyn/btnajouter.png" />
+			</div>
+		$$END$$
+		</td>
+	</tr>
+</table>	
+
+$$IF=:1:HELPMODIF$$
+<div class="info"><span><strong>Comment modifier la sélection ?</strong><br />
+	Vous pouvez supprimer des activités de la liste en les décochant puis en cliquant sur "<strong>Modifier</strong>".
+</span></div>
+$$END:HELPMODIF$$
+
+<div class="info"><span>Pour enregistrer les activités sélectionnées cliquez sur "<strong>Valider</strong>".</span></div>
+
+
+<div class="btn" onClick="javascript:store();">
+	<input type="image" name="Submit" src="$$_$$i/dyn/btnvalider.png" />
+</div>
+
+</form>
+$$INCL:BASPOP.HTM$$

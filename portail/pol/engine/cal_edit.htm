@@ -1,0 +1,202 @@
+$$A:TITLEPOPUP=Saisie des disponiblités$$
+$$INCL:HAUTPOPX.HTM$$ 
+$$INIT:INTRAX=1$$ 
+$$SET:PGNAV=an$$ 
+$$SET:OVERDIV=1$$
+$$B:IMMOBC:CALENDRIERVAC:QRY:IDANNONCE:ALIAS:CAL$$
+<style type="TEXT/CSS">
+<!--
+td {font: 8pt, tahoma;}
+.d1, .d0, .d1 td,.dselectedfin,.dselecteddebut,.dselected {width: 15px; font: 8pt, tahoma; cursor:pointer;}
+.d1 td {background-color:#EEEEEE; text-align:center; width:150px;}
+.d0 { background-color:#FFBCB7;}
+.d1 { background-color:#CAFFCA;}
+.dselectedfin {background-color:#FFBCB7;background-image:url('$$_$$images/cal_selectfin.gif');background-repeat:no-repeat; background-position: top left;}
+.dselecteddebut {background-color:#FFBCB7;background-image:url('$$_$$images/cal_selectdebut.gif');background-repeat:no-repeat; background-position: bottom right;}
+.finresa {background-image:url('$$_$$images/cal_resafin.gif');background-repeat:no-repeat; background-position: bottom right;}
+.debutresa {background-image:url('$$_$$images/cal_resadebut.gif');background-repeat:no-repeat;}
+.dselected { background-color:#C1C1E1;}
+table.tour { border: 1px solid #000000; height:150px; }
+-->
+</style>
+$$BIF:CAL$$
+<script language="javascript" type="text/javascript">
+<!--
+var isDeb=0;
+var first, last;
+
+function parseDate (x) {
+	a= x.split("/");
+	return new Date (a[1]+"/"+a[0]+"/"+a[2]);
+}
+
+function setDate (x,o) {
+	var ohref;
+	
+	
+		fillDist(true);
+	
+	if ( o.getAttribute("href") ) ohref = o.getAttribute("href").substr(0,2);
+	
+	fs = document.getElementById("search");
+	//fs.disposubmit.enabled=false;
+	d = parseDate(x);
+	if (fs.debut.value=='') 
+	{
+		isDeb=0;
+	}
+	else
+	{
+		d2 =  parseDate(fs.fin.value);
+		if (d>d2) isDeb=1;
+		d2 =  parseDate(fs.debut.value);
+		if (d<d2) isDeb=0;
+	}
+
+		
+	if (isDeb==0) {
+		fs.debut.value = x;
+		isDeb=1;
+		if (first && ohref && (ohref=="d1" || ohref=="d0")) first.className = o.getAttribute("href");
+		first=o;
+	}
+	else
+	{	
+		fs.fin.value = x;
+		isDeb=0;
+		if (last && ohref && (ohref=="d1" || ohref=="d0")) last.className = o.getAttribute("href");
+		last=o;
+	}
+	
+	o.className="dselected";
+	
+	fillDist(false);
+
+}
+
+
+function fillDist(rollback) {
+	fs = document.getElementById("search");
+	if (first && last) {
+		var xx = document.getElementsByTagName("TD");
+		ons=false;
+		if (rollback) {
+			for (i=0; i<xx.length; i++) {
+				var monTD = xx[i];
+				monTD.className = monTD.getAttribute("href");
+			}
+		}
+		
+		for (i=0; i<xx.length; i++) {
+			o = xx[i];
+
+			if (! ons && o==first) ons = true;
+			if ( ons ) {
+				var oclass = o.className.substr(0,2);
+				if (oclass=="d1" || oclass=="d2" || oclass=="d0" || oclass=="ds") {
+						if ( ! rollback ) {
+							var ohref;
+							if ( o.getAttribute("href") ) ohref = o.getAttribute("href").substr(0,2);
+							if ( ohref ) {
+								if (o==first) {
+									o.className = ohref + " dselecteddebut";
+								}
+								else if (o==last) {
+									o.className = ohref +  " dselectedfin";
+									break;
+								}
+								else {
+									o.className = "dselected";
+								}
+							}
+							else {
+								if (ohref && (ohref=="d1" || ohref=="d0")) o.className = o.getAttribute("href");
+							}
+						}
+					}
+				if (ons && o==last) ons = false;
+			} // retablissement
+			else
+			{
+					if (ohref && (ohref=="d1" || ohref=="d0")) o.className = o.getAttribute("href");
+			}
+		}
+	}
+}
+
+// --></script>
+$$BFIN$$
+$$IF:ERRE$$<font class="errmsg">Erreur: $$ERRE$$</font><br /><br />$$END$$
+<p align="right">
+<table width="180" style="border:1px solid black">
+	<tr>
+		<td class="d1"></td>
+		<td style="width:100px;">Disponible</td>
+		<td class="d0"></td>
+		<td style="width:100px;">Non disponible</td>
+	</tr>
+</table>
+</p>
+<form name="search" id="search" method="post">
+<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="u" value="immobc:setdispo" />
+<input type="hidden" name="idannonce" value="$$FORM:IDANNONCE$$" />
+Du <input type="text" name="debut" value="" size="10"> au <input type="text" name="fin" value="" size="10">
+<input type="radio" name="pris" value="1" $$IF:FORM:PRIS$$checked="checked"$$END$$ /> Dispo
+<input type="radio" name="pris" value="0" $$IF=:0:FORM:PRIS$$checked="checked"$$END$$ /> Pas dispo
+<input type="submit" value="Modifier" />
+</form>
+
+<table width="450" align="center">
+	<tr>
+		<td>
+		$$BIF:CAL$$
+		<table align="center" border="0">
+		$$DO$$
+		$$IFNOTNULL:CAL:DEBUTMOIS$$
+			$$IF=:0:CAL:NUMMOIS modulo 3$$<tr class="debutmois">$$END$$
+				<td>
+				<table class="tour" width="150">
+					<tr>
+						<td colspan="7" style="width:150px; text-align:center;"><b><font size="2">$$CAL:DATE date MMM_yyyy pcase $$</font></b></td>
+					</tr>
+					<tr class="d1">
+						<td onmouseover="return escape(dcc2(this,'<center>Samedi</center>'));">S</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Dimanche</center>'));">D</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Lundi</center>'));">L</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Mardi</center>'));">M</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Mercredi</center>'));">M</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Jeudi</center>'));">J</td>
+						<td onmouseover="return escape(dcc2(this,'<center>Vendredi</center>'));">V</td>
+					</tr>
+					<tr>
+						$$CAL:DEBUTMOIS repeatcode <td_class="d2"></td>$$ $$END$$
+						$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:6:CAL:WEEKDAY$$<tr>$$END$$ $$END$$
+						<td class="d$$CAL:DISPO$$$$IF:CAL:FINRESA$$ debutresa$$END$$$$IF:CAL:DEBUTRESA$$ finresa$$END$$" onclick="setDate('$$CAL:DATE date 2$$',this);" href="d$$CAL:DISPO$$$$IF:CAL:FINRESA$$ debutresa$$END$$$$IF:CAL:DEBUTRESA$$ finresa$$END$$">$$CAL:DATE day$$</td>
+						$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:5:CAL:WEEKDAY$$</tr>$$END$$ $$END$$
+						$$IFNOTNULL:CAL:FINMOIS$$
+						$$CAL:FINMOIS repeatcode <td_class="d2"></td>$$
+					</tr>
+				</table>
+				<br />
+				</td>
+			$$IF=:0:CAL:NUMMOIS exec XX+1 modulo 3$$</tr>$$END$$
+		$$END$$
+		$$LOOP$$
+		</table>
+		$$BFIN$$
+		</td>
+	</tr>
+</table>
+<p align="right">
+<table width="180" style="border:1px solid black">
+	<tr>
+		<td class="d1"></td>
+		<td style="width:100px;">Disponible</td>
+		<td class="d0"></td>
+		<td style="width:100px;">Non disponible</td>
+	</tr>
+</table>
+</p>
+$$INCL:BASPOP.HTM$$

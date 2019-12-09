@@ -1,0 +1,103 @@
+			<!-- $$REP:1$$ //-->
+
+$$IF0:REP:1$$
+	$$A:TITLEPOPUP=Ajouter une langue parlée dans l'agence$$
+$$END$$
+$$IF:REP:1$$
+	$$A:TITLEPOPUP=Definir les Langues parlées du ou des contact(s) de l'agence pour cette annonce$$
+$$END$$
+
+$$SET:PAGE:CLOSE=1$$
+$$INIT:CLOSEONLOAD=1$$
+$$INCL:HAUTPOP.HTM$$
+<!-- $$FORM:RELOADPARENT$$ $$FORM:RELOADPARENTANDCHECK$$ //-->
+$$IF:FORM:RELOADPARENT$$
+<script type="text/javascript">
+<!--	
+	top.opener.top.location.href= "$$ID3DOM$$/compte_langues.htm";
+//-->
+</script>
+$$END$$
+
+$$B:SLPRO:LANGUESPARLEES:VAL:AUTH_CHECK*LOGIN_IDAGENCE:REP:1$$
+
+
+	$$IF:FORM:RELOADPARENTANDCHECK$$
+		$$BIF:SLPRO:LANGUESPARLEES:VAL$$
+			<script type="text/javascript">
+			<!--	
+				var o = top.opener.document.getElementById('leslanguesparlees');
+				o.innerHTML ="$$DO:1:99$$$$IF=:1:SLPRO:LANGUESPARLEES:VAL:CHECKED$$<input type='checkbox' name='xmll_idlanguesparlees_modif' id='xmll_idlanguesparlees_modif_$$SLPRO:LANGUESPARLEES:VAL:I$$' disabled='disabled' checked='checked' value='$$SLPRO:LANGUESPARLEES:VAL:CODEISO$$' />$$SLPRO:LANGUESPARLEES:VAL:LIBELLE mcase$$&nbsp;$$END$$$$LOOP$$";
+			//-->
+			</script>
+		$$BFIN$$ 
+	$$END$$
+
+
+
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+<div style="float: left;">
+<form method="get">
+<table width="100%" align="center" cellpadding="2" cellspacing="2" border="0">
+	<tr>
+		<td colspan="4"><strong>Rechercher une langue parmi les langues disponibles</strong></td>
+	</tr>
+	<tr>
+		<td>Langue<br /><input type="text" name="langue" value="$$FORM:LANGUE$$" /></td>
+		<td><strong>ou</strong></td>
+		<td> Code Iso 939-2<br /><input type="text" name="codeiso" value="$$FORM:CODEISO$$" /></td>
+		<td><input type="image" name="submit" src="$$_$$i/dyn/btnrechercher.png" /></td>
+	</tr>
+</table>
+</form>
+</div>
+
+<div style="float: left;">
+<table width="100%" align="center" cellpadding="2" cellspacing="2" border="0">
+	<tr>
+		<td>
+$$IF0:FORM:CODEISO$$
+	$$IF0:FORM:LANGUE$$
+		<strong>Liste de toutes les langues disponibles</strong><br />
+	$$END$$
+$$END$$
+<font class="legende">Sélectionnez la ou les langues parlées dans votre agence puis cliquez sur valider.</font><br />
+
+
+$$BIF:SLPRO:LANGUESPARLEES:VAL$$ <!-- $$SLPRO_LANGUESPARLEES_VAL_CODEISO$$ $$FORM:XMLL_IDLANGUESPARLEES$$ -->
+<table width="100%" align="center" cellpadding="2" cellspacing="2" border="0">
+	<tr>
+		<td>
+			<form method="post">
+			<input type="hidden" name="u" value="slpro:languesparleesedit" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			
+
+			$$IF0:REP:1$$
+				<input type="hidden" name="reloadparent" value="1" />
+				<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+			$$END$$
+			$$IF:REP:1$$
+				<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+				<input type="hidden" name="idannonce" value="$$REP:1$$" />
+				<input type="hidden" name="reloadparentandcheck" value="1" />
+			$$END$$
+				$$DO:6:999$$
+				<!-- $$SLPRO_LANGUESPARLEES_VAL_CODEISO$$ $$FORM:XMLL_IDLANGUESPARLEES$$ -->
+						$$IF=:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$
+							<input type="hidden" name="xmll_idlanguesparlees" value="fr" />
+						$$END$$
+					<label for="xmll_idlanguesparlees_$$SLPRO:LANGUESPARLEES:VAL:I$$" $$IF:SLPRO:LANGUESPARLEES:VAL:LIBELLE_NATIF$$title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Natif] body=[$$SLPRO:LANGUESPARLEES:VAL:LIBELLE_NATIF mcase$$]"$$END$$><input type="checkbox" id="xmll_idlanguesparlees_$$SLPRO:LANGUESPARLEES:VAL:I$$" name="xmll_idlanguesparlees" $$IF=:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$disabled="disabled" checked="checked"$$END$$ $$IF!:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$$$IF(:SLPRO_LANGUESPARLEES_VAL_CODEISO:FORM:XMLL_IDLANGUESPARLEES$$checked="checked"$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:1:SLPRO:LANGUESPARLEES:VAL:CHECKED$$checked="checked"$$END$$$$END$$$$END:0fr$$ value="$$SLPRO:LANGUESPARLEES:VAL:CODEISO$$" />&nbsp;$$SLPRO:LANGUESPARLEES:VAL:LIBELLE mcase$$$$IF:SLPRO:LANGUESPARLEES:VAL:LIBELLE_NATIF$$$$END$$</label><br />
+				$$LOOP$$<input type="hidden" name="xmlll_idlanguesparlees" value="" />
+			$$BFIN$$ 
+			<div class="btn">
+				<input type="image" name="submit" src="$$_$$i/dyn/btnvalider.png" />
+			</div>
+			</form>
+		</td>
+	</tr>
+</table>
+</div>
+$$INCL:BASPOP.HTM$$

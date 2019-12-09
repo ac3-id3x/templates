@@ -1,0 +1,131 @@
+$$DYN:ID3:NOFOOTER$$$$DYN:ID3:NOCACHE$$
+$$E:E3:CAT:CDC_COMPTE:SLPRO$$
+$$SET:PAGE:IDT=MandatventeCompte$$ $$INIT:FORM:DISPLAY=compte$$
+$$INIT:INTRAX=1$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+
+$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+			<!--#include absolute="/portail/pol/engine/centredecontact/offredec.htm"-->
+$$END$$
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+
+<div id="gestError"></div>
+<div id="divGestMandat"></div>
+
+<script type="text/javascript">
+<!--
+<!--#include absolute="/portail/pol/engine/centredecontact/javascript.htm"-->
+-->
+</script>
+
+$$B:MANDATVENTE:CAGNOTTES:ALIAS:CAGNOTTES$$
+$$BIF:CAGNOTTES$$
+<h3>Liste des cagnottes attribuées</h3>
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+	<thead><tr>
+	<th class="bdr">Date</th><th class="bdr">Montant</th><th class="bdr">Raison</th>
+	</tr></thead>
+	$$DO$$
+	<tr style="background-color:$$CAGNOTTES:I mod2 #ffffff #eff3f6$$;">
+		<td>$$CAGNOTTES:DATEINSERTION$$</td>
+		<td>$$CAGNOTTES:MONTANT$$</td>
+		<td>$$CAGNOTTES:RAISON$$</td>
+	</tr>
+	$$LOOP$$
+</table>
+$$BFIN$$
+
+	<h3> Informations $$SLPRO:INFOSAGENCE:NOM$$.</h3>
+		<div style="vertical-align:bottom; float:left; margin-top:5px;">
+			$$IF=:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete"><td>Modifier le budget mensuel maximum</td></tr>
+		$$IF:MANDATVENTE:CLIENT:SOLDE_RESTANT$$<tr><td><b>Votre solde est de $$MANDATVENTE:CLIENT:SOLDE_RESTANT$$ &euro; </b></td></tr>$$END$$
+		$$IF0:MANDATVENTE:CLIENT:SOLDE_RESTANT$$<tr><td class="redinfobig">Vous avez épuisé tout votre budget.</td></tr>$$END$$
+		$$IF:MODEDEV$$
+	<tr><td><b>DEV uniquement: </b>montant hors prime:$$MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME$$
+				, montant total:$$MANDATVENTE:CLIENT:MONTANT_COURANT$$ </td></tr>
+		$$END$$
+		<tr>
+			<td style="float:center;">
+				Saisissez dans la case suivante, le budget mensuel maximum que vous ne souhaitez pas dépasser pour vos recherches de mandats:&nbsp;
+				<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">
+					<input type="hidden" name="u" value="MANDATVENTE:EDITCLIENT"/>
+					<input type="hidden" name="page_ok" value="/$$BASE:FIELD$$compte.htm" />
+					<input type="hidden" name="page_err" value="/$$BASE:FIELD$$compte.htm"/>
+					<input type="hidden" name="idclient" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDCLIENT$$" />
+					<input type="hidden" name="iduser" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDUSER$$" />
+					<input type="text" name="plafondmensuel" value="$$MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$" size="6" /> &euro;			
+				<div class="btn"><input type="image" id="submitbutton" src="$$_$$i/dyn/btnmodifier.png" /></div>
+				</form>
+			</td>
+		</tr>
+		</table>				
+			$$END$$
+			<!-- ISCOMPTEBLANC $$MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$ --> 
+			
+			$$IF=:True:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete"><td>Modifier le budget mensuel maximum</td></tr>
+			$$IF:MANDATVENTE:CLIENT:SOLDE_RESTANT$$<tr><td><b>Votre solde est de $$MANDATVENTE:CLIENT:SOLDE_RESTANT$$ &euro; </b></td></tr>$$END$$
+			$$IF0:MANDATVENTE:CLIENT:SOLDE_RESTANT$$<tr><td class="redinfobig">Vous avez épuisé tout votre budget.</td></tr>$$END$$		
+			$$IF:MODEDEV$$
+			<tr><td><b>DEV uniquement: </b>montant hors prime:$$MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME$$
+					, montant total:$$MANDATVENTE:CLIENT:MONTANT_COURANT$$</td></tr>
+			$$END$$		
+			<tr>
+				<td>
+			<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">	
+				<input type="checkbox" name="accept_cgv" value="1" id="accept_cgvYES" /> 
+				<label for="accept_cgvYES">	$$LG:CGV htmlencode$$.	</label>				
+				<input type="hidden" name="u" value="MANDATVENTE:UPGRADECLIENT"/>
+				<input type="hidden" name="page_ok" value="$$BASE:FIELD$$compte.htm" />
+				<input type="hidden" name="page_err" value=$$IF0:MODEDEV$$"$$BASE:FIELD$$compte.htm"$$END$$$$IF:MODEDEV$$"$$BASE:FIELD$$dossiers.htm"$$END$$/>
+				<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+				<input type="hidden" name="display" value="compte" />
+				<div>Plafond mensuel: <input type="text" name="plafondmensuel" value="" size="4" /> &euro;</div>			
+				<div class="btn"><input type="image" src="$$_$$engine/centredecontact/icons/valider.gif" id="submitbutton" style="float:right; border:none; margin-right:125px;" /></div>
+			</form>
+				</td>
+			</tr>
+	</table>	
+				
+			$$END$$
+		</div>
+
+	<br /><hr />
+	
+	
+	<h3>Montant facturé par mois</h3> 
+	$$B:MANDATVENTE:FACTURESCLIENTS::LAST:2:!D:ALIAS:LISTEFACTURE$$
+	$$BIF:LISTEFACTURE$$<table cellpadding="2" cellspacing="1" border="0" style="width:450px;">
+	<tr>
+	<td>Mois</td>
+	<td>Année</td>
+	<td>Nb Fiches Contact</td>
+	<td>Montant facturé HT</td>
+	</tr>
+	$$DO$$
+	<tr style="background-color:$$LISTEFACTURE:I mod2 #ffffff #eff3f6$$;">
+		<td>$$LISTEFACTURE:LIBMOIS pcase$$</td>
+		<td>$$LISTEFACTURE:ANNEE$$</td>
+		<td>$$LISTEFACTURE:NBACHAT$$</td>
+		<td>$$LISTEFACTURE:MONTANTTOT formatnumber 0$$ &euro;</td>
+	</tr>
+	$$LOOP$$
+	</table>
+	$$BFIN$$
+	$$BIF0:LISTEFACTURE$$
+	<table cellpadding="1" cellspacing="0" border="0" style="width:450px;">
+	<tr style="background-color:#eff3f6;">
+		<td><div style="padding:3px;">Aucun montant n'est aujourd'hui facturé.</div></td>
+	</tr>
+	</table>
+	$$BFIN$$
+
+
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->

@@ -1,0 +1,366 @@
+<script type="text/javascript">
+<!--
+	var cookies=Array();
+	var yalib = 0;
+	qrys = getQuery();
+	document.write("<div class='line_tab' id='titlefiltre' style='display:none;'><div class='title_tab'><div class='img_puce_title'>&nbsp;</div>Filtre<span id='titlefiltre_s' style='display:none;'>s</span> actif<span id='titlefiltre_s1' style='display:none;'>s</span> de recherche</div></div>");
+	
+	function clear_and_go(){
+		clear_cookie_listeann();
+		var s = location;
+		window.location.href = "http://" + location.host + window.location.pathname;
+	}
+	
+	function clear_cookie_listeann(){
+		//alert("clearcookie");
+		EffaceCookie("censure");
+		EffaceCookie("cp");
+		EffaceCookie("idtypebien");
+		EffaceCookie("idtypetransaction");
+		EffaceCookie("nbpieces");
+		EffaceCookie("refannonce");
+		EffaceCookie("agannoncespi");
+		EffaceCookie("tri");	
+	}
+	
+
+	
+	function remove_param_qry(param,paramvalue){
+		$$IF:MODEDEV$$
+		//alert(param + paramvalue);
+		$$END$$
+		var params = reforme_qry();
+		var removeqry = "?";
+		EffaceCookie(param);
+		for(var i=0; i<params.length; i++){
+			if(param != params[i][0]){
+				if((params[i][0] != "x")&&(params[i][0] != "y")){
+					if(params[i][0]){
+						removeqry = removeqry + params[i][0] + "=" +  params[i][1] + "&";
+					}
+				}
+			}else{
+				$$IF:MODEDEV$$
+			//	alert(paramvalue + params[i][1]);
+				$$END$$
+				
+				if(paramvalue != params[i][1]) {
+				// si ok mais value différente
+					if(params[i][0]){
+						removeqry = removeqry + params[i][0] + "=" +  params[i][1] + "&";
+					}
+				}else {
+				}
+			}
+		}
+		$$IF:MODEDEV$$
+			//alert("http://" + location.host + window.location.pathname + removeqry + "_" + window.location.pathname.replace('?','/'));
+		$$END$$	
+		window.location.href = "http://" + location.host + window.location.pathname.replace('?','/') + removeqry;
+	}
+	
+	function write_cookie_listeann(){
+		clear_cookie_listeann();
+
+		//alert("writecookie");
+		
+		var tempname = "";
+		var tempvalue = "";
+		for(var i=0; i<qrys.length; i++){
+			if(tempname != qrys[i][0]){
+				if(tempname != ""){
+					EcrireCookie(tempname,tempvalue);
+					//alert(tempname + " : " +  tempvalue);
+				}
+				tempname = qrys[i][0];
+				tempvalue = "";
+			}
+			if(tempvalue == ""){
+					tempvalue = qrys[i][1];
+				}else{
+					tempvalue = tempvalue + "," + qrys[i][1];
+				}
+		}
+		EcrireCookie(tempname,tempvalue);
+	}
+	
+		
+	function reforme_qry(){
+		//alert("reforme_qry");
+		
+		var tempname = "";
+		var tempvalue = "";
+		var params=Array();
+		for(var i=0; i<qrys.length; i++){
+			//alert(qrys[i][1]);
+			if(qrys[i][0] && qrys[i][1]){
+				tempname = qrys[i][0];
+				var iscomma = qrys[i][1].indexOf(',');
+				if (iscomma == -1){
+				//	alert("nocomma");
+					params.push([tempname,qrys[i][1]]);
+				}else {	
+				//	alert("yescomma");
+					var tempvaluearray = qrys[i][1].split(',');
+					
+					for(var j=0; j<tempvaluearray.length; j++){
+						params.push([tempname,tempvaluearray[j]]);
+					}
+				}
+			}
+		}
+		return params;
+	}	
+
+	
+	function read_query_listeann(){
+		//alert("readqry");
+		
+		var tempname = "";
+		var tempvalue = "";
+		var params=Array();
+		for(var i=0; i<qrys.length; i++){
+			if(tempname != qrys[i][0]){
+				if(tempname != ""){
+					params.push([tempname,tempvalue]);
+				}
+				tempname = qrys[i][0];
+				tempvalue = "";
+			}
+			
+			if(tempvalue == ""){
+					tempvalue = qrys[i][1];
+			}else{
+				tempvalue = tempvalue + "," + qrys[i][1];
+			}
+			
+		}
+		if(tempname){
+			params.push([tempname,tempvalue]);
+		}
+		return params;
+	}	
+	
+	function write_lib_listann(tempvar,tempvalue){
+		
+		//	alert("writelib");
+		if(tempvalue){
+					 var valueaff = "";
+					if((tempvar != "x")&&(tempvar != "y")&&(tempvar != "AGANNONCESPI")&&(tempvar != "agannoncespi")&&(tempvar != "publication")){
+						if(tempvar == "idtypetransaction"){
+							var tempvaluearray = tempvalue.split(',');
+							for(var j=0; j<tempvaluearray.length; j++){
+								if(tempvaluearray[j] == "11"){lib = "cession&nbsp;de&nbsp;bail"}
+								if(tempvaluearray[j] == "1"){lib = "location"}
+								if(tempvaluearray[j] == "7"){lib = "loc.&nbsp;de&nbsp;prestige"}
+								if(tempvaluearray[j] == "3"){lib = "location&nbsp;temporaire"}
+								if(tempvaluearray[j] == "4"){lib = "loc.&nbsp;vacances"}
+								if(tempvaluearray[j] == "6"){lib = "investissement"}
+								if(tempvaluearray[j] == "2"){lib = "vente"}
+								if(tempvaluearray[j] == "8"){lib = "prestige"}
+								if(tempvaluearray[j] == "9"){lib = "vente&nbsp;neuf"}
+								if(tempvaluearray[j] == "5"){lib = "viager"}
+								if(tempvaluearray[j] == "10"){lib = "commerce"}
+								document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"idtypetransaction\",\""+tempvaluearray[j]+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + lib + "</div></div>");
+								yalib++;
+							}
+						}else {
+							if(tempvar == "idtypebien"){
+								var tempvaluearray = tempvalue.split(',');
+								for(var j=0; j<tempvaluearray.length; j++){
+									if(tempvaluearray[j] == "1"){lib = "appartement"}
+									if(tempvaluearray[j] == "12"){lib = "bâtiment"}
+									if(tempvaluearray[j] == "6"){lib = "boutique"}
+									if(tempvaluearray[j] == "11"){lib = "immeuble"}
+									if(tempvaluearray[j] == "8"){lib = "bureaux"}
+									if(tempvaluearray[j] == "13"){lib = "château"}
+									if(tempvaluearray[j] == "10"){lib = "inconnu"}
+									if(tempvaluearray[j] == "14"){lib = "hôtel&nbsp;particulier"}
+									if(tempvaluearray[j] == "7"){lib = "local"}
+									if(tempvaluearray[j] == "9"){lib = "loft/atelier/surface"}
+									if(tempvaluearray[j] == "2"){lib = "maison/villa"}
+									if(tempvaluearray[j] == "3"){lib = "parking/box"}
+									if(tempvaluearray[j] == "15"){lib = "programme"}
+									if(tempvaluearray[j] == "4"){lib = "terrain"}
+									document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"idtypebien\",\""+tempvaluearray[j]+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + lib + "</div></div>");
+									yalib++;
+								}
+							}else {
+								if(tempvar == "cp"){
+									var tempvaluearray = tempvalue.split(',');
+									for(var j=0; j<tempvaluearray.length; j++){
+										if(tempvaluearray[j]){
+											document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"cp\",\""+tempvaluearray[j]+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + tempvaluearray[j] + " (localisation)" + "</div></div>");
+											yalib++;
+										}
+									}
+								}else {
+									if(tempvar == "nbpieces"){
+										var tempvaluearray = tempvalue.split(',');
+										var lib;
+										for(var j=0; j<tempvaluearray.length; j++){
+											if(tempvaluearray[j] == "1"){lib = "1&nbsp;pièce";}
+											if(tempvaluearray[j] == "2"){lib = "2&nbsp;pièces";}
+											if(tempvaluearray[j] == "3"){lib = "3&nbsp;pièces";}
+											if(tempvaluearray[j] == "4"){lib = "4&nbsp;pièces";}
+											if(tempvaluearray[j] == "5"){lib = "5&nbsp;pièces";}
+											if((tempvaluearray[j] == "5et%2B")||(tempvaluearray[j] == "5et%2b")){lib = "5 pièces et +";}
+											if(lib){
+												document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"nbpieces\",\""+tempvaluearray[j]+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + lib + "</div></div>");
+												yalib++;
+											}
+											lib = "";
+										}
+									}else {		
+										if(tempvar == "tri"){
+									
+												if(tempvalue == "d_dtcrea"){lib = "date&nbsp;de&nbsp;création&nbsp;(tri)";}
+												if(tempvalue == "d_refannonce"){lib = "référence&nbsp;(tri)";}
+												if(tempvalue == "d_dtmaj"){lib = "date&nbsp;de&nbsp;mise&nbsp;à&nbsp;jour&nbsp;(tri)";}
+												if(tempvalue == "a_dtcrea"){lib = "date&nbsp;de&nbsp;création&nbsp;(tri)";}
+												if(tempvalue == "a_refannonce"){lib = "référence&nbsp;(tri)";}
+												if(tempvalue == "a_dtmaj"){lib = "date&nbsp;de&nbsp;mise&nbsp;à&nbsp;jour&nbsp;(tri)";}
+												if(tempvalue == "d_typetransaction"){lib = "type&nbsp;de&nbsp;transaction&nbsp;(tri)";}
+												if(tempvalue == "a_typetransaction"){lib = "type&nbsp;de&nbsp;transaction&nbsp;(tri)";}
+												if(tempvalue == "d_typebien"){lib = "type&nbsp;de&nbsp;bien&nbsp;(tri)";}
+												if(tempvalue == "a_typebien"){lib = "type&nbsp;de&nbsp;bien&nbsp;(tri)";}
+												if(tempvalue == "d_cp"){lib = "cp&nbsp;(tri)";}
+												if(tempvalue == "a_cp"){lib = "cp&nbsp;(tri)";}							
+												if(tempvalue == "d_ville"){lib = "ville&nbsp;(tri)";}
+												if(tempvalue == "a_ville"){lib = "ville&nbsp;(tri)";}
+												if(tempvalue == "d_px"){lib = "prix&nbsp;(tri)";}
+												if(tempvalue == "a_px"){lib = "prix&nbsp;(tri)";}												
+												if((tempvalue == "d_nbpieces")||(tempvalue == "a_nbpieces")){lib = "nbr.&nbsp;de&nbsp;pièces&nbsp;(tri)";}	
+												if((tempvalue == "d_nbvisuels")||(tempvalue == "a_nbvisuels")){lib = "visuels&nbsp;(tri)";}	
+												if((tempvalue == "d_surface")||(tempvalue == "a_surface")){lib = "surface&nbsp;(tri)";}	
+												document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"tri\",\""+tempvalue+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + lib + "</div></div>");		
+												yalib++;							
+										}else {												
+											if(tempvar == "censure"){
+												if(tempvalue == "0"){valueaff = "annonce&nbsp;valide";}
+												if(tempvalue == "1"){valueaff = "annonce&nbsp;non&nbsp;valide";}
+												document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:remove_param_qry(\"censure\",\""+tempvalue+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" +  valueaff + "</div></div>");
+												yalib++;
+											}else {
+												if(tempvar == "refannonce"){
+													valueaff = "référence";
+														document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\"  onclick='javascript:remove_param_qry(\"refannonce\",\""+tempvalue+"\");'><div class='left'>&nbsp;</div><div class='cnt'>" + tempvalue + "&nbsp;("+ valueaff + ")" +  "</div></div>");
+												}
+
+												else if(tempvar == "coex"){
+													if (tempvalue == 1) valueaff = "CoEx";
+                                                    if (tempvalue == 0) valueaff = "Sans CoEx";
+														document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\"  onclick='javascript:remove_param_qry(\"coex\",\""+tempvalue+"\");'><div class='left'>&nbsp;</div><div class='cnt'>"+ valueaff + "</div></div>");
+												}
+                                                
+												yalib++;
+											}
+										}
+									}			
+								}								
+							}
+						}
+					}		
+				}
+		
+	}
+	
+	function make_qry_listann(){
+		//alert("readcookie&make");
+		var qry ="";
+		cookies["censure"] = LireCookie("censure");
+		cookies["cp"] = LireCookie("cp");
+		cookies["idtypebien"] = LireCookie("idtypebien");
+		cookies["idtypetransaction"] = LireCookie("idtypetransaction");
+		cookies["nbpieces"] = LireCookie("nbpieces");
+		cookies["refannonce"] = LireCookie("refannonce");
+		cookies["agannoncespi"] = LireCookie("agannoncespi");
+		cookies["tri"] = LireCookie("tri");
+		
+		var valueaff = "";
+		if(cookies["idtypetransaction"]){
+			qry = "idtypetransaction=" + cookies["idtypetransaction"];
+			qry = qry + "&";
+		}
+		
+		if(cookies["idtypebien"]){
+			qry = qry + "idtypebien=" + cookies["idtypebien"];
+			qry = qry + "&";
+		}
+		
+		if(cookies["cp"]){
+			qry = qry + "cp=" + cookies["cp"];
+			qry = qry + "&";
+		}
+		
+		if(cookies["nbpieces"]){
+			qry = qry + "nbpieces=" + cookies["nbpieces"];
+			qry = qry + "&";
+		}		
+		
+		if(cookies["tri"]){
+			qry = qry + "tri=" + cookies["tri"];
+			qry = qry + "&";			
+		}												
+		
+		if(cookies["censure"]){
+			qry = qry + "censure=" + cookies["censure"];
+			qry = qry + "&";		
+		}
+		
+		if(cookies["refannonce"]){
+			qry = qry + "refannonce=" + cookies["refannonce"];
+			qry = qry + "&";													
+		}
+												
+		if(cookies["agannoncespi"]){
+			qry = qry + "agannoncespi=" + cookies["agannoncespi"];
+			qry = qry + "&";													
+		}
+										
+		return qry;
+	}
+	
+	function read_cookie_listann(){
+		var params = read_query_listeann();
+		//alert(params.length);
+	  var found = 0;
+	  var writecookie = 0;
+		for(var i=0; i<params.length; i++){
+			tempvar = params[i][0];
+			tempvalue = params[i][1];
+			if(tempvar){
+				found = 1;
+				if(writecookie == 0){
+					writecookie = 1;
+					write_cookie_listeann();
+				}
+				write_lib_listann(tempvar,tempvalue);
+			}
+		}
+		if(found == 0){
+			
+			var loc = location;
+			var qry = make_qry_listann();
+			
+			$$IF:MODEDEV$$
+	
+			//	alert("loc : " + loc);
+			//			loc = loc.split('?');
+			//		alert("loc : " + loc[0]);	
+			//	alert("s : " + s);
+				
+			$$END$$
+			//loc = loc.split('?');
+			if(qry){
+				window.location.href = window.location.pathname.replace('?','') + "?" + qry;
+			}
+			
+		}
+		if(yalib > 0){var o = document.getElementById('titlefiltre');o.style.display="block";}
+		if(yalib > 1){document.write("<div class='listan_cookies' onmouseout=\"this.className='listan_cookies';\" onmouseover=\"this.className='listan_cookies_on';\" onclick='javascript:clear_and_go();'><div class='left'>&nbsp;</div><div class='cnt'>supprimer&nbsp;les&nbsp;tous</div></div>");var o1 = document.getElementById('titlefiltre_s');o1.style.display="inline";var o2 = document.getElementById('titlefiltre_s1');o2.style.display="inline";}
+	}
+	
+	read_cookie_listann();
+//-->
+</script>

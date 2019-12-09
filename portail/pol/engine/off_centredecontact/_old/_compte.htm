@@ -1,0 +1,171 @@
+$$E:E3:CAT:CDC_COMPTE:SLPRO$$
+$$SET:PAGE:IDT=MandatventeCompte$$ $$INIT:FORM:DISPLAY=compte$$
+$$INIT:INTRAX=1$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+
+$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+	<div style="border:1px outset #42638C; color:#42638C; font-weight:bold; float:center; padding:3px; margin-bottom:10px; width:350px;">
+		<a href="javascript:void(0);" class="mvhelp" onmouseover="return escape(dcc2(this,'$$LG:PRIME escape$$'));"><img src="$$_$$engine/centredecontact/icons/lightbulb.gif" /></a> &nbsp; Offre découverte : Profitez encore de $$MANDATVENTE:CLIENT:PRIME_RESTANT formatnumber 0$$&euro; HT
+	</div>
+$$END$$
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+
+<div id="gestError"></div>
+<div class="divContent" id="divGestMandat"></div>
+<script type="text/javascript">
+<!--
+<!--#include absolute="/portail/pol/engine/centredecontact/javascript.htm"-->
+-->
+</script>
+<div style="width:100%">
+<div class="menu$$IF=:groupe$groupenull:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$dossiers.htm?display=groupe" onmouseover="return escape(dcc2(this,'$$LG:DOSSIER escape$$'));" class="lienMenu$$IF=:groupe:FORM:DISPLAY$$On$$END$$">Mes Recherches</a></div>
+<div class="menu$$IF=:mandat:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$contacts.htm?display=mandat" onmouseover="return escape(dcc2(this,'$$LG:AFFAIRE escape$$'));" class="lienMenu$$IF=:mandat:FORM:DISPLAY$$On$$END$$">Mes Contacts</a></div>
+<div class="menu$$IF=:compte:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$compte.htm?display=compte" onmouseover="return escape(dcc2(this,'$$LG:COMPTE escape$$'));" class="lienMenu$$IF=:compte:FORM:DISPLAY$$On$$END$$">Mon Compte</a></div>
+<div style="float:left; margin-top:3px; padding-left:15px;"><a href="$$BASE:FIELD$$aide.htm" class="lienSp" ><img src="$$_$$engine/centredecontact/icons/help.gif" /></a></div>
+<div style="float:left; margin-top:4px;">&nbsp;<a href="$$BASE:FIELD$$aide.htm" class="lienSp" >Aide</a></div>
+<div>
+<div class="divContent">
+	<br />
+	<h3> Informations $$IMMOBC:AGENCECORE:NOM$$. 
+		$$REM$$<a href="/$$REP:URI$$" onMouseOver="mvHelp();">.</a> $$END$$ </h3>
+		<div style="vertical-align:bottom; float:left; margin-top:5px;">
+			$$IF=:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+				<div>
+					<div style="float:right; width:420px;">
+						Dés que l’Offre découverte est épuisée ou insuffisante, je re&ccedil;ois les contacts apportés par le "Centre de contacts" et de régler sur ma facture Petites annonces les fiches contact reçues, au prix que j'aurai fixé dans la mesure où je ferai partie des 3 premiers gagnants.
+					</div>
+					$$IF>:2,4:OBJECTIFMANDATS:VERSION$$ <!-- preprod -->
+					<div style="float:left; padding:5px;">
+						<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire" >
+						<input type="image" src="$$_$$engine/centredecontact/icons/valider.gif" id="submitbutton" style="float:right; border:none; margin-right:125px;" />
+						<b>Le budget maximum mensuel est de :</b> 
+						<input type="hidden" name="u" value="MANDATVENTE:EDITCLIENT"/>
+						<input type="hidden" name="page_ok" value="/$$REP:1$$/$$BASE:FIELD$$compte.htm" />
+						<input type="hidden" name="page_err" value="/$$REP:1$$/$$BASE:FIELD$$compte.htm"/>
+						<input type="text" name="plafondmensuel" value="$$MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$$$IF0:MANDATVENTE:CLIENT:PLAFONDMENSUEL$$300$$END$$" size="4" />&euro;
+						</form>
+					</div>
+					$$END$$
+					<!-- img src="$$_$$engine/centredecontact/icons/accept.gif" / -->
+				</div>				
+			$$END$$
+			<!-- ISCOMPTEBLANC $$MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$ --> 
+			
+			$$IF!:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+			<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">
+			<input type="hidden" name="u" value="MANDATVENTE:UPDATECLIENT_PRESSIMMO"/>
+			<input type="hidden" name="page_ok" value="/$$REP:1$$/$$BASE:FIELD$$compte.htm" />
+			<input type="hidden" name="page_err" value="/$$REP:1$$/$$BASE:FIELD$$compte.htm"/>
+			<input type="hidden" name="idagence" value="$$IMMOBC:AGENCECORE:IDAGENCE$$" />
+			<input type="hidden" name="display" value="compte" />
+			<div>
+				<div style="float:right; width:420px;">
+					<label for="accept_cgvYES">	$$LG:CGV htmlencode$$	</label>
+				</div>
+				<input type="checkbox" name="accept_cgv" value="YES" id="accept_cgvYES" /> 
+			</div>
+			<input type="hidden" name="plafondmensuel" value="300" />
+				$$REM$$
+					<!-- 
+						<div style="vertical-align:bottom; float:left; margin-top:5px;">
+							<div style="float:right; width:420px;">
+								<label for="suiviConso">Je souhaite être averti par email par Objectif Mandats quand ma facture dépasse</label>
+								$$B:ID3:LOOP:ALIAS:FORMPLAFOND:;:;49;149;199;299$$
+								$$BIF:FORMPLAFOND$$<select name="plafondmensuel" id="plafondmensuel" >
+								$$DO$$<option value="$$FORMPLAFOND:1$$" $$IF=:FORMPLAFOND_1:MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$selected$$END$$>$$IF:FORMPLAFOND:1$$$$FORMPLAFOND:1$$&euro;$$END$$$$IF0:FORMPLAFOND:1$$-----$$END$$ 
+								$$LOOP$$
+								</select>$$BFIN$$	 
+								<label for="suiviConso">&euro; HT / mois</label>
+							</div>
+						</div>	
+					-->
+				$$END$$		
+				<input type="image" src="$$_$$engine/centredecontact/icons/valider.gif" id="submitbutton" style="float:right; border:none; margin-right:25px; margin-top:-10px;" />
+			</form>
+			$$END$$
+		</div>
+		$$REM$$ <!-- 
+		<div style="vertical-align:bottom; float:left; margin-top:5px;">
+			<div style="float:right; width:420px;">
+			<label for="suiviConso">Je souhaite être averti par email par Objectif Mandats quand ma facture dépasse</label>
+			$$B:ID3:LOOP:ALIAS:FORMPLAFOND:;:;49;149;199;299$$
+			$$BIF:FORMPLAFOND$$<select name="plafondmensuel" id="plafondmensuel" >
+			$$DO$$<option value="$$FORMPLAFOND:1$$" $$IF=:FORMPLAFOND_1:MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$selected$$END$$>$$IF:FORMPLAFOND:1$$$$FORMPLAFOND:1$$&euro;$$END$$$$IF0:FORMPLAFOND:1$$-----$$END$$ 
+			$$LOOP$$
+			</select>$$BFIN$$	 
+			<label for="suiviConso">&euro; HT / mois</label>
+			</div>
+			<br />
+			<a href="#" onClick="javascript:gestForm('plafond','iduser=$$SESSION:IDUSER$$,idclient=$$SESSION:IDCLIENT$$,plafondmax='+parseInt($$MANDATVENTE:CLIENT:PLAFONDMAX$$)+',plafondmensuel='+parseInt(document.getElementById('plafondmensuel')[document.getElementById('plafondmensuel').selectedIndex].value));" >
+				<img src="$$_$$engine/centredecontact/icons/valider.gif" onmouseover="return escape(dcc2(this,'$$LG:VALIDERMONTANT escape$$'));" style="float:right; margin-right:25px;">
+			</a>
+		</div> -->
+		$$END$$
+		$$REM$$	<!--
+			<div style="vertical-align:bottom; float:left; margin-top:1px;">&nbsp;
+				$$REM$$<input type="text" name="plafondmensuel" size="5" value="$$MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$" id="plafondmensuel" /> $$END$$
+			</div>
+			<div style="vertical-align:bottom; float:left; margin-top:5px;"></div>
+			<div style="vertical-align:bottom; float:left; margin-top:1px;"> &nbsp; </div> 
+			<br />
+			-->
+		$$END$$
+	<br /><hr />
+	
+	$$REM:20070111$$$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$ 
+	<div style="color:#42638C; font-weight:bold; float:center; width:350px; margin:-top:30px;">
+		<a href="javascript:void(0);" class="mvhelp" onmouseover="return escape(dcc2(this,'Cette prime permet d\'acquérir des contacts sans facturation'));"><img src="/z/portail/pol/engine/centredecontact/icons/lightbulb.gif" style="margin-left:3px; " /></a> 
+		&nbsp; Profitez encore de  $$MANDATVENTE:CLIENT:PRIME_RESTANT formatnumber 0$$ &euro; offert$$MANDATVENTE:CLIENT:PRIME_RESTANT pluriel$$ $$REM$$ à utiliser avant le $$MANDATVENTE:CLIENT:FINPRIME date 2$$ $$END$$
+	</div>
+	$$END$$$$END$$
+	
+	
+	$$REM$$<!-- Votre plafond maximum : $$MANDATVENTE:CLIENT:PLAFONDMAX formatnumber 0$$ &euro; <br /> --> $$END$$
+	<br />
+	$$REM$$<!--
+		<hr />
+		<h3>Détail du mois en cours</h3>
+		Montant des Fiches Contact acquises : $$MANDATVENTE:CLIENT:MONTANT_COURANT formatnumber 0$$ &euro; 
+		<br /> dont 
+		$$IF:MANDATVENTE:CLIENT:PRIME_UTILISEE$$$$MANDATVENTE:CLIENT:PRIME_UTILISEE formatnumber 0$$&euro; sont offerts et $$END$$
+		$$IF=:MANDATVENTE_CLIENT_MONTANT*COURANT:MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME$$ la totalité sera facturée$$END$$
+		$$IF!:MANDATVENTE_CLIENT_MONTANT*COURANT:MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME$$ $$MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME formatnumber 0$$&euro; facturé$$MANDATVENTE:CLIENT:MONTANT_COURANT_HORS_PRIME pluriel$$ $$END$$   <br />
+		<br />
+		Vous pouvez encore acquérir des Fiches Contact pour un montant de $$MANDATVENTE:CLIENT:SOLDE_RESTANT formatnumber 0$$&euro;<br />
+		<br />
+		<hr /> -->
+	$$END$$
+	
+	<h3>Montant facturé par mois</h3> 
+	$$B:MANDATVENTE:FACTURESCLIENTS::LAST:2:!D:ALIAS:LISTEFACTURE$$
+	$$BIF:LISTEFACTURE$$<table cellpadding="2" cellspacing="1" border="0" style="width:450px;">
+	<tr>
+	<td>Mois</td>
+	<td>Année</td>
+	<td>Nb Fiches Contact</td>
+	<td>Montant facturé HT</td>
+	</tr>
+	$$DO$$
+	<tr style="background-color:$$LISTEFACTURE:I mod2 #ffffff #efefef$$;">
+		<td>$$LISTEFACTURE:LIBMOIS pcase$$</td>
+		<td>$$LISTEFACTURE:ANNEE$$</td>
+		<td>$$LISTEFACTURE:NBACHAT$$</td>
+		<td>$$LISTEFACTURE:MONTANTTOT formatnumber 0$$ &euro;</td>
+	</tr>
+	$$LOOP$$
+	</table>
+	$$BFIN$$
+	$$BIF0:LISTEFACTURE$$
+	<table cellpadding="1" cellspacing="0" border="0" style="width:450px;">
+	<tr style="background-color:#efefef;">
+		<td><div style="padding:3px;">Aucun montant n'est aujourd'hui facturé.</div></td>
+	</tr>
+	</table>
+	$$BFIN$$
+	<br />
+</div>
+
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->

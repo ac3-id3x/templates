@@ -1,0 +1,180 @@
+<!-- Vérification des adresse IP -->
+$$DYN:ID3:CHECKIP:10.0.0.0/16 127.0.0.1 192.168.0.1/16$$
+<!-- Page d'affichage des stats d'une agence / appellée directement depuis Carim avec l'idtiers de l'agence en querystring. -->
+$$E:SLPRO:INFOSAGENCE:ALIAS:INFAG:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATMOISPUBLICATION:~iIdTypePublication:1:ALIAS:STATMOIS:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATANNTOT:ALIAS:STATTOT:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATMOISTRANSAC:~iIdTypePublication:1:~iLimMois:6:ALIAS:STATMT:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATTRANSAC:~iIdTypePublication:1:ALIAS:STATRANSAC:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATLISTPUBLICATION:ALIAS:STATLIST:~idtiers:QRY:idtiers$$
+$$B:SLPRO:STATLANGUE:~iIdTypePublication:1:ALIAS:STATLANG:~idtiers:QRY:idtiers$$
+
+$$INCL:HAUT.HTM$$ 
+
+$$IF:INFAG:IDAGENCE$$
+
+	$$BIF:STATLIST$$
+	$$DO:1:999$$
+	$$IF=:STATLIST_IDTYPEPUBLICATION:REP:1$$
+		<h4>Statistiques des consultations de vos annonces sur $$STATLIST:PUBLICATION ucase$$</h4> 
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	
+	<table width="100%" cellpadding="0" cellspacing="0" style="clear: both;width: 100%;">
+		<tr>
+			<td>
+		<h4>Résultats des lectures des annonces<br />générées par les recherches des internautes pour<br />$$INFAG:NOM$$</h4>
+			</td>
+			<td>
+			<table class="tabbasic" cellpadding="0" cellspacing="0">
+				<tr class="tabentete">
+					<td align="center">Total des lectures<br />depuis souscription</td>				
+				</tr>
+				<tr>
+					<td align="center">
+					$$BIF:STATTOT$$$$DO:1:1$$$$STATTOT:TOTAL formatnumber 0$$$$LOOP$$$$BFIN$$
+					$$BIF0:STATTOT$$Aucune de vos annonces n'a encore été vue$$BFIN$$
+					</td>				
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</table>
+	$$BIF:STATMOIS$$
+		$$A:BO_GLOBAL=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Global] body=[Total des visualisations]"$$
+		$$A:BO_lISTE=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Liste de résultat] body=[Annonces affichées dans la<br>liste de résultat d'une recherche]"$$
+		$$A:BO_DETAIL=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Détail] body=[Détail de l'annonce affiché <br>à partir du lien <strong>plus d'infos</strong>]"$$
+		$$A:BO_RATIO=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Ratio] body=[Détail / Liste en pourcentage,<br>Taux de conversion]"$$
+		$$A:BO_MAILS=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Mails] body=[Mails envoyés à votre agence]"$$
+		$$A:BO_MAILSAMI=title="header=[<img src='/z/portail/pol/i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Mails à ami] body=[Mails envoyés à un ami]"$$
+	<br />
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td class="alignleft">Lectures par mois<br />(12 derniers mois)</td>	
+			<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+			<td $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td $$BO_MAILS$$ class="alignright">Mails</td>
+			<td $$BO_MAILSAMI$$ class="alignright">Mails à ami</td>
+		</tr>
+	
+		$$DO:1:100$$
+		<tr $$IF0:STATMOIS:MOIS$$class="total"$$END$$>
+			<td class="alignleft">$$IF:STATMOIS:MOIS$$$$STATMOIS:MOIS$$$$END$$$$IF0:STATMOIS:MOIS$$total$$END$$</td>
+			<td class="alignright">$$STATMOIS:L formatnumber 0$$</td>
+			<td class="alignright">$$STATMOIS:D formatnumber 0$$</td>
+			<td  class="alignright">$$STATMOIS:POURCENT formatnumber 0$$&nbsp;%</td>
+			<td  class="alignright">$$STATMOIS:MAG formatnumber 0$$</td>
+			<td  class="alignright">$$STATMOIS:MAMIS formatnumber 0$$</td>
+		</tr>
+		
+		$$LOOP$$	
+	</table>
+	$$BFIN$$
+
+	$$BIF:STATLANG$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td class="alignleft">Lectures par langue de visualisation </td>	
+			<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+			<td $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td $$BO_MAILS$$ class="alignright">Mails</td>
+			<td $$BO_MAILSAMI$$ class="alignright">Mails à ami</td>
+		</tr>
+	
+		$$DO:1:100$$
+		<tr $$IF=:total:STATLANG:LG$$class="total"$$END$$>
+			<td class="alignleft">$$IF!:TOTAL:STATLANG:LG$$dont $$END$$$$STATLANG:LG lcase$$</td>
+			<td class="alignright">$$STATLANG:L formatnumber 0$$</td>
+			<td class="alignright">$$STATLANG:D formatnumber 0$$</td>
+			<td class="alignright">$$STATLANG:POURCENT formatnumber 0$$&nbsp;%</td>
+			<td class="alignright">$$STATLANG:MAG formatnumber 0$$</td>
+			<td class="alignright">$$STATLANG:MAMIS formatnumber 0$$</td>
+		</tr>	
+		$$LOOP$$
+	</table>
+	
+	$$IF=:11:REP:1$$
+	<div class="info"><span>Les visualisation d'annonces sur les sites de nos partenaires étrangers ne sont pas comptabilisés, par contre le détail peut l'être</span></div>
+	$$END$$
+	
+	$$BFIN$$
+
+
+	$$BIF:STATRANSAC$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td class="alignleft">Lectures par type de transaction<br />(12 derniers mois)</td>	
+			<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+			<td $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td $$BO_MAILS$$ class="alignright">Mails</td>
+			<td $$BO_MAILSAMI$$ class="alignright">Mails&nbsp;à&nbsp;ami</td>
+		</tr>
+	
+		$$DO:1:100$$
+		<tr $$IF=:TOTAL:STATRANSAC:TT$$class="total"$$END$$>
+			<td>$$IF!:TOTAL:STATRANSAC:TT$$dont $$END$$$$STATRANSAC:TT lcase$$</td>
+			<td class="alignright">$$STATRANSAC:L formatnumber 0$$</td>
+			<td class="alignright">$$STATRANSAC:D formatnumber 0$$</td>
+			<td class="alignright">$$STATRANSAC:POURCENT formatnumber 0$$&nbsp;%</td>
+			<td class="alignright">$$STATRANSAC:MAG formatnumber 0$$</td>
+			<td class="alignright">$$STATRANSAC:MAMIS formatnumber 0$$</td>
+		</tr>
+		<tr class="tabsep"><td colspan="6"></td></tr> 
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+
+
+	$$BIF:STATMT$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete">
+			<td class="alignleft">Lectures<br />(12 derniers mois)</td>	
+			<td $$BO_lISTE$$ class="alignright">Liste de résultat</td>
+			<td $$BO_DETAIL$$ class="alignright">Détail</td>
+			<td $$BO_RATIO$$ class="alignright">Ratio</td>
+			<td $$BO_MAILS$$ class="alignright">Mails</td>
+			<td $$BO_MAILSAMI$$ class="alignright">Mails&nbsp;à&nbsp;ami</td>
+		</tr>
+	
+		$$DO:1:99$$
+		$$IF:STATMT:MOIS$$ $$IF!:TOTAL:STATMT:TT$$
+		<tr>
+			<td colspan="6" class="groupe">$$STATMT:MOIS$$</td>
+		</tr>
+		$$END$$ $$END$$
+		<tr $$IF=:TOTAL:STATMT:TT$$ class="total" $$END$$>			
+			<td >$$IF!:TOTAL:STATMT:TT$$dont $$END$$$$STATMT:TT lcase$$</td>		
+			<td class="alignright">$$STATMT:L formatnumber 0$$</td>
+			<td class="alignright">$$STATMT:D formatnumber 0$$</td>
+			<td class="alignright">$$STATMT:POURCENT formatnumber 0$$&nbsp;%</td>
+			<td class="alignright">$$STATMT:MAG formatnumber 0$$</td>
+			<td class="alignright">$$STATMT:MAMIS formatnumber 0$$</td>
+		</tr>
+		<tr class="tabsep"><td colspan="6"></td></tr>
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+
+$$END$$
+
+$$IF0:INFAG:IDAGENCE$$
+
+	<table width="100%" cellpadding="0" cellspacing="0" style="clear: both;width: 100%;">
+		<tr>
+			<td>
+		<h4>Agence Inconnue.</h4>
+			</td>
+			<td>
+			&nbsp;
+			</td>
+		</tr>
+	</table>
+
+$$END$$
+
+	</body>
+</html>

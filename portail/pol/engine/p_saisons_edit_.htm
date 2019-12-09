@@ -1,0 +1,77 @@
+$$A:TITLEPOPUP=Saisie des périodes des saisons$$
+$$INCL:HAUTPOPX.HTM$$ 
+$$INIT:INTRAX=1$$ 
+$$SET:PGNAV=an$$ 
+$$SET:OVERDIV=1$$
+
+<p align="left">
+Périodes
+<table width="380" style="border:1px solid black" cellspacing="1" cellpadding="1">
+	
+	<tr>
+		<th>Saison Basse</th>
+		<th>Saison Haute</th>
+	</tr>
+	<tr>
+		<td>			
+			$$B:IMMOBC:PERIODESSAISON:~idAnnonce:REP:1:~idTypeSaison:1:ALIAS:PERB$$
+			$$BIF:PERB$$
+			$$DO$$
+				<a href="/$$PERB:IDPERIODE$$/$$REP:1$$/$$REP:0$$"> Du $$PERB:DTDEBUTJOUR$$/$$PERB:DTDEBUTMOIS$$ au $$PERB:DTFINJOUR$$/$$PERB:DTFINMOIS$$</a><br/>
+			$$LOOP$$			
+			$$BFIN$$
+		</td>
+		<td>
+			$$B:IMMOBC:PERIODESSAISON:~idAnnonce:REP:1:~idTypeSaison:2:ALIAS:PERH$$
+			$$BIF:PERH$$
+			$$DO$$
+				<a href="/$$PERH:IDPERIODE$$/$$REP:1$$/$$REP:0$$"> Du $$PERH:DTDEBUTJOUR$$/$$PERH:DTDEBUTMOIS$$ au $$PERH:DTFINJOUR$$/$$PERH:DTFINMOIS$$</a><br/>
+			$$LOOP$$			
+			$$BFIN$$
+		</td>
+	</tr>
+</table>
+</p>
+
+<br/>
+<br/>
+<hr/>
+
+<form name="periodes" id="periodes" method="post">
+<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="u" value="IMMOBC:SAISIEPERIODESSAISONS" />
+
+<input type="hidden" name="idannonce" value="$$REP:1$$" />
+<input type="hidden" name="idPeriode" value="$$FORM:IDPERIODE$$" />
+
+
+$$IF:IMMOBC:SAISIEPERIODESSAISONS:ERRE$$ <div class="erre"><span>$$IMMOBC:SAISIEPERIODESSAISONS:ERRE$$</span></div>$$END$$
+
+$$E:IMMOBC:PERIODESAISON:~idPeriode:REP:2$$
+Saison : 
+<select name="idTypeSaison" >    				
+	$$B:IMMOBC:TYPESSAISONS:ALIAS:TSAISONS$$
+	$$BIF:TSAISONS$$		            	
+		$$DO$$			
+			<option value="$$TSAISONS:IDTYPESAISON$$" $$IF=:TSAISONS_IDTYPESAISON:FORM:IDTYPESAISON$$selected="selected"$$END$$>$$TSAISONS:LIBELLE$$</option>
+		$$LOOP$$            	
+	$$BFIN$$
+</select>
+
+   Du <input type="text" name="dtdebutjour" value="$$FORM:DTDEBUTJOUR$$" size="2"><input type="text" name="dtdebutmois" value="$$FORM:DTDEBUTMOIS$$" size="2"> 
+au <input type="text" name="dtfinjour" value="$$FORM:DTFINJOUR$$" size="2"><input type="text" name="dtfinmois" value="$$FORM:DTFINMOIS$$" size="2"> 
+<br/>
+<br/>
+<input type="submit" value="$$IF:FORM:IDPERIODE$$Modifier$$END$$$$IF0:FORM:IDPERIODE$$Ajouter$$END$$" />
+
+$$IF:FORM:IDPERIODE$$
+	<input type="button" value="Supprimer" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette periode?')) document.location.href='$$XDOM$$/$$REP:2$$/persuppr.htm?redirect=$$XDOM$$/$$REP:1$$/$$REP:0$$';">
+	<input type="button" value="New" onclick="document.location.href='$$XDOM$$/$$REP:1$$/$$REP:0$$';">
+$$END$$
+<br/>
+<hr/>
+</form>
+<input type="button" value="Close" onclick="window.close();">
+
+$$INCL:BASPOP.HTM$$

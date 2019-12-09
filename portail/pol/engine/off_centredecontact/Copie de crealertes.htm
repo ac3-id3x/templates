@@ -1,0 +1,273 @@
+$$E:E3:CAT:CDC_NRECHERCHE:SLPRO$$
+$$INIT:FORM:COURONNERAYON=1$$
+$$SET:PAGE:IDT=MandatventeCrealertes$$
+$$INIT:FORM:DISPLAY=compte$$ 
+$$INIT:INTRAX=1$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+	
+$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+	$$IF!:compte:FORM:DISPLAY$$
+		<!--#include absolute="/portail/pol/engine/centredecontact/offredec.htm"-->
+	$$END$$	
+$$END$$
+
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+
+
+<link rel="stylesheet" type="text/css" href="$$_$$engine/centredecontact/css/crealertes.css" media="all">
+
+<script type="text/javascript">
+<!--	
+
+	var dragObject  = null;
+	var mouseOffset = null;
+	
+	document.onmousemove = mouseMove;
+	document.onmouseup   = mouseUp;
+	
+	function getMouseOffset(target, ev){
+		ev = ev || window.event;
+		var docPos    = getPosition(target);
+		var mousePos  = mouseCoords(ev);
+		return {x:mousePos.x - docPos.x, y:mousePos.y - docPos.y};
+	}
+	
+	function getPosition(e){
+		var left = 0;
+		var top  = 0;
+		while (e.offsetParent){
+			left += e.offsetLeft;
+			top  += e.offsetTop;
+			e     = e.offsetParent;
+		}
+		left += e.offsetLeft;
+		top  += e.offsetTop;
+		return {x:left, y:top};
+	}
+	
+	function mouseCoords(ev){
+		if(ev.pageX || ev.pageY){
+			return {x:ev.pageX, y:ev.pageY};
+		}
+		return {
+			x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+			y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+		};
+	}
+	
+	function mouseMove(ev){
+		ev           = ev || window.event;
+		var mousePos = mouseCoords(ev);
+		if(dragObject){
+			position(mousePos.x - mouseOffset.x,mousePos.y - mouseOffset.y);
+			return false;
+		}
+	}
+
+	function mouseUp(){
+		if(dragObject){loadRing();}
+		dragObject = null;
+	}
+	
+	function makeDraggable(item){
+		if(!item) return;
+		item.onmousedown = function(ev){
+			dragObject  = this;
+			mouseOffset = getMouseOffset(this, ev);
+			return false;
+		}
+	}
+	
+	var lastX = 0;
+	function position(x,y) { 
+		 var RayX = parseInt(document.getElementById('cursorRay').style.left);
+     if(x && RayX){
+     		deltaX = x - lastX;
+     		if((RayX + deltaX > 5) &&(RayX + deltaX < 102)){
+     			document.getElementById('cursorRay').style.left = RayX + deltaX + "px";
+    			document.getElementById('couronneRayon').value = parseInt((RayX + deltaX)/2);
+     		}
+     		lastX = x;
+     	}
+   }
+
+	$$REM$$
+		function changeCpRay(a){
+			if(a==1){
+				document.onmousedown = position;
+			}	
+			else{
+				document.onmousedown = false;
+			}
+		}
+	$$END$$
+-->	
+</script>
+
+
+<div id="debugTxt"></div>
+<a href="#" name="errMsgLink"></a>
+<div id="errMsg"></div>
+<div id="gestError"></div>
+
+<form name="formGestMandat" id="formGestMandat" method="post" style="display: inline;">
+	<input name="u" value="mandatvente:campagnemultiple" type="hidden" />
+	<input name="page_ok" value="/$$REP:URI replace crealertes.htm dossiers.htm$$" type="hidden" />
+	<input name="page_err" value="/$$REP:URI$$" type="hidden" />
+	<input name="iduser" value="$$SESSION:IDUSER$$" type="hidden" />
+	<input name="etatcampagne" value="a" type="hidden" />
+	<input name="idclient" value="$$SESSION:IDCLENT$$" type="hidden" />
+	<input name="listetypebien" id="listetypebien1" value="1" type="hidden" />
+	<input name="step" id="step" value="0" type="hidden" />
+	$$REM:20070111$$<input name="display" id="listetypebien1" value="groupe" type="hidden" />$$END$$
+
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete"><td>Cibler les biens désirés</td></tr>
+		<tr>
+			<td>
+
+
+	
+
+	<div id="creAlerte">
+		<!-- step 1 Start -->
+		<div id="creAlerte-1">
+			<div class="formBloc">	
+
+				<li class="sel_villes"> Sélectionnez les villes concernées * : </li>
+				
+				<div class="formHelpCity"  style="float:left;">
+					Afficher les villes autour du code postal 
+					<input type="text" value="$$SLPRO:INFOSAGENCE:CP$$" name="couronneCP" id="couronneCP" size="5" maxlength="5" onBlur="loadRing();"/> <br />
+					<div style="padding-top:2px">dans un rayon de</div>
+					<div id="selectCursor">
+						<img id="cursorWay" src="$$_$$engine/centredecontact/img/locOn.gif" />
+						<img id="cursorRay" src="$$_$$engine/centredecontact/img/locOn.gif" style="width:4px; height:10px; z-index:10; position:relative; left:10px; top:7px;margin: 0; float:left; border:1px outset #aaa; cursor:pointer;" />
+							
+						<script type="text/javascript">
+						//<![CDATA[	
+							makeDraggable(document.getElementById('cursorRay'));
+						//]]>
+						</script>	
+					</div>
+					<div>
+						<input id="couronneRayon" name="couronneRayon" size="5" maxlength="5" type="text" value="$$INIT:FORM:COURONNERAYON=5$$$$FORM:COURONNERAYON$$">
+						km <!--  &nbsp;  <span style="color:grey; font-size:10px;"> (max : 50 km) </span> -->&nbsp;							
+						<input value="OK" onClick="loadRing();" type="button" class="button" />
+					</div>
+				</div>
+
+				<div id="listeCpProximite" style="float:left;">
+					<div id="gestErrorCouronne"></div>
+					<div id="helpCity"></div>
+				</div>
+			</div>
+			<br />
+			<div class="formBloc" style="border-top:none; width:100%;">
+				<li> Ou précisez les codes postaux des biens recherchés * : </li><br />
+				<span id="listCp"><input name="LISTECP" id="LISTECP0" value="" size="5" type="text"></span> 
+				<span id="listCp"><input name="LISTECP" id="LISTECP1" value="" size="5" type="text"></span> 
+				<span id="listCp"><input name="LISTECP" id="LISTECP2" value="" size="5" type="text"></span> 
+				<span id="listCp"><input name="LISTECP" id="LISTECP3" value="" size="5" type="text"></span> 
+				<span id="listCp"><input name="LISTECP" id="LISTECP4" value="" size="5" type="text"></span> 
+				<br /><span class="greyinfo">ex: $$SLPRO:INFOSAGENCE:CP$$</span>
+			</div>
+			<br />
+			<div class="formBloc" style="width:100%;">
+				<li> Email utilisé pour le suivi de mes recherches : </li><br />
+				Mon Email : <input id="emailcampagne" name="emailcampagne" value="$$FORM:EMAILCAMPAGNE$$$$IF0:FORM:EMAILCAMPAGNE$$$$MANDATVENTE:CLIENT:EMAILCLIENT$$$$END$$" type="text" size="40">*
+			</div>
+			<br />
+			<input value="&raquo; Suite" type="button" onClick="stepCreAlerte(1);" class="button" style="float:right;">
+		</div>		
+		<!-- step 1 Stop -->
+		
+		<!-- div class="formBloc" style="text-align:right; border:none; background-color:none; margin:none; padding:none;">
+		</div -->
+		<input id="btnBack" value="&laquo; Retour" type="button" onClick="stepCreAlerte(0);" class="button" style="margin:0px !important; margin:8px; display:none;" />				 
+		
+		<!-- step 2 Start -->	
+		<div id="creAlerte-2">
+			<br />
+			<div class="formBloc">
+				<div class="ongletTransaction"> 
+					$$BIF:TRANSACTIONS$$ 
+					<div class="type_trans">Type de transactions recherchées * : &nbsp; </div>
+					$$DO$$
+					<div id="ongletTransaction-$$TRANSACTIONS:TYPETRANSACTION$$">
+						<input type="checkbox" name="listetypetransac" id="listetypetransac-$$TRANSACTIONS:TYPETRANSACTION$$" value="$$TRANSACTIONS:IDTYPETRANSAC$$" checked="checked" onclick="getGroupeNom();" />
+						<div id="ongetTransactionLabel">
+							<label for="listetypetransac-$$TRANSACTIONS:TYPETRANSACTION$$">
+								$$TRANSACTIONS:TYPETRANSACTION$$
+							</label>
+						</div>
+					</div>
+					$$LOOP$$
+					$$BFIN$$
+				</div>
+				
+				<br />
+				
+				<input type="radio" name="etatalerte" checked="checked" id="etatalerte" value="a" onClick="displayAmount();" style="float:left" /> 
+				<label for="etatalerte"> Contacts Chrono : <br /> &nbsp; &nbsp; &nbsp;  &nbsp;Recevez  le contact avant tous vos confrères en plaçant une enchère.</label>
+
+				$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+					<div style="color:red; font-weight:bold;">
+						&nbsp; &nbsp; &nbsp;  &nbsp;$$MANDATVENTE:CLIENT:PRIME_RESTANT formatnumber 0$$ &euro; HT	offert$$MANDATVENTE:CLIENT:PRIME_RESTANT pluriel$$ pour découvrir notre option "Contacts Chrono". 
+					</div>
+				$$END$$
+				
+				<br />
+				
+				<div id="amount">
+					<b>
+					Indiquez le montant maximum que vous souhaitez payer pour acquérir un contact correspondant à votre recherche : <br />
+					Montant : <input id="montantalertes" name="montantalertes" size="3" value="$$INIT:FORM:MONTANTALERTES=0$$$$FORM:MONTANTALERTES$$" type="text"> € *</b>
+					<br /><span style="color:grey;">*Montant minimum : 10 &euro;</span>
+					<br />						
+					<br />
+					<b><img src="$$_$$engine/centredecontact/img/position1.gif" /> Vous êtes 1er 	:	 </b>Vous recevez en exclusivité le contact mandat pendant 3 jours. <br />
+					<b><img src="$$_$$engine/centredecontact/img/position2.gif" /> Vous êtes 2ème :  </b>Vous recevez le même contact mandat après 3 jours  <br />
+					<b><img src="$$_$$engine/centredecontact/img/position3.gif" /> Vous êtes 3ème :  </b>Vous recevez le contact mandat après 5 jours <br />
+					</p>		
+					
+				</div>
+				
+				<br />
+				<input type="radio" name="etatalerte" id="etatalerte" value="W" onClick="displayAmount();" style="float:left" /> <label for="etatalerteW">Recevez gratuitement les contacts  15 jours après leur diffusion</label> <br />
+				
+				<!-- <br />Mes alertes seront associées au groupe : -->
+				
+				<input type="hidden" id="nomcampagne" name="nomcampagne" value="$$FORM:NOMCAMPAGNE$$$$IF0:FORM:NOMCAMPAGNE$$groupe$$MANDATVENTE:CLIENT:TOT_CAMPAGNE_ALL exec XX+1$$$$END$$"> 
+				<!-- <div id="nomcampagneText" style="float:left; font-weight:bold"></div><br /> <br />
+				<br />Mes alertes seront créées <input class="radio" name="etatalerte" value="a" id="etatalerte-a" $$IF=:a:FORM:ETATALERTE$$checked="checked"$$END$$$$IF0:FORM:ETATALERTE$$checked="checked"$$END$$ type="radio"><label for="etatalerte-a">actives</label> <input class="radio"  name="etatalerte" value="i" id="etatalerte-i" type="radio"$$IF=:i:FORM:ETATALERTE$$checked="checked"$$END$$><label for="etatalerte-i">inactives</label>
+				-->
+				
+				<!-- input name="etatalerte" value="a" id="etatalerte-a" type="hidden" / -->
+				
+			</div>
+			
+			$$REM$$<!-- //// les CGV sont à accepter si prime == 0 et iscompteblanc == True -->$$END$$
+		
+			<div id="validation" class="formBloc"></div>
+			
+		</div>
+		<!-- step 2 Stop -->
+	</div>
+
+		<br />	<br /> *champs obligatoires
+
+			</td>
+		</tr>
+		</table>
+
+</form>
+
+<!--#include absolute="/portail/pol/engine/centredecontact/crealertes_js.htm"-->
+
+
+
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->

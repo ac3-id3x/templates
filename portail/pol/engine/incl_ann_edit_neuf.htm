@@ -1,0 +1,185 @@
+	$$IF=:1:PROG9$$
+	<table class="tabbasic" cellpadding="4" cellspacing="0">
+	<tr class="tabentete">
+		<td align="left" colspan="2">Caractéristiques du programme</td>
+	</tr>
+	<tr class="oblig_input">
+		<td valign="top" >
+			<input type="hidden" name="titre_si_maison" value="Programme avec maisons" />
+		<label for="si_maison"><input type="checkbox" name="si_maison" id="si_maison" value="1"$$IF=:1:FORM:SI_MAISON$$ checked="checked"$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:SLPRO:ANNONCE:SI_MAISON$$ checked="checked"$$END$$$$END$$ title="Coché si le programme contient une ou plusieurs maisons" onclick="javascript:DispTableaux();" />&nbsp;Programme avec maisons</label>
+			<font class="legende">Cocher si une ou plusieurs maison(s)</font>
+		</td>
+		<td valign="top">
+			<input type="hidden" name="titre_si_appartement" value="Programme avec appartements" />
+		<label for="si_appartement"><input type="checkbox" name="si_appartement" id="si_appartement" value="1"$$IF=:1:FORM:SI_APPARTEMENT$$ checked="checked"$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:SLPRO:ANNONCE:SI_APPARTEMENT$$ checked="checked"$$END$$$$END$$ title="Coché si le programme contient un ou plusieurs appartements" onclick="javascript:DispTableaux();" />&nbsp;Programme avec appartement</label>
+			<font class="legende">Cocher si un ou plusieurs appartement(s)</font>
+		</td>
+	</tr>
+	<tr class="oblig_input">
+		<td>
+	<input type="hidden" name="titre_si_terrain" value="Programme avec terrain" />
+	<label for="si_terrain"><input type="checkbox" name="si_terrain" id="si_terrain" value="1"$$IF=:1:FORM:SI_TERRAIN$$ checked="checked"$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:SLPRO:ANNONCE:SI_TERRAIN$$ checked="checked"$$END$$$$END$$ onclick="javascript:DispTableaux();" />&nbsp;Programme avec terrain</label>
+	<font class="legende">Coché si le programme contient un ou plusieurs terrains</font>
+	</td>
+	<td>
+	$$IF:SLPRO:ANNONCE:IDANNONCE$$
+Lots du programme&nbsp;:&nbsp;<a href="$$XDOM$$/$$REP:1$$/annonce_eclatprog.htm">Cliquer ici pour g&eacute;n&eacute;rer les lots de ce programme.$$END$$
+	</td>
+	</tr>
+	<tr>
+		<td valign="top">Nombre de pièces minimum&nbsp;:<br />
+			<input type="hidden" name="titre_nb_pieces_min" value="nb pieces min" />
+			<input type="text" name="nb_pieces_min" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:NB_PIECES_MIN$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:NB_PIECES_MIN$$$$END$$" size="30" maxlength="10" title="Nombre de pièces minimum" />
+		</td>
+		<td valign="top">Nombre de pièces maximum&nbsp;:<br />
+			<input type="hidden" name="titre_nb_pieces_max" value="nb pieces max" />
+			<input type="text" name="nb_pieces_max" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:NB_PIECES_MAX$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:NB_PIECES_MAX$$$$END$$" size="30" maxlength="10" title="Nombre de pièces maximum" />
+		</td>
+	</tr>
+	<tr class="tabsep">
+		<td colspan="2" ></td>
+	</tr>
+	<tr>
+		<td colspan="2" valign="top">
+			<div id="disptab"></div></td>
+	</tr>
+	
+	<tr>
+		<td valign="top">Stock total&nbsp;:<br />
+			<input type="hidden" name=titre_stock_total value="Stock total" />
+			<input type="text" name="stock_total" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:STOCK_TOTAL$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:STOCK_TOTAL$$$$END$$" size="30" maxlength="10" title="Stock total" />
+		</td>
+		<td valign="top">Stock disponible&nbsp;:<br />
+			<input type="hidden" name=titre_stock_dispo value="Stock disponible" />
+			<input type="text" name="stock_dispo" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:STOCK_DISPO$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:STOCK_DISPO$$$$END$$" size="30" maxlength="10" title="Stock disponible" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top">Prix moyen au m²&nbsp;:<br />
+			<input type="hidden" name=titre_px_au_m2 value="Prix au m²">
+			<input type="text" name="px_au_m2" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:PX_AU_M2$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:PX_AU_M2$$$$END$$" size="20" maxlength="22" title="Prix au m²" />
+		</td>
+		<td valign="top">Investissement&nbsp;:<br />
+	$$B:SLPRO:TYPESINVEST_ANNONCES:REP:1$$
+	$$BIF:SLPRO:TYPESINVEST_ANNONCES:REP$$
+	<input type="hidden" name="titre_idtypeinvestissement" value="Type d'investissement">
+	<select name="typeinvestissement" multiple="multiple" size="8">
+		<option value="">Non communiqué</option>    $$DO:1:99$$
+		<option value="$$SLPRO:TYPESINVEST_ANNONCES:REP:IDTYPEINVESTISSEMENT$$"$$IF=:1:SLPRO:TYPESINVEST_ANNONCES:REP:COCHE$$ selected="selected"$$END$$>$$SLPRO:TYPESINVEST_ANNONCES:REP:TYPEINVESTISSEMENT$$</option>
+	$$LOOP$$   </select>	
+	$$BFIN$$
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top" colspan="2">Financement&nbsp;:<br />
+			<input type="hidden" name="titre_financement" value="Financement" />
+			<textarea name="financement" rows="3" cols="60" maxlength="1024" wrap="soft" title="Financement">$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:FINANCEMENT htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:FINANCEMENT htmlencode$$$$END$$</textarea><input type="hidden" name="len_financement" value="1024">
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top" colspan="2">Adresse du bureau&nbsp;:<br />
+			<input type="hidden" name="titre_adrbureau" value="Adresse du bureau" />
+			<textarea name="adrbureau" rows="3" cols="60" maxlength="128" wrap="soft" title="Adresse du bureau">$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:ADRBUREAU htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$$FORM:ADRBUREAU htmlencode$$$$END$$</textarea><input type="hidden" name="len_adrbureau" value="128" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+		<table width="100%">
+			<tr>
+				<td valign="top" align="center"><b>Contact 1</b></td>
+				<td valign="top" align="center"><b>Contact 2</b></td>
+			</tr>
+			<tr>
+				<td valign="top">Type&nbsp;:<br />
+					<input type="hidden" name=titre_idtypectc1 value="Type du contact 1">
+					$$BIF:SLPRO:TYPESCTC$$
+					<select name="idtypectc1" title="Type du contact 1">
+					<option value="">pas de contact$$DO:1:999$$
+					<option value="$$SLPRO:TYPESCTC:IDTYPECTC$$"$$IF0:FORM:PAGE_OK$$$$IF=:SLPRO_ANNONCE_IDTYPECTC1:SLPRO:TYPESCTC:IDTYPECTC$$ SELECTED$$END$$$$END$$ $$IF=:FORM_IDTYPECTC1:SLPRO:TYPESCTC:IDTYPECTC$$ SELECTED$$END$$>$$SLPRO:TYPESCTC:TYPECTC$$$$LOOP$$
+					</select>
+					$$BFIN$$
+				</td>
+				<td valign="top">Type&nbsp;:<br />
+					<input type="hidden" name=titre_idtypectc2 value="Type du contact 2">
+					$$BIF:SLPRO:TYPESCTC$$
+					<select name="idtypectc2" title="Type du contact 2">
+					<option value="">pas de contact$$DO:1:999$$
+					<option value="$$SLPRO:TYPESCTC:IDTYPECTC$$"$$IF0:FORM:PAGE_OK$$$$IF=:SLPRO_ANNONCE_IDTYPECTC2:SLPRO:TYPESCTC:IDTYPECTC$$ SELECTED$$END$$$$END$$ $$IF=:FORM_IDTYPECTC2:SLPRO:TYPESCTC:IDTYPECTC$$ SELECTED$$END$$>$$SLPRO:TYPESCTC:TYPECTC$$$$LOOP$$
+					</select>
+					$$BFIN$$
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">Nom&nbsp;:<br />
+					<input type="hidden" name=titre_nomctc1 value="Nom du contact 1">
+					<input type="text" name="nomctc1" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:NOMCTC1 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:NOMCTC1 htmlencode$$$$END$$" size="32" maxlength=64 title="Nom du contact 1">
+				</td>
+				<td valign="top">Nom&nbsp;:<br />
+					<input type="hidden" name=titre_nomctc2 value="Nom du contact 2">
+					<input type="text" name="nomctc2" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:NOMCTC2 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:NOMCTC2 htmlencode$$$$END$$" size="32" maxlength=64 title="Nom du contact 2">
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">Coordonnées&nbsp;:<br />
+					<input type="hidden" name=titre_coordctc1 value="Coordonnées du contact 1">
+					<input type="text" name="coordctc1" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:COORDCTC1 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$$FORM:COORDCTC1 htmlencode$$$$END$$" size="32" maxlength=64 title="Coordonnées du contact 1">
+				</td>
+				<td valign="top">Coordonnées&nbsp;:<br />
+					<input type="hidden" name=titre_coordctc2 value="Coordonnées du contact 2">
+					<input type="text" name="coordctc2" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:COORDCTC2 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:COORDCTC2 htmlencode$$$$END$$" size="32" maxlength=64 title="Coordonnées du contact 2">
+				</td>	
+			</tr>
+			<tr>
+				<td valign="top">Label&nbsp;:<br />
+					<input type="hidden" name="titre_idlabel1" value="Label 1" />
+					$$BIF:SLPRO:LABELS$$
+					<select name="idlabel1" title="Label 1">
+					<option value="">aucun$$DO:1:999$$
+					<option value="$$SLPRO:LABELS:IDLABEL$$"$$IF0:FORM:PAGE_OK$$$$IF=:SLPRO_ANNONCE_IDLABEL:SLPRO:LABELS:IDLABEL$$ SELECTED$$END$$$$END$$ $$IF=:FORM_IDLABEL:SLPRO:LABELS:IDLABEL$$ SELECTED$$END$$>$$SLPRO:LABELS:LABEL$$$$LOOP$$
+					</select>
+					$$BFIN$$
+				</td>
+				<td valign="top">Label&nbsp;:<br />
+					<input type="hidden" name=titre_idlabel2 value="Label 2">
+					$$BIF:SLPRO:LABELS$$
+					<select name="idlabel2" title="Label 2">
+					<option value="">aucun$$DO:1:999$$
+					<option value="$$SLPRO:LABELS:IDLABEL$$"$$IF0:FORM:PAGE_OK$$$$IF=:SLPRO_ANNONCE_IDLABEL:SLPRO:LABELS:IDLABEL$$ SELECTED$$END$$$$END$$ $$IF=:FORM_IDLABEL:SLPRO:LABELS:IDLABEL$$ SELECTED$$END$$>$$SLPRO:LABELS:LABEL$$$$LOOP$$
+					</select>
+					$$BFIN$$
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">Logo&nbsp;:<br />
+					<input type="hidden" name=titre_logo1 value="Logo 1">
+					<input type="text" name="logo1" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:LOGO1 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:LOGO1 htmlencode$$$$END$$" size=10 maxlength=8 title="Logo 1">
+				</td>
+				<td valign="top">Logo&nbsp;:<br />
+					<input type="hidden" name=titre_logo2 value="Logo 2" />
+					<input type="text" name="logo2" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:LOGO2 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:LOGO2 htmlencode$$$$END$$" size=10 maxlength=8 title="Logo 1">
+				</td>
+			</tr>
+			<tr>
+					<td valign="top">URL Logo&nbsp;:<br />
+					<input type="hidden" name=titre_urllogo1 value="URL Logo 1">
+					<input type="text" name="urllogo1" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:URLLOGO1 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:URLLOGO1 htmlencode$$$$END$$" size="32" maxlength=128 title="URL Logo 1">
+				</td>
+				<td valign="top">URL Logo&nbsp;:<br />
+					<input type="hidden" name=titre_urllogo2 value="URL Logo 2" />
+					<input type="text" name="urllogo2" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:URLLOGO2 htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:URLLOGO2 htmlencode$$$$END$$" size="32" maxlength=128 title="URL Logo 2">
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	
+	$$END:PROG9$$
+	
+	
+	
+	

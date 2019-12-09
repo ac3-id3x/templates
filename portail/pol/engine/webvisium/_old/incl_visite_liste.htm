@@ -1,0 +1,83 @@
+$$B:IMMOBC:HVVISUELS:ALIAS:LIST$$
+$$BIF:LIST$$
+<form name="fa" action="/$$REP:NOM$$" method="post">
+	<input type="hidden" name="u" value="IMMOBC:HVVISUELSMODIF" />
+	<input type="hidden" name="page_ok" value="$$XDOM$$/$$REP:NOM$$" />
+	<input type="hidden" name="page_err" value="$$XDOM$$/$$REP:NOM$$" />
+	<input type="hidden" name="idvisite" value="$$FORM:IDVISITE$$" />
+	
+	<br />
+	<div class="line_tab">
+	<div class="title_tab">
+		<div class="img_puce_title">&nbsp;</div>Les vues associées
+	</div>
+</div>
+	
+	<table class="tabinfo" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr>
+			<th class="bdr" id="vv_ordre">Ordre</th>
+			<th class="bdr" id="vv_photo">Photo</th>
+			<th>Données</th>
+		</tr>
+	</thead>
+	
+	$$DO$$
+	<tr class="$$LIST:I mod2 line_pair2 line_impair2$$">
+	<td valign="top" $$IF0:LIST:ACTIF$$style="background-color:#8F1414;color:white;" rowspan=2$$END$$>
+		<strong>$$LIST:I$$</strong><br><br>
+		$$IF!:1:LIST:I$$<a href="$$REP:NOM$$?idvisite=$$FORM:IDVISITE$$&idvisuel=$$LIST:IDVISUEL$$&action=up&pos=$$LIST:I$$"><img src="$$WEBVISIUMIMG$$up.gif" border=0 alt="Mettre ce visuel en avant"></a>$$END$$
+	$$IF!:LIST_NBR:LIST:I$$<a href="$$REP:NOM$$?idvisite=$$FORM:IDVISITE$$&idvisuel=$$LIST:IDVISUEL$$&action=dn&pos=$$LIST:I$$"><img src="$$WEBVISIUMIMG$$dn.gif" border=0 alt="Baisser la priorité de cette vue"></a>$$END$$
+	</td>
+
+	$$IF0:LIST:ACTIF$$
+		<td colspan=2><font color="#8F1414"><b>Vue non affichée</b></font></td>
+		</tr>
+		<tr bgcolor="$$LIST:I mod2 #f0f3f5 #ffffff$$">
+	$$END$$
+	
+<td valign=top class="alignleft" height="240px;">
+	<img src="$$WEBVISIUMLINK$$dispvisuel.htm?mode=vgn&idvisite=$$FORM:IDVISITE$$&idvisuel=$$LIST:IDVISUEL$$&cadre=1" alt="Vue n°$$LIST:I$$" border="0" style="width:200px;"><br />
+	<small>
+	<b style="width:40px;">Nom :</b> ...$$LIST:NOMORIGINAL right 20$$
+	<br>
+	<b style="width:40px;">Etat :</b> $$LIST:ETAT$$<br>
+	$$IF:LIST:DTAJOUT$$<b style="width:80px;">Date ajout :</b> $$LIST:DTAJOUT$$ <br>$$END$$
+</small>
+	$$IF!:100:LIST:IDETAT$$
+		Attente de traitement, non affichée<br>
+	$$END$$
+
+</td>
+<td valign="top" class="alignleft">
+	<b>Libellé de la vue :</b><br /><input type="text" name=libe_$$LIST:IDVISUEL$$ value="$$LIST:LIBELLE$$" style="width:280px;"><br /><br />
+	<b>Description :</b><br />
+	<textarea name=desc_$$LIST:IDVISUEL$$ maxlength="1024" style="width:280px;height:50px;" wrap="soft">$$LIST:DESCRIPTION$$</textarea>
+	<br>
+<br>
+<div>
+	$$IF=:100:LIST:IDETAT$$
+		<br /><b>Active :</b>
+		<label for="disp_$$LIST:I$$_1">
+		<input type="radio" name="disp_$$LIST:IDVISUEL$$" value="1" id="disp_$$LIST:I$$_1"  $$IF:LIST:ACTIF$$checked="checked"$$END$$>	Oui</label>
+		<label for="disp_$$LIST:I$$_0"><input type=radio name="disp_$$LIST:IDVISUEL$$" value="0" id="disp_$$LIST:I$$_0" $$IF0:LIST:ACTIF$$checked="checked"$$END$$> Non</label>
+	$$END$$
+	$$IF=:100:LIST:IDETAT$$<a href="$$WEBVISIUMLINK$$visuel.htm?idvisuel=$$LIST:IDVISUEL$$&idvisite=$$FORM:IDVISITE$$&acte=pano">&raquo; Creer une photo normale</a>&nbsp;$$END$$<a href="$$REP:NOM$$?idvisite=$$FORM:IDVISITE$$&idvisuel=$$LIST:IDVISUEL$$&action=del">&raquo; Supprimer cette vue</a>
+$$IF!:100:LIST:IDETAT$$
+<a href="$$WEBVISIUMLINK$$visuel.htm?idvisuel=$$LIST:IDVISUEL$$&idvisite=$$FORM:IDVISITE$$" class=xbutton style="background-color:#8F1414;color:white;">&raquo; Traiter cette vue</a>
+
+$$END$$
+</div>
+
+<br />
+	</td>
+</tr>
+$$IF=:100:LIST:IDETAT$$
+	$$A:VUETRAITEE=1$$
+$$END$$
+
+$$LOOP$$
+</table>
+<div class="btn"><input type="image" src="$$_$$i/dyn/btnappliquerlesmodif.png" /></div>
+</form>
+$$BFIN$$

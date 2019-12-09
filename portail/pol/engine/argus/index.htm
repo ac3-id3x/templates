@@ -1,0 +1,253 @@
+$$A:NODISPDROIT=1$$
+$$A:NOHEADERA=1$$
+$$A:RUBR=Argus immobilier$$
+$$A:LIBELLEMASTHEAD= : @@RUBR@@$$
+$$A:LIBELLEPATH= @@RUBR@@$$
+$$A:NORIGHT=1$$
+
+$$A:CAT=estimer_bien$$
+$$E:E3:CAT:estimer_bien:SLPRO$$
+$$A:PAGE_ARGUS=1$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+
+$$DYN:ID3:NOCACHE:FULL$$
+
+
+
+<!-- BEGIN / Fin du produit -->
+<style type="text/css">
+#argus_end {
+	margin:20px 0;
+	overflow:auto;
+	padding:10px;
+	
+	font-size:12px;
+	font-weight:bold;
+	
+	background-color:#F4EBE9;
+    color:#F13000;
+}
+#polCnt .m_top_anime {
+	margin:28px 0 12px 0;
+}
+#argus_end .light_text {
+	color:#00496E;
+}
+#argus_end p {
+	color:#333;
+	font-weight:normal;
+}
+</style>
+$$REM$$
+<script type="text/javascript">
+	<!--
+	var messToAnime = null,
+		countAnimeMess = 0;
+	
+	function animeMess() {
+		if (countAnimeMess <= 6) {
+			messToAnime.addClass('m_top_anime');
+			setTimeout(messSwitchClass, 100);
+		}
+	}
+	
+	function messSwitchClass() {
+		messToAnime.removeClass();
+		countAnimeMess++;
+		setTimeout(animeMess, 100);
+	}
+	
+	$j(document).ready(function(){
+		messToAnime = $j('#argus_end');
+		setTimeout(animeMess, 800);
+	});
+	//-->
+</script>
+$$END$$
+
+<div id="argus_end">
+	Attention, cet outil ne sera bientôt plus disponible !<br /><br />
+	Pour réaliser des estimations encore plus précises et traitant dorénavant de prix de vente (et non de prix de mise en vente), nous vous invitons à découvrir Avis de Valeur en cliquant <a href="http://www.selogerpro.com/159080/avis_de_valeur_produit.htm">ici</a>.<br />
+	<p>Avis de Valeur est une application en ligne que nous avons développé et qui vous permet de réaliser très simplement l'évaluation d'un bien (appartement ou maison) en s'appuyant sur les données de marché.<br />
+	Avis de Valeur ne se contente pas seulement de vous accompagner dans l'évaluation d'un bien mais vous permet également d'éditer un dossier complet d'estimation, personnalisable, que vous pourrez remettre à vos prospects. Vous pourrez ainsi leur communiquer des informations sur le secteur, le marché afin de faire accepter le prix que vous défendez.</p>
+	<br />
+	<a href="http://www.selogerpro.com/159080/avis_de_valeur_produit.htm">Découvrir Avis de Valeur</a>
+</div>
+<!-- END / Fin du produit -->
+
+
+
+
+$$IF:FORM:SHOWREFINE$$
+	$$A:SHOWREFINE=1$$
+	$$A:HIDECALCUL=1$$
+$$END$$
+
+$$IF0:IMMOBW:ARGUS_VILLES:NBR$$
+	$$A:SHOWREFINE=1$$
+$$END$$
+
+$$IF:SHOWREFINE$$
+<h4>Evaluer un appartement, une maison à la vente ou à la location</h4>
+	<p>
+		
+		Merci de remplir le questionnaire ci-dessous, nous allons vérifier si nous avons suffisamment d'informations dans nos bases de calcul pour vous proposer un résultat correspondant à l'état actuel du marché.</p>
+$$END$$
+
+$$IF0:IMMOBW:ARGUS_VILLES:NBR$$
+	$$A:SHOWREFINE=1$$
+	$$IF:FORM:CP$$
+		<div class="erre"><span>Le code postal n'est pas reconnu.<br />Merci de modifier vos critères.</span></div>
+	$$END$$
+$$END$$
+
+$$IF0:FORM:SHOWREFINE$$
+	$$IF:IMMOBW:ARGUS_VILLES:NBR$$
+		$$IF:IMMOBW:ARGUS:PRIXNA$$
+			<div class="erre"><span>Nos informations statistiques ne nous permettent pas de vous donner, sur les critéres choisis, une estimation.<br />Merci de modifier vos critères.</span></div>
+			$$A:SHOWREFINE=1$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF0:SHOWREFINE$$
+	$$IF0:HIDECALCUL$$
+		$$E:IMMOBW:ARGUS$$
+		$$B:IMMOBW:ARGUS_VILLES$$
+		$$BIF:IMMOBW:ARGUS_VILLES$$
+		$$IF:DEVo$$
+			<form name="fticket" method="get" action="/argus,quest.htm">
+			<input type="hidden" name="o" value="$$FORM:O$$" />
+		$$END$$
+		$$IF0:DEVo$$
+			<form name="fticket" id="fticket" method="get" action="/argus,affiche.htm" />
+			<input type="hidden" name="o" value="$$FORM:O$$" />
+		
+		$$END$$
+		<input type="hidden" name="typetransaction" value="$$FORM:TYPETRANSACTION$$" />
+		<input type="hidden" name="typebien" value="$$FORM:TYPEBIEN$$" />
+		<input type="hidden" name="surface" value="$$FORM:SURFACE$$" />
+		<input type="hidden" name="cp" value="$$FORM:CP$$" />
+		<input type="hidden" name="data" value="$$FORM:CP$$" />
+		
+		<h4>Vous avez choisi d'estimer le prix
+		
+		
+		$$IF=:LOC:FORM:TYPETRANSACTION$$de <strong>location</strong>$$END$$
+		$$IF=:VEN:FORM:TYPETRANSACTION$$de <strong>vente</strong>$$END$$
+		$$IF=:APP:FORM:TYPEBIEN$$d'un <strong>appartement</strong> pour $$END$$
+		$$IF=:MAI:FORM:TYPEBIEN$$une <strong>maison</strong> pour $$END$$
+		
+	<strong>$$1_IMMOBW:ARGUS_VILLES:VILLE$$</strong>, d'une surface de $$IF:FORM:SURFACE$$ <strong>$$FORM:SURFACE$$&nbsp;m&sup2;</strong>$$END$$.<br /></h4>
+		
+		
+		$$IF0:IMMOBW:ARGUS:PRIXNA$$
+		<div><a href="/Argus,Index.htm?$$REP:QRY$$&showrefine=1" class="button">Modifier mes critères</a></div>
+		
+		$$IF:IMMOBW:ARGUS_VILLES:NBR$$
+			$$IF!:1:IMMOBW:ARGUS_VILLES:NBR$$
+				<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+				<thead>
+					<tr><th>Vous pouvez affiner votre estimation en sélectionnant un des choix ci-dessous</th></tr>
+				</thead>
+				<tr>
+					<td>
+				
+				$$DO:1:100$$
+				<label for="$$IMMOBW:ARGUS_VILLES:CP$$">
+					<input type="radio" name="quartier" value="$$IMMOBW:ARGUS_VILLES:CP$$" id="$$IMMOBW:ARGUS_VILLES:CP$$" $$IF=:1:IMMOBW:ARGUS_VILLES:I$$checked="checked"$$END$$ /> $$IMMOBW:ARGUS_VILLES:VILLE$$</label>
+					$$LOOP$$
+			
+					
+						</td>
+					</tr>
+				</table>
+		$$END:plusieurs villes$$
+		$$IF=:1:IMMOBW:ARGUS_VILLES:NBR$$
+		<script type="text/javascript">
+		<!--
+			var o = document.getElementById('fticket');
+			o.submit();
+		//-->
+		</script>
+		$$END$$
+		
+		
+		<div id="line_btn_ann">
+			<div class="btn_right"><input type="image" name="submit" src="$$_$$i/dyn/btnestimer.png" /></div>
+	</div>	
+		
+		$$IF:ERRE$$
+			<div class="erre"><span>Erreur:<br />$$ERRE$$</sapn></div>
+		$$END$$
+
+		
+		$$END$$
+		</form>
+		$$BFIN$$
+		
+		$$END$$
+	$$END:hidecalcul$$
+$$END:showrefine$$
+
+$$IF:SHOWREFINE$$
+	<form method="get" action="/argus,index.htm">
+	<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<thead>
+		<tr>
+			<th>Type du bien</th>
+		</tr>
+	</thead>
+	<tr>
+		<td>
+		<label for="tbApp"><input type="radio" name="typebien"  id="tbApp" value="APP" $$IF=:APP:FORM:TYPEBIEN$$checked="checked"$$END$$ $$IF0:FORM:TYPEBIEN$$checked="checked"$$END$$ />Appartement</label>
+		<label for="tbMai"><input type="radio" name="typebien"  id="tbMai" value="MAI" $$IF=:MAI:FORM:TYPEBIEN$$checked="checked"$$END$$ />Maison</label>	
+			
+		</td>		
+  </tr>
+</table>
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<thead>
+		<tr><th>Estimation</th></tr>
+	</thead>
+	<tr>
+		<td>
+					<label for="rtypev"><input type="radio" name="typetransaction" value="VEN" id="rtypev" $$IF=:VEN:FORM:TYPETRANSACTION$$checked="checked"$$END$$ $$IF0:FORM:TYPETRANSACTION$$checked="checked"$$END$$ /> de la valeur</label>
+					<label for="rtypel"><input type="radio" name="typetransaction" value="LOC" id="rtypel" $$IF=:LOC:FORM:TYPETRANSACTION$$checked="checked"$$END$$ /> du loyer</label>
+	</td>		
+  </tr>
+</table>
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<thead>
+		<tr><th>Code postal du bien</th></tr>
+	</thead>
+	<tr>
+		<td>
+					<input type="text" name="cp" value="$$FORM:CP$$" size="20" />
+					<input type="hidden" name="ticket" value="$$FORM:TICKET$$" />
+					<input type="hidden" name="o" value="$$FORM:O$$" />
+		</td>		
+  </tr>
+</table>
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<thead>
+		<tr><th>Surface du bien</th></tr>
+	</thead>
+	<tr>
+		<td>
+					<input type="text" name="surface" value="$$FORM:SURFACE$$" size="5" />
+			</td>
+		</tr>
+	</table>
+			
+	<div id="line_btn_ann">
+		<div class="btn_right"><input type="image" name="submit" src="$$_$$i/dyn/btnvalider.png" /></div>
+</div>	
+			
+	</form>
+$$END$$
+
+
+$$INCL:BASX.HTM$$

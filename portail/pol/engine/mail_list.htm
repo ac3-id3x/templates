@@ -1,0 +1,72 @@
+$$A:CAT=msg_ann$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$E:E3:CAT:msg_ann:SLPRO$$
+$$A:CSS_WEBMAIL=1$$
+$$A:CSS_LISTEANN=1$$
+
+$$INCL:HAUTX.HTM$$ 
+$$E:SLPRO:INFOSAGENCE$$
+$$E:SLPRO:ANNONCE:~idannonce:QRY:IDANNONCE:~visuels:1:ALIAS:VISUANN$$
+
+$$B:SLPRO:LISTMAILAGENCE:~idannonce:QRY:IDANNONCE:ALIAS:LSTMAIL$$
+$$BIF:LSTMAIL$$
+	<div class="line_tab" id="line_res">
+	<div class="title_tab"><div class="img_puce_title">&nbsp;</div> $$LSTMAIL:NBR$$ message$$LSTMAIL:NBR pluriel$$ reçu$$LSTMAIL:NBR pluriel$$ $$IF:VISUANN:REFANNONCE$$ pour l'annonce de référence : <a href="$$XDOM$$/$$FORM:IDANNONCE$$/annonce_visu.htm">$$VISUANN:REFANNONCE$$</a>$$END$$</div></div>
+	<table class="tabinfo" cellpadding="0" cellspacing="0">	
+	<thead>
+		<tr>
+			<th id="wb_picto"></th>
+			<th class="bdr" id="wb_email">De</th>
+			<th class="bdr">Objet</th>
+			<th class="date_list">Date</th>
+			<th class="bdr" id="wb_nom">Nom, Prénom</th>
+			<th class="bdr" id="liste_cp">CP</th>
+			<th class="bdr">Ville</th>
+			<th class="bdr" id="liste_transac">Type de transac.</th>
+			<th  id="wb_site">Site</th>
+		</tr>
+	</thead>
+	$$DO:1:query:20$$ 
+		<tr class="line_$$LSTMAIL:I mod2 pair impair$$_new" onmouseover="this.className='line_$$LSTMAIL:I mod2 pair impair$$_new_hover'" onmouseout="this.className='line_$$LSTMAIL:I mod2 pair impair$$_new'" onclick="javascript:id3_go('mail_visu.htm?idmail=$$LSTMAIL:IDMAIL$$');">
+			<td title="header=[Détail du message] body=[<div class='bubble'>Cliquez pour voir le détail de ce message</div>]"><span class="img_email_2"></span></td>
+			<td class="bdralignleft" title="header=[Email] body=[<div class='bubble'>$$LSTMAIL:EMAIL lcase$$</div>]">$$LSTMAIL:EMAIL lcase$$</td>
+			<td class="bdralignleft" title="header=[Objet] body=[<div class='bubble'>$$LSTMAIL:LIBELLE$$</div>]">$$LSTMAIL:LIBELLE$$</td>
+			<td class="bdr" title="header=[Date et heure d'envoi] body=[<div class='bubble'>$$LSTMAIL:DATESEND$$</div>]">$$LSTMAIL:DATESEND date dd/MM/yy$$</td>
+			<td class="bdralignleft" title="header=[Nom, Prénom] body=[<div class='bubble'>$$LSTMAIL:NOM pcase$$, $$LSTMAIL:PRENOM pcase$$</div>]">$$LSTMAIL:NOM pcase$$, $$LSTMAIL:PRENOM pcase$$</td>
+			<td class="bdr">$$LSTMAIL:CP$$</td>
+			<td class="bdralignleft" $$IF:LSTMAIL:VILLE$$title="header=[Ville] body=[<div class='bubble'>$$LSTMAIL:VILLE pcase$$</div>]"$$END$$>$$LSTMAIL:VILLE pcase$$</td>
+			<td class="bdralignleft" title="header=[Type de transaction] body=[<div class='bubble'>$$LSTMAIL:TYPETRANSAC pcase$$</div>]">$$LSTMAIL:TYPETRANSAC pcase$$</td>
+			<td>$$LSTMAIL:SITE lcase replace seloger SeLoger.com replace immostreet ImmoStreet.com$$</td>
+		</tr>
+	$$LOOP$$
+	</table>
+$$BFIN$$	
+
+$$IF:LSTMAIL:NBRPAGES$$
+	<div class="list_nav_links_bottom">
+		$$IF!:1:LSTMAIL:NBRPAGES$$
+			$$IF:LSTMAIL:LIENARRIERE$$<a href="$$LSTMAIL:LIENARRIERE$$">Page précédente</a>$$END$$
+				$$LSTMAIL:MULTIPAGE replace | &nbsp;|&nbsp;$$
+				$$IF:LSTMAIL:LIENAVANT$$
+					<a href="$$LSTMAIL:LIENAVANT$$">Page suivante</a>
+				$$END$$
+		$$END:nbrpages$$
+	</div>
+$$END$$
+
+$$IF:FORM:IDANNONCE$$
+	<div class="btn">
+		<a href="$$XDOM$$/mail_list.htm"><img src="$$_$$i/dyn/btntouslesmessages.png" title="Tous les messages" alt="Tous les messages" /></a>
+	</div>
+$$END$$
+	
+$$BIF0:LSTMAIL$$		
+	<div class="erre"><span>Vous n'avez reçu aucun message</span></div>
+$$BFIN$$		
+
+<div class="info"><span>Ce module de consultation de message est disponible <strong>en complément de la voie classique</strong>. Chaque demande d'information de la part d'un internaute pour une de vos annonces est <strong>aussi envoyée sur votre boite mail</strong> à l'adresse suivante : <strong>$$SLPRO:INFOSAGENCE:EMAIL$$</strong>.	
+</span></div>
+
+
+$$INCL:BASX.HTM$$ 
+

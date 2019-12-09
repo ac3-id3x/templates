@@ -1,0 +1,205 @@
+$$DYN:ID3:NOFOOTER$$$$DYN:ID3:NOCACHE$$
+$$E:E3:CAT:CDC_DOSSIERS:SLPRO$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$INIT:FORM:DISPLAY=groupe$$
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+
+
+$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+	<!--#include absolute="/portail/pol/engine/centredecontact/offredec.htm"-->
+$$END$$	
+
+
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+
+
+$$IF:MANDATVENTE:CAMPAGNEMULTIPLE:ERRE$$<div>$$MANDATVENTE:CAMPAGNEMULTIPLE:ERRE$$</div>$$END$$
+<div id="gestError"></div>
+<div id="divGestMandat"></div>
+
+<script type="text/javascript">
+<!--
+	<!--#include absolute="/portail//pol/engine/centredecontact/javascript.htm"-->
+-->
+</script>
+
+
+	$$B:MANDATVENTE:LISTEALERTE::!DNTBC::-s:-s:ALIAS:LISTEALERTE$$
+	
+	$$IF=:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+	$$IF>:2,4:OBJECTIFMANDATS:VERSION$$ <!-- preprod -->
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<tr class="tabentete"><td>Modifier le budget mensuel maximum</td></tr>
+		<tr>
+			<td>
+			<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">
+					<input type="hidden" name="u" value="MANDATVENTE:EDITCLIENT"/>
+					<input type="hidden" name="page_ok" value="/$$BASE:FIELD$$compte.htm" />
+					<input type="hidden" name="page_err" value="/$$BASE:FIELD$$compte.htm"/>
+					<input type="hidden" name="idclient" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDCLIENT$$" />
+					<input type="hidden" name="iduser" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDUSER$$" />
+				<div><input type="text" name="plafondmensuel" value="$$MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$" size="6" /> &euro;</div>
+			
+				<div class="btn"><input type="image" id="submitbutton" src="$$_$$i/dyn/btnmodifier.png" /></div>
+				</form>
+			</td>
+		</tr>
+		</table>
+	$$END$$		
+	$$END$$
+	
+	$$IF=:True:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+	$$IF>:2,4:OBJECTIFMANDATS:VERSION$$ <!-- preprod -->
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete"><td>Modifier le budget mensuel maximum</td></tr>
+		<tr>
+			<td>
+		<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">	
+			<input type="checkbox" name="accept_cgv" value="YES" id="accept_cgvYES" /> 
+			<label for="accept_cgvYES">	$$LG:CGV htmlencode$$	</label>				
+			$$IF:MODEDEV$$<input type="hidden" name="u" value="MANDATVENTE:UPGRADECLIENT"/>$$END$$
+			$$IF0:MODEDEV$$<input type="hidden" name="u" value="MANDATVENTE:UPDATECLIENT_PRESSIMMO"/>$$END$$
+			<input type="hidden" name="page_ok" value="$$BASE:FIELD$$compte.htm" />
+			<input type="hidden" name="page_err" value=$$IF0:MODEDEV$$"$$BASE:FIELD$$compte.htm"$$END$$$$IF:MODEDEV$$"$$BASE:FIELD$$dossiers.htm"$$END$$/>
+			<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+			<input type="hidden" name="display" value="compte" />
+			<div><input type="text" name="plafondmensuel" value="" size="4" /> &euro;</div>			
+			<div class="btn"><input type="image" id="submitbutton" src="$$_$$i/dyn/btnmodifier.png" /></div>
+		</form>
+			</td>
+		</tr>
+	</table>
+	$$END$$		
+	$$END$$	
+	
+
+	
+	
+$$IF=:groupe:FORM:DISPLAY$$
+	<table cellpadding="0" cellspacing="0" class="tablealerte" id="tablealerte">
+	<thead>
+	<tr>
+	<th colspan="7">
+			Liste des Recherches
+	</th>
+	</thead>
+	
+	$$BIF:LISTEALERTE$$
+	$$DO$$ 
+	$$IF=:1:LISTEALERTE:IDCAMPAGNE_HEADINGS$$
+	$$IF!:1:LISTEALERTE:I$$
+	$$IF>:2,4:OBJECTIFMANDATS:VERSION$$	</table></td> </tr> <!-- preprod fin d'un groupe de recherches --> $$END$$
+		<tr>
+			<td colspan="7" style="border-top:2px solid#777777;">&nbsp;</td> 
+		</tr>	
+	$$END$$
+	<tr><td colspan="7"><a href="#" name="linkalerte$$LISTEALERTE:I$$"></a> 
+		<!-- link start search group list -->
+	</td></tr>
+	<tr style="background-color:#eff3f6;" $$IF!:a:LISTEALERTE:ETATCAMPAGNE$$id="campagneinactive"$$END$$>
+	<td colspan="6" >
+		<nobr><img src="$$_$$engine/centredecontact/icons/folder$$IF!:a:LISTEALERTE:ETATCAMPAGNE$$grey$$END$$.gif">
+		<b>$$LISTEALERTE:NOMCAMPAGNE$$</b></nobr>
+		<i>$$IF=:a:LISTEALERTE:ETATCAMPAGNE$$activée$$END$$ $$IF=:i:LISTEALERTE:ETATCAMPAGNE$$désactivée$$END$$$$IF=:s:LISTEALERTE:ETATCAMPAGNE$$supprimée$$END$$</i> $$LISTEALERTE:EMAILCAMPAGNE$$ 
+	</td>
+	<td style="text-align:right;">
+		<nobr>
+			<a title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Modification groupe] body=[<div style=text-align:left;width:240px;>$$LG:MODIFIERDOSSIER htmlencode$$</div>]" onClick="gestForm('editcampagne','idcampagne=$$LISTEALERTE:IDCAMPAGNE$$,iduser=$$SESSION:IDUSER$$,etatcampagne=$$LISTEALERTE:ETATCAMPAGNE$$,nomcampagne=$$LISTEALERTE:NOMCAMPAGNE escape replace , §$$,emailcampagne=$$LISTEALERTE:EMAILCAMPAGNE$$,submitButton=Valider',event);" href="javascript:void(0);"><img src="$$_$$engine/centredecontact/icons/page_white_edit.gif"></a>
+			<a title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Suppression groupe] body=[<div style=text-align:left;width:240px;>$$LG:SUPPRIMERDOSSIER htmlencode$$</div>]" onclick="gestForm('desactivcampagne','idcampagne=$$LISTEALERTE:IDCAMPAGNE$$,iduser=$$SESSION:IDUSER$$,etatcampagne=s,submitButton=Oui',event);" href="javascript:void(0);"><img src="$$_$$engine/centredecontact/icons/cancel.gif"></a>			
+		</nobr>
+	</td>
+	</tr>
+		$$IF>:2,4:OBJECTIFMANDATS:VERSION$$
+			<!-- preprod début d'un groupe de recherches -->
+			<tr><td colspan="7" style="background-color:#eff3f6;">
+			<table id="groupealerte$$LISTEALERTE:I$$" cellpadding="0" cellspacing="0" style="width:410px; margin:none; padding:none; background:none; display:inline;">
+		$$END$$
+		$$END$$
+		$$IF:LISTEALERTE:IDALERTE$$
+		<!-- $$LISTEALERTE:ETATALERTE$$ $$LISTEALERTE:TYPEALERTE$$ -->
+		<!-- $$IF!:a:LISTEALERTE:ETATALERTE$$inactive$$END$$$$IF=:c:LISTEALERTE:TYPEALERTE$$inactive$$END$$$$IF=:O:LISTEALERTE:TYPEALERTE$$inoperante$$END$$$$IF=:P:LISTEALERTE:TYPEALERTE$$perdante$$END$$$$IF=:G:LISTEALERTE:TYPEALERTE$$gagnante$$END$$ -->
+		<tr id="alertegagnante">
+			<td width="20" style="background-color:#eff3f6;"></td>
+			<td width="120"> 
+					<div style="width:120px; min-width:120px; padding:0px; margin:0px;">
+						Recherche $$LISTEALERTE:LIBTYPETRANSAC$$
+					</div>
+			</td>
+			<td>$$LISTEALERTE:CPALERTE$$</td>
+			<td>$$LISTEALERTE:LIBTYPEBIEN$$</td>
+			<td><nobr>
+				<input type="hidden" name="montantalerte" id="montantalerte$$LISTEALERTE:I$$" size="3" value="$$IF!:W:LISTEALERTE:ETATALERTE$$$$LISTEALERTE:MONTANTALERTE formatnumber 0$$$$END$$$$IF=:W:LISTEALERTE:ETATALERTE$$0$$END$$"	onKeypress="keyControl(event, escape('gestForm(\'montantalerte\',\'idalerte=$$LISTEALERTE:IDALERTE$$,iduser=$$SESSION:IDUSER$$,montantAlertes=\'+document.getElementById(\'montantalerte$$LISTEALERTE:I$$\').value)'));"/>
+				<div style="font-weight: bold; float: left; margin-top:2px">$$IF!:W:LISTEALERTE:ETATALERTE$$$$LISTEALERTE:MONTANTALERTE formatnumber 0$$$$END$$$$IF=:W:LISTEALERTE:ETATALERTE$$0$$END$$ &euro; &nbsp; </div>
+				$$IF=:a:LISTEALERTE:ETATCAMPAGNE$$<a title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Modification montant] body=[<div style=text-align:left;width:240px;>$$LG:VALIDERMONTANT htmlencode$$</div>]" onclick="gestForm('modifalerte','idalerte=$$LISTEALERTE:IDALERTE$$,iduser=$$SESSION:IDUSER$$,montantAlertes='+document.getElementById('montantalerte$$LISTEALERTE:I$$').value+',cp=$$LISTEALERTE:CPALERTE$$,tt=$$LISTEALERTE:LIBTYPETRANSAC$$,submitButton=Valider',event);" href="javascript:void(0);"><img src="$$_$$engine/centredecontact/icons/modifier.gif"></a>$$END$$	
+			</nobr></td>
+			<td>
+				$$IF=:a:LISTEALERTE:ETATALERTE$$
+					<a $$IF=:a:LISTEALERTE:ETATCAMPAGNE$$href="javascript:void(0);" 
+						title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Votre position] body=[<div style=text-align:left;width:240px;>
+							$$IF:LISTEALERTE:POSITIONALERTE$$$$LISTEALERTE:POSITIONALERTE$$<sup>e</sup>$$IF>:2:LISTEALERTE:NBPOSITION$$($$LISTEALERTE:NBPOSITION$$ ex-aequo)$$END$$<br />$$END$$$$IF:LISTEALERTE:MONTANTPOS1$$1<sup>ere</sup> enchère : $$LISTEALERTE:MONTANTPOS1 formatnumber 0$$&euro;<br />$$END$$$$IF:LISTEALERTE:MONTANTPOS2$$2<sup>nd</sup> enchère : $$LISTEALERTE:MONTANTPOS2 formatnumber 0$$&euro;<br />$$END$$$$IF:LISTEALERTE:MONTANTPOS3$$3<sup>e</sup> enchère : $$LISTEALERTE:MONTANTPOS3 formatnumber 0$$&euro;<br />$$END$$$$IF=:1$2$3:LISTEALERTE:POSITIONALERTE$$$$IF>:2:LISTEALERTE:NBPOSITION$$$$LG:PODIUMEXAEQUO escape$$$$END$$$$IF0:LISTEALERTE:NBPOSITION$$$$LG:PODIUM escape$$$$END$$$$END$$$$IF!:1$2$3:LISTEALERTE:POSITIONALERTE$$$$LG:HORSPODIUM escape$$$$END$$
+							</div>]" class="mvhelp">
+					$$IF<:2,4:OBJECTIFMANDATS:VERSION$$<img src="$$_$$engine/centredecontact/icons/podium$$IF=:1$2$3:LISTEALERTE:POSITIONALERTE$$$$IF0:LISTEALERTE:NBPOSITION$$$$LISTEALERTE:POSITIONALERTE$$$$END$$$$IF:LISTEALERTE:NBPOSITION$$grey$$END$$$$END$$$$IF!:1$2$3:LISTEALERTE:POSITIONALERTE$$grey$$END$$.gif" /></a>$$END$$
+					$$IF>:2,4:OBJECTIFMANDATS:VERSION$$<!-- preprod -->
+						<img src="$$_$$engine/centredecontact/img/position$$IF=:1$2$3:LISTEALERTE:POSITIONALERTE$$$$LISTEALERTE:POSITIONALERTE$$$$END$$$$IF!:1$2$3:LISTEALERTE:POSITIONALERTE$$hp$$END$$.gif" /></a>
+					$$END$$					
+				$$END$$
+				$$END$$
+			</td>
+			<td style="text-align:right;">
+				<nobr>
+				<a 
+					title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Suppression] body=[<div style=text-align:left;width:240px;>$$LG:SUPPRIMERALERTE escape$$</div>]" onClick="gestForm('editalerte','idalerte=$$LISTEALERTE:IDALERTE$$,iduser=$$SESSION:IDUSER$$,etatalerte=s,submitButton=Oui',event);"  href="javascript:void(0);"><img src="$$_$$engine/centredecontact/icons/cancel.gif"></a>
+				</nobr>
+			</td>
+		</tr>
+		$$IF=:O:LISTEALERTE:TYPEALERTE$$
+		<tr>
+			<td style="background-color:#eff3f6;">&nbsp;</td>
+			<td colspan="6" class="redinfo" id="alerte$$IF!:a:LISTEALERTE:ETATALERTE$$inactive$$END$$$$IF=:O:LISTEALERTE:TYPEALERTE$$inoperante$$END$$$$IF=:P:LISTEALERTE:TYPEALERTE$$perdante$$END$$$$IF=:G:LISTEALERTE:TYPEALERTE$$gagnante$$END$$"> 
+				Votre budget mensuel ne permet plus d'utiliser cette recherche. 
+			</td>
+		</tr>
+		$$END$$
+		$$END$$
+		$$IF=:LISTEALERTE_NBR:LISTEALERTE:I$$
+		
+		$$IF>:2,4:OBJECTIFMANDATS:VERSION$$	</table></td></tr>	<!-- preprod exception, fin du dernier groupe de recherches --> $$END$$
+		
+
+
+		$$END$$	
+		$$LOOP$$
+		$$BFIN$$
+		
+		
+		
+	</table>
+	
+	<div class="btn">
+		<a title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle;'>&nbsp;&nbsp;Ajouter des recherches] body=[<div style=text-align:left;width:240px;>$$LG:AJOUTDOSSIER$$</div>]" $$IF<:2,4:OBJECTIFMANDATS:VERSION$$href="javascript:void(0);" onClick="gestForm('premiereAlerte','submitButton=Valider,idclient=$$SESSION:IDCLIENT$$,iduser=$$SESSION:IDUSER$$,cp=5',event)"$$END$$$$IF>:2,4:OBJECTIFMANDATS:VERSION$$href="centredecontact,crealertes.htm"$$END$$><img src="$$_$$i/dyn/btnajouterdesrecherches.png" /></a>
+	</div>	
+	
+	
+$$END$$
+	
+$$IF=:groupenull:FORM:DISPLAY$$
+	<h3>Liste des groupes & recherches supprimées  : </h3>
+$$END$$
+	
+	
+
+$$BIF0:LISTEALERTE$$
+	$$IF>:2,4:OBJECTIFMANDATS:VERSION$$
+		<script type="text/javascript">
+		<!--
+			id3_go('$$REP:0 field 1$$,crealertes.htm');
+		//-->
+		</script>	 
+	$$END$$
+$$BFIN$$
+
+
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->
+

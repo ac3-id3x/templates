@@ -1,0 +1,96 @@
+$$INCL:AUTH.HTM$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$E:E3:CAT:REP:1:SLPRO$$
+$$A:CSS_LISTEANN=1$$
+$$A:CSS_ACCOUNT=1$$
+$$A:JS_ACCOUNT=1$$
+$$E:AUTH:DETAILCOMPTE:~idcompte:REP:2:ALIAS:DC$$
+
+$$INCL:HAUTX.HTM$$
+
+
+
+
+
+<div id="edit_haut">
+	<div class="left">
+		<div class="oblig_txt"><div>&nbsp;&nbsp;&nbsp;</div>Champs obligatoires</div>
+	</div>
+	$$IF:REP:2$$
+	<form action="/$$REP:URI$$" method="post" name="fidmdp" id="fidmdp" style="display: inline;">
+	<input type="hidden" name="page_ok" value="/okmsgsend/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="bcc_webmaster" value="1" />
+	<input type="hidden" name="u" value="slpro:envoie_infos_connexion" />
+	<input type="hidden" name="uri_template" value="/mails,send_pass.htm" />
+	<input type="hidden" name="uri_template_cmi" value="/mails,send_pass_cmi.htm" />
+	<input type="hidden" name="codeagence" value="$$DC:LOGIN$$" />
+	<div class="right">
+		
+		<a href="javascript:document.getElementById('fidmdp').submit();"><img src="$$_$$i/dyn/btnxedy_sedidmdp.png" border="0" /></a>
+	</div>
+	</form>
+$$END$$
+</div>
+
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+$$IF=:okmsgsend:REP:3$$<div class="noerre"><span>Identifiant et mot de passe envoyés à $$DC:EMAIL$$</span></div>$$END$$
+
+<form name="ea" id="ea" action="/account,account_list.htm" method="post"> 
+	<input type=hidden name="u" value="$$IF:REP:2$$AUTH:UPDLOGIN$$END$$$$IF0:REP:2$$AUTH:ADDLOGIN$$END$$" />
+  $$IF:REP:2$$<input type="hidden" name="idcompte" value="$$REP:2$$" />$$END$$ 			
+  <input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" /> 		
+	<input type="hidden" name="page_ok" value="/$$IF:REP:2$$oksave$$END$$$$IF0:REP:2$$okcreate$$END$$/account,account_list.htm" /> 
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	
+		<table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+			<tr><td class="tabentete">Informations de connexion à SeLogerPro.com</td></tr>
+			<tr><td>	
+		    <div class="line100"><div>Identifiant :</div> $$IF:DC:LOGIN$$<strong>$$DC:LOGIN$$</strong>$$END$$ $$IF0:DC:LOGIN$$auto-généré$$END$$</div>
+		    <div class="line100"><div>Mot de passe :</div> $$IF:DC:PASS$$<input type="text" id="edit_mdp" name="pass_word" value="$$DC:PASS$$">$$END$$ $$IF0:DC:PASS$$auto-généré$$END$$
+		    
+		    </div>
+		   </td>
+		</tr>
+		</table>  
+		
+		<table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+			<tr><td class="tabentete">Informations personnelles</td></tr>
+			<tr><td>	
+				<div class="line50percent"><div>Nom :</div><input type="text" id="edit_nom" name="nom" value="$$DC:NOM htmlencode$$"></div>
+				<div class="line50percent"><div>Fonction :</div><input type="text" id="edit_fonction" name="fonction" value="$$DC:FONCTION htmlencode$$"></div>
+				<div class="line50percent"><div>Prénom :</div><input type="text" id="edit_prenom" name="prenom" value="$$DC:PRENOM htmlencode$$"></div>
+		  	<div class="line50percent"><div>Email :</div><input type="text" id="edit_email" name="email" value="$$DC:EMAIL$$" class="oblig_input"></div>
+		   </td>
+		</tr>
+		</table>  
+		
+		<table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+		<tr><td class="tabentete">Modules associés</td></tr>
+			<tr><td>	
+				<div class="line50percent"><label id="droit_pole_position"><input type="checkbox" $$IF:DC:DROIT_POLE_POSITION$$checked="checked"$$END$$id="droit_pole_position" name="droit_pole_position" value="1" /> Pole Position</label></div>
+				<div class="line50percent"><label id="droit_web_visium"><input type="checkbox" $$IF:DC:DROIT_WEB_VISIUM$$checked="checked"$$END$$id="droit_web_visium" name="droit_web_visium" value="1" /> WebVisium</label></div>
+				<div class="line50percent"><label id="droit_gestion_pa"><input type="checkbox" $$IF:DC:DROIT_GESTION_PA$$checked="checked"$$END$$id="droit_gestion_pa" name="droit_gestion_pa" value="1" /> Annonces</label></div>
+				<div class="line50percent"><label id="droit_parametres_agence"><input type="checkbox" $$IF:DC:DROIT_PARAMETRES_AGENCE$$checked="checked"$$END$$id="droit_parametres_agence" name="droit_parametres_agence"  value="1" /> Agence</label></div>
+				<div class="line50percent"><label id="droit_alertes_acheteur"><input type="checkbox" $$IF:DC:DROIT_ALERTES_ACHETEUR$$checked="checked"$$END$$id="droit_alertes_acheteur" name="droit_alertes_acheteur" value="1" /> Alerte Acheteurs</label></div>
+				<div class="line50percent"><label id="droit_alertes_vandeur"><input type="checkbox" $$IF:DC:DROIT_ALERTES_VENDEUR$$checked="checked"$$END$$id="droit_alertes_vendeur" name="droit_alertes_vendeur" value="1" /> Alerte Vendeurs</label></div>
+				<div class="line50percent"><label id="droit_avis_valeur"><input type="checkbox" $$IF:DC:DROIT_AVIS_VALEUR$$checked="checked"$$END$$id="droit_avis_valeur" name="droit_avis_valeur" value="1" /> Avis de Valeur</label></div>
+		  		$$REM$$<div class="line50percent"><label id="droit_tout_acces"><input type="checkbox" $$IF:DC:DROIT_TOUT_ACCES$$checked="checked"$$END$$id="droit_tout_acces" name="droit_tout_acces" value="1" /> Tous les modules</label></div>$$END$$
+		  	$$IF:DC:T_DROIT_MODULE_FACTURATION$$<div class="line50percent"><label id="t_droit_module_facturation"><img src="$$_$$i/picto_true.png" title="Non modifiable par l'interface. Contactez le support pour retirer ou attributer ce droit." /> Accès à vos factures en ligne</label></div>$$END$$
+		   </td>
+		</tr>
+		</table>
+		
+		<div id="line_btn_ann">
+			$$IF:REP:2$$<div class="btn_left">
+				<div onclick="delaccount('$$DC:LOGIN$$','$$XDOM$$/$$REP:2$$/account,account_del.htm');"><img src="$$_$$i/dyn/btnsupprimer.png"></div>
+			</div>$$END$$
+			<div class="btn_right"><img src="$$_$$i/dyn/btnvalider.png" onclick="javascript:document.getElementById('ea').submit();"></div>
+		</div>
+		
+		<div class="info"><span><strong>Accès à vos factures en ligne</strong> : Si ce module est activé (coche verte) vous avez la possibilité de suivre vos factures en ligne. Il n'est pas possible de modifier l'accès à ce module dans ce site. <strong>Contactez le support pour retirer ou attributer ce droit</strong>.</span></div>
+</form>
+
+		
+$$INCL:BASX.HTM$$

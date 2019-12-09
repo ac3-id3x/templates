@@ -1,0 +1,149 @@
+<html>
+<head>
+</head>
+<body>
+<form method="get" action="/prerecherche.htm" >
+
+<b>Type d'annonce</b> :
+<select name="idTypeAnnonce">
+	<option value=""></option>
+	<option value="1" $$IF=:1:FORM:IDTYPEANNONCE$$selected="selected"$$END$$>Maisons seules</option>
+	<option value="2" $$IF=:2:FORM:IDTYPEANNONCE$$selected="selected"$$END$$>Maisons + Terrain</option>
+</select><br/>
+
+<b>Liste de départements, villes, codes postaux séparés par des virgules :</b>
+<input type="text" name="situationSaisie" value="$$FORM:SITUATIONSAISIE$$" /><br/>
+<input type="hidden" name="situation" value="$$FORM:SITUATION$$" /><br/>
+
+$$B:CMI:CLASSESMAISONS$$
+$$BIF:CMI:CLASSESMAISONS$$
+Classe de maison :
+<select name="idClasseMaison">
+	<option value=""></option>
+$$DO$$
+	<option value="$$CMI:CLASSESMAISONS:IDCLASSEMAISON$$" $$IF=:CMI_CLASSESMAISONS_IDCLASSEMAISON:FORM:IDCLASSEMAISON$$selected="selected"$$END$$>$$CMI:CLASSESMAISONS:CLASSEMAISON$$</option>
+$$LOOP$$
+</select><br/>
+$$BFIN$$
+
+Référence du modèle : <input type="text" name="referenceModele" value="$$FORM:REFERENCEMODELE$$" /><br/>
+
+Budget min : <input type="text" name="budgetMin" value="$$FORM:BUDGETMIN$$" />
+max : <input type="text" name="budgetMax" value="$$FORM:BUDGETMAX$$" /><br/>
+
+Surface min : <input type="text" name="surfaceMin" value="$$FORM:SURFACEMIN$$" />
+max : <input type="text" name="surfaceMax" value="$$FORM:SURFACEMAX$$" /><br/>
+
+Nombre d'étages :
+<select name="nbEtages">
+	<option value=""></option>
+	<option value="1" $$IF=:1:FORM:NBETAGES$$selected="selected"$$END$$>1</option>
+	<option value="2" $$IF=:2:FORM:NBETAGES$$selected="selected"$$END$$>2</option>
+	<option value="3+" $$IF=:3+:FORM:NBETAGES$$selected="selected"$$END$$>3 et plus</option>
+</select><br/>
+
+Nombre de pieces :
+<select name="nbPieces">
+	<option value=""></option>
+	<option value="1" $$IF=:1:FORM:NBPIECES$$selected="selected"$$END$$>1</option>
+	<option value="2" $$IF=:2:FORM:NBPIECES$$selected="selected"$$END$$>2</option>
+	<option value="3" $$IF=:3:FORM:NBPIECES$$selected="selected"$$END$$>3</option>
+	<option value="4" $$IF=:4:FORM:NBPIECES$$selected="selected"$$END$$>4</option>
+	<option value="5+" $$IF=:5+:FORM:NBPIECES$$selected="selected"$$END$$>5 et plus</option>
+</select><br/>
+
+Nombre de chambres :
+<select name="nbChambres">
+	<option value=""></option>
+	<option value="1" $$IF=:1:FORM:NBCHAMBRES$$selected="selected"$$END$$>1</option>
+	<option value="2" $$IF=:2:FORM:NBCHAMBRES$$selected="selected"$$END$$>2</option>
+	<option value="3" $$IF=:3:FORM:NBCHAMBRES$$selected="selected"$$END$$>3</option>
+	<option value="4" $$IF=:4:FORM:NBCHAMBRES$$selected="selected"$$END$$>4</option>
+	<option value="5+" $$IF=:5+:FORM:NBCHAMBRES$$selected="selected"$$END$$>5 et plus</option>
+</select><br/>
+
+Cave  ? <input type="checkbox" name="siCave" value="1" $$IF:FORM:SICAVE$$checked="checked"$$END$$/><br/>
+
+Combles aménageables ? <input type="checkbox" name="siComblesAmenageables" value="1" $$IF:FORM:SICOMBLESAMENAGEABLES$$checked="checked"$$END$$/><br/>
+
+Possibilité mitoyenneté ? <input type="checkbox" name="siPossibiliteMitoyennete" value="1" $$IF:FORM:SIPOSSIBILITEMITOYENNETE$$checked="checked"$$END$$/><br/>
+
+Moins de 15 jours ? <input type="checkbox" name="ageMaximum" value="15" $$IF:FORM:AGEMAXIMUM$$checked="checked"$$END$$/><br/>
+
+<br/>
+<input type="submit" value="Rechercher" />
+
+</form>
+	<font color="red">$$CMI_ANNONCES:ERRMSG htmlencode crlf2br$$</font>
+	$$IF:CMI_ANNONCES:RESUMERECHERCHE$$
+
+		$$IF:CMI_ANNONCES:NBR$$
+			Voici
+			$$IF-:2:CMI_ANNONCES:NBR$$
+				l'unique annonce
+			$$END$$
+			$$IF+:2:CMI_ANNONCES:NBR$$
+				les $$CMI_ANNONCES:NBR$$ premières annonce$$CMI_ANNONCES:NBR pluriel$$
+			$$END$$
+		$$END$$
+		$$IF0:CMI_ANNONCES:NBR$$
+			Aucune annonce 
+		$$END$$
+
+		de $$CMI_ANNONCES:RESUMERECHERCHE htmlencode crlf2br$$<br/>
+	$$END$$
+
+	<hr />
+
+	$$IF:CMI_ANNONCES:LIENARRIERE$$
+		<a href="$$CMI_ANNONCES:LIENARRIERE removeqry idAnnonce$$">Page précédente</a><br/>
+	$$END$$
+	$$IF:CMI_ANNONCES:LIENAVANT$$
+		<a href="$$CMI_ANNONCES:LIENAVANT removeqry idAnnonce$$">Page suivante</a><br/>
+	$$END$$
+
+	$$CMI_ANNONCES:MULTIPAGE removeqry idAnnonce$$
+
+	<hr />
+
+	$$B:CMI:ANNONCES:ALIAS:CMI_ANNONCES:~idAnnonce:QRY:idAnnonce$$
+	$$BIF:CMI_ANNONCES$$
+	$$DO:1:4$$
+
+		idAnnonce : $$CMI_ANNONCES:IDANNONCE$$<br/>
+		idtypeannonce : $$CMI_ANNONCES:IDTYPEANNONCE$$<br/>
+		nommodele : $$CMI_ANNONCES:NOMMODELE$$<br/>
+		referencemodele : $$CMI_ANNONCES:REFERENCEMODELE$$<br/>
+
+		prixMini : $$CMI_ANNONCES:PRIXMINI$$<br/>
+		prixMaxi : $$CMI_ANNONCES:PRIXMAXI$$<br/>
+
+		nbPiecesMini : $$CMI_ANNONCES:NBPIECESMINI$$<br/>
+		nbPiecesMaxi : $$CMI_ANNONCES:NBPIECESMAXI$$<br/>
+
+		surfaceMini : $$CMI_ANNONCES:SURFACEMINI$$<br/>
+		surfaceMaxi : $$CMI_ANNONCES:SURFACEMAXI$$<br/>
+
+		nbChambresMini : $$CMI_ANNONCES:NBCHAMBRESMINI$$<br/>
+		nbChambresMaxi : $$CMI_ANNONCES:NBCHAMBRESMAXI$$<br/>
+
+		nbPlans : $$CMI_ANNONCES:NBPLANS$$<br/>
+		nbPhotosMaison : $$CMI_ANNONCES:NBPHOTOSMAISON$$<br/>
+		nbPhotosTerrain : $$CMI_ANNONCES:NBPHOTOSTERRAIN$$<br/>
+
+		$$IF:CMI_ANNONCES:THBURL$$
+			<img src="$$CMI_ANNONCES:THBURL$$" /><br/>
+			stdUrl : $$CMI_ANNONCES:STDURL$$<br/>
+			bigUrl : $$CMI_ANNONCES:BIGURL$$<br/>
+		$$END$$
+
+		<br/>
+		<a href="/rechercheAnnoncesDetail.htm?$$REP:QRY removeqry idAnnonce$$&idAnnonce=$$CMI_ANNONCES:IDANNONCE$$">Détail</a><br/>
+
+		<hr />
+
+	$$LOOP$$
+	$$BFIN$$
+
+</body>
+</html>

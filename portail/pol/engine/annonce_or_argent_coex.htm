@@ -1,0 +1,379 @@
+$$E:E3:CAT:159754:SLPRO$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:4:~url:slpro_regions.htm$$
+$$E:SLPRO:INFOSAGENCE$$
+$$E:POLEPOSITION:POSITION-OR-AR:ALIAS:CONTRAT$$
+$$B:POLEPOSITION:ANNONCES-COEX:ALIAS:COEX$$
+$$E:POLEPOSITION:CONTRATS-POLEPO:ALIAS:CPP$$
+
+$$B:POLEPOSITION:LISTCOEXENCOURS:ALIAS:ENCOURS$$
+$$B:POLEPOSITION:LISTCOEXENATTENTE:ALIAS:ENATTENTE$$
+$$B:POLEPOSITION:LISTCOEXREFUSEES:ALIAS:REFUSEES$$
+$$B:POLEPOSITION:LISTCOEXOTHER:ALIAS:OTHER$$
+$$E:POLEPOSITION:ORARCOEX:ALIAS:ORAR$$
+
+<script src="$$_$$js/jquery-1.2.6.js"></script>
+<script type="text/javascript">
+
+
+	$( document ).ready(function() {
+		$('#trAjouterCiblage').css('display', 'none');
+		$("tr[id^='trCoui_']").css('display', 'none');
+		$("tr[id^='trCouc_']").css('display', 'none');
+		$("tr[id^='trRef_']").css('display', 'none');
+		$("tr[id^='trAtt_']").css('display', 'none');
+		$("tr[id^='trOth_']").css('display', 'none');
+	});
+
+	function displayAgencesCoex(pIdDisp, pIdTr, pIdTd, pIdAnnonce, pPolepocoex){
+		var disphtml = $("#" + pIdDisp).html();
+		if(disphtml.indexOf("Afficher") == 0) {
+			$("#" + pIdTr).css('display', 'none');
+			$.ajax({
+				type: "GET",
+				dataType: 'html',
+				url: "annonce_or_ar_coex_rechmandat.htm",
+				data: { idannonce: pIdAnnonce,
+						polepocoex: pPolepocoex,
+						idtr: pIdTr,
+						'ie_fix' : new Date().getTime()
+						},
+				success: function(msg) {
+					window.document.getElementById(pIdTd).innerHTML = msg;
+					$("#" + pIdTd).find("script").each(function(i) {
+						eval($(this).text());
+					});
+					$("#" + pIdTr).css('display', 'table-row');
+					$("#" + pIdDisp).html('Masquer');
+				}
+			});
+		}
+		else {
+			$("#" + pIdTr).css('display', 'none');
+			$("#" + pIdDisp).html('Afficher');
+		}
+	}
+	
+</script>
+<br>
+	Il vous reste $$CPP:NBPPOR$$ annonce(s) Or disponible(s).
+	<br />
+	<br />
+	<div>
+
+		<b>Liste des annonces Or en co-exclusivité  en attente :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:ENATTENTE$$
+			<tr>
+				<th style="width:15px"></th>
+				<th>Annonce</th>
+				<th>Adresse</th>
+				<th>Type transaction</th>
+				<th>Type bien</th>
+				<th>Surface</th>
+				<th>Prix</th>
+				<!--<th>Or / Argent</th>-->
+				<th style="width:80px">Action</th>
+				<th style="width:80px">Action</th>
+				<th>Co-mandataires</th>
+                <th>Nb Visuels</th>
+			</tr>
+			$$DO$$
+			<tr class="line_$$IF=:0:ENATTENTE:I mod2 0 1$$pair$$END$$$$IF!:0:ENATTENTE:I mod2 0 1$$impair$$END$$_new">
+				<td title="header=[] body=[$$ENATTENTE:MSG_PUBLICATION$$]" style="width:15px">
+					$$IF=:True:ENATTENTE:SI_PUBLIEE$$
+						<span class="img_puce_green" />
+					$$END$$
+					$$IF=:False:ENATTENTE:SI_PUBLIEE$$
+						<span class="img_puce_red" />
+					$$END$$
+				</td>
+				<td>$$ENATTENTE:REFANNONCE$$</td>
+				<td title="header=[] body=[$$ENATTENTE:ADRESSE$$$$IF:ENATTENTE:ADRESSE$$<br />$$END$$$$ENATTENTE:CP$$ $$ENATTENTE:VILLE$$]">$$ENATTENTE:VILLE$$</td>
+				<td>$$ENATTENTE:TTDESC$$</td>
+				<td>$$ENATTENTE:TBDESC$$$$IF:ENATTENTE:STBDESC$$ - $$ENATTENTE:STBDESC$$$$END$$</td>
+				<td>$$ENATTENTE:SURFACE$$ m<sup>2</sup></td>
+				<td>$$ENATTENTE:PRIX round 2$$ &euro;</td>
+				<!--<td>$$IF=:2:ENATTENTE:IDNIVEAUPOLEPO$$Argent$$END$$$$IF=:3:ENATTENTE:IDNIVEAUPOLEPO$$Or$$END$$ </td>-->
+				<td>
+					<form method="post" >
+						<input type="hidden" name="page_ok" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="page_err" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="idannonce" value="$$ENATTENTE:IDANNONCE$$">
+						<input type="hidden" name="idniveaupolepo" value="$$ENATTENTE:IDNIVEAUPOLEPO$$">
+						<input type="hidden" name="u" value="POLEPOSITION:ACCEPTERPOLEPOCOEX">
+						$$IF0:CPP:NBPPOR$$
+							<span title="Vous n'avez plus de crédit disponible pour une publication Or">
+							<input type="SUBMIT" value="Accepter" disabled="disabled">
+							</span>
+						$$END$$
+						$$IF:CPP:NBPPOR$$
+							<input type="SUBMIT" value="Accepter">
+						$$END$$
+					</form>
+				</td>
+				<td>
+					<form method="post">
+						<input type="hidden" name="page_ok" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="page_err" value="annonce_or_argent_coex.htm">
+				 		<input type="hidden" name="idannonce" value="$$ENATTENTE:IDANNONCE$$">
+				  		<input type="hidden" name="idniveaupolepo" value="$$ENATTENTE:IDNIVEAUPOLEPO$$">
+		  				<input type="hidden" name="u" value="POLEPOSITION:REFUSERPOLEPOCOEX">
+						<input type="SUBMIT" value="Refuser">
+					</form>
+				</td>
+				<td>
+					<a href="#" id= "dispAtt_$$ENATTENTE:IDANNONCE$$"
+						onclick="javascript:displayAgencesCoex('dispAtt_$$ENATTENTE:IDANNONCE$$',
+						'trAtt_$$ENATTENTE:IDANNONCE$$',
+						'tdAtt_$$ENATTENTE:IDANNONCE$$', $$ENATTENTE:IDANNONCE$$, 1); return false;">Afficher</a>
+				</td>
+                <td>
+                    $$ENATTENTE:NBVISUELS$$
+                </td>
+			</tr>
+			<tr id="trAtt_$$ENATTENTE:IDANNONCE$$" class="line_$$IF=:0:ENATTENTE:I mod2 0 1$$pair$$END$$$$IF!:0:ENATTENTE:I mod2 0 1$$impair$$END$$_new">
+				<td /><td /><td /><td /><td />
+				<td id="tdAtt_$$ENATTENTE:IDANNONCE$$" colspan="5">
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:ENATTENTE$$
+			<tr class="line_impair_new"><td>Pas d'annonce Or en co-exclusivité en attente</td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+	<br>
+	<div>
+
+		<b>Liste des annonces Or en co-exclusivité acceptées : </b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:ENCOURS$$
+			<tr>
+				<th style="width:15px"></th>
+				<th>Annonce</th>
+				<th>Adresse</th>
+				<th>Type transaction</th>
+				<th>Type bien</th>
+				<th>Surface</th>
+				<th>Prix</th>
+				<th style="width:80px">Action</th>
+				<th>Co-mandataires</th>
+        <th>Nb Visuels</th>
+			</tr>
+			$$DO$$
+			<tr class="line_$$IF=:0:ENCOURS:I mod2 0 1$$pair$$END$$$$IF!:0:ENCOURS:I mod2 0 1$$impair$$END$$_new">
+				<td title="header=[] body=[$$ENCOURS:MSG_PUBLICATION$$]" style="width:15px">
+					$$IF=:True:ENCOURS:SI_PUBLIEE$$
+						<span class="img_puce_green" />
+					$$END$$
+					$$IF=:False:ENCOURS:SI_PUBLIEE$$
+						<span class="img_puce_red" />
+					$$END$$
+				</td>
+				<td>$$ENCOURS:REFANNONCE$$</td>
+				<td title="header=[] body=[$$ENCOURS:ADRESSE$$$$IF:ENCOURS:ADRESSE$$<br />$$END$$$$ENCOURS:CP$$ $$ENCOURS:VILLE$$]">$$ENCOURS:VILLE$$</td>
+				<td>$$ENCOURS:TTDESC$$</td>
+				<td>$$ENCOURS:TBDESC$$$$IF:ENCOURS:STBDESC$$ - $$ENCOURS:STBDESC$$$$END$$</td>
+				<td>$$ENCOURS:SURFACE$$ m<sup>2</sup></td>
+				<td>$$ENCOURS:PRIX round 2$$ &euro;</td>
+				<td>
+					<form method="post" >
+						<input type="hidden" name="page_ok" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="page_err" value="annonce_or_argent_coex.htm">
+		  				<input type="hidden" name="idannonce" value="$$ENCOURS:IDANNONCE$$">
+		  				<input type="hidden" name="idniveaupolepo" value="$$ENCOURS:IDNIVEAUPOLEPO$$">
+		  				<input type="hidden" name="u" value="POLEPOSITION:REFUSERPOLEPOCOEX">
+						<input type="SUBMIT" value="Refuser">
+					</form>
+				</td>
+				<td>
+					<a href="#" id= "dispCoui_$$ENCOURS:IDANNONCE$$"
+						onclick="javascript:displayAgencesCoex('dispCoui_$$ENCOURS:IDANNONCE$$',
+						'trCoui_$$ENCOURS:IDANNONCE$$',
+						'tdCoui_$$ENCOURS:IDANNONCE$$', $$ENCOURS:IDANNONCE$$, 1); return false;">Afficher</a>
+				</td>
+                <td>
+                    $$ENCOURS:NBVISUELS$$
+                </td>
+			</tr>
+			<tr id="trCoui_$$ENCOURS:IDANNONCE$$" class="line_$$IF=:0:ENCOURS:I mod2 0 1$$pair$$END$$$$IF!:0:ENCOURS:I mod2 0 1$$impair$$END$$_new">
+				<td /><td /><td /><td />
+				<td id="tdCoui_$$ENCOURS:IDANNONCE$$" colspan="5">
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:ENCOURS$$
+			<tr class="line_impair_new"><td>Pas d'annonce Or en co-exclusivité  accepté.</td></tr>
+		$$BFIN$$
+		</table>
+    
+    
+		<br>
+	</div>
+	<br>
+	<div>
+		<b>Liste des annonces Or en co-exclusivité  refusées :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:REFUSEES$$
+			<tr>
+				<th style="width:15px"></th>
+				<th>Annonce</th>
+				<th>Adresse</th>
+				<th>Type transaction</th>
+				<th>Type bien</th>
+				<th>Surface</th>
+				<th>Prix</th>
+				<!--<th>Or / Argent</th>-->
+				<th style="width:80px">Action</th>
+				<th>Co-mandataires</th>
+        <th>Nb Visuels</th>
+			</tr>
+			$$DO$$
+			<tr class="line_$$IF=:0:REFUSEES:I mod2 0 1$$pair$$END$$$$IF!:0:REFUSEES:I mod2 0 1$$impair$$END$$_new">
+				<td title="header=[] body=[$$REFUSEES:MSG_PUBLICATION$$]" style="width:15px">
+					$$IF=:True:REFUSEES:SI_PUBLIEE$$
+						<span class="img_puce_green" />
+					$$END$$
+					$$IF=:False:REFUSEES:SI_PUBLIEE$$
+						<span class="img_puce_red" />
+					$$END$$
+				</td>
+				<td>$$REFUSEES:REFANNONCE$$</td>
+				<td title="header=[] body=[$$REFUSEES:ADRESSE$$$$IF:REFUSEES:ADRESSE$$<br />$$END$$$$REFUSEES:CP$$ $$REFUSEES:VILLE$$]">$$REFUSEES:VILLE$$</td>
+				<td>$$REFUSEES:TTDESC$$</td>
+				<td>$$REFUSEES:TBDESC$$$$IF:REFUSEES:STBDESC$$ - $$REFUSEES:STBDESC$$$$END$$</td>
+				<td>$$REFUSEES:SURFACE$$ m<sup>2</sup></td>
+				<td>$$REFUSEES:PRIX round 2$$ &euro;</td>
+				<!--<td>$$IF=:2:REFUSEES:IDNIVEAUPOLEPO$$Argent$$END$$$$IF=:3:REFUSEES:IDNIVEAUPOLEPO$$Or$$END$$</td>-->
+				<td>
+					<form method="post">
+						<input type="hidden" name="page_ok" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="page_err" value="annonce_or_argent_coex.htm">
+			  		<input type="hidden" name="idannonce" value="$$REFUSEES:IDANNONCE$$">
+			  		<input type="hidden" name="idniveaupolepo" value="$$REFUSEES:IDNIVEAUPOLEPO$$">
+	  				<input type="hidden" name="u" value="POLEPOSITION:ACCEPTERPOLEPOCOEX">
+						$$IF0:CPP:NBPPOR$$
+							<span title="Vous n'avez plus de crédit disponible pour une publication Or">
+							<input type="SUBMIT" value="Accepter" disabled="disabled">
+							</span>
+						$$END$$
+						$$IF:CPP:NBPPOR$$
+							<input type="SUBMIT" value="Accepter">
+						$$END$$
+					</form>
+				</td>
+				<td>
+					<a href="#" id="dispRef_$$REFUSEES:IDANNONCE$$"
+						onclick="javascript:displayAgencesCoex('dispRef_$$REFUSEES:IDANNONCE$$',
+						'trRef_$$REFUSEES:IDANNONCE$$',
+						'tdRef_$$REFUSEES:IDANNONCE$$', $$REFUSEES:IDANNONCE$$, 1); return false;">Afficher</a>
+				</td>
+                <td>
+                    $$REFUSEES:NBVISUELS$$
+                </td>
+			</tr>
+			<tr id="trRef_$$REFUSEES:IDANNONCE$$" class="line_$$IF=:0:REFUSEES:I mod2 0 1$$pair$$END$$$$IF!:0:REFUSEES:I mod2 0 1$$impair$$END$$_new">
+				<td /><td /><td /><td />
+				<td id="tdRef_$$REFUSEES:IDANNONCE$$" colspan="5">
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:REFUSEES$$
+			<tr class="line_impair_new"><td>Pas d'annonce Or en co-exclusivité  refusées</td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+
+	<br>
+	<div>
+		<b>Liste des annonces Or en co-exclusivité à proposer :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:OTHER$$
+			<tr>
+				<th style="width:15px"></th>
+				<th>Annonce</th>
+				<th>Adresse</th>
+				<th>Type transaction</th>
+				<th>Type bien</th>
+				<th>Surface</th>
+				<th>Prix</th>
+				<th style="width:85px">Or</th>
+				<th>Co-mandataires</th>
+        <th>Nb Visuels</th>
+			</tr>
+			$$DO$$
+			<tr class="line_$$IF=:0:OTHER:I mod2 0 1$$pair$$END$$$$IF!:0:OTHER:I mod2 0 1$$impair$$END$$_new">
+				<td title="header=[] body=[$$OTHER:MSG_PUBLICATION$$]" style="width:15px">
+					$$IF=:True:OTHER:SI_PUBLIEE$$
+						<span class="img_puce_green" />
+					$$END$$
+					$$IF=:False:OTHER:SI_PUBLIEE$$
+						<span class="img_puce_red" />
+					$$END$$
+				</td>
+				<td>$$OTHER:REFANNONCE$$</td>
+				<td title="header=[] body=[$$OTHER:ADRESSE$$$$IF:OTHER:ADRESSE$$<br />$$END$$$$OTHER:CP$$ $$OTHER:VILLE$$]">$$OTHER:VILLE$$</td>
+				<td>$$OTHER:TTDESC$$</td>
+				<td>$$OTHER:TBDESC$$$$IF:OTHER:STBDESC$$ - $$OTHER:STBDESC$$$$END$$</td>
+				<td>$$OTHER:SURFACE$$ m<sup>2</sup></td>
+				<td>$$OTHER:PRIX round 2$$ &euro;</td>
+				<td>
+					$$IF!:3:OTHER:IDNIVEAUPOLEPO$$		
+					<form method="post" >
+						<input type="hidden" name="page_ok" value="annonce_or_argent_coex.htm">
+						<input type="hidden" name="page_err" value="annonce_or_argent_coex.htm">
+			  		<input type="hidden" name="idannonce" value="$$OTHER:IDANNONCE$$">
+			  		<input type="hidden" name="idniveaupolepo" value="3">
+	  				<input type="hidden" name="u" value="POLEPOSITION:AJOUTERPOLEPOCOEX">
+						$$IF0:CPP:NBPPOR$$
+							<span title="Vous n'avez plus de crédit disponible pour une publication Or">
+							<input type="SUBMIT" value="Ajouter Or" disabled="disabled">
+							</span>
+						$$END$$
+						$$IF:CPP:NBPPOR$$
+							<input type="SUBMIT" value="Ajouter Or" $$IF=:False:OTHER:SI_PUBLIEE$$disabled="disabled"$$END$$>
+						$$END$$
+					</form>
+					$$END$$
+					$$IF=:3:OTHER:IDNIVEAUPOLEPO$$	
+						-
+					$$END$$
+				</td>
+				<td>
+					<a href="#" id="dispOth_$$OTHER:IDANNONCE$$"
+						onclick="javascript:displayAgencesCoex('dispOth_$$OTHER:IDANNONCE$$',
+						'trOth_$$OTHER:IDANNONCE$$',
+						'tdOth_$$OTHER:IDANNONCE$$', $$OTHER:IDANNONCE$$, 0); return false;">Afficher</a>
+				</td>
+                <td>
+                    $$OTHER:NBVISUELS$$
+                </td>
+			</tr>
+			<tr id="trOth_$$OTHER:IDANNONCE$$" class="line_$$IF=:0:OTHER:I mod2 0 1$$pair$$END$$$$IF!:0:OTHER:I mod2 0 1$$impair$$END$$_new">
+				<td /><td /><td /><td />
+				<td id="tdOth_$$OTHER:IDANNONCE$$" colspan="5">
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:OTHER$$
+			<tr class="line_impair_new"><td>Pas d'annonce Or en co-exclusivité à proposer </td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+
+
+
+
+$$INCL:BASX.HTM$$

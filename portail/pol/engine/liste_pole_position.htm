@@ -1,0 +1,71 @@
+$$E:E3:CAT:LIST_POL_P:SLPRO$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:4:~url:slpro_regions.htm$$
+$$E:SLPRO:INFOSAGENCE$$
+$$E:POLEPOSITION:ACCES$$
+
+$$E:POLEPOSITION:COMPTE:ALIAS:APLUSCPT$$
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+
+
+	$$IF0:SLPRO:INFOSAGENCE:TXT_PUBLIC$$
+		$$A:MANQUEINFO=1$$
+	$$END$$
+	$$E:SLPRO:HORAIRE_OUVERTURE_AGENCE:ALIAS:HR$$
+	$$IF=:true:HR:VIDE$$
+		$$A:MANQUEINFO=1$$
+	$$END$$
+	$$REM$$$$IF0:SLPRO:INFOSAGENCE:SI_LOGO$$
+		$$A:MANQUEINFO=1$$
+	$$END$$$$END$$
+
+	
+$$IF=:1:MANQUEINFO$$
+	<div class="erre" id="erre">
+		<span> Nous vous invitons à saisir vos horaires d'ouvertures  <a href="$$XDOM$$/compte_horaires.htm?url=$$REP:URI$$" class="link"> (ici) </a>
+			et votre texte de présentation <a href="$$ID3DOM$$/compte_texte.htm?url=$$REP:URI$$" class="link"> (ici) </a> afin de bénéficier d'une meilleure visibilité auprès des internautes.
+		</span>
+	</div>
+$$END$$
+
+
+
+	$$IF!:1$0:APLUSCPT:IDTYPESELECTION$$ $$A:NOCHECK=1$$ $$END$$
+
+	$$A:BTN_VALID_LISTE=1$$
+	$$BIF0:AGANNONCES$$
+		$$A:BTN_VALID_LISTE=0$$
+		<div class="erre"><span>Aucune annonce ne correspond à votre recherche.</span></div>
+	$$BFIN$$
+
+
+	$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+	$$IF:OK$$<div class="noerre"><span>$$OK$$</span></div>$$END$$
+
+	$$IF:POLEPOSITION:PUBLICATIONS_MAJ:ERRE$$<div class="erre"><span>$$POLEPOSITION:PUBLICATIONS_MAJ:ERRE$$</span></div>$$END$$
+	$$IF:POLEPOSITION:PUBLICATIONS_MAJ:OK$$<div class="noerre"><span>$$POLEPOSITION:PUBLICATIONS_MAJ:OK$$</span></div>$$END$$
+
+	<h4>$$IF!:0:APLUSCPT:NBANN$$Votre sélection comporte $$APLUSCPT:NBANN$$ annonce$$APLUSCPT:NBANN pluriel$$ Pole Position$$END$$$$IF=:0:APLUSCPT:NBANN$$Aucune annonce Pole Position séléctionnée$$END$$</h4>
+
+
+	$$INCL:LISTE_ANN_POLE_POSITION.HTM$$
+
+
+
+
+	
+	$$IF!:1:APLUSCPT:IDTYPESELECTION$$ <br /> $$END$$
+	$$INCL:LISTE_ANN_POLE_POSITION_MODE.HTM$$
+
+
+$$IF!:1:POLEPOSITION:ACCES:ISOK$$
+	<div class="erre"><span>Vous n'avez pas souscrit cette option.</span></div>
+$$END$$
+
+
+$$INCL:BASX.HTM$$

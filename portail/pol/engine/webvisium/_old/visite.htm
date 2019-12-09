@@ -1,0 +1,99 @@
+$$E:E3:CAT:WEBVISIUM_CREER:SLPRO$$
+$$E:IMMOBC:HVVISITE:ALIAS:VISITE$$
+
+$$IF0:FORM:IDVISITE$$
+	$$A:LIBELLE=Création d'une visite$$
+$$END$$
+
+$$IF:FORM:IDVISITE$$
+	$$A:LIBELLE=Visite: @@VISITE:LIBELLE@@$$
+$$END$$
+
+$$IF:VISITE:ERRE$$ 
+	$$A:LIBELLE=Visite non trouvée$$ 
+$$END$$
+
+$$A:PAGE:TITRE=@@LIBELLE@@$$
+
+
+
+
+<!--#include virtual="webvisium/haut.htm"-->
+
+$$IF:VISITE:ERRE$$
+	<div class="erre">$$VISITE:ERRE$$</div>
+	$$A:LIBELLE=Visite non trouvée$$
+$$END$$
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+
+$$IF0:VISITE:ERRE$$
+	<!--#include virtual="webvisium/incl_visite_choix.htm"-->
+$$END$$
+
+
+$$IF:FORM:IDVISITE$$
+
+$$IF:LIST:NBR$$
+	$$IF:VISITE:WARNNOFOUNDPRESSIMMO$$	
+		<div class="erre"><span>Attention, la reference annonce associée est inconnue,<br />cette visite virtuelle ne peut donc être publiée.</span></div>
+	$$END$$
+	<!--#include virtual="webvisium/incl_visite_modif.htm"-->
+	</form>
+$$END$$
+
+
+$$IF0:LIST:NBR$$
+	</form>
+$$END$$
+
+
+
+<!--#include virtual="webvisium/incl_visite_liste.htm"-->
+
+$$IF>:2:LIST:NBR$$
+	<div class="info">
+		<span>
+		Pour modifier l'ordre de présentation des vues, utilisez les flèches
+		<img src="$$WEBVISIUMIMG$$up.gif" alt="Mettre ce visuel en avant">
+		<img src="$$WEBVISIUMIMG$$dn.gif" alt="Baisser la priorité de cette vue">
+		disposés sur la gauche des vues. Vous pouvez aussi vous aider de l'<strong>outil plan</strong> pour guider les visiteurs.
+		</span>
+	 </div>
+$$END$$
+
+<!--#include virtual="webvisium/incl_visite_ajout.htm"-->
+
+$$IF!:1:VUETRAITEE$$
+	<div class="info">
+		<span>
+		L'ajout d'un <strong>plan intéractif</strong> ainsi que la <strong>diffusion</strong> de votre visite virtuelle sont possibles lorqu'au moins une vue est traitée.</span>
+	 </div>
+$$END$$
+
+
+<!-- Gestion plan intéractif //-->
+$$IF=:1:VUETRAITEE$$
+	$$IF:LIST:NBR$$
+		<a name="plan"></a>
+		<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+			<tr class="tabentete">
+				<td>Plan de la visite</td>
+			</tr>
+			<tr>
+				<td>	
+				$$IF:VISITE:SIPLAN$$
+					Vous avez accompagné cette visite d'un plan, pour le rendre interactif ou le modifier :
+				$$END$$
+				$$IF0:VISITE:SIPLAN$$
+					Vous pouvez accompagner chaque visite d'un plan interactif, pour envoyer la photo du plan :
+				$$END$$
+				<div class="btn"><input type="image" src="$$_$$i/dyn/btngestionduplan.png" onclick="javascript:id3_go('/$$FORM:IDVISITE$$$$WEBVISIUMLINK$$plan.htm?idvisite=$$FORM:IDVISITE$$')" /></div>
+			</td>
+		</tr>
+	</table>
+	$$END$$
+$$END$$
+
+$$END:VISITE:ERRE$$
+<!--#include virtual="webvisium/bas.htm"-->

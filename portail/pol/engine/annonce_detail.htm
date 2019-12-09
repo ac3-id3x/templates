@@ -1,0 +1,109 @@
+$$E:SLPRO:ANNONCE-COEX:~idannonce:QRY:IDANNONCE:ALIAS:ANNCOEX$$
+$$B:SLPRO:ANNONCEVISUELS:1:QRY:IDANNONCE:ALIAS:ANNPHOTOS$$
+
+<html>
+	<head>
+		<title>Détail d'annonce</title>
+		<link rel="stylesheet" href="http://www.selogerpro.com/z/portail/pol/css/style.css" />
+		<link rel="stylesheet" href="http://www.selogerpro.com/z/portail/pol/css/pro3.css" />
+		<link rel="stylesheet" href="http://www.selogerpro.com/z/portail/pol/engine/css/style_2col.css" />
+	</head>
+	<body>
+		<h2>ANNONCE</h2>
+		<table style="padding:10px;">
+			<tr>
+				<td>
+					<body>
+						<div class="line">
+							<div class="title">
+								D&eacute;tails de l'annonce
+							</div>
+						</div>
+						<div class="line_easy">
+							<strong>R&eacute;f&eacute;rence :</strong>
+							$$ANNCOEX:REFANNONCE$$<br />
+							<strong>Libell&eacute; :</strong>
+							$$ANNCOEX:LIBELLE$$<br />
+							<strong>Surface totale :</strong>
+							$$ANNCOEX:SURFACE$$ m<sup>2</sup>$$IF:ANNCOEX:DIVISIBLE_MIN$$, divisible à partir de $$ANNCOEX:DIVISIBLE_MIN$$ m<sup>2</sup>$$END$$<br />                            
+							<strong>CP :</strong>
+							$$ANNCOEX:CP$$<br />
+							<strong>Ville :</strong>
+							$$ANNCOEX:VILLE$$<br />
+							<strong>Prix / Loyer (par mois) :</strong>
+							$$ANNCOEX:PRIX$$ &euro;<br />
+							<strong>Type transaction :</strong>
+							$$ANNCOEX:TYPETRANSACTION$$<br />
+							<strong>Type bien :</strong>
+							$$ANNCOEX:TYPEBIEN$$<br />
+							<br />
+							<strong>Descriptif :</strong><br />
+							$$ANNCOEX:DESCRIPTIF$$<br />
+						</div>
+						<div class="line">
+							<div class="title">
+								Photo
+							</div>
+						</div>
+						<div class="line_easy" id="zone_photo">
+							$$BIF:ANNPHOTOS$$
+							$$DO:3:99$$
+							<div class="thumb"><img src="$$ANNPHOTOS:THUMB_URL$$" /></div>
+							$$LOOP$$
+							$$BFIN$$
+							$$IF0:ANNPHOTOS:NBR$$ <div class="errenoclear"><span>Aucune photo</span></div> $$END$$
+						</div>
+						<div class="line">
+							<div class="title">
+								Créateur
+							</div>
+						</div>
+						<div class="line_easy">
+							<strong>Nom commercial :</strong>
+							$$IF0:ANNCOEX:NOM$$[ Non communiqu&eacute; ]$$END$$
+							$$ANNCOEX:NOM$$<br />
+							<strong>T&eacute;l&eacute;phone :</strong>
+							$$IF0:ANNCOEX:TEL$$[ Non communiqu&eacute; ]$$END$$
+							$$ANNCOEX:TEL$$<br />
+							<strong>Email :</strong>
+							$$IF0:ANNCOEX:EMAIL$$[ Non communiqu&eacute; ]$$END$$
+							$$ANNCOEX:EMAIL$$<br />
+							<strong>N&eacute;gociateur :</strong>
+							$$IF0:ANNCOEX:RESPAG$$[ Non communiqu&eacute; ]$$END$$
+							$$ANNCOEX:RESPAG$$<br />
+						</div>
+                        $$B:SLPRO:GET-COMANDATAIRES-INFO:~idannonce:QRY:IDANNONCE:ALIAS:COMANDAT$$
+                        $$BIF:COMANDAT$$
+						<div class="line">
+							<div class="title">
+								Co-mandataires
+							</div>
+						</div>
+                        <div class="line_easy">
+                        $$DO:1:10$$
+                        	$$IF=:Oui:COMANDAT:REPONSE$$
+								<strong>Nom commercial :</strong>
+								$$IF0:COMANDAT:NOM$$[ Non communiqu&eacute; ]$$END$$
+								$$COMANDAT:NOM$$<br />
+								<strong>T&eacute;l&eacute;phone :</strong>
+								$$IF0:COMANDAT:TELNEGO$$[ Non communiqu&eacute; ]$$END$$
+								$$COMANDAT:TELNEGO$$<br />
+								<strong>Email :</strong>
+								$$IF0:COMANDAT:MAILNEGO$$[ Non communiqu&eacute; ]$$END$$
+								$$COMANDAT:MAILNEGO$$<br />                            
+								<strong>N&eacute;gociateur :</strong>
+								$$IF0:COMANDAT:NOMNEGO$$[ Non communiqu&eacute; ]$$END$$
+								$$COMANDAT:NOMNEGO$$<br />
+	                            <br />
+	                        $$END$$
+                        $$LOOP$$
+                        </div>
+                        $$BFIN$$
+                        $$BIF0:COMANDAT$$
+                        $$BFIN$$
+					</body>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

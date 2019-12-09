@@ -1,0 +1,118 @@
+$$E:E3:CAT:WV_PREVIOUS_VERSION:SLPRO$$
+$$A:TAGALIAS=gestion_webvisium$$
+$$A:PG=ACC$$ $$A:LIBELLE=Gestion de vos visites virtuelles$$
+$$A:PAGE:TITRE=@@LIBELLE@@$$
+<!--#include virtual="webvisium/haut.htm"-->
+
+$$IF:ERRE$$<div class="erre">$$ERRE$$</div>$$END$$
+<div class="info"><span><b>Votre contrat WebVisium :</b> Visites diffusables : $$IMMOBC:AUTHHV:VISITESMAX$$, Diffusées actuellement : $$IMMOBC:AUTHHV:VISITESNB$$.</span>
+</div>	
+
+$$B:IMMOBC:HVVISITES:ALIAS:LISV$$
+	$$REM$$<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+		<tr class="tabentete">
+			<td>Créer une nouvelle visite virtuelle</td>
+		</tr>
+		<tr>
+			<td>
+				Vous devez créer une visite par annonce à présenter, dans chaque visite vous pouvez placer un nombre illimité de vues.<br>
+				<div class="btn">
+					<img src="$$_$$i/dyn/btncreerunenouvellevv.png"  onclick="javascript:id3_go('$$XDOM$$/webvisium,visite.htm');"/>
+				</div>	
+			</td>
+		</tr>
+	</table>$$END$$
+$$BIF:LISV$$
+
+$$IF:LISV:NOFOUND$$
+	<div class="erre"><span>Attention, nous n'avons pas trouvé de visite correspondant à votre recherche.</span></div>
+$$END$$	
+
+<form name="searchwv" action="/$$REP:URI$$" method="get">
+	<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+		<tr class="tabentete">
+			<td>Recherchez par référence ou libellé</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="ref" value="$$FORM:REF$$"/>
+				<input type="image" name="submit" src="$$_$$i/dyn/btnrechercher.png" onclick="javascript:id3_go('/webvisium,liste.htm')" />
+				$$IF0:LISV:NOFOUND$$<input type="image" name="submit" src="$$_$$i/dyn/btntoutafficher.png" onclick="javascript:id3_go('/webvisium,liste.htm')" />$$END$$
+			</td>
+		</tr>
+	</table>
+</form>
+
+<div class="info"><span>Retrouvez ci-dessous les visites virtuelles de version 1. Les visites virtuelles actives peuvent seulement être visualisées. Vos visites virtuelles ne peuvent être modifiables. Néanmoins elles restent visibles et hébergées pour un délai de 3 mois à compter du 20 décembre 2007. <br /><strong>Pour gérer vos nouvelles visites virtuelles, <a href="/webvisium,liste.htm">accèdez à la nouvelle plateforme</a>.</strong></span>
+</div>
+
+<form method="post" action="$$REP:NOM$$">
+	
+<h4>Vous hébergez actuellement $$LISV:NBR$$ visite$$LISV:NBR pluriel$$ sur webvisium.</h4>
+<br />
+$$DO$$
+	$$IFPREV:LISV:MOIS$$
+		<div class="line_tab">
+		<div class="title_tab"><div class="img_puce_title">&nbsp;</div>$$LISV:DTCREA date MMMM¤yyyy pcase$$</div>
+	</div>	
+		<table class="tabinfo" cellpadding="0" cellspacing="0">	
+		<thead>
+		<tr>
+			<th class="bdr" id="col_ref">Référence</th>
+			<th class="bdr col_check">Activée</th>
+			<th class="bdr">Libellé</th>
+			<th class="col_check">Effacer</th>
+		</tr>
+		</thead>
+	$$END$$
+
+	<tr class="line_$$LISV:I mod2 pair impair$$">
+	
+	<td class="bdr alignleft" title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Référence] body=[#$$LISV:REFANNONCE$$]">#$$LISV:REFANNONCE$$</td>
+	<td class="bdr">
+		<input type="checkbox" class="noborder" name="actif" value="$$LISV:IDVISITE$$" $$IF:LISV:ACTIF$$checked="checked"$$END$$ onclick="setTimeout('modifActif(\'$$LISV:IDVISITE$$\')',100);" id="actif$$LISV:IDVISITE$$" />
+		<input type=hidden name="desactivee" value="" id="desactive$$LISV:IDVISITE$$" />
+		</td>
+	<td class="bdr alignleft" style="height: 35px;">
+		$$IF:LISV:ACTIF$$<a href="http://www.webvisium.com/$$LISV:UID$$/hv,view.htm" target="_blank" class=und><b>$$END$$$$LISV:LIBELLE$$$$IF:LISV:ACTIF$$</b></a>$$END$$
+		<br />
+		<small>
+			$$IFNULL:LISV:NBVISUELS$$aucun$$END$$$$LISV:NBVISUELS$$ visuel$$LISV:NBVISUELS pluriel$$ |
+		Créee le: $$LISV:DTCREA$$
+		$$IF!:LISV_DTMAJ:LISV:DTCREA$$- Modifiée le: $$LISV:DTCREA$$$$END$$
+		</small>
+$$REM$$	$$IF:LISV:ACTIF$$$$IF+:1:LISV:NBVISUELS$$<div style="float: right"><div class="download_small"></div><a href="$$XDOM$$/webvisium,visite_1.htm?idvisite=$$LISV:IDVISITE$$&uid=$$LISV:UID$$">Télécharger $$IF!:1:LISV:NBVISUELS$$vos visuels$$END$$$$IF=:1:LISV:NBVISUELS$$votre visuel$$END$$</a>&nbsp;&nbsp;</div>$$END$$$$END$$$$END$$
+	</td>
+	<td><input type="checkbox" class="noborder" name="del" value="$$LISV:IDVISITE$$" /></td></tr>
+		
+	$$IFNEXT:LISV:MOIS$$
+	</table><br />
+	
+	$$END$$	
+$$LOOP$$
+
+
+
+
+<div class="btn">
+	<input type="image" name="submit" src="$$_$$i/dyn/btnappliquerlesmodif.png" />
+</div>	
+<script>
+function modifActif(id) {
+	var o= document.getElementById('desactive'+id);
+	var oa = document.getElementById('actif'+id);
+	if (o && oa) {
+		if (oa.checked==true)
+			o.value='';
+		else
+			o.value=id;
+	}
+}
+</script>
+<input type="hidden" name="page_ok" value="$$REP:NOM$$">
+<input type="hidden" name="page_err" value="$$REP:NOM$$">
+<input type="hidden" name="u" value="IMMOBC:HVVISITESMODIF">
+</form>
+$$BFIN$$
+
+<!--#include virtual="webvisium/bas.htm"-->

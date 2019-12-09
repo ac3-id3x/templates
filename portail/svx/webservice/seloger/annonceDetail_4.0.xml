@@ -1,0 +1,214 @@
+﻿$$INCL:COMMON.INC$$$$DYN:ID3:NOFOOTER$$<?xml version="1.0" encoding="UTF-8"?>
+<detailAnnonce>$$E:IMMOBW:DETAILS-ANNONCE-SL:~idAnnonce:QRY:IDANNONCE:~noVisu:NOVISU:ALIAS:SEARCH$$
+$$IF:SEARCH:ERRE$$<codeOp>1</codeOp>$$END:ERRE$$
+$$IF0:SEARCH:ERRE$$<codeOp>0</codeOp>
+	<idTiers>$$SEARCH:IDTIERS$$</idTiers>
+	<idAnnonce>$$SEARCH:IDANNONCE$$</idAnnonce>
+	<niveauorargent>$$SEARCH:NIVEAUORARGENT$$</niveauorargent>
+	<idTypeTransaction>$$SEARCH:IDTYPETRANSACTION$$</idTypeTransaction>	
+	<idTypeBien>$$SEARCH:IDTYPEBIEN$$</idTypeBien>
+	$$IF:SEARCH:IDSOUSTYPEBIEN$$<idSousTypeBien>$$SEARCH:IDSOUSTYPEBIEN$$</idSousTypeBien>$$END$$
+	<dtFraicheur>$$SEARCH:DT_FRAICHEUR date yyyy-MM-ddTHH:mm:ss$$</dtFraicheur>
+	<dtCreation>$$SEARCH:DT_CREATION date yyyy-MM-ddTHH:mm:ss$$</dtCreation>
+	<titre>$$SEARCH:TITRE htmlattributeencode$$</titre>
+	<libelle>$$SEARCH:LIBELLE htmlattributeencode$$</libelle>
+	$$IF:SEARCH:PROX$$<proximite>$$SEARCH:PROX htmlattributeencode$$</proximite>$$END$$
+	<descriptif>$$SEARCH:DESCRIPTIF_FR htmlattributeencode$$$$IF=:1:SEARCH:IDTYPETRANSACTION$$$$IF:SEARCH:HONORAIRES$$
+Honoraires TTC en sus : $$SEARCH:HONORAIRES etoeuro replace &euro; "" trim$$ €.$$END:HONORAIRES$$$$IF:SEARCH:GARANTIE$$
+Garantie : $$SEARCH:GARANTIE etoeuro replace &euro; "" trim$$ €.$$END:GARANTIE$$$$IF:SEARCH:DT_DISPO$$
+Disponible le $$SEARCH:DT_DISPO date dd/MM/yyyy$$.$$END:DT_DISPO$$$$END:IDTYPETRANSACTION$$</descriptif>
+$$IF0:SEARCH:SITRANCHEPRIX$$
+$$IF:SEARCH:PRIXRAW$$
+	<prix>$$SEARCH:PRIXRAW round 2$$</prix>
+$$END:PRIXRAW$$
+$$END:SITRANCHEPRIX$$
+$$IF:SEARCH:SITRANCHEPRIX$$
+	<tranchePrix>$$SEARCH:TRANCHEPRIX htmldecode htmlattributeencode rxreplace €$ ¤ trim$$</tranchePrix>
+$$END:SITRANCHEPRIX$$
+	<charges>$$SEARCH:PX_CHARGES$$</charges>
+	<prixUnite>$$SEARCH:PRIX_UNITE$$$$IF:SEARCH:SI_LOYER_CC$$*$$END:SI_LOYER_CC$$$$IF:SEARCH:SI_FAI$$*$$END:SI_FAI$$$$IF=:1:SEARCH:IDTYPETRANSACTION$$$$IF0:SEARCH:SI_LOYER_CC$$*$$END:SI_LOYER_CC$$$$END:IDTYPETRANSACTION$$</prixUnite>
+	<prixMention>$$IF=:1:SEARCH:IDTYPETRANSACTION$$$$IF0:SEARCH:SI_LOYER_CC$$* Loyer mensuel hors charges$$END:SI_LOYER_CC$$$$END:IDTYPETRANSACTION$$$$IF:SEARCH:SI_LOYER_CC$$* Loyer mensuel charges comprises$$END:SI_LOYER_CC$$$$IF:SEARCH:SI_FRAIS_NOTAIRE$$* Prix net, hors frais notariés, d'enregistrement et de publicité foncière$$END:SI_FRAIS_NOTAIRE$$</prixMention>
+	<si_fai>$$SEARCH:SI_FAI$$</si_fai>
+	<si_cc>$$SEARCH:SI_LOYER_CC$$</si_cc>
+$$IF=:5:SEARCH:IDTYPETRANSACTION$$
+	<prixRente>$$SEARCH:PX_RENTE$$</prixRente>
+	<prixBouquet>$$SEARCH:PX_BOUQUET$$</prixBouquet>
+	<ageHomme>$$SEARCH:AGE_H$$</ageHomme>
+	<ageFemme>$$SEARCH:AGE_F$$</ageFemme>
+	<siLibre>$$SEARCH:SI_LIBRE$$</siLibre>
+$$END:IDTYPETRANSACTION$$
+$$IF=:11:SEARCH:IDTYPETRANSACTION$$
+	<loyer>$$SEARCH:PX_LOYER round 2$$</loyer>
+	$$A:SI_LOYER_CC=0$$ $$IF:SEARCH:SI_LOYER_CC$$ $$A:SI_LOYER_CC=1$$ $$END$$ $$IF=:OUI:SEARCH:XML xml si_loyer_annuel_cc trim$$ $$A:SI_LOYER_CC=1$$ $$END$$
+	$$A:SI_LOYER_HT=0$$ $$IF:SEARCH:SI_LOYER_HT$$ $$A:SI_LOYER_HT=1$$ $$END$$ $$IF=:OUI:SEARCH:XML xml si_loyer_annuel_ht trim$$ $$A:SI_LOYER_HT=1$$ $$END$$
+	<loyerUnite>€$$IF:SI_LOYER_CC$$cc$$END:SI_LOYER_CC$$$$IF:SI_LOYER_HT$$HT$$END:SI_LOYER_HT$$</loyerUnite>
+$$END:IDTYPETRANSACTION$$
+$$IF=:1$11:SEARCH:IDTYPETRANSACTION$$
+	$$IF:SEARCH:XML xml loyer_annuel_metre$$
+	<loyerAnnuelM2>$$SEARCH:XML xml loyer_annuel_metre round 2$$</loyerAnnuelM2>
+	<loyerAnnuelM2Unite>€$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_metre_cc trim$$cc$$END$$$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_metre_ht trim$$HT$$END$$</loyerAnnuelM2Unite>
+	$$END$$
+	$$IF:SEARCH:XML xml loyer_annuel_global$$
+	<loyerAnnuel>$$SEARCH:XML xml loyer_annuel_global round 2$$</loyerAnnuel>
+	<loyerAnnuelUnite>€$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_cc trim$$cc$$END$$$$IF=:OUI:SEARCH:XML xml si_loyer_annuel_ht trim$$HT$$END$$</loyerAnnuelUnite>
+	$$END$$
+$$END:IDTYPETRANSACTION$$
+	$$IF:SEARCH:SURFACE$$<surface>$$SEARCH:SURFACE round 2$$</surface>
+	<surfaceUnite>m²</surfaceUnite>$$END$$
+	$$IF:SEARCH:NB_PIECES$$<nbPieces>$$SEARCH:NB_PIECES$$</nbPieces>$$END$$
+	$$IF:SEARCH:NB_CHAMBRES$$<nbChambres>$$SEARCH:NB_CHAMBRES$$</nbChambres>$$END$$
+	<idPays>$$SEARCH:IDPAYS$$</idPays>
+	<pays>$$SEARCH:IDPAYS getpays$$</pays>
+	$$IF:SEARCH:ACP$$<cp>$$SEARCH:ACP htmlattributeencode$$</cp>$$END$$
+	$$IF:SEARCH:CODEINSEE$$<codeInsee>$$SEARCH:CODEINSEE$$</codeInsee>$$END$$
+	<ville>$$SEARCH:AVILLE htmlattributeencode$$</ville>
+	<adresse>$$SEARCH:ADRESSE htmlattributeencode$$</adresse>
+	$$IF:SEARCH:QUARTIER$$<quartier>$$SEARCH:QUARTIER htmlattributeencode$$</quartier>$$END$$
+	<latitude>$$SEARCH:PUBLICLAT round 6$$</latitude>
+	<longitude>$$SEARCH:PUBLICLNG round 6$$</longitude>
+	<llPrecision>$$SEARCH:LATLNGTYPE$$</llPrecision>
+	<siExclusif>$$SEARCH:SI_EXCLUSIF$$</siExclusif>
+	<siMandatExclusif>$$IF:SEARCH:SI_MANDATEXCLUSIF_ET_PRODUITEXCLUSIVITESL$$ $$SEARCH:SI_MANDATEXCLUSIF_ET_PRODUITEXCLUSIVITESL$$$$END$$ $$IF0:SEARCH:SI_MANDATEXCLUSIF_ET_PRODUITEXCLUSIVITESL$$false$$END$$</siMandatExclusif>
+	<siMandatStar>$$IF:SEARCH:SIMANDATSTAR$$ $$SEARCH:SIMANDATSTAR$$$$END$$ $$IF0:SEARCH:SIMANDATSTAR$$false$$END$$</siMandatStar>
+	<reference>$$SEARCH:PREFIXE_REF$$$$IF:SEARCH:PREFIXE_REF$$ $$END$$$$SEARCH:REFANNONCE htmlattributeencode$$</reference>
+	$$IF0:SEARCH:URLVIRTUELLE$$<permaLien>http://www.$$REP:MSRV$$/$$SEARCH:IDPUBLICATION$$/$$SEARCH:IDANNONCE$$/detail.htm?idtt=$$SEARCH:IDTYPETRANSACTION$$&amp;p=$$SEARCH:BASICPARAMETERS urlencode$$</permaLien>$$END$$
+	$$IF:SEARCH:URLVIRTUELLE$$<permaLien>$$SEARCH:URLVIRTUELLE htmlattributeencode$$?p=$$SEARCH:BASICPARAMETERS urlencode$$</permaLien>$$END$$	
+	<typeDPE>$$SEARCH:TYPEDPE$$</typeDPE>
+	<DPE>$$SEARCH:SI_DPE_NON_RENSEIGNE$$</DPE>
+	$$IF:SEARCH:CONSOENERGIE$$<consoEnergie>$$SEARCH:CONSOENERGIE$$</consoEnergie>$$END:CONSOENERGIE$$
+	$$IF:SEARCH:BILANCONSOENERGIE$$<bilanConsoEnergie>$$SEARCH:BILANCONSOENERGIE$$</bilanConsoEnergie>$$END:BILANCONSOENERGIE$$
+	$$IF:SEARCH:EMISSIONGES$$<emissionGES>$$SEARCH:EMISSIONGES$$</emissionGES>$$END:EMISSIONGES$$
+	$$IF:SEARCH:BILANEMISSIONGES$$<bilanEmissionGES>$$SEARCH:BILANEMISSIONGES$$</bilanEmissionGES>$$END:BILANEMISSIONGES$$
+	<siLotNeuf>$$IF:SEARCH:IDANNONCEPARENT$$true$$END$$$$IF0:SEARCH:IDANNONCEPARENT$$false$$END$$</siLotNeuf>
+	<idAnnonceProgramme>$$SEARCH:IDANNONCEPARENT$$</idAnnonceProgramme>
+	<autrePlateforme>$$IF:SEARCH:SISLN$$SLNEUF$$END$$$$IF:SEARCH:SIBD$$BD$$END$$$$IF:SEARCH:SICMI$$CMI$$END$$</autrePlateforme>
+	<tagOmniture>$$SEARCH:TAG_OMNITURE$$</tagOmniture>
+	<baissePrix>$$SEARCH:ANNONCEBAISSEPRIX$$</baissePrix>
+
+$$B:IMMOBW:AFFICHANNONCES:QRY:IDANNONCE:ALIAS:DETAILS$$
+$$BIF:DETAILS$$
+	<details>
+$$DO$$
+		<detail>
+			<libelle>$$DETAILS:LIB htmlattributeencode$$</libelle>
+			<valeur>$$DETAILS:VAL$$</valeur>
+		</detail>
+$$LOOP$$
+	</details>
+$$BFIN$$
+	<contact>
+$$IF:FORM:NOAUDIOTEL$$
+	$$A:NOAUDIOTEL=1$$
+$$END$$
+$$IF0:SEARCH:SI_AUDIOTEL$$
+	$$A:NOAUDIOTEL=1$$
+$$END$$
+$$IF:NOAUDIOTEL$$
+		<siAudiotel>false</siAudiotel>
+		<idPublication>$$SEARCH:IDPUBLICATION$$</idPublication>
+		<idAgence>$$SEARCH:IDAGENCE$$</idAgence>
+		<idAnnuaire>$$SEARCH:IDANNUAIRE$$</idAnnuaire>		
+		$$E:IMMOBW:ANNUAIRE_DETAIL:~idannuaire:VAL:SEARCH_IDANNUAIRE:~formatLogo:QRY:FORMATLOGO$$		
+		<niveauAnnuaire>$$IMMOBW:ANNUAIRE_DETAIL:NIVEAUANNUAIRE$$</niveauAnnuaire>
+		<typeProfessionnel>$$IMMOBW:ANNUAIRE_DETAIL:TYPEPROFESSIONNEL$$</typeProfessionnel>		
+		<nom>$$IF:SEARCH:COOR-NOM$$$$SEARCH:COOR-NOM htmlattributeencode$$$$END:COOR-NOM$$$$IF0:SEARCH:COOR-NOM$$$$SEARCH:COOR-CONTACT htmlattributeencode$$$$END:COOR-NOM$$</nom>
+		$$IF:SEARCH:TELEPHONEORI$$<telephone>$$SEARCH:TELEPHONEORI leftuntil / formattel$$</telephone>$$END$$
+		$$IF:SEARCH:FAX$$<fax>$$SEARCH:FAX leftuntil / formattel$$</fax>$$END$$
+		$$IF:SEARCH:EMAIL$$<email>$$SEARCH:EMAIL$$</email>$$END$$
+		$$IF:SEARCH:COOR-ADRESSE$$<adresse>$$SEARCH:COOR-ADRESSE htmlattributeencode$$</adresse>$$END$$
+		$$IF:SEARCH:AGLATITUDE$$<latitude>$$SEARCH:AGLATITUDE round 6$$</latitude>$$END$$
+		$$IF:SEARCH:AGLONGITUDE$$<longitude>$$SEARCH:AGLONGITUDE round 6$$</longitude>$$END$$
+
+		$$E:IMMOBW:AGENCE:VAL:SEARCH_IDPUBLICATION:ALIAS:AGENCE$$
+		$$IF:AGENCE:RCS_SIREN$$<rcsSiren>$$AGENCE:RCS_SIREN$$</rcsSiren>
+		$$IF:AGENCE:RCS_NIC$$<rcsNic>$$AGENCE:RCS_NIC$$</rcsNic>$$END$$$$END$$
+
+		$$IF:SEARCH:SI_LOGO-ORPI$$
+		<tnyUrl>http://$$REP:SRV$$/z/portail/svx/portals/sv6_gen/images/logo_orpi_2010_40.gif</tnyUrl>
+		<bigUrl>http://$$REP:SRV$$/z/portail/svx/portals/sv6_gen/images/logo_orpi_2010.gif</bigUrl>
+		$$END:SI_LOGO-ORPI$$
+		$$IF0:SEARCH:SI_LOGO-ORPI$$
+$$IF:PAGE:RETURNLOGOS$$$$A:RETURNLOGOS=1$$$$END:RETURNLOGOS$$
+$$IF:SEARCH:SI_PRODUITLOGOAGENCE$$$$A:RETURNLOGOS=1$$$$END:SI_PRODUITLOGOAGENCE$$
+		$$IF:RETURNLOGOS$$$$IF:SEARCH:URLLOGO$$
+		<tnyUrl>$$SEARCH:URLLOGO$$</tnyUrl>
+		<bigUrl>$$SEARCH:URLLOGO replace tny big$$</bigUrl>
+		$$END:URLLOGO$$$$END:RETURNLOGOS$$
+		$$END:SI_LOGO-ORPI$$
+
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:COUNT:VAL:SEARCH_IDPUBLICATION$$$$BIF:COUNT$$$$DO$$
+		$$IF=:1:COUNT:IDTYPETRANSACTION$$<nbAnnoncesLocation>$$COUNT:NBANN$$</nbAnnoncesLocation>$$END$$
+		$$IF=:2:COUNT:IDTYPETRANSACTION$$<nbAnnoncesVente>$$COUNT:NBANN$$</nbAnnoncesVente>$$END$$
+		$$IF=:8:COUNT:IDTYPETRANSACTION$$<nbAnnoncesVentePrestige>$$COUNT:NBANN$$</nbAnnoncesVentePrestige>$$END$$
+		$$LOOP$$$$BFIN$$
+
+		$$E:IMMOBW:BIENS-VENDUS-VALIDES:~idPublication:VAL:SEARCH_IDPUBLICATION:~forMobile:1:ALIAS:BVD$$
+		<nbBiensVendus>$$BVD:NBBIENSVENDUS$$</nbBiensVendus>
+
+$$END:NOAUDIOTEL$$
+$$IF0:NOAUDIOTEL$$
+		<siAudiotel>true</siAudiotel>
+		<nom>$$IF:SEARCH:COOR-NOM$$$$SEARCH:COOR-NOM typeannonceur htmlattributeencode$$$$END:COOR-NOM$$$$IF0:SEARCH:COOR-NOM$$$$SEARCH:COOR-CONTACT typeannonceur htmlattributeencode$$$$END:COOR-NOM$$</nom>
+		$$IF:SEARCH:TELEPHONE$$<telephone>$$SEARCH:TELEPHONE leftuntil / formattel$$</telephone>$$END$$
+		<audiotelCodeContact>$$SEARCH:IDANNONCE$$</audiotelCodeContact>
+		<audiotelMentionLegale>1€35/appel puis 0€34/min</audiotelMentionLegale>
+$$END:NOAUDIOTEL$$
+	</contact>
+	<nbPhotos>$$LISTPIC:NBR$$</nbPhotos>
+$$B:IMMOBW:PHOTOS:QRY:IDANNONCE:ALIAS:LISTPIC$$
+$$BIF:LISTPIC$$
+	<photos>
+$$DO$$
+		<photo>
+			<ordre>$$LISTPIC:I$$</ordre>
+			<thumbUrl>$$LISTPIC:THUMB_URL$$</thumbUrl>
+			<thbUrl>$$LISTPIC:CARRE_URL$$</thbUrl>
+			<stdUrl>$$LISTPIC:URL$$</stdUrl>
+			<bigUrl>$$IF0:LISTPIC:BIG_URL$$$$LISTPIC:B600_URL$$$$END$$$$IF:LISTPIC:BIG_URL$$$$LISTPIC:BIG_URL$$$$END$$</bigUrl>			
+		</photo>
+$$LOOP$$
+	</photos>
+$$BFIN$$
+
+$$IF!:1$3$4$7:SEARCH:IDTYPETRANSACTION$$
+	$$E:IMMOBW:CREDITAGRICOLEMOBILE:~cp:VAL:SEARCH_CP::~ci:VAL:SEARCH_CODEINSEE:ALIAS:CRAG$$
+	<creditAgricole>
+		<nom>$$CRAG:NOM$$</nom>
+		<urlMB>$$CRAG:URLMB htmlattributeencode$$</urlMB>
+		<urlAND>$$CRAG:URLAND htmlattributeencode$$</urlAND>
+		<urlIPHN>$$CRAG:URLIPHN htmlattributeencode$$</urlIPHN>
+		<urlIPAD>$$CRAG:URLIPAD htmlattributeencode$$</urlIPAD>
+	</creditAgricole>
+$$END$$
+
+	$$E:IMMOBW:ACHETERAPARTIRDE:~prix:VAL:SEARCH_PRIXRAW:ALIAS:CRMENS$$
+	<acheterapartirde>
+		<mensualite>$$CRMENS:MENSUALITE round 0$$</mensualite>
+		<taux>$$CRMENS:TAUX$$</taux>
+		<duree>$$CRMENS:DUREE$$</duree>
+	</acheterapartirde>
+	$$IF:SEARCH:ANNONCEBAISSEPRIX$$
+	$$B:IMMOBW:ANNONCEHISTORIQUEPRIX:~idannonce:QRY:IDANNONCE:ALIAS:LISTE$$
+	$$BIF:LISTE$$
+	<prixTendance>$$LISTE:SI_HAUSSE$$</prixTendance>
+	<prixHistorique>
+	$$DO$$
+		<prixV4>
+			<date>$$LISTE:DATEPRIX date yyyy-MM-ddTHH:mm:ss$$</date>
+			<ancienPrix>$$LISTE:PRIXOLD$$</ancienPrix>
+			<nouveauPrix>$$LISTE:PRIXNEW$$</nouveauPrix>
+		</prixV4>
+	$$LOOP$$
+	</prixHistorique>
+	$$BFIN$$
+	$$END:ANNONCEBAISSEPRIX$$
+$$END:ERRE$$
+	<siHonorairesAcquereur>$$SEARCH:SI_HONORAIRES_ACQUEREUR$$</siHonorairesAcquereur>
+	<honorairePourcentageAcquereur>$$SEARCH:HONORAIRES_POURCENTAGE_ACQUEREUR$$</honorairePourcentageAcquereur>
+	<siCopropriete>$$SEARCH:SI_COPROPRIETE$$</siCopropriete>
+	<nbLotsCopropriete>$$SEARCH:NB_LOTS_COPROPRIETE$$</nbLotsCopropriete>
+	<chargesAnnuelles>$$SEARCH:CHARGES_ANNUELLES$$</chargesAnnuelles>
+	<siProcedureSyndicat>$$SEARCH:SI_PROCEDURE_SYNDICAT$$</siProcedureSyndicat>
+	<descriptionProcedureSyndicat>$$SEARCH:DESCRIPTION_PROCEDURE_SYNDICAT htmlattributeencode$$</descriptionProcedureSyndicat>
+
+</detailAnnonce>

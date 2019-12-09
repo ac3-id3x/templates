@@ -1,0 +1,271 @@
+$$B:SLPRO:LISTE_ANNONCES:~idtypevisuel_filtre:QRY:IDTYPEVISUEL:~idtypetransaction_filtre:QRY:IDTYPETRANSACTION:~idtypebien_filtre:QRY:IDTYPEBIEN:~censure_filtre:QRY:CENSURE:~cpville_filtre:QRY:CP:~idtypepublication_filtre:QRY:PUBLICATION:QRY:IDTYPEPUBLICATION:~nbpieces_filtre:QRY:NBPIECES:~nbpieces_min:QRY:NBPIECES_MIN:~idtypepublication_filtre:QRY:PUBLICATION:~idannonce_filtre:QRY:ID:~refannonce_filtre:QRY:REFANNONCE:~eligibleorar:QRY:ELIGIBLEORAR:~tri:QRY:TRI:ALIAS:AGANNONCES$$	
+$$INCL:LISTE_ANN_NBANN.HTM$$
+
+$$IF:PARUTIONPAPIER$$ $$A:MAJ=1$$ $$END$$
+$$IF:CANNAUXDIFF$$ $$A:MAJ=1$$ $$END$$
+
+<script src="$$_$$js/jquery-1.11.0.min.js" ></script>
+<script src="$$_$$js/jquery.radio.checkbox.behavior.js" ></script>
+<script src="$$_$$js/jquery.liste-annonce.nbpolepodispo-handler.js" ></script>
+
+<script type="text/javascript" >
+	$( document ).ready(function() {
+		$('#trAjouterCiblage').css('display', 'none');
+		$("tr[id^='trAg']").css('display', 'none');
+		$("tr[id^='trOr']").css('display', 'none');
+		for(i = 0; i < $("td[id^='td_ar_']").length; i++)
+			$("td[id^='td_ar_']")[i].boBDY = "Nb disponibles: " + nbArDispo;
+		for(i = 0; i < $("td[id^='td_or_']").length; i++)
+			$("td[id^='td_or_']")[i].boBDY = "Nb disponibles: " + nbOrDispo;
+
+	    $(".polepofield").behaveLikeCheckbox();
+	    $(".polepofield").handleNbPolePoDispo();
+		
+		$("input[name=idtypepublication_list]").val('$$IF=:1:CANNAUXDIFF$$$$IF:PUBL:PUBNB1_PUBLICATION_ABBR$$$$PUBL:PUBNB1_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB2_PUBLICATION_ABBR$$$$PUBL:PUBNB2_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB3_PUBLICATION_ABBR$$$$PUBL:PUBNB3_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB4_PUBLICATION_ABBR$$$$PUBL:PUBNB4_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB5_PUBLICATION_ABBR$$$$PUBL:PUBNB5_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB6_PUBLICATION_ABBR$$$$PUBL:PUBNB6_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB7_PUBLICATION_ABBR$$$$PUBL:PUBNB7_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB8_PUBLICATION_ABBR$$$$PUBL:PUBNB8_IDTYPEPUBLICATION$$,$$END$$$$IF:PUBL:PUBNB9_PUBLICATION_ABBR$$$$PUBL:PUBNB9_IDTYPEPUBLICATION$$,$$END$$$$END$$');
+
+		var listExclude = $(".excludePubli").map(function( index ) {
+			   return $(this).attr("id");
+		}).get().join();
+		
+		$("input[name=publiExclude]").val(listExclude);
+		
+		// A exécuter seulement si on vient de créer une annonce: URL = http://www.selogerpro.com/editann/new/canaux_diffusion.htm?id=#idannonce
+		if(window.location.href.indexOf("editann/new") > 0)
+			InitEditPubli();
+		else
+			$("input[name=EditPubli]").val("");
+
+		var typePublicationArray = new Array();
+		$(".polepofield").click(function () {
+			if(window.location.href.indexOf("editann/new") > 0)
+				return;
+			
+			var attrName = $(this).attr("name");
+			if($.inArray(attrName,typePublicationArray)!=-1){
+				typePublicationArray = jQuery.grep(typePublicationArray, function(value) {
+				  return value != attrName;
+				});
+			}
+			else
+			{
+				typePublicationArray.push(attrName);
+			}
+			
+			$("input[name=EditPubli]").val(typePublicationArray.join());
+		}); 
+		
+	});
+
+	function InitEditPubli(){
+		var typePublicationArray = new Array();
+		for(i = 0; i < $('input.polepofield[value="1"]').length; i++)
+			typePublicationArray.push($('input.polepofield[value="1"]')[i].name);
+		$("input[name=EditPubli]").val(typePublicationArray.join());
+	}
+
+	function displayAgencesCoex(pIdDisp, pIdTr, pIdTd, pIdAnnonce, pIdNiveauPolePo, pDateDemande) {
+		var disphtml = $("#" + pIdDisp).html();
+		if(disphtml.indexOf("Afficher") == 0) {
+			$("#" + pIdTr).css('display', 'none');
+			$.ajax({
+				type: "GET",
+				dataType: 'html',
+				url: "annonce_or_argent_coex_rechag.htm",
+				data: { idNiveauPolePo: pIdNiveauPolePo,
+						dateDemande: pDateDemande,
+						idannonce: pIdAnnonce,
+						idtr: pIdTr,
+						'ie_fix' : new Date().getTime()
+						},
+				success: function(msg) {
+					window.document.getElementById(pIdTd).innerHTML = msg;
+					$("#" + pIdTd).find("script").each(function(i) {
+						eval($(this).text());
+					});
+					$("#" + pIdTr).css('display', 'table-row');
+					$("#" + pIdDisp).html('Masquer les<br>co-mandataires');
+				}
+			});
+		}
+		else {
+			$("#" + pIdTr).css('display', 'none');
+			$("#" + pIdDisp).html('Afficher les<br>co-mandataires');
+		}
+	}
+
+	function ClearCheckbox(id, index) {
+		var child1 = document.getElementById("1" + id);
+		var child2 = document.getElementById("2" + id);
+		if (index == 1) {
+			child2.checked = false;
+		} else {
+			child1.checked = false;
+		}
+	}
+
+	function SetChecked(obj) {
+		obj.checked = true;
+	}
+	$$E:POLEPOSITION:CONTRATS-POLEPO:~idtypepublication:2109:ALIAS:CPP$$
+	var nbArDispo = $$IF:CPP:NBPPAR$$$$CPP:NBPPAR$$$$END$$ $$IF0:CPP:NBPPAR$$0$$END$$;
+	var nbOrDispo = $$IF:CPP:NBPPOR$$$$CPP:NBPPOR$$$$END$$ $$IF0:CPP:NBPPOR$$0$$END$$;
+	
+	function MedalOnOff(id) {
+		var idannonce = id.replace("medal_silver_on_", "").replace("medal_silver_off_", "").replace("medal_gold_on_", "").replace("medal_gold_off_", "");
+		
+		if(id.indexOf("medal_silver_on_") != -1) { // On a cliqué sur medal_silver_on ==> on passe à medal_silver_off ==> PPAR_idannonce value passe à 0
+			$("#medal_silver_on_" + idannonce).css('display', 'none');
+			$("#medal_silver_off_" + idannonce).css('display', 'inline');
+			$('#PPAR_' + idannonce).val("");
+			nbArDispo++;
+			updateDivDispo();
+		}
+
+		if(id.indexOf("medal_silver_off_") != -1) {
+			if(nbArDispo > 0){
+				$("#medal_silver_off_" + idannonce).css('display', 'none');
+				$("#medal_silver_on_" + idannonce).css('display', 'inline');
+				$('#PPAR_' + idannonce).val("1");
+				nbArDispo--;
+
+				if($("#medal_gold_on_" + idannonce).css('display') == 'inline')
+					nbOrDispo++;
+
+				updateDivDispo();
+
+				$("#medal_gold_on_" + idannonce).css('display', 'none');
+				$("#medal_gold_off_" + idannonce).css('display', 'inline');
+				$('#PPOR_' + idannonce).val("");
+			} else {
+				alert('Vous n\'avez pas/plus de Pole Position Argent disponible');
+			}
+		}
+		
+		if(id.indexOf("medal_gold_on_") != -1) {
+			$("#medal_gold_on_" + idannonce).css('display', 'none');
+			$("#medal_gold_off_" + idannonce).css('display', 'inline');
+			$('#PPOR_' + idannonce).val("");
+			nbOrDispo++;
+			updateDivDispo();
+		}
+
+		if(id.indexOf("medal_gold_off_") != -1) {
+			if (nbOrDispo > 0) {
+				$("#medal_gold_off_" + idannonce).css('display', 'none');
+				$("#medal_gold_on_" + idannonce).css('display', 'inline');
+				$('#PPOR_' + idannonce).val("1");
+				nbOrDispo--;
+            
+				if ($("#medal_silver_on_" + idannonce).css('display') == 'inline')
+					nbArDispo++;
+
+				updateDivDispo();
+
+				$("#medal_silver_on_" + idannonce).css('display', 'none');
+				$("#medal_silver_off_" + idannonce).css('display', 'inline');
+				$('#PPAR_' + idannonce).val("");
+			} else {
+				alert('Vous n\'avez pas/plus de Pole Position Or disponible');
+			}
+		}
+
+	}
+	
+	function updateDivDispo() {
+		$('#libNbDispo').html('PolePo argent dispo : ' + nbArDispo + '<br>PolePo or dispo : ' + nbOrDispo + '<br><br>');
+	}
+	
+	function DisplayMedal(color, idannonce, pparchecked, uneligiblepp, nbphotos, customHiddenFieldName) {
+		var lettre = (color == 'silver') ? 'A' : 'O';
+		var strHtml;
+		
+		if (pparchecked == 'True') {
+			strHtml = '<img id="medal_' + color + '_on_' + idannonce + '" onclick="javascript:MedalOnOff(\'medal_' + color + '_on_' + idannonce + '\')" src="$$_$$i/medal_' + color + '_on.png" border="0" />';
+			strHtml += '<img id="medal_' + color + '_off_' + idannonce + '" onclick="javascript:MedalOnOff(\'medal_' + color + '_off_' + idannonce + '\')" src="$$_$$i/medal_' + color + '_off.png" border="0" style="display:none"/>';
+			strHtml += '<input type="hidden" name="' + customHiddenFieldName + '" id="PP' + lettre + 'R_' + idannonce + '" value="1"/>';
+			document.write(strHtml);
+			return;
+		} else {
+			if (uneligiblepp == '1') {
+				strHtml = '<img id="medal_black_' + idannonce + '" src="$$_$$i/medal_black.png" border="0" />';
+				strHtml += '<input type="hidden" name="' + customHiddenFieldName + '" id="PP' + lettre + 'R_' + idannonce + '" value=""/>';
+				document.write(strHtml);
+				return;
+			} else {
+				if(nbphotos == '' || nbphotos == '0') {
+					strHtml = '<img id="medal_black_' + idannonce + '" src="$$_$$i/medal_black.png" border="0" />';
+					strHtml += '<input type="hidden" name="' + customHiddenFieldName + '" id="PP' + lettre + 'R_' + idannonce + '" value=""/>';
+					document.write(strHtml);
+					return;
+				}
+			}
+		}
+		strHtml = '<img id="medal_' + color + '_on_' + idannonce + '" onclick="javascript:MedalOnOff(\'medal_' + color + '_on_' + idannonce + '\')" src="$$_$$i/medal_' + color + '_on.png" border="0" style="display:none"/>';
+		strHtml += '<img id="medal_' + color + '_off_' + idannonce + '" onclick="javascript:MedalOnOff(\'medal_' + color + '_off_' + idannonce + '\')" src="$$_$$i/medal_' + color + '_off.png" border="0" />';
+		strHtml += '<input type="hidden" name="' + customHiddenFieldName + '" id="PP' + lettre + 'R_' + idannonce + '" value=""/>'
+		document.write(strHtml);
+	}
+	
+</script>
+
+$$A:NO_VISU=0$$
+$$A:HAS_POLEPOCOEX=0$$
+<form action="/$$IF!:editann:REP:2$$$$IF:MAJ$$$$REP:0$$$$END$$$$IF0:MAJ$$liste_annonces.htm$$END$$$$END$$$$IF=:editann:REP:2$$$$1_AGANNONCES:IDTYPEBIEN$$/$$1_AGANNONCES:IDTYPETRANSACTION$$/$$FORM:ID$$/annonce_visu.htm$$END$$" method="post" style="display: inline;" name="form" id="form" $$IF0:MAJ$$onsubmit="return delouinon();"$$END$$>
+		$$BIF:AGANNONCES$$
+			<input type="hidden" name="page_ok" value="$$IF0:FORM:ID$$/$$REP:URI$$$$END$$$$IF:FORM:ID$$/$$1_AGANNONCES:IDTYPEBIEN$$/$$1_AGANNONCES:IDTYPETRANSACTION$$/$$FORM:ID$$/annonce_visu.htm$$END$$">
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" >
+			<input type="hidden" name="edit" value="ok" />
+			<input type="hidden" name="id" value="$$FORM:ID$$" />
+			$$IF:MAJ$$<input type="hidden" name="u" value="SLPRO:PUBLICATIONS_MAJ" />$$END$$
+			$$IF0:MAJ$$<input type="hidden" name="u" value="SLPRO:DELETE_ANNONCES" />$$END$$
+			<!-- ! relation avec engine_list_ann //-->
+			<input type="hidden" name="idtypetransaction" value="$$FORM:IDTYPETRANSACTION$$" />
+			<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />
+			<input type="hidden" name="nbpieces" value="$$FORM:NBPIECES$$" />
+			<input type="hidden" name="cp" value="$$FORM:CP$$" />
+			<input type="hidden" name="publication" value="$$FORM:PUBLICATION$$" />
+			<input type="hidden" name="censure" value="$$FORM:CENSURE$$" />
+			<input type="hidden" name="idtypepublication_list" value="" />
+			<input type="hidden" name="publiExclude" value="" />
+			<input type="hidden" name="EditPubli" value="" />
+			<div class="info" id="infoPackPCSLN" style="visibility:hidden;" >
+				<span >Une annonce  "<strong>ne peut pas être publiée</strong>" sur le Pack Commercialisateur SelogerNeuf et sur   <strong>SL/IS/SLN/BD/AGB</strong>.</span>
+			</div>
+			<table id="liste-annonce" class="tabinfo" cellpadding="0" cellspacing="0">
+					$$INCL:LISTE_ANNONCES_HEADER.HTM$$
+					$$INCL:LISTE_ANNONCES_TRI.HTM$$	
+					$$DO:1:query:20$$ 		
+						$$INCL:LISTE_ANNONCES_LINE_MF.HTM$$
+					$$LOOP$$
+			</table>
+		$$BFIN$$
+	  $$IF:AFFPA$$
+			$$IF:BTN_VALID_LISTE$$
+				<div class="btn_list">
+					<input type="image" src="$$_$$i/dyn/btnvalider.png" />
+				</div>
+			$$END$$
+		$$END$$
+		$$IF:AGANNONCES:NBRPAGES$$
+			<div class="list_nav_links_bottom">
+				$$IF!:1:AGANNONCES:NBRPAGES$$
+					$$IF:AGANNONCES:LIENARRIERE$$<a href="$$AGANNONCES:LIENARRIERE$$">Page précédente</a>$$END$$
+						$$AGANNONCES:MULTIPAGE replace | &nbsp;|&nbsp;$$
+						$$IF:AGANNONCES:LIENAVANT$$
+							<a href="$$AGANNONCES:LIENAVANT$$">Page suivante</a>
+						$$END$$
+				$$END:nbrpages$$
+			</div>
+		$$END$$
+</form>
+
+$$INCL:LISTE_ANNONCES_LEGEND.HTM$$
+
+$$BIF0:AGANNONCES$$
+	<script type="text/javascript">
+	<!--
+		var o = document.getElementById('line_res');
+		o.style.display = "none";
+	//-->
+	</script>
+$$BFIN$$

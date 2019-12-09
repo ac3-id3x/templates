@@ -1,0 +1,574 @@
+$$IF0:REP:1$$
+	$$A:REP:1=159080$$
+$$END$$
+$$E:E3:CAT:REP:1$$
+$$E:E3:CAT_POSITION:REP:1:ALIAS:CAT$$
+
+$$A:CSS_AV=1$$
+$$A:CSS_LISTEANN=1$$
+$$A:JS_AV=1$$
+
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$IF:AUTH:CHECK_LOGIN:DROIT_AVIS_VALEUR$$ $$A:DROITSMODIF=1$$ $$END$$
+$$IF:AUTH:CHECK_LOGIN:DROIT_TOUT_ACCES$$  $$A:DROITSMODIF=1$$ $$END$$
+
+$$INCL:HAUTX.HTM$$ 
+<style type="text/css">
+	.calltoaction_slpro {
+		margin:8px;
+		padding:17px 12px;
+		display:block;
+		float:right;
+		outline:0;
+		
+		font-size:13px;
+		font-weight:bold;
+		text-decoration:none !important;
+		
+		border:1px solid #C6120B;
+		color:#FFF !important;
+		background-color:#EA4946;
+		background-image:-moz-linear-gradient(top, #EA4946, #D2160D);
+		background-image:-o-linear-gradient(top, #EA4946, #D2160D);
+		background-image:-webkit-gradient(linear, center top, center bottom, from(#EA4946), to(#D2160D));
+		background-image:linear-gradient(top, #EA4946, #D2160D);
+		
+		text-shadow:0 -1px 0 #555;
+		-moz-text-shadow:0 -1px 0 #555;
+		-webkit-text-shadow:0 -1px 0 #555;
+		-ms-text-shadow:0 -1px 0 #555;
+		-o-text-shadow:0 -1px 0 #555;
+		
+		border-radius:3px;
+		-moz-border-radius:3px;
+		-webkit-border-radius:3px;
+		-ms-border-radius:3px;
+		-o-border-radius:3px;
+	}
+	.calltoaction_slpro:hover {
+		background-color:#ED352F;
+		border-color:#ED352F;
+		background-image:none;
+	}
+	.calltoaction_slpro:active {
+		background-color:#D2160D;
+		background-image:none;
+	}
+	
+	
+	.calltoaction_slpro_noprio {
+		border:1px solid #00486D;
+		background-color:#196C96;
+		background-image:-moz-linear-gradient(top, #196C96, #00486D);
+		background-image:-o-linear-gradient(top, #196C96, #00486D);
+		background-image:-webkit-gradient(linear, center top, center bottom, from(#196C96), to(#00486D));
+		background-image:linear-gradient(top, #196C96, #00486D);
+	}
+	.calltoaction_slpro_noprio:hover {
+		background-color:#055177;
+		border-color:#055177;
+		background-image:none;
+	}
+	.calltoaction_slpro_noprio:active {
+		background-color:#00486D;
+		background-image:none;
+	}
+	
+	.calltoaction_slpro_3 {
+		border:1px solid #E56B00;
+		background-color:#F99420;
+		background-image:-moz-linear-gradient(top, #F99420, #E56B00);
+		background-image:-o-linear-gradient(top, #F99420, #E56B00);
+		background-image:-webkit-gradient(linear, center top, center bottom, from(#F99420), to(#E56B00));
+		background-image:linear-gradient(top, #F99420, #E56B00);
+	}
+	.calltoaction_slpro_3:hover {
+		background-color:#ED7A00;
+		border-color:#ED7A00;
+		background-image:none;
+	}
+	.calltoaction_slpro_3:active {
+		background-color:#E56B00;
+		background-image:none;
+	}
+	
+	#cnt_blc_art p {
+		overflow:auto;
+	}
+	#cnt_blc_art p img {
+		float:left;
+	}
+</style>
+<script type="text/javascript">
+	<!--
+	function visuel(lien,titre,l,h,scrollb) {
+		var hauteur=Math.round((screen.availHeight-h)/2);
+		var largeur=Math.round((screen.availWidth-l)/2);
+		window.open(lien,titre,"toolbar=0,location=0,directories=0,status=0,scrollbars="+scrollb+",resizable=0,menubar=0,top="+hauteur+",left="+largeur+",width="+l+",height="+h);
+	}
+	//-->
+</script>
+
+$$E:SLPRO:GETURLAVD:ALIAS:URLAVD$$
+$$E:SLPRO:AVISVALEUR-INFOS:ALIAS:AVIVAL$$
+<!-- Définition des boutons d'action -->
+<!--$$A:SOUSCRIRE_ABO=<a href="#" onclick="id3_go_blank('http://www.selogerpro.com/observatoire,av.htm?idLead=@@FORM:IDLEAD@@');return false;" class="calltoaction_slpro">Souscrire à un abonnement</a>$$-->
+$$A:SOUSCRIRE_ABO=<a href="#" class="calltoaction_slpro calltoaction_slpro_noprio demande_abo">Souscrire à un abonnement</a>$$
+
+$$A:SHOW_BTN_CREATE=1$$
+
+$$IF=:1:SHOW_BTN_CREATE$$
+	$$A:CREER_UN_AVIS=<a href="@@URLAVD:URL@@" class="calltoaction_slpro calltoaction_slpro_3 av4all">Créer un Avis de Valeur</a>$$
+	$$IF0:AVIVAL:VOLUMELEFT$$
+		$$IF:AVIVAL:VOLUMEDONE$$
+			$$A:CREER_UN_AVIS=<a href="@@URLAVD:URL@@" class="calltoaction_slpro calltoaction_slpro_3 av4all">Accéder à l'Avis de Valeur</a>$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF=:0:SHOW_BTN_CREATE$$
+	$$A:CREER_UN_AVIS=$$
+$$END$$
+
+	<noscript>
+		<div class="erre"><span>Vous devez activer l'interprétation du <b>JavaScript</b> de votre navigateur</span></div>
+	</noscript>
+
+$$IF=:0:AVIVAL:VOLUMELEFT$$
+	<div class="info">
+		<span>Nous vous recommandons également d'utiliser Avis de Valeur avec une version récente de votre navigateur.</span>
+	</div>
+$$END$$
+
+$$IF0:EVAL:ISLEADMISSED$$
+$$IF:FORM:IDLEAD$$
+	$$IF:EVAL:DTACCEPTED$$
+		<table class="tabbasic" cellspacing="0" cellpadding="0">
+			<tr>
+				<td colspan="2" class="tabentete">Coordonnées du vendeur</td>
+			</tr>
+			<tr>
+				<td>
+					<b>Nom</b> : $$EVAL:PROPRIETAIRENOM pcase$$<br />
+					<b>Prénom</b> : $$EVAL:PROPRIETAIREPRENOM pcase$$<br />
+					<b>Email</b> : $$IF:EVAL:PROPRIETAIREMAIL$$<a href="mailto:$$EVAL:PROPRIETAIREMAIL$$">$$EVAL:PROPRIETAIREMAIL$$</a>$$END$$<br />
+					<b>Tel</b> : $$EVAL:PROPRIETAIRETELEPHONE$$<br />
+				</td>
+				<td>
+					$$A:SHOW_BTN_ACHAT_AV=0$$
+					$$IF0:AVIVAL:DTDEBUT$$
+						$$IF=:0:AVIVAL:VOLUMEONESHOT$$
+							$$A:SHOW_BTN_ACHAT_AV=1$$
+						$$END$$
+						$$SOUSCRIRE_ABO$$
+					$$END$$
+					$$IF=:0:SHOW_BTN_ACHAT_AV$$
+						$$IF:DROITSMODIF$$
+							$$CREER_UN_AVIS$$
+						$$END$$
+					$$END$$
+				</td>
+			</tr>
+		</table>
+	$$END$$
+
+
+	$$E:OBSERVATOIRE:EVALUATION:~idLead:QRY:IDLEAD:ALIAS:EVAL$$
+	$$IF:EVAL:PRIXEVALUATIONFINAL$$
+	
+		$$A:RAPPEL_TITLE=Rappel de l'Estimation$$
+		
+		$$IF:EVAL:DTACCEPTED$$
+			$$IF:EVAL:IDTYPEBIEN$$
+				$$A:RAPPEL_TITLE=@@RAPPEL_TITLE@@ <span style="font-weight:normal;">de</span>&nbsp;@@EVAL:IDTYPEBIEN gettypebien@@$$
+			$$END$$
+			$$IF:EVAL:VILLE$$
+				$$A:RAPPEL_TITLE=@@RAPPEL_TITLE@@ <span style="font-weight:normal;">&agrave;</span>&nbsp;@@EVAL:VILLE pcase replace ¤ &nbsp;@@$$
+				$$IF:EVAL:CODEPOSTAL$$
+					$$A:RAPPEL_TITLE=@@RAPPEL_TITLE@@&nbsp;(@@EVAL:CODEPOSTAL@@)$$
+				$$END$$
+			$$END$$
+			$$IF:EVAL:PROPRIETAIRENOM$$
+				$$A:RAPPEL_TITLE=@@RAPPEL_TITLE@@ <span style="font-weight:normal;">de</span>&nbsp;@@EVAL:PROPRIETAIRENOM pcase@@ @@EVAL:PROPRIETAIREPRENOM pcase@@$$
+			$$END$$
+		$$END$$
+		
+		<table class="tabbasic" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="tabentete">$$RAPPEL_TITLE$$</td>
+			</tr>
+			<tr>
+				<td>
+					$$IF:EVAL:PRIXMINIMUM$$
+						$$A:PREFIXTB=Cette$$
+						$$IF=:appartement:EVAL:IDTYPEBIEN gettypebien$$
+							$$A:PREFIXTB=Cet$$
+						$$END$$
+						<p>$$PREFIXTB$$ $$EVAL:IDTYPEBIEN gettypebien replace Maison¤/¤Villa Maison$$ a été estimé$$IF=:Cette:PREFIXTB$$e$$END$$<br />entre <b>$$EVAL:PRIXMINIMUM formatnumber 0 replace ¤ &nbsp;$$</b> et <b>$$EVAL:PRIXMAXIMUM formatnumber 0 replace ¤ &nbsp;$$&nbsp;&euro;</b></p>
+					$$END$$
+					<a style="clear:right;float:right; margin-right:10px;" href="/estimation_detail.htm?idLead=$$FORM:IDLEAD$$">Détail de l'estimation</a>
+				</td>
+				$$A:SHOWINFOS_ZDRA=$$
+				$$IF:EVAL:DTSENT$$
+					$$A:SHOWINFOS_ZDRA=@@SHOWINFOS_ZDRA@@Cette estimation vous a été transmise le <b>@@EVAL:DTSENT date 2@@</b>&nbsp;&agrave;&nbsp;@@EVAL:DTSENT date 4 replace : h@@<br />$$
+				$$END$$
+				$$IF:EVAL:DTACCEPTED$$
+					$$A:SHOWINFOS_ZDRA=@@SHOWINFOS_ZDRA@@Vous avez accepté cette estimation le <b>@@EVAL:DTACCEPTED date 2@@</b>&nbsp;&agrave;&nbsp;@@EVAL:DTACCEPTED date 4 replace : h@@<br />$$
+				$$END$$
+				$$IF:EVAL:DTAVISVALEUR$$
+					$$A:SHOWINFOS_ZDRA=@@SHOWINFOS_ZDRA@@Vous avez créé un Avis de Valeur pour cette estimation le <b>@@EVAL:DTAVISVALEUR date 2@@</b>&nbsp;&agrave;&nbsp;@@EVAL:DTAVISVALEUR date 4 replace : h@@<br />$$
+				$$END$$
+				$$IF!::SHOWINFOS_ZDRA$$
+				<tr><td style="padding:0 5px;"><div class="info"><span>$$SHOWINFOS_ZDRA$$</span></div></td></tr>
+				$$END$$
+			</tr>
+		</table>
+	$$END$$
+$$END$$
+$$END$$
+
+$$IF:AVIVAL:DTDEBUT$$<!-- Abonné -->
+
+	<!-- Si contrat récent -->
+	$$IF:AVIVAL:NOBIENSVENDUSCHECK$$
+
+		$$IF0:AVIVAL:VOLUMELEFT$$
+			<div class="erre"><span>
+				Vous avez atteint le nombre maximal d'Avis de Valeur autorisé par mois par votre abonnement.
+				Vous pouvez acheter des Avis de Valeur à l'unité pour continuer à faire des estimations.
+			</span></div>
+		$$END:VOLUMELEFT$$
+
+		$$IF:AVIVAL:VOLUMELEFT$$
+			$$IF:AVIVAL:NBBIENSVENDUSWARNING$$
+				<div class="info"><span>
+				Vous n'avez saisi que $$AVIVAL:NBBIENSVENDUSRECENTS$$ bien$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$ vendu$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$ valide$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$ depuis $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois. Comme indiqué sur votre contrat d'abonnement, pour continuer d'utiliser pleinement le produit Avis de Valeur, il vous est demandé de contribuer à l'alimentation de la base de données des biens vendus à un rythme de $$AVIVAL:NBBIENSVENDUSNECESSAIRES$$ biens vendus minimum sur $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois glissants. Aussi, pour conserver l'accès à ce produit, vous devez saisir $$AVIVAL:NBBIENSVENDUSWARNING$$ bien$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ vendu$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ valide$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ avant le $$AVIVAL:DATEBIENSVENDUSWARNING date 2$$.
+				<br /><br />
+				<a href="/opt_in_biens_vendus.htm">gestion des biens vendus</a>
+				</span></div>
+			$$END:NBBIENSVENDUSWARNING$$
+		$$END:VOLUMELEFT$$
+
+	$$END:NOBIENSVENDUSCHECK$$
+
+	<!-- Si contrat pas récent -->
+	$$IF0:AVIVAL:NOBIENSVENDUSCHECK$$
+
+		$$IF:AVIVAL:VOLUMELEFT$$
+			$$IF:AVIVAL:NBBIENSVENDUSWARNING$$
+				<div class="info"><span>
+				<b>Information :</b><br /> Comme indiqué sur votre contrat d'abonnement, pour continuer d'utiliser pleinement le produit Avis de Valeur, il vous est demandé de contribuer à l'alimentation de la base de données des biens vendus à un rythme de $$AVIVAL:NBBIENSVENDUSNECESSAIRES$$ biens vendus minimum sur $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois glissants. Aussi, pour conserver l'accès à ce produit, vous devez saisir $$AVIVAL:NBBIENSVENDUSWARNING$$ bien$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ vendu$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ valide$$AVIVAL:NBBIENSVENDUSWARNING pluriel$$ avant le $$AVIVAL:DATEBIENSVENDUSWARNING date 2$$.
+				<br /><br />
+				<a href="/opt_in_biens_vendus.htm">gestion des biens vendus</a>
+				</span></div>
+			$$END:NBBIENSVENDUSWARNING$$
+		$$END:VOLUMELEFT$$
+
+		$$IF0:AVIVAL:VOLUMELEFT$$
+			$$IF:AVIVAL:NBBIENSVENDUSASAISIR$$
+				<div class="erre"><span>
+				Vous n'avez saisi
+				$$IF0:AVIVAL:NBBIENSVENDUSRECENTS$$
+					aucun bien vendu valide
+				$$END$$
+				$$IF:AVIVAL:NBBIENSVENDUSRECENTS$$
+					que $$AVIVAL:NBBIENSVENDUSRECENTS$$ bien$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$ vendu$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$ valide$$AVIVAL:NBBIENSVENDUSRECENTS pluriel$$
+				$$END$$
+				depuis $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois.
+	
+				Vous devez saisir $$AVIVAL:NBBIENSVENDUSASAISIR$$
+				bien$$AVIVAL:NBBIENSVENDUSASAISIR pluriel$$ vendu$$AVIVAL:NBBIENSVENDUSASAISIR pluriel$$ valide$$AVIVAL:NBBIENSVENDUSASAISIR pluriel$$
+				pour pouvoir de nouveau effectuer des estimations avec l'Avis de Valeur (<a href="/opt_in_biens_vendus.htm">gestion des biens vendus</a>).
+				</span></div>
+			$$END:NBBIENSVENDUSASAISIR$$
+
+			$$IF0:AVIVAL:NBBIENSVENDUSASAISIR$$
+				<div class="erre"><span>
+				Vous avez atteint le nombre maximal d'Avis de Valeur autorisé par mois par votre abonnement.
+				Vous pouvez acheter des Avis de Valeur à l'unité pour continuer à faire des estimations.
+				</span></div>
+			$$END:NBBIENSVENDUSASAISIR$$
+		$$END:VOLUMELEFT$$
+
+	$$END:NOBIENSVENDUSCHECK$$
+	<br />
+$$END$$
+
+$$IF:AVIVAL:DTDEBUT$$
+	<table class="tabbasic" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="tabentete">Informations Abonnement</td>
+		</tr>
+		<tr>
+			<td>
+				<b>Abonné depuis le</b> : $$AVIVAL:DTDEBUT date 2$$<br />
+				<b>Prix de l'abonnement</b> :
+					$$IF0:AVIVAL:PRIXMENSUEL$$offert$$END$$
+					$$IF:AVIVAL:PRIXMENSUEL$$$$AVIVAL:PRIXMENSUEL round 2$$€ HT$$END$$<br />
+				<b>Nombre d'Avis de Valeur mensuel</b> : $$AVIVAL:VOLUMEMENSUEL$$<br />
+				$$IF:AVIVAL:VOLUMEONESHOT$$
+					<b>Nombre d'Avis de Valeur à l'unité restants</b> : $$AVIVAL:VOLUMEONESHOT$$<br />
+				$$END$$
+				<b>Nombre de Biens Vendus nécessaires</b> : $$AVIVAL:NBBIENSVENDUSNECESSAIRES$$ sur $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois glissants<br />
+				<b>Nombre d'Avis de Valeur effectués au total</b> : $$AVIVAL:VOLUMEDONE$$<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b>Nombre d'Avis de Valeur effectués dans le mois</b> : $$AVIVAL:VOLUMEMOIS$$<br />
+				<b>Nombre de Biens Vendus valides</b> : $$AVIVAL:NBBIENSVENDUSRECENTS$$ sur $$AVIVAL:NBJOURSNECESSAIRES exec XX/30 round 0$$ mois glissants<br />
+				<b>Nombre d'Avis de Valeur restants pour le mois courant</b> : $$AVIVAL:VOLUMELEFT$$<br />
+			</td>
+		</tr>
+	</table>
+$$END$$
+<!-- Infos basiques du compte -->
+<!-- Décompte nb "Avis de Valeur" restants -->
+$$IF0:AVIVAL:DTDEBUT$$
+$$IF:AVIVAL:VOLUMEONESHOT$$
+	<table class="tabbasic" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="tabentete">Informations Accès à l'unité</td>
+		</tr>
+		<tr>
+			<td>
+				<b>Nombre d'Avis de Valeur à l'unité restants</b> : $$AVIVAL:VOLUMEONESHOT$$<br />
+				<b>Nombre d'Avis de Valeur effectués au total</b> : temporairement indisponible $$REM$$$$AVIVAL:VOLUMEDONE$$$$END$$<br />
+			</td>
+		</tr>
+	</table>
+$$END:VOLUMEONESHOT$$
+$$END:DTDEBUT$$
+
+
+<div>
+	$$IF:DROITSMODIF$$
+		$$CREER_UN_AVIS$$
+	$$END$$
+	
+	$$IF0:AVIVAL:DTDEBUT$$
+		$$SOUSCRIRE_ABO$$
+	$$END$$
+</div>
+
+<link rel="stylesheet" href="/z/portail/pol/css/sv6_gen_jquery-prompt_v4.css" type="text/css" />
+<script type="text/javascript" src="/z/portail/pol/js/jquery.impromptu.2.7.min.js"></script>
+<script type="text/javascript" src="/z/portail/pol/js/omniture.js"></script>
+<script type="text/javascript">
+	<!--
+		var redirectTo,
+			popupAchat = $j('<div />');
+		
+		function submitAcceptation(v) {
+			if (v != false) {
+				//c'est accepté
+				document.location.href = redirectTo;
+			}
+		}
+		
+		function goToKillerApp(v) {
+			if (v != false) {
+				var URLkillerapp = $j('.av4all').attr('href'),
+					largeur = 1100,
+					hauteur = 750,
+					feature = "width=" + largeur + ", height=" + hauteur;
+				window.open(URLkillerapp,"Avis de Valeur",feature);
+				
+				current_omniture.omnitureLeadSLP("L051","event10");
+			}
+		}
+		
+		/*
+        function checkClosed(popup) {
+            if (!popup.closed) {
+                setTimeout("checkClosed", 1000)
+            } else {
+                console.debug("test ok");
+            }
+        }
+		*/
+		
+		function submitAchat(v) {
+			if (v != false) {
+				//c'est accepté
+				var URLachatKiller = '$$XDOM$$/p_paiement_avis_de_valeur.htm',
+					largeur = 850,
+					hauteur = 740,
+					feature = "width=" + largeur + ", height=" + hauteur,
+                    close_check = false;
+				
+				current_omniture.omnitureLeadSLP("L053","event10");
+				
+				popupAchat = window.open(URLachatKiller,'Paiement Avis de Valeur',feature);
+				/*
+                if (popupAchat) {
+                    checkClosed(popupAchat)
+                }
+				*/
+			}
+		}
+		
+		function focusInForm() {
+			var firstEmpty = 0;
+			$j('#jqi').find('input, textarea').each(function() {
+				if (firstEmpty == 0) {
+					if ($j(this).val() == '') {
+						firstEmpty = 1;
+						$j(this).focus();
+					}
+				}
+			});
+		}
+		
+		function submitAbo(v) {
+			var result = true,
+				papa = $j('#jqi'),
+				it,
+				itContent,
+				error = false,
+				ajaxQueryPost = '';
+				
+			if (v != false) {
+				
+				papa.find('.oblig_input').each(function() {
+					it = $j(this);
+					itContent = it.val(),
+					itId = it.attr('id');
+					
+					if (itContent == '') {
+						//erreur
+						it.css('background-color', '#FFF6A5');
+						result = false;
+						error = true;
+					} else {
+						if (itId == 'email') {
+							var checkMail = new RegExp("^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,4}$");
+							if (itContent == null || itContent.length == 0 || checkMail.exec(itContent) == null) {
+								//Syntaxe de merde :P
+								it.css('background-color', '#FFF6A5');
+								result = false;
+								error = true;
+							} else {
+								it.css('background-color', '#FFF');
+							}
+						} else if (itId == 'tel') {
+							var checkTel = new RegExp("^\\+?[0-9]{8,14}$");
+							if (itContent == null || itContent.length == 0 || checkTel.exec(itContent) == null) {
+								//Syntaxe de merde :P
+								it.css('background-color', '#FFF6A5');
+								result = false;
+								error = true;
+							} else {
+								it.css('background-color', '#FFF');
+							}
+						} else {
+							it.css('background-color', '#FFF');
+						}
+					}
+				});
+				
+				if (result && !error) {
+					ajaxQueryPost = papa.find('#contact_av').serialize();
+					//alert('ajaxQueryPost : ' + ajaxQueryPost);
+					$j.ajax({
+						url : 		document.location.href,
+						data: 		ajaxQueryPost,
+						type: 		'POST',
+						dataType: 	'html',
+						timeout: 	10000,
+						success: 	function(data) {
+							current_omniture.omnitureLeadSLP("L052","event10");
+							if (data == 1 || data == '1') {
+								$j.prompt('<h3>Demande d\'abonnement</h3><div class="noerre"><span>Vous demande a été envoyée.</span></div>');
+							} else {
+								$j.prompt('<h3>Demande d\'abonnement</h3><div class="erre"><span>Une erreur est survenue lors de l\'envoie de votre demande.<br />Veuillez réessayer ultérieurement.</span></div>');
+							}
+						}, error: 	function() {
+							$j.prompt('<h3>Demande d\'abonnement</h3><div class="erre"><span>Une erreur est survenue lors de l\'envoie de votre demande.<br />Veuillez réessayer ultérieurement.</span></div>');
+						}
+					});
+				}
+			}
+			
+			return result;
+		}
+		
+		
+		
+		
+		$j(document).ready(function(){
+			
+			current_omniture = new Omniture();
+			
+			if ($j('.av4all').length > 0) {
+				current_omniture.omnitureLeadSLP("L051","event9");
+			}
+			if ($j('.achavis').length > 0) {
+				current_omniture.omnitureLeadSLP("L053","event9");
+			}
+			
+			$$IF:AVIVAL:DTDEBUT$$
+				$j('#cnt_blc_art').hide();
+			$$END$$
+			
+			
+			$j('.accept_dossier').click(function() {
+				$j.prompt(	'<h3>Acceptation du dossier</h3>' + 
+							'<p>Vous &ecirc;tes sur le point de valider la prise en charge de la demande d\'estimation d\'un internaute.<br />Attention ! Afin de continuer &agrave; proposer un service de qualit&eacute; sur le site www.lacoteimmo.fr, lorsque vous validez cette prise en charge vous vous engagez &agrave; contacter ce particulier dans un <b>d&eacute;lai maximum</b> de <b>5 jours</b> afin de lui donner pleine satisfaction.<br />Vous aurez alors acc&egrave;s &agrave; ses coordonn&eacute;es et &agrave; l\'adresse exacte de son bien.</p>', {
+								submit: submitAcceptation,
+								buttons: {
+									'J\'accepte': true,
+									'Non, merci': false
+								}
+							});
+							
+				redirectTo = $j('#Acceptation_dossier').attr('href');
+				//console.info('redirectTo : ' + redirectTo);
+				
+				return false;
+			});
+			
+			$j('a.achavis').click(function() {
+				$j.prompt(	'<h3>Achat d\'un Avis de Valeur à l\'unité</h3>' + 
+							'Vous vous apprêtez à acheter une unité d\'Avis de Valeur.' + 
+							'<br /><br />Celle-ci vous donne accès à l\'application Avis de Valeur à partir de laquelle vous pourrez réaliser l\'évaluation d\'un bien.' + 
+							'<br /><br />Vous pourrez ensuite éditer un rapport que vous choisirez dans une sélection de modèles et le personnaliser avec vos couleurs, votre logo, les photos du bien, un descriptif du secteur, un descriptif de votre agence, un descriptif du bien etc.' + 
+							'<br /><br /><br />Le <b>montant HT</b> d\'une unité Avis de Valeur est de <b>$$AVIVAL:MONTANTHTAVISVALEUR formatnumber 2$$ €</b>.' + 
+							'<br />Il vous sera donc demandé de régler un <b>montant total TTC</b> de <b>$$AVIVAL:MONTANTTTCAVISVALEUR formatnumber 2$$ €</b>.', {
+								submit: submitAchat,
+								buttons: {
+									'Acheter': true,
+									'Non, merci': false
+								}
+							});
+				
+				return false;
+			});
+			
+			$j('.demande_abo').click(function() {
+				
+				current_omniture.omnitureLeadSLP("L052","event9");
+				
+				$j.prompt('<h3>Souscrire à un abonnement</h3>', {
+					loadURL: "/demande_abo_av.htm",
+					submit: submitAbo,
+					workBeforeShow: function() {
+						$j('.content_module').find('input[type="submit"]').detach();
+						
+						return true;
+					},
+					loaded: focusInForm,
+					buttons: {
+						'Envoyer': true,
+						'Annuler': false
+					},
+					size: "500"
+				});
+				
+				return false;
+			});			
+		});
+	//-->
+</script>
+
+$$INCL:BASX.HTM$$

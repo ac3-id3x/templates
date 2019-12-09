@@ -1,0 +1,101 @@
+$$E:E3:CAT:157473:SLPRO$$
+$$A:CSS_AA=1$$
+$$A:JS_AA=1$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$ 
+$$E:MANDATSRECHERCHE:INFOS-AGENCE:ALIAS:SIAA$$
+$$IF0:SIAA:ISAGENCEACTIVE$$
+	<div class="erre"><div>Vous n'avez pas souscrit cette option.</div></div>
+$$END$$
+
+$$IF:SIAA:ISAGENCEACTIVE$$
+<div class="line_tab" id="line_res">
+$$IF:LR:NBR$$
+	<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Résultat : $$LR:NBR$$ recherche$$IF>:2:LR:NBR$$s$$END$$ trouvée$$IF>:2:LR:NBR$$s$$END$$</div>
+$$END$$
+
+$$IF:LR:NBRPAGES$$ 
+		$$A:COMBOAFF=1$$
+$$END$$
+$$IF+:10:LR:NBR$$
+		$$A:COMBOAFF=1$$
+$$END$$
+$$IF:COMBOAFF$$
+		<div class="list_nav_links">
+		$$INIT:FORM:LRPI=20$$
+		Annonces par page
+		$$B:ID3:LOOP:,:10,20,50,100:ALIAS:LISTEIP$$
+		$$BIF:LISTEIP$$
+		<select name="listeitems" $$REM$$$$IF0:MODEDEV$$onchange="document.location.replace('/$$REP:NOM$$?$$REP:QRY removeqry lrpi removeqry lrpg$$&lrpi='+this.options[this.selectedIndex].value);"$$END$$$$END$$
+		onchange="change_nbpage('/$$REP:NOM$$?$$REP:QRY removeqry lrpi removeqry lrpg$$&lrpi='+this.options[this.selectedIndex].value,this.options[this.selectedIndex].value);">
+		$$DO$$<option value="$$LISTEIP:1$$" $$IF=:FORM_LRPI:LISTEIP:1$$selected="selected"$$END$$>$$LISTEIP:1$$
+		$$LOOP$$</select>
+		$$BFIN$$
+		</div>
+$$END$$
+</div>
+
+
+$$B:MANDATSRECHERCHE:LISTE_RECHERCHES:~idalerte:QRY:IDALERTE:ALIAS:LR$$
+$$BIF:LR$$
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+<thead>
+<tr>
+	<th class="bdr" id="aa_datec">Date réception</th>
+	<th class="bdr">Type de transaction</th>
+	<th class="bdr">Type de bien</th>
+	<th class="bdr">Localisation</th>
+	<th class="bdr">Contact</th>
+	<th class="bdr">Prix (&euro;)</th>
+	<th id="aa_detail">Détail</th>
+</tr>
+</thead>
+$$DO:1:query:20$$ 
+$$A:LINKBLC=@@XDOM@@/aa,recherche_detail.htm?idrecherche=@@LR:IDRECHERCHE@@$$
+$$A:CLICKVISU=onclick="javascript:id3_go('@@LINKBLC@@');"$$
+
+<tr class="line_$$IF=:0:LR:I mod2 0 1$$pair$$END$$$$IF!:0:LR:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:LR:I mod2 0 1$$pair$$END$$$$IF!:0:LR:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:LR:I mod2 0 1$$pair$$END$$$$IF!:0:LR:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+		onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:LR:I mod2 0 1$$pair$$END$$$$IF!:0:LR:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:LR:I mod2 0 1$$pair$$END$$$$IF!:0:LR:I mod2 0 1$$impair$$END$$_new');"
+		$$END$$ id="line_contact_$$LR:I$$">
+	<td class="bdr" $$CLICKVISU$$>$$LR:DTENVOISEMAIL date 2$$</td>
+	<td class="bdr" $$CLICKVISU$$ title="header=[Type de transaction] body=[<div style=text-align:left;width:240px;>$$LR:IDTYPETRANSACTION gettypetransaction pcase$$</div>]">$$LR:IDTYPETRANSACTION gettypetransaction pcase$$</td>
+	<td class="bdr" $$CLICKVISU$$ title="header=[Type de bien] body=[<div style=text-align:left;width:240px;>$$LR:IDTYPEBIEN gettypebien pcase$$</div>]">$$LR:IDTYPEBIEN gettypebien pcase$$</td>
+	<td class="bdr" $$CLICKVISU$$ title="header=[Localisation] body=[<div style=text-align:left;width:240px;>$$LR:LOCALISATION replace , ,¤$$</div>]">$$LR:LOCALISATION replace , ,¤$$</td>
+	<td class="bdr" $$CLICKVISU$$ title="header=[Nom] body=[<div style=text-align:left;width:240px;>$$LR:NOM pcase$$</div>]">$$LR:NOM pcase$$</td>
+	<td class="bdr" $$CLICKVISU$$>$$LR:PXMIN$$ / $$LR:PXMAX$$</td>
+
+	<td class="bdr" $$CLICKVISU$$><a href="$$LINKBLC$$"><div class="picto_center"><div class="picto_page_content"></div></div></a></td>
+</tr>		
+$$LOOP$$
+
+</table>
+$$BFIN$$
+$$BIF0:LR$$
+	$$IF0:FORM:IDALERTE$$
+		<div class="erre"><span>Aucune liste de recherche</span></div>
+	$$END$$
+	$$IF:FORM:IDALERTE$$
+		<div class="erre"><span>Aucune recherche correspondante à votre alerte</span></div>
+	$$END$$
+$$BFIN$$
+
+
+$$IF:LR:NBRPAGES$$
+	<div class="list_nav_links_bottom">
+		
+		$$IF!:1:LR:NBRPAGES$$
+			$$IF:LR:LIENARRIERE$$<a href="$$LR:LIENARRIERE$$">Page précédente</a>$$END$$
+				$$LR:MULTIPAGE replace | &nbsp;|&nbsp;$$
+		
+				$$IF:LR:LIENAVANT$$
+					<a href="$$LR:LIENAVANT$$">Page suivante</a>
+				$$END$$
+		
+		$$END:nbrpages$$
+	</div>
+
+$$END$$
+$$END$$
+
+$$INCL:BASX.HTM$$ 

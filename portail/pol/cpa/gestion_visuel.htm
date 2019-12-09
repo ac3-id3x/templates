@@ -1,0 +1,167 @@
+$$E:E3:CAT:158840:SLPRO$$
+$$INCL:AUTH.HTM$$
+
+$$INCL:HAUTX.HTM$$
+$$E:PAUNIT:CPA-GETCONF:~PAUNITCONF:REP:1$$
+<script type="text/javascript" language="javascript">
+
+function visuel(rep) {
+	window.open(rep + '/visuel.htm','visuel','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400,top='+(window.screen.Height/2 - 200)+',left='+(window.screen.Width/2 - 225));
+}
+
+<!--
+
+$$IF0:REP:1$$
+document.location = '/$$PAUNIT:CPA-GETCONF:PAUNITCONF$$/gestion_visuel.htm';
+$$END$$
+
+-->
+</script>
+
+<a href="/$$REP:2$$/$$REP:1$$/annonce_edit.htm" >Détail Annonce </a>
+<br>
+<br>
+
+<!-- PHOTOS 2D idtype 2, non unique -->
+$$B:IMMOBC:ANNONCEVISUELS:1:REP:2:REP:1$$
+
+$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$
+<table cellspacing="0" cellpadding="0" class="tabbasic">
+$$BIF:IMMOBC:ANNONCEVISUELS:1$$
+	<tr class="tabentete">
+		<td>Photo$$IMMOBC:ANNONCEVISUELS:1:NBR pluriel$$ ($$IMMOBC:ANNONCEVISUELS:1:NBR$$)</td>
+	</tr>
+
+	<tr>
+		<td colspan="2"> <span class="legende">cliquez sur l'image pour agrandir - utilisez les boutons pour changer l'ordre</span></td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+		$$DO:4:999$$		
+			$$IF+:2:IMMOBC:ANNONCEVISUELS:1:NBR$$
+				$$IF!:1:IMMOBC:ANNONCEVISUELS:1:I$$
+					<form method="POST" action="/$$REP:URI$$" >
+						<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+						<input type="hidden" name="page_err" value="/$$REP:URI$$">
+						<input type="hidden" name="idvisuel" value="$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$">
+						<input type="hidden" name="sens" value="-1">
+						<input type="hidden" name="u" value="IMMOBC:VISUEL_CHANGEORDRE">
+						<input type="hidden" name="idpaunit_conf" value="$$REP:1$$">
+						<input type="submit" name="changer ordre" value="<<">
+					</form>
+				$$END$$
+
+					&nbsp;$$IMMOBC:ANNONCEVISUELS:1:I$$&nbsp;
+
+				$$IF!:IMMOBC_ANNONCEVISUELS_1_NBR:IMMOBC:ANNONCEVISUELS:1:I$$
+					<form method="POST" action="/$$REP:URI$$" >
+						<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+						<input type="hidden" name="page_err" value="/$$REP:URI$$">
+						<input type="hidden" name="sens" value="1">
+						<input type="hidden" name="idvisuel" value="$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$">
+						<input type="hidden" name="u" value="IMMOBC:VISUEL_CHANGEORDRE">
+						<input type="hidden" name="idpaunit_conf" value="$$REP:1$$">
+						<input type="submit" name="changer ordre" value=">>">
+					</form>
+				$$END$$
+				<br />
+			$$END:UNSEULDANSLABOUCLE$$
+
+			<a href="javascript:visuel('$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$')"><img height="75" src="$$IMMOBC:ANNONCEVISUELS:1:THUMB_URL$$?$$RND:1:10000$$" style="margin:0 auto;" alt="$$IMMOBC:ANNONCEVISUELS:1:ORDRE$$"></a><br />
+			$$IF:IMMOBC:ANNONCEVISUELS:1:DESCRIPTIF_FR$$<span class="legende"> légende : <font color="#0000FF">$$IMMOBC:ANNONCEVISUELS:1:DESCRIPTIF_FR$$</font> </span><br />$$END$$
+
+			<form method="POST"  action="/$$REP:URI$$">
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+			<input type="hidden" name="page_err" value="/$$REP:URI$$">
+			<input type="hidden" name="idvisuel" value="$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$">
+			<input type="hidden" name="u" value="immobc:visuel_del">
+			<input type="hidden" name="idpaunit_conf" value="$$REP:1$$">
+
+
+			<input type="image" src="/z/portail/pol/i/dyn/btnsupprimer.png">
+			</form>
+			<br/>
+			$$IF=:2:IMMOBC:ANNONCEVISUELS:1:IDETATVISUEL$$<FONT class="errmsg">En attente de traitement<!--($$IMMOBC:ANNONCEVISUELS:1:IDETATVISUEL$$)--></font><br />$$END$$
+			<!--
+			Presse :
+			<a href="visuel_censure.htm?idvisuel=$$IMMOBC:ANNONCEVISUELS:1:IDVISUEL$$&url=/$$REP:PAGE urlencode$$%23photos&cens=$$IF0:IMMOBC:ANNONCEVISUELS:1:SI_CENSURE_PRESSE$$presse$$END$$$$IF:IMMOBC:ANNONCEVISUELS:1:SI_CENSURE_PRESSE$$decens$$END$$">
+				$$IF:IMMOBC:ANNONCEVISUELS:1:SI_CENSURE_PRESSE$$<font color=#FF0000><b>Décensurer</b></FONT>$$END$$$$IF0:IMMOBC:ANNONCEVISUELS:1:SI_CENSURE_PRESSE$$Censurer$$END$$</a>
+			<br />
+			 -->
+			$$IF:IMMOBC:ANNONCEVISUELS:1:IDCENSURE$$
+				<font color=#FF0000>Censure Internet Agence</FONT><br/>
+			$$END$$
+			$$IF0:IMMOBC:ANNONCEVISUELS:1:IDCENSURE$$
+				$$IF:IMMOBC:ANNONCEVISUELS:1:SI_CENSURE$$ Image Censurée $$END$$
+				$$IF:IMMOBC:ANNONCEVISUELS:1:QUALIFICATION$$<br />Qualification : $$IMMOBC:ANNONCEVISUELS:1:QUALIFICATION$$$$END$$
+					$$IF:IMMOBC:ANNONCEVISUELS:1:NOMSOURCE$$<br />Source : $$IMMOBC:ANNONCEVISUELS:1:NOMSOURCE$$$$END$$
+			<br />
+			$$END$$
+		$$LOOP$$
+		</td>
+	</tr>
+$$BFIN$$
+$$BIF0:IMMOBC:ANNONCEVISUELS:1$$
+<!--FIN  PHOTOS 2D idtype 2 -->
+$$BFIN$$
+</table>
+
+<table cellspacing="0" cellpadding="0" class="tabbasic">
+<tbody><tr class="tabentete"><td>Ajouter une Photo</td></tr>
+<tr>
+	<td>
+		<form method="POST"   action="/$$REP:URI$$" enctype="multipart/form-data">
+			<input type="hidden" name="u" value="IMMOBC:VISUEL_ADD" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			<input type="hidden" name="idtypevisuel" value="1" />
+			<input type="hidden" name="idannonce" value="$$REP:2$$" />
+			<input type="hidden" name="idpaunit_conf" value="$$REP:1$$">
+
+			<input type="file" name="visuel" />
+			<br /><br />
+			<strong>Légende :</strong><br /><input type="text" name="descriptif" value="" />
+			<br />
+			<span class="legende">(Cuisine, Salon,... )</span>
+
+			<div class="btn"><input type="image" src="/z/portail/pol/i/dyn/btnajouter.png"></div>
+
+
+		</form>
+	</td>
+</tr>
+</tbody></table>
+<div class="info">
+	<span>
+		Formats supportés : GIF, JPG, JPEG, PNG, BMP, TIF, TIFF<br />
+		Taille maximum du fichier : 10 Mo
+	</span>
+</div>
+<!--
+<table>
+	<tr>
+		<td colspan="2">
+			<form method="POST"   action="/$$REP:URI$$" enctype="multipart/form-data">
+				<input type="hidden" name="u" value="IMMOBC:VISUEL_ADD" />
+				<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+				<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+				<input type="hidden" name="idtypevisuel" value="1" />
+				<input type="hidden" name="idannonce" value="$$REP:2$$" />
+				<input type="hidden" name="idpaunit_conf" value="$$REP:1$$">
+				Descriptif : <input type="text" name="descriptif" value="" />
+				Fichier : <input type="file" name="pic" />
+				<input type="submit" name="Ajouter une Photo">
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" class="legende">
+			Formats images acceptés: gif,jpg,jpeg,bmp,tif,tiff,png. <br/>
+			Autres fichiers acceptés: pdf,doc,zip.
+			La taille maximale autorisée pour le fichier est de 10 Mo.
+		</td>
+	</tr>
+</table>
+-->
+$$INCL:BASX.HTM$$

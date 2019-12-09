@@ -1,0 +1,81 @@
+$$IF0:SESSION:IDPERSONNE$$
+<div style="border:1px solid black; padding:8px; background-color:#EEEEEE;">
+
+&nbsp;Bienvenue dans la version de démonstration de la base mandats Pressimmo. Vous pouvez utiliser le moteur ci-dessous pour rechercher dans cette base.<br>
+<br>Votre abonnement ne vous permet pas de visualiser les coordonnées des demandes. Pour en savoir plus, <a style="text-decoration:underline;" href="mandats,subs.htm">découvrez en détail cette offre</a>.
+</div><br>
+$$END$$
+
+<form name=recherche action=/mandats,index.htm method=get>
+<table width=100% align=center style="border:1px solid outset;" cellpadding=5 class=form>
+<tr>
+$$IF:ABO:LISTE:#1:ERRE$$
+<td colspan=2>
+<div style="background-color:#CC0000;color:white;margin:2px;padding:8px;">
+<font size=2><b>$$ABO:LISTE:#1:ERRE$$</b></font>
+</div>
+</td>
+</tr><tr>
+$$END:ERRE$$
+
+<td>
+<h4>Type de demande:</h4>
+</td><td>
+<input type=radio name=idtypeaction id=idta1 value=1 $$IF=:1:FORM:IDTYPEACTION$$checked$$END$$ $$IF0:FORM:IDTYPEACTION$$checked$$END$$ >
+<label for=idta1>Proposition de bien</label>
+<input type=radio name=idtypeaction id=idta2 value=2 $$IF=:2:FORM:IDTYPEACTION$$checked$$END$$>
+<label for=idta2>Recherche de bien</label>
+<input type=radio name=idtypeaction id=idta3 value=3 $$IF=:3:FORM:IDTYPEACTION$$checked$$END$$>
+<label for=idta3>Demande d'estimation gratuite</label>
+</td></tr><tr>
+<td><h4>Type de transaction:</h4></td>
+<td>
+$$B:ABO:LISTEREF:#1:TRANSACTION$$
+$$BIF:ABO:LISTEREF:#1$$
+$$DO$$
+<input type=checkbox name=idtypetransaction value="$$ABO:LISTEREF:#1:IDTYPETRANSACTION$$" id=idtt$$ABO:LISTEREF:#1:IDTYPETRANSACTION$$
+$$IF(:FORM_IDTYPETRANSACTION:ABO:LISTEREF:#1:IDTYPETRANSACTION$$ CHECKED$$END$$
+>&nbsp;<label for=idtt$$ABO:LISTEREF:#1:IDTYPETRANSACTION$$>$$ABO:LISTEREF:#1:LIBELLE ncase$$</label>
+
+$$LOOP$$
+$$BFIN$$
+</td>
+</tr>
+<tr><td>
+$$REM$$
+<h4>Type de bien:</h4>
+
+$$B:ABO:LISTEREF:#2:BIEN$$
+$$BIF:ABO:LISTEREF:#2$$
+$$DO$$
+<nobr>
+<input type=checkbox name=idtypebien value="$$ABO:LISTEREF:#2:IDTYPEBIEN$$" id=idtb$$ABO:LISTEREF:#2:IDTYPEBIEN$$
+$$IF(:FORM_IDTYPEBIEN:ABO:LISTEREF:#2:IDTYPEBIEN$$ CHECKED$$END$$
+>
+<label for=idtb$$ABO:LISTEREF:#2:IDTYPEBIEN$$>$$ABO:LISTEREF:#2:LIBELLE ncase$$</label>
+</nobr>
+$$LOOP$$
+$$BFIN$$
+$$END$$
+<h4>Zone géographique:</h4><small>Un ou plusieurs codes postaux</small>
+</td><td>
+
+<input type=text name=cp value="$$FORM:CP field 1$$">
+<input type=text name=cp value="$$FORM:CP field 2$$">
+<input type=text name=cp value="$$FORM:CP field 3$$">
+<input type=text name=cp value="$$FORM:CP field 4$$">
+</td></tr><tr><td valign=top>
+<H4>Déposés depuis:</H4></td><td><select name=datedif>
+<option value=1 $$IF=:1:FORM:DATEDIF$$selected$$END$$>1 semaine
+<option value=2 $$IF=:2:FORM:DATEDIF$$selected$$END$$>2 semaines
+<option value=4 $$IF=:4:FORM:DATEDIF$$selected$$END$$>1 mois
+<option value=12 $$IF=:12:FORM:DATEDIF$$selected$$END$$>3 mois
+<option value=52 $$IF=:52:FORM:DATEDIF$$selected$$END$$>1 an
+</select><div align=right><input type=submit value="Afficher les mandats correspondants" style="font-size:10pt;font-weight:bold;"></div>
+</td></tr><tr>
+</td>
+</tr>
+</table>
+
+
+</form>

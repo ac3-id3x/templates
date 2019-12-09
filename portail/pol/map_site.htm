@@ -1,0 +1,35 @@
+$$E:E3:CAT:REP:1$$
+$$INCL:HAUTX.HTM$$
+
+$$B:E3:CATMENU:REP:2:7:ALIAS:MAPSITE$$
+$$BIF:MAPSITE$$
+<ul>
+$$A:CURENTLV=1$$
+$$DO$$
+
+$$A:CURNEXT=@@MAPSITE:NIVEAU@@$$
+$$IF!:CURENTLV:CURNEXT$$ 
+	$$IF-:CURENTLV:CURNEXT$$</ul>$$END$$
+	$$IF+:CURENTLV:CURNEXT$$<ul>$$END$$
+	$$A:CURENTLV=@@CURENTLV exec XX-1@@$$
+	$$IF-:CURENTLV:CURNEXT$$</ul>$$END$$
+	$$A:CURENTLV=@@CURENTLV exec XX-1@@$$
+	$$IF-:CURENTLV:CURNEXT$$</ul>$$END$$
+$$END$$
+
+
+$$A:CURENTLV=@@MAPSITE:NIVEAU@@$$
+
+$$A:LIEN=$$
+	
+	$$IF:MAPSITE:URL$$ $$A:LIEN=@@MAPSITE:URL@@$$ $$END$$
+	$$IF0:MAPSITE:URL$$ $$IF!:1:MAPSITE:NIVEAU$$$$A:LIEN=/@@MAPSITE:CAT_ID@@/rub.htm$$$$END$$ $$END$$
+	$$A:CAT_ID=@@MAPSITE:CAT_ID@@$$
+
+	<li>$$IF:LIEN$$<a href="$$LIEN$$">$$END$$$$MAPSITE:LIBELLE$$ $$INCL:XEDY_LINK.HTM$$ $$IF:LIEN$$</a>$$END$$</li>
+
+	
+$$LOOP$$
+</ul>
+$$BFIN$$
+$$INCL:BASX.HTM$$

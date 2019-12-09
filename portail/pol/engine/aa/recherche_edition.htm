@@ -1,0 +1,101 @@
+$$E:E3:CAT:157478:SLPRO$$
+$$A:CSS_AA=1$$
+$$A:JS_AA=1$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$ 
+$$E:MANDATSRECHERCHE:INFOS-AGENCE:ALIAS:SIAA$$
+$$IF0:SIAA:ISAGENCEACTIVE$$
+	<div class="erre"><div>Vous n'avez pas souscrit cette option.</div></div>
+$$END$$
+
+$$IF:SIAA:ISAGENCEACTIVE$$
+$$IF:MANDATSRECHERCHE:PASSE_ANNONCE:ERRMSG$$<div class="erre"><span>$$MANDATSRECHERCHE:PASSE_ANNONCE:ERRMSG$$</span></div>$$END$$
+$$IF:MANDATSRECHERCHE:PASSE_ANNONCE:OKMSG$$<div class="noerre"><span>$$MANDATSRECHERCHE:PASSE_ANNONCE:OKMSG$$</span></div>$$END$$
+
+<form name="sauve" action="/$$REP:URI$$" method="post">      
+  <input type=hidden name="u" value="MANDATSRECHERCHE:PASSE_ANNONCE" />        		
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" /> 
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	
+  <table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+	<tr><td class="tabentete">Description de votre recherche de bien</td></tr>
+	<tr><td>
+		<div class="line150"><div>Type de transaction :</div>
+				$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_TRANSACTIONS:ALIAS:TT$$
+				$$BIF:TT$$
+				$$DO:3:99$$
+				<label for="labtt_$$TT:I$$"><input type="checkbox" name="idtypetransaction" id="labtt_$$TT:I$$" value="$$TT:IDTYPETRANSACTION$$" $$IF:TT:SELECTED$$checked="checked"$$END$$$$IF0:TT:SELECTED$$$$IF(:FORM_IDTYPETRANSACTION:TT:IDTYPETRANSACTION$$checked="checked"$$END$$$$END$$ />$$TT:LIBELLE pcase$$</label>
+				$$LOOP$$
+				$$BFIN$$
+		</div>
+		
+		<div class="line150"><div>Type de bien :</div>	
+				$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_BIENS:ALIAS:TB$$
+				$$BIF:TB$$
+				$$DO:5:99$$
+					<label for="labtb_$$TB:I$$"><input type="checkbox" id="labtb_$$TB:I$$" name="idtypebien" value="$$TB:IDTYPEBIEN$$" $$IF:TB:SELECTED$$checked="checked"$$END$$$$IF0:TB:SELECTED$$$$IF(:FORM_IDTYPEBIEN:TB:IDTYPEBIEN$$checked="checked"$$END$$$$END$$ />$$TB:LIBELLE pcase$$</li>
+$$LOOP$$</label>
+				$$BFIN$$
+			</div>
+			
+		<div class="line150">
+   		<div>Budget minimum :</div>
+   		<input type="text" name="pxmin" id="aa_pxmin" value="$$FORM:PXMIN$$"/>
+   	</div>
+
+		<div class="line150">
+   		<div>Budget maximum :</div>
+   		<input type="text" name="pxmax" id="aa_pxmax" value="$$FORM:PXMAX$$" />
+   	</div>
+
+		<div class="line150">
+   		<div>Surface minimum :</div>
+   		<input type="text" name="surfmin" id="aa_surfmin" value="$$FORM:SURFMIN$$"/>
+   	</div>
+
+		<div class="line150">
+   		<div>Surface maximum :</div>
+   		<input type="text" name="surfmax" id="aa_surfmax" value="$$FORM:SURFMAX$$" />
+   	</div>
+
+			
+   	<div class="line150">
+   		<div id="line150aa_local">Localisation :</div>
+   		
+   		<input type="text" name="localisation" id="aa_localisation" value="$$FORM:LOCALISATION$$"  class="oblig_input" /><br />(Code postaux et/ou départements, sépareur ",")
+   	</div>
+   	 <div class="line150">
+   		<div id="line150aa_local">Commentaire :</div>
+   		<textarea name="precisions" id="aa_precisions">$$FORM:PRECISIONS$$</textarea>
+   	</div>
+   	
+
+  </td>
+  </tr>
+	</table>  
+	  <table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+	<tr><td class="tabentete">Vos coordonnées</td></tr>
+	<tr>
+		<td>
+			<div class="line150"><div>Nom :</div><input type="text" name="nom" id="aa_nom" value="$$FORM:EMAIL$$"  class="oblig_input" /></div>
+			<div class="line150"><div>Prénom :</div><input type="text" name="prenom" id="aa_prenom" value="$$FORM:PRENOM$$"  class="oblig_input" /></div>
+			<div class="line150"><div>Raison sociale :</div><input type="text" name="raisonsociale" id="aa_rs" value="$$FORM:RAISONSOCIALE$$" /></div>
+			<div class="line150"><div>Adresse :</div><input type="text" name="adresse" id="aa_adresse" value="$$FORM:ADRESSE$$" /></div>
+			<div class="line150"><div>Code postal :</div><input type="text" name="codepostal" id="aa_cp" value="$$FORM:CODEPOSTAL$$" maxlength="5" class="oblig_input" /></div>
+			<div class="line150"><div>Ville :</div><input type="text" name="ville" id="aa_ville" value="$$FORM:VILLE$$" class="oblig_input" /></div>
+			<div class="line150"><div>Tél. :</div><input type="text" name="tel" id="aa_tel" value="$$FORM:TEL$$" class="oblig_input" /></div>
+			<div class="line150"><div>Fax :</div><input type="text" name="fax" id="aa_fax" value="$$FORM:FAX$$" /></div>
+			<div class="line150"><div>Email :</div><input type="text" name="email" id="aa_email" value="$$FORM:EMAIL$$" class="oblig_input" /></div>
+  	</td>
+  </tr>
+	</table>  
+
+	<div id="line_btn_ann">		
+			<div class="btn_right"><input type="image" src="$$_$$i/dyn/btnvalider.png" /></div>
+		</div>
+</form>
+$$END$$
+
+
+$$INCL:BASX.HTM$$ 

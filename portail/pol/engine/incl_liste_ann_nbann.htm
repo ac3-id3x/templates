@@ -1,0 +1,28 @@
+<div class="line_tab" id="line_res">
+$$IF0:FORM:ID$$
+	<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Résultat : $$AGANNONCES:NBR$$ annonce$$IF>:2:AGANNONCES:NBR$$s$$END$$ trouvée$$IF>:2:AGANNONCES:NBR$$s$$END$$</div>
+$$END$$
+<div class="title_tab" style="color:green">$$IF=:1:OFPHLSTOF:OK$$ Votre sélection d'annonces en vedette a été enregistrée. $$END$$</div>
+$$IF:AGANNONCES:NBRPAGES$$ 
+		$$A:COMBOAFF=1$$
+$$END$$
+$$IF+:10:AGANNONCES:NBR$$
+		$$A:COMBOAFF=1$$
+$$END$$
+    $$IF:COMBOAFF$$
+		<div class="list_nav_links" >
+		$$INIT:FORM:AGANNONCESPI=20$$
+		Annonces par page
+		$$B:ID3:LOOP:,:10,20,50,100:ALIAS:LISTEIP$$
+		$$BIF:LISTEIP$$
+		
+		<select name="listeitems" $$REM$$$$IF0:MODEDEV$$onchange="document.location.replace('/$$REP:NOM$$?$$REP:QRY removeqry agannoncespi removeqry agannoncespg$$&agannoncespi='+this.options[this.selectedIndex].value);"$$END$$$$END$$
+		    onchange="change_nbpage('/$$REP:NOM$$?$$REP:QRY removeqry agannoncespi removeqry agannoncespg$$&agannoncespi='+this.options[this.selectedIndex].value,this.options[this.selectedIndex].value);" >
+		    $$DO$$
+            <option value="$$LISTEIP:1$$" $$IF=:FORM_AGANNONCESPI:LISTEIP:1$$selected="selected"$$END$$>$$LISTEIP:1$$
+		    $$LOOP$$
+        </select>
+		$$BFIN$$
+		</div>
+    $$END$$
+</div>

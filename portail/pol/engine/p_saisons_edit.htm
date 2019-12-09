@@ -1,0 +1,94 @@
+$$A:TITLEPOPUP=Edition des saisons$$
+$$INCL:HAUTPOPX.HTM$$ 
+
+$$IF:IMMOBC:SAISIEPERIODESSAISONS:ERRE$$<div class="erre"><span>$$IMMOBC:SAISIEPERIODESSAISONS:ERRE$$</span></div>$$END$$
+	
+$$IF:IMMOBC:SAISIEPERIODESSAISONS:OK$$<div class="noerre"><span>$$IMMOBC:SAISIEPERIODESSAISONS:OK$$</span></div>$$END$$	
+
+    $$B:IMMOBC:PERIODESSAISON:~idAnnonce:REP:1:~idTypeSaison:1:ALIAS:PERB$$
+		$$BIF:PERB$$
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<thead>	
+			<tr><th>Saison Basse</th></tr>
+		</thead>
+		<tr>
+			<td>
+				$$DO$$
+					<a href="/$$PERB:IDPERIODE$$/$$REP:1$$/$$REP:0$$"> Du $$IF-:10:PERB:DTDEBUTJOUR$$0$$END$$$$PERB:DTDEBUTJOUR$$/$$IF-:10:PERB:DTDEBUTMOIS$$0$$END$$$$PERB:DTDEBUTMOIS$$ au $$IF-:10:PERB:DTFINJOUR$$0$$END$$$$PERB:DTFINJOUR$$/$$IF-:10:PERB:DTFINMOIS$$0$$END$$$$PERB:DTFINMOIS$$</a> 
+				$$LOOP$$		
+			</td>
+		</tr>
+		</table>
+    $$BFIN$$
+    
+    
+    
+    
+    $$B:IMMOBC:PERIODESSAISON:~idAnnonce:REP:1:~idTypeSaison:2:ALIAS:PERH$$
+		$$BIF:PERH$$
+		<table class="tabbasic" cellpadding="0" cellspacing="0">
+		<thead>	
+			<tr><th>Saison Haute</th></tr>
+		</thead>
+		<tr>
+			<td>
+				$$DO$$
+					<a href="/$$PERH:IDPERIODE$$/$$REP:1$$/$$REP:0$$"> Du $$IF-:10:PERH:DTDEBUTJOUR$$0$$END$$$$PERH:DTDEBUTJOUR$$/$$IF-:10:PERH:DTDEBUTMOIS$$0$$END$$$$PERH:DTDEBUTMOIS$$ au $$IF-:10:PERH:DTFINJOUR$$0$$END$$$$PERH:DTFINJOUR$$/$$IF-:10:PERH:DTFINMOIS$$0$$END$$$$PERH:DTFINMOIS$$</a> 
+				$$LOOP$$		
+			</td>
+		</tr>
+		</table>
+    $$BFIN$$
+    
+    
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<thead>	
+			<tr><th>Edition $$IF0:FORM:IDPERIODE$$d'une nouvelle période$$END$$$$IF:FORM:IDPERIODE$$de la période du $$FORM:DTDEBUTJOUR$$/$$FORM:DTDEBUTMOIS$$ au $$FORM:DTFINJOUR$$/$$FORM:DTFINMOIS$$$$END$$</th></tr>
+		</thead>
+		<tr>
+			<td>
+			<form name="periodes" id="periodes" method="post">
+				<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+				<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+				<input type="hidden" name="u" value="IMMOBC:SAISIEPERIODESSAISONS" />
+				
+				<input type="hidden" name="idannonce" value="$$REP:1$$" />
+				<input type="hidden" name="idPeriode" value="$$FORM:IDPERIODE$$" />
+
+
+
+
+$$E:IMMOBC:PERIODESAISON:~idPeriode:REP:2$$
+Saison : 
+<select name="idTypeSaison" >    				
+	$$B:IMMOBC:TYPESSAISONS:ALIAS:TSAISONS$$
+	$$BIF:TSAISONS$$		            	
+		$$DO$$			
+			<option value="$$TSAISONS:IDTYPESAISON$$" $$IF=:TSAISONS_IDTYPESAISON:FORM:IDTYPESAISON$$selected="selected"$$END$$>$$TSAISONS:LIBELLE$$</option>
+		$$LOOP$$            	
+	$$BFIN$$
+</select>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Du <input type="text" name="dtdebutjour" value="$$FORM:DTDEBUTJOUR$$" size="2" maxlength="2" /> / <input type="text" name="dtdebutmois" value="$$FORM:DTDEBUTMOIS$$" size="2" maxlength="2" /> 
+au <input type="text" name="dtfinjour" value="$$FORM:DTFINJOUR$$" size="2" maxlength="2" /> / <input type="text" name="dtfinmois" value="$$FORM:DTFINMOIS$$" size="2" maxlength="2" /> 
+
+<div class="btn">
+	<input type="image" name="Submit" src="$$_$$i/dyn/btn$$IF:FORM:IDPERIODE$$modifier$$END$$$$IF0:FORM:IDPERIODE$$ajouter$$END$$.png" />
+</div>
+
+$$IF:FORM:IDPERIODE$$
+<div class="btn">
+	<input type="image" src="$$_$$i/dyn/btnsupprimer.png" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette période ?')) document.location.href='$$XDOM$$/$$REP:2$$/persuppr.htm?redirect=$$XDOM$$/$$REP:1$$/$$REP:0$$';" />
+</div>
+$$END$$
+
+</form>	
+</td>
+</tr>
+</table>
+
+$$IF:FORM:IDPERIODE$$
+	<input type="image" src="$$_$$i/dyn/btnpsaisonnew.png" onclick="document.location.href='$$XDOM$$/$$REP:1$$/$$REP:0$$';" />
+$$END$$
+
+$$INCL:BASPOP.HTM$$

@@ -1,0 +1,485 @@
+$$INCL:AUTH.HTM$$
+
+$$SET:CSS_CALENDAR=1$$
+
+$$E:SLPRO:ANNONCE:~idannonce:REP:1:ALIAS:ANNONCE$$
+
+$$IF0:IDTYPETRANSACTION$$
+	$$A:IDTYPETRANSACTION=@@ANNONCE:IDTYPETRANSACTION@@$$
+$$END$$
+
+$$IF0:IDTYPEBIEN$$
+	$$A:IDTYPEBIEN=@@ANNONCE:IDTYPEBIEN@@$$
+$$END$$
+
+$$A:BUREAUCOMMERCE=0$$
+$$IF=:4$6$7$8:FORM:IDTYPEBIEN$$
+	$$IF=:1$2$11:FORM:IDTYPETRANSACTION$$
+		$$A:BUREAUCOMMERCE=1$$
+	$$END$$
+$$END$$
+
+$$A:TBBUREAUCOMMERCE=0$$
+$$IF=:6$7$8$4:FORM:IDTYPEBIEN$$
+	$$A:TBBUREAUCOMMERCE=1$$
+$$END$$
+
+$$A:IDPUBWEBIMM=0$$
+
+$$B:SLPRO:AGENCE_LISTE_PUBLICATIONS:ALIAS:LISTPUB$$
+$$BIF:LISTPUB$$
+	$$DO$$
+		$$IF=:34:LISTPUB:IDTYPEPUBLICATION$$
+			$$A:IDPUBWEBIMM=1$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+
+$$A:AFFICHERCHAMPSWEBIMM=0$$
+$$IF=:1:TBBUREAUCOMMERCE$$
+	$$IF=:1:IDPUBWEBIMM$$
+		$$A:AFFICHERCHAMPSWEBIMM=1$$
+	$$END$$
+$$END$$
+
+$$A:AFFICHERCOEX=0$$
+$$IF=:1:IDPUBWEBIMM$$
+	$$IF=:1:FORM:SI_EXCLUSIF$$
+		$$A:AFFICHERCOEX=1$$
+	$$END$$
+$$END$$
+
+<!-- $$FORM:PAGE_OK$$ //-->
+
+<style type="text/css">
+	@import url("$$_$$engine/css/calendar.css");
+</style>
+
+<!-- $$REP:SRV$$ //-->
+
+$$SET:PAGE:TITRE=&eacute;dition d'une annonce$$
+$$SET:PGNAV=an$$
+
+<!-- $$SESSION:SETLANGUECOOKIE$$ $$REP:2$$ -->
+
+$$E:IMMOBC:TYPETRANSACTION:QRY:IDTYPETRANSACTION$$
+$$E:IMMOBC:TYPEBIEN:QRY:IDTYPEBIEN$$
+$$B:IMMOBC:TYPESCHAUFFAGE:ALIAS:TYPESCHAUFFAGE$$
+$$B:IMMOBC:TYPESCUISINE:ALIAS:TYPESCUISINE$$
+$$B:IMMOBC:DIVISIONSLIBELLE:ALIAS:DIVISIONLIBELLE$$
+$$B:IMMOBC:SITUATIONS:ALIAS:SITUATIONS$$
+$$B:IMMOBC:PAYS:ALIAS:PAYS$$
+$$B:IMMOBC:SOUSTYPESBIEN:QRY:IDTYPEBIEN:REP:1:REP:2:QRY:IDTYPETRANSACTION:ALIAS:SOUSTYPESBIEN$$
+$$BIF:SOUSTYPESBIEN$$
+$$E:IMMOBC:TESTWAG:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+$$B:IMMOBC:TYPESACTIVITE:ANN:REP:1$$
+$$E:SLPRO:ANNONCE-PISCINE:~idtypetransaction:QRY:IDTYPETRANSACTION:~idtypebien:QRY:IDTYPEBIEN:ALIAS:ANNONCEPISCINE$$
+
+$$BFIN$$
+
+$$INCL:HAUTX.HTM$$
+
+<!-- $$FORM:PAGE_OK$$ -->
+
+$$SET:IDTYPEBIEN=@@ANNONCE:IDTYPEBIEN@@$$$$SET:IDTYPEBIEN=@@FORM:IDTYPEBIEN@@$$
+$$SET:IDTYPETRANSACTION=@@ANNONCE:IDTYPETRANSACTION@@$$$$SET:IDTYPETRANSACTION=@@FORM:IDTYPETRANSACTION@@$$
+$$A:PISCINE=@@ANNONCE:HASPOOL@@$$
+$$IF0:PISCINE$$
+	$$A:PISCINE=@@ANNONCEPISCINE:HASPOOL@@$$
+$$END$$
+
+$$IF=:9$10:IDTYPETRANSACTION$$
+	$$IF=:15:FORM:IDTYPEBIENFC$$
+		$$A:PROG9=1$$
+	$$END$$
+	$$IF=:15:FORM:IDTYPEBIEN$$
+		$$A:PROG9=1$$
+	$$END$$
+$$END$$
+
+$$IF:ERRE$$
+	<div class="erre"><span>$$ERRE$$</span></div>
+$$END$$
+
+$$IF:ANNONCE:BQ_SI_CENSURE$$
+	<div class="erre"><span>Votre annonce est censurée, pour plus d'informations contactez la hotline.</span></div>
+$$END$$
+
+$$IF=:1:ANNONCE:SI_FIGEE$$
+	<div class="erre"><span>Cette annonce est associée à une publication figée, vous ne pouvez la modifier.</span></div>
+$$END$$
+<br clear="all" />
+<script>
+	
+	function createHiddenField(name, value)
+	{
+		var field = document.createElement('input');
+		field.type = 'hidden';
+		field.name = name;
+		field.value = value;
+		return field;
+	}
+	
+	function setMacroFields(form_tabsurface)
+	{	
+		document.form_surface.u.value = form_tabsurface.surface_u.value;
+		document.form_surface.page_ok.value = form_tabsurface.surface_page_ok.value;
+		document.form_surface.page_err.value = form_tabsurface.surface_page_err.value;
+		document.form_surface.idannonce.value = form_tabsurface.surface_idannonce.value;
+		document.form_surface.xmlElement.value = form_tabsurface.surface_xmlelement.value;
+		document.form_surface.idElement.value = form_tabsurface.surface_idelement.value;
+		
+		if (form_tabsurface.surface_xmlelementparent && form_tabsurface.surface_idelementparent)
+		{
+			document.form_surface.idElementParent.value = form_tabsurface.surface_idelementparent.value;
+			document.form_surface.xmlElementParent.value = form_tabsurface.surface_xmlelementparent.value;
+		}
+		
+		document.form_surface.submit();
+		
+		return true;
+	}
+</script>
+<form method="post" name="form_surface">
+	<input type="hidden" id="page_ok" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" id="page_err" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" id="idannonce" name="idannonce" value="$$ANNONCE:IDANNONCE$$" />
+	<input type="hidden" id="xmlElement" name="xmlElement" value="" />
+	<input type="hidden" id="idElement" name="idElement" value="" />
+	<input type="hidden" id="xmlElementParent" name="xmlElementParent" value="" />
+	<input type="hidden" id="idElementParent" name="idElementParent" value="" />
+	<input type="hidden" id="u" name="u" value="SLPRO:SAISIE-ANNONCE" />
+	<input type="hidden" name="idtypebien" value="$$IF:ANNONCE:IDTYPEBIEN$$$$ANNONCE:IDTYPEBIEN$$$$END$$$$IF0:ANNONCE:IDTYPEBIEN$$$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIENFC$$$$END$$$$END$$" />
+	<input type="hidden" name="idtypetransaction" value="$$IF:ANNONCE:IDTYPETRANSACTION$$$$ANNONCE:IDTYPETRANSACTION$$$$END$$$$IF0:ANNONCE:IDTYPETRANSACTION$$$$FORM:IDTYPETRANSACTION$$$$END$$" />
+	<input type="hidden" name="bq_si_censure" value="$$IF:ANNONCE:BQ_SI_CENSURE$$$$ANNONCE:BQ_SI_CENSURE$$$$END$$$$IF0:ANNONCE:BQ_SI_CENSURE$$$$IF!:False:ANNONCE:BQ_SI_CENSURE$$$$FORM:BQ_SI_CENSURE$$$$END$$$$END$$" />
+	<input type="hidden" name="idpaunit_conf" value="$$REP:1$$" />
+	<!-- <input type="image" name="submit" src="$$_$$i/dyn/btnvalidermodifs.png" />-->
+</form>
+<form method="post" name="f_annedit" onsubmit="return ValidForm(this);" style="display: inline;" autocomplete="off" accept-charset="utf-8">
+	<input type="image" name="submit" src="$$_$$i/dyn/btnvalidermodifs.png" />
+<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="idannonce" value="$$ANNONCE:IDANNONCE$$" />
+<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+<input type="hidden" name="idtypebien" value="$$IF:ANNONCE:IDTYPEBIEN$$$$ANNONCE:IDTYPEBIEN$$$$END$$$$IF0:ANNONCE:IDTYPEBIEN$$$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIENFC$$$$END$$$$END$$" />
+<input type="hidden" name="idtypetransaction" value="$$IF:ANNONCE:IDTYPETRANSACTION$$$$ANNONCE:IDTYPETRANSACTION$$$$END$$$$IF0:ANNONCE:IDTYPETRANSACTION$$$$FORM:IDTYPETRANSACTION$$$$END$$" />
+<input type="hidden" name="bq_si_censure" value="$$IF:ANNONCE:BQ_SI_CENSURE$$$$ANNONCE:BQ_SI_CENSURE$$$$END$$$$IF0:ANNONCE:BQ_SI_CENSURE$$$$IF!:False:ANNONCE:BQ_SI_CENSURE$$$$FORM:BQ_SI_CENSURE$$$$END$$$$END$$" />
+<input type="hidden" name="idpaunit_conf" value="$$REP:1$$" />
+<input type="hidden" name="u" value="SLPRO:SAISIE-ANNONCE" />
+
+$$INCL:ANNONCE_EDIT_HISTO.HTM$$
+
+$$INCL:ANNONCE_EDIT_JS.HTM$$
+
+<div id="edit_haut">
+	<div class="left">
+		<div class="oblig_txt"><div>&nbsp;&nbsp;&nbsp;</div>Champs obligatoires</div>
+	</div>
+
+	<div class="right">
+		<!-- idannonce=$$REP:1$$ -->$$IF!:new:REP:1$$
+		<a href="javascript:id3_go('$$ID3DOM$$/$$REP:1$$/annonce_changetype.htm?idtypetransaction=$$FORM:IDTYPETRANSACTION$$&idtypebien=$$FORM:IDTYPEBIEN$$&bted=slpro');"><img src="$$_$$i/dyn/btnmodtypeann.png" border="0" /></a>&nbsp;$$END$$
+		<a href="javascript:ssav();"><img src="$$_$$i/dyn/btnsaisieavancee.png" border="0" /></a>
+	</div>
+</div>
+
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:acces:ALIAS:XML_ACCES$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:services:ALIAS:XML_SERVICES$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:bucom:ALIAS:XML_BUCOM$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:attributs:ALIAS:XML_ATTRIBUTS$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:equipements:ALIAS:XML_EQUIPEMENTS$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:contacts:ALIAS:XML_CONTACTS$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:prix:ALIAS:XML_PRIX$$
+
+$$B:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:mandataire:ALIAS:XML_MANDATAIRE$$
+$$B:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:piece:ALIAS:XML_PIECES$$
+
+$$BIF:XML_MANDATAIRE$$
+	$$DO$$
+		$$IF=:1:XML_MANDATAIRE:EMAIL$$
+			$$A:EMAILNEGOCIATEUR=@@XML_MANDATAIRE:EMAIL@@$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+
+$$INCL:ANNONCE_EDIT_INFO_GEN2.HTM$$
+$$INCL:ANNONCE_EDIT_LOCALISER.HTM$$
+$$INCL:ANNONCE_EDIT_INFO_SUP.HTM$$
+$$INCL:ANNONCE_EDIT_NEUF.HTM$$
+
+$$IF=:0:BUREAUCOMMERCE$$
+	$$INCL:ANNONCE_EDIT_INTER.HTM$$
+$$END$$
+$$IF=:1:BUREAUCOMMERCE$$
+	<input type="hidden" id="libelle" value="" />
+	<input type="hidden" id="libelle_id" value="" />
+	
+	<input type="hidden" id="situation" value="" />
+	<input type="hidden" id="situation_id" value="" />
+	
+	<input type="hidden" id="prox" value="" />
+	<input type="hidden" id="prox_id" value="" />
+	
+	<input type="hidden" id="descriptif" value="" />
+	<input type="hidden" id="descriptif_id" value="" />
+$$END$$
+
+$$INCL:ANNONCE_EDIT_COORDANN.HTM$$
+
+$$IF=:1:AFFICHERCHAMPSWEBIMM$$
+	$$E:SLPRO:PRODUIT_LIEN_DETAIL_ANNONCE:ALIAS:LDA$$
+	$$IF:LDA:HAS_PRODUCT$$
+		$$INCL:ANNONCE_EDIT_COORDANN_WEBIMM.HTM$$
+	$$END$$
+$$END$$
+
+$$INCL:ANNONCE_EDIT_INFO_AV.HTM$$
+
+
+	$$INCL:ANNONCE_EDIT_COEX.HTM$$
+
+
+$$IF=:1:AFFICHERCHAMPSWEBIMM$$
+	$$INCL:ANNONCE_EDIT_XMLANNONCE_ATTRIBUTS.HTM$$
+	$$INCL:ANNONCE_EDIT_XMLANNONCE_SERVICES.HTM$$
+	$$INCL:ANNONCE_EDIT_XMLANNONCE_ACCES.HTM$$
+	$$INCL:ANNONCE_EDIT_XMLANNONCE_PIECES.HTM$$
+
+	$$A:AFFICHERBATIMENTS=1$$
+	$$IF=:6$7:FORM:IDTYPEBIEN$$
+		$$A:AFFICHERBATIMENTS=0$$
+	$$END$$
+	$$IF=:59$67:FORM:IDSOUSTYPEBIEN$$
+		$$A:AFFICHERBATIMENTS=1$$
+	$$END$$
+
+	$$IF=:1:AFFICHERBATIMENTS$$
+		$$INCL:ANNONCE_EDIT_XMLANNONCE_BATIMENTS.HTM$$
+	$$END$$
+$$END$$
+
+
+<script src="$$_$$js/jquery-1.2.6.js"></script>
+
+<script type="text/javascript">
+var CoexText;
+function coexClick(el)
+{
+	var numeroComandataire = $(el).parent().prev()[0].id.split('_')[1];
+	var idAgence = $(el).attr("data-numcom");
+	$(el).parent().prev().val($(el).text()).attr('numcom', idAgence);
+	$(el).parent().prev().prev().val(idAgence);
+	$(el).parent().hide();
+	CoexText[numeroComandataire -1] = $(el).text();
+	if(idAgence == 0)
+	{
+		$("#info_comandataire_" + numeroComandataire).html("");
+	}
+	else
+	{
+		$.get
+		(
+			"annonce_edit_coex_recup_info_mandataire.htm", 
+			{ idagence : idAgence, numeroCom : numeroComandataire },
+			function(data)
+			{
+				$("#info_comandataire_" + numeroComandataire).html(data);
+			}
+		);
+	}
+}
+$(document).ready(function() {
+	
+	// Calcule le prix au m²
+	CalculPrixMc()
+	CoexText = Array.prototype.slice.call($(".comboCoex").map(function(index){
+		if($(this).val() !== ""){
+			$.get
+			(
+				"annonce_edit_coex_recup_info_mandataire.htm", 
+				{ idagence : $(this).prev().val(), numeroCom : index+1 },
+				function(data)
+				{
+					$("#info_comandataire_" + (index+1)).html(data);
+				}
+			);
+		}
+		return $(this).val();
+	}));
+	// Charge les infos complémentaires lorsqu'on sélectionne un comandataire
+	$(".comboCoex").keyup
+	(
+		function(){
+			var value = $(this).val();
+			var that = this;
+			
+			var numeroComandataire = this.id.split('_')[1];
+			if(CoexText[numeroComandataire -1] != $(this).val()){
+			CoexText[numeroComandataire -1] = $(this).val();
+				$("#info_comandataire_" + numeroComandataire).html("");
+				$(this).prev().val(0).attr("numcom",0);
+			
+				if(value.length >= 2){
+					$.getJSON(
+						".,autocomplete_coex.json",{term: value, id: "$$AUTH:CHECK_LOGIN:IDAGENCE$$"}, 
+						function(data){
+							if(data.length > 0){
+								var html = "";
+								var idAgences = Array.prototype.slice.call($("input[type=hidden][name*=comandataire_]").map(function(){return $(this).val();}));
+								
+								for(var i=0; i< data.length; i++){
+									if(jQuery.inArray(data[i].numero, idAgences)< 0)
+									html += "<li class=\"coex_liste\" data-numcom=\"" + data[i].numero +"\" onclick=\"javascript:coexClick(this)\">" + data[i].nom + "</li>";
+								}
+								$(that).next().empty().append(html).show();
+							}
+						}
+					);
+				}else{
+					$(that).next().hide();
+				}
+				
+			}
+		}
+	)
+	.blur(function(){
+		var that = this;
+		setTimeout(function(){$(that).next().hide()},100);
+	});
+	
+	// Supprime les entrées déjà sélectionnées dans un autre select et réaffiche celles qui ne sont plus sélectionnées
+	var previousCoex = 0;
+	/*$(".comboCoex")
+	.change
+	(
+		function()
+		{
+			if(this.value > 0)
+			{
+				$(".comboCoex option[value='"+this.value+"']").not($(this).children()).hide();
+			}
+				
+			var showSelector = ".comboCoex option";
+			$(".comboCoex").each
+			(
+				function()
+				{
+					if(this.value > 0)
+					{
+						showSelector += "[value!='"+this.value+"']";
+					}
+				}
+			);
+			
+			$(showSelector).show();
+		}
+	);*/
+	
+	
+	$("#annonce_edit_px").change(function () {CalculPrixMc();});
+	
+	$("#prixmcarre").change(function () {
+		var surface = $("#annonce_edit_surface").val();
+		var prix = $("#prixmcarre").val();
+		
+		if (isNaN(prix))
+		{
+			alert('Veuillez saisir uniquement des chiffres.');
+			$("#prixmcarre").val('');
+			return;
+		}
+		
+		if(prix !== null && surface !== null && surface > 0)
+		{
+			$("#annonce_edit_px").val(Math.round(prix*surface));
+		}
+	});
+	
+	function CalculPrixMc()
+	{		
+		var surface = $("#annonce_edit_surface").val();
+		var prix = $("#annonce_edit_px").val();
+		if(prix !== null && surface !== null && surface > 0 && prix >= 1000)
+		{
+			$("#prixmcarre").val(Math.round(prix/surface));
+		}
+	}
+	
+	$$IF=:1:IDPUBWEBIMM$$
+	$("#si_exclusif").click(
+		function()
+		{
+			if($("#si_exclusif").is(':checked'))
+			{
+				$("#tableau_coex").show();
+			}
+			else
+			{
+				$("#tableau_coex").hide();
+			}
+		}
+	);
+	$$END$$
+	
+});
+
+Division();
+
+
+$$IF=:1:PROG9$$
+function DispTableaux(){
+var objM = MM_findObj('si_maison');
+var objA = MM_findObj('si_appartement');
+var objT = MM_findObj('si_terrain');
+var objImg = MM_findObj('idbt15h');
+var tab;
+var onlyVide = false;
+
+	if (objM || objA) {
+		if (objM.checked && objA.checked) {
+			tab = neufapptmais;
+			if (!document.all){if(objImg) {objImg.height = 180;}}
+		}
+		else if (objM.checked !="") {
+			tab = neufmaison;
+			if (!document.all){if(objImg) {objImg.height = 100;}}
+		}
+		else if (objA.checked !="") {
+			tab = neufappt;
+			if (!document.all){if(objImg) {objImg.height = 170;}}
+		}
+		else {
+			tab = neufvide;
+			if (!document.all){if(objImg) {objImg.height = 30;}}
+		}
+	}
+	if(objT){
+		if (objT.checked) {
+			tab = tab + "<p>&nbsp;</p>" + neufterrain;
+		}
+	}
+	if(tab){
+		FillLayer('disptab', tab);
+	}
+}
+
+ if (!document.layers) {DispTableaux();}
+
+ $$END:PROG9$$
+
+	</script>
+	
+
+<div id="line_btn_ann">
+
+	<div class="btn_left">
+
+	</div>
+
+	<div class="btn_right"><input type="image" name="submit" src="$$_$$i/dyn/btnvalidermodifs.png" onclick="" /></div>
+
+</div>
+
+</form>
+
+$$INCL:BAS.HTM$$

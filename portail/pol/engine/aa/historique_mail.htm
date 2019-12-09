@@ -1,0 +1,83 @@
+$$E:E3:CAT:157471:SLPRO$$
+$$A:CSS_AA=1$$
+$$A:JS_AA=1$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$ 
+
+
+$$E:MANDATSRECHERCHE:INFOS-AGENCE:ALIAS:SIAA$$
+$$IF0:SIAA:ISAGENCEACTIVE$$
+	<div class="erre"><div>Vous n'avez pas souscrit cette option.</div></div>
+$$END$$
+
+$$IF:SIAA:ISAGENCEACTIVE$$
+
+
+
+<div class="line_tab" id="line_res">
+$$IF:HM:DTDERNIERENVOIS$$
+	<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Dernier message reçu le  $$HM:DTDERNIERENVOIS date 2$$ à $$HM:DTDERNIERENVOIS date 4$$</div>
+$$END$$
+
+$$IF:HM:NBRPAGES$$ 
+		$$A:COMBOAFF=1$$
+$$END$$
+$$IF+:10:HM:NBR$$
+		$$A:COMBOAFF=1$$
+$$END$$
+$$IF:COMBOAFF$$
+		<div class="list_nav_links">
+		$$INIT:FORM:HMPI=10$$
+		Annonces par page
+		$$B:ID3:LOOP:,:10,20,50,100:ALIAS:LISTEIP$$
+		$$BIF:LISTEIP$$
+		<select name="listeitems" $$REM$$$$IF0:MODEDEV$$onchange="document.location.replace('/$$REP:NOM$$?$$REP:QRY removeqry hmpi removeqry hmpg$$&hmpi='+this.options[this.selectedIndex].value);"$$END$$$$END$$
+		onchange="change_nbpage('/$$REP:NOM$$?$$REP:QRY removeqry hmpi removeqry hmpg$$&hmpi='+this.options[this.selectedIndex].value,this.options[this.selectedIndex].value);">
+		$$DO$$<option value="$$LISTEIP:1$$" $$IF=:FORM_HMPI:LISTEIP:1$$selected="selected"$$END$$>$$LISTEIP:1$$
+		$$LOOP$$</select>
+		$$BFIN$$
+		</div>
+$$END$$
+</div>
+
+$$B:MANDATSRECHERCHE:HISTORIQUE:ALIAS:HM$$
+$$BIF:HM$$
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+<thead>
+<tr>
+	<th class="bdr" id="av_cp">Mois</th>
+	<th class="bdr" id="av_prix">Nombre de message reçu</th>
+</tr>
+</thead>
+$$DO:1:query:10$$ 
+<tr class="line_$$IF=:0:HM:I mod2 0 1$$pair$$END$$$$IF!:0:HM:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:HM:I mod2 0 1$$pair$$END$$$$IF!:0:HM:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:HM:I mod2 0 1$$pair$$END$$$$IF!:0:HM:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+		onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:HM:I mod2 0 1$$pair$$END$$$$IF!:0:HM:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:HM:I mod2 0 1$$pair$$END$$$$IF!:0:HM:I mod2 0 1$$impair$$END$$_new');"
+		$$END$$ id="line_contact_$$HM:I$$">
+	<td class="bdrnopointer">$$HM:MOIS$$</td>
+	<td class="nopointer">$$HM:NBRECU$$</td>
+</tr>		
+$$LOOP$$
+$$BFIN$$
+$$BIF0:HM$$
+	<div class="erre"><span>Aucun historique</span></div>
+$$BFIN$$
+</table>
+
+$$IF:HM:NBRPAGES$$
+	<div class="list_nav_links_bottom">
+		
+		$$IF!:1:HM:NBRPAGES$$
+			$$IF:HM:LIENARRIERE$$<a href="$$HM:LIENARRIERE$$">Page précédente</a>$$END$$
+				$$HM:MULTIPAGE replace | &nbsp;|&nbsp;$$
+		
+				$$IF:HM:LIENAVANT$$
+					<a href="$$HM:LIENAVANT$$">Page suivante</a>
+				$$END$$
+		
+		$$END:nbrpages$$
+	</div>
+
+$$END$$
+$$END$$
+$$INCL:BASX.HTM$$ 

@@ -1,0 +1,186 @@
+$$E:E3:CAT:WEBVISIUM_PLAN:SLPRO$$
+
+$$A:RETOURVISITE=1$$
+
+$$E:IMMOBC:HVVISITE:ALIAS:VISITE$$
+
+$$A:LIBELLE=Visite: @@VISITE:LIBELLE@@$$
+
+$$IF:VISITE:ERRE$$
+	$$A:LIBELLE=Visite non trouvée$$ 
+$$END$$
+
+$$A:PAGE:TITRE=@@LIBELLE@@$$
+<!--#include virtual="/webvisium/haut.htm"-->
+
+$$IF:VISITE:ERRE$$
+	<div class="erre">$$VISITE:ERRE$$</div>
+	$$A:LIBELLE=Visite non trouvée$$
+$$END$$
+
+$$IF:ERRE$$<div class="erre">$$ERRE$$</div>$$END$$
+
+$$IF0:VISITE:ERRE$$
+
+$$IF:FORM:IDVISITE$$
+$$IF:VISITE:SIPLAN$$
+
+<form name="fa" action="/$$REP:NOM$$" method="post">
+	<input type="hidden" name="u" value="IMMOBC:HVPLAN">
+	<input type="hidden" name="page_ok" value="$$WEBVISIUMLINK$$plan.htm">
+	<input type="hidden" name="page_err" value="$$WEBVISIUMLINK$$plan.htm">
+	<input type="hidden" name="idvisite" value="$$FORM:IDVISITE$$">
+
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<tr class="tabentete">
+		<td colspan="2">Gestion du plan</td>
+	</tr>
+	<tr>
+		<td>
+			<div id=situplan style="position:relative;">
+			<input name=plan type=image src="$$WEBVISIUMLINK$$dispplan.htm?idvisite=$$VISITE:IDVISITE$$" toolbar=no>
+			</div>
+		</td>
+		<td valign=top>
+			<script type="text/javascript"><!--
+			function setlink(lien,texte,x,y) {
+				
+				o  =document.getElementById("situplan");
+				if (o) {
+					o.innerHTML = o.innerHTML 
+					+'<div style="position:absolute;left:'
+					+x
+					+'px;top:'
+					+y
+					+'px;background-color:white;border:1px solid black;padding:0 2 0 2;">'
+					+texte+'</div>';
+					//.pub300		{ position: absolute; left: 370px;
+				}
+			}
+			//-->
+			</script>
+			
+			<b><small><li>Selectionnez une vue ci dessous puis cliquez sur le plan pour la situer.<br></small></b>
+			$$B:IMMOBC:HVVISUELS:ALIAS:LIST$$
+			$$BIF:LIST$$
+			$$DO$$
+		$$IF=:100:LIST:IDETAT$$
+		$$IF:LIST:ACTIF$$
+		$$A:LIBELLE=@@LIST:LIBELLE@@$$
+		$$IF0:LIST:LIBELLE$$$$A:LIBELLE=Vue n°@@LIST:I@@$$$$END$$
+		$$IF:LIST:X$$$$A:LISTELINK=@@LISTELINK@@ setlink(@@LIST:IDVISUEL@@,'@@LIBELLE escape@@',@@LIST:X@@+16,@@LIST:Y@@); $$ $$END$$
+			<input type=radio name=idvisuel value="$$LIST:IDVISUEL$$" class=noborder> $$LIBELLE$$<br>
+			$$END$$$$END$$	
+			$$LOOP$$
+			$$BFIN$$<br>
+	
+	<small><li> Pour modifier l'emplacement d'un lien vers une vue, sélectionnez la vue puis cliquez sur l'image.<br><br></small>
+	
+	<small><li> Pour supprimer un lien à une vue, selectionnez la vue puis cliquez sur supprimer.<br></small>
+	<input type="image" src="$$_$$i/dyn/btnsupprimer.png" />
+</td>
+</tr>
+</table>
+</form>
+$$IF:LISTELINK$$
+<script>
+$$LISTELINK$$	
+</script>
+$$END$$
+
+
+
+$$END$$
+
+
+
+<form name=fa action="/$$REP:NOM$$" method=post ENCTYPE="multipart/form-data" onsubmit="dispuploading();">
+
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<tr class="tabentete">
+		<td>
+			$$IF0:VISITE:SIPLAN$$
+				Envoi de la photo du plan
+			$$END$$
+			
+			$$IF:VISITE:SIPLAN$$
+				Modification de la photo du plan
+			$$END$$
+		</td>
+	</tr>
+	<tr>
+		<td>
+	<div id=fileupload style="padding-left:20px;">
+		<input type=hidden name=u value="IMMOBC:HVPLAN">
+		<input type=hidden name=page_ok value="$$WEBVISIUMLINK$$plan.htm">
+		<input type=hidden name=page_err value="$$WEBVISIUMLINK$$plan.htm">
+		<input type=hidden name=idvisite value="$$FORM:IDVISITE$$">
+		<b>Nom du fichier : </b><input type="file" id="element_input" name="file_1" />
+		<div class="btn"><input type="image" src="$$_$$i/dyn/btnenvoyer.png" /></div>	
+	</div>
+	<center>
+	
+	<div id=uploading style="display:none;">
+		<h4>Envoi du fichier</h4>
+		<div style="border:1px solid black;background-color:#6C8EE8;width:200px;text-align:left;">
+			<div id=progress style="color:white;font-weight:bold;">
+			</div>
+		</div>
+	</div>
+	</center>
+	<script>
+		function dispuploading() {
+			o =document.getElementById("fileupload");
+			o2=document.getElementById("uploading");
+			if (o && o2) {
+				o.style.display='none';
+				o2.style.display='inline';
+				setTimeout('progress()',10);	
+			}
+		}
+		function progress() {
+		o = document.getElementById("progress");
+		if (o) {
+				if (o.innerHTML.length>100) o.innerHTML="";
+				o.innerHTML = o.innerHTML +"&nbsp;&raquo;";
+			setTimeout('progress()',750);	
+		}
+	}
+	</script>
+	</form>
+	
+</td>
+</tr>
+</table>
+
+	<div class="info"><span>Cliquez sur le bouton <b>Parcourir...</b> ou <b>Browse...</b>, choisissez le visuel a envoyer sur votre disque dur puis cliquez sur le bouton <b>Envoyer</b>.</span></div>
+
+	$$IF:VISITE:SIPLAN$$
+	<form name=fa action="/$$REP:NOM$$" method=post >
+		<input type=hidden name=u value="IMMOBC:HVPLAN">
+		<input type=hidden name=page_ok value="$$WEBVISIUMLINK$$visite.htm">
+		<input type=hidden name=page_err value="$$WEBVISIUMLINK$$plan.htm">
+		<input type=hidden name=idvisite value="$$FORM:IDVISITE$$">
+		<input type=hidden name=supp value="supp">
+		
+		<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+		<tr class="tabentete">
+			<td>Supprimer le plan</td>
+		</tr>
+		<tr>
+			<td>
+				Si vous ne voulez plus voir apparaitre le plan a coté de votre visite, vous pouvez le supprimer en cliquant sur le bouton ci-dessous.
+				<div class="btn"><input type="image" src="$$_$$i/dyn/btnsupprimer.png" /></div>	
+		</td>
+	</tr>
+	</table>
+	</form>
+	$$END$$
+	
+	
+	
+$$END$$	
+	
+
+$$END:VISITE:ERRE$$
+<!--#include virtual="webvisium/bas.htm"-->

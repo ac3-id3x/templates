@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<TITLE>Acces agence SeLoger</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE type=text/css>
+BODY, TD {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
+input {  font-family: Arial, Helvetica, sans-serif; font-size: 8pt}
+.bg_table_gauche {  background-color: #E2E2E2 }
+.errmsg {font-weight: bold;  color: #4080FF}
+</style>
+$$B:IMMOBC:VIRTUALEYE:REP:1$$
+<SCRIPT language="javascript"><!--
+
+$$IF:FORM:VOIR$$
+document.location='$$FORM:VOIR$$';
+$$END$$
+
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+//--------------------
+function Valider()
+{
+	var tmp;
+	chaine = MM_findObj("id").value;
+	var tab=new Array;
+	tab[0] = "http:";tab[1] = "/";tab[2] = "www.";tab[3] = "virtualeye";tab[4] = ".php?";
+	for (i=0;i<5;i++)
+	{
+		tmp = chaine.indexOf(tab[i]);
+		if (tmp != -1) {alert("Vous ne devez pas saisir l'url.");return 0;}
+	}
+	tmp = chaine.indexOf(" ");
+	if (tmp != -1) {alert("Vous ne devez pas saisir d'espaces.");return 0;}
+		document.f_virtualeye.submit();
+
+	return 1;
+}
+function PupOpen(page)
+	{
+	window.open(page,'visuel','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=no,resizable=yes,width=400,height=400,top=100,left=100');
+	}
+
+// --></SCRIPT>
+
+</HEAD>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#000000" vlink="#000000" alink="#000000">
+<center>
+
+<font class="errmsg">$$ERRE$$</FONT><br/>
+<form action="virtualeye_ajouter.htm" method="post" name="f_virtualeye">
+
+$$IF0:FORM:IDVISU$$
+<input type="hidden" name="u" value="immobc:virtualeye_add">
+<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+<input type="hidden" name="page_err" value="/$$REP:URI$$">
+<input type="hidden" name="idtypevisuel" value="10">
+<input type="hidden" name="idannonce" value="$$REP:1$$">
+<input type="hidden" name="idagence" value="$$REP:2$$">
+<b>Ajout d'une visite virtuelle Virtual Eye</b><br/>
+<br/>
+Veuillez saisir l'identifiant de la visite.
+<input type="text" value="$$IF0:FORM:PAGE_OK$$$$END$$$$FORM:ID$$"  size="64" name="id"><br/>
+$$BIF:IMMOBC:VIRTUALEYE:REP$$
+	<br/><br/>
+	<a href="javascript:PupOpen('$$DO:1:999$$$$IMMOBC:VIRTUALEYE:REP:URLVIRTUALEYE$$$$IMMOBC:VIRTUALEYE:REP:URL$$$$LOOP$$');">Voir la visite virtuelle</a>
+	<br/><br/><a href="javascript:document.location='/$$REP:2$$/$$REP:1$$/virtualeye_ajouter.htm?idvisu=$$DO:1:999$$$$IMMOBC:VIRTUALEYE:REP:IDVISUEL$$$$LOOP$$';">Supprimer la visite virtuelle</a>
+	<br/>
+	$$BFIN$$
+<br/><input type="button" value="Enregistrer" OnClick="Valider();">
+$$END:ajout$$ 
+$$IF:FORM:IDVISU$$
+<input type="hidden" name="u" value="immobc:visuel_del">
+<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+<input type="hidden" name="page_err" value="/$$REP:URI$$">
+<input type="hidden" name="idvisuel" value="$$FORM:IDVISU$$">
+<b>Suppression d'une visite virtuelle Virtual Eye</b><br/>
+<br/>
+Etes-vous certain de vouloir supprimer cette visite virtuelle Virtual Eye ?
+	$$BIF:IMMOBC:VIRTUALEYE:REP$$
+	<br/><br/><a href="javascript:PupOpen('$$DO:1:999$$$$IMMOBC:VIRTUALEYE:REP:URLVIRTUALEYE$$$$IMMOBC:VIRTUALEYE:REP:URL$$$$LOOP$$');">Voir la visite virtuelle</a><br/>
+	$$BFIN$$
+<br/><br/><input type="submit" value="Supprimer">
+$$END:ajout$$ 
+<input type="button" value="Fermer" OnClick="window.close();">
+</form>
+</center>
+
+</body>
+</html>

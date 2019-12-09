@@ -1,0 +1,163 @@
+
+$$B:XEDY:CATMENU:~getArgInConfig:cfg_rubx_header:ALIAS:MTEMPLATETOP$$
+$$BIF:MTEMPLATETOP$$
+	$$A:CURENTLEVEL=1$$
+	$$A:DIV=0$$
+	$$A:ITEM_OPEN=0$$
+	<ul class="menu">
+		$$DO$$
+			$$A:CAT_ID=@@MTEMPLATETOP:CAT_ID@@$$
+			$$IF!:159677$159711$159713$159715$159749$159789$159693$160521$160515$160433$160499$160427$160419$160511$159763$160391$159703$159705$159701$159903:CAT_ID$$
+				$$IF!:159677$159711$159713$159715$159749$159789$159693$160521$160515$160433$160499$160427$160419$160511$159763$160391$159703$159705$159701$159903:MTEMPLATETOP:PARENT$$
+				$$REM$$<!-- si rubrique différente de:
+					home,
+					footer,
+					Footer Sites Groupe,
+					Actualités,
+					Plan de site,
+					Qui sommes-nous ?,
+					contact
+				-->$$END$$
+
+					$$IF0:MTEMPLATETOP:PROTEGEE$$<!-- catégories non protégées uniquement -->
+						$$IF=:1$2:MTEMPLATETOP:NIVEAU$$<!-- 2 premier niveau de catégories uniquement -->
+
+
+							$$IF!:CURENTLEVEL:MTEMPLATETOP:NIVEAU$$<!-- Si le niveau de rubrique change -->
+								$$IF-:CURENTLEVEL:MTEMPLATETOP:NIVEAU$$<!-- Si on revient au niveau 1 -->
+									$$IF=:1:DIV$$<!-- Si on a ouvert la div du deuxième niveau -->
+										</ul></div>
+										$$A:DIV=0$$
+									$$END$$
+								$$END$$
+							$$END$$
+
+							$$IF=:0:DIV$$
+							
+								$$IF!:CURENTLEVEL:MTEMPLATETOP:NIVEAU$$<!-- Si le niveau de rubrique change -->
+									$$IF+:CURENTLEVEL:MTEMPLATETOP:NIVEAU$$<!-- ouverture du deuxième niveau -->
+										<div class="sousMenu menu_fr_$$CAT_ID$$">
+											<img class="flecheSousMenu" alt="" src="http://static.poliris.com/z/portail/poliris_2011/images/fleche-bas.png" />
+											<ul class="ssrub" id="sub_menu_fr_$$MTEMPLATETOP:PARENT$$">
+										$$A:DIV=1$$
+									$$END$$
+								$$END$$
+							$$END$$
+
+							<!-- BEGIN | Creation du href
+								$$A:LIEN=$$
+								$$IF:MTEMPLATETOP:URL$$
+									$$A:LIEN=@@MTEMPLATETOP:URL@@$$
+								$$END$$
+								$$IF0:MTEMPLATETOP:URL$$
+									$$IF!:1:MTEMPLATETOP:NIVEAU$$
+										$$A:LIEN=/@@CAT_ID@@/rub.htm$$
+									$$END$$
+								$$END$$
+								$$IF:MTEMPLATETOP:URLVIRTUELLE$$
+									$$A:LIEN=@@MTEMPLATETOP:URLVIRTUELLE@@$$
+								$$END$$
+								$$IF=:159709:CAT_ID$$
+									$$A:LIEN=/poliris_tm.htm$$
+								$$END$$
+								$$IF=:159755:CAT_ID$$
+									$$A:LIEN=/mobile.htm$$
+								$$END$$
+								$$IF=:160385:CAT_ID$$
+									$$A:LIEN=/contact_poliris.htm$$
+								$$END$$
+							<!-- END | Creation du href -->
+							$$IF=:1:ITEM_OPEN$$
+								$$IF!:159695$159709$159757$160545$160019$159755$160659$160661:CAT_ID$$
+									</li>
+								$$END$$
+								$$A:ITEM_OPEN=0$$
+							$$END$$
+
+							$$IF=:0:ITEM_OPEN$$
+								<!-- BEGIN | Creation du libellé du lien 
+									$$A:LIBLINK=@@MTEMPLATETOP:LIBELLE htmlencode@@$$
+									$$IF:MTEMPLATETOP:LIBELLECOURT$$
+										$$A:LIBLINK=@@MTEMPLATETOP:LIBELLECOURT htmlencode@@$$
+									$$END$$
+									$$IF=:159685:CAT_ID$$
+										$$A:LIBLINK=LOGICIELS$$
+									$$END$$
+								<!-- END | Creation du libellé du lien -->
+								$$IF!:159755:CAT_ID$$
+									<li id="$$IF=:2:MTEMPLATETOP:NIVEAU$$s$$END$$menu_fr_$$CAT_ID$$" class="$$IF=:1:MTEMPLATETOP:NIVEAU$$master$$CAT_ID$$$$END$$$$IF=:2:MTEMPLATETOP:NIVEAU$$submaster_$$MTEMPLATETOP:PARENT$$$$END$$">
+									<a 
+										$$IF!:160335$159685$159687$159689:CAT_ID$$
+											href="$$LIEN$$"
+										$$END$$
+										$$IF=:159685:CAT_ID$$
+											href="http://www.poliris.fr/periclesnomade" target="_blank"
+										$$END$$										
+										$$IF=:159687:CAT_ID$$
+											href="http://www.poliris.fr/creationdesitesinternet" target="_blank"
+										$$END$$
+										$$IF=:159689:CAT_ID$$
+											href="http://www.poliris.fr/referencement2013" target="_blank"
+										$$END$$
+										$$IF=:160335:CAT_ID$$
+											href="http://www.poliris.fr/immobilier-marketing/estimation/avis-de-valeur-r160545"
+										$$END$$
+										 title="$$MTEMPLATETOP:LIBELLE htmlencode$$" $$IF:MTEMPLATETOP:SI_BLANK$$ target="_blank"$$END$$ $$IF=:1:MTEMPLATETOP:NIVEAU$$class="niv1"$$END$$">
+										$$IF!:159685:CAT_ID$$$$LIBLINK$$	$$END$$							
+										$$IF=:159685:CAT_ID$$<img src="/z/portail/poliris_2011/images/logo_pericles_menu.png">$$END$$
+										$$IF=:159687:CAT_ID$$<span>et d'applications mobiles</span>$$END$$
+										$$IF=:159689:CAT_ID$$<span>de votre site</span>$$END$$
+										$$IF=:160335:CAT_ID$$<span>& e-prospection</span>$$END$$
+										$$IF=:160385:CAT_ID$$<span>Personnalisé</span>$$END$$
+									</a>
+									$$A:ITEM_OPEN=1$$
+								$$END$$
+								
+								$$IF=:160831:CAT_ID$$
+									<li id="smenu_fr" class="submaster_159687">
+										<a href="http://www.poliris.fr/pericles5eva " title="EVA" target="_blank">
+											EVA
+										</a>
+									</li>
+								$$END$$
+								
+								$$IF=:159755:CAT_ID$$
+									<!--<li id="smenu_fr_159709" class="submaster_159687">
+										<a href="/poliris_tm.htm" title="Sites Internet">
+											Sites Internet
+										</a>
+									</li>-->
+									<li id="$$IF=:2:MTEMPLATETOP:NIVEAU$$s$$END$$menu_fr_$$CAT_ID$$" class="$$IF=:1:MTEMPLATETOP:NIVEAU$$master$$CAT_ID$$$$END$$$$IF=:2:MTEMPLATETOP:NIVEAU$$submaster_$$MTEMPLATETOP:PARENT$$$$END$$">
+									<a 
+										$$IF!:160335:CAT_ID$$
+											href="$$LIEN$$"
+										$$END$$
+										$$IF=:160335:CAT_ID$$
+											href="http://www.poliris.fr/avis-de-valeur_estimation_immobiliere"
+										$$END$$
+										 title="$$MTEMPLATETOP:LIBELLE htmlencode$$" $$IF:MTEMPLATETOP:SI_BLANK$$ target="_blank"$$END$$ $$IF=:1:MTEMPLATETOP:NIVEAU$$class="niv1"$$END$$>
+										$$LIBLINK$$								
+										$$IF=:159685:CAT_ID$$<span>Périclès</span>$$END$$
+										$$IF=:159687:CAT_ID$$<span>et d'applications mobiles</span>$$END$$
+										$$IF=:159689:CAT_ID$$<span>de votre site</span>$$END$$
+										$$IF=:160335:CAT_ID$$<span>& e-prospection</span>$$END$$
+										$$IF=:160385:CAT_ID$$<span>Personnalisé</span>$$END$$
+									</a>
+									$$A:ITEM_OPEN=1$$
+								$$END$$
+							$$END$$
+
+							$$A:CURENTLEVEL=@@MTEMPLATETOP:NIVEAU@@$$
+						$$END$$
+					$$END$$
+
+				$$END$$
+			$$END$$
+		$$LOOP$$
+
+		$$IF=:1:DIV$$<!-- Si on a ouvert la div du deuxième niveau -->
+			</ul></div>
+			$$A:DIV=0$$
+		$$END$$
+	</ul>
+$$BFIN$$

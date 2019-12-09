@@ -1,0 +1,58 @@
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	
+	<tr class="tabentete">
+		<td align="left" colspan="2">Coordonnées affichées sur l'annonce <font class="legendeb">- si elles sont différentes de celles de l'agence.</font><br/></td>
+	</tr>
+	<tr>
+		<td>Nom :<br />
+			<input type="hidden" name="titre_contact" value="Négociateur"> 
+			<input type="text" name="contact" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:CONTACT htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:CONTACT htmlencode$$$$END$$" size="32" maxlength="64" title="Nom du négociateur">
+		</td>
+		<td valign="top">Email :<br />
+			<input type="hidden" name="titre_email" value="Email" />
+			<input type="text" name="email" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:EMAIL htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:EMAIL htmlencode$$$$END$$" size="32" maxlength="64" title="Email" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">Téléphone<font class="legende"> - Pour un numéro en France ne pas tenir compte des préfixes</font><br />
+		<table class="sstabbasic">
+			<tr>
+				<td valign="bottom">Préfixe international</td>
+				<td valign="bottom">Préfixe national</td>
+				<td valign="bottom">Numéro</td>
+				<td valign="bottom">Pays<font class="legende"><sup>p</sup></font></td>
+			</tr>
+			<tr>
+				<td valign="top">
+					+<input type="text" name="telephone_pxi" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:TELEPHONE_PXI$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:TELEPHONE_PXI$$$$END$$" size="4" maxlength="3" />
+				</td><td valign="top">
+					(<input type="text" name="telephone_pxn" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:TELEPHONE_PXN$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:TELEPHONE_PXN$$$$END$$" size="4" maxlength="2" />)
+					<input type="hidden" name="titre_telephone" value="Téléphone" />
+				</td><td valign="top">
+					<input type="text" name="telephone" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:TELEPHONE$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:TELEPHONE$$$$END$$" size="32" maxlength="64" title="Téléphone" />
+				</td><td valign="top">				
+						$$BIF:PAYS$$
+						<select name="telephone_idpays" title="Code du pays" onChange='SetTel("telephone");' >
+						<option value="33">France [+33]
+						$$DO$$
+						$$IF:PAYS:PREFIXE_INTER$$
+						<option value="$$PAYS:PREFIXE_INTER$$">$$PAYS:PAYS_FR$$ [+$$PAYS:PREFIXE_INTER$$]
+						$$END$$
+						$$LOOP$$
+						</select>
+						$$BFIN$$
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="legende">
+					<sup>p</sup>Pour un numéro à l'étranger sélectionnez le pays, le préfixe international se remplira automatiquement.<br/>
+					Exemple pour un numéro en France : +33(0)000000000 à l'étranger +13200000000
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	
+<!--  ...................................... Nego - End -->
+</table>

@@ -1,0 +1,321 @@
+<script type="text/javascript">
+	
+var modeSelect = 0;
+   $$IF:FORM:COURONNERAYON$$ 
+   /* position cursor if reload with ray value posted */
+   position($$FORM:COURONNERAYON$$);
+   $$END$$
+
+	<!--#include absolute="/portail/pol/engine/centredecontact/javascript.htm"-->
+	
+	/* display/hide error message */
+	function gestError(a){
+		if(a){	
+			document.getElementById('errMsg').style.display = 'inline';
+			document.getElementById('errMsg').innerHTML = "<div class='gestError'>"+a+"</div>";
+			document.location.href ="#errMsgLink";		
+		}
+		else{
+			document.getElementById('errMsg').style.display = 'none';
+			document.getElementById('errMsg').innerHTML = "<div class='gestError'></div>";			
+		}	
+	}
+	/* display/hide amount option if premium "alerte" */ 
+	function displayAmount(){
+		
+		if(document.formGestMandat.etatalerte[i].value=="a"){
+			if(document.formGestMandat.etatalerte[i].checked){
+				document.getElementById('amount').style.display = "inline";
+				document.getElementById('montantalertes').value = 10;
+			}else{
+				document.getElementById('amount').style.display = "none";
+					document.getElementById('montantalertes').value = 0;
+			}
+		}		
+		
+	}
+		/* just a "0" before format if value < 10 */ 
+	function dateString(a){
+		if(parseInt(a)<10){a = "0"+a}
+		return a;	
+	}
+	/* automatic name group with search type and date */
+	function getGroupeNom(){
+			var myDate = new Date();
+			var groupeDate = myDate.valueOf();
+			var groupeTransactions = "";
+			var groupeCp;
+			for(i=0 ; i < document.formGestMandat.LISTECP.length ; i++){
+				if(document.formGestMandat.LISTECP[i].checked == true){(!groupeCp)?groupeCp = document.formGestMandat.LISTECP[i].value:false;}
+				else if(document.formGestMandat.LISTECP[i].value != "" && document.formGestMandat.LISTECP[i].id.substring(0,7) == "LISTECP"){
+					(!groupeCp)?groupeCp = document.formGestMandat.LISTECP[i].value:false;
+				}
+			}
+			for(i=0; i < document.formGestMandat.listetypetransac.length ; i++){
+				if(document.formGestMandat.listetypetransac[i].checked == true){groupeTransactions += ((groupeTransactions!="")?' et ':'') + document.formGestMandat.listetypetransac[i].id.replace('listetypetransac-','');}
+			}
+			if(groupeTransactions!=""){
+				$$REM$$
+				//document.getElementById('nomcampagneText').innerHTML = groupeTransactions+groupeCp+" "+"("+groupeDate+")";
+				//document.getElementById('nomcampagne').value = groupeTransactions+groupeCp+" "+"n&#176;"+groupeDate;	
+				$$END$$
+				groupeDate = dateString(myDate.getDate());
+				groupeDate += "/"+dateString(myDate.getMonth()+1);
+				groupeDate += "/"+dateString(myDate.getFullYear());
+				groupeDate += " "+dateString(myDate.getHours());
+				groupeDate += ":"+dateString(myDate.getMinutes());
+				groupeDate += ":"+dateString(myDate.getSeconds());
+				document.getElementById('nomcampagne').value = groupeTransactions+", "	+	groupeDate;
+				gestError();
+			}
+			else{
+				gestError("S&eacute;lectionnez au moins un type de transaction");
+			}
+	}
+	
+	/* cgv acceptation if necessary or submit "alerte"	*/
+	function gestValidationCGV(a){
+		if(a == false){
+			document.getElementById('validation').className ="";
+			document.getElementById('validation').innerHTML = '<BR /><input value="Validez ces recherches" type="button" onClick="stepCreAlerte(2);" class="button"  style="float:right;" />';
+		}
+		else{
+			var textFields = "";
+			textFields += "<p><b>Pour valider votre demande, merci d\'accepter les conditions générales de vente qui suivent : </b></p>" ;
+			textFields += '<input type="checkbox" name="accept_cgv" id="accept_cgv" value="YES" />' ;
+			textFields += "<label for='accept_cgv'>	$$LG:CGV htmlencode$$	</label>";
+			textFields += "<br /><br />Vous pouvez indiquer le montant maximum de vos d&eacute;penses mensuelles : " ;
+			textFields += '<input type="text" size="3" name="plafondmensuel" id="plafondmensuel" value="300" />&euro; </p>' ;
+			textFields += '<input style="float:right;" class="button" type="button" name="valider" value="Valider les CGV" onclick="postCGV()" /><br /><br />';
+			
+			document.getElementById('validation').innerHTML = textFields;
+		}
+	}
+	/* post CGV acceptation */
+	function postCGV(){
+		var a ="";
+		var b=""; 
+		var errMsg = "";
+		a = document.getElementById('accept_cgv');
+		b = parseInt(document.getElementById('plafondmensuel').value);
+		gestError();
+		
+		if((a.checked == true && a.value) && (isNaN(b) == false  && b > 0)){
+				if(window.XMLHttpRequest){myFlew = new XMLHttpRequest(); }
+				else if(window.ActiveXObject){myFlew = new ActiveXObject("Microsoft.XMLHTTP");} 
+				var method   = "POST"; 
+				var filename = "$$REP:0 field 1$$,cgvValid.htm"; 
+				var uriElement = "";
+				uriElement += "u=MANDATVENTE:UPDATECLIENT_PRESSIMMO";
+				uriElement += "&page_ok="+filename;
+				uriElement += "&page_err="+filename;
+				uriElement += "&idagence=$$AUTH:CHECK_LOGIN:IDAGENCE$$";
+				uriElement += "&accept_cgv="+a.value; 			
+				uriElement += "&plafondmensuel="+b; 
+				
+				var data = null; 
+				if(uriElement != ""){data = uriElement;} 
+				if(method == "POST" && data != null) { 
+				   filename += "?"+data; 
+				   data      = null; 
+				} 
+				myFlew.open(method, filename, true); 
+				myFlew.onreadystatechange = function() { 
+				   if(myFlew.readyState == 4) { 
+				      
+				      var myResult = myFlew.responseText; 
+				      if(myResult == "okCGV"){gestValidationCGV(false);}
+				      else{
+								errMsg = "Une erreur est survenue. Merci de contacter votre service commercial <br />"+myResult;      	
+				      	if(errMsg){gestError(errMsg);}
+				      	document.getElementById('validation').innerHTML = myResult;
+				      }
+				   } 
+				} 
+				if(method == "POST"){myFlew.setRequestHeader("Content-type", "application/x-www-form-urlencoded");} 
+				myFlew.send(data); 
+			}
+			else{
+				if(a.checked == false){errMsg += "Merci de valider les Conditions G&eacute;n&eacute;rales de Ventes en cochant la case." }
+				if(isNaN(b) || b<1){
+						(errMsg !="")?errMsg+="<br />":null; 
+						errMsg += "Merci de sp&eacute;cifier un montant maximum valide.";
+				}
+				if(errMsg){gestError(errMsg);}
+			}
+	}
+	$$A:VALIDCGV=false$$
+	
+	$$IF:XDEV$$	<!-- test si prime null -->
+		$$IF=:null:FORM:PRIME$$	$$A:MANDATVENTE:CLIENT:PRIME_RESTANT=$$	$$END$$
+	$$END$$
+		
+	$$IF=:True:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$$$IF0:MANDATVENTE:CLIENT:PRIME_RESTANT$$
+		$$A:VALIDCGV=true$$
+	$$END$$$$END$$
+	gestValidationCGV($$VALIDCGV$$);
+	
+	/* display select form step */
+	function stepCreAlerte(a){
+		var errMsg = "";
+		var reCity = /^\d{5}$/;
+
+		switch(a){
+			case  0 :
+				gestError();
+				document.getElementById('step').value = 0;
+				document.getElementById('creAlerte-1').style.display = 'inline';
+				document.getElementById('creAlerte-2').style.display = 'none';
+				document.getElementById('btnBack').style.display = 'none';
+				if(document.getElementById('helpCity').innerHTML == ""){loadRing();}
+				break;
+			case 1 : 
+				gestError();
+				document.getElementById('step').value = 1;
+				/* isOk type text email and type checkbox LISTECP */
+				if(!document.getElementById('emailcampagne').value){errMsg += "Saisissez une adresse email. <br />";}
+				var listecp = false;
+				var cpValide = true;
+				for(i=0 ; i < document.formGestMandat.LISTECP.length ; i++){
+					if(document.formGestMandat.LISTECP[i].checked == true){listecp = true;}
+					else if(document.formGestMandat.LISTECP[i].value != "" && document.formGestMandat.LISTECP[i].id.substring(0,7) == "LISTECP"){
+						listecp = true;
+						if(!reCity.test(document.formGestMandat.LISTECP[i].value) && document.formGestMandat.LISTECP[i].value != ""){cpValide = false}
+					}
+				}
+				if(listecp == false){errMsg += "Choisissez au moins un code postal <br />";}
+				if(!cpValide){errMsg += "Saisissez un code postal valide <br />"};
+				
+				if(errMsg == ""){
+					gestError();		
+					getGroupeNom();
+					document.getElementById('creAlerte-1').style.display = 'none';
+					document.getElementById('creAlerte-2').style.display = 'inline';
+					document.getElementById('btnBack').style.display = 'inline';
+					document.location.href ="#errMsgLink";
+
+				}
+				else{
+					gestError(errMsg);	
+				}
+				break;				
+			case 2 :
+					gestError();
+					/* isOk type checkbox transaction, type text email and amount */			
+					if(!document.getElementById('montantalertes').value){errMsg += "Saisissez un montant d'enchère. <br /> ";}
+					//if(document.getElementById('montantalertes').value && parseInt(document.getElementById('montantalertes').value) < 10){errMsg += "Saisissez un montant d'au moins 10 &euro; <br /> ";}
+					if(!document.getElementById('nomcampagne').value){errMsg += "Saisissez le nom du groupe associé aux recherches <br />";}
+					var transactionList  = false;
+					for(i=0; i < document.formGestMandat.listetypetransac.length ; i++){
+						if(document.formGestMandat.listetypetransac[i].checked == true){transactionList = true;}
+					}
+					if(transactionList == false){errMsg += "Choisissez au moins un type de transaction <br />";}
+					if(errMsg == ""){
+						gestError();	
+						document.getElementById('formGestMandat').submit();
+					}
+					else{
+						gestError(errMsg);	
+					}			
+				break;
+		}
+	}
+	$$INIT:FORM:STEP=0$$
+	stepCreAlerte($$FORM:STEP$$);
+
+
+	
+	function gestListCp(){
+		var imgs=["http://dev.selogerpro.com.xdev.poliris.net"+"$$_$$i/dyn/btntoutselectionner.png",
+		"http://dev.selogerpro.com.xdev.poliris.net"+"$$_$$i/dyn/btntoutdeselectionner.png"
+		]
+		var img0 = document.getElementById('imgCpList0');
+		var img1 = document.getElementById('imgCpList1');
+
+		modeSelect = Math.abs(modeSelect-1);
+		
+		if (modeSelect == 1)
+		{
+			img0.style.width=154;
+			img1.style.width=154;
+		}else{
+			img0.style.width=136;
+			img1.style.width=136;
+		}
+		
+		if (img0.tagName=="SPAN") // est vrai sous ie
+		{
+			img0.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+imgs[modeSelect]+"', sizingMethod='scale');";
+			img1.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+imgs[modeSelect]+"', sizingMethod='scale');";
+		}
+		else {
+			img0.src=imgs[modeSelect];
+			img1.src=imgs[modeSelect];
+		}
+		
+		if (document.formGestMandat.LISTECP.length){
+			for(i = 0 ; i < document.formGestMandat.LISTECP.length ; i++){
+				document.formGestMandat.LISTECP[i].checked = (modeSelect==1)?true:false;
+			}
+		}
+	}
+
+	function getListCityBtnCode(nbr,issel) {
+		return  '<div id=cplistsel'+nbr+'><img src="$$_$$i/dyn/btntout'+((issel==1)?'de':'')+'selectionner.png" /></div>';
+	}
+
+	/* load city list arround a first one with a dynamic ray */
+	function loadRing(){
+		var city = document.getElementById('couronneCP').value;
+		var ray = parseInt(document.getElementById('couronneRayon').value);
+		var reCity = /^\d{5}$/;
+		var reRay = /^\d{1,2}$/;
+
+		var myFlew = null; 
+		var errMsg ="";
+		gestError();	
+		if(!reCity.test(city)){errMsg += "Vous devez saisir un code postal valide<br />";}	
+		if(!reRay.test(ray) || ray < 1 || ray > 50){errMsg += "Vous devez saisir un rayon entre 1 et 50 km<br />"}	
+		
+		if(errMsg){
+			gestError(errMsg);	
+		}
+		else{
+			if(window.XMLHttpRequest){myFlew = new XMLHttpRequest(); }
+			else if(window.ActiveXObject){myFlew = new ActiveXObject("Microsoft.XMLHTTP");} 
+			var method   = "GET"; 
+			var filename = "$$REP:0 field 1$$,listecp_ajx.htm"; 
+			var uriElement = "rayon="+ray+"&ville="+city; 
+			
+			var data = null; 
+			if(uriElement != ""){data = uriElement;} 
+			if(method == "GET" && data != null) { 
+			   filename += "?"+data; 
+			   data      = null; 
+			} 
+			myFlew.open(method, filename, true); 
+			myFlew.onreadystatechange = function() { 
+			   if(myFlew.readyState == 4) { 
+			      var divCityName="";
+			      var myResult = myFlew.responseText.split(";"); 
+			      for (i=0;i<myResult.length;i++){
+							if(myResult[i].split('|')[1]){
+							divCityName += '<div> <input type="checkbox" name="LISTECP" id="cp-'+myResult[i].split('|')[0]+'" value="'+myResult[i].split('|')[0]+'" '+((i==0)?' checked':'')+'/><label for="cp-'+myResult[i].split('|')[0]+'">'+ myResult[i].split('|')[1] + ' (' + myResult[i].split('|')[0] + ')' +'</label></div>';
+							}
+			      }
+			      var helpCity = document.getElementById('helpCity');
+			      helpCity.innerHTML=
+			      '<div id=sellist0><img id="imgCpList0" src="$$_$$i/dyn/btntoutselectionner.png" /></div>'
+			      +divCityName
+			      +'<div id=sellist1><img id="imgCpList1" src="$$_$$i/dyn/btntoutselectionner.png" /><div>';
+
+			      document.getElementById('sellist0').onclick=gestListCp;
+			      document.getElementById('sellist1').onclick=gestListCp;
+	
+			   } 
+			} 
+			if(method == "POST"){myFlew.setRequestHeader("Content-type", "application/x-www-form-urlencoded");} 
+			myFlew.send(data); 	
+		}
+	}	
+</script>

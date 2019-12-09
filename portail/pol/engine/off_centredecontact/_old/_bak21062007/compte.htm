@@ -1,0 +1,106 @@
+$$DYN:ID3:NOFOOTER$$$$DYN:ID3:NOCACHE$$
+$$E:E3:CAT:CDC_COMPTE:SLPRO$$
+$$SET:PAGE:IDT=MandatventeCompte$$ $$INIT:FORM:DISPLAY=compte$$
+$$INIT:INTRAX=1$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+
+$$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$	
+			<!--#include absolute="/portail/pol/engine/centredecontact/offredec.htm"-->
+$$END$$
+$$E:SLPRO:INFOSAGENCE$$
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+
+<div id="gestError"></div>
+<div id="divGestMandat"></div>
+
+<script type="text/javascript">
+<!--
+<!--#include absolute="/portail/pol/engine/centredecontact/javascript.htm"-->
+-->
+</script>
+
+
+
+	<h3> Informations $$SLPRO:INFOSAGENCE:NOM$$.</h3>
+		<div style="vertical-align:bottom; float:left; margin-top:5px;">
+			$$IF=:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+				<div>
+					<div style="float:right; width:420px;">
+						Dés que l’Offre découverte est épuisée ou insuffisante, je re&ccedil;ois les contacts apportés par le "Centre de contacts" et de régler sur ma facture Petites annonces les fiches contact reçues, au prix que j'aurai fixé dans la mesure où je ferai partie des 3 premiers gagnants.
+					</div>
+					$$IF>:2,4:OBJECTIFMANDATS:VERSION$$ <!-- preprod -->
+					<div style="float:left; padding:5px;">
+						<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire" >
+						<input type="image" src="$$_$$engine/centredecontact/icons/valider.gif" id="submitbutton" style="float:right; border:none; margin-right:125px;" />
+						<b>Le budget maximum mensuel est de :</b> 
+						<input type="hidden" name="u" value="MANDATVENTE:EDITCLIENT"/>						
+						<input type="hidden" name="page_ok" value="/$$BASE:FIELD$$compte.htm" />
+						<input type="hidden" name="page_err" value="/$$BASE:FIELD$$compte.htm"/>
+						<input type="hidden" name="idclient" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDCLIENT$$" />						
+						<input type="hidden" name="iduser" value="$$MANDATVENTE:IDENTIFICATION_PRESSIMMO:IDUSER$$" />
+						<input type="text" name="plafondmensuel" value="$$MANDATVENTE:CLIENT:PLAFONDMENSUEL formatnumber 0$$" size="4" />&euro;
+						</form>
+					</div>
+					$$END$$
+					<!-- img src="$$_$$engine/centredecontact/icons/accept.gif" / -->
+				</div>				
+			$$END$$
+			<!-- ISCOMPTEBLANC $$MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$ --> 
+			
+			$$IF!:False:MANDATVENTE:IDENTIFICATION_PRESSIMMO:ISCOMPTEBLANC$$
+			<form method="post" action="$$BASE:FIELD$$compte.htm" id="formulaire">
+			$$IF:MODEDEV$$<input type="hidden" name="u" value="MANDATVENTE:UPGRADECLIENT"/>$$END$$
+			$$IF0:MODEDEV$$<input type="hidden" name="u" value="MANDATVENTE:UPDATECLIENT_PRESSIMMO"/>$$END$$
+			<input type="hidden" name="page_ok" value="/$$BASE:FIELD$$compte.htm" />
+			<input type="hidden" name="page_err" value="/$$BASE:FIELD$$compte.htm"/>
+			<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+			<input type="hidden" name="display" value="compte" />
+			<div>
+				<div style="float:right; width:420px;">
+					<label for="accept_cgvYES">	$$LG:CGV htmlencode$$	</label>
+				</div>
+				<input type="checkbox" name="accept_cgv" value="YES" id="accept_cgvYES" /> 
+			</div>
+			<input type="hidden" name="plafondmensuel" value="300" />
+
+			<br /><br /><br /><br />
+				<input type="image" src="$$_$$engine/centredecontact/icons/valider.gif" id="submitbutton" style="float:right; border:none; margin-right:25px; " />
+			</form>
+			$$END$$
+		</div>
+
+	<br /><hr />
+	
+	
+	<h3>Montant facturé par mois</h3> 
+	$$B:MANDATVENTE:FACTURESCLIENTS::LAST:2:!D:ALIAS:LISTEFACTURE$$
+	$$BIF:LISTEFACTURE$$<table cellpadding="2" cellspacing="1" border="0" style="width:450px;">
+	<tr>
+	<td>Mois</td>
+	<td>Année</td>
+	<td>Nb Fiches Contact</td>
+	<td>Montant facturé HT</td>
+	</tr>
+	$$DO$$
+	<tr style="background-color:$$LISTEFACTURE:I mod2 #ffffff #eff3f6$$;">
+		<td>$$LISTEFACTURE:LIBMOIS pcase$$</td>
+		<td>$$LISTEFACTURE:ANNEE$$</td>
+		<td>$$LISTEFACTURE:NBACHAT$$</td>
+		<td>$$LISTEFACTURE:MONTANTTOT formatnumber 0$$ &euro;</td>
+	</tr>
+	$$LOOP$$
+	</table>
+	$$BFIN$$
+	$$BIF0:LISTEFACTURE$$
+	<table cellpadding="1" cellspacing="0" border="0" style="width:450px;">
+	<tr style="background-color:#eff3f6;">
+		<td><div style="padding:3px;">Aucun montant n'est aujourd'hui facturé.</div></td>
+	</tr>
+	</table>
+	$$BFIN$$
+
+
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->

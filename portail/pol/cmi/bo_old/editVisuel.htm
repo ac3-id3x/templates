@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<body>
+$$IF:CMI:BO-VISUELEDITION:ERRMSG$$<font color="red">$$CMI:BO-VISUELEDITION:ERRMSG htmlencode crlf2br$$</font>$$END$$
+$$IF0:CMI:BO-VISUELEDITION:ERRMSG$$$$IF:FORM:PAGE_OK$$<font color="blue">Ok !</font>$$END$$$$END$$
+
+$$E:CMI:BO-VISUEL:~idVisuel:QRY:idVisuel:~toForm:true$$<!-- Pré-rempli les macros FORM: avec les valeurs venant de la BDD -->
+<form method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="u" value="cmi:bo-visueledition" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idAnnonce" value="$$FORM:IDANNONCE$$" />
+	<input type="hidden" name="idVisuel" value="$$FORM:IDVISUEL$$" />
+
+	Type de visuels : $$B:CMI:TYPESVISUELS$$
+	$$BIF:CMI:TYPESVISUELS$$
+	<select name="idTypeVisuel">
+	$$DO$$
+		<option value="$$CMI:TYPESVISUELS:IDTYPEVISUEL$$" $$IF=:CMI_TYPESVISUELS_IDTYPEVISUEL:FORM:IDTYPEVISUEL$$selected="selected"$$END$$>$$CMI:TYPESVISUELS:TYPEVISUEL$$</option>
+	$$LOOP$$
+	</select>
+	$$BFIN$$
+	<br/>
+
+	Fichier : <input type="file" name="visuel" /><br/>
+
+	Légende : <input type="text" name="legende" value="$$FORM:LEGENDE$$" /><br/>
+
+	<br/>
+	<input type="submit" name="" value="Mettre à jour" />
+</form>
+
+</body>
+</html>

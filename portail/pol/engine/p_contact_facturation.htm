@@ -1,0 +1,86 @@
+$$D:AUTH:CHECK_LOGIN$$
+$$A:TITLE=Contactez notre service client pour l'accès à vos factures en ligne$$
+$$E:E3:CAT:158738:SLPRO$$
+$$INCL:HAUTX.HTM$$
+$$E:SLPRO:INFOSAGENCE:ALIAS:AGINFO$$
+$$E:SLPRO:PANELMANDATAIRE112011:ALIAS:PANELM$$
+
+<script language="javascript">
+	function doSelect(obj) {
+		var vtexte = document.getElementById('choixtexte');
+		if (vtexte) {
+			vtexte.value = obj.options[obj.selectedIndex].value;
+		}
+		return true;
+	}
+</script>
+
+$$IF=:OK:REP:1$$
+		<div class="noerre"><span>Votre message a bien été envoyé</span></div>
+$$END$$
+
+$$IF0:REP:1$$
+	$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+	<form name="form1" method="post">
+		<div style="margin-top: 10px;margin-left:5px"><b>$$AGINFO:NOM$$</b>  ($$AUTH:CHECK_LOGIN:LOGIN$$)</div>
+	  <div class="erre" style="color: black;padding-left: 5px">Ce formulaire vous permet de contacter notre service client afin d'ajuster les paramètres du compte qui sera utilisé pour la gestion des <u>Factures en ligne</u>.
+	  	<br /><br />Par défaut, le compte utilisé est le compte du responsable d'agence.
+	  	<br /><br />Veuillez compléter ce formulaire pour qu'un opérateur puisse vous recontacter.
+	  </div>
+	  <div>&nbsp;</div>
+		<div>
+		<!-- $$FORM:PAGE_OK$$ -->
+			<table>
+				<tr>
+					<td>Nom : </td>
+					<td><input type="text" name="nom" value="$$IF:AUTH:CHECK_LOGIN:CIVILITE$$$$AUTH:CHECK_LOGIN:CIVILITE$$ $$END$$$$AUTH:CHECK_LOGIN:NOM$$$$IF:AUTH:CHECK_LOGIN:PRENOM$$ $$AUTH:CHECK_LOGIN:PRENOM$$$$END$$" size="45"></td>
+				</tr>
+				<tr>
+					<td>Fonction : </td>
+					<td><input type="text" name="fonction" value="$$AUTH:CHECK_LOGIN:FONCTION$$" size="45"></td>
+				</tr>
+				<tr>
+					<td>Email :</td>
+					<td><input type="text" name="adrmail" value="$$AUTH:CHECK_LOGIN:EMAIL$$" size="45"></td>
+				</tr>
+				<tr>
+					<td>Téléphone :</td>
+			  	<td><input type="text" name="tel" value="$$IF:AUTH:CHECK_LOGIN:TELEPHONE$$$$AUTH:CHECK_LOGIN:TELEPHONE$$$$END$$$$IF0:AUTH:CHECK_LOGIN:TELEPHONE$$$$AGINFO:TEL formattel2$$$$END$$"></td>
+				</tr>
+				<tr>
+					<td>Email de facturation :</td>
+					<td><input type="text" name="emailfacturation" value="$$PANELM:EMAILFACTURATION$$" size="45"></td>
+				</tr>
+				<tr>
+					<td>Choix :</td>
+			  	<td>
+			  		<select name="choix" onchange="javascript:doSelect(this);">
+			  			<option value="Créer un nouveau compte pour la gestion des factures">Créer un nouveau compte pour la gestion des factures</option>
+			  			<option value="Autre demande">Autre demande</option>
+			  		</select>
+			  	</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					Vous pouvez précisez votre demande ici :<br />
+					<textarea name="commentaire" cols="45" rows="10"></textarea>
+					<input type="hidden" name="rs" value="$$AGINFO:NOM$$">
+					<input type="hidden" name="idagence" value="$$AGINFO:IDAGENCE$$">
+					<input type="hidden" name="idtiers" value="$$AGINFO:IDTIERS$$">
+					<input type="hidden" name="login" value="$$AUTH:CHECK_LOGIN:LOGIN$$">
+					<input type="hidden" name="choixtexte" id="choixtexte" value="Créer un nouveau compte pour la gestion des factures">
+					<input type="hidden" name="email" value="$$AGINFO:EMAIL$$">
+					<input type="hidden" name="u" value="ID3:FORMMAIL">    
+					<input type="hidden" name="page_ok" value="/OK/$$REP:URI$$" />
+					<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+					<input type="hidden" name="cfg_form" value="contact_facturation">
+					<input type="hidden" name="cfg_emails" value="formmail_contact_facturation">
+					<br clear="all" />
+					<div class="btn"><input type="image" src="$$_$$i/dyn/btnenvoyer.png" /></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+$$END$$
+$$INCL:BASX.HTM$$

@@ -1,0 +1,64 @@
+$$B:SLPRO:LISTE_ANNONCES:~idtypevisuel_filtre:QRY:IDTYPEVISUEL:~idtypetransaction_filtre:QRY:IDTYPETRANSACTION:~idtypebien_filtre:QRY:IDTYPEBIEN:~censure_filtre:QRY:CENSURE:~cpville_filtre:QRY:CP:~idtypepublication_filtre:QRY:PUBLICATION:QRY:IDTYPEPUBLICATION:~nbpieces_filtre:QRY:NBPIECES:~nbpieces_min:QRY:NBPIECES_MIN:~idtypepublication_filtre:QRY:PUBLICATION:~idannonce_filtre:QRY:ID:~refannonce_filtre:QRY:REFANNONCE:~tri:QRY:TRI:ALIAS:AGANNONCES$$	
+$$INCL:LISTE_ANN_NBANN_BAISSEPRIX.HTM$$
+
+$$IF:CANNAUXDIFF$$ $$A:MAJ=1$$ $$END$$
+$$IF:SLPRO:KA-ANNONCES-TO-BIENS-VENDUS:ERRE$$
+	<div class="erre"><div>$$SLPRO:KA-ANNONCES-TO-BIENS-VENDUS:ERRE$$</div></div>
+$$END$$
+<form action="/$$IF!:editann:REP:2$$$$IF:MAJ$$$$REP:0$$$$END$$$$IF0:MAJ$$evolution_prix.htm$$END$$$$END$$$$IF=:editann:REP:2$$$$1_AGANNONCES:IDTYPEBIEN$$/$$1_AGANNONCES:IDTYPETRANSACTION$$/$$FORM:ID$$/annonce_visu.htm$$END$$$$IF=:liste_annonces_archives.htm:REP:0$$liste_annonces_archives.htm$$END$$" method="post" style="display: inline;" name="form" id="form">
+		$$BIF:AGANNONCES$$
+			<input type="hidden" id="page_ok_form_field" name="page_ok" value="$$IF0:FORM:ID$$/evolution_prix.htm$$END$$$$IF:FORM:ID$$/$$1_AGANNONCES:IDTYPEBIEN$$/$$1_AGANNONCES:IDTYPETRANSACTION$$/$$FORM:ID$$/annonce_visu.htm$$END$$">
+			<input type="hidden" name="page_err" value="/evolution_prix.htm">
+			<input type="hidden" name="edit" value="ok" />
+			<input type="hidden" name="id" value="$$FORM:ID$$" />
+			<input type="hidden" id="u_form_field" name="u" value="SLPRO:ANNONCES_SELECTION_BAISSEPRIX" />
+			<!-- ! relation avec engine_list_ann //-->
+			<input type="hidden" name="idtypetransaction" value="$$FORM:IDTYPETRANSACTION$$" />
+			<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />
+			<input type="hidden" name="nbpieces" value="$$FORM:NBPIECES$$" />
+            <input type="hidden" name="siInvalides" value="1" />
+			<input type="hidden" name="cp" value="$$FORM:CP$$" />
+			<input type="hidden" name="publication" value="$$FORM:PUBLICATION$$" />
+			<input type="hidden" name="censure" value="$$FORM:CENSURE$$" />
+			<input type="hidden" name="affpa" value="1" />
+			<input type="hidden" name="refannonce" value="$$FORM:REFANNONCE$$" />
+			$$IF:FORM:TRI$$<input type="hidden" name="tri" value="$$FORM:TRI$$" />$$END$$
+			$$IF:FORM:AGANNONCESPI$$<input type="hidden" name="agannoncespi" value="$$FORM:AGANNONCESPI$$" />$$END$$
+			<table class="tabinfo" cellpadding="0" cellspacing="0">	
+					$$INCL:LISTE_ANNONCES_HEADER_BAISSEPRIX.HTM$$
+					$$INCL:LISTE_ANNONCES_TRI_BAISSEPRIX.HTM$$
+					$$DO:1:query:20$$
+						$$INCL:LISTE_ANNONCES_LINE_BAISSEPRIX.HTM$$
+					$$LOOP$$
+			</table>
+	  $$IF:FORM:AFFPA$$   
+        <div class="btn_list" style="clear: right; float: right; width: 300px;">
+					<input type="image" id="btn_valider" src="$$_$$i/dyn/btnvalider.png" />					
+				</div>
+		$$END$$
+		$$BFIN$$
+		$$IF:AGANNONCES:NBRPAGES$$
+			<div class="list_nav_links_bottom">
+				$$IF!:1:AGANNONCES:NBRPAGES$$
+					$$IF:AGANNONCES:LIENARRIERE$$<a href="$$AGANNONCES:LIENARRIERE replace evolution_prix_list evolution_prix$$">Page précédente</a>$$END$$
+						$$AGANNONCES:MULTIPAGE replace | &nbsp;|&nbsp; replace evolution_prix_list evolution_prix$$
+						$$IF:AGANNONCES:LIENAVANT$$
+							<a href="$$AGANNONCES:LIENAVANT replace evolution_prix_list evolution_prix$$">Page suivante</a>
+						$$END$$
+				$$END:nbrpages$$
+			</div>
+		$$END$$
+</form>
+
+$$INCL:LISTE_ANNONCES_LEGEND.HTM$$
+
+$$BIF0:AGANNONCES$$
+	<script type="text/javascript">
+	<!--
+		var o = document.getElementById('line_res');
+		o.style.display = "none";
+	//-->
+	</script>
+	<div class="erre"><span>Aucune annonce ne correspond à votre recherche</span></div>
+$$BFIN$$
+

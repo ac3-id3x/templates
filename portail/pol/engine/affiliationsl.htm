@@ -1,0 +1,83 @@
+
+
+$$E:E3:CAT:158624:SLPRO$$
+
+$$INCL:HAUTX.HTM$$ 
+
+<SCRIPT language="JavaScript">
+
+
+	function Affiliation(val)
+	{
+		var action=document.getElementById("action");
+		
+		action.value=val;
+		document.forms.affiliationform.submit();
+	}
+	
+	
+
+
+</SCRIPT>
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+$$B:SLPRO:LISTEAFFILIATIONSL:ALIAS:LC$$
+
+
+
+
+
+$$IF:ERRE$$<div class="erre"><span>$$SLPRO:ACTIONAFFILIATION:ERRE$$</span></div>$$END$$
+$$IF:OK$$<div class="noerre"><span>$$SLPRO:ACTIONAFFILIATION:OK$$</span></div>$$END$$
+
+
+$$BIF:LC$$
+<form method="POST" name="affiliationform">
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+<thead>
+<tr>
+	<th class="bdr" style="width:70px">Identifiant</th>	
+	<th class="bdr">Nom, Prénom</th>	
+	<th class="bdr">Email</th>	
+  <th class="bdr" style="width:30px">Etat</th>	
+	<th style="width:50px">Sélection</th>
+</tr>
+</thead>
+$$DO$$
+
+<tr class="line_$$IF=:0:LC:I mod2 0 1$$pair$$END$$$$IF!:0:LC:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:LC:I mod2 0 1$$pair$$END$$$$IF!:0:LC:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:LC:I mod2 0 1$$pair$$END$$$$IF!:0:LC:I mod2 0 1$$impair$$END$$_new'" $$REM$$
+	onmouseover="javascript:swapannclass(this.id,'line_$$IF=:0:LC:I mod2 0 1$$pair$$END$$$$IF!:0:LC:I mod2 0 1$$impair$$END$$_new_hover');" onmouseout="javascript:swapannclass(this.id,'line_$$IF=:0:LC:I mod2 0 1$$pair$$END$$$$IF!:0:LC:I mod2 0 1$$impair$$END$$_new');"
+	$$END$$ id="line_ann_$$LC:I$$">
+	<td class="bdr">$$LC:USR_ID$$</td>
+	<td class="bdr">$$LC:NOM$$, $$LC:PRENOM$$</td>
+	<td class="bdr">$$LC:EMAIL$$</td>
+	<td class="bdr">$$IF=:1:LC:ETAT$$<span class="img_puce_red" title="header=[] body=[Assossiation inactive]"></span>$$END$$$$IF=:2:LC:ETAT$$<span class="img_puce_grey" title="header=[] body=[Assossiation en attente]"></span>$$END$$$$IF=:3:LC:ETAT$$<span class="img_puce_green" title="header=[] body=[Assossiation active]"></span>$$END$$</td>
+	<td><input type="checkbox" name="usr_id" value="$$LC:USR_ID$$" /></td>
+</tr>
+$$LOOP$$
+</table>
+<div class="btn_list">
+	<input type="image" src="$$_$$i/dyn/btndesactiver.png" onclick="Affiliation(2);" />
+	<input type="image" src="$$_$$i/dyn/btnactiver.png" onclick="Affiliation(1);"  />
+	
+</div> 
+
+<div class="info"><span>Choisissez le ou les profil(s) à <strong>associer à votre activité</strong>. Chaque profil associé sera mis en valeur sur le Forum Conseils de SeLoger.com par : un <strong>pictogramme PRO SeLoger</strong> différenciatif, un <strong>encart sur votre activité</strong> disposé sur le profil et une mise en avant de vos <strong>derniers biens immobiliers diffusés</strong> sur SeLoger.com.</span></div>
+		<input type="hidden" id="action" name="action" value="" />		
+		<input type="hidden" name="u" value="SLPRO:ACTIONAFFILIATION" />				
+		<input type="hidden" name="templatenameActivation" value="mails,reponse_affiliation.htm" />
+		<input type="hidden" name="templatenameDesactivation" value="mails,supp_affiliation.htm" />
+		<input type="hidden" name="page_err" value="$$REP:URI$$" />
+		<input type="hidden" name="page_ok" value="$$REP:URI$$" />
+</form>
+$$BFIN$$
+$$BIF0:LC$$
+<div class="erre"><span>Aucune association pour votre activité.</span></div>
+
+$$BFIN$$
+
+
+
+$$INCL:BASX.HTM$$
+
+

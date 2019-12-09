@@ -1,0 +1,59 @@
+$$IF:AUTH:CHECK_LOGIN:DROIT_ALERTES_VENDEUR$$ $$A:DROITSMODIF=1$$ $$END$$
+$$IF:AUTH:CHECK_LOGIN:DROIT_TOUT_ACCES$$      $$A:DROITSMODIF=1$$ $$END$$
+
+$$E:E3:CAT:157433:SLPRO$$
+$$A:CSS_AV=1$$
+$$A:JS_AV=1$$
+$$INCL:HAUTX.HTM$$ 
+
+$$E:ALERTESVENDEURS:CLIENT_ELIGIBLE$$
+$$E:ALERTESVENDEURS:RECHERCHE_DETAIL:ALIAS:RD$$
+
+$$IF:ALERTESVENDEURS:RECHERCHE_EDIT:ERRMSG$$<div class="erre"><span>$$ALERTESVENDEURS:RECHERCHE_EDIT:ERRMSG$$</span></div>$$END$$
+$$IF:ALERTESVENDEURS:RECHERCHE_SUPPRIME:ERRMSG$$<div class="erre"><span>$$ALERTESVENDEURS:RECHERCHE_SUPPRIME:ERRMSG$$</span></div>$$END$$
+
+$$IF:RD:IDRECHERCHE$$
+
+
+
+	<div id="line_btn_ann">
+		<div class="btn_right"><img src="$$_$$i/dyn/btnav_revenir_mes_recherches.png" onclick="javascript:id3_go('/av,recherche_liste.htm');" /></div>
+	</div> 
+$$IF:DROITSMODIF$$
+	<form method="post" name="listeRecherche"> 
+	<input type="hidden" name="idrecherche" id="idrecherche" value="$$RD:IDRECHERCHE$$" />                                 
+	<input type="hidden" name="u" id="macro" value="ALERTESVENDEURS:RECHERCHE_EDIT" />                     
+	<input type="hidden" name="page_ok" value="/av,recherche_liste.htm" />                                             
+	<input type="hidden" name="page_err" value="$$REP:URI$$" /> 	
+$$END:DROITSMODIF$$
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<thead>	
+		<tr><th>Informations sur le bien proposé</th></tr>
+	</thead>
+	<tr>
+		<td>
+			<div class="line200"><div>Nom :</div><input type="text" name="nom" value="$$RD:NOM$$" size="40" /></div>
+			<div class="line200"><div>Code Postal :</div><input type="text" name="code_postal" value="$$RD:CP$$" size="5" /></div>
+			<div class="line200"><div>Type de Transaction :</div>
+				<select name="idtypetransaction">
+					<option value="2" $$IF=:2:RD:TYPETRANSACTION$$selected="selected"$$END$$>Ventes</option>
+					<option value="1" $$IF=:1:RD:TYPETRANSACTION$$selected="selected"$$END$$>Locations</option>
+					<option value="0" $$IF=:0:RD:TYPETRANSACTION$$selected="selected"$$END$$>Ventes / Locations</option>
+				</select>
+			</div>
+			<div class="line200"><div>Email :</div><input type="text" name="email" value="$$RD:EMAIL$$" size="40" /></div>
+		</td>
+	</tr>
+	</table>  
+$$IF:DROITSMODIF$$
+	<div id="line_btn_ann">
+		<div class="btn_left"><img src="$$_$$i/dyn/btnsupprimer.png" onclick="javascript:delete_recherche_detail();" /></div>
+		<div class="btn_right"><img src="$$_$$i/dyn/btnmodifier.png" onclick="javascript:edit_recherche_detail();" /></div>
+	</div>                                                                                     
+	</form>  
+$$END:DROITSMODIF$$
+$$END$$      
+$$IF0:RD:IDRECHERCHE$$
+	<div class="erre"><span>Recherche $$FORM:IDRECHERCHE$$ non disponible</span></div>
+$$END$$                                              
+$$INCL:BASX.HTM$$ 

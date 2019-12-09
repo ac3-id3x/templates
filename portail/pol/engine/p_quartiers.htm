@@ -1,0 +1,139 @@
+$$A:TITLEPOPUP=Choix du quartier$$
+$$INCL:HAUTPOPX.HTM$$ 
+$$E:ID3:NOUACACHE$$ 
+$$E:ID3:NOCACHE$$
+$$B:E3:GETQUARTIERANNONCECP:QRY:CP:ALIAS:QUARTIERS$$
+$$A:PAGE:CLOSE=1$$
+
+$$IF0:FORM:CP$$
+	<div class="erre"><span>Il manque des informations pour l'affichage de cette page.</span></div>
+$$END$$
+
+$$BIF0:QUARTIERS$$
+	<div class="erre"><span>Les quartiers de cette ville ne sont pas définis pour l'instant.</span></div>
+$$BFIN$$
+
+$$IF:FORM:CP$$
+$$BIF:QUARTIERS$$
+	
+<script type="text/javascript">
+<!--
+function go(idq) {
+	window.open('/saisiquartier.htm?ci='+escape(idq),'aidequartier','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=400');
+}
+
+function checkByIdQuartier(idquartier) {
+	var idquartiers = document.forms["f_quartiers"].idquartier;
+	for (i=0;i<idquartiers.length;i++) {
+		if (idquartier) {
+			if (idquartiers[i].value==idquartier)
+				idquartiers[i].checked=true;				
+		}
+		else
+		{
+			if (idquartiers[i].checked) return idquartiers[i].value;			
+		}
+	}
+}
+
+function getQuartierLibelle(idquartier) {
+	if (!idquartier) idquartier=checkByIdQuartier();	
+	if (idquartier) {
+		var o = document.getElementById("quartierlibelle_" + idquartier);
+
+		if (o) 
+			if (o.innerText) return o.innerText;		
+			else return o.innerHTML;
+
+	}
+	return null;
+}
+
+function updateParent(idquartier){
+	if (!idquartier) idquartier = checkByIdQuartier();
+	if(idquartier){
+		var libelle = getQuartierLibelle(idquartier);		
+		if (window.opener && window.opener.document)
+		{
+			var o = window.opener.document.getElementById("quartiertxt");
+			var oinput = window.opener.document.getElementById("quartierinput");
+			if (o && oinput) {
+				var lequartier = o;
+				var lidquartier = oinput;
+				lequartier.innerHTML = libelle;
+				lidquartier.innerHTML = "<input type=hidden name=idquartier value="+idquartier+" />";
+				window.opener.document.getElementById("si_quartier_saisi").value = 1;	
+				window.opener.document.getElementById("lienquartier").innerHTML =  "(Modifier";																							
+				window.opener.document.getElementById("supprquartier").innerHTML = " - Supprimer)";								
+			}
+		}
+	}
+	self.close();
+}
+
+function closepopup(){
+	var html = "";
+
+	
+	if (window.opener && window.opener.document)
+	{
+		//var o = window.opener.document.getElementById("quartiertxt");
+		var o = window.opener.document.getElementById("quartierinput");
+		if (o) {
+			var lequartier = o;
+			lequartier.innerHTML ="<input type=hidden name=idquartier value=$$FORM:IDQUARTIER$$ />";
+			window.opener.document.getElementById("si_quartier_saisi").value = 1;								
+		}
+	}	
+	self.close()
+}
+
+// -->		
+</script>
+
+
+
+
+
+
+
+	<font class="titrepage">Choix du quartier à partir de la liste ou d'une carte:<br />
+	$$IF:ERRE$$<font class="errmsg">$$ERRE$$</font><br /><br />$$END$$
+	<form method="get" name="f_quartiers" action="/modifquartier">	
+	<input type="hidden" name="page_err" value="/$$REP:0$$" />	
+	<input type="hidden" name="idannonce" value="$$FORM:IDANNONCE$$$$IF0:FORM:IDANNONCE$$$$REP:2$$$$END$$" />
+	<table>
+		<tr>
+			<td colspan="2" align="center">
+	
+	$$DO:2:QUARTIERS:NBR$$
+	
+			<input type="radio" name="idquartier" style={border:0;} value="$$QUARTIERS:IDQUARTIER$$"
+					$$IF=:FORM_IDQUARTIER:QUARTIERS:IDQUARTIER$$ checked="checked"$$END$$
+						id="quartier_$$QUARTIERS:IDQUARTIER$$" />
+			<label for="quartier_$$QUARTIERS:IDQUARTIER$$" id=quartierlibelle_$$QUARTIERS:IDQUARTIER$$>$$QUARTIERS:LIBELLE$$</label><br/>
+	$$LOOP$$
+	
+
+			</td>
+		</tr>
+	
+		<tr>
+			<td colspan="2" align="center">															
+				<a href="javascript: go('$$1_QUARTIERS:CODEINSEE$$')" id="liencp">
+					Afficher les limites des quartiers</a>
+			</td>
+		</tr>		
+		<tr>
+			<td colspan="2" align="center">								
+				<input type="button" value="Modifier" onclick="updateParent();" />
+			</td>
+		</tr>	
+	</table>
+</form>
+
+
+$$BFIN$$
+$$END$$
+
+$$INCL:BASPOP.HTM$$

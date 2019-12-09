@@ -1,0 +1,90 @@
+$$INCL:AUTH.HTM$$
+$$E:E3:CAT:157167:SLPRO$$
+$$INCL:HAUTX.HTM$$
+<!-- $$REP:SRV$$ //-->
+$$IF=:www.selogerpro.com:REP:SRV$$
+<script type="text/javascript">
+	id3_go('/index.htm');
+</script>
+$$END$$
+
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+$$IF:OK$$<div class="noerre"><span>$$OK$$</span></div>$$END$$
+
+$$E:SLPRO:INFOSPUBLICATION:~idTypePublication:508$$
+$$E:SLPRO:INFOSAGENCE$$
+
+$$IF+:1:SLPRO:INFOSAGENCE:XML_CORE indexOf <codeProduit>LOGO-CMI</codeProduit>$$
+	<div class="noerre">
+		<span>Produit Logo Agence actif</span>
+	</div>
+	$$IF0:SLPRO:INFOSPUBLICATION:SI_LOGO_PUBLICATION$$
+	En affichant votre logo dans les résultats des recherches des internautes, vous développez votre image de marque auprès des acheteurs et renforcez rapidement votre notoriété.<br /><strong>Vous gagnez à vous différencier !</strong>
+	$$END$$
+	<br /><br />
+$$END$$
+
+$$IF-:0:SLPRO:INFOSAGENCE:XML_CORE indexOf <codeProduit>LOGO-CMI</codeProduit>$$
+	<div class="erre">
+		<span>Pas de souscription active au produit Logo Agence</span>
+	</div>
+	Si vous souhaitez bénéficier du <strong>produit Logo Agence</strong> et afficher votre logo en résultats des recherches des internautes, <strong>contactez votre conseiller commercial</strong>.
+	<br /><br />
+$$END$$
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr class="tabentete">
+    <td>Votre logo</td>
+</tr>
+<tr>
+	<td>
+	<div id="compte_logo">
+		$$IF:SLPRO:INFOSPUBLICATION:SI_LOGO_PUBLICATION$$
+			<img src="$$PAGE:CFG_REP_LOGOSPUBS$$$$SLPRO:INFOSPUBLICATION:IDPUBLICATION right 1$$/$$SLPRO:INFOSPUBLICATION:IDPUBLICATION$$.gif?$$RND:1:100000$$" border="0" />
+			$$A:PG:ACTLOGO=Modifier$$
+		$$END$$		
+		$$IF0:SLPRO:INFOSPUBLICATION:SI_LOGO_PUBLICATION$$
+			Logo<br />non transmis
+			$$A:PG:ACTLOGO=Envoyer$$
+		$$END$$
+	</div>
+	</td>
+</tr>
+</table>
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr class="tabentete">
+    <td>$$PG:ACTLOGO pcase$$ votre logo</td>
+</tr>
+<tr>
+	<td>
+		<form method="post" enctype="multipart/form-data">
+		<input type="hidden" name="u" value="slpro:logo" />
+		<input type="hidden" name="page_ok" value="$$IF0:FORM:URL$$/$$REP:URI$$$$END$$$$IF:FORM:URL$$/redirect.htm$$END$$" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="f_page_ok" value="logo" />
+		<input type="file" name="logo" />
+
+		<div class="btn">
+			$$IF:SLPRO:INFOSPUBLICATION:SI_LOGO_PUBLICATION$$
+				<input type="image" src="$$_$$i/dyn/btnsupprimer.png" name="effacer" value="effacer" />
+				<input type="image" src="$$_$$i/dyn/btnmodifier.png" />
+			$$END:SI_LOGO_PUBLICATION$$
+			$$IF0:SLPRO:INFOSPUBLICATION:SI_LOGO_PUBLICATION$$
+			<input type="image" src="$$_$$i/dyn/btnenvoyer.png" />
+			$$END:SI_LOGO_PUBLICATION$$
+		</div>
+		</form>
+	</td>
+</tr>
+</table>
+
+<div class="info">
+	<span>
+		Temps d'actualisation après modification : 5 min<br />
+		Formats supportés : GIF, JPG, PNG, BMP, TIF<br />
+		Dimension minimum de l'image : 40 pixels de hauteur sur 40 pixels de largeur<br />
+		Taille maximum du fichier : 6 Mo
+	</span>
+</div>
+
+$$INCL:BASX.HTM$$

@@ -1,0 +1,689 @@
+<!-- Val de HASMETRO : $$IMMOBC:ANNONCE:HASMETRO$$ -->
+<script type="text/javascript" language="javascript"><!--
+	
+function visuel(rep) {
+	window.open(rep + '/visuel.htm','visuel','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400,top='+(window.screen.Height/2 - 200)+',left='+(window.screen.Width/2 - 225));
+}
+
+function aidedivision(libellediv,libellesub,libellevil) {
+	var idpays;
+	var iddivision;
+	var idvilleinter;
+	idpays = document.f_annedit.idpays.value;
+	iddivision = document.f_annedit.iddivision.value;
+	idsubdivision = document.f_annedit.idsubdivision.value;
+	ville = document.f_annedit.ville.value;
+	cp = document.f_annedit.cp.value;
+	idvilleinter = document.f_annedit.idvilleinter.value;
+	var villeinter = "";
+	if (idvilleinter != "")
+	{
+		villeinter = "&idvilleinter=" + idvilleinter;
+	}
+	
+	window.open('/aidedivision.htm?idpays='+escape(idpays)+'&ville='+escape(ville)+'&iddivision='+escape(iddivision)+'&idsubdivision='+escape(idsubdivision)+'&cp='+escape(cp)+'&libellediv='+libellediv+'&libellesub='+libellesub+'&libellevil='+libellevil+villeinter,'aidedivision','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400');
+}
+
+function aidecp() {
+	if (document.f_annedit.cp.value == '') tmp = document.f_annedit.ville.value;
+	else tmp = document.f_annedit.cp.value;
+	window.open('/aidecpville.htm?s='+escape(tmp),'aidecpville','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400');
+}
+function aideville() {
+	if (document.f_annedit.ville.value == '') tmp = document.f_annedit.cp.value;
+	else tmp = document.f_annedit.ville.value;
+	window.open('/aidecpville.htm?s='+escape(tmp),'aidecpville','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=400');
+}
+function aidevilleinter() {
+	var ville = document.f_annedit.ville.value;
+	var cp = document.f_annedit.cp.value;
+	var idpays = document.f_annedit.idpays.value;
+	window.open('/aidecpvilleinter.htm?cp='+escape(cp)+'&ville='+escape(ville)+'&idpays='+escape(idpays), 'aidecpvilleinter', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=400');
+}
+
+
+function save_loyer()
+{
+	
+	var elt_px_loyer = MM_findObj("px_loyer_format");
+	var elt_px_loyer_mensuel = MM_findObj("px_loyer");	
+	var elt_surface = MM_findObj("surface");	
+	
+	
+	if(document.getElementById("prixformat0").checked)
+	{
+		
+		elt_px_loyer_mensuel.value=elt_px_loyer.value;
+	}
+	
+	if(document.getElementById("prixformat1").checked)
+	{
+		
+		elt_px_loyer_mensuel.value=elt_px_loyer.value/12;
+	}
+	
+	if(document.getElementById("prixformat2").checked)
+	{
+		if(elt_surface.value>0)
+		{
+			elt_px_loyer_mensuel.value=(elt_px_loyer.value/12)*elt_surface.value;
+		}
+		else
+		{
+			alert("Veuillez saisir la surface du bien.");
+		}
+	}
+	
+	
+}
+
+function save_charge()
+{
+	
+	var elt_px_charge = MM_findObj("px_charges_format");
+	var elt_px_charge_mensuel = MM_findObj("px_charges");	
+	var elt_surface = MM_findObj("surface");	
+	
+	
+	
+	
+	if(document.getElementById("prixformat0").checked)
+	{
+		elt_px_charge_mensuel.value=elt_px_charge.value;
+	}
+	
+	if(document.getElementById("prixformat1").checked)
+	{
+		elt_px_charge_mensuel.value=elt_px_charge.value/12;
+	}
+	
+	if(document.getElementById("prixformat2").checked)
+	{
+		if(elt_surface.value>0)
+		{
+			elt_px_charge_mensuel.value=(elt_px_charge.value/12)*elt_surface.value;
+		}
+		else
+		{
+			alert("Veuillez saisir la surface du bien.");
+			
+		}
+	}
+		
+	
+}
+
+function set_divisible()
+{
+		
+		var div_min = MM_findObj( "divisible_min" );						
+		var div_max = MM_findObj( "divisible_max" );
+		
+		var div = MM_findObj( "si_divisibles" );
+		
+		
+		var elt_surface = MM_findObj("surface");
+		
+		if(elt_surface.value>0)
+		{
+		
+				
+			if(div.checked==true)
+			{	
+				div_min.value="";
+				div_max.value="";	
+				div_max.disabled=false;
+				div_min.disabled=false;				
+				
+			}			
+			else
+			{		
+				div_min.value="";
+				div_max.value="";	
+				div_max.disabled=true;
+				div_min.disabled=true;				
+			}
+		}
+		else
+		{
+			alert("Veuillez renseigner la surface.");
+			div.checked=false;
+		}
+			
+		
+}
+	
+function select_format_loyer(formatLoyer)
+{
+		
+	var elt_px_loyer = MM_findObj( "px_loyer_format" );
+	var elt_px_loyer_mensuel = MM_findObj( "px_loyer" );	
+	
+	var elt_px_charge = MM_findObj( "px_charges_format" );
+	var elt_px_charge_mensuel = MM_findObj( "px_charges" );	
+		
+	var elt_surface = MM_findObj( "surface" );	
+		
+		
+	//mensuel
+	if(formatLoyer==0)
+	{
+		elt_px_loyer.title="€/mois/HT/HC (mensuel)";		
+		
+		if(elt_px_loyer_mensuel.value!="")
+		elt_px_loyer.value=elt_px_loyer_mensuel.value;
+		
+	
+		elt_px_charge.title="€/mois/HT/HC (mensuel)";		
+		
+		if(elt_px_charge_mensuel.value!="")
+		elt_px_charge.value=elt_px_charge_mensuel.value;		
+		
+	}
+	
+	//annuel
+	if(formatLoyer==1)
+	{
+		elt_px_loyer.title=" €/an/HT/HC (annuel)";		
+		if(elt_px_loyer_mensuel.value!="")
+			elt_px_loyer.value=elt_px_loyer_mensuel.value*12;
+		
+		
+		elt_px_charge.title=" €/an/HT/HC (annuel)";		
+		if(elt_px_charge_mensuel.value!="")
+			elt_px_charge.value=elt_px_charge_mensuel.value*12;
+		
+	}
+	
+	//m carree / an
+	if(formatLoyer==2)
+	{
+		if(elt_surface.value>0)
+		{
+			
+			elt_px_loyer.title="€/m2/an/HT/HC (annuel)";		
+			if(elt_px_loyer_mensuel.value!="")
+				elt_px_loyer.value=(elt_px_loyer_mensuel.value*12)/elt_surface.value;
+		
+		
+			elt_px_charge.title="€/m2/an/HT/HC (annuel)";		
+			if(elt_px_charge_mensuel.value!="")
+				elt_px_charge.value=(elt_px_charge_mensuel.value*12)/elt_surface.value;
+		}
+		else
+		{
+			elt_px_loyer.title="€/m2/an/HT/HC (annuel)";		
+			
+				
+			elt_px_charge.title="€/m2/an/HT/HC (annuel)";		
+			
+			alert("Veuillez saisir la surface du bien.");
+			
+		}
+		
+	}
+	
+}	
+
+$$IF=:10:IDTYPETRANSACTION$$
+function modify_commerce() {
+	var elt_ca = MM_findObj( "commerces_annonces" );
+	var url = "/$$REP:1$$/p_commerces_edit.htm";
+	var sep = "?";
+	$$IF=:1:IMMOBC:ANNONCE:HASMETRO$$
+	url += sep + "dispdom=1";
+	sep = "&";
+	$$END$$	
+	if( elt_ca ) {
+		if( elt_ca.value != "" ) {
+			url += sep + "commerces_annonces=" + escape( elt_ca.value );
+			sep = "&";
+		}
+	}	
+	openext(url,'Commerces',600,650,'no');
+	//PopUP(url,'Commerces',600,650,window.screen.Height/2 - 200,window.screen.Width/2 - 225,'yes','yes');
+}
+
+function store( ids, txt ) {
+	var elt_ca = MM_findObj( "commerces_annonces" );
+	if( elt_ca ) {
+		elt_ca.value = ids;
+	}
+	elt_ca = MM_findObj( "list_commerces" );
+	if( elt_ca ) {
+		elt_ca.value = txt;
+	}
+}
+$$END:IDTYPETRANSACTION10$$
+
+
+//-------------------------------
+function initialiser_liens(nomdivision,nomsubdivision,villesinter)
+{
+	var oVille = MM_findObj("lienville");
+	var oCp = MM_findObj("liencp");
+				
+		if ( document.f_annedit.idpays.value == '0' $$BIF:IMMOBC:DIVISIONSLIBELLE$$$$DO:1:99$$$$IF!:250:IMMOBC:DIVISIONSLIBELLE:IDPAYS$$ || document.f_annedit.idpays.value == '$$IMMOBC:DIVISIONSLIBELLE:IDPAYS$$'$$END$$$$LOOP$$$$BFIN$$)
+		{	
+//			oVille.href = "javascript:aidedivision(\'"+nomdivision+"\',\'"+nomsubdivision+"\',\'"+villesinter+"\');";
+	//		oCp.href = "javascript:aidedivision(\'"+nomdivision+"\',\'"+nomsubdivision+"\',\'"+villesinter+"\');";
+		}
+		else
+		{
+			oCp.href = "javascript:aidecp();";
+			oVille.href = "javascript:aideville();";
+		}
+
+}//initialiser_liens
+
+function SetTel(sChmp)
+{
+	if(sChmp != "") {
+		if(MM_findObj(sChmp+"_pxi") && MM_findObj(sChmp+"_pxn") && MM_findObj(sChmp)) {
+		var objArriv = MM_findObj(sChmp+"_pxi");
+		var objDept = MM_findObj(sChmp+"_idpays");
+		objArriv.value=objDept.value;
+		}
+	}
+}
+//-------------------------------
+function Division()
+{
+var idpays = document.f_annedit.idpays.value;
+var nomdivision='';
+var nomsubdivision='';
+var villesinter='';
+
+$$IF:IMMOBC:ANNONCE:IDPAYS$$
+if (document.f_annedit.idpays.value != '$$IMMOBC:ANNONCE:IDPAYS$$')
+{
+	document.f_annedit.ville.value = "";
+	document.f_annedit.cp.value ="";
+	if (document.f_annedit.division) {document.f_annedit.division.value ="";}
+	if (document.f_annedit.subdivision) {document.f_annedit.subdivision.value ="";}
+	if (document.f_annedit.iddivision) {document.f_annedit.iddivision.value ="";}
+	if (document.f_annedit.idsubdivision) {document.f_annedit.idsubdivision.value ="";}
+	if (document.f_annedit.idvilleinter) {document.f_annedit.idvilleinter.value ="";}
+
+}
+$$END$$
+ 
+$$BIF:IMMOBC:DIVISIONSLIBELLE$$
+$$DO:1:99$$ 
+if(idpays == '$$IMMOBC:DIVISIONSLIBELLE:IDPAYS$$') 
+{
+nomdivision = '$$IMMOBC:DIVISIONSLIBELLE:LIBELLE_DIVISION replace ' \' replace " \'$$';
+nomsubdivision='$$IMMOBC:DIVISIONSLIBELLE:LIBELLE_SUBDIVISION replace ' \' replace " \'$$';}
+$$LOOP$$$$BFIN$$
+
+	if(nomdivision != '')
+	{
+	
+	var lettre = nomdivision.substr(nomdivision.length-1,1); var pluriel = '';
+	if(lettre != 's') {pluriel='s';}
+	
+	FillLayerDivision('ndivision',nomdivision + ' :');
+	if (document.f_annedit.idpays.value == '$$IMMOBC:ANNONCE:IDPAYS$$') {	FillLayerDivision('ldivision','<input type="text" name="division" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:NOM_DIVISION replace ' \' replace " \'$$$$END$$$$FORM:DIVISION replace ' \' replace " \'$$"  size="32" maxlength="50" title="Division"  readonly="readonly" " onclick="javascript:aidedivision(\'Région\',\'Département\',\'\');"/>&nbsp;<a href="javascript:aidedivision(\'Région\',\'Département\',\'\')" class="help">[Liste]</a><br />');
+	document.f_annedit.iddivision.value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:IDDIVISION htmlencode$$$$END$$$$FORM:IDDIVISION$$";
+	document.f_annedit.ville.value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:VILLE replace ' \' replace " \'$$$$END$$$$FORM:VILLE replace ' \' replace " \'$$";
+	document.f_annedit.cp.value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:CP$$$$END$$$$FORM:CP$$";
+	}
+	else {	FillLayerDivision('ldivision','<input type="text" name="division" value=""  size="32" maxlength="50" title="Division"  readonly="readonly" onclick="javascript:aidedivision(\'Région\',\'Département\',\'\');" />&nbsp;<a href="javascript:aidedivision(\'Région\',\'Département\',\'\')" class="help">[Liste]</a>');
+	document.f_annedit.iddivision.value="";}
+	
+		if (nomsubdivision !='')
+		{
+		FillLayerDivision('nsubdivision',nomsubdivision + ' :');
+		if (document.f_annedit.idpays.value == '$$IMMOBC:ANNONCE:IDPAYS$$') {	FillLayerDivision('lsubdivision','<input type="text" name="subdivision" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:NOM_SUBDIVISION replace ' \' replace " \'$$$$END$$$$FORM:SUBDIVISION replace ' \' replace " \'$$"  size="32" maxlength="50" title="SubDivision"  readonly="readonly" onclick="aidedivision(\'Région\',\'Département\',\'\');"  />&nbsp;<a href="javascript:aidedivision(\'Région\',\'Département\',\'\')" class="help">[Liste]</a><br />');document.f_annedit.idsubdivision.value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:IDSUBDIVISION$$$$END$$$$FORM:IDSUBDIVISION$$";}
+		else {	FillLayerDivision('lsubdivision','<input type="text" name="subdivision" value=""  size="32" maxlength="50" title="SubDivision" readonly="readonly" onclick="aidedivision(\'Région\',\'Département\',\'\');" />&nbsp;<a href="javascript:aidedivision(\'Région\',\'Département\',\'\')" class="help">[Liste]</a>');document.f_annedit.idsubdivision.value="";}
+		}
+	}
+	else
+	{
+	FillLayerDivision('ndivision','');
+	FillLayerDivision('ldivision','');
+	FillLayerDivision('nsubdivision','');
+	FillLayerDivision('lsubdivision','');
+	
+	}
+initialiser_liens(nomdivision,nomsubdivision,villesinter);
+}
+$$IF=:1:PROG9$$
+
+
+var neufvide = '<div class="oblig_txt">Vous devez cocher "Programme avec maisons" et/ou "Programme avec appartements"</div>';
+var neufappt = '<table width="100%" cellspacing="0" cellpadding="0">'
+	+ '	<tr>'
+	+ '		<td colspan="7" width="100%" align="left" nowrap><b><u>APPARTEMENTS</u></b></td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '		<td width="16%">&nbsp;</td>'
+	+ '		<td width="14%" align="left" nowrap><b>Studio</b></td>'
+	+ '		<td width="14%" align="left" nowrap><b>2 pièces</b></td>'
+	+ '		<td width="14%" align="left" nowrap><b>3 pièces</b></td>'
+	+ '		<td width="14%" align="left" nowrap><b>4 pièces</b></td>'
+	+ '		<td width="14%" align="left" nowrap><b>5 pièces</b></td>'
+	+ '		<td width="14%" align="left" nowrap><b>6 pièces</b></td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix min</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a1_min" value="Prix mini studio"><input type="text" name="px_a1_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_MIN$$$$END$$$$FORM:PX_A1_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a2_min" value="Prix mini 2 pièces"><input type="text" name="px_a2_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_MIN$$$$END$$$$FORM:PX_A2_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a3_min" value="Prix mini 3 pièces"><input type="text" name="px_a3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_MIN$$$$END$$$$FORM:PX_A3_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a4_min" value="Prix mini 4 pièces"><input type="text" name="px_a4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_MIN$$$$END$$$$FORM:PX_A4_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a5_min" value="Prix mini 5 pièces"><input type="text" name="px_a5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_MIN$$$$END$$$$FORM:PX_A5_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a6_min" value="Prix mini 6 pièces"><input type="text" name="px_a6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_MIN$$$$END$$$$FORM:PX_A6_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix max</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a1_max" value="Prix maxi studio"><input type="text" name="px_a1_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_MAX$$$$END$$$$FORM:PX_A1_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a2_max" value="Prix maxi 2 pièces"><input type="text" name="px_a2_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_MAX$$$$END$$$$FORM:PX_A2_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a3_max" value="Prix maxi 3 pièces"><input type="text" name="px_a3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_MAX$$$$END$$$$FORM:PX_A3_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a4_max" value="Prix maxi 4 pièces"><input type="text" name="px_a4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_MAX$$$$END$$$$FORM:PX_A4_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a5_max" value="Prix maxi 5 pièces"><input type="text" name="px_a5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_MAX$$$$END$$$$FORM:PX_A5_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a6_max" value="Prix maxi 6 pièces"><input type="text" name="px_a6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_MAX$$$$END$$$$FORM:PX_A6_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Surf. min</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a1_min" value="Surface mini studio"><input type="text" name="surf_a1_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A1_MIN$$$$END$$$$FORM:SURF_A1_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a2_min" value="Surface mini 2 pièces"><input type="text" name="surf_a2_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A2_MIN$$$$END$$$$FORM:SURF_A2_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a3_min" value="Surface mini 3 pièces"><input type="text" name="surf_a3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A3_MIN$$$$END$$$$FORM:SURF_A3_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a4_min" value="Surface mini 4 pièces"><input type="text" name="surf_a4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A4_MIN$$$$END$$$$FORM:SURF_A4_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a5_min" value="Surface mini 5 pièces"><input type="text" name="surf_a5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A5_MIN$$$$END$$$$FORM:SURF_A5_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a6_min" value="Surface mini 6 pièces"><input type="text" name="surf_a6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A6_MIN$$$$END$$$$FORM:SURF_A6_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Surf. max</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a1_max" value="Surface maxi studio"><input type="text" name="surf_a1_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A1_MAX$$$$END$$$$FORM:SURF_A1_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a2_max" value="Surface maxi 2 pièces"><input type="text" name="surf_a2_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A2_MAX$$$$END$$$$FORM:SURF_A2_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a3_max" value="Surface maxi 3 pièces"><input type="text" name="surf_a3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A3_MAX$$$$END$$$$FORM:SURF_A3_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a4_max" value="Surface maxi 4 pièces"><input type="text" name="surf_a4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A4_MAX$$$$END$$$$FORM:SURF_A4_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a5_max" value="Surface maxi 5 pièces"><input type="text" name="surf_a5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A5_MAX$$$$END$$$$FORM:SURF_A5_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_a6_max" value="Surface maxi 6 pièces"><input type="text" name="surf_a6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A6_MAX$$$$END$$$$FORM:SURF_A6_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Duplex</b></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a1" value="Duplex studio"><input type="CHECKBOX" name="si_duplex_a1" value="1"$$IF=:1:FORM:SI_DUPLEX_A1$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A1$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a2" value="Duplex 2 pièces"><input type="CHECKBOX" name="si_duplex_a2" value="1"$$IF=:1:FORM:SI_DUPLEX_A2$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A2$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a3" value="Duplex 3 pièces"><input type="CHECKBOX" name="si_duplex_a3" value="1"$$IF=:1:FORM:SI_DUPLEX_A3$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A3$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a4" value="Duplex 4 pièces"><input type="CHECKBOX" name="si_duplex_a4" value="1"$$IF=:1:FORM:SI_DUPLEX_A4$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A4$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a5" value="Duplex 5 pièces"><input type="CHECKBOX" name="si_duplex_a5" value="1"$$IF=:1:FORM:SI_DUPLEX_A5$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A5$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center" nowrap><input type="hidden" name="titre_si_duplex_a6" value="Duplex 6 pièces"><input type="CHECKBOX" name="si_duplex_a6" value="1"$$IF=:1:FORM:SI_DUPLEX_A6$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A6$$ CHECKED$$END$$$$END$$></td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix parking min</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a1_pk_min" value="Prix parking mini studio"><input type="text" name="px_a1_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_PK_MIN$$$$END$$$$FORM:PX_A1_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a2_pk_min" value="Prix parking mini 2 pièces"><input type="text" name="px_a2_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_PK_MIN$$$$END$$$$FORM:PX_A2_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a3_pk_min" value="Prix parking mini 3 pièces"><input type="text" name="px_a3_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_PK_MIN$$$$END$$$$FORM:PX_A3_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a4_pk_min" value="Prix parking mini 4 pièces"><input type="text" name="px_a4_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_PK_MIN$$$$END$$$$FORM:PX_A4_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a5_pk_min" value="Prix parking mini 5 pièces"><input type="text" name="px_a5_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_PK_MIN$$$$END$$$$FORM:PX_A5_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a6_pk_min" value="Prix parking mini 6 pièces"><input type="text" name="px_a6_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_PK_MIN$$$$END$$$$FORM:PX_A6_PK_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="7" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix parking max</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a1_pk_max" value="Prix parking maxi studio"><input type="text" name="px_a1_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_PK_MAX$$$$END$$$$FORM:PX_A1_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a2_pk_max" value="Prix parking maxi 2 pièces"><input type="text" name="px_a2_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_PK_MAX$$$$END$$$$FORM:PX_A2_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a3_pk_max" value="Prix parking maxi 3 pièces"><input type="text" name="px_a3_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_PK_MAX$$$$END$$$$FORM:PX_A3_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a4_pk_max" value="Prix parking maxi 4 pièces"><input type="text" name="px_a4_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_PK_MAX$$$$END$$$$FORM:PX_A4_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a5_pk_max" value="Prix parking maxi 5 pièces"><input type="text" name="px_a5_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_PK_MAX$$$$END$$$$FORM:PX_A5_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_a6_pk_max" value="Prix parking maxi 6 pièces"><input type="text" name="px_a6_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_PK_MAX$$$$END$$$$FORM:PX_A6_PK_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '</table>';
+
+var neufmaison = '<table width="100%" cellspacing="0" cellpadding="0">'
+	+ '	<tr>'
+	+ '		<td colspan="8" width="100%" align="left" nowrap><b><u>MAISONS</u></b></td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '		<td width="12%" align="left" nowrap>&nbsp;</td>'
+	+ '		<td width="13%" align="left" nowrap><b>3 pièces</b></td>'
+	+ '		<td width="13%" align="left" nowrap><b>4 pièces</b></td>'
+	+ '		<td width="13%" align="left" nowrap><b>5 pièces</b></td>'
+	+ '		<td width="13%" align="left" nowrap><b>6 pièces</b></td>'
+	+ '		<td width="13%" align="left" nowrap><b>7 pièces</b></td>'
+	+ '		<td width="23%" align="left" colspan=2 nowrap><b>Surface du terrain</b></td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8" ></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix min</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m3_min" value="Prix mini 3 pièces"><input type="text" name="px_m3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M3_MIN$$$$END$$$$FORM:PX_M3_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m4_min" value="Prix mini 4 pièces"><input type="text" name="px_m4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M4_MIN$$$$END$$$$FORM:PX_M4_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m5_min" value="Prix mini 5 pièces"><input type="text" name="px_m5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M5_MIN$$$$END$$$$FORM:PX_M5_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m6_min" value="Prix mini 6 pièces"><input type="text" name="px_m6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M6_MIN$$$$END$$$$FORM:PX_M6_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m7_min" value="Prix mini 7 pièces"><input type="text" name="px_m7_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M7_MIN$$$$END$$$$FORM:PX_M7_MIN$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><b>Min.:</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name=titre_surf_terrain_min value="Surface terrain mini"><input type="text" name="surf_terrain_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_TERRAIN_MIN$$$$END$$$$FORM:SURF_TERRAIN_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Prix max</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m3_max" value="Prix maxi 3 pièces"><input type="text" name="px_m3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M3_MAX$$$$END$$$$FORM:PX_M3_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m4_max" value="Prix maxi 4 pièces"><input type="text" name="px_m4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M4_MAX$$$$END$$$$FORM:PX_M4_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m5_max" value="Prix maxi 5 pièces"><input type="text" name="px_m5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M5_MAX$$$$END$$$$FORM:PX_M5_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m6_max" value="Prix maxi 6 pièces"><input type="text" name="px_m6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M6_MAX$$$$END$$$$FORM:PX_M6_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_px_m7_max" value="Prix maxi 7 pièces"><input type="text" name="px_m7_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_M7_MAX$$$$END$$$$FORM:PX_M7_MAX$$" size="7" maxlength="10"> &euro;</td>'
+	+ '		<td align="left" nowrap><b>Max.:</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name=titre_surf_terrain_max value="Surface terrain maxi"><input type="text" name="surf_terrain_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_TERRAIN_MAX$$$$END$$$$FORM:SURF_TERRAIN_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Surf. mini.</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m3_min" value="Surface mini 3 pièces"><input type="text" name="surf_m3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M3_MIN$$$$END$$$$FORM:SURF_M3_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m4_min" value="Surface mini 4 pièces"><input type="text" name="surf_m4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M4_MIN$$$$END$$$$FORM:SURF_M4_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m5_min" value="Surface mini 5 pièces"><input type="text" name="surf_m5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M5_MIN$$$$END$$$$FORM:SURF_M5_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m6_min" value="Surface mini 6 pièces"><input type="text" name="surf_m6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M6_MIN$$$$END$$$$FORM:SURF_M6_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m7_min" value="Surface mini 7 pièces"><input type="text" name="surf_m7_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M7_MIN$$$$END$$$$FORM:SURF_M7_MIN$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" colspan=2 rowspan=2>&nbsp;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td nowrap><b>Surf. max</b></td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m3_max" value="Surface maxi 3 pièces"><input type="text" name="surf_m3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M3_MAX$$$$END$$$$FORM:SURF_M3_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m4_max" value="Surface maxi 4 pièces"><input type="text" name="surf_m4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M4_MAX$$$$END$$$$FORM:SURF_M4_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m5_max" value="Surface maxi 5 pièces"><input type="text" name="surf_m5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M5_MAX$$$$END$$$$FORM:SURF_M5_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m6_max" value="Surface maxi 6 pièces"><input type="text" name="surf_m6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M6_MAX$$$$END$$$$FORM:SURF_M6_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '		<td align="left" nowrap><input type="hidden" name="titre_surf_m7_max" value="Surface maxi 7 pièces"><input type="text" name="surf_m7_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_M7_MAX$$$$END$$$$FORM:SURF_M7_MAX$$" size="7" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '</table>';
+
+var neufapptmais = '<table width="100%" cellspacing="0" cellpadding="0" border="0">'
+	+ '	<tr>'
+	+ '		<td colspan="8" width="100%" align="left"><b><u>APPARTEMENTS + MAISONS</u></b></td>'	
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '		<td width="9%" align="left">&nbsp;</td>'
+	+ '		<td width="13%" align="left"><b>Studio</b></td>'
+	+ '		<td width="13%" align="left"><b>2 pièces</b></td>'
+	+ '		<td width="13%" align="left"><b>3 pièces</b></td>'
+	+ '		<td width="13%" align="left"><b>4 pièces</b></td>'
+	+ '		<td width="13%" align="left"><b>5 pièces</b></td>'
+	+ '		<td width="13%" align="left"><b>6 pièces</b></td>'
+	+ '		<td width="13%" align="left"><b>Maison V</b></td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Prix min</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a1_min" value="Prix mini studio"><input type="text" name="px_a1_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_MIN$$$$END$$$$FORM:PX_A1_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a2_min" value="Prix mini 2 pièces"><input type="text" name="px_a2_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_MIN$$$$END$$$$FORM:PX_A2_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a3_min" value="Prix mini 3 pièces"><input type="text" name="px_a3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_MIN$$$$END$$$$FORM:PX_A3_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a4_min" value="Prix mini 4 pièces"><input type="text" name="px_a4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_MIN$$$$END$$$$FORM:PX_A4_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a5_min" value="Prix mini 5 pièces"><input type="text" name="px_a5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_MIN$$$$END$$$$FORM:PX_A5_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a6_min" value="Prix mini 6 pièces"><input type="text" name="px_a6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_MIN$$$$END$$$$FORM:PX_A6_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_mv_min" value="Prix mini maison"><input type="text" name="px_mv_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_MV_MIN$$$$END$$$$FORM:PX_MV_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Prix max</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a1_max" value="Prix maxi studio"><input type="text" name="px_a1_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_MAX$$$$END$$$$FORM:PX_A1_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a2_max" value="Prix maxi 2 pièces"><input type="text" name="px_a2_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_MAX$$$$END$$$$FORM:PX_A2_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a3_max" value="Prix maxi 3 pièces"><input type="text" name="px_a3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_MAX$$$$END$$$$FORM:PX_A3_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a4_max" value="Prix maxi 4 pièces"><input type="text" name="px_a4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_MAX$$$$END$$$$FORM:PX_A4_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a5_max" value="Prix maxi 5 pièces"><input type="text" name="px_a5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_MAX$$$$END$$$$FORM:PX_A5_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a6_max" value="Prix maxi 6 pièces"><input type="text" name="px_a6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_MAX$$$$END$$$$FORM:PX_A6_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_mv_max" value="Prix maxi maison"><input type="text" name="px_mv_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_MV_MAX$$$$END$$$$FORM:PX_MV_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Surf. min</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a1_min" value="Surface mini studio"><input type="text" name="surf_a1_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A1_MIN$$$$END$$$$FORM:SURF_A1_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a2_min" value="Surface mini 2 pièces"><input type="text" name="surf_a2_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A2_MIN$$$$END$$$$FORM:SURF_A2_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a3_min" value="Surface mini 3 pièces"><input type="text" name="surf_a3_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A3_MIN$$$$END$$$$FORM:SURF_A3_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a4_min" value="Surface mini 4 pièces"><input type="text" name="surf_a4_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A4_MIN$$$$END$$$$FORM:SURF_A4_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a5_min" value="Surface mini 5 pièces"><input type="text" name="surf_a5_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A5_MIN$$$$END$$$$FORM:SURF_A5_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a6_min" value="Surface mini 6 pièces"><input type="text" name="surf_a6_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A6_MIN$$$$END$$$$FORM:SURF_A6_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_mv_min" value="Surface mini maison"><input type="text" name="surf_mv_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_MV_MIN$$$$END$$$$FORM:SURF_MV_MIN$$" size="6" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Surf. max</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a1_max" value="Surface maxi studio"><input type="text" name="surf_a1_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A1_MAX$$$$END$$$$FORM:SURF_A1_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a2_max" value="Surface maxi 2 pièces"><input type="text" name="surf_a2_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A2_MAX$$$$END$$$$FORM:SURF_A2_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a3_max" value="Surface maxi 3 pièces"><input type="text" name="surf_a3_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A3_MAX$$$$END$$$$FORM:SURF_A3_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a4_max" value="Surface maxi 4 pièces"><input type="text" name="surf_a4_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A4_MAX$$$$END$$$$FORM:SURF_A4_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a5_max" value="Surface maxi 5 pièces"><input type="text" name="surf_a5_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A5_MAX$$$$END$$$$FORM:SURF_A5_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_a6_max" value="Surface maxi 6 pièces"><input type="text" name="surf_a6_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_A6_MAX$$$$END$$$$FORM:SURF_A6_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_surf_mv_max" value="Surface maxi maison"><input type="text" name="surf_mv_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_MV_MAX$$$$END$$$$FORM:SURF_MV_MAX$$" size="6" maxlength="10"> m²</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Duplex</b></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a1" value="Duplex studio"><input type="CHECKBOX" name="si_duplex_a1" value="1"$$IF=:1:FORM:SI_DUPLEX_A1$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A1$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a2" value="Duplex 2 pièces"><input type="CHECKBOX" name="si_duplex_a2" value="1"$$IF=:1:FORM:SI_DUPLEX_A2$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A2$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a3" value="Duplex 3 pièces"><input type="CHECKBOX" name="si_duplex_a3" value="1"$$IF=:1:FORM:SI_DUPLEX_A3$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A3$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a4" value="Duplex 4 pièces"><input type="CHECKBOX" name="si_duplex_a4" value="1"$$IF=:1:FORM:SI_DUPLEX_A4$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A4$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a5" value="Duplex 5 pièces"><input type="CHECKBOX" name="si_duplex_a5" value="1"$$IF=:1:FORM:SI_DUPLEX_A5$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A5$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td align="center"><input type="hidden" name="titre_si_duplex_a6" value="Duplex 6 pièces"><input type="CHECKBOX" name="si_duplex_a6" value="1"$$IF=:1:FORM:SI_DUPLEX_A6$$ CHECKED$$END$$ $$IF0:FORM:PAGE_OK$$$$IF:IMMOBC:ANNONCE:SI_DUPLEX_A6$$ CHECKED$$END$$$$END$$></td>'
+	+ '		<td colspan="2" align="center" rowspan="4">&nbsp;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Prix parking&nbsp;min</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a1_pk_min" value="Prix parking mini studio"><input type="text" name="px_a1_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_PK_MIN$$$$END$$$$FORM:PX_A1_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a2_pk_min" value="Prix parking mini 2 pièces"><input type="text" name="px_a2_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_PK_MIN$$$$END$$$$FORM:PX_A2_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a3_pk_min" value="Prix parking mini 3 pièces"><input type="text" name="px_a3_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_PK_MIN$$$$END$$$$FORM:PX_A3_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a4_pk_min" value="Prix parking mini 4 pièces"><input type="text" name="px_a4_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_PK_MIN$$$$END$$$$FORM:PX_A4_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a5_pk_min" value="Prix parking mini 5 pièces"><input type="text" name="px_a5_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_PK_MIN$$$$END$$$$FORM:PX_A5_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td colspan="2" align="left"><input type="hidden" name="titre_px_a6_pk_min" value="Prix parking mini 6 pièces"><input type="text" name="px_a6_pk_min" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_PK_MIN$$$$END$$$$FORM:PX_A6_PK_MIN$$" size="6" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '<tr class="tabsep"><td colspan="8"></td></tr>'
+	+ '	<tr>'
+	+ '		<td><b>Prix parking&nbsp;max</b></td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a1_pk_max" value="Prix parking maxi studio"><input type="text" name="px_a1_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A1_PK_MAX$$$$END$$$$FORM:PX_A1_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a2_pk_max" value="Prix parking maxi 2 pièces"><input type="text" name="px_a2_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A2_PK_MAX$$$$END$$$$FORM:PX_A2_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a3_pk_max" value="Prix parking maxi 3 pièces"><input type="text" name="px_a3_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A3_PK_MAX$$$$END$$$$FORM:PX_A3_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a4_pk_max" value="Prix parking maxi 4 pièces"><input type="text" name="px_a4_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A4_PK_MAX$$$$END$$$$FORM:PX_A4_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td align="left"><input type="hidden" name="titre_px_a5_pk_max" value="Prix parking maxi 5 pièces"><input type="text" name="px_a5_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A5_PK_MAX$$$$END$$$$FORM:PX_A5_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '		<td colspan="2" align="left"><input type="hidden" name="titre_px_a6_pk_max" value="Prix parking maxi 6 pièces"><input type="text" name="px_a6_pk_max" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_A6_PK_MAX$$$$END$$$$FORM:PX_A6_PK_MAX$$" size="6" maxlength="10"> &euro;</td>'
+	+ '	</tr>'
+	+ '</table>';
+
+var neufterrain = '<table width="100%" cellspacing="0" cellpadding="0" border="0"'
+	+ '	<tr>'
+	+ '		<td colspan="7" width="100%" align="left"><b><u>TERRAINS</u></b></td>'	
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td width="9%"></td>'
+	+ '	<td><b>Type n&deg;1</b></td>'
+	+ '	<td><b>Type n&deg;2</b></td>'
+	+ '	<td><b>Type n&deg;3</b></td>'
+	+ '	<td><b>Type n&deg;4</b></td>'
+	+ '	<td><b>Type n&deg;5</b></td>'
+	+ '	<td><b>Type n&deg;6</b></td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td><b>Prix</b></td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t1" value="Prix Type n&deg;1" /><input type="text" name="px_t1" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T1$$$$END$$$$FORM:PX_T1$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t2" value="Prix Type n&deg;2" /><input type="text" name="px_t2" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T2$$$$END$$$$FORM:PX_T2$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t3" value="Prix Type n&deg;3" /><input type="text" name="px_t3" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T3$$$$END$$$$FORM:PX_T3$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t4" value="Prix Type n&deg;4" /><input type="text" name="px_t4" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T4$$$$END$$$$FORM:PX_T4$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t5" value="Prix Type n&deg;5" /><input type="text" name="px_t5" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T5$$$$END$$$$FORM:PX_T5$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t6" value="Prix Type n&deg;6" /><input type="text" name="px_t6" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T6$$$$END$$$$FORM:PX_T6$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td><b>Surface</b></td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t1" value="Surface Type n&deg;1" /><input type="text" name="surf_t1" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T1$$$$END$$$$FORM:SURF_T1$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t2" value="Surface Type n&deg;2" /><input type="text" name="surf_t2" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T2$$$$END$$$$FORM:SURF_T2$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t3" value="Surface Type n&deg;3" /><input type="text" name="surf_t3" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T3$$$$END$$$$FORM:SURF_T3$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t4" value="Surface Type n&deg;4" /><input type="text" name="surf_t4" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T4$$$$END$$$$FORM:SURF_T4$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t5" value="Surface Type n&deg;5" /><input type="text" name="surf_t5" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T5$$$$END$$$$FORM:SURF_T5$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t6" value="Surface Type n&deg;6" /><input type="text" name="surf_t6" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T6$$$$END$$$$FORM:SURF_T6$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td>&nbsp;</td>'
+	+ '	<td><b>Type n&deg;7</b></td>'
+	+ '	<td><b>Type n&deg;8</b></td>'
+	+ '	<td><b>Type n&deg;9</b></td>'
+	+ '	<td><b>Type n&deg;10</b></td>'
+	+ '	<td><b>Type n&deg;11</b></td>'
+	+ '	<td><b>Type n&deg;12</b></td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td><b>Prix</b></td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t7" value="Prix Type n&deg;7" /><input type="text" name="px_t7" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T7$$$$END$$$$FORM:PX_T7$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t8" value="Prix Type n&deg;8" /><input type="text" name="px_t8" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T8$$$$END$$$$FORM:PX_T8$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t9" value="Prix Type n&deg;9" /><input type="text" name="px_t9" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T9$$$$END$$$$FORM:PX_T9$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t10" value="Prix Type n&deg;10" /><input type="text" name="px_t10" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T10$$$$END$$$$FORM:PX_T10$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t11" value="Prix Type n&deg;11" /><input type="text" name="px_t11" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T11$$$$END$$$$FORM:PX_T11$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_px_t12" value="Prix Type n&deg;12" /><input type="text" name="px_t12" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:PX_T12$$$$END$$$$FORM:PX_T12$$" size="6" maxlength="10" />&nbsp;&euro;</td>'
+	+ '	</tr>'
+	+ '	<tr>'
+	+ '	<td><b>Surface</b></td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t7" value="Surface Type n&deg;7" /><input type="text" name="surf_t7" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T7$$$$END$$$$FORM:SURF_T7$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t8" value="Surface Type n&deg;8" /><input type="text" name="surf_t8" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T8$$$$END$$$$FORM:SURF_T8$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t9" value="Surface Type n&deg;9" /><input type="text" name="surf_t9" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T9$$$$END$$$$FORM:SURF_T9$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t10" value="Surface Type n&deg;10" /><input type="text" name="surf_t10" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T10$$$$END$$$$FORM:SURF_T10$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t11" value="Surface Type n&deg;11" /><input type="text" name="surf_t11" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T11$$$$END$$$$FORM:SURF_T11$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	<td align="left"><input type="hidden" name="titre_surf_t12" value="Surface Type n&deg;12" /><input type="text" name="surf_t12" value="$$IF0:FORM:PAGE_OK$$$$IMMOBC:ANNONCE:SURF_T12$$$$END$$$$FORM:SURF_T12$$" size="6" maxlength="10" />&nbsp;m&sup2;</td>'
+	+ '	</tr>'
+	+ '	</table>';
+
+
+
+$$END:PROG9$$
+
+// --></script>
+$$REM$$
+<script type="text/javascript" language="javascript">
+function affQuartier(){	
+	
+	if(document.f_annedit.cp != null){
+		var dept = document.f_annedit.cp.value.substring(0,2); 		
+		var orow = document.getElementById("rowquartier");
+		if(dept == "75")	{
+			document.getElementById("lienquartier").innerHTML = "&raquo;Choisir un quartier";
+			document.getElementById("supprquartier").innerHTML = "";
+			orow.style.visibility="visible";
+		}
+		else{
+			document.getElementById("lienquartier").innerHTML = "";					
+			if(document.getElementById("idquartier") == null)
+				orow.style.visibility="hidden";
+			else {				
+				document.getElementById("idquartier").value = 0;
+				document.getElementById("si_quartier_saisi").value = 1;
+				document.getElementById("quartiertxt").innerHTML = "";								
+				orow.style.visibility="hidden";
+			}		
+		}
+	}
+}
+function supprQuartier()
+{	
+	document.getElementById("lienquartier").innerHTML =  "&raquo;Choisir un quartier";																							
+	document.getElementById("supprquartier").innerHTML = "";
+	document.f_annedit.si_quartier_saisi.value = 1;	
+	if(document.f_annedit.idquartier != null)	{		
+		document.f_annedit.idquartier.value = 0;			
+		document.getElementById("quartiertxt").innerHTML = "";
+	}		
+	else document.getElementById("quartierinput").innerHTML = "<input type='hidden' name='idquartier' id='idquartier' value='0'>";
+}
+</script>
+$$END$$

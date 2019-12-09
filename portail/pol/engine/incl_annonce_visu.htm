@@ -1,0 +1,204 @@
+﻿	<div class="tab_visu">
+		<div class="line">
+			<div class="title">Historique de l'annonce</div>
+		</div>	
+		<div class="line_easy">
+			Créée le $$VISUANN:DT_ARRIVEE date 1$$ $$IF:VISUANN:DT_MAJ$$ - Modifiée le $$VISUANN:DT_MAJ date 1$$ $$END$$
+		</div>	
+		<div class="line">
+			$$IF0:POPVISU$$
+				$$IF:AFFPA$$
+				<div class="link">
+					$$IF:ANNTYPESPUB:NBR$$<a href="$$XDOM$$/canaux_diffusion.htm?id=$$REP:1$$">Modifier</a>$$END$$
+					$$IF0:ANNTYPESPUB:NBR$$<a href="$$XDOM$$/canaux_diffusion.htm?id=$$REP:1$$">Ajouter</a>$$END$$
+				</div>
+				$$END$$
+			$$END$$
+			<div class="title">Diffusion de l'annonce</div>
+		</div>		
+		<div class="line_easy">
+		$$A:AUDIENCEPLUS=0$$
+		$$BIF:ANNTYPESPUB$$
+
+			Votre annonce est 
+			$$IF:VISUANN:BQ_SI_CENSURE$$ censurée.$$END$$ 
+			$$IF0:VISUANN:BQ_SI_CENSURE$$ diffusée sur 
+				
+				$$DO:1:99$$
+
+                    	$$IF:ANNTYPESPUB:URL$$
+							$$IF!:1$11:ANNTYPESPUB:IDTYPEPUBLICATION$$
+								$$IF!:AGORABIZ:ANNTYPESPUB:PUBLICATION$$<a href="$$IF=:http:ANNTYPESPUB:URL left 4$$$$ANNTYPESPUB:URL$$$$END$$$$IF!:http:ANNTYPESPUB:URL left 4$$http://$$ANNTYPESPUB:URL$$$$END$$/$$ANNTYPESPUB:IDPUBLICATION$$/$$REP:1$$/plus_annonce_full.htm" target="_blank"> $$ANNTYPESPUB:PUBLICATION$$ </a>$$END$$
+								$$IF=:AGORABIZ:ANNTYPESPUB:PUBLICATION$$<a href="http://www.agorabiz.com/annonces/acces-direct?ref_tiers=$$REP:1$$" target="_blank"> $$ANNTYPESPUB:PUBLICATION$$ </a>$$END$$                              
+							$$END$$
+
+							$$IF=:1:ANNTYPESPUB:IDTYPEPUBLICATION$$
+								<a href="$$IF=:http:ANNTYPESPUB:URL left 4$$$$ANNTYPESPUB:URL$$$$END$$$$IF!:http:ANNTYPESPUB:URL left 4$$http://$$ANNTYPESPUB:URL$$$$END$$/$$ANNTYPESPUB:IDPUBLICATION$$/$$REP:1$$/detail.htm" target="_blank"> $$ANNTYPESPUB:PUBLICATION$$ </a>
+							$$END$$
+
+							$$IF=:11:ANNTYPESPUB:IDTYPEPUBLICATION$$
+								<a href="http://www.immostreet.com/Listing/Show/$$REP:1$$" target="_blank"> $$ANNTYPESPUB:PUBLICATION$$ </a>
+							$$END$$		
+						$$END$$
+
+					    $$IF0:ANNTYPESPUB:URL$$ 
+						    $$IF=:31:ANNTYPESPUB:IDTYPEPUBLICATION$$ $$A:AUDIENCEPLUS=1$$ $$END$$
+						    $$IF!:31:ANNTYPESPUB:IDTYPEPUBLICATION$$ $$ANNTYPESPUB:PUBLICATION$$	$$END$$
+					    $$END$$		
+
+                        $$IF!:ANNTYPESPUB_NBR:ANNTYPESPUB:I$$, $$END$$
+                    
+				$$LOOP$$				
+				
+				$$IF=:1:AUDIENCEPLUS$$
+					$$E:SLPRO:PUBLAGBBDAUDP:~idAnnonce:REP:1:ALIAS:AUDP$$
+					$$IF:AUDP:AUDPSIAGB$$ , <a href="http://www.agorabiz.com/annonces/acces-direct?ref_tiers=$$REP:1$$" target="_blank"> Audience+ Agorabiz</a> $$END$$
+					$$IF:AUDP:AUDPSIBD$$ , <a href="http://www.bellesdemeures.com/$$REP:1$$/detail.htm" target="_blank"> Audience+ BellesDemeures</a> $$END$$
+				$$END$$
+				.
+			$$END$$			
+		
+			
+			
+		
+			
+			
+			$$B:SLPRO:AGENCEFILTRESPERSO:ALIAS:AGFILTREP$$
+			$$BIF:AGFILTREP$$$$DO:1:2$$$$LOOP$$$$BFIN$$
+			$$IF+:0:AGFILTREP:NBR$$
+					<br/>
+					<br/>
+			  		<a href="/annoncefiltresPerso.htm?idannonce=$$REP:1$$" target="_blank"> Gérer les associations avec les filtres personnalisées des publications</a>
+			$$END$$
+			$$IF0:AGFILTREP:EXISTEPRODUIT$$
+			  $$IF=:1438:AUTH:CHECK_LOGIN:IDAGENCE$$<br/><br/><a href="/annoncefiltresPerso.htm?idannonce=$$REP:1$$" target="_blank"> Gérer les associations avec les filtres personnalisées des publications</a>$$END$$
+			$$END$$
+		$$BFIN$$
+		</div>		
+		<div class="line">
+			$$IF0:POPVISU$$
+				$$IF:AFFPA$$
+					<div class="link"><a href="$$XDOM$$/$$REP:1$$/annonce_edit.htm">Modifier</a></div>
+				$$END$$
+			$$END$$
+			<div class="title">Détail de l'annonce</div>
+		</div>	
+		
+		<div class="line_easy" id="visu_detail">
+			$$INCL:ANNONCE_VISU_DETAIL.HTM$$
+		</div>
+		
+        $$BIF:ANNTYPESPUB$$
+			$$DO:1:99$$
+				$$IF=:34:ANNTYPESPUB:IDTYPEPUBLICATION$$
+					$$A:WEBIMTEST=1$$
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+
+        $$IF:WEBIMTEST$$
+            $$B:SLPRO:WBIM-LISTCOEXCREATEUR:ALIAS:LISTAG$$
+            $$BIF:LISTAG$$                
+            <div class="line">
+                <div class="title">Négociateur</div>
+            </div>
+            <div class="line_easy">
+            $$DO:1:99$$
+				$$A:IDANNONCE=@@LISTAG:IDANNONCE@@$$
+				$$IF=:IDANNONCE:REP:1$$
+					<strong>$$LISTAG:NOM$$:</strong>&nbsp;$$LISTAG:REPONSE_STRING$$ $$IF:LISTAG:COMMENTAIRE$$&nbsp;($$LISTAG:COMMENTAIRE$$)$$END$$<br/>
+				$$END$$
+            $$LOOP$$
+            </div>                
+            $$BFIN$$
+        $$END$$
+		
+		<div class="line">
+			$$IF:VISUANN:NBVISUELS$$ $$A:VVOKAFF=1$$ $$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_3$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_4$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_5$$ $$A:VVOKAFF=1$$ $$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_6$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_8$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_9$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_10$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_11$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_12$$ $$A:VVOKAFF=1$$ $$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_13$$ $$A:VVOKAFF=1$$ $$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_14$$ $$A:VVOKAFF=1$$ $$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_15$$ $$A:VVOKAFF=1$$ $$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_16$$ $$A:VVOKAFF=1$$ $$END$$
+			
+			$$IF:AFFPA$$
+			$$IF0:POPVISU$$<div class="link"><a href="$$ID3DOM$$/$$REP:1$$/annonce_edit_vv.htm">$$IF!:1:VVOKAFF$$Ajouter$$END$$$$IF=:1:VVOKAFF$$Modifier$$END$$</a></div>$$END$$$$END$$
+			<div class="title">Visite Virtuelle</div>
+		</div>	
+		<div class="line_easy">		
+			$$IF0:VISUANN:NBVISUELS$$	Aucune visite virtuelle.$$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_3$$$$VISUANN:NBVISUEL_TYPE_3$$ visite 360° - Zoom.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_4$$$$VISUANN:NBVISUEL_TYPE_4$$ visite 360° - PreVisite .$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_5$$$$VISUANN:NBVISUEL_TYPE_5$$ lien.$$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_6$$$$VISUANN:NBVISUEL_TYPE_6$$ video.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_8$$$$VISUANN:NBVISUEL_TYPE_8$$ realpanorama.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_9$$$$VISUANN:NBVISUEL_TYPE_9$$ visite 360° - egg.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_10$$$$VISUANN:NBVISUEL_TYPE_10$$ virtual eye.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_11$$$$VISUANN:NBVISUEL_TYPE_11$$ visite virtuelle / plan 3d dynamique.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_12$$$$VISUANN:NBVISUEL_TYPE_12$$ lienEgg.$$END$$				
+			$$IF:VISUANN:NBVISUEL_TYPE_13$$$$VISUANN:NBVISUEL_TYPE_13$$ quicktour.$$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_14$$$$VISUANN:NBVISUEL_TYPE_14$$ WebVisium.$$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_15$$$$VISUANN:NBVISUEL_TYPE_15$$ MagicVisit.$$END$$
+			$$IF:VISUANN:NBVISUEL_TYPE_16$$$$VISUANN:NBVISUEL_TYPE_16$$ VisualClic.$$END$$
+		</div>	
+		
+
+
+
+		<div class="line">
+			$$IF0:POPVISU$$
+			$$IF:AFFPA$$
+			<div class="link">
+				<a href="$$XDOM$$/$$REP:1$$/annonce_edit_photo.htm">
+					$$IF0:ANNPHOTOS:NBR$$Ajouter$$END$$
+					$$IF:ANNPHOTOS:NBR$$Ajouter / Modifier$$END$$
+				</a>
+			</div>
+			$$END$$
+			$$END$$
+			<div class="title">Photos</div>
+		</div>
+		
+		
+		<div class="line_easy" id="zone_photo">
+			$$BIF:ANNPHOTOS$$
+			$$DO:3:99$$
+			<div class="thumb"><img src="$$ANNPHOTOS:THUMB_URL$$" /></div>
+			$$LOOP$$
+			$$BFIN$$
+			$$IF0:ANNPHOTOS:NBR$$ <div class="errenoclear"><span>Aucune photo</span></div> $$END$$
+		</div>
+		
+		<!--$$AUTH:CHECK_LOGIN:IDAGENCE$$//-->
+		$$REM:EB-COMMENTAIRES-DESACTIVATION-PRODUIT-INCONNU$$
+	$$IF=:39520$37382$3146$2685$46145$411$37059$46829$32720:AUTH:CHECK_LOGIN:IDAGENCE$$  $$A:ACTIVVIDEO=1$$ $$END$$
+	$$IF:XDEV$$  $$A:ACTIVVIDEO=1$$ $$END$$
+	
+	 $$IF:ACTIVVIDEO$$
+		<div class="line">
+			<div class="title">Vidéo$$VISUANN:NBVISUEL_TYPE_19 pluriel$$</div>
+		</div>	
+		<div class="line_easy">$$IF:VISUANN:NBVISUEL_TYPE_19$$$$VISUANN:NBVISUEL_TYPE_19$$ vidéo$$VISUANN:NBVISUEL_TYPE_19 pluriel$$ associée$$VISUANN:NBVISUEL_TYPE_19 pluriel$$ à cette annonce$$END$$</div>		
+	$$END$$		
+		$$END$$
+		
+	
+	<div class="line">
+		$$IF:AFFPA$$
+			<div class="link">
+				<a href="$$ID3DOM$$/$$REP:1$$/annonce_edit_pdf.htm">Ajouter$$IF:VISUANN:NBVISUEL_TYPE_18$$ / Modifier$$END$$</a></div>$$END$$
+			<div class="title"><img src="$$_$$engine/images/picto_pdf2.gif" border="0" /> Document$$VISUANN:NBVISUEL_TYPE_18 pluriel$$ PDF</div>
+		</div>	
+		<div class="line_easy">$$IF:VISUANN:NBVISUEL_TYPE_18$$$$VISUANN:NBVISUEL_TYPE_18$$ document$$VISUANN:NBVISUEL_TYPE_18 pluriel$$ associé$$VISUANN:NBVISUEL_TYPE_18 pluriel$$ à cette annonce$$END$$</div>		
+
+		
+	</div>
+	

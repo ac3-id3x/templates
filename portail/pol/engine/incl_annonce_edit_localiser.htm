@@ -1,0 +1,160 @@
+<script src="$$_$$js/jquery-2.1.0.min.js" ></script>
+<script type="text/javascript" src="/z/portail/pol/js/ajax.js" ></script>
+<script type="text/javascript" src="/z/portail/pol/engine/js/affquartiers.js" ></script>
+
+<script type="text/javascript" >		
+	function getQuartierForCp() {
+		var o = document.getElementById('cp');
+		var v = document.getElementById('form_ville');
+		var odest = document.getElementById('affquartier');
+		console.debug('cp ' + o.value + ' ville ' + v.value + ' quartier ' + odest.value);
+		if (o && v) {
+			sendReq('/saisiquartier.html?cp=' + escape(o.value) + '&ville=' + escape(v.value));
+		}
+	}
+	
+	function checkquartier()
+	{
+		$$IF:ANNONCE:IDQUARTIER$$		
+			
+		var idq = $$ANNONCE:IDQUARTIER$$
+		var quartierok = document.getElementById("quartier_"+idq);
+		if(quartierok)
+			quartierok.checked = true;
+		$$END$$
+	}
+</script>
+
+<table class="tabbasic" cellpadding="4" cellspacing="0">	
+		<!-- .............................. prix - end $$ANNONCE:IDQUARTIER$$ ........................... -->
+	<tr class="tabentete">
+		<td align="left" colspan="2">Localiser le bien</td>
+	</tr>
+	<tr>
+		<td class="oblig">Pays&nbsp;:<br />
+			<input type="hidden" name="titre_idpays" value="Pays" >
+			$$BIF:PAYS$$
+			<select name="idpays" title="Code du pays" class="oblig_input" onchange="Division();" >
+			<option value="250" >France</option>
+			$$DO$$
+				<option value="$$PAYS:IDPAYS$$"$$IF0:FORM:PAGE_OK$$$$IF=:ANNONCE_IDPAYS:PAYS:IDPAYS$$ selected="selected"$$END$$$$END$$ $$IF=:FORM_IDPAYS:PAYS:IDPAYS$$ selected="selected"$$END$$>$$PAYS:PAYS_FR$$</option>
+			$$LOOP$$
+			</select>	
+			$$BFIN$$
+            <br />
+            <span class="legende">Si votre pays ne figure pas dans la liste, <a href="mailto:$$MAILTECH$$?subject=Pays manquant sur $$SRV$$&body=merci de bien vouloir ajouter le pays suivant :">cliquez ici</a></a>
+        </td>
+        <td>
+            Adresse <span class="legende">(N° de voie + voie)</span> :<br />
+            <input type="hidden" name="titre_adresse" value="Adresse" />
+            <input type="text" name="adresse" id="form_adresse" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:ADRESSE htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ADRESSE$$$$END$$" size="32" maxlength="64" title="Adresse" />
+            <!-- $$ANNONCE:ADRESSE$$ / $$ANNONCE:ADRESSE htmlencode$$-->
+        </td>
+	</tr>
+	
+	<tr>
+		<td valign="top">
+			<div id="ndivision"></div><div id="ldivision"></div>
+			<input type="hidden" name="titre_division" value="Division" />
+			<input type="hidden" name="iddivision" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:IDDIVISION htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:IDDIVISION$$$$END$$" />
+		</td>
+		<td valign="top">
+			<div id="nsubdivision"></div><div id="lsubdivision"></div>
+			<input type="hidden" name="titre_subdivision" value="SubDivision" />
+			<input type="hidden" name="idsubdivision" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:IDSUBDIVISION htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:IDSUBDIVISION$$$$END$$" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top" class="oblig">Code postal&nbsp;:<br />
+			<input type="hidden" name="titre_cp" value="Code Postal">
+			<input required type="text" class="oblig_input" name="cp" id="cp" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:CP htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:CP htmlencode$$$$END$$" size="32" maxlength="10" title="Code postal" onchange="javascript:getQuartierForCp();" onBlur="getQuartierForCp();">&nbsp;<a href="javascript:aidecp()" id="liencp" class="help">[Liste]</a>
+			
+		</td>
+		<td valign="top" class="oblig">Ville&nbsp;:<br />
+			<input type="hidden" name="titre_ville" value="ville">
+			<input type="text" class="oblig_input" id="form_ville" name="ville" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:VILLE htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:VILLE htmlencode$$$$END$$" size="32" maxlength="50" title="Ville" onChange="getQuartierForCp();" onBlur="getQuartierForCp();">&nbsp;<a href="javascript:aideville();" id="lienville" class="help">[Liste]</a>
+			<input type="hidden" name="idvilleinter" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:IDVILLEINTER$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:IDVILLEINTER$$$$END$$" />
+		</td>
+	</tr>
+
+$$IF=:1::ANNONCE:HASMETRO$$
+	<tr>
+		<td valign="top" colspan="2" >
+			Transports à proximité : 
+			<a href="javascript:PopUP('$$XDOM$$/$$ANNONCE:IDANNONCE$$/$$ANNONCE:IDAGENCE$$/p_metro.htm?ci=$$ANNONCE:CODEINSEE$$','PlusLangues',700,450,10,10,'yes','yes');" >Ajouter / retirer des stations</a>
+			<!-- $$ANNONCE:METROSEL$$ -->
+			<div id="listemetros" >$$IF=:1::ANNONCE:METROSEL$$Déjà sélectionnée(s) : $$ANNONCE:LISTEMETRO$$$$END$$</div>
+		</td>
+	</tr>
+$$END$$
+	<tr>
+		<td valign="top" colspan="2" >
+			<input type="hidden" name="si_quartier_saisi" id="si_quartier_saisi" value="$$IF=:False:ANNONCE:SI_QUARTIER_SAISI$$0$$END$$$$IF=:True:ANNONCE:SI_QUARTIER_SAISI$$1$$END$$" />
+            
+			<div id="affquartier"	>
+				$$IF:ANNONCE:CODEINSEE$$
+					<script type="text/javascript" > sndReq('/AffQuartiers,$$ANNONCE:CODEINSEE$$.htm?ci=$$ANNONCE:CODEINSEE$$&idquartier=$$ANNONCE:IDQUARTIER$$')</script>
+				$$END:CODEINSEE$$
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>Proximité :<br />
+			<input type="hidden" name="titre_prox_fr" value="Proximité" />
+			<input type="text" name="prox_fr" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:PROX_FR htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:PROX_FR htmlencode$$$$END$$" size="32" maxlength="64" title="Proximité" />
+			<br /><font class="legende" >Proximité (Gare, centre ville, RER, ...)</font>
+		</td>
+		$$IF=:0:BUREAUCOMMERCE$$
+		<td valign="top" >Situation :<br />
+			<input type="hidden" name="titre_idsituation" value="Situation" />
+			$$BIF:SITUATIONS$$
+				<select name="idsituation" title="Situation" >
+				<option value="" >Inconnue</option>
+				$$DO$$
+					<option value="$$SITUATIONS:IDSITUATION$$" $$IF0:FORM:PAGE_OK$$ $$IF=:ANNONCE_IDSITUATION:SITUATIONS:IDSITUATION$$ selected="selected" $$END$$ $$END$$ $$IF:FORM:PAGE_OK$$ $$IF=:FORM_IDSITUATION:SITUATIONS:IDSITUATION$$ selected="selected" $$END$$ $$END$$ >$$SITUATIONS:DESCRIPTION$$</option>
+				$$LOOP$$
+				</select>
+			$$BFIN$$
+		</td>
+		$$END$$
+		$$IF=:1:BUREAUCOMMERCE$$
+			<td></td>
+		$$END$$
+	</tr>
+	$$IF=:7$8$9$3:IDTYPETRANSACTION$$ <!-- KLB 13/08/2004 ajout de 9 -->
+	
+	<tr>
+		<td colspan="2" >
+			Situation :<br />
+			<input type="hidden" name="titre_situation_fr" value="Situation" >
+			<textarea name="situation_fr" rows="2" cols="60" maxlength="1024" wrap="soft" title="Situtation" >$$IF0:FORM:PAGE_OK$$$$ANNONCE:SITUATION_FR htmlencode$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:SITUATION_FR htmlencode$$$$END$$</textarea>
+			<input type="hidden" name="len_situation_fr" value="1024" >
+		</td>
+	</tr>
+	
+	$$IF=:3:IDTYPETRANSACTION$$
+	<tr>
+		<td valign="top" >Alentours&nbsp;:<br />
+			<input type="hidden" name="titre_autour_fr" value="Alentours" />
+			<input type="text" name="autour_fr" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:AUTOUR_FR$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:AUTOUR_FR$$$$END$$" size="30" maxlength="60" title="Alentours" />
+		</td>
+		<td valign="top" >Alentours anglais&nbsp;:<br />
+			<input type="hidden" name="titre_autour_en" value="Alentours - anglais" />
+			<input type="text" name="autour_en" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:AUTOUR_EN$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:AUTOUR_EN$$$$END$$" size="30" maxlength="60" title="Alentours - anglais" />
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" >Arrondissement&nbsp;:<br />
+			<input type="hidden" name="titre_arrondissement" value="Arrondissement" />
+			<input type="text" name="arrondissement" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:ARRONDISSEMENT$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ARRONDISSEMENT$$$$END$$" size="30" maxlength="10" title="arrondissement" />
+		</td>
+		<td valign="top" >Métro&nbsp;:<br />
+			<input type="hidden" name="titre_metro" value="Métro" />
+			<input type="text" name="metro" value="$$IF0:FORM:PAGE_OK$$$$ANNONCE:METRO$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:METRO$$$$END$$" size="30" maxlength="60" title="metro" />
+		</td>
+	</tr>
+	$$END:LOCTEMP$$
+	$$END$$
+</table>
+

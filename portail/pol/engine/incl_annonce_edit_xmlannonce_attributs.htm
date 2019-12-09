@@ -1,0 +1,132 @@
+<table class="tabbasic" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<th colspan=2 >Informations li&eacute;es au bien</th>
+	</tr>
+	$$IF!:6$4:FORM:IDTYPEBIEN$$
+		<tr>
+			<td>Nom de l'immeuble</td>
+			<td><input type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_ATTRIBUTS:NOMDUBIEN$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ATTRIBUTS_NOMDUBIEN$$$$END$$" name="attributs_nomdubien" /></td>
+		</tr>
+		<tr>
+			<td>Nombre de parking en intérieur (entre 0 et 100 000)</td>
+			<td><input class='allownumericwithoutdecimal' onchange="handleChange(this, 100000);" type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_ATTRIBUTS:NBPARKINGSOUSSSOL$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ATTRIBUTS_NBPARKINGSOUSSSOL$$$$END$$" name="attributs_nbparkingsoussol" /></td>
+		</tr>
+		<tr>
+			<td>Nombre de parking en extérieur (entre 0 et 100 000)</td>
+			<td><input class='allownumericwithoutdecimal' onchange="handleChange(this, 100000);" type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_ATTRIBUTS:NBPARKINGEXTERIEUR$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ATTRIBUTS_NBPARKINGEXTERIEUR$$$$END$$" name="attributs_nbparkingexterieur" /></td>
+		</tr>
+	$$END$$
+	<tr>
+		<td>Enseignes voisines</td>
+		<td><input type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_BUCOM:ENSEIGNESVOISINES$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:BUCOM_ENSEIGNESVOISINES$$$$END$$" name="bucom_enseignesvoisines" /></td>
+	</tr>
+	
+	$$A:AFFICHERQUAI=1$$
+	$$IF=:6$7$4:FORM:IDTYPEBIEN$$
+		$$A:AFFICHERQUAI=0$$
+	$$END$$
+	$$IF=:59$67:FORM:IDSOUSTYPEBIEN$$
+		$$A:AFFICHERQUAI=1$$
+	$$END$$
+	
+	$$IF=:1:AFFICHERQUAI$$
+		<tr>
+			<td>Nombre de quai de d&eacute;chargement (entre 0 et 100 000)</td>
+			<td><input type="text" class='allownumericwithoutdecimal' onchange="handleChange(this, 100000);" value="$$IF0:FORM:PAGE_OK$$$$XML_BUCOM:NOMBREQUAIS$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:BUCOM_NOMBREQUAIS$$$$END$$" name="bucom_nombrequais" /></td>
+		</tr>
+		<tr>
+			<td>Surface de stockage (entre 0 et 10 000 000)</td>
+			<td><input type="text" class='allownumericwithdecimal' onchange="handleChange(this, 10000000);" value="$$IF0:FORM:PAGE_OK$$$$XML_BUCOM:SURFACESTOCKAGE$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:BUCOM_SURFACESTOCKAGE$$$$END$$" name="bucom_surfacestockage" /></td>
+		</tr>
+	$$END$$
+	$$IF!:4$6$8:FORM:IDTYPEBIEN$$
+		<tr>
+			<td>Age de l'immeuble</td>
+			<td>
+				$$IF0:FORM:PAGE_OK$$
+					<select name="attributs_ageimmeuble">
+						<option $$IF!:2$3$4:XML_ATTRIBUTS:AGEIMMEUBLE$$ selected="selected" $$END$$ value=1>Neuf</option>
+						<option $$IF=:2:XML_ATTRIBUTS:AGEIMMEUBLE$$ selected="selected" $$END$$ value=2>Ancien</option>
+						<option $$IF=:3:XML_ATTRIBUTS:AGEIMMEUBLE$$ selected="selected" $$END$$ value=3>R&eacute;cent</option>
+						<option $$IF=:4:XML_ATTRIBUTS:AGEIMMEUBLE$$ selected="selected" $$END$$ value=4>A construire</option>
+					</select>
+				$$END$$
+				$$IF:FORM:PAGE_OK$$
+					<select name="attributs_ageimmeuble">
+						<option $$IF!:2$3$4:FORM:ATTRIBUTS_AGEIMMEUBLE$$ selected="selected" $$END$$ value=1>Neuf</option>
+						<option $$IF=:2:FORM:ATTRIBUTS_AGEIMMEUBLE$$ selected="selected" $$END$$ value=2>Ancien</option>
+						<option $$IF=:3:FORM:ATTRIBUTS_AGEIMMEUBLE$$ selected="selected" $$END$$ value=3>R&eacute;cent</option>
+						<option $$IF=:4:FORM:ATTRIBUTS_AGEIMMEUBLE$$ selected="selected" $$END$$ value=4>A construire</option>
+					</select>
+				$$END$$
+		</tr>
+		<tr>
+			<td>Hauteur sous plafond</td>
+			<td><input type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_ATTRIBUTS:HAUTEURSOUSFERME$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ATTRIBUTS_HAUTEURSOUSFERME$$$$END$$" name="attributs_hauteursousferme" /></td>
+		</tr>
+	$$END$$
+	
+	$$A:AFFICHERMAGASIN=1$$
+	$$IF=:8$4:FORM:IDTYPEBIEN$$
+		$$A:AFFICHERMAGASIN=0$$
+	$$END$$
+	$$IF=:59$67:FORM:IDTYPEBIEN$$
+		$$A:AFFICHERMAGASIN=0$$
+	$$END$$
+	
+	$$IF=:1:AFFICHERMAGASIN$$
+		<tr>
+			<td>Magasin angle</td>
+			<td>
+				$$IF0:FORM:PAGE_OK$$
+					Oui <input type="radio" name="bucom_magasinangle" value="true" $$IF=:TRUE:XML_BUCOM:MAGASINANGLE$$ checked="checked" $$END$$ />
+					Non <input type="radio" name="bucom_magasinangle" value="false" $$IF=:FALSE:XML_BUCOM:MAGASINANGLE$$ checked="checked" $$END$$/>
+				$$END$$
+				$$IF:FORM:PAGE_OK$$
+					Oui <input type="radio" name="bucom_magasinangle" value="true" $$IF:FORM:BUCOM_MAGASINANGLE$$ checked="checked" $$END$$ />
+					Non <input type="radio" name="bucom_magasinangle" value="false" $$IF0:FORM:BUCOM_MAGASINANGLE$$ checked="checked" $$END$$/>
+				$$END$$
+			</td>
+		</tr>
+		<tr>
+			<td>Longueur de vitrine</td>
+			<td><input type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_BUCOM:LONGUEURVITRINE$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:BUCOM_LONGUEURVITRINE$$$$END$$" name="bucom_longueurvitrine" /></td>
+		</tr>
+	$$END$$	
+	
+	$$A:AFFICHERHORSBUREAU=1$$
+	$$IF=:1:BUREAUCOMMERCE$$
+		$$IF=:1$2$11:FORM:IDTYPETRANSACTION$$
+			$$A:AFFICHERHORSBUREAU=0$$
+		$$END$$
+	$$END$$
+	
+	$$IF=:1:AFFICHERHORSBUREAU$$
+		<tr>
+			<td>Etat de la surface &agrave; commercialiser</td>
+			<td><input type="text" value="$$IF0:FORM:PAGE_OK$$$$XML_ATTRIBUTS:ETATSURFACEACOMMERCIALISER$$$$END$$$$IF:FORM:PAGE_OK$$$$FORM:ATTRIBUTS_ETATSURFACEACOMMERCIALISER$$$$END$$" name="attributs_etatsurfaceacommercialiser" /></td>
+		</tr>
+	$$END$$
+</table>
+
+	<script type="text/javascript">
+		$(".allownumericwithoutdecimal").on("keypress keyup blur",function (event) {    
+				   $(this).val($(this).val().replace(/[^\d{0,3}].+/, ""));
+					if (event.which != 8 && (event.which < 48 || event.which > 57)) {
+						event.preventDefault();
+					}
+				});
+
+		function handleChange(input, limit) {
+			if (input.value < 0) input.value = 0;
+			if (input.value > limit) input.value = limit;
+		}
+
+		$(".allownumericwithdecimal").on("keypress keyup blur",function (event) {    
+				   $(this).val($(this).val().replace(/[^\d{0,3}].+/, ""));
+					if (event.which != 8 && event.which != 44 && (event.which < 48 || event.which > 57)) {
+						event.preventDefault();
+					}
+				});
+
+	</script>

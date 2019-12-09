@@ -1,0 +1,182 @@
+$$A:CAT=compte_edit$$
+
+$$INCL:HAUT.HTM$$
+
+<!-- $$REP:SRV$$ //-->
+
+<script type="text/javascript">
+<!--
+	$$IF=:www.selogerpro.com:REP:SRV$$
+		id3_go('/index.htm');
+	$$END$$
+//-->
+</script>
+
+
+$$E:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$E:SLPRO:AGENCECORE:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+$$E:SLPRO:TXT_PUBLIC:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr><td class="tabentete">Votre texte de présentation</td></tr>
+	<tr><td colspan="2">
+		
+			<form name="TxtPublic" method="post" >
+			<input type="hidden" name="u" value="SLPRO:TXTPUBLIC" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+			<input type="hidden" name="page_err" value="/$$REP:URI$$">
+			<input type="hidden" name="f_page_ok" value="txtpublic">
+		    <input type="hidden" name="id" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+		    <input type="hidden" name="dirige" value="" /><!-- $$FORM:F_PAGE_OK$$ -->
+			<strong></strong><a href="#" onmouseover="return escape(dcc2(this,'Limitez vous à quelques phrases. Les retours à la ligne sont pris en compte.'));"></a><br />
+			<textarea class="textearea" cols="80" rows="10" name="txt_public">$$FORM:TXT_PUBLIC$$$$IF!:txtpublic:FORM:F_PAGE_OK$$$$SLPRO:AGENCECORE:TXT_PUBLIC$$$$END$$</textarea>
+	<div class="btn">
+				<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+			</div>		</form>
+	
+	</td></tr>
+</table>
+
+	<div class="info"><span>Ce texte est visible par les internautes sur les sites Internets et dans certains cas il sert à la mise en valeur de vos annonces. C'est pourquoi, il est important de présenter votre agence et votre activité au mieux.<br />Concerant le texte publié sur les annuaires, appeller la hot-line pour ajout ou modification.</span></div>
+
+
+
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr><td class="tabentete">Pr&eacute;cision de la localisation</td></tr>
+	<tr><td colspan="2"><p align="center">
+		<form name="precisLocalisation" method="post" >
+		<input type="hidden" name="u" value="SLPRO:LOCATE" />
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="f_page_ok" value="locate">
+		<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />								
+		<table cellspacing="0" cellpadding="0" width="100%">
+			$$B:SLPRO:PREFLOCALISATION:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$								
+			<tr>
+				<td colspan="4"><a href="#" onmouseover="return escape(dcc2(this,'Choix de la pr&eacute;cision de l\'emplacement sur une carte.'));"></a></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><strong>Ville</strong><a href="#" onmouseover="return escape(dcc2(this,'Icone sur la ville de l\'annonce.'));"></a></td>
+				<td><strong>Quartier</strong><a href="#" onmouseover="return escape(dcc2(this,'Icone sur le quartier de l\'annonce.'));"></a></td>
+				<td><strong>Adresse</strong><a href="#" onmouseover="return escape(dcc2(this,'Icone sur l\'adresse exacte de l\'annonce.'));"></a></td>
+			</tr>
+			$$BIF0:SLPRO:PREFLOCALISATION:VAL$$
+			<input type="hidden" name="siupdate" value="0" />				
+			<tr>
+				<td><strong>Locations</strong></td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td width=54%>&nbsp;Biens exclusifs</td>
+				<td width=22%><input type="radio" name="plexclu" style={border:0;} value="1" checked="checked"></td>
+				<td width=22%><input type="radio" name="plexclu" style={border:0;} value="2"></td>
+				<td width=22%><input type="radio" name="plexclu" style={border:0;} value="3"></td>
+			</tr>
+			<tr>
+				<td width=60%>&nbsp;Autres biens</td>
+				<td width=20%><input type="radio" name="plautre" style={border:0;} value="1" checked="checked" ></td>
+				<td width=20%><input type="radio" name="plautre" style={border:0;} value="2"></td>
+				<td width=20%><input type="radio" name="plautre" style={border:0;} value="3"></td>
+			</tr>		
+			<tr>
+				<td><strong>Ventes</strong></td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td width=60%>&nbsp;Biens exclusifs</td>
+				<td width=20%><input type="radio" name="pvexclu" style={border:0;} value="1" checked="checked"></td>
+				<td width=20%><input type="radio" name="pvexclu" style={border:0;} value="2"></td>
+				<td width=20%><input type="radio" name="pvexclu" style={border:0;} value="3"></td>
+			</tr>
+			<tr>
+				<td width=60%>&nbsp;Autres biens</td>
+				<td width=20%><input type="radio" name="pvautre" style={border:0;} value="1" checked="checked" ></td>
+				<td width=20%><input type="radio" name="pvautre" style={border:0;} value="2"></td>
+				<td width=20%><input type="radio" name="pvautre" style={border:0;} value="3"></td>
+			</tr>																										
+			$$BFIN$$
+			$$BIF:SLPRO:PREFLOCALISATION:VAL$$
+			<input type="hidden" name="siupdate" value="1" />		
+			$$DO:0:4$$								
+			<tr>
+				<td><strong>					
+					$$IF=:1:SLPRO:PREFLOCALISATION:VAL:I$$					
+					$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$Locations$$END$$
+					$$END$$
+					$$IF=:3:SLPRO:PREFLOCALISATION:VAL:I$$					
+					$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$Ventes$$END$$
+					$$END$$
+					</strong></td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>									
+				$$IF:SLPRO:PREFLOCALISATION:VAL:SI_EXCLUSIF$$
+				<td width=60%>&nbsp;Biens exclusifs</td>
+														
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plexclu"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvexclu"$$END$$
+					style={border:0;} value="1" $$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plexclu"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvexclu"$$END$$
+					style={border:0;} value="2" $$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plexclu"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvexclu"$$END$$
+					style={border:0;} value="3" $$IF=:3:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				$$END$$
+				$$IF0:SLPRO:PREFLOCALISATION:VAL:SI_EXCLUSIF$$
+				<td width=60%>&nbsp;Autres biens</td>
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plautre"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvautre"$$END$$
+					style={border:0;} value="1" $$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plautre"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvautre"$$END$$
+					style={border:0;} value="2" $$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				<td width=20%><input type="radio" 
+					name=$$IF=:1:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"plautre"$$END$$$$IF=:2:SLPRO:PREFLOCALISATION:VAL:IDTYPETRANSACTION$$"pvautre"$$END$$
+					style={border:0;} value="3" $$IF=:3:SLPRO:PREFLOCALISATION:VAL:IDLOCALISATIONPRECISION$$checked="checked"$$END$$></td>
+				$$END$$
+			</tr>	
+			$$LOOP$$
+			$$BFIN$$															
+		</table>
+		<div class="btn">
+			<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+		</div>
+	</form>
+	</p></td></tr>			
+	</table>
+	<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr><td class="tabentete">Langues parl&eacute;es dans l'agence</td></tr>
+	<tr><td colspan="2">
+		<!-- Langues parlées dans l'agence - begin -->
+		$$B:SLPRO:LANGUESPARLEES:VAL:AUTH_CHECK*LOGIN_IDAGENCE::1$$ $$BIF:SLPRO:LANGUESPARLEES:VAL$$
+		<br /><form method="post">
+		<!-- $$FORM:XMLL_IDLANGUESPARLEES$$ -->
+		<input type="hidden" name="u" value="slpro:languesparleesedit" />
+		<input type="hidden" name="f_page_ok" value="lg">
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+		<input type="hidden" name="page_err" value="/$$REP:URI$$">
+		<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+		<input type="hidden" name="idannonce" value="" />
+		$$DO:4:99$$
+		$$IF=:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$<input type="hidden" name="xmll_idlanguesparlees" value="fr" />$$END$$
+		<input type="checkbox" name="xmll_idlanguesparlees" $$IF=:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$disabled checked$$END$$ $$IF!:fr:SLPRO:LANGUESPARLEES:VAL:CODEISO$$$$IF(:SLPRO_LANGUESPARLEES_REP_CODEISO:FORM:XMLL_IDLANGUESPARLEES$$checked$$END$$ $$IF0:FORM:PAGE_OK$$$$IF=:1:SLPRO:LANGUESPARLEES:VAL:CHECKED$$checked$$END$$$$END$$$$END:0fr$$ value="$$SLPRO:LANGUESPARLEES:VAL:CODEISO$$" />$$SLPRO:LANGUESPARLEES:VAL:LIBELLE mcase$$<br />
+		$$LOOP$$
+	</td></tr>
+	<tr><td colspan="2">
+		<input type="hidden" name="xmlll_idlanguesparlees" value="" />
+		<div class="btn">
+			<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+		</div>
+		$$IF:SLPRO:AGENCECORE:IDAGENCE$$
+		<p align="right">
+			<a href="javascript:openext('/$$SLPRO:AGENCECORE:IDAGENCE$$/p_languesparlees.htm','PlusLangues',760,780,'no');">Plus de langues</a></p>
+		$$END$$
+		</form>							
+	 	$$BFIN$$
+		<!-- Langues parlées dans l'agence - end -->
+		</td></tr></table>
+	
+	$$INCL:BAS.HTM$$

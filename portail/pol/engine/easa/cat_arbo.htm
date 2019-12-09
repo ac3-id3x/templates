@@ -1,0 +1,92 @@
+$$A:TITLEPOPUP=Arborescence$$
+$$A:CSS_EASA=1$$
+$$INCL:HAUTPOPNI.HTM$$
+$$IF:ERRE$$<font color="red">$$ERRE$$<br>$$END$$
+<form name="sauve" action="/" method="get" id="sauve">  
+
+$$IF0:FORM:IDTEXTE$$	
+	$$E:EASA:BO-CATEGORIE:~idCategorie:QRY:IDCATEGORIE:ALIAS:KTADEP$$		
+	<h4>Déplacement de la rubrique [ $$KTADEP:LIBELLE$$ ]</h4>	
+$$END$$
+
+$$REM$$$$IF:FORM:IDTEXTE$$	
+	$$E:EASA:TEXTE:~IdCategorie:QRY:IDCATEGORIE:~idTexte:QRY:IDTEXTE:ALIAS:CNT$$		
+	<h4>Copie du texte [ $$CNT:TITRE$$ ]</h4>	
+$$END$$$$END$$
+	    
+<h4>Choisissez votre cible</h4>       	
+<div id="easa_chemin">
+	$$IF:FORM:IDTEXTE$$   
+		<a href="/easa,cat_arbo.htm?idTexte=$$FORM:IDTEXTE$$">Racine</a><img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" />	
+	$$END$$   	
+	$$IF:FORM:IDCATEGORIE$$             	       
+		<a href="/easa,cat_arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">Racine</a><img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" />			
+	$$END$$
+	
+	$$B:EASA:BO-CATPATH:~idCatParent:REP:1:ALIAS:CATPATH$$ 		
+	$$BIF:CATPATH$$
+	$$DO$$		  
+		$$IF:FORM:IDTEXTE$$   
+    	<a href="/$$CATPATH:IDCATEGORIE$$/easa,cat_arbo.htm?idTexte=$$FORM:IDTEXTE$$">$$CATPATH:LIBELLE$$</a> <img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" />		  
+    $$END$$             
+    $$IF:FORM:IDCATEGORIE$$             	
+    	<a href="/$$CATPATH:IDCATEGORIE$$/easa,cat_arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">$$CATPATH:LIBELLE$$</a> <img src="$$_$$engine/easa/images/easa_arrow.gif" border="0" />		
+    $$END$$
+	$$LOOP$$
+	$$BFIN$$		
+</div>
+<br clear="all" />
+
+$$B:EASA:BO-CATEGORIES:~idCatParent:REP:1:ALIAS:CLIST$$		
+$$BIF:CLIST$$	 
+$$A:FORMID=@@FORM:IDCATEGORIE@@$$ 
+<h4>Sous-rubrique$$CLIST:NBR pluriel$$ accessible$$CLIST:NBR pluriel$$ directement :</h4>   
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+$$DO$$
+	<tr>
+  	<td>
+    	$$IF:FORM:IDTEXTE$$             	
+				$$IF!:FORMID:CLIST:IDCATEGORIE$$<a href="/$$CLIST:IDCATEGORIE$$/easa,cat_arbo.htm?idTexte=$$FORM:IDTEXTE$$">$$END$$$$CLIST:LIBELLE$$$$IF!:FORMID:CLIST:IDCATEGORIE$$</a>$$END$$
+      $$END$$             
+      $$IF0:FORM:IDTEXTE$$           
+      	$$IF!:FORMID:CLIST:IDCATEGORIE$$<a href="/$$CLIST:IDCATEGORIE$$/easa,cat_arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">$$END$$$$CLIST:LIBELLE$$$$IF!:FORMID:CLIST:IDCATEGORIE$$</a>$$END$$
+      $$END$$
+		</td>
+	</tr>
+$$LOOP$$
+</table>
+$$BFIN$$ 
+            
+<div class="btnorder">
+	<div onclick="javascript:window.close();"><img src="$$_$$i/dyn/btnannuler.png"></div>	
+	$$IF:FORM:IDTEXTE$$
+		$$IF:REP:1$$
+			<div onclick="javascript:Move();"><img src="$$_$$i/dyn/btnvalider.png"></div>	
+		 $$END$$
+	$$END$$
+	$$IF:FORM:IDCATEGORIE$$    
+		<div onclick="javascript:Move();"><img src="$$_$$i/dyn/btnvalider.png"></div>	
+	$$END$$
+</div>           
+</form>
+<script>
+            
+function Move(){
+	if(confirm("Confirmez-vous $$IF:FORM:IDTEXTE$$la copie$$END$$$$IF0:FORM:IDTEXTE$$le deplacement$$END$$ ?"))
+	$$IF:FORM:IDTEXTE$$
+ 		location.href="/easa,txt_move.htm?idCategorie=$$REP:1$$&idTexte=$$FORM:IDTEXTE$$" 		
+	$$END$$
+	$$IF0:FORM:IDTEXTE$$
+ 		location.href="/easa,cat_move.htm?idCatParent=$$REP:1$$&idCategorie=$$FORM:IDCATEGORIE$$" 		
+	$$END$$
+	$$IF:REP:1$$
+		opener.location.href = "/easa,cat_edit.htm?idCategorie=$$REP:1$$";
+	$$END$$
+	$$IF0:REP:1$$
+		opener.location.href = "/easa,cat_list.htm";
+	$$END$$
+	window.close();
+}
+</script>
+        
+$$INCL:BASPOP.HTM$$

@@ -1,0 +1,74 @@
+$$E:E3:CAT:157432:SLPRO$$
+$$A:CSS_AV=1$$
+$$A:JS_AV=1$$
+$$E:ALERTESVENDEURS:CLIENT_ELIGIBLE$$
+$$E:ALERTESVENDEURS:MANDAT_AFFICHE:ALIAS:MD$$
+$$IF:MD:IDMANDAT$$
+	$$A:TITREPAGEH2=Détail contact / Mandat N°@@MD:IDMANDAT@@$$
+$$END$$
+$$IF0:MD:IDMANDAT$$
+	$$A:TITREPAGEH2=Détail contact / Mandat N°@@FORM:IDMANDAT@@$$
+$$END$$
+$$INCL:HAUTX.HTM$$ 
+
+
+$$IF:MD:IDMANDAT$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<thead>	
+	<tr><th><span class="picto_info"></span>Informations sur le bien proposé</th></tr>
+</thead>
+<tr>
+	<td>
+		<div class="line200"><div>N° Mandat</div>$$MD:IDMANDAT$$</div> 																																																																																			
+		<div class="line200"><div>Type de transaction</div>$$MD:IDTYPETRANSACTION gettypetransaction pcase$$</div> 																																																																																			
+		<div class="line200"><div>Date de réception</div>$$MD:DATEMANDAT$$</div> 																																																																																			
+		<div class="line200"><div>Code postal du mandat</div>$$MD:CPMANDAT$$</div> 																																																																																			
+		$$IF:MD:NOMVENDEUR$$<div class="line200"><div>Adresse du bien</div>$$MD:ADRESSEMANDAT$$</div>$$END$$ 																																																																																			
+		<div class="line200"><div>Ville du bien</div>$$MD:VILLEMANDAT$$</div> 																																																																																			
+		<div class="line200"><div>Nombre de pièces</div>$$MD:NOMBREPIECEMANDAT$$</div>  																																																																																		
+		<div class="line200"><div>Surface</div>$$MD:SURFACEMANDAT$$$$IF:MD:SURFACEMANDAT$$ m<sup>2</sup>$$END$$</div> 																																																																																			
+		<div class="line200"><div>Prix</div>$$MD:PRIXMANDAT$$$$IF:MD:PRIXMANDAT$$ &euro;$$END$$</div> 																																																																																			
+		<div class="line200"><div>Commentaire</div></div> 			
+		$$MD:DESCRIPTIONMANDAT$$																			
+	</td>	
+</tr>	
+</table>
+$$END$$
+
+$$IF:MD:NOMVENDEUR$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<thead>	
+	<tr><th><span class="picto_personal"></span>Informations sur le vendeur</th></tr>
+</thead>
+<tr>
+	<td>
+		<div class="line200"><div>Civilité</div>$$MD:CIVID$$</div> 																																																																																			
+		<div class="line200"><div>Nom</div>$$MD:NOMVENDEUR$$</div> 																																																																																			
+		<div class="line200"><div>Prénom</div>$$MD:PRENOMVENDEUR$$</div> 																																																																																			
+		<div class="line200"><div>Adresse</div>$$MD:ADRESSEVENDEUR$$</div> 																																																																																			
+		<div class="line200"><div>Code postal</div>$$MD:CPVENDEUR$$</div> 																																																																					
+		<div class="line200"><div>Ville</div>$$MD:VILLEVENDEUR$$</div> 																																																																																			
+		<div class="line200"><div>Téléphone</div>$$MD:TELVENDEUR$$</div>   		    																																																																																			
+		<div class="line200"><div>Téléphone mobile</div>$$MD:MOBILEVENDEUR$$</div> 																																																																																			
+		<div class="line200"><div>Email</div><a href="mailto:$$MD:EMAILVENDEUR$$">$$MD:EMAILVENDEUR$$</a></div> 																																											
+	</td>	
+</tr>	
+</table>
+$$END$$
+
+$$IF:MD:IDMANDAT$$
+	<div id="line_btn_ann">
+		<div class="btn_right"><img src="$$_$$i/dyn/btnav_recherche_associee.png" onclick="javascript:id3_go('$$XDOM$$/av,recherche_detail.htm?idrecherche=$$MD:IDRECHERCHE$$');" /></div>
+	</div>   
+$$END$$
+
+$$IF0:MD:IDMANDAT$$<div class="erre"><span>Mandat non disponible</span></div>$$END$$
+$$IF:MD:IDMANDAT$$
+	$$IF0:MD:NOMVENDEUR$$
+		<div class="erre"><span>
+			Ce mandat n'est plus disponible à la $$MD:IDTYPETRANSACTION gettypetransaction pcase$$.<br /> 
+			Veuillez nous excuser pour la gêne occasionnée.			
+		</span></div>
+	$$END$$
+$$END$$
+$$INCL:BASX.HTM$$ 

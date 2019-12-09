@@ -1,0 +1,76 @@
+$$E:E3:CAT:157475:SLPRO$$
+$$A:CSS_AA=1$$
+$$A:JS_AA=1$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$ 
+
+$$IF:MANDATSRECHERCHE:MODIFICATION_ALERTE:ERRMSG$$<div class="erre"><span>$$MANDATSRECHERCHE:MODIFICATION_ALERTE:ERRMSG$$</span></div>$$END$$
+
+
+$$E:MANDATSRECHERCHE:AFFICHE_ALERTE:~idalerte:QRY:idalerte:ALIAS:AA$$
+
+<form name="sauve" action="/$$REP:URI$$" method="post" id="sauve">      
+  <input type=hidden name="u" value="MANDATSRECHERCHE:MODIFICATION_ALERTE" />
+  <input type="hidden" name="idalerte" value="$$FORM:IDALERTE$$" />		        		
+	<input type="hidden" name="page_ok" value="/aa,alerte_liste.htm" /> 
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtypepublication" value="$$IF:AA:IDTYPEPUBLICATION$$$$AA:IDTYPEPUBLICATION$$$$END$$$$IF0:AA:IDTYPEPUBLICATION$$1$$END$$" />
+  <table class="tabbasic" cellpadding="0" cellspacing="0" id="inforub">
+	<tr><td class="tabentete">Alerte </td></tr>
+	<tr><td>
+		$$REM$$<div class="line150"><div>Site Internet cible : </div>
+			<select name="idtypepublication">
+				<option value="1">SeLoger.com</option>
+				<option value="11">ImmoStreet.com</option>
+			</select>
+		</div>$$END$$
+		<div class="line150"><div>Type de transaction :</div>
+				$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_TRANSACTIONS:~idalerte:QRY:idalerte:ALIAS:TT$$
+				$$BIF:TT$$
+				$$DO:3:99$$
+				<label for="labtt_$$TT:I$$"><input type="checkbox" name="idtypetransaction" id="labtt_$$TT:I$$" value="$$TT:IDTYPETRANSACTION$$" $$IF:TT:SELECTED$$checked="checked"$$END$$ />$$TT:LIBELLE pcase$$</label>
+				$$LOOP$$
+				$$BFIN$$
+		</div>
+		
+		<div class="line150"><div>Type de bien :</div>	
+				$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_BIENS:~idalerte:QRY:idalerte:ALIAS:TB$$
+				$$BIF:TB$$
+				$$DO:5:99$$
+					<label for="labtb_$$TB:I$$"><input type="checkbox" id="labtb_$$TB:I$$" name="idtypebien" value="$$TB:IDTYPEBIEN$$"$$IF:TB:SELECTED$$ checked="checked"$$END$$ />$$TB:LIBELLE pcase$$</li>
+$$LOOP$$</label>
+
+				$$BFIN$$
+			</div>
+			
+
+			
+   	<div class="line150">
+   		<div>Localisation (Code postaux et/ou départements, sépareur ",") :</div>
+   		<input type="text" name="localisation" id="aa_localisation" value="$$AA:LOCALISATIONS$$" />
+   	</div>
+   	
+
+   	<div class="line150"><div>Email de reception de l'alerte :</div><input type="text" name="email" id="aa_email" value="$$AA:EMAIL$$" /></div>
+   </td></tr>
+	</table>  
+
+
+	<div id="line_btn_ann">
+			<div class="btn_left">
+					$$IF:FORM:IDALERTE$$<a href="/aa,alerte_delete.htm?idalerte=$$FORM:IDALERTE$$&idagence=$$AUTH:CHECK_LOGIN:IDAGENCE$$"><img src="$$_$$i/dyn/btnsupprimer.png" border="0" /></a>$$END$$
+			</div>
+			
+			<div class="btn_right"><input type="image" src="$$_$$i/dyn/btnvalider.png" /></div>
+		</div>
+</form>
+
+$$REM$$
+<script type="text/javascript">
+<!--
+	addLoadEvent(init_caa);
+//-->
+</script>$$END$$
+
+$$INCL:BASX.HTM$$ 

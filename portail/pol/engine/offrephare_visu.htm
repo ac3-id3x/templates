@@ -1,0 +1,980 @@
+$$A:CAT=159746$$
+$$E:E3:CAT:159746:SLPRO$$
+
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$
+
+$$A:IDCIB=@@FORM:IDCIBLAGE@@$$
+$$A:IDPUB=@@FORM:IDTYPEPUBLICATION@@$$
+
+$$A:IDDIVISION=@@FORM:IDDIVISION@@$$
+$$A:IDSUBDIVISION=@@FORM:IDSUBDIVISION@@$$
+$$A:CODEINSEE=@@FORM:CODEINSEE@@$$
+$$A:CB=@@FORM:CB@@$$
+$$A:TT=@@FORM:IDTYPETRANSACTION@@$$
+$$A:IDPRODUIT=@@FORM:IDPRODUIT@@$$
+$$A:AJOUTER=@@FORM:ADD@@$$
+$$A:MODIFIER=@@FORM:MODIFIER@@$$
+
+$$A:ADD=@@FORM:ADD@@$$
+$$A:LOC=@@FORM:LOCALISATION@@$$
+$$A:IDTT=@@FORM:IDTYPETRANSACTION@@$$
+$$A:IDOPATTR=@@FORM:IDOPATTR@@$$
+
+$$B:SLPRO:OFPH-LISTEPUBLICATIONSAG:ALIAS:OFPHLSTPB$$
+$$E:SLPRO:OFPH-INFOSSITUATION:ALIAS:OFPHSITU$$
+$$B:SLPRO:OFPH-RECAPRESERVATION:ALIAS:OFPHRECAPRESERV$$
+
+$$B:SLPRO:TYPESATTRIBUTION:ALIAS:TA$$
+
+$$E:SLPRO:OFPH-INFOSONEPUBLICATION:ALIAS:OFPHPUB$$
+$$B:SLPRO:OFPH-RECAPCIBLAGE:ALIAS:OFPHRECAPCIBL$$
+$$E:SLPRO:OFPH-INFOSOFFREPHARE:ALIAS:OFPHLSTOF$$
+
+
+<script src="$$_$$js/jquery-1.11.0.min.js" ></script>
+<script type="text/javascript" >
+
+	var coutAdd;
+	var nbCreditsRestAdd;
+	var OPEncoursAgAdd;
+	var idOPAttr;
+
+	$(document).ready(function() {
+		$('#trAjouterCiblage').css('display', 'none');
+		$('#trRechCible').css('display', 'none'); 
+		$('#avecCompletionAuto').change(function() { DisplayTypeAttributionAuto($('#avecCompletionAuto'), 'trAddSelAuto', 'trAddSelMan'); });
+
+        handleReservation();
+	});
+
+    function handleReservation() {
+        var forms = $('.form-reservation-ciblage');
+
+        var i = 0;
+        while (i < forms.length) {
+            var form = $(forms[i]);
+            var btn = form.find('.res-btn');
+            if (btn.length <= 0)
+                continue;
+
+            btn.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var btn = $(e.target);
+                var theform = $(btn.parents('form'));
+                var urifield = theform.find('input[name="uri"]');
+
+                var crrestant = $('#conso-table').data('crrestant');
+                var cout = theform.find('input[name="cout"]').val();
+
+                if (cout > crrestant) {
+                    alert("Vous n’avez pas assez de crédits disponibles pour réserver ce ciblage. " 
+                        + "\nVous pouvez supprimer un ciblage actif pour libérer des crédits ou contacter votre commercial pour acheter des crédits supplémentaires. ");
+                        return false;
+                }
+
+                urifield.val(window.location);
+                theform.submit();
+            });
+
+            ++i;
+        }
+    }
+
+	function displayCritere()
+	{
+		if (window.document.getElementById("selection").style.display == 'block')
+		{
+			$('#selection').css('display', 'none'); 
+			$('#selection2').css('display', 'none'); 
+		}
+		else
+		{
+			$('#selection').css('display', 'block'); 
+			$('#selection2').css('display', 'block'); 
+		}
+	}
+	
+	function displayAddEditCiblage(pId, pIdCiblage) {
+		$('#trRechCible').css('display', 'none');
+		// pId == "" <==> on ferme tout
+		if (pId == "") {
+			window.document.getElementById("btnAjouterCiblage").style.display = 'block';
+			window.document.getElementById("btnAnnulerCiblage").style.display = 'none';
+		
+			window.document.getElementById("ajouterCiblage").style.display = 'none';
+			window.document.getElementById("editerCiblage").style.display = 'none';
+			self.location.hash = "retour";
+			document.getElementById("add").value = 0;
+		} else {
+			window.document.getElementById("btnAjouterCiblage").style.display = 'none';
+			window.document.getElementById("btnAnnulerCiblage").style.display = 'block';
+		
+			if (pId == "ajouterCiblage") {
+				window.document.getElementById("ajouterCiblage").style.display = 'block';
+				window.document.getElementById("editerCiblage").style.display = 'none';
+				//self.location.hash = "#ajouterCiblage";
+				document.getElementById("add").value = 1;
+			}
+			if (pId == "editerCiblage") {
+				window.document.getElementById("ajouterCiblage").style.display = 'none';
+				window.document.getElementById("editerCiblage").style.display = 'block';	
+				//self.location.hash = "#editerCiblage";
+			}
+		}
+
+		if (pIdCiblage != null) {
+			$.ajax({
+				cache: false,
+				type: "GET",
+				dataType: 'html',
+				url: "offrephare_visu_rechoffre.htm",
+				data: { 
+					idciblage: pIdCiblage,
+					'ie_fix' : new Date().getTime()
+				},
+				success: function(msg) {
+					$("#tdRechOffre").html(msg);
+					//window.document.getElementById("tdRechOffre").innerHTML = msg;
+					
+					$("#tdRechOffre").find("script").each(function(i) {
+						eval($(this).text());
+					});
+					$("tr[id^='trUpdCbl']").css('display', 'none');
+					if(idOPAttr != null)
+						displayUpdCbl(idOPAttr);
+				}
+			});
+		}
+	}
+
+	function displayRechercheCiblage(pIdtypepublication) {
+		
+		window.document.getElementById("trAjouterCiblage").style.display = 'none';
+		window.document.getElementById("trRechCible").style.display = 'none';
+		$.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "offrephare_visu_rechciblage.htm",
+			data: { idtypepublication: pIdtypepublication,
+					idtypetransaction: window.document.getElementById("iTypeTransaction").value,
+					localisation: window.document.getElementById("iLocalisationRech").value,
+					'ie_fix' : new Date().getTime()
+					},
+			success: function(msg) {
+				window.document.getElementById("trRechCible").style.display = 'table-row';
+				window.document.getElementById("tdRechCible").innerHTML = msg;
+				$("#tdRechCible").find("script").each(function(i) {
+                    eval($(this).text());
+                });
+			}
+		});
+	}
+	
+	function displayRechercheAnnoncesOP(pIdElement, pIdOffrephare) {
+		$.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "offrephare_visu_rechannop.htm",
+			data: { idOffrephare: pIdOffrephare,
+					idAnnonceToDel: 0,
+					idpub: $$IDPUB$$,
+					'ie_fix' : new Date().getTime()
+					},
+			success: function(msg) {
+				$("#" + pIdElement).html(msg);
+				//window.document.getElementById(pIdElement).innerHTML = msg;
+				$("#" + pIdElement).find("script").each(function(i) {
+                    eval($(this).text());
+                });
+			}
+		});
+	}
+	
+	function deleteAndReloadAnnonces(pIdElement, pIdOffrephare, pIdAnnToDel) {
+		$.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "offrephare_visu_rechannop.htm",
+			data: { idOffrephare: pIdOffrephare,
+					idAnnonceToDel: pIdAnnToDel,
+					'ie_fix' : new Date().getTime()
+					},
+			success: function(msg) {
+				window.document.getElementById(pIdElement).innerHTML = msg;
+				$("#" + pIdElement).find("script").each(function(i) {
+                    eval($(this).text());
+                });
+			}
+		});
+	}
+	
+	function confirmerSupprimer() {
+		return confirm('Confirmer la suppression du ciblage et la sélection des annonces en vedette ?'
+                        + '\nImportant ! Ce ciblage sera remis à disposition des autres clients.');
+	}
+
+	function getActionCiblage(idelement, dispo, rownum, idciblage, idtypepublication, localisation, idtypetransaction, ttdesc, pCout, pCredits, pOPEncoursAg, liblocalisation) {
+		var html = "";
+		if (dispo == 'disponible') {
+			 html = '<a href="" onclick="javascript:displayNbOffres(' + idciblage + ', \'' + localisation + '\', ' + idtypetransaction + ', \'' + ttdesc + '\', ' + pCout + ', ' + pCredits + ', ' + pOPEncoursAg + ', 1, \'' + liblocalisation + '\'); return false;" >Ajouter ciblage</a>';
+		}
+		if (dispo == 'complet') {
+			html = '<form name="formResCbl' + rownum + '" method="post" action="offrephare_visu.htm?idtypepublication=' + idtypepublication + '" class="formacces" onsubmit="return verifierReservation(' + pCout + ', ' + pCredits + ', ' + pOPEncoursAg + ');">' +
+						'<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="offrephare_visu.htm" />' +
+						'<input type="hidden" id="page_err_form_field_add" name="page_err" value="offrephare_visu.htm" />' +
+						'<input type="hidden" name="idtypepublication" value="' + idtypepublication + '" />' +
+						'<input type="hidden" name="newCiblage" value="' + idciblage + '" />' +
+						'<input type="hidden" name="nbOffres" value="1" />' +
+						'<input type="hidden" name="command" value="insert" />' +
+						'<input type="hidden" name="u" value="SLPRO:OFPH-UPDATERESERVATION" />' +
+						'<a href="" onclick="if (document.formResCbl' + rownum + '.onsubmit()) document.formResCbl' + rownum + '.submit();return false;">Poser une option</a>' +
+						'</form>';
+		}
+		if (dispo == 'quota_atteint')
+			html = 'Quota atteint';
+		if (dispo == 'credit_insuffisant')
+			html = 'Crédit insuffisant';
+		if (dispo == 'resa_encours')
+			html = 'Réservation en cours';
+			
+		window.document.getElementById(idelement).innerHTML = html;
+	}
+
+	function displayNbOffres(idciblage, localisation, idtypetransaction, ttdesc, pCout, pCredits, pOPEncoursAg, IdTypeLocalisation, locdesc) {
+		window.document.getElementById("trAjouterCiblage").style.display = 'none';
+		coutAdd = pCout;
+		nbCreditsRestAdd = pCredits;
+		OPEncoursAgAdd = pOPEncoursAg;
+
+		window.document.getElementById("iNewCiblageAdd").value = idciblage;
+		window.document.getElementById("iLocalisation").value = localisation;
+		window.document.getElementById("iIdTypeLocalisation").value = IdTypeLocalisation;
+		window.document.getElementById("iIdtypetransaction").value = idtypetransaction;
+		window.document.getElementById("selLocAdd").innerHTML = locdesc;
+		window.document.getElementById("selTTAdd").innerHTML = ttdesc;
+		if (coutAdd <= 1)
+			window.document.getElementById("selCoutAdd").innerHTML = coutAdd + ' crédit';
+		else
+			window.document.getElementById("selCoutAdd").innerHTML = coutAdd + ' crédits';
+		GetCheckBoxListTT('trAddSelAuto', idciblage, '', idtypetransaction, ttdesc)
+	}
+	
+	function getListNbOffres(idParent, id) {
+		var html = '<select  name="nbOffres" id="' + id + '">';
+		for (var i = 1; i <= 10;i++) {
+			html += '<option value="' + i + '">' + i + '</option>';
+		}
+		html += '</select>';
+		$('#' + idParent).html(html);
+	}
+
+	function getListPartDeVoix(idParent, id) {
+		var max = $$IF:OFPHPUB:IDTYPEPUBLICATION$$ $$OFPHPUB:MAXIMUMPDV$$ / $$OFPHPUB:INCREMENTPDV$$ $$END$$ $$IF0:OFPHPUB:IDTYPEPUBLICATION$$0$$END$$;
+		var inc = $$IF:OFPHPUB:IDTYPEPUBLICATION$$ $$OFPHPUB:INCREMENTPDV$$ $$END$$ $$IF0:OFPHPUB:IDTYPEPUBLICATION$$0$$END$$;
+		var html = '<select name="partdevoix" id="' + id + '">';
+		for (var i=1;i<=max;i++) {
+			html += '<option value="' + i * inc + '">' + i * inc + ' %</option>';
+		}
+		html += '</select>';
+		$('#' + idParent).html(html);
+	}
+
+	function getListAttribution(idParent, id) {
+	//On garde l'input select en cas de modification "fonctionnelle"
+		var html = 'Manuel <select style="display: none;" name="idTypeAttribution" id="' + id + '">';
+
+		$$BIF:TA$$
+		$$DO$$
+			html += '<option value="$$TA:IDTYPEATTRIBUTION$$" $$IF=:manuel:TA:TYPEATTRIBUTION$$selected="selected"$$END$$>$$TA:TYPEATTRIBUTION$$</option>';
+		$$LOOP$$
+		$$BFIN$$
+		html += '</select>';
+		$('#' + idParent).html(html);
+	}
+
+	function verifierAjouter() {
+		var nbOffres = parseInt(window.document.getElementById("iNbOffresAdd").value);
+		var pdv = parseInt(window.document.getElementById("iPartDeVoixAdd").value.replace(' %', ''));
+		
+		var max = $$IF:OFPHPUB:IDTYPEPUBLICATION$$$$OFPHPUB:MAXIMUMPDV$$ / $$OFPHPUB:INCREMENTPDV$$$$END$$ $$IF0:OFPHPUB:IDTYPEPUBLICATION$$0$$END$$;
+		var inc = $$IF:OFPHPUB:IDTYPEPUBLICATION$$$$OFPHPUB:INCREMENTPDV$$$$END$$ $$IF0:OFPHPUB:IDTYPEPUBLICATION$$0$$END$$;
+
+		if ((coutAdd * nbOffres * pdv / inc) > nbCreditsRestAdd) {
+			alert('Pas assez de crédit');
+			return false;
+		}
+		if ((OPEncoursAgAdd + nbOffres * pdv / inc) > 10) {
+			alert('Quota déjà atteint');
+			return false;
+		}
+		if (confirm('Vous disposez de  ' + nbCreditsRestAdd + ' crédits non utilisés.\nLe ciblage choisi necessite: ' + coutAdd * nbOffres * pdv / inc + ' crédits. \nConfirmez le ciblage?')) {
+			if(window.document.getElementById("iNewCiblageAdd").value != 0)
+				document.formAddCbl.action += '&idciblage=' + window.document.getElementById("iNewCiblageAdd").value;
+			GetValueListTT('trAddSelAuto', 'listttadd');
+			return true;
+		} else
+			return false;
+	}
+	
+	function verifierReservation(pCout, pNbCreditRest, pOPEncoursAg){
+		if (pCout > pNbCreditRest){
+			alert('Pas assez de crédit');
+			return false;
+		}
+		if (pOPEncoursAg > 9){
+			alert('Quota déjà atteint');
+			return false;
+		}
+		return confirm('Crédits restant: ' + pNbCreditRest + '\nMontant réservation: ' + pCout + '\nContinuez?');
+	}
+	
+	/*function getURLParameter(name) {
+		return decodeURI(
+			(RegExp(name.toLowerCase() + '=' + '(.+?)(&|$)').exec(location.search.toLowerCase())||[,null])[1]
+		);
+	}*/
+
+	function displayUpdCbl(pIdoffrephare){
+		/*
+		if ($('#trUpdCbl' + pIdoffrephare).css("display") == "none") {
+			$('#trUpdCbl' + pIdoffrephare).css("display", "table-row");
+			$('#aUpdCbl' + pIdoffrephare).html("Fermer");
+		}
+		else {
+			$('#trUpdCbl' + pIdoffrephare).css("display", "none");
+			$('#aUpdCbl' + pIdoffrephare).html("Modifier le mode de sélection automatique");
+		}
+		*/
+					$('#trUpdCbl' + pIdoffrephare).css("display", "table-row");
+	}
+	
+	function DisplayTypeAttributionAuto(pIdSel, pIdFormAuto, pIdFormMan) {
+		if (pIdSel.is(':checked')) {
+			if (pIdFormAuto.indexOf('div') == -1)
+				$('#' + pIdFormAuto).css("display", "table-row");
+			else
+				$('#' + pIdFormAuto).css("display", "block");
+			//$('#' + pIdFormMan).css("display", "none");
+		} else {
+			$('#' + pIdFormAuto).css("display", "none");
+			if (pIdFormMan.indexOf('div') == -1)
+				$('#' + pIdFormMan).css("display", "table-row");
+			else
+				$('#' + pIdFormMan).css("display", "block");
+				//$('#' + pIdFormMan).find('#avecCompletionAuto').attr('checked',false);
+		}
+	}
+	function DisplayTypeAttributionAuto2(pIdSel, pIdFormAuto, pIdFormMan) {
+		if (pIdSel.val() == 1) {
+			if (pIdFormAuto.indexOf('div') == -1)
+				$('#' + pIdFormAuto).css("display", "table-row");
+			else
+				$('#' + pIdFormAuto).css("display", "block");
+			//$('#' + pIdFormMan).css("display", "none");
+		} else {
+			$('#' + pIdFormAuto).css("display", "none");
+			if (pIdFormMan.indexOf('div') == -1)
+				$('#' + pIdFormMan).css("display", "table-row");
+			else
+				$('#' + pIdFormMan).css("display", "block");
+				//$('#' + pIdFormMan).find('#avecCompletionAuto').attr('checked',false);
+		}
+	}
+	
+	function ReinitTypeAttribution(pIdForm) {
+		$('#' + pIdForm).find('select').val(1);
+		$('#' + pIdForm).find('input[type=checkbox]').attr('checked', '');
+		$('#' + pIdForm).find('input[type=text]').val('')
+	}
+	
+	function GetCheckBoxListTT(pIdElement, pIdCibl, pEval, pIdTypeTransaction, pTTDesc){
+		$.ajax({
+			type: "GET",
+			dataType: 'html',
+			url: "offrephare_listtt.htm",
+			data: { idciblage: pIdCibl,
+					idtypetransaction: pIdTypeTransaction,
+					idpublication: $$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$,
+					ttdesc: pTTDesc,
+					'ie_fix' : new Date().getTime()
+					},
+			success: function(msg) {
+				$("#" + pIdElement).find("span").html(msg);
+				$("#" + pIdElement).find("script").each(function(i) {
+                    eval($(this).text());
+                });
+				if(pIdElement == "trAddSelAuto"){
+					window.document.getElementById("trAjouterCiblage").style.display = 'table-row';
+					$('#' + pIdElement).find('input[type=checkbox]').each(function(){
+						$(this).attr('checked',true);
+					});
+				}
+				if(pEval != '')
+					eval(pEval);
+			}
+		});
+	}
+	
+	function GetValueListTT(pIdElement, pIdHidden){
+		var tt = '';
+		$('#' + pIdElement).find('input[type=checkbox]').each(function(index, e){
+			if(e.checked){
+				if(tt != '')
+					tt += ","
+				tt += e.value; 
+			}
+		});
+		$('#' + pIdHidden).val(tt);
+	}
+	
+	function ListeReg(elt) {
+	    urlFin = "/offrephare_visu.htm?cb=" + document.getElementById("cb").value
+	        + "&idtypetransaction=" + document.getElementById("tt").value
+		    + "&idtypepublication=$$IDPUB$$"	
+		    + "&idproduit=$$OFPHSITU:IDPRODUIT$$"
+		    + "&add=" + document.getElementById("add").value	
+		    + "&iddivision=" + document.getElementById("region").value
+		    //+ "#ajouterCiblage";		
+	    document.location.href = urlFin ;
+    }
+
+    function ListeDpts(elt) {
+	    urlFin = "/offrephare_visu.htm?cb=" + document.getElementById("cb").value
+	        + "&idtypetransaction=" + document.getElementById("tt").value
+	        + "&idtypepublication=$$IDPUB$$"	
+	        + "&idproduit=$$OFPHSITU:IDPRODUIT$$"
+	        + "&iddivision=" + document.getElementById("region").value
+	        + "&add=" + document.getElementById("add").value	
+	        + "&idsubdivision=" + document.getElementById("dpts").value
+		    //+ "#ajouterCiblage";		
+	    document.location.href = urlFin ;
+    }
+
+    function ListeVilles(elt) {
+	    urlFin = "/offrephare_visu.htm?cb=" + document.getElementById("cb").value
+	        + "&idtypetransaction=" + document.getElementById("tt").value
+		    + "&idtypepublication=$$IDPUB$$"	
+		    + "&idproduit=$$OFPHSITU:IDPRODUIT$$"
+		    + "&iddivision=" + document.getElementById("region").value
+		    + "&idsubdivision=" + document.getElementById("dpts").value
+		    + "&add=" + document.getElementById("add").value	
+		    + "&codeinsee=" + document.getElementById("villes").value
+		    //+ "#ajouterCiblage";		
+	    document.location.href = urlFin ;
+    }
+	
+	function ListeCB(elt) {
+	    urlFin = "/offrephare_visu.htm?cb=" + document.getElementById("cb").value
+	        + "&idtypetransaction=" + document.getElementById("tt").value
+		    + "&idtypepublication=$$IDPUB$$"	
+		    + "&idproduit=$$OFPHSITU:IDPRODUIT$$"
+		    + "&iddivision=" + document.getElementById("region").value
+		    + "&idsubdivision=" + document.getElementById("dpts").value
+		    + "&add=" + document.getElementById("add").value	
+			+ "&codeinsee=" + document.getElementById("villes").value
+		    //+ "#ajouterCiblage";		
+	    document.location.href = urlFin ;
+    }
+
+    function ListeTT(elt) {
+	    urlFin = "/offrephare_visu.htm?cb=" + document.getElementById("cb").value
+	        + "&idtypetransaction=" + document.getElementById("tt").value
+		    + "&idtypepublication=$$IDPUB$$"	
+		    + "&idproduit=$$OFPHSITU:IDPRODUIT$$"
+		    + "&iddivision=" + document.getElementById("region").value
+		    + "&idsubdivision=" + document.getElementById("dpts").value
+		    + "&add=" + document.getElementById("add").value	
+		+ "&codeinsee=" + document.getElementById("villes").value
+		    //+ "#ajouterCiblage";		
+	    document.location.href = urlFin ;
+    }
+
+    function confirmsubmit(form) {
+        var select = form.find('select[name="idTypeAttribution"]');
+        var oldvalue = select.data("oldvalue");
+        var value = select.val();
+
+        if (value == oldvalue && value == 1)
+            return confirm('Vous avez modifié les filtres du mode de sélection des annonces. \nles annonces automatiques qui ne correspondent plus au nouveaux critères seront désélectionnées.');
+        if (value == oldvalue)
+            return true;
+        if (value == 2)
+            return confirm('Pour les annonces En Vedette, vous avez choisi de passer en mode de sélection 100% Manuel. \nToutes les annonces sélectionnées de façon automatique seront désélectionnées.' 
+                            + '\nEtes-vous sûr de vouloir faire cela ?');
+        if (value == 1)
+            return confirm('Pour les annonces En Vedette, vous avez choisi de passer en mode de sélection Manuel/Automatique.' 
+                            + '\nDes annonces seront ajoutées automatiquement de manière à utiliser au maximum votre réserve d\'annonces.'
+                            + '\nSi vous choisissez manuellement des annonces, les annonces automatiques en trop seront automatiquement déselectionnées.');
+        return true;
+    }
+</script>
+
+
+<input id="add" type="hidden" value="0" />
+
+<img  src="http://selogerpro.com/z/portail/pol/i/VEDETTE-SLpro.jpg"  style="width:740; height:300;" />
+<div align="right"><a href="http://selogerpro.com/z/portail/pol/download/pdf/Guide d' utilisation Annonce en Vedette.pdf" >Pour en savoir plus cliquez-ici</a> </div>
+<br/>
+<div>
+	$$BIF0:OFPHLSTPB$$
+	    <div class="erre" ><span>Vous n'avez pas souscrit à la mise en avant Annonce en Vedette.</span></div>
+	$$BFIN$$
+</div>
+
+$$IF=:1:SLPRO:OFPH-RESERVATIONSLPRO:CIBLAGEADDED$$
+    $$E:SLPRO:OFPH-GETOFPHENCOURSDETAILS:ALIAS:OFPHENCOURSDETAILS$$
+    <p style="color:green;" >
+        Vous venez de réserver ce(s) ciblage(s) : 
+        $$OFPHENCOURSDETAILS:LIBLOCALISATION$$ - $$OFPHENCOURSDETAILS:TTDESC pcase$$ - $$IF=:1:OFPHENCOURSDETAILS:CLASSBIEN$$Habitation$$END$$$$IF=:2:OFPHENCOURSDETAILS:CLASSBIEN$$Bu&Com$$END$$ - Audience : $$OFPHENCOURSDETAILS:PARTDEVOIX$$ %
+    </p>
+$$END$$
+
+$$BIF:OFPHLSTPB$$
+<div>
+	<form name="formSelectIdTypePub" method="get" action="offrephare_visu.htm" class="formacces" >
+		Vous avez souscrit à la mise en avant Annonce(s) en Vedette sur&nbsp;:&nbsp;
+		<select name="idtypepublication" >
+		$$BIF:OFPHLSTPB$$
+		$$DO$$
+			$$IF0:OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$
+				<option value="$$OFPHLSTPB:IDOFFREPHARETYPESPUBLICATIONS$$" >$$OFPHLSTPB:PUBSOURCE$$	</option>
+			$$END$$
+			$$IF:OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$
+				<option value="$$OFPHLSTPB:IDOFFREPHARETYPESPUBLICATIONS$$" $$IF=:OFPHLSTPB_IDOFFREPHARETYPESPUBLICATIONS:OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$ selected="selected" $$END$$ >
+					 $$OFPHLSTPB:PUBCIBLE$$
+				</option>
+			$$END$$
+		$$LOOP$$
+		$$BFIN$$
+		</select>
+		<a href="" onclick="document.formSelectIdTypePub.submit();return false;">Valider</a>
+		<!-- input type="image" name="submit" src="$$_$$i/dyn/btnvalider.png" id="iValiderAdd"/ -->
+	</form>
+</div>
+	$$BFIN$$
+<br>
+	
+				
+$$IF:OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$
+	<div>Votre consommation en cours&nbsp;:&nbsp;<br />
+		<table class="tabinfo" id="conso-table" cellpadding="0" cellspacing="0" data-crrestant="$$OFPHSITU:NBCREDITSRESTANT$$" >
+			<tr>
+				<th>Total crédits souscrits</th><th>Nb crédits utilisés</th><th>Nb crédits non utilisés</th><th>Nb ciblage(s) en cours</th>
+			</tr>
+			<tr class="line_impair_new" >
+				<td>$$OFPHSITU:NBCREDITSTOTAL$$</td><td>$$OFPHSITU:CRREST$$</td><td>$$OFPHSITU:NBCREDITSRESTANT$$</td><td>$$OFPHSITU:NBCIBLAGESENCOURS$$</td>
+			</tr>
+		</table>
+	</div>
+
+$$REM$$
+	$$BIF:OFPHRECAPRESERV$$
+		<div>
+			<br>
+			<br>
+			Liste des réservations en cours&nbsp;:&nbsp;<br />
+			<table class="tabinfo" cellpadding="0" cellspacing="0" >
+				<tr>
+					<th>Localisation</th>
+					<th>Type de transaction</th>
+					<th>Supprimer</th>
+				</tr>
+				$$DO$$
+				<tr class="line_$$IF=:0:OFPHRECAPRESERV:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHRECAPRESERV:I mod2 0 1$$impair$$END$$_new" >
+					<td>$$OFPHRECAPRESERV:LIBLOCALISATION$$</td>
+					<td>$$OFPHRECAPRESERV:TTDESC$$</td>
+					<td>
+						<form id="formDelRes$$OFPHRECAPRESERV:I$$" method="post" action="offrephare_visu.htm?idtypepublication=$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" class="formacces" >
+							<input type="hidden" id="page_ok_form_field_del_res" name="page_ok" value="offrephare_visu.htm" />
+							<input type="hidden" id="page_err_form_field_del_res" name="page_err" value="offrephare_visu.htm" />
+							<input type="hidden" name="idtypepublication" value="$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" />
+							<input type="hidden" name="newCiblage" value="$$OFPHRECAPRESERV:IDCIBLAGE$$" />
+							<input type="hidden" name="command" value="delete" />
+							<input type="hidden" name="u" value="SLPRO:OFPH-UPDATERESERVATION" />
+							<a href="" onclick="$('#formDelRes$$OFPHRECAPRESERV:I$$').submit(); return false;">Annuler réservation</a>
+						</form>
+					</td>
+				</tr>
+				$$LOOP$$
+			</table>
+		</div>
+	$$BFIN$$
+	$$END$$
+	<br>
+	<br>
+	<div id="retour" >
+		Vos ciblages en cours&nbsp;:&nbsp;<br />
+		<table class="tabinfo" cellpadding="0" cellspacing="0" >
+			<tr>
+				<th>Localisation</th>
+				<th>Type de transaction</th>
+				<th>Type de bien</th>
+				<th> % audience</th>
+				<th>Nb crédits utilisés</th>
+				<th>Gérer mon ciblage  </th>
+			</tr>
+			$$BIF:OFPHRECAPCIBL$$
+			$$DO$$
+			<tr class="line_$$IF=:0:OFPHRECAPCIBL:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHRECAPCIBL:I mod2 0 1$$impair$$END$$_new" >
+				<td>$$OFPHRECAPCIBL:LIBLOCALISATION$$</td>
+				<td>
+                    $$IF=:1:OFPHRECAPCIBL:IDTYPETRANSACTION$$ Location $$END$$ 
+                    $$IF=:2:OFPHRECAPCIBL:IDTYPETRANSACTION$$ Vente $$END$$ 
+                </td>
+				<td>$$IF=:1:OFPHRECAPCIBL:TBDESC$$Habitation$$END$$
+						$$IF=:2:OFPHRECAPCIBL:TBDESC$$Bu&Com$$END$$</td>
+				<td>$$OFPHRECAPCIBL:TOTPDV$$ %</td>
+				<td>$$OFPHRECAPCIBL:CRREST$$</td>
+				<td>
+					<a href="#ancreModifier" onclick="javascript:displayAddEditCiblage('editerCiblage', $$OFPHRECAPCIBL:IDCIBLAGE$$); return false;" >Modifier</a>
+				</td>
+
+			</tr>
+			$$LOOP$$
+			$$BFIN$$
+		</table>
+	</div>
+
+$$IF:SLPRO:OFPH-ADDCIBLAGE:ERRE$$
+	<div class="erre" ><span>$$SLPRO:OFPH-ADDCIBLAGE:ERRE$$</span></div>
+$$END$$
+	
+	<div align="right" >
+		<a href=""  onclick="javascript:displayAddEditCiblage('ajouterCiblage', null);  return false;" id="btnAjouterCiblage" >
+			<img id="toto" src="$$_$$i/dyn/btnajouter.png" border="0" /></a>
+	</div>
+	<br>
+	
+	<div id="ajouterCiblage" style="display:none" >
+        <table  cellpadding="0" cellspacing="0" >
+	        <tr>
+		        <td align="left" class="tabentete" colspan="8" >Ajouter</td>
+	        </tr>
+	        <tr>
+		        <td><b>Type de transaction&nbsp;:&nbsp;</b></td>
+		        <td><b>Types de biens&nbsp;:&nbsp;</b></td>
+	        </tr>
+	        <tr>
+		        <td>
+				        <select name="tt" id="tt" onchange="javascript:ListeTT(this);" >
+					        <option value="1" $$IF=:1:TT$$ selected="selected" $$END$$ >Location</option>
+					        <option value="2" $$IF=:2:TT$$ selected="selected" $$END$$ >Vente</option>
+				        </select>
+		        </td>
+		        <td> 
+			        <select name="cb" id="cb" onchange="javascript:ListeCB(this);" >			
+				        $$IF!=:2:IDPUB$$			
+						        <option value="1"$$IF=:1:CB$$ selected="selected"$$END$$>Habitation</option>
+				        $$END$$
+				        $$IF=:2:IDPUB$$
+					        <option value="2"$$IF=:2:CB$$ selected="selected"$$END$$>Bureaux et commerces</option>
+				        $$END$$
+		        </select>
+		        </td>
+	        </tr>
+		    $$IF:IDPUB$$
+	        <tr>
+		        <td><b>Région&nbsp;:&nbsp;</b></td>
+		        <td><b>Département&nbsp;:&nbsp;</b></td>
+		        <td><b>Ville&nbsp;:&nbsp;</b></td>
+	        </tr>
+
+	        <tr>
+	          <td>
+			        $$B:SLPRO:OFPH-REGIONS:~cb::ALIAS:REGIONS$$
+			        $$BIF:REGIONS$$
+			        <select name="region" id="region" onchange="javascript:ListeReg(this);" >
+			            <option value="" >--</option>
+				        $$DO$$
+				        <option value="$$REGIONS:IDDIVISION$$"$$IF=:REGIONS_IDDIVISION:IDDIVISION$$ selected="selected" $$END$$ >$$REGIONS:LIBELLE_AFF$$</option>
+				        $$LOOP$$
+	                </select>
+	                $$BFIN$$
+		        </td>
+		        <td>
+			        $$B:SLPRO:OFPH-DEPARTEMENTS:ALIAS:DPTS$$
+			        $$BIF:DPTS$$
+	                <select name="dpts" id="dpts" onchange="javascript:ListeDpts(this);" >
+	                    <option value="">--</option>
+				        $$DO$$
+				        <option value="$$DPTS:IDSUBDIVISION$$"$$IF=:DPTS_IDSUBDIVISION:IDSUBDIVISION$$ selected="selected"$$END$$>$$DPTS:LIBELLE_AFF$$</option>
+				        $$LOOP$$
+			        </select>
+	                $$BFIN$$
+		        </td>
+		        <td>
+			        $$B:SLPRO:OFPH-VILLES:ALIAS:VILLES$$
+	                $$BIF:VILLES$$
+	                <select name="villes" id="villes" onchange="javascript:ListeVilles(this);" >
+	                    <option value="">--</option>
+				        $$DO$$
+				        <option value="$$VILLES:CODEINSEE$$"$$IF=:VILLES_CODEINSEE:CODEINSEE$$ selected="selected"$$END$$>$$VILLES:VILLEAFF$$</option>
+				        $$LOOP$$
+			        </select>
+	                $$BFIN$$
+		        </td>
+	        </tr>
+            $$END$$
+
+        </table>
+
+$$IF+:0:OFPHSITU:CRREST$$
+$$B:SLPRO:OFPH-CIBLAGEVILLES:ALIAS:CBGV$$
+$$BIF:CBGV$$
+<table class="tabinfo" cellpadding="0" cellspacing="0" >
+<tr>
+    <th>Ville</th>
+	<th>Audience</th>
+    <th>Nb Crédits</th>
+    <th>Prix</th>
+    <th>Dispo</th>
+    <th>Action</th>
+</tr>
+$$DO$$
+<tr class="line_$$IF=:0:OFPHLSTCBL:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHLSTCBL:I mod2 0 1$$impair$$END$$_new" >
+	<td align="middle">$$CBGV:VILLEAFF$$</td>
+	<td align="middle">$$CBGV:PDV$$ %</td>
+	<td align="middle">$$CBGV:COUT$$</td>
+	<td align="middle">$$CBGV:PRIX$$ €</td>
+	<td align="middle">$$CBGV:DISPO$$ </td>
+	<td align="middle">
+	$$IF=:Disponible:CBGV:DISPO$$
+		<form name="formResCbl" method="post" class="formacces  form-reservation-ciblage" >
+			<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="/offrephare_visu.htm" />
+			<input type="hidden" id="page_err_form_field_add" name="page_err" value="/offrephare_visu.htm" />							
+			<input type="hidden" name="uri" value="/offrephare_visu.htm?$$REP:QRY htmlencode$$" />
+			<input type="hidden" name="cout" value="$$CBGV:COUT$$" />
+			<input type="hidden" name="PDV" value="$$CBGV:PDV$$" />
+			<input type="hidden" name="idCiblage" value="$$CBGV:IDCIBLAGE$$" />
+			<input type="hidden" name="idtypepublication" value="$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" />
+			<input type="hidden" name="idpub" value="$$IDPUB$$" />		
+			<input type="hidden" name="tt" value="$$TT$$" />
+			<input type="hidden" name="u" value="SLPRO:OFPH-RESERVATIONSLPRO" />
+			<input type="hidden" name="iddivision" value="$$IDDIVISION$$" />
+			<input type="hidden" name="idsubdivision" value="$$IDSUBDIVISION$$" />
+			<input type="hidden" name="codeinsee" value="$$CODEINSEE$$" />
+			<input type="hidden" name="add" value="$$ADD$$" />
+			<input type="hidden" name="idproduit" value="$$IDPRODUIT$$" />
+			<input type="hidden" name="idtypetransaction" value="$$TT$$" />
+			<input type="hidden" name="cb" value="$$CB$$" />
+
+			<input type="button" value="Réserver" class="res-btn" />
+		</form>
+	$$END$$
+	</td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$B:SLPRO:OFPH-CIBLAGEDEPARTEMENT:ALIAS:CBGD$$
+$$BIF:CBGD$$
+<table class="tabinfo" cellpadding="0" cellspacing="0" >
+<tr>
+    <th >Département</th>
+	<th >Audience</th>
+    <th >Nb Crédits</th>
+    <th >Prix</th>
+    <th >Dispo</th>
+    <th >Action</th>
+</tr>
+$$DO$$
+<tr class="line_$$IF=:0:OFPHLSTCBL:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHLSTCBL:I mod2 0 1$$impair$$END$$_new" >
+	<td align="middle">$$CBGD:DEPARTEMENTAFF$$</td>
+	<td align="middle">$$CBGD:PDV$$ %</td>
+	<td align="middle">$$CBGD:COUT$$</td>
+	<td align="middle">$$CBGD:PRIX$$ €</td>
+	<td align="middle">$$CBGD:DISPO$$</td>
+	<td align="middle">
+	$$IF=:Disponible:CBGD:DISPO$$
+		<form name="formResCbl" method="post" class="formacces form-reservation-ciblage" >
+			<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="/offrephare_visu.htm" />
+			<input type="hidden" id="page_err_form_field_add" name="page_err" value="/offrephare_visu.htm" />
+			<input type="hidden" name="uri" value="/offrephare_visu.htm?$$REP:QRY htmlencode$$" />
+			<input type="hidden" name="cout" value="$$CBGD:COUT$$" />
+			<input type="hidden" name="PDV" value="$$CBGD:PDV$$" />
+			<input type="hidden" name="idCiblage" value="$$CBGD:IDCIBLAGE$$" />
+			<input type="hidden" name="idtypepublication" value="$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" />
+			<input type="hidden" name="tt" value="$$TT$$" />
+			<input type="hidden" name="u" value="SLPRO:OFPH-RESERVATIONSLPRO" />
+			<input type="hidden" name="iddivision" value="$$IDDIVISION$$" />
+			<input type="hidden" name="idsubdivision" value="$$IDSUBDIVISION$$" />
+			<input type="hidden" name="codeinsee" value="$$CODEINSEE$$" />
+			<input type="hidden" name="idpub" value="$$IDPUB$$" />
+			<input type="hidden" name="add" value="$$ADD$$" />
+			<input type="hidden" name="idproduit" value="$$IDPRODUIT$$" />
+			<input type="hidden" name="idtypetransaction" value="$$TT$$" />
+			<input type="hidden" name="cb" value="$$CB$$" />
+
+			<input type="button" value="Réserver" class="res-btn" />
+		</form>
+	$$END$$
+	</td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$B:SLPRO:OFPH-CIBLAGEREGION:ALIAS:CBGR$$
+$$BIF:CBGR$$
+<table class="tabinfo" cellpadding="0" cellspacing="0" >
+<tr>
+    <th>Région</th>
+	<th>Audience</th>
+    <th>Nb Crédits</th>
+    <th>Prix</th>
+    <th>Dispo</th>
+    <th>Action</th>
+</tr>
+$$DO$$
+<tr class="line_$$IF=:0:OFPHLSTCBL:I mod2 0 1$$pair$$END$$$$IF!:0:OFPHLSTCBL:I mod2 0 1$$impair$$END$$_new" >
+	<td align="middle">$$CBGR:REGIONAFF$$</td>
+	<td align="middle">$$CBGR:PDV$$ %</td>
+	<td align="middle">$$CBGR:COUT$$</td>
+	<td align="middle">$$CBGR:PRIX$$ €</td>
+	<td align="middle">$$CBGR:DISPO$$</td>
+
+	<td align="middle">
+	$$IF=:Disponible:CBGR:DISPO$$
+			<form name="formResCbl" method="post" class="formacces  form-reservation-ciblage" >
+			<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="/offrephare_visu.htm" />
+			<input type="hidden" id="page_err_form_field_add" name="page_err" value="/offrephare_visu.htm" />							
+			<input type="hidden" name="uri" value="/offrephare_visu.htm?idTypePublication=$$IDPUB$$&idCiblage=$$CBGR:IDCIBLAGE$$" />
+			<input type="hidden" name="cout" value="$$CBGR:COUT$$" />
+			<input type="hidden" name="PDV" value="$$CBGR:PDV$$" />
+			<input type="hidden" name="idCiblage" value="$$CBGR:IDCIBLAGE$$" />
+			<input type="hidden" name="idtypepublication" value="$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" />
+			<input type="hidden" name="idpub" value="$$IDPUB$$" />		
+			<input type="hidden" name="tt" value="$$TT$$" />
+			<input type="hidden" name="u" value="SLPRO:OFPH-RESERVATIONSLPRO" />
+			<input type="hidden" name="iddivision" value="$$IDDIVISION$$" />
+			<input type="hidden" name="idsubdivision" value="$$IDSUBDIVISION$$" />
+			<input type="hidden" name="codeinsee" value="$$CODEINSEE$$" />
+			<input type="hidden" name="add" value="$$ADD$$" />
+			<input type="hidden" name="idproduit" value="$$IDPRODUIT$$" />
+			<input type="hidden" name="idtypetransaction" value="$$TT$$" />
+			<input type="hidden" name="cb" value="$$CB$$" />
+
+			<input type="button" value="Réserver" class="res-btn" />
+		</form>
+	$$END$$
+	</td>
+
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$END$$
+	$$IF-:1:OFPHSITU:NBCREDITSRESTANT$$
+		Plus de crédits disponibles.
+	$$END$$
+$$IF:IDPUB$$
+		<table>
+			<tr id="trRechCible" >
+				<td id="tdRechCible" />
+			</tr>
+			<tr id="trAjouterCiblage" >
+				<td>
+					<div id="ajouterCiblage" >
+						<form name="formAddCbl" method="post" action="offrephare_visu.htm?idtypepublication=$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" class="formacces" onsubmit="return verifierAjouter();" >
+						<table cellpadding="0" cellspacing="0" >
+							<tr>
+								<td><b>Localisation :</b></td>
+								<td><span id="selLocAdd" /></td>
+								<td><b>Type de transaction :</b></td>
+								<td><span id="selTTAdd" /></td>
+								<td><b>Coût d'un ciblage :</b></td>
+								<td><span id="selCoutAdd" /></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><b>Type d'attribution :</b></td>
+								<td id="tdTypeAttributionAdd"><script type="text/javascript">getListAttribution('tdTypeAttributionAdd', 'iTypeAttributionAdd');</script></td>
+									
+								<input type="hidden" name="nbOffres" id="iNbOffresAdd" value="1" />
+									
+								<td><b>Audience :</b></td>
+								<td id="tdPartDeVoixAdd"><script type="text/javascript">getListPartDeVoix('tdPartDeVoixAdd', 'iPartDeVoixAdd');</script></td>
+									
+							</tr>
+
+							<tr id="trAddSelMan">
+								<td colspan="7">
+									<table>
+										<tr>
+											<td>Avec complétion automatique des annonces:</td>
+											<td colspan="2"><input type="checkbox" name="avecCompletionAuto" id="avecCompletionAuto" checked="checked"></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="7" style="text-align: right;">
+									<input type="hidden" id="page_ok_form_field_add" name="page_ok" value="offrephare_visu.htm" />
+									<input type="hidden" id="page_err_form_field_add" name="page_err" value="offrephare_visu.htm" />
+									<input type="hidden" name="idtypepublication" value="$$OFPHSITU:IDOFFREPHARETYPESPUBLICATIONS$$" />
+									<input type="hidden" name="newCiblage" id="iNewCiblageAdd" />
+									<input type="hidden" name="idtypetransaction" id="Idtypetransaction" />
+									<input type="hidden" name="localisation" id="iLocalisation" /> 
+									<input type="hidden" name="idTypeLocalisation" id="iIdTypeLocalisation" />
+									<input type="hidden" name="u" value="SLPRO:OFPH-ADDCIBLAGE" />
+									<input type="image" name="submit" src="$$_$$i/dyn/btnvalider.png" id="iValiderAdd"/>
+								</td>
+							</tr>
+						</table>
+						</form>
+					</div>
+				<td>
+			</tr>
+		</table>
+
+	</div>
+				$$END$$
+				<div id="ancreModifier"></div>
+	<div id="editerCiblage" style="display:none">
+		Détail du ciblage et des annonces en vedette sélectionnées :
+		<table style="border: 1px solid #9AB6C7;"  cellpadding="0" cellspacing="0" style="width: auto;" >
+			<tr>
+				<td align="left" ></td>
+			</tr>
+			<tr>
+				<td id="tdRechOffre" />
+			</tr>
+			<tr id="trAddSelAuto" >
+				<td colspan="7" >
+					$$INCL:OFFREPHARE_CRITERES_OFPH.HTM$$
+					<input type="hidden" name="listtt" id="listttadd" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div align="center" >
+		<a href="" onclick="javascript:displayAddEditCiblage('', null);  return false;" id="btnAnnulerCiblage" style="display:none" ><img src="$$_$$i/dyn/btnretour.png" border="0" /></a>
+	</div>
+
+	$$IF:IDCIB$$
+		<script type="text/javascript" >
+			$$IF:IDOPATTR$$ idOPAttr = $$IDOPATTR$$; $$END$$
+			displayAddEditCiblage('editerCiblage', $$IDCIB$$);
+		</script>
+	$$END$$
+	$$IF:ADD$$
+		<script type="text/javascript" >
+			displayAddEditCiblage('ajouterCiblage', null);
+			//window.document.getElementById("selLocAdd").innerHTML = '$$LOC$$';
+			//window.document.getElementById("iLocalisationRech").value = '$$LOC$$';
+			//window.document.getElementById("iTypeTransaction").value = $$IDTT$$;
+			
+			displayRechercheCiblage($$IDPUB$$);
+			//displayNbOffres($$IDCIB$$, $$LOC$$, 'toto', 4, 77, 0);
+		</script>
+	$$END$$
+	$$IF:SLPRO:OFPH-ADDCIBLAGE:IDCIBLAGENEW$$
+		<script type="text/javascript" >
+			displayAddEditCiblage('editerCiblage', $$SLPRO:OFPH-ADDCIBLAGE:IDCIBLAGENEW$$);
+		</script>
+	$$END$$
+
+
+$$INCL:BAS.HTM$$

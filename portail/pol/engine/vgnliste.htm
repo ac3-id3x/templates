@@ -1,0 +1,76 @@
+$$A:CAT=liste_vgn$$
+$$E:E3:CAT:liste_vgn:SLPRO$$
+$$INCL:HAUTX.HTM$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$SET:PAGE:TITRE=Vos vignettes$$ 
+
+$$B:VIGNETTES:LISTE:VAL:AUTH_CHECK*LOGIN_IDAGENCE:ALIAS:LISTVGNS$$
+$$BIF0:LISTVGNS$$
+	<div class="erre"><span>Vous n'avez pas souscrit cette option.</span></div>
+$$BFIN$$	
+
+$$BIF:LISTVGNS$$
+
+<div class="line_tab">
+	<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Synthèse</div>
+</div>
+
+<table class="tabinfo" cellpadding="0" cellspacing="0">	
+	<thead><tr>
+			<th class="bdr">Total (tous mois confondus)</th>
+			<th class="bdr">Mois en cours</th>
+			<th>Mois précédent</th>
+		</tr></thead>
+		<tr class="line_impair">
+			<td class="bdr">			
+				$$E:VIGNETTES:TOTALAFFICHAGESVGN:1:VAL:AUTH_CHECK*LOGIN_IDAGENCE:ALIAS:TOTALAFFICHAGESVGN_DEBUT$$
+				$$TOTALAFFICHAGESVGN_DEBUT:SUMAFFICHAGES sinull 0 formatnumber 0$$
+			</td>	
+			<td class="bdr">
+				$$E:VIGNETTES:TOTALAFFICHAGESVGN:2:VAL:AUTH_CHECK*LOGIN_IDAGENCE:ALIAS:TOTALAFFICHAGESVGN_MOISCOURANT$$
+				$$TOTALAFFICHAGESVGN_MOISCOURANT:SUMAFFICHAGES sinull 0 formatnumber 0$$
+			</td>
+			<td>
+				$$E:VIGNETTES:TOTALAFFICHAGESVGN:3:VAL:AUTH_CHECK*LOGIN_IDAGENCE:ALIAS:TOTALAFFICHAGESVGN_MOISPRECEDENT$$
+				$$TOTALAFFICHAGESVGN_MOISPRECEDENT:SUMAFFICHAGES sinull 0 formatnumber 0$$
+			</td>
+		</tr>				
+	</table>
+	
+	
+	<div class="line_tab">
+		<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Résultat</div>
+	</div>
+	
+
+	<table class="tabinfo" cellpadding="0" cellspacing="0">	
+	<thead><tr>
+				<th class="bdr">Type</th>
+			
+				$$REM$$<th class="bdr">Url</th>$$END$$
+				<th class="bdr">Etat</th>
+				<th class="bdr">Publication</th>
+				<th class="bdr">Transaction</th>
+				<th class="bdr">Localisation</th>
+				<th>Détail</th>
+			</tr></thead>
+				$$DO$$
+					<tr class="line_$$IF=:0:LISTVGNS:I mod2 0 1$$pair$$END$$$$IF!:0:LISTVGNS:I mod2 0 1$$impair$$END$$">
+						<td class="bdr">$$IF=:1:LISTVGNS:TYPE$$Master-Vignette$$END$$$$IF=:0:LISTVGNS:TYPE$$Vignette$$END$$</td>
+						$$REM$$<td class="bdr">$$LISTVGNS:URL$$</td>$$END$$
+						<td class="bdr">
+							<!-- $$LISTVGNS:DESACTIVE$$ -->
+							$$IF=:True:LISTVGNS:DESACTIVE$$
+							<span class="img_puce_red"></span><span class="initule">Inactif</span>$$END$$$$IF=:False:LISTVGNS:DESACTIVE$$<span class="img_puce_green"></span><span class="initule">Active</span>$$END$$
+						</td>
+						<td class="bdr">
+							$$IF=:1:LISTVGNS:IDTYPEPUBLICATION$$SeLoger$$END$$$$IF=:11:LISTVGNS:IDTYPEPUBLICATION$$ImmoStreet$$END$$
+						</td>
+						<td class="bdr">$$LISTVGNS:IDTYPETRANSACTION gettypetransaction pcase$$</td>
+						<td class="bdr">$$LISTVGNS:CP$$$$LISTVGNS:DP$$</td>
+						<td><a href="/10/$$LISTVGNS:IDATTR$$/vgndetail.htm">voir</a></td>
+					</tr>
+				$$LOOP$$
+		</table>
+  $$BFIN$$				
+$$INCL:BAS.HTM$$

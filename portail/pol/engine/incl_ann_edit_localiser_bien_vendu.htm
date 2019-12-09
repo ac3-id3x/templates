@@ -1,0 +1,71 @@
+<script type="text/javascript" src="/z/portail/pol/js/ajax.js"></script>
+<script type="text/javascript" src="/z/portail/pol/engine//js/affquartiers.js"></script>
+
+<script type="text/javascript">		
+	function getQuartierForCp() {
+		var o = document.getElementById('cp');
+		var odest = document.getElementById('affquartier');
+		if (o) {
+			sendReq('/saisiquartier.html?cp=' + o.value);
+		}
+	}
+	
+	function checkquartier()
+	{
+		$$IF:SLPRO:ANNONCE:IDQUARTIER$$		
+			
+			var idq = $$SLPRO:ANNONCE:IDQUARTIER$$
+			var quartierok = document.getElementById("quartier_" + idq);
+			if(quartierok)
+				quartierok.checked = true;
+		$$END$$
+	}
+</script>
+
+<table class="tabbasic" cellpadding="4" cellspacing="0">	
+		<!-- .............................. prix - end $$SLPRO:ANNONCE:IDQUARTIER$$ ........................... -->
+	<tr class="tabentete">
+		<td align="left" colspan="2">Localiser le bien</td>
+	</tr>
+	
+	<tr>
+		<td class="oblig">Pays<br />
+			<input type="hidden" name="titre_idpays" value="Pays">
+			<select name="idpays" title="Code du pays" class="oblig_input" onchange="Division();">
+			<option value="250">France$$DO:1:999$$
+			<option value="$$SLPRO:PAYS:IDPAYS$$"$$IF0:FORM:PAGE_OK$$$$IF=:SLPRO_ANNONCE_IDPAYS:SLPRO:PAYS:IDPAYS$$ selected="selected"$$END$$$$END$$ $$IF=:FORM_IDPAYS:SLPRO:PAYS:IDPAYS$$ selected="selected"$$END$$>$$SLPRO:PAYS:PAYS_FR$$$$LOOP$$
+			</select>
+            <br />
+            <span class="legende">Si votre pays ne figure pas dans la liste, <a href="mailto:$$MAILTECH$$?subject=Pays manquant sur $$SRV$$&body=merci de bien vouloir ajouter le pays suivant :">cliquez ici</a></a>
+        </td>
+        <td>
+            Adresse <span class="legende">(N° de voie + voie)</span> :<br />
+            <input type="hidden" name="titre_adresse" value="Adresse" />
+            <input type="text" name="adresse" id="form_adresse" value="$$IF0:FORM:ADRESSE$$$$SLPRO:ANNONCE:ADRESSE htmlencode$$$$END$$$$IF:FORM:ADRESSE$$$$FORM:ADRESSE$$$$END$$" size="32" maxlength="64" title="Adresse" />
+        </td>
+	</tr>
+	<tr>
+		<td valign="top">
+			<div id="ndivision"></div><div id="ldivision"></div>
+			<input type="hidden" name="titre_division" value="Division" />
+			<input type="hidden" name="iddivision" value="$$IF0:FORM:IDDIVISION$$$$SLPRO:ANNONCE:IDDIVISION htmlencode$$$$END$$$$IF:FORM:IDDIVISION$$$$FORM:IDDIVISION$$$$END$$" />
+		</td>
+		<td valign="top">
+			<div id="nsubdivision"></div><div id="lsubdivision"></div>
+			<input type="hidden" name="titre_subdivision" value="SubDivision" />
+			<input type="hidden" name="idsubdivision" value="$$IF0:FORM:IDSUBDIVISION$$$$SLPRO:ANNONCE:IDSUBDIVISION htmlencode$$$$END$$$$IF:FORM:IDSUBDIVISION$$$$FORM:IDSUBDIVISION$$$$END$$" />
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" class="oblig">Code postal<br />
+			<input type="hidden" name="titre_cp" value="Code Postal">
+			<input type="text" class="oblig_input" name="cp" id="cp" value="$$IF0:FORM:CP$$$$SLPRO:ANNONCE:CP htmlencode$$$$END$$$$IF:FORM:CP$$$$FORM:CP htmlencode$$$$END$$" size="32" maxlength="10" title="Code postal" onChange="getQuartierForCp();">&nbsp;<a href="javascript:aidecp()" id="liencp" class="help">[Liste]</a>
+		</td>
+		<td valign="top" class="oblig">Ville<br />
+			<input type="hidden" name="titre_ville" value="ville">
+			<input type="text" class="oblig_input" name="ville" id="form_ville" value="$$IF0:FORM:VILLE$$$$SLPRO:ANNONCE:VILLE htmlencode$$$$END$$$$IF:FORM:VILLE$$$$FORM:VILLE htmlencode$$$$END$$" size="32" maxlength="50" title="Ville">&nbsp;<a href="javascript:aideville();" id="lienville" class="help">[Liste]</a>
+			<input type="hidden" name="idvilleinter" value="$$IF0:FORM:IDVILLEINTER$$$$SLPRO:ANNONCE:IDVILLEINTER$$$$END$$$$IF:FORM:IDVILLEINTER$$$$FORM:IDVILLEINTER$$$$END$$" />
+		</td>
+	</tr>
+</table>
+

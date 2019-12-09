@@ -1,0 +1,322 @@
+$$E:E3:CAT:158326:SLPRO$$
+$$E:SLPRO:KA-FORM-BIEN-VENDU:~idAnnonce:QRY:IDANNONCE:~idVente:QRY:IDVENTE$$
+$$INCL:AUTH.HTM$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$INCL:HAUTX.HTM$$
+$$INCL:KA-INFOS.HTM$$
+$$IF0:SLPRO:KA-INFORMATIONS:SIDIFFUSERBIENSVENDUS$$
+<div style="font-weight: bold; color: #E7274D; padding: 5px;" class="oblig_input">
+    Pour publier vos biens vendus, vous devez valider la diffusion, <a href="/opt_in_biens_vendus.htm">cliquez ici</a> !
+</div>
+$$END$$
+<link rel="stylesheet" href="$$_$$engine/css/saisie_biens_vendus.css" />
+<script type="text/javascript" src="$$_$$engine/js/saisie_biens_vendus.js"></script>
+$$IF:SLPRO:KA-SAISIE-BIEN-VENDU:ERRE$$
+<div class="erre"><span>$$SLPRO:KA-SAISIE-BIEN-VENDU:ERRE crlf2br$$</span></div>
+$$END$$
+$$IF:SLPRO:KA-FORM-BIEN-VENDU:ERRE$$
+<div class="erre"><span>$$SLPRO:KA-FORM-BIEN-VENDU:ERRE crlf2br$$</span></div>
+$$END$$
+$$IF=:ok:REP:1$$
+<div class="noerre">L'annonce a correctement été mise à jour</div>
+$$END$$
+$$IF0:SLPRO:KA-FORM-BIEN-VENDU:ERRE$$
+<div class="erre" id="validErre"><span></span></div>
+<script type="text/javascript" src="$$_$$engine/js/calendar.js"></script>
+
+<br style="clear: both;" />
+<form action="/biens_vendus.htm$$IF0:FORM:IDVENTE$$?siInvalides=1$$END$$" method="post" name="bien_vendu_edit" id="bien_vendu_edit" onsubmit="return validForm($$IF:FORM:IDVENTE$$true$$END$$$$IF0:FORM:IDVENTE$$false$$END$$);">
+<input type="hidden" name="page_ok" value="/biens_vendus.htm" />
+$$IF0:FORM:IDVENTE$$
+	<input type="hidden" name="siInvalides" value="1" />
+$$END$$
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="idAnnonce" value="$$FORM:IDANNONCE$$" />
+<input type="hidden" name="idVente" value="$$FORM:IDVENTE$$" />
+<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+<input type="hidden" name="u" value="SLPRO:KA-SAISIE-BIEN-VENDU" />
+<input type="hidden" name="dtCreation" value="$$IF:FORM:DTCREATION$$$$FORM:DTCREATION date sql$$$$END$$" />
+<input type="hidden" name="dtModificationn" value="$$IF:FORM:DTMODIFICATION$$$$FORM:DTMODIFICATION date sql$$$$END$$" />
+<input type="hidden" id="display_typeBien" name="display_typeBien" value="$$FORM:IDTYPEBIENVENDU$$" />
+<input type="hidden" name="surfaceTerrain" value="$$FORM:SURFACETERRAIN$$" />
+<div id="ka_form_saisie">
+	<div id="infos_generales" class="clall">
+		<h2>Informations générales</h2>
+		<div id="edit_haut">
+			<div class="left">
+				<div class="oblig_txt"><div class="oblig_input">&nbsp;&nbsp;&nbsp;</div>Champs obligatoires</div>
+			</div>
+		</div>
+		<div class="fleft">
+			$$B:SLPRO:KA-TYPESBIENSVENDUS:ALIAS:TBV$$
+			$$BIF:TBV$$
+			<label for="idTypeBienVendu">Type de bien</label>
+			<select name="idTypeBienVendu" id="idTypesBiens" class="oblig_input">
+				$$DO$$
+				<option value="$$TBV:IDTYPEBIENVENDU$$"$$IF=:FORM_IDTYPEBIENVENDU:TBV:IDTYPEBIENVENDU$$ selected="selected"$$END$$>$$TBV:TYPEBIENVENDU$$</option>
+				$$LOOP$$
+			</select>
+			$$BFIN$$
+			<label for="prixOffreFAI">Prix de mise en vente (FAI)</label>
+			<input type="text" name="prixOffreFAI" value="$$FORM:PRIXOFFREFAI htmlattributeencode$$" maxlength="33" title="Prix de mise en vente (FAI)" />&nbsp;&euro;
+			<span class="legende">Ne sera pas diffusé sur SeLoger.com</span>
+			<label for="dtMutation">Date de signature du bien vendu</label>
+			<input type="text" name="dtMutation" class="oblig_input" id="dtMutation" value="$$IF:FORM:DTMUTATION$$$$FORM:DTMUTATION date d$$$$END$$" maxlength="33" title="Date de signature du bien vendu" />
+			<img class="imgcal" src="$$_$$/engine/images/picto_calendar.gif" onclick="javascript:showCalendar(this, document.getElementById('dtMutation'), 'dd/mm/yyyy' , null, 1, -1, -1, 1);" />
+		  <span class="legende">Format (jj/mm/aaaa)</span>
+		</div>
+		<div class="fleft clright">
+			<label for="idTypeBienVendu">Origine de la vente</label>
+			<select name="siVenteTiers" class="oblig_input">
+				<option value="">Sélectionnez une origine</option>
+				<option value="False"$$IF=:False:FORM:SIVENTETIERS$$ selected="selected"$$END$$>Vente réalisée par votre agence</option>
+				<option value="True"$$IF=:True:FORM:SIVENTETIERS$$ selected="selected"$$END$$>Vente réalisée par un tiers</option>
+			</select>
+			<label for="prixVenteFAI">Prix de vente (FAI)</label>
+			<input type="text" name="prixVenteFAI" class="oblig_input" value="$$FORM:PRIXVENTEFAI htmlattributeencode$$" maxlength="33" title="Prix de vente (FAI)" />&nbsp;&euro;
+		</div>
+		<div class="clall"></div>
+	</div>
+	<div id="localiser_bien" class="clall">
+		<h2>Adresse du bien</h2>
+		<input type="hidden" name="codePays" value="FR" />
+		<div class="fleft clall">
+			<label for="adresse">Numéro, Rue, Bâtiment, ...</label>
+			<textarea name="adresse" class="oblig_input" cols="80" rows="2">$$FORM:ADRESSE htmlattributeencode$$</textarea>
+			<span class="legende">Ne sera pas diffusé sur SeLoger.com</span>
+		</div>
+        <div class="clall"></div>
+		<div class="fleft clleft">
+			<label for="cp">Code Postal</label>
+			<input type="text" name="cp" class="oblig_input" value="$$FORM:CP htmlattributeencode$$" maxlength="5" title="Code Postal" />
+		</div>
+		<div class="fleft clright">
+			<label for="ville">Ville</label>
+			<input type="text" name="ville" class="oblig_input" value="$$FORM:VILLE htmlattributeencode$$" title="Ville" />
+		</div>
+		<div class="clall"></div>
+	</div>
+	<div id="infos_complementaires" class="clall">
+		<h2>Informations complémentaires</h2>
+		<div id="display_parkings">
+			<div class="fleft clall">
+				<label for="surfaceParking">Surface</label>
+				<input type="text" name="surfaceParking" value="$$FORM:SURFACEHABITABLE htmlattributeencode$$" maxlength="33" title="Surface Parking" />&nbsp;m&sup2;
+			</div>
+		</div>
+		<div id="display_terrains">
+			<div class="fleft clleft">
+				<label for="surfaceTerrain1">Surface terrain</label>
+				<input type="text" name="surfaceTerrain1" class="oblig_input" value="$$FORM:SURFACETERRAIN htmlattributeencode$$" maxlength="33" title="Surface Terrain" />&nbsp;m&sup2;
+			</div>
+			<div class="fleft">
+				<label for="siTerrainViabilise" class="oblig_input">Terrain Viabilisé</label>
+				<input type="radio" name="siTerrainViabilise"$$IF=:True:FORM:SITERRAINVIABILISE$$ checked="checked"$$END$$ value="True" title="Coché s'il existe une cave"> Oui
+				<input type="radio" name="siTerrainViabilise"$$IF=:False:FORM:SITERRAINVIABILISE$$ checked="checked"$$END$$ value="False" title="Coché s'il existe une cave"> Non
+				<input type="radio" name="siTerrainViabilise"$$IF=::FORM:SITERRAINVIABILISE$$ checked="checked"$$END$$ value="" title="Coché s'il existe une cave"> N/C
+			</div>
+			<div class="fleft clright">
+				<label for="siTerrainConstructible" class="oblig_input">Terrain Constructible</label>
+				<input type="radio" name="siTerrainConstructible"$$IF=:true:FORM:SITERRAINCONSTRUCTIBLE$$ checked="checked"$$END$$ value="True" title="Coché s'il existe une piscine"> Oui
+				<input type="radio" name="siTerrainConstructible"$$IF=:false:FORM:SITERRAINCONSTRUCTIBLE$$ checked="checked"$$END$$ value="False" title="Coché s'il existe une piscine"> Non
+				<input type="radio" name="siTerrainConstructible"$$IF=::FORM:SITERRAINCONSTRUCTIBLE$$ checked="checked"$$END$$ value="" title="Coché s'il existe une piscine"> N/C
+			</div>
+		</div>
+		<div id="display_defaults">
+			<div class="fleft clall">
+				<label for="anneeConstruction">Année de construction</label>
+				<input type="text" name="anneeConstruction" class="oblig_input" value="$$FORM:ANNEECONSTRUCTION htmlattributeencode$$" maxlength="4" title="Année de construction" />
+			  <span class="legende">ex: 1910</span>
+			</div>
+			<div class="oblig_input fleft largebox clall">
+				<div class="fleft">
+					<label for="surfaceHabitable">Surface habitable</label>
+					<input type="text" name="surfaceHabitable" value="$$FORM:SURFACEHABITABLE htmlattributeencode$$" maxlength="33" title="Surface Habitable" />&nbsp;m&sup2;
+				  <span class="legende">Obligatoire si Surface Carrez non renseignée</span>
+				</div>
+				<div class="fleft">
+					<label for="surfaceCarrez">Surface Carrez</label>
+					<input type="text" name="surfaceCarrez" value="$$FORM:SURFACECARREZ htmlattributeencode$$" maxlength="33" title="Surface Carrez" />&nbsp;m&sup2;
+				  <span class="legende">Obligatoire si Surface Habitable non renseignée</span>
+				</div>
+			</div>
+			<div id="surf_pour_maisons" class="fleft clall$$IF=:2:FORM:IDTYPEBIENVENDU$$ largebox oblig_input$$END$$">
+				<div class="fleft" id="surf_terrain">
+					<label for="surfaceTerrain2">Surface terrain</label>
+					<input type="text" name="surfaceTerrain2" value="$$FORM:SURFACETERRAIN htmlattributeencode$$" maxlength="33" title="Surface Terrain" />&nbsp;m&sup2;
+					<span class="legende"$$IF=:2:FORM:IDTYPEBIENVENDU$$ style="display: inline;"$$END$$>Obligatoire si Surface jardin non renseignée</span>
+				</div>
+				<div class="fleft" id="surf_jardin">
+					<label for="surfaceJardin">Surface jardin</label>
+					<input type="text" name="surfaceJardin" value="$$FORM:SURFACEJARDIN htmlattributeencode$$" maxlength="33" title="Surface Jardin" />&nbsp;m&sup2;
+					<span class="legende"$$IF=:2:FORM:IDTYPEBIENVENDU$$ style="display: inline;"$$END$$>Obligatoire si Surface terrain non renseignée</span>
+				</div>
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft">
+				<label for="nbPieces">Nombre de pièces</label>
+				<input type="text" name="nbPieces" class="oblig_input" value="$$FORM:NBPIECES htmlattributeencode$$" maxlength="3" title="Nombre de pièces" />
+			</div>
+			<div class="fleft" id="apt_etage">
+				<label for="Etage">&Eacute;tage</label>
+				<input type="text" name="etage" class="oblig_input" value="$$FORM:ETAGE htmlattributeencode$$" maxlength="2" title="&Eacute;" />
+				<span class="legende">0 pour RDC</span>
+			</div>
+			<div class="fleft clright">
+				<label for="nbEtages" id="nbetages">Nombre d'étages</label>
+				<input type="text" name="nbEtages" value="$$FORM:NBETAGES htmlattributeencode$$" maxlength="2" title="Nombre d'étages" />
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft">
+				<label for="siAscenseur">Ascenseur</label>
+				<input type="radio" name="siAscenseur"$$IF=:True:FORM:SIASCENSEUR$$ checked="checked"$$END$$ value="True" title="Coché s'il existe un ascenseur dans l'immeuble"> Oui
+				<input type="radio" name="siAscenseur"$$IF=:False:FORM:SIASCENSEUR$$ checked="checked"$$END$$ value="False" title="Coché s'il existe un ascenseur dans l'immeuble"> Non
+				<input type="radio" name="siAscenseur"$$IF=::FORM:SIASCENSEUR$$ checked="checked"$$END$$ value="" title="Coché s'il existe un ascenseur dans l'immeuble"> N/C
+			</div>
+			<div class="fleft">
+				<label for="siCave">Cave</label>
+				<input type="radio" name="siCave"$$IF=:True:FORM:SICAVE$$ checked="checked"$$END$$ value="True" title="Coché s'il existe une cave"> Oui
+				<input type="radio" name="siCave"$$IF=:False:FORM:SICAVE$$ checked="checked"$$END$$ value="False" title="Coché s'il existe une cave"> Non
+				<input type="radio" name="siCave"$$IF=::FORM:SICAVE$$ checked="checked"$$END$$ value="" title="Coché s'il existe une cave"> N/C
+			</div>
+			<div class="fleft clright">
+				<label for="siCave">Piscine</label>
+				<input type="radio" name="siPiscine"$$IF=:True:FORM:SIPISCINE$$ checked="checked"$$END$$ value="True" title="Coché s'il existe une piscine"> Oui
+				<input type="radio" name="siPiscine"$$IF=:False:FORM:SIPISCINE$$ checked="checked"$$END$$ value="False" title="Coché s'il existe une piscine"> Non
+				<input type="radio" name="siPiscine"$$IF=::FORM:SIPISCINE$$ checked="checked"$$END$$ value="" title="Coché s'il existe une piscine"> N/C
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft">
+				<label for="nbBox">Nombre de box(es)/garage(s)</label>
+				<input type="text" name="nbBox" value="$$FORM:NBBOX htmlattributeencode$$" maxlength="3" title="Nombre de Boxes" />
+			</div>
+			<div class="fleft">
+				<label for="nbParkExt">Nombre de parking(s) extérieur(s)</label>
+				<input type="text" name="nbParkExt" value="$$FORM:NBPARKEXT htmlattributeencode$$" maxlength="3" title="Nombre de Parking Extérieurs" />
+			</div>
+			<div class="fleft clright">
+				<label for="nbParkInt">Nombre de parking(s) intérieur(s)</label>
+				<input type="text" name="nbParkInt" value="$$FORM:NBPARKINT htmlattributeencode$$" maxlength="3" title="Nombre de Parking Intérieurs" />
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft smallField">
+				<label for="nbTerrasses">Nombre de terrasse(s)</label>
+				<input type="text" name="nbTerrasses" value="$$FORM:NBTERRASSES htmlattributeencode$$" maxlength="3" title="Nombre de Terrasses" />
+			</div>
+			<div class="fleft smallField">
+				<label for="surfaceTerrasses">Surface terrasse(s)</label>
+				<input type="text" name="surfaceTerrasses" value="$$FORM:SURFACETERRASSES htmlattributeencode$$" maxlength="3" title="Surface Terrasses" />
+			</div>
+			<div class="fleft smallField">
+				<label for="nbBalcons">Nombre de balcon(s)</label>
+				<input type="text" name="nbBalcons" value="$$FORM:NBBALCONS htmlattributeencode$$" maxlength="3" title="Nombre de Balcons" />
+			</div>
+			<div class="fleft clright smallField">
+				<label for="surfaceBalcons">Surface balcon(s)</label>
+				<input type="text" name="surfaceBalcons" value="$$FORM:SURFACEBALCONS htmlattributeencode$$" maxlength="3" title="Surface Balcons" />
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft smallField">
+				$$B:SLPRO:KA-BILANCONSOENERGIE:ALIAS:BCE$$
+				$$BIF:BCE$$
+				<label for="codeBilanConsoEnergie">Bilan consommation énergie</label>
+				<select name="codeBilanConsoEnergie">
+					<option value="">N/C</option>
+					$$DO$$
+					<option value="$$BCE:CODEBILANCONSOENERGIE$$"$$IF=:FORM_CODEBILANCONSOENERGIE:BCE:CODEBILANCONSOENERGIE$$ selected="selected"$$END$$>$$BCE:CODEBILANCONSOENERGIE$$ - $$BCE:BILANCONSOENERGIE$$</option>
+					$$LOOP$$
+				</select>
+				$$BFIN$$
+			</div>
+			<div class="fleft smallField">
+				$$B:SLPRO:KA-BILANEMISSIONSGES:ALIAS:BEG$$
+				$$BIF:BEG$$
+				<label for="codeBilanEmissionsGES">Bilan émissions GES</label>
+				<select name="codeBilanEmissionsGES">
+					<option value="">N/C</option>
+					$$DO$$
+					<option value="$$BEG:CODEBILANEMISSIONSGES$$"$$IF=:FORM_CODEBILANEMISSIONSGES:BEG:CODEBILANEMISSIONSGES$$ selected="selected"$$END$$>$$BEG:CODEBILANEMISSIONSGES$$ - $$BEG:BILANEMISSIONSGES$$</option>
+					$$LOOP$$
+				</select>
+				$$BFIN$$
+			</div>
+			<div class="fleft smallField">
+				<label for="consoEnergie">Consommation d'énergie</label>
+				<input type="text" name="consoEnergie" value="$$FORM:CONSOENERGIE htmlattributeencode$$" maxlength="5" title="Consommation d'&Eacute;nergie" />
+				<span class="legende">en kWhep/m&sup2;/an</span>
+			</div>
+			<div class="fleft clright smallField">
+				<label for="emissionsGES">&Eacute;missions GES</label>
+				<input type="text" name="consoemissionsGESnergie" value="$$FORM:EMISSIONSGES htmlattributeencode$$" maxlength="5" title="&Eacute;missions GES" />
+				<span class="legende">en kgeqCO&sup2;/m&sup2;/an</span>
+			</div>
+            <div class="clall"></div>
+			<div class="fleft clleft smallField">
+				$$B:SLPRO:KA-TYPESCHAUFFAGE:ALIAS:TC$$
+				$$BIF:TC$$
+				<label for="idTypeChauffage">Type de Chauffage</label>
+				<select name="idTypeChauffage">
+					<option value="">N/C</option>
+					$$DO$$
+					<option value="$$TC:IDTYPECHAUFFAGE$$"$$IF=:FORM_IDTYPECHAUFFAGE:TC:IDTYPECHAUFFAGE$$ selected="selected"$$END$$>$$TC:TYPECHAUFFAGE$$</option>
+					$$LOOP$$
+				</select>
+				$$BFIN$$
+			</div>
+			<div class="fleft smallField">
+				<label for="surfaceAnnexes">Surface des annexes</label>
+				<input type="text" name="surfaceAnnexes" value="$$FORM:SURFACEANNEXES htmlattributeencode$$" maxlength="1" title="Surface des annexes" />&nbsp;m&sup2;
+				<span class="legende">Dépendances, chambres de bonne, etc</span>
+			</div>
+			<div class="fleft smallField">
+				<label for="siOccupe">Vendu occupé</label>
+				<input type="radio" name="siOccupe"$$IF=:True:FORM:SIOCCUPE$$ checked="checked"$$END$$ value="True" title="Coché s'il existe une piscine"> Oui
+				<input type="radio" name="siOccupe"$$IF=:False:FORM:SIOCCUPE$$ checked="checked"$$END$$ value="False" title="Coché s'il existe une piscine"> Non
+				<input type="radio" name="siOccupe"$$IF=::FORM:SIOCCUPE$$ checked="checked"$$END$$ value="" title="Coché s'il existe une piscine"> N/C
+			</div>
+			<div class="fleft clright smallField">
+				<label for="loyer">Loyer mensuel (si vendu occupé)</label>
+				<input type="text" name="loyer" value="$$FORM:LOYER htmlattributeencode$$" maxlength="5" title="Loyer" />
+				<span class="legende">Loyer de l'occupant</span>
+			</div>
+			$$B:SLPRO:KA-ETATS:ALIAS:ETATS$$
+			$$BIF:ETATS$$
+            <div class="clall"></div>
+			<div class="fleft clleft">
+				<label for="idEtatInterieur">&Eacute;tat intérieur</label>
+				<select name="idEtatInterieur">
+					<option value="">N/C</option>
+					$$DO$$
+					<option value="$$ETATS:IDETAT$$"$$IF=:FORM_IDETAT:ETATS:IDETAT$$ selected="selected"$$END$$>$$ETATS:ETAT$$</option>
+					$$LOOP$$
+				</select>
+			</div>
+			$$BFIN$$
+			$$BIF:ETATS$$
+			<div class="fleft clright">
+				<label for="idEtatExterieur">&Eacute;tat extérieur</label>
+				<select name="idEtatExterieur">
+					<option value="">N/C</option>
+					$$DO$$
+					<option value="$$ETATS:IDETAT$$"$$IF=:FORM_IDETAT:ETATS:IDETAT$$ selected="selected"$$END$$>$$ETATS:ETAT$$</option>
+					$$LOOP$$
+				</select>
+			</div>
+			$$BFIN$$
+		</div>
+		<div class="desc_wrapper clall">
+			<label for="descriptif">Descriptif <span class="legende">Ce descriptif apparaîtra dans votre vitrine de biens vendus sur SeLoger.com</span></label>
+			<textarea name="descriptif" cols="80" rows="5">$$FORM:DESCRIPTIF htmlattributeencode$$</textarea>
+		</div>
+		<div class="clall"></div>
+	</div>
+</div>
+<div id="line_btn_ann" class="clall">
+	<div class="btn_left">
+		<div onclick="javascript:reinit();"><img src="$$_$$i/dyn/btnreinitialiser.png" /></div>
+	</div>
+	<div class="btn_right"><input type="image" name="submit" src="$$_$$i/dyn/btnvalidermodifs.png" /></div>
+</div>
+</form>
+$$END$$
+$$INCL:BASX.HTM$$

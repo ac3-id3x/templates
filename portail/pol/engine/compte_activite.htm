@@ -1,0 +1,74 @@
+
+$$DYN:ID3:NOCACHE:SQL$$
+
+$$E:E3:CAT:type_activite:SLPRO$$
+
+$$INCL:HAUTX.HTM$$
+
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$IF:ERRE$$<div class="erre"><span>$$ERRE$$</span></div>$$END$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="tabentete">Définissez votre type d'activité</td>
+	</tr>
+	<tr>
+		<td>
+			<form name="form" method="post">
+				 $$A:AFFICICX=0$$	
+			$$B:SLPRO:ACTIVITE_AGENCE:ALIAS:ACA$$
+			$$BIF:ACA$$
+			$$DO$$
+			
+			<div class="choix_act">
+				<label for="listidActivite_$$ACA:IDREFACTIVITE$$">
+					<input type="checkbox" id="listidActivite_$$ACA:IDREFACTIVITE$$" name="listidActivite" $$IF=:TRUE:ACA:ISCHECKED$$ checked="checked" $$END$$ value="$$ACA:IDREFACTIVITE$$" />
+					$$ACA:DESCRIPTION pcase$$
+				</label>
+			</div>
+			$$IF=:15:ACA:IDREFACTIVITE$$
+			 $$IF=:TRUE:ACA:ISCHECKED$$
+			 $$A:AFFICICX=1$$
+			 $$END$$
+			$$END$$
+					
+			
+			$$LOOP$$
+			$$BFIN$$
+			$$BIF0:ACA$$
+				Pas de resultat trouvé
+			$$BFIN$$
+			
+			
+			<!--
+			 $$IF=:1:AFFICICX$$
+			 $$E:SLPRO:AGENCECONTACTCOEX:ALIAS:CCX$$
+			 	<div class="choix_act">
+			 <table>
+			 	<tr>
+			 		<td class="tabentete" colspan="2">Informations Co-exclusivité</td>
+				</tr>
+				<tr>
+					<td>Contact(Nom,Prénom)</td><td><input type="text" name="contactcoex"  value="$$IF0:FORM:PAGE_OK$$$$:CCX:CONTACTCOEX htmlencode$$$$END$$$$FORM:CONTACTCOEX htmlencode$$" size="32" maxlength="20" title="Le contact pour vos co-exclusivités"></td>
+				</tr>
+				<tr>
+					<td>Email co-exclusivités</td><td><input type="text" name="mailcoex"  value="$$IF0:FORM:PAGE_OK$$$$:CCX:MAILCOEX htmlencode$$$$END$$$$FORM:MAILCOEX htmlencode$$" size="32" maxlength="20" title="Adresse email pour vos co-exclusivités"></td>
+				</tr>
+				<tr>
+					<td>Téléphone co-exclusivités</td><td><input type="text" name="telcoex" value="$$IF0:FORM:PAGE_OK$$$$:CCX:TELCOEX htmlencode$$$$END$$$$FORM:TELCOEX htmlencode$$" size="32" maxlength="20" title="Téléphone pour vos co-exclusivités"></td>
+				</tr>
+			</table>
+			</div>
+			$$END$$
+			-->
+			
+			<input type="hidden" name="page_ok" value="compte_activite.htm" />
+			<input type="hidden" name="page_err" value="compte_activite.htm" />
+			<input type="hidden" id="u" name="u" value="SLPRO:SAISIE_ACTIVITE_AGENCE" />
+			<div class="btn">
+				<input type="image" name="submit" src="$$_$$i/dyn/btnvalider.png" />
+			</div>
+			</form>
+		</td>
+	</tr>
+</table>
+$$INCL:BASX.HTM$$

@@ -1,0 +1,176 @@
+$$E:E3:CAT:159748:SLPRO$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:1:~url:/156455/cnt.htm$$
+$$DYN:AUTH:UNIVERS_REDIRECT:~idunivers:4:~url:slpro_regions.htm$$
+$$E:SLPRO:INFOSAGENCE$$
+$$E:POLEPOSITION:TYPEPUBLICATION-CONTRAT-PP:~idtypepublication:QRY:IDTYPEPUBLICATION:ALIAS:INFOS$$
+$$E:SLPRO:PUBLICATIONS:~si_web:1:ALIAS:PUBL$$
+
+	Pour changer vos paramètres de mises en avant lors de la sélection automatique, choisissez une publication et cliquez sur continuer
+	<form id="query_form" method="get" action="/polePositionCriteres.htm" >		
+		$$B:POLEPOSITION:LISTE-CONTRATS-OR-ARGENT:ALIAS:CORARTP$$
+		$$BIF:CORARTP$$
+		<select name="idTypePublication">
+			$$DO$$
+			$$IFPREV:CORARTP:IDTYPEPUBLICATION$$
+				<option value="$$CORARTP:IDTYPEPUBLICATION$$" $$IF=:FORM_IDTYPEPUBLICATION:CORARTP:IDTYPEPUBLICATION$$ selected $$END$$> $$CORARTP:PUBLICATION$$ </option><br/>
+			$$END$$
+			$$LOOP$$
+		</select>
+	$$BFIN$$
+		
+		<input type="submit" value="Continuer"/>
+	</form>
+	
+	<br />
+	
+	$$IF:POLEPOSITION:CHANGE_MODE_SELECTION_OR_ARGENT:ERRE$$
+		<span style="color:green">$$POLEPOSITION:CHANGE_MODE_SELECTION_OR_ARGENT:ERRE$$</span><br /><br />
+	$$END$$
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr><th>Mode de sélection des mises en avant sur $$INFOS:PUBLICATION$$</th></tr>
+	</thead>
+	
+	$$IF:INFOS:CONTRATAREXIST$$
+	<tr><th>Sélection pour le niveau Argent</th></tr>
+	<tr>
+		<td>
+        <form method="post" >
+			<span> Mode de sélection: </span>
+	        <select name="idTypeAttribution">
+	        	<option value="1" $$IF=:1:INFOS:IDTYPEATTRIBUTIONAR$$selected$$END$$> Automatique </option>
+				<option value="2" $$IF=:2:INFOS:IDTYPEATTRIBUTIONAR$$selected$$END$$> Manuel </option>
+				<option value="3" $$IF=:3:INFOS:IDTYPEATTRIBUTIONAR$$selected$$END$$> Manuel / Jamais automatique </option>
+			</select>
+			<br />
+			<span>(Si vous sélectionnez le mode manuel mais que vous n'utilisez pas tout votre compte d'annonces Or&Argent la sélection automatique completera en rajoutant des annonces automatiquement pour vous)</span>
+			<br /><br />
+			
+			<span> Priorité pour la sélection automatique: </span>
+			<select name="idPrioritySelectionAuto">
+	        	<option value="1" $$IF=:1:INFOS:IDPRIORITYAR$$selected$$END$$> Exclusivité </option>
+				<option value="2" $$IF=:2:INFOS:IDPRIORITYAR$$selected$$END$$> Récence </option>
+				<option value="3" $$IF=:3:INFOS:IDPRIORITYAR$$selected$$END$$> Baisse de prix </option>
+			</select>
+			<br /><br />
+			
+			<span> Seulement les types de transaction: </span>
+			<br />
+			<span> - Vente: </span><input type="checkbox" name="vente" value="1" $$IF:INFOS:VENTEAR$$checked$$END$$/>
+			<span> - Location: </span><input type="checkbox" name="location" value="1" $$IF:INFOS:LOCATIONAR$$checked$$END$$/>
+			<br /><br />
+			
+			<span> Fourchette de prix (vente): </span>
+			<br />
+			<span> - Prix minimum: </span><input type="text" name="prixMinV" value="$$INFOS:PRIXMINARV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<span> - Prix maximum: </span><input type="text" name="prixMaxV" value="$$INFOS:PRIXMAXARV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<br /><br />
+			
+			<span> Fourchette de surface (vente): </span>
+			<br />
+			<span> - Surface minimum: </span><input type="text" name="surfaceMinV" value="$$INFOS:SURFACEMINARV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<span> - Surface maximum: </span><input type="text" name="surfaceMaxV" value="$$INFOS:SURFACEMAXARV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<br /><br />
+			
+			<span> Fourchette de prix (location): </span>
+			<br />
+			<span> - Prix minimum: </span><input type="text" name="prixMinL" value="$$INFOS:PRIXMINARL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<span> - Prix maximum: </span><input type="text" name="prixMaxL" value="$$INFOS:PRIXMAXARL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<br /><br />
+			
+			<span> Fourchette de surface (location): </span>
+			<br />
+			<span> - Surface minimum: </span><input type="text" name="surfaceMinL" value="$$INFOS:SURFACEMINARL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<span> - Surface maximum: </span><input type="text" name="surfaceMaxL" value="$$INFOS:SURFACEMAXARL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<br /><br />
+			
+			<input type="hidden" name="idNiveauPolePo" value="2" />
+			<input type="hidden" name="idTypePublication" value="$$FORM:IDTYPEPUBLICATION$$" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+			<input type="hidden" name="page_err" value="/$$REP:URI$$">
+			<input type="hidden" id="u" name="u" value="POLEPOSITION:CHANGE_MODE_SELECTION_OR_ARGENT">
+			<div class="btn">
+				<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png" />
+			</div>
+        
+		</form>
+		</td>
+	</tr>
+	$$END$$
+	
+	$$IF:INFOS:CONTRATOREXIST$$
+	<tr><th>Sélection pour le niveau Or</th></tr>
+	<tr>
+		<td>
+        <form method="post" >
+		
+			<span> Mode de sélection: </span>
+	        <select name="idTypeAttribution">
+	        	<option value="1" $$IF=:1:INFOS:IDTYPEATTRIBUTIONOR$$selected$$END$$> Automatique </option>
+				<option value="2" $$IF=:2:INFOS:IDTYPEATTRIBUTIONOR$$selected$$END$$> Manuel </option>
+				<option value="3" $$IF=:3:INFOS:IDTYPEATTRIBUTIONOR$$selected$$END$$> Manuel / Jamais automatique </option>
+			</select>
+			<br />
+			<span>(Si vous sélectionnez le mode manuel mais que vous n'utilisez pas tout votre compte d'annonces Or&Argent la sélection automatique completera en rajoutant des annonces automatiquement pour vous)</span>
+			<br /><br />
+			
+			<span> Priorité pour la sélection automatique: </span>
+			<select name="idPrioritySelectionAuto">
+	        	<option value="1" $$IF=:1:INFOS:IDPRIORITYOR$$selected$$END$$> Exclusivité </option>
+				<option value="2" $$IF=:2:INFOS:IDPRIORITYOR$$selected$$END$$> Récence </option>
+				<option value="3" $$IF=:3:INFOS:IDPRIORITYOR$$selected$$END$$> Baisse de prix </option>
+			</select>
+			<br /><br />
+			
+			<span> Seulement les types de transaction: </span>
+			<br />
+			<span> - Vente: </span><input type="checkbox" name="vente" value="1" $$IF:INFOS:VENTEOR$$checked$$END$$/>
+			<span> - Location: </span><input type="checkbox" name="location" value="1" $$IF:INFOS:LOCATIONOR$$checked$$END$$/>
+			<br /><br />
+			
+			<span> Fourchette de prix (vente): </span>
+			<br />
+			<span> - Prix minimum: </span><input type="text" name="prixMinV" value="$$INFOS:PRIXMINORV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<span> - Prix maximum: </span><input type="text" name="prixMaxV" value="$$INFOS:PRIXMAXORV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<br /><br />
+			
+			<span> Fourchette de surface (vente): </span>
+			<br />
+			<span> - Surface minimum: </span><input type="text" name="surfaceMinV" value="$$INFOS:SURFACEMINORV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<span> - Surface maximum: </span><input type="text" name="surfaceMaxV" value="$$INFOS:SURFACEMAXORV$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<br /><br />
+			
+			<span> Fourchette de prix (location): </span>
+			<br />
+			<span> - Prix minimum: </span><input type="text" name="prixMinL" value="$$INFOS:PRIXMINORL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<span> - Prix maximum: </span><input type="text" name="prixMaxL" value="$$INFOS:PRIXMAXORL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>€
+			<br /><br />
+			
+			<span> Fourchette de surface(location): </span>
+			<br />
+			<span> - Surface minimum: </span><input type="text" name="surfaceMinL" value="$$INFOS:SURFACEMINORL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<span> - Surface maximum: </span><input type="text" name="surfaceMaxL" value="$$INFOS:SURFACEMAXORL$$" size="10" pattern="[0-9]{1,10}" title="Merci de rentrer un entier valide"/>m²
+			<br /><br />
+			
+			<input type="hidden" name="idNiveauPolePo" value="3" />
+			<input type="hidden" name="idTypePublication" value="$$FORM:IDTYPEPUBLICATION$$" />
+			<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+			<input type="hidden" name="page_err" value="/$$REP:URI$$">
+			<input type="hidden" id="u" name="u" value="POLEPOSITION:CHANGE_MODE_SELECTION_OR_ARGENT">
+			<div class="btn">
+				<input type="image" name="Submit" src="$$_$$i/dyn/btnmodifier.png"/>
+			</div>
+			        
+		</form>
+		</td>
+	</tr>
+	$$END$$
+	
+</table>
+
+$$INCL:BASX.HTM$$

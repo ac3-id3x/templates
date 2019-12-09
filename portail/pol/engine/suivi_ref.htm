@@ -1,0 +1,187 @@
+$$E:ID3:DATE:1:-7$$
+$$E:GDP2:LECTURE_INFORMATIONPRODUIT:~iddossier:REP:1:ALIAS:INFOCONTRAT$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$DYN:SLPRO:LIENAXIALYS$$
+$$A:CAT=POSITION_REF$$
+<!-- $$REP:2$$ -->
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUT.HTM$$
+
+<script type="text/javascript" src="/z/portail/pol/js/ref/rankingv2.js" ></script>
+<script type="text/javascript" src="/z/portail/pol/js/ref/jquery.min.js"></script>
+<script type="text/javascript" src="/z/portail/pol/js/ref/highcharts.js"></script>
+
+<h4>Votre rapport de positionnement</h4>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td colspan="2">Votre contrat</td>
+	</tr>
+	<tr>
+		<td>Pack souscrit : $$INFOCONTRAT:LGC_PRODUIT$$</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Date de soumission de votre site : $$INFOCONTRAT:CON_DT_DEBUT date 2$$</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Nom de domaine : $$INFOCONTRAT:DOS_URL$$</td>
+		<td></td>
+	</tr>
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td>Suivi de votre positionnement</td>
+	</tr>
+	<tr>
+		<td>
+			<p>Dans le cadre de votre prestation de référencement, nous avons défini ensemble plusieurs thématiques pour renforcer votre visibilité sur des axes de communication clé dans votre activité.</p>
+			<p>Nous déclinons chaque thématique en 10 expressions en s’appuyant sur les recherches les plus utilisées par les internautes.  Nous calculons ensuite une moyenne de positionnement de votre site sur les moteurs de recherche Bing et Google pour toutes ces expressions. Pour être au plus proche de la réalité, nous avons attribué un coefficient 9 pour Google contre 1 pour Bing.</p>
+			<p>Aujourd’hui, un résultat de recherche peut varier d’un ordinateur à un autre en fonction de nombreux critères pris en compte par Google : lieu, historique de recherche… Nos moyennes sont réalisées depuis Paris et en partant d’un historique de navigation vierge.</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:100%;" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top">
+			<table class="tabbasic" cellpadding="0" cellspacing="0">
+				<tr class="tabentete">
+					<td>Thématiques choisies</td>
+				</tr>
+				<tr>
+					<td>
+					$$BIF:RGTV$$
+					<table>
+						$$DO$$
+						<tr>
+							<td><img src="/z/portail/pol/i/picto_arrow.gif" style="margin-right:5px;">$$RGTV:NOMTHEMATIQUE$$</td>
+						</tr>
+						$$LOOP$$
+					</table>
+					$$BFIN$$
+					</td>
+				</tr>
+			</table>	
+		</td>
+		<td width="10"></td>
+		<td valign="top">
+			<table class="tabbasic" cellpadding="0" cellspacing="0">
+				<tr class="tabentete">
+					<td>Expressions les plus performantes</td>	
+				</tr>
+				<tr>
+					<td>
+						<table id="listeTopTen">
+							<tr>
+								<td>Expression</td>
+								<td>Position</td>	
+							<tr>
+						</table>
+					</td>
+				</tr>
+			</table>	
+		</td>
+	</tr>
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td>Taux de positionnement 10 premières positions</td>
+	</tr>
+	<tr>
+		<td><div id="graph1erepage" style="width: 100%; height: 400px;" ></div></td>
+	</tr>
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td>Position moyenne globale</td>
+	</tr>
+	<tr>
+		<td><div id="graphGlobal" style="width: 100%; height: 400px;"></div></td>
+	</tr>
+</table>
+
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+	<tr class="tabentete">
+		<td>Détails par thématique</td>
+	</tr>
+	<tr>
+		<td>
+			<div style="width: 600px; height: 20px;">
+			$$B:GDP2:RANK-GET-THEMATIQUESVALORISEES:~idDossier:REP:1:ALIAS:RGTV$$
+			$$BIF:RGTV$$
+			<select id="idThematique" name="idThematique" onchange="javascript:GetStats(this);">
+				<option value="0">Choisir une thématique</option>
+				$$DO$$
+				<option value="$$RGTV:IDTHEMATIQUE$$">$$RGTV:NOMTHEMATIQUE$$</option>
+				$$LOOP$$
+			</select>
+			$$BFIN$$
+			$$BIF0:RGTV$$
+				<p>Aucune th&eacute;matique valoris&eacute;es enregistr&eacute;es</p>
+			$$BFIN$$
+			</div>
+			<div id="grapheThemaExp" style="margin-top:10px;width: 100%; height: 400px;" ></div></div>
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+
+	$(document).ready( function () {
+		
+				//var obj1;
+		//jQuery.getJSON("http://localhost:54507/RankingService.svc/RankingTauxPositionnement1erepage/$$REP:1$$?callback=?", 
+		/*jQuery.getJSON("http://service-ranking.svc.groupe-seloger.com/RankingService.svc/RankingTauxPositionnement1erepage/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+			function(data) {
+				objJson = data;
+				//delete objJson.X[objJson.X.length - 1];
+				//delete objJson.Y[0].Values[objJson.Y[0].Values.length - 1]
+			}).success( function () {
+										MakeGraph('graph1erepage', 'line', 50, 100, '#fff', false , 'Taux de positionnement 1ère page', 'Semaine', objJson.X, 'Taux positionnement', objJson.Y, false, 2);
+									}
+				);
+		
+				//var obj1;
+		//jQuery.getJSON("http://localhost:54507/RankingService.svc/RankingPositionGlobalMoyenHebdo/$$REP:1$$?callback=?", 
+		jQuery.getJSON("http://service-ranking.svc.groupe-seloger.com/RankingService.svc/RankingPositionGlobalMoyenHebdo/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+			function(data) {
+				objJson = data;
+				//delete objJson.X[objJson.X.length - 1];
+				//delete objJson.Y[0].Values[objJson.Y[0].Values.length - 1]
+			}).success( function () {
+					MakeGraph('graphGlobal', 'line', 50, 100, '#fff', false , 'Position Moyenne Globale', 'Semaine', objJson.X, 'Position', objJson.Y, true, 1);
+					}
+			);
+			
+		jQuery.getJSON("http://service-ranking.svc.groupe-seloger.com/RankingService.svc/GetTop10Expression/$$REP:1$$?callback=?", 
+			function(data) {
+				objJson = data;
+			}).success( function () {
+					for(i = 0; i < objJson.length; i++) {
+						$("#listeTopTen").append('<tr><td>'+decodeURIComponent(escape(objJson[i].Expression))+'</td><td>'+objJson[i].Position+'</td></tr>');
+					}
+				}
+			);*/
+	});
+	
+	function GetStats(elt)
+		{
+			$.ajax({ 
+					type: "GET",
+					data: 'idThematique='+elt.value+'&idDossier=$$REP:1$$',
+					url: 'incl_expression_graphe_v2.htm',
+					cache: false, 
+					success:function(html){ 
+					$('#grapheThemaExp').html(html);
+				}
+			});
+		}
+</script>
+
+
+$$INCL:BAS.HTM$$

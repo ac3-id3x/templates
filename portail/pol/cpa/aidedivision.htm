@@ -1,0 +1,226 @@
+$$A:TITLEPOPUP=Aide à la localisation$$
+$$B:IMMOBW:DIVISIONS:QRY:IDPAYS:QRY:CP$$ 
+$$SET:PAGE:CLOSE=1$$
+$$B:IMMOBW:SUBDIVISIONS:QRY:IDDIVISION$$
+$$B:SLPRO:VILLESINTER:QRY:IDSUBDIVISION$$
+$$B:SLPRO:ZIPVILLESINTER:QRY:IDVILLEINTER$$
+$$B:SLPRO:RETROUVDIVISION$$
+<!--$$FORM:IDDIVISION$$-->
+<!--$$FORM:IDSUBDIVISION$$-->
+<!--$$FORM:IDVILLEINTER$$-->
+<!--$$FORM:CP$$-->
+<!--$$FORM:ZIP$$-->
+$$INCL:HAUTPOP.HTM$$
+$$BIF:SLPRO:RETROUVDIVISION$$
+$$IF0:FORM:IDDIVISION$$
+<table border="0" cellpadding="0" cellspacing="0" >
+	$$DO$$
+	$$IF=:1:SLPRO:RETROUVDIVISION:NBR$$
+		<script type="text/javascript" language="javascript" ><!--
+		window.document.location="$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$SLPRO:RETROUVDIVISION:IDDIVISION$$&idsubdivision=$$SLPRO:RETROUVDIVISION:IDSUBDIVISION$$&idvilleinter=$$SLPRO:RETROUVDIVISION:IDVILLEINTER$$&cp=$$SLPRO:RETROUVDIVISION:ZIP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$"
+		// --></script>
+	$$END$$
+	<tr>	
+		<td><a href="$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$SLPRO:RETROUVDIVISION:IDDIVISION$$&idsubdivision=$$SLPRO:RETROUVDIVISION:IDSUBDIVISION$$&idvilleinter=$$SLPRO:RETROUVDIVISION:IDVILLEINTER$$&cp=$$SLPRO:RETROUVDIVISION:ZIP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$" class="lien">
+		$$SLPRO:RETROUVDIVISION:NOM_DIVISION$$</a></td>
+		<td><a href="$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$SLPRO:RETROUVDIVISION:IDDIVISION$$&idsubdivision=$$SLPRO:RETROUVDIVISION:IDSUBDIVISION$$&idvilleinter=$$SLPRO:RETROUVDIVISION:IDVILLEINTER$$&cp=$$SLPRO:RETROUVDIVISION:ZIP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$" class="lien">
+		$$SLPRO:RETROUVDIVISION:NOM_SUBDIVISION$$</a></td>
+		<td><a href="$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$SLPRO:RETROUVDIVISION:IDDIVISION$$&idsubdivision=$$SLPRO:RETROUVDIVISION:IDSUBDIVISION$$&idvilleinter=$$SLPRO:RETROUVDIVISION:IDVILLEINTER$$&cp=$$SLPRO:RETROUVDIVISION:ZIP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$" class="lien">
+		$$SLPRO:RETROUVDIVISION:ZIP$$</a></td>
+		<td><a href="$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$SLPRO:RETROUVDIVISION:IDDIVISION$$&idsubdivision=$$SLPRO:RETROUVDIVISION:IDSUBDIVISION$$&idvilleinter=$$SLPRO:RETROUVDIVISION:IDVILLEINTER$$&cp=$$SLPRO:RETROUVDIVISION:ZIP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$" class="lien">
+		$$SLPRO:RETROUVDIVISION:VILLE$$</a></td>
+	</tr>
+	$$LOOP$$
+	$$BFIN$$
+</table>
+$$END:0FORMDIVISION$$
+
+	<script type="text/javascript" language="javascript" ><!--
+	function store( nom_champ , valeur_champ)
+	{
+		//console.log('entre store ' + nom_champ + ' ' + valeur_champ);
+		var elt_id = top.opener.MM_findObj(nom_champ);
+		if (elt_id) {
+			elt_id.value = valeur_champ ;
+		} else {
+			top.opener.f_annedit.division.value = valeur_champ;
+		}
+	}
+
+	var tab = new Array();
+	var tabsub = new Array();
+	var tabvil = new Array();
+	
+	$$BIF:IMMOBW:DIVISIONS:QRY$$
+	$$DO$$
+	tab[$$IMMOBW:DIVISIONS:QRY:IDDIVISION$$]='$$IMMOBW:DIVISIONS:QRY:NOM_DIVISION replace ' \'$$';
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$BIF:IMMOBW:SUBDIVISIONS:QRY$$
+	$$DO$$
+	tabsub[$$IMMOBW:SUBDIVISIONS:QRY:IDSUBDIVISION$$]='$$IMMOBW:SUBDIVISIONS:QRY:SDIVAFF replace ' \'$$';
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$BIF:SLPRO:VILLESINTER:QRY$$
+	$$DO$$
+	tabvil[$$SLPRO:VILLESINTER:QRY:IDVILLEINTER$$]='$$SLPRO:VILLESINTER:QRY:VILLE replace ' \'$$';
+	$$LOOP$$
+	$$BFIN$$
+	
+	function valid(type) { 
+		var elt_idsubdivision	= MM_findObj("idusbdivision");
+		var elt_iddivision 	= MM_findObj("iddivision");
+		var elt_division 		= MM_findObj("division");
+		var elt_idvilleinter 	= MM_findObj("idvilleinter");
+		
+		//-- j'ai changé la division, j'écrase tout.
+		if (type == "div") 
+		{
+			if (elt_idsubdivision) { elt_idsubdivision.value=""; }
+			if (elt_idvilleinter) { elt_idvilleinter.value=""; }
+		}
+		
+		var storeVide = true;
+		
+		// Problème sur Internet Explorer 8 alors on réalise les tests un par un
+		if (elt_idsubdivision)
+			if (elt_idsubdivision.value)
+				if (tabsub[elt_idsubdivision.value])
+					if (tabsub[elt_idsubdivision.value] != "")
+					{
+						store ("subdivision", tabsub[elt_idsubdivision.value]); 
+						store ("idsubdivision", elt_idsubdivision.value); 
+					
+						if (tabvil[elt_idvilleinter.value] != "" && tabvil[elt_idvilleinter.value]) {
+							store("ville", tabvil[elt_idvilleinter.value]); 
+							store("idvilleinter", elt_idvilleinter.value); 
+							store("cp", ""); 
+						} else {
+							store("idvilleinter", ""); 
+							store("ville", ""); 
+						}
+						
+						storeVide = false;
+					}
+		
+		if (storeVide)
+		{
+			store("subdivision", ""); 
+			store("idsubdivision", ""); 
+			store("idvilleinter", ""); 
+		}
+
+		elt_division.value = tab[elt_iddivision.value]; 
+		
+		window.document.formulaire.submit();	
+	}
+	// --></script>
+	
+	<form action="$$REP:URI$$" method="get" name="formulaire" >
+	<input type="hidden" name= "division" value="" />
+	<input type="hidden" name= "subdivision" value="" />
+	<input type="hidden" name= "idpays" value="$$FORM:IDPAYS$$" />
+	<input type="hidden" name= "libellediv" value="$$FORM:LIBELLEDIV$$" />
+	<input type="hidden" name= "libellesub" value="$$FORM:LIBELLESUB$$" />
+	<input type="hidden" name= "libellevil" value="$$FORM:LIBELLEVIL$$" />
+
+	$$BIF:IMMOBW:DIVISIONS:QRY$$
+		<b>$$FORM:LIBELLEDIV pcase htmlencode$$</b>
+		<br /><br />
+		<select name="iddivision" title="Code de la division" OnChange="valid('div');" >
+		<option value="">-------Faites votre choix------</option>
+		$$DO:1:999$$
+		<option value="$$IMMOBW:DIVISIONS:QRY:IDDIVISION$$" $$IF=:FORM_IDDIVISION:IMMOBW:DIVISIONS:QRY:IDDIVISION$$ selected $$END$$ $$IF=:1:IMMOBW:DIVISIONS:QRY:NBR$$ selected $$END$$>$$IMMOBW:DIVISIONS:QRY:NOM_DIVISION$$</option>
+		$$LOOP$$
+		</select>
+		$$IF=:1:IMMOBW:DIVISIONS:QRY:NBR$$$$IF0:FORM:IDDIVISION$$ 
+			$$DO:1:999$$
+				$$IF:IMMOBW:DIVISIONS:QRY:IDDIVISION$$
+					<script language="javascript" type="text/javascript"><!--
+					window.document.location = "/$$REP:0$$?idpays=$$FORM:IDPAYS$$&ville=$$FORM:VILLE$$&iddivision=$$IMMOBW:DIVISIONS:QRY:IDDIVISION$$&idsubdivision=$$FORM:IDSUBDIVISION$$&idvilleinter=$$FORM:VILLEINTER$$&cp=$$FORM:CP$$&libellediv=$$FORM:LIBELLEDIV$$&libellesub=$$FORM:LIBELLESUB$$&libellevil=$$FORM:LIBELLEVIL$$&division=$$IMMOBW:DIVISIONS:QRY:NOM_DIVISION$$";
+					// --></script>
+				$$END$$
+			$$LOOP$$
+		$$END$$$$END$$
+	$$BFIN$$
+	
+	<br /><br />
+	$$BIF:IMMOBW:SUBDIVISIONS:QRY$$
+		<br /><b>$$FORM:LIBELLESUB pcase htmlencode$$</b><br /><br />
+		<select name="idsubdivision" title="Code de la subdivision" OnChange="valid('sub');">
+		<option value="">-------Faites votre choix------</option>
+		$$DO:1:999$$
+			<option value="$$IMMOBW:SUBDIVISIONS:QRY:IDSUBDIVISION$$" $$IF=:FORM_IDSUBDIVISION:IMMOBW:SUBDIVISIONS:QRY:IDSUBDIVISION$$ selected $$END$$ $$IF=:1:IMMOBW:SUBDIVISIONS:QRY:NBR$$ selected $$END$$>$$IMMOBW:SUBDIVISIONS:QRY:SDIVAFF$$</option>
+		$$LOOP$$
+		</select>
+	$$BFIN$$
+	
+	$$BIF0:IMMOBW:SUBDIVISIONS:QRY$$
+		<input type="hidden" name="idsubdivision" value="">
+	$$BFIN$$
+	<br /><br />
+	
+	$$BIF:SLPRO:VILLESINTER:QRY$$
+		<br /><br /><b>Villes</b><!--$$FORM:LIBELLEVIL$$--><br /><br />
+		<select name="idvilleinter" title="Code de la ville" OnChange="valid('vil');">
+		<option value="">-------Faites votre choix------</option>
+		$$DO:1:999$$
+			<option value="$$SLPRO:VILLESINTER:QRY:IDVILLEINTER$$" $$IF=:FORM_IDVILLEINTER:SLPRO:VILLESINTER:QRY:IDVILLEINTER$$ selected $$END$$ >$$SLPRO:VILLESINTER:QRY:VILLE$$</option>
+		$$LOOP$$
+		</select>
+	$$BFIN$$
+	$$BIF0:SLPRO:VILLESINTER:QRY$$
+		<input type="hidden" name="idvilleinter" value="" />
+	$$BFIN$$
+	<br /><br />
+	
+	$$BIF:SLPRO:ZIPVILLESINTER:QRY$$
+		<br /><br /><b>Codes postaux.</b><br /><br />
+		<select name="zip" title="Code postal" OnChange="valid('zip');" >
+			<option value="">-------Faites votre choix------</option>
+		$$DO:1:999$$
+			<option value="$$SLPRO:ZIPVILLESINTER:QRY:ZIP$$" $$IF=:FORM_CP:SLPRO:ZIPVILLESINTER:QRY:ZIP$$ selected $$END$$ $$IF=:FORM_ZIP:SLPRO:ZIPVILLESINTER:QRY:ZIP$$ selected $$END$$>$$SLPRO:ZIPVILLESINTER:QRY:ZIP$$</option>
+		$$LOOP$$
+		</select>
+	$$BFIN$$
+	
+	<br /><br />
+	</form>
+	
+	<script type="text/javascript" language="javascript" ><!--
+	var ObjIddivision = MM_findObj("iddivision");
+	var ObjIdsubdivision = MM_findObj("idsubdivision");
+	var ObjIdVilleInter = MM_findObj("idvilleinter");
+
+	//console.log(ObjIddivision);
+	//console.log(ObjIdsubdivision);
+	//console.log(ObjIdsubdivision.value);
+	//console.log(ObjIdVilleInter);
+	
+	if(ObjIddivision && tab[ObjIddivision.value])
+	{
+		store("division",tab[ObjIddivision.value]);
+		store("iddivision",ObjIddivision.value);
+	}
+	
+	if(ObjIdsubdivision && tab[ObjIddivision.value] && ObjIdsubdivision.value != "")
+	{
+		//console.log('passe store subdivision');
+		store("subdivision",tabsub[ObjIdsubdivision.value]);
+		store("idsubdivision",ObjIdsubdivision.value);
+	}
+	
+	if(ObjIdVilleInter.value && tab[ObjIddivision.value])
+	{
+		store("ville",tabvil[ObjIdVilleInter.value]); 
+		store("idvilleinter",ObjIdVilleInter.value); 
+	}
+	
+	if(window.document.formulaire.zip)
+	{
+		store("cp",window.document.formulaire.zip.value); 
+	}
+	// --></script>
+$$INCL:BASPOP.HTM$$ 

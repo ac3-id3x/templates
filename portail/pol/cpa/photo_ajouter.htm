@@ -1,0 +1,61 @@
+
+<HTML>
+<HEAD>
+<TITLE>Acces agence SeLoger</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE type=text/css>
+BODY, TD {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
+input {  font-family: Arial, Helvetica, sans-serif; font-size: 8pt}
+.bg_table_gauche {  background-color: #E2E2E2 }
+.errmsg {font-weight: bold;  color: #4080FF}
+</style>
+
+<SCRIPT language="javascript"><!--
+$$E:ID3:PROGRESSGETID$$
+ProgressID = $$ID3:PROGRESSGETID:ID$$;
+function Upload()
+{
+	w = window.open('/cgi/progressbar.asp?uplid='+ProgressID, 'progress'+ProgressID, 'scrollbars=no,resizable=no,toolbar=no,status=no,menubar=no,width=360,height=80,top=' + (window.screen.Height/2 - 40)+',left=' + (window.screen.Width/2 - 180));
+	document.f_upl.action += '?uplid=$$ID3:PROGRESSGETID:ID$$';
+	document.f_upl.submit();
+}
+// --></SCRIPT>
+
+</HEAD>
+
+<BODY bgcolor="#FFFFFF" text="#000000" link="#000000" vlink="#000000" alink="#000000" onLoad="self.focus();">
+<!-- $$ID3:PROGRESSGETID:ERRE$$ -->
+<font class=errmsg>$$ERRE$$</font><br/>
+$$IF0:ID3:PROGRESSGETID:ERRE$$
+<b>Ajout d'une photo</b><br/>
+<br>
+
+<form method="POST" action="/$$REP:URI$$" enctype="multipart/form-data" name="f_upl">
+<input type=hidden name="page_ok" value="/$$REP:URI$$">
+<input type=hidden name="page_err" value="/$$REP:URI$$">
+<input type=hidden name="idtypevisuel" value="1">
+<input type=hidden name="idannonce" value="$$REP:1$$">
+<input type=hidden name="u" value="immobc:visuel_add">
+
+<table border="0">
+	<tr>
+		<td>Fichier :</td>
+		<td><input type="file" name="visuel" size="30"></td>
+	</tr>
+	<tr>
+		<td>Descriptif :</td>
+		<td><input type="text" name="descriptif_fr" size="30" maxlength="256"> <font size="1">(Cuisine, Salon, ...)</font></td>
+	</tr>
+</table>
+<br/>
+<input type="button" value="envoyer la photo" OnClick="Upload()">
+$$END$$
+</form>
+$$IF:ID3:PROGRESSGETID:ERRE$$
+<p style="text-align:center;"><font class=errmsg>$$ID3:PROGRESSGETID:ERRE$$</font><br/>
+<br/>
+<a href="javascript:window.close();">fermer</a>
+</p>
+$$END$$
+</BODY>
+</HTML>

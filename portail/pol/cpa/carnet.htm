@@ -1,0 +1,70 @@
+$$E:E3:CAT:158776:SLPRO$$
+$$INCL:AUTH.HTM$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$E:PAUNIT:CPA-GETCONF:~PAUNITCONF:REP:1$$
+
+<script type="text/javascript">
+<!--
+
+$$IF0:REP:1$$
+document.location = '/$$PAUNIT:CPA-GETCONF:PAUNITCONF$$/carnet.htm?idcontrat=$$FORM:IDCONTRAT$$';
+$$END$$
+
+//-->
+</script>
+
+$$E:PAUNIT:CPA-INFOSCONTRAT:~IDCONTRAT:QRY:idcontrat$$
+
+<p>
+<h3>  </h3><br/>
+
+<table  class="tabbasic" cellpadding="0" cellspacing="0" >
+<tbody>
+
+<tr class="tabentete"><td>Infos agence</td></tr>
+<tr>
+	<td>
+			<div class="line200"><div>N°Contrat : </div>$$PAUNIT:CPA-INFOSCONTRAT:IDCONTRAT$$</div>
+			<div class="line200"><div>RCS : </div>$$PAUNIT:CPA-INFOSCONTRAT:RCS$$</div>
+			<div class="line200"><div>Raison sociale : </div>$$PAUNIT:CPA-INFOSCONTRAT:RAISONSOCIAL$$</div>
+			<div class="line200"><div>Durée du contrat : </div>$$PAUNIT:CPA-INFOSCONTRAT:DUREE$$ mois</div>
+			<div class="line200"><div>Nombre de tickets : </div>$$PAUNIT:CPA-INFOSCONTRAT:NBTICKETSTOTAL$$</div>
+	</td>
+</tr>
+<tr class="tabentete"><td>Infos carnet</td></tr>
+<tr>
+	<td>
+			<div class="line200"><div>Nombre de tickets consommés : </div>$$PAUNIT:CPA-INFOSCONTRAT:NBTICKETSCONSOMMES$$</div>
+			<div class="line200"><div>Nombre de tickets restants : </div>$$PAUNIT:CPA-INFOSCONTRAT:NBTICKETSRESTANTS$$</div>
+			<div class="line200"><div>Date de début du contrat : </div>$$PAUNIT:CPA-INFOSCONTRAT:DTDEBUTCARIM date 2$$</div>
+			<div class="line200"><div>Date de première consommation : </div>$$IF0:PAUNIT:CPA-INFOSCONTRAT:DTPREMIERSERVICE$$ N/A $$END$$ $$PAUNIT:CPA-INFOSCONTRAT:DTPREMIERSERVICE date 2$$</div>
+			<div class="line200"><div>Date de fin prévisionnelle : </div>$$PAUNIT:CPA-INFOSCONTRAT:DTFINCARIM date 2$$</div>
+			<div class="line200"><div>Date de fin effective : </div>$$IF0:PAUNIT:CPA-INFOSCONTRAT:DTFINSERVICE$$ N/A $$END$$ $$PAUNIT:CPA-INFOSCONTRAT:DTFINSERVICE date 2$$</div>				
+	</td>
+</tr>
+</tbody></table>
+
+<br/>
+	$$B:PAUNIT:CPA-GETANNONCESCONTRAT:~IDCONTRAT:QRY:idcontrat:ALIAS:GETANNONCESCONTRAT$$
+	
+	$$BIF:GETANNONCESCONTRAT$$
+	<table  class="tabinfo" cellpadding="0" cellspacing="0" >
+		<tr>
+			<th class="bdr">Début publication</th><th class="bdr">Fin publication</th><th class="bdr">Annonce</th>
+		</tr>
+		
+		$$DO$$
+		<tr class="line_$$IF=:0:GETANNONCESCONTRAT:I mod2 0 1$$pair$$END$$$$IF!:0:GETANNONCESCONTRAT:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:GETANNONCESCONTRAT:PUBNB1$$_green$$END$$$$END$$" onmouseover="this.className='line_$$IF=:0:GETANNONCESCONTRAT:I mod2 0 1$$pair$$END$$$$IF!:0:GETANNONCESCONTRAT:I mod2 0 1$$impair$$END$$_new_hover';" onmouseout="this.className='line_$$IF=:0:GETANNONCESCONTRAT:I mod2 0 1$$pair$$END$$$$IF!:0:GETANNONCESCONTRAT:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:GETANNONCESCONTRAT:PUBNB1$$_green$$END$$$$END$$'">
+			<td class="bdr">$$IF0:GETANNONCESCONTRAT:DT_DEBUT_PUB$$ NA $$END$$ $$GETANNONCESCONTRAT:DT_DEBUT_PUB$$</td><td class="bdr">$$IF0:GETANNONCESCONTRAT:DT_FIN_PUB$$ NA $$END$$ $$GETANNONCESCONTRAT:DT_FIN_PUB$$ </td><td class="bdr"><a href="/$$GETANNONCESCONTRAT:IDANNONCE$$/$$REP:1$$/annonce_edit.htm">$$GETANNONCESCONTRAT:REFANNONCE$$</a></td>
+		</tr>
+		$$LOOP$$
+	</table>
+	$$BFIN$$
+
+	$$BIF0:GETANNONCESCONTRAT$$
+	Aucune annonce n'utilise ce contrat.
+	$$BFIN$$
+
+
+$$INCL:BASX.HTM$$

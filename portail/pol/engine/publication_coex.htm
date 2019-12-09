@@ -1,0 +1,369 @@
+﻿$$A:CAT=159750$$
+$$E:E3:CAT:159792:SLPRO$$
+
+$$INCL:AUTH.HTM$$
+$$INCL:HAUTX.HTM$$
+
+$$A:IDPUB=34$$
+
+$$B:SLPRO:WBIM-LISTCOEXCREATEUR:ALIAS:WBIMCOI$$
+$$B:SLPRO:WBIM-LISTCOEXINVITEENATTENTE:ALIAS:WBIMCOIATT$$
+$$B:SLPRO:WBIM-LISTCOEXINVITEHORSDELAI:ALIAS:WBIMCOIHD$$
+
+$$B:SLPRO:WBIM-LISTCOEXENCOURSINIT:ALIAS:WBIMCOCOUI$$
+$$B:SLPRO:WBIM-LISTCOEXENCOURSCOM:ALIAS:WBIMCOCOUC$$
+$$B:SLPRO:WBIM-LISTCOEXENATTENTE:ALIAS:WBIMCOATT$$
+$$B:SLPRO:WBIM-LISTCOEXREFUSEES:ALIAS:WBIMCOREF$$
+
+<script src="$$_$$js/jquery-1.2.6.js"></script>
+<script type="text/javascript">
+
+	function popupAnnonce(idannonce)
+	{
+	    window.open('annonce_detail.htm?idannonce='+idannonce,'titre','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=550,height=600,top='+(screen.height/2 - 300)+',left='+(screen.width/2 - 100));
+	}
+	
+function popup(rep) {
+    var win = window.open(rep ,'titre','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=502,height=386,top='+(screen.height/2 - 100)+',left='+(screen.width/2 - 100));
+var timer = setInterval(function() {   
+    if(win.closed) {  
+    	{
+        window.location.reload();
+        clearInterval(timer);
+      }
+    }  
+}, 500);
+}
+
+
+	$( document ).ready(function() {
+		$('#trAjouterCiblage').css('display', 'none');
+		$("tr[id^='trCoui_']").css('display', 'none');
+		$("tr[id^='trCouc_']").css('display', 'none');
+		$("tr[id^='trRef_']").css('display', 'none');
+	});
+
+	function displayAgencesCoex(pIdDisp, pIdTr, pIdTd, pIdAnnonce){
+		var disphtml = $("#" + pIdDisp).html();
+		if(disphtml.indexOf("Afficher") == 0) {
+			$("#" + pIdTr).css('display', 'none');
+			$.ajax({
+				type: "GET",
+				dataType: 'html',
+				url: "publication_coex_rechmandat.htm",
+				data: { idannonce: pIdAnnonce,
+						idtr: pIdTr,
+						'ie_fix' : new Date().getTime()
+						},
+				success: function(msg) {
+					window.document.getElementById(pIdTd).innerHTML = msg;
+					$("#" + pIdTd).find("script").each(function(i) {
+						eval($(this).text());
+					});
+					$("#" + pIdTr).css('display', 'table-row');
+					$("#" + pIdDisp).html('Masquer les<br>comandataires');
+				}
+			});
+		}
+		else {
+			$("#" + pIdTr).css('display', 'none');
+			$("#" + pIdDisp).html('Afficher les<br>comandataires');
+		}		
+	}
+	
+	function toggleMandatairesVisibility(sender)
+	{
+		if ($(sender)[0].innerHTML == '+')
+		{
+			$(sender).parents('tr').next('tr').attr('style', '');
+			$(sender)[0].innerHTML = '-';
+		}
+		else
+		{
+			$(sender).parents('tr').next('tr').attr('style', 'display: none');
+			$(sender)[0].innerHTML = '+';
+		}
+	}
+
+	
+</script>
+<br>
+	<div>
+		<b>Liste des coexclusivit&eacute;s initi&eacute;es :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:WBIMCOI$$
+			<tr>
+				<th width="14px"></th>
+				<th>R&eacute;f&eacute;rence</th>
+				<th>Type de bien</th>
+				<th>Localisation</th>
+				<th>Date de cr&eacute;ation</th>
+				<th>Mise en ligne</th>
+				<th>Etat</th>
+			</tr>
+            $$A:TRIC=Tri croissant$$
+            $$A:TRID=Tri décroissant$$
+            <tr class="line_arrow">
+                <td class="bdr">&nbsp;</td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_refannonce" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=refannonce" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_typebien" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=typebien" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_ville" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=ville" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_dt_crea" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=dt_crea" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_delai" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=delai" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=d_etat" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry trilcc$$&trilcc=etat" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+            </tr>
+
+			$$DO$$
+			$$IFPREV:WBIMCOI:IDANNONCE$$
+			<tr class="line_$$IF=:0:COMPTEUR mod2 0 1$$pair$$END$$$$IF!:0:COMPTEUR mod2 0 1$$impair$$END$$_new">
+				<td><div onclick="toggleMandatairesVisibility(this);" style="border: 1px solid #CCCCCC; width=11px">+</div></td>
+				<td title="$$WBIMCOI:SURFACE$$ m² - $$WBIMCOI:PRIX$$ €">$$WBIMCOI:REFANNONCE$$</td>
+				<td$$IF:WBIMCOI:SOUSTYPEBIEN$$ title="$$WBIMCOI:SOUSTYPEBIEN$$"$$END$$>$$WBIMCOI:TYPEBIEN$$ ($$WBIMCOI:TYPETRANSACTION$$)</td>
+				<td title="$$WBIMCOI:ADRESSE$$">$$WBIMCOI:CP$$ $$WBIMCOI:VILLE$$</td>
+				<td>$$WBIMCOI:DT_CREA$$</td>
+				<td>$$WBIMCOI:DELAI$$</td>
+				<td>$$WBIMCOI:ETAT$$</td>
+			</tr>
+			<tr class="line_$$IF=:0:COMPTEUR mod2 0 1$$pair$$END$$$$IF!:0:COMPTEUR mod2 0 1$$impair$$END$$_new" style="display: none;">
+				<td></td>
+				<td colspan="6">
+					<table class="tabinfo" cellpadding="0" cellspacing="0">
+						<tr>
+							<th>Agence</th>
+							<th>Date invitation</th>
+							<th>Date r&eacute;ponse</th>
+							<th>R&eacute;ponse</th>
+							<th>Commentaire</th>
+						</tr>
+			$$END$$
+						<tr>
+							<td title="$$WBIMCOI:NOM$$">$$WBIMCOI:NOM$$</td>
+							<td>$$WBIMCOI:DT_CREA$$</td>
+							<td>$$WBIMCOI:DT_REPONSE$$</td>
+							<td>$$WBIMCOI:REPONSE_STRING$$</td>
+							<td title="$$WBIMCOI:COMMENTAIRE$$">$$WBIMCOI:COMMENTAIRE$$</td>
+						</tr>
+			$$IFNEXT:WBIMCOI:IDANNONCE$$
+					</table>
+				</td>
+			</tr>
+			$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:WBIMCOI$$
+			<tr class="line_impair_new"><td>Pas de coexclusivit&eacute; initiée</td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+	<br>
+	<div>
+		<b>Liste des coexclusivit&eacute;s en attente de votre r&eacute;ponse :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:WBIMCOIATT$$
+			<tr>
+				<th>R&eacute;f&eacute;rence</th>
+				<th>Type</th>
+				<th>Localisation</th>
+				<th>Cr&eacute;ateur</th>
+				<th>Mise en ligne</th>
+				<th>Action</th>
+			</tr>
+            <tr class="line_arrow">
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=d_refannonce" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=refannonce" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=d_typebien" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=typebien" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=d_ville" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=ville" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=d_nomprincipal" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=nomprincipal" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=d_tempsrestant" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricia$$&tricia=tempsrestant" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">&nbsp;</td>
+            </tr>
+
+			$$DO$$
+			<tr class="line_$$IF=:0:WBIMCOIATT:I mod2 0 1$$pair$$END$$$$IF=:1:WBIMCOIATT:I mod2 0 1$$impair$$END$$_new">
+				<td title="$$WBIMCOIATT:SURFACE$$ m² - $$WBIMCOIATT:PRIX$$ €">$$WBIMCOIATT:REFANNONCE$$ <img src="/z/portail/pol/engine/images/picto_loupe.png" title="Voir le détail de l'annonce" style="height:12px;width:12px;margin-left:3px" onclick="popupAnnonce($$WBIMCOIATT:IDANNONCE$$);" /></td>
+				<td$$IF:WBIMCOIATT:SOUSTYPEBIEN$$ title="$$WBIMCOIATT:SOUSTYPEBIEN$$"$$END$$>$$WBIMCOIATT:TYPETRANSACTION$$ $$WBIMCOIATT:TYPEBIEN$$</td>
+				<td title="$$WBIMCOIATT:ADRESSE$$ - $$WBIMCOIATT:CP$$ $$WBIMCOIATT:VILLE$$">$$WBIMCOIATT:CP$$ $$WBIMCOIATT:VILLE$$</td>
+				<td title="$$WBIMCOIATT:NOMPRINCIPAL$$">$$WBIMCOIATT:NOMPRINCIPAL$$</td>
+				<td>$$WBIMCOIATT:DELAI date dd/MM/yyyy_HH\hmm$$</td>
+				
+				<td>
+				<a href="javascript: void(0)" 
+				   onclick="popup('/acceptpubcoex.htm?idannonce=' + $$WBIMCOIATT:IDANNONCE$$); 
+				   return false;">Accepter</a>
+					- 
+				<a href="javascript: void(0)" 
+				   onclick="popup('/refuspubcoex.htm?idannonce=' + $$WBIMCOIATT:IDANNONCE$$); 
+				   return false;">Refuser</a>
+				</td>
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:WBIMCOIATT$$
+			<tr class="line_impair_new"><td>Pas de coexclusivit&eacute; en attente</td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+	<br>
+	<div>
+		<b>Liste des coexclusivit&eacute;s traît&eacute;es ou hors d&eacute;lai :</b>
+		<br>
+		<table class="tabinfo" cellpadding="0" cellspacing="0">
+		$$BIF:WBIMCOIHD$$
+			<tr>
+				<th>R&eacute;f&eacute;rence</th>
+				<th>Type</th>
+				<th>Localisation</th>
+				<th>Cr&eacute;ateur</th>
+				<th>Date de cr&eacute;ation</th>
+				<th>Etat</th>
+				<th>Action</th>
+			</tr>
+            <tr class="line_arrow">
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_refannonce" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=refannonce" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_typebien" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=typebien" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_ville" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=ville" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_nomprincipal" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=nomprincipal" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_dtetat" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=dtetat" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">
+                    <div class="picto_tri">
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=d_etat" title="header=[] body=[$$TRID$$]"><img src="$$_$$/engine/images/picto_tri_bas.gif"></a>
+                        <a href="$$PAGE_URL$$?$$REP:QRY removeqry tricthd$$&tricthd=etat" title="header=[] body=[$$TRIC$$]"><img src="$$_$$/engine/images/picto_tri_haut.gif"></a>
+                    </div>
+                </td>
+                <td class="bdr">&nbsp;</td>
+            </tr>
+
+			$$DO$$
+			<tr class="line_$$IF=:0:WBIMCOIHD:I mod2 0 1$$pair$$END$$$$IF=:1:WBIMCOIHD:I mod2 0 1$$impair$$END$$_new">
+				<td title="$$WBIMCOIHD:SURFACE$$ m² - $$WBIMCOIHD:PRIX$$ €">$$WBIMCOIHD:REFANNONCE$$ <img src="/z/portail/pol/engine/images/picto_loupe.png" title="Voir le détail de l'annonce" style="height:12px;width:12px;margin-left:3px" onclick="popupAnnonce($$WBIMCOIHD:IDANNONCE$$);" /></td>
+				<td$$IF:WBIMCOIHD:SOUSTYPEBIEN$$ title="$$WBIMCOIHD:SOUSTYPEBIEN$$"$$END$$>$$WBIMCOIHD:TYPETRANSACTION$$ $$WBIMCOIHD:TYPEBIEN$$</td>
+				<td title="$$WBIMCOIHD:ADRESSE$$ - $$WBIMCOIHD:CP$$ $$WBIMCOIHD:VILLE$$">$$WBIMCOIHD:CP$$ $$WBIMCOIHD:VILLE$$</td>
+				<td title="$$WBIMCOIHD:NOMPRINCIPAL$$">$$WBIMCOIHD:NOMPRINCIPAL$$</td>
+				<td>$$WBIMCOIHD:DTETAT$$</td>
+				<td title="$$WBIMCOIHD:COMMENTAIRE$$">$$WBIMCOIHD:ETAT$$</td>
+				
+				<td>
+				$$IFNULL:WBIMCOIHD:REPONSE$$
+				<a href="javascript: void(0)" 
+				   onclick="popup('/acceptpubcoex.htm?idannonce=' + $$WBIMCOIHD:IDANNONCE$$); 
+				   return false;">Accepter</a>
+					- 
+				<a href="javascript: void(0)" 
+				   onclick="popup('/refuspubcoex.htm?idannonce=' + $$WBIMCOIHD:IDANNONCE$$); 
+				   return false;">Refuser</a>   
+				$$END$$
+				$$IFNOTNULL:WBIMCOIHD:REPONSE$$
+					$$IF=:True:WBIMCOIHD:REPONSE$$
+						<a href="javascript: void(0)" 
+							onclick="popup('/modifpubcoex.htm?idannonce=$$WBIMCOIHD:IDANNONCE$$&nomctc=$$WBIMCOIHD:NOMCTC$$&telephone=$$WBIMCOIHD:TELEPHONE$$&mail=$$WBIMCOIHD:EMAIL$$'); 
+							return false;">Modifier</a>
+					-
+						<a href="javascript: void(0)" 
+							onclick="popup('/refuspubcoex.htm?idannonce=' + $$WBIMCOIHD:IDANNONCE$$); 
+							return false;">Refuser</a>		   
+					$$END$$
+					$$IF=:False:WBIMCOIHD:REPONSE$$
+						<a href="javascript: void(0)" 
+						   onclick="popup('/acceptpubcoex.htm?idannonce=$$WBIMCOIHD:IDANNONCE$$&nomctc=$$WBIMCOIHD:NOMCTC$$&telephone=$$WBIMCOIHD:TELEPHONE$$&mail=$$WBIMCOIHD:EMAIL$$'); 
+						   return false;">Accepter</a>
+					$$END$$
+				$$END$$
+				</td>
+			</tr>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:WBIMCOIHD$$
+			<tr class="line_impair_new"><td>Pas de coexclusivit&eacute; à afficher</td></tr>
+		$$BFIN$$
+		</table>
+		<br>
+	</div>
+	<br>
+
+
+
+
+$$INCL:BAS.HTM$$

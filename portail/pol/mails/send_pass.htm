@@ -1,0 +1,35 @@
+$$A:TITRE=Rappel de mot de passe$$
+<!--#include virtual="/mails/incl_header_mail_slpro.htm"-->
+		<table border="0" cellpadding="10" cellspacing="0" width="100%">
+		<tr><td>	
+			<div class="t1">Rappel du mot de passe</div>
+			$$B:SLPRO:AGENCE_COMPTES:ALIAS:AGCOMPTES$$
+		$$BIF:AGCOMPTES$$			
+				<div>
+					<br />Suite à votre demande, voici $$IF=:1:AGCOMPTES:NBR$$votre identifiant et mot$$END$$$$IF>:2:AGCOMPTES:NBR$$vos identifiants et mots$$END$$ de passe à SelogerPro.com :
+				</div>
+				<table border="0" cellpadding="2" cellspacing="2" width="100%">
+					<tr><td class="t2">Identifiant</td><td class="t2">Mot de passe</td></tr>
+					$$DO$$
+					<tr><td>$$AGCOMPTES:LOGIN$$</td><td>$$AGCOMPTES:PASS$$</td></tr>
+					$$LOOP$$
+				</table>
+		$$BFIN$$
+		$$BIF0:AGCOMPTES$$
+			$$IF:DETAIL:IDCOMPTE$$
+			<div>
+						<br />Suite à votre demande, voici votre identifiant et mot de passe à SelogerPro.com :
+					</div>
+					<table border="0" cellpadding="2" cellspacing="2" width="100%">
+						<tr><td class="t2">Identifiant</td><td class="t2">Mot de passe</td></tr>
+						<tr><td>$$DETAIL:LOGIN$$</td><td>$$DETAIL:PASS$$</td></tr>
+					</table>
+			$$END$$		
+			$$IF0:DETAIL:IDCOMPTE$$
+			<br />Vous n'avez pas de compte SeLogerPro ou de publication associée à votre compte,<br /> contactez notre Hotline au $$NUMTEL$$. <br /> 
+			$$END$$
+		$$BFIN$$
+	<div class="t4"><br /><a href="http://www.selogerpro.com" target="_blank">www.selogerpro.com</a> - <a href="mailto:contact@selogerpro.com">contact@selogerpro.com</a> - $$NUMTEL$$<span class="t3">(prix d'un appel national)</span></div>
+		</td></tr>
+		</table>
+<!--#include virtual="/mails/incl_footer_mail_slpro.htm"-->

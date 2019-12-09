@@ -1,0 +1,134 @@
+$$E:E3:CAT:158834:SLPRO$$
+$$INCL:AUTH.HTM$$
+$$A:CSS_LISTEANN=1$$
+$$INCL:HAUTX.HTM$$
+$$E:PAUNIT:CPA-GETCONF:~PAUNITCONF:REP:1$$
+<script type="text/javascript">
+<!--
+
+$$IF0:REP:1$$
+document.location = '/$$PAUNIT:CPA-GETCONF:PAUNITCONF$$/liste_annonces.htm';
+$$END$$
+
+//-->
+</script>
+
+<script type="text/javascript" src="/z/portail/pol/cpa/js/cpa.js"></script>
+
+$$E:PAUNIT:CPA-ANNONCE-MESSAGE:ALIAS:MESSAGES$$
+
+$$IF:MESSAGES:OKMSG$$
+<div class="noerre"><span>
+	$$MESSAGES:OKMSG$$
+</span></div>
+$$END$$
+$$IF:MESSAGES:ERRMSG$$
+<div class="erre"><span>
+	$$MESSAGES:ERRMSG$$
+</span></div>
+$$END$$
+
+$$B:PAUNIT:LISTE_ANNONCES_PERSONNE:ALIAS:LISTEANNONCES$$
+
+$$BIF:LISTEANNONCES$$
+
+<div id="line_res" class="line_tab">
+	<div class="title_tabfull"><div class="img_puce_title">&nbsp;</div>$$LISTEANNONCES:NBR$$ annonce$$LISTEANNONCES:NBR pluriel$$$$IF+:1:LISTEANNONCES:NBRPAGES$$<span style="float: right;text-align: right;">(de $$LISTEANNONCES:PAGE exec ((XX-1)*10)+1$$ � $$SET:NBANNMAX=@@LISTEANNONCES:PAGE exec ((XX-1)*10)+10@@$$ $$IF-:LISTEANNONCES_NBR:NBANNMAX$$$$NBANNMAX$$$$END$$$$IF+:LISTEANNONCES_NBR:NBANNMAX$$$$LISTEANNONCES:NBR$$$$END$$)</span>$$END$$</div>
+</div>
+
+
+<table class="tabinfo" cellpadding="0" cellspacing="0">
+    <tr>
+
+        <th  id="" class="bdr">Référence</th>
+        <th id="" class="bdr">Date création</th>
+        <th id="" class="bdr">Fin publication</th>
+        <th id="liste_cp" class="bdr">CP</th>
+        <th id="liste_ville" class="bdr">Ville</th>
+        <th id="" class="bdr">Prix</th>
+        <th id="" class="bdr">Type de bien</th>
+        <th id="" class="lst_transac" >Transaction</th>
+
+        <th class="lst_detail" ><div class="picto_center"><div class="img_go"></div></div></th>
+</tr>
+
+$$DO:1:5$$
+<tr class="line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:LISTEANNONCES:PUBNB1$$_green$$END$$$$END$$" onmouseover="this.className='line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new_hover';" onmouseout="this.className='line_$$IF=:0:LISTEANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:LISTEANNONCES:I mod2 0 1$$impair$$END$$_new$$IF=:1:FLASHAGENCE$$$$IF=:True:LISTEANNONCES:PUBNB1$$_green$$END$$$$END$$'">
+    <td class="bdr">
+        $$IF=:1:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_green" title="Publiée"></span>$$END$$
+        $$IF=:2:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_yellow" title="En cours de validation pour la publication"></span>$$END$$
+        $$IF=:3:LISTEANNONCES:CPA_ETAT$$<span class="img_puce_red" title="Non publiée"></span>$$END$$
+
+        $$LISTEANNONCES:REFANNONCE$$</td>
+    <td class="bdr">$$LISTEANNONCES:DT_CREA date 2$$</td>
+    <td class="bdr">$$IF0:LISTEANNONCES:PAUNIT_FIN_PUBLICATION$$ N/A $$END$$ $$LISTEANNONCES:PAUNIT_FIN_PUBLICATION date 2$$</td>
+    <td class="bdr">$$LISTEANNONCES:CP$$</td>
+    <td class="bdr" title="$$LISTEANNONCES:VILLE$$">$$LISTEANNONCES:VILLE truncate 16 ...$$</td>
+    <td class="bdr">$$LISTEANNONCES:PX formatnumber 0$$&nbsp;&euro;&nbsp;</td>
+    <td class="bdr">&nbsp;$$LISTEANNONCES:TYPEBIEN$$<br /></td>
+      <td class="bdr" title="$$LISTEANNONCES:TYPETRANSACTION$$">&nbsp;$$LISTEANNONCES:TYPETRANSACTION$$</td>
+
+    <td class="lst_detail">
+
+        <div>
+            <span class="lst_cel"><a href="/$$LISTEANNONCES:IDANNONCE$$/$$REP:1$$/annonce_edit.htm" title="Détail de l'annonce">Voir / Modifier</a></span> 
+            <span class="lst_cel">   <form method="POST">
+                    <input type="hidden" class="idannonce" name="idannonce" value="$$LISTEANNONCES:IDANNONCE$$"/>
+                    <input type="hidden" class="idtypeproduit" name="idtypeproduit" value="28"/>
+                    <input type="hidden" class="idetatannonce" name="idetatannonce" value="$$LISTEANNONCES:CPA_ETAT$$"/>
+                    <input type="hidden" name="page_err" value="ajax_post_cpa_publish.htm" />
+                    <input type="hidden" name="page_ok" value="ajax_post_cpa_publish.htm" />
+                    <input type="hidden" name="u" value="PAUNIT:PUBLICATION_ANNONCES" />
+                    <a href="#" class="publie_cpa" title="Mettre en ligne l'annonce">Publier</a>
+                </form>
+            </span> 
+        </div>
+        <div><span class="lst_cel">
+                <a href="/$$LISTEANNONCES:IDANNONCE$$/$$REP:1$$/gestion_visuel.htm" title="Ajouter une ou plusieurs photos">Ajout photo(s)</a>
+
+            </span>
+            <span>
+                <form method="POST">
+                    <input type="hidden" class="del" name="del" value="$$LISTEANNONCES:IDANNONCE$$" />
+                    <input type="hidden" class="idetatannoncedel" name="idetatannoncedel" value="$$LISTEANNONCES:CPA_ETAT$$"/>
+                    <input type="hidden" name="page_err" value="ajax_post_cpa_supp.htm" />
+                    <input type="hidden" name="page_ok" value="ajax_post_cpa_supp.htm" />
+                    <input type="hidden" name="u" value="PAUNIT:CPA-SUPPRIME-ANNONCES" />
+                    <a href="#" class="supp_cpa" title="Supprimer / Dépublier l'annonce">Désactiver</a>
+                </form>
+            </span>
+        </div>
+    </td>
+
+</tr>
+$$LOOP$$
+</table>
+
+$$IF:LISTEANNONCES:NBRPAGES$$
+	<div class="list_nav_links_bottom">
+		$$IF!:1:LISTEANNONCES:NBRPAGES$$
+			$$IF:LISTEANNONCES:LIENARRIERE$$<a href="$$LISTEANNONCES:LIENARRIERE$$">Page précédente</a>$$END$$
+				$$LISTEANNONCES:MULTIPAGE replace | &nbsp;|&nbsp;$$
+				$$IF:LISTEANNONCES:LIENAVANT$$
+					<a href="$$LISTEANNONCES:LIENAVANT$$">Page suivante</a>
+				$$END$$
+		$$END:nbrpages$$
+	</div>
+$$END$$
+
+<div id="legend_list">
+	<div><span class="img_puce_green"></span>&nbsp;Annonce publiée</div>
+	<div><span class="img_puce_yellow"></span>&nbsp;Annonce en cours de validation</div>
+	<div><span class="img_puce_red"></span>&nbsp;Annonce non publiée</div>
+	<div><span class="img_picture"></span>&nbsp;Une photo</div>
+	<div><span class="img_pictures"></span>&nbsp;Plusieurs photos</div>
+</div>
+
+$$BFIN$$
+
+$$BIF0:LISTEANNONCES$$
+Aucune annonce à lister.
+$$BFIN$$
+
+
+$$INCL:BASX.HTM$$

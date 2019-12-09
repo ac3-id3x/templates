@@ -1,0 +1,230 @@
+$$E:E3:CAT:ANNONCE_VISU:SLPRO$$
+$$INCL:HAUTX.HTM$$
+ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$E:SLPRO:ANNONCE:~idannonce:REP:1:~visuels:1:ALIAS:VISUANN$$
+$$E:SLPRO:INFO_XMLANNONCE:~idannonce:REP:1:~xmlElement:prix:ALIAS:XMLPRIX$$
+
+$$B:SLPRO:ANNONCEVISUELS:1:REP:1:ALIAS:ANNPHOTOS$$
+$$B:SLPRO:ANNONCEVISUELS:ALLVISU:REP:1:ALIAS:ANNWEBV$$
+$$BIF:ANNWEBV$$
+$$DO$$
+$$LOOP$$
+$$BFIN$$
+
+$$B:SLPRO:ANNONCE-TYPESPUBLICATIONS:~IDANNONCE:REP:1:ALIAS:ANNTYPESPUB$$
+
+$$IF:AUTH:CHECK_LOGIN:DROIT_GESTION_PA$$ $$A:AFFPA=1$$ $$END$$
+$$IF:AUTH:CHECK_LOGIN:DROIT_TOUT_ACCES$$ $$A:AFFPA=1$$ $$END$$
+
+
+
+	$$IF+:0:VISUANN:IDTYPETRANSACTION indexOf 10$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+	
+	$$IF+:0:VISUANN:IDTYPETRANSACTION indexOf 11$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+	
+	$$IF+:0:VISUANN:IDTYPEBIEN indexOf 12$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:VISUANN:IDTYPEBIEN indexOf 6$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:VISUANN:IDTYPEBIEN indexOf 8$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:VISUANN:IDTYPEBIEN indexOf 11$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+
+	$$IF+:0:VISUANN:IDTYPEBIEN indexOf 7$$
+		$$A:AGORABIZ=1$$
+	$$END$$
+		
+	
+	$$IF:AGORABIZ$$
+	
+	
+
+	$$A:VALSKIPBXAB=_editannvisu$$
+	<div id="info_agorabiz">
+		<div id="info_agorabiz_cookie">
+			$$INCL:BX_AB.HTM$$
+		</div>
+	</div>
+
+	
+	<script type="text/javascript">
+	<!--
+	function skipmsg(namecookie){
+		EcrireCookie("skipmsg"+namecookie,"1");
+		var info_agorabiz = document.getElementById('info_agorabiz');
+		info_agorabiz.style.display = 'none';	
+	}
+	
+	var skipmsg_editann = LireCookie("skipmsg_editannvisu");	
+	var info_agorabiz_cookie = document.getElementById('info_agorabiz_cookie');
+	if(skipmsg_editann == "1"){
+		if(info_agorabiz_cookie){info_agorabiz_cookie.style.display = "none";}
+	}
+	//-->
+	</script>
+	$$END$$
+
+$$IF=:ok:FORM:EDIT$$
+	<div class="noerre">
+		<span>Annonce enregistrée (vérification en cours) - $$REP:2 gettypetransaction lcase$$ | $$REP:3 gettypebien lcase$$</span>
+	</div>
+	<a href="$$XDOM$$/annonce_edit_choix.htm"><img src="$$_$$i/dyn/btncreerunenouvelleannonce.png" title="Créer une nouvelle annonce" alt="Créer une nouvelle annonce" /></a>
+	&nbsp;&nbsp;
+	<a href="$$XDOM$$/new/annonce_edit.htm?idtypetransaction=$$REP:2$$&idtypebien=$$REP:3$$"><img src="$$_$$i/dyn/btncreeruneannoncedumemetype.png" title="Créer une annonce du même type" alt="Créer une annonce du même type" /></a>
+ $$END$$
+ 
+
+$$IF0:REP:1$$
+<table class="tabbasic" cellpadding="0" cellspacing="0">
+<tr><td class="tabentete">Rechercher une annonce</td></tr>
+<tr>
+	<td><!-- --------- recherche d'une annonce par référence -->
+		<form action="/$$REP:URI$$" method="post">
+		<input type="hidden" name="page_ok" value="annonce_visu.htm">
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="u" value="SLPRO:ANNONCEFIND" />
+		<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+		R&eacute;f&eacute;rence&nbsp;:<br />
+		<input type="text" name="refannonce" size="16">
+		<input type="submit" value=" Rechercher " name="submit2">
+		</form>
+	</td>
+</table>
+$$END$$
+
+$$IF:REP:1$$
+$$IF=:0:VISUANN:REFANNONCE$$
+	<div class="erre"><span>Aucune annonce ne correspond à votre demande</span></div>
+$$END$$
+
+
+$$IF!:0:VISUANN:REFANNONCE$$
+
+
+	$$B:SLPRO:GETCENSUREQUALITE:~idannonce:REP:1:ALIAS:RC$$
+	$$BIF:RC$$
+	<div class="erre">
+	<div>Cette annonce est non valide, en voici $$IF=:1:RC:NBR$$la$$END$$$$IF!:1:RC:NBR$$les$$END$$ raison$$RC:NBR pluriel$$ :</div>
+		$$DO$$
+			<div>&bull;&nbsp;$$RC:LIBELLE_PUBLIC$$
+				$$IF:MODEDEV$$$$IF:RC:PRECISIONS$$<br />$$RC:PRECISIONS$$$$END$$$$END$$	
+			</div>
+		$$LOOP$$
+	</div>	
+	$$BFIN$$
+
+<div class="cnt" id="cnt_visu">
+	$$B:SLPRO:DATAMOIS:~idannonce:REP:1:ALIAS:DONNEES$$
+	<div class="tab_mea">
+		<div class="line">
+			$$BIF:DONNEES$$<div class="link"><a href="$$XDOM$$/$$REP:1$$/stats_plus.htm">Plus de Stats</a></div>$$BFIN$$
+			<div class="title">Statistiques</div>
+		</div>	
+		<div class="line_easy">
+			$$INCL:ANNONCE_VISU_GRAPHSTAT.HTM$$
+		</div>
+		
+	
+		$$B:SLPRO:LISTMAILAGENCE:~idannonce:REP:1:ALIAS:LSTMAIL$$
+		$$BIF:LSTMAIL$$
+		$$DO$$
+		$$LOOP$$
+		$$BFIN$$	
+		$$IF+:0:LSTMAIL:NBR$$
+			<div class="line">
+				$$A:LINKMSG=@@XDOM@@/mail_list.htm?idannonce=@@REP:1@@$$
+				<div class="link"><a href="$$LINKMSG$$">Voir les messages</a></div>
+				<div class="title">Réponses internautes</div>
+			</div>	
+			<div class="line_easy4">
+				<div>			
+					<span class="img_email" onclick="javascript:id3_go('$$LINKMSG$$');"></span>
+					$$LSTMAIL:NBR$$ message$$LSTMAIL:NBR pluriel$$ envoyé$$LSTMAIL:NBR pluriel$$ pour cette annonce$$IF!:1:LSTMAIL:NBR$$ par les internautes$$END$$.
+				</div>
+			</div>
+		$$END$$
+
+	$$E:SLPRO:ANNONCENBSUIVIBAISSEPRIX:~idAnnonce:REP:1:ALIAS:NBALPX$$
+		$$IF+:1:NBALPX:NBALERTESBP$$
+		<div class="line_easy4">
+			$$A:LINKMSG=@@XDOM@@/alertprix_list.htm?idannonce=@@REP:1@@$$
+			<span class="img_email" onclick="javascript:id3_go('$$LINKMSG$$');"></span>
+			$$NBALPX:NBALERTESBP$$ alerte$$NBALPX:NBALERTESBP pluriel$$ prix pour cette annonce
+		</div>
+		$$END$$
+	$$E:SLPRO:AFFICHE_BAISSE_PRIX:ALIAS:AFFBP$$
+		$$IF=:1:VISUANN:IDTYPETRANSACTION$$ $$A:PARAMTYPE=@@AFFBP:SELBPL@@$$ $$END$$
+		$$IF=:2:VISUANN:IDTYPETRANSACTION$$ $$A:PARAMTYPE=@@AFFBP:SELBPV@@$$ $$END$$
+		$$IF=:2:PARAMTYPE$$ $$A:HISTOOK=1$$ $$END$$
+		$$IF=:3:PARAMTYPE$$ $$IF:VISUANN:SISELECTBAISSEPRIX$$ $$A:HISTOOK=1$$ $$END$$ $$END$$
+	
+		$$IF=:1:HISTOOK$$
+		<div class="line">
+			<div class="link">
+					<a href="/evolution_prix.htm?idtypetransaction=$$VISUANN:IDTYPETRANSACTION$$&refannonce=$$VISUANN:REFANNONCE$$">Modifier</a>
+				</div>
+			<div class="title">Historique du prix</div>
+			<div class="line"><i>L'affichage de l'évolution du prix est activé</i><br/><br/></div>
+			$$B:SLPRO:ANNONCEHISTORIQUEPRIX:~idAnnonce:REP:1:ALIAS:HISTOPRIX$$
+			$$BIF:HISTOPRIX$$
+			<div class="line">
+				<table width="100%" class="aligncenter tabinfo">
+					<tr>
+						<th class="bdr">Date</th><th class="bdr">Prix</th>	
+					</tr>
+					$$DO$$
+					<tr class="line_$$IF=:0:HISTOPRIX:I mod2 0 1$$pair$$END$$$$IF!:0:HISTOPRIX:I mod2 0 1$$impair$$END$$">
+						<td>$$HISTOPRIX:DATEPRIX date 2$$</td><td>$$HISTOPRIX:PRIXNEW$$ &euro; </td>
+					</tr>
+					$$LOOP$$
+				</table>
+			</div>
+			$$BFIN$$	
+		</div>
+		$$END$$
+		
+		
+	</div>
+	
+$$INCL:ANNONCE_VISU.HTM$$
+
+	<div id="line_bas">
+		<div class="right">
+			<div class="btitre">Envoyer</div>
+			<div class="cnt">
+				<a href="javascript:openext('$$ID3DOM$$/$$REP:1$$/p_envoi_annonce.htm','AnnonceMail',550,550,'no');">L'annonce par mail</a>	
+			</div>
+		</div>
+		<div class="left">
+			<div class="btitre">Imprimer</div>
+			
+            $$E:SLPRO:CRYPTE_URL:p_certificat_x_pdf2.htm$$
+            
+			<div class="cnt"><a href="javascript:openext('/p_certificat_pdf2.htm?url=$$SLPRO:CRYPTE_URL:TEXT$$&idannonce=$$REP:1$$','Certificat',600,300,'no');">Le certificat de parution</a>$$REM$$<a href="javascript:openext('$$XDOM$$/$$REP:1$$/p_certificat.htm','Certificat',600,300,'no');">Le certificat de diffusion</a>$$END$$ | $$E:IMMOBC:ANNONCE:REP:1:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$<!--$$FORM:MODE$$-->$$IF:IMMOBC:ANNONCE:CONTACT$$<a href="javascript:openext('/$$REP:1$$/print_fiche_visite_choix.htm?mode=portrait','FicheVitrine',500,300,'yes');">La fiche vitrine portrait</a> | <a href="javascript:openext('/$$REP:1$$/print_fiche_visite_choix.htm?mode=paysage','FicheVitrine',500,300,'yes');">La fiche vitrine paysage</a> | $$END$$$$IF0:IMMOBC:ANNONCE:CONTACT$$<a href="javascript:id3_go_blank('/$$REP:1$$/print_fiche_vitrine_portrait.htm?coordonnees=agence&idtp=$$SLPRO:AGENCECERTIFPUBLICATIONS:VAL:IDTYPEPUBLICATION$$');">La fiche vitrine portrait</a> | <a href="javascript:id3_go_blank('/$$REP:1$$/print_fiche_vitrine_paysage.htm?coordonnees=agence&idtp=$$SLPRO:AGENCECERTIFPUBLICATIONS:VAL:IDTYPEPUBLICATION$$');">La fiche vitrine paysage</a> |	$$END$$<a href="javascript:openext('$$XDOM$$/$$REP:1$$/print_fiche_visite.htm','FicheVisite',800,600,'yes');">La fiche visite</a> | <a href="javascript:openext('$$XDOM$$/print_fiche_bonvisite.htm?idannonce=$$REP:1$$','BonDeVisite',830,850,'yes');">Le bon de visite</a></div>
+		</div>
+	</div>
+	
+</div>	
+$$IF:AFFPA$$
+$$IF0:ANNPHOTOS:NBR$$
+	<div class="info"><span>Mettre en valeur un bien par l'ajout de photo permet d'augmenter sa visibilité et ainsi améliorer la qualité des contacts générés.</span></div>
+$$END$$ 
+$$END$$ 
+
+$$END$$
+$$END$$
+
+$$INCL:BASX.HTM$$

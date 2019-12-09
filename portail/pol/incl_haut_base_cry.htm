@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	$$INCL:CFG.HTM$$	
+	$$DYN:ID3:NOCACHE:FULL$$
+	$$E:E3:CAT_POSITION:VAL:E3_CAT_CAT*ID:ALIAS:CAT$$
+	$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:NONE$$
+	
+	$$E:SLPRO:INFOSAGENCE$$
+	$$B:E3:PATH:VAL:E3_CAT_CAT*ID:SLPRO:SLPRO:ALIAS:NAVIGATION$$
+$$IF0:PAGE:TITR$$
+	$$BIF:NAVIGATION$$
+		$$A:PAGE:TITR=SeLogerPro$$
+		$$DO$$
+			$$IF!:1$2:NAVIGATION:I$$
+				$$A:PAGE:TITR=@@PAGE:TITR@@ - @@NAVIGATION:LIBELLE pcase@@$$
+			$$END$$
+		$$LOOP$$
+	$$BFIN$$
+	$$IF-:3:NAVIGATION:NBR$$
+		$$A:PAGE:TITR=SeLogerPro | @@2_NAVIGATION:LIBELLE pcase@@$$
+	$$END$$
+$$END$$
+	
+	$$INCL:ENGINE_CSS.HTM$$
+	$$INCL:ENGINE_JS.HTM$$
+	<link rel="shortcut icon" href="$$_$$favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="$$_$$favicon.ico">
+
+	<title>$$PAGE:TITR$$</title>
+</head>
+<body>
+<div id="top"></div>
+<div id="polPage">
+
+<div id="pol_header">
+	<div class="lineh1">
+		<div id="pol_logo" onclick="javascript:id3_go('$$XDOM$$');"></div>
+		<div id="pol_baseline"><span>Médias et Services pour les Professionnels de l’Immobilier</span></div>
+		<div id="pol_logogp" onclick="javascript:id3_go_blank('http://www.groupe-seloger.com');"></div> 
+	</div>
+	<div class="lineh2">
+		<div id="pol_infologin">&nbsp;
+			$$IF:AUTH:CHECK_LOGIN:IDAGENCE$$
+				$$IF:SLPRO:INFOSAGENCE:NOM$$$$SLPRO:INFOSAGENCE:NOM left 33$$$$IF+:33:SLPRO:INFOSAGENCE:NOM len$$...$$END$$$$END$$ | <a href="$$XDOM$$/logout.htm">déconnexion</a>
+			$$END$$					
+		</div>
+		<div id="pol_onglets">
+			$$B:E3:SFLD:ACCUEIL:ALIAS:MENUA$$
+			$$BIF:MENUA$$
+			$$DO$$
+				$$IF=:1$2$3:MENUA:I$$
+					$$A:VAR=@@MENUA:U_NAME@@$$
+					<a href="$$XDOM$$/$$VAR$$$$MENUA:URL$$" $$IF=:VAR:CAT:1$$class="polOngletActif"$$END$$><img src="$$_$$i/$$MENUA:U_NAME$$.png" alt="" title="" /></a>
+				$$END$$
+			$$LOOP$$
+			$$BFIN$$
+		</div>
+	</div>
+</div>
+
+
+
+<!--finheader-->
+	
+	<div class="polMenu" id="polMenu">	
+	$$B:E3:SFLD:VAL:CAT_1:ALIAS:MENUB$$
+	$$BIF:MENUB$$$$DO$$
+		<a $$IFNULL:MENUB:URL$$ href="$$XDOM$$/$$MENUB:CAT_ID$$/cnt$$IF=:PRO3:CAT:1$$ag$$END$$.htm"$$END$$ $$IF:MENUB:URL$$ $$IF=:id3/:MENUB:URL left 4$$ href="$$ID3DOM$$$$MENUB:URL replace id3/ /$$" $$END$$  $$IF!:id3/:MENUB:URL left 4$$	href="/$$MENUB:URL$$" $$END$$ $$END$$ class="smenu$$IF:CAT:2$$$$IF=:CAT_2:MENUB:CAT_ID$$on$$END$$$$IF!:CAT_2:MENUB:CAT_ID$$$$IF=:CAT_2:MENUB:U_NAME$$on$$END$$$$END$$$$END$$">$$MENUB:LIBELLE htmlencode$$</a><span class="img_xedy"><a href="http://xedy.id3x.com/a.htm?cat_id=$$MENUB:CAT_ID$$" target=_edit><img src="/i/picto_xedit.gif" border="0" alt="Edition xedy" /></a></span>
+		$$IF!:MENUB_NBR:MENUB:I$$ | $$END$$
+	$$LOOP$$$$BFIN$$
+	</div>
+	
+	<div id="polContent">
+		
+
+		<div id="polCnt">
+		
+			<div onclick="javascript:$$IF!:liste_annonces.htm:REP:0$$print();$$END$$$$IF=:liste_annonces.htm:REP:0$$choiceprint('choiceprint');$$END$$" id="bnt_print"></div>
+			<div id="choiceprint"></div>
+
+			
+			<div id="polChemin">
+				$$IF:CAT:1$$
+					$$BIF:NAVIGATION$$
+					$$DO$$
+									
+				
+
+						$$IF!:NAVIGATION_NBR:NAVIGATION:I$$
+						<a href="$$IF0:NAVIGATION:URL$$$$XDOM$$/$$NAVIGATION:CAT_ID$$/cnt$$IF=:PRO3:CAT:1$$ag$$END$$.htm$$END$$$$IF:NAVIGATION:URL$$$$IF=:id3/:NAVIGATION:URL left 4$$$$ID3DOM$$$$NAVIGATION:URL replace id3/ /$$$$IF!:/pro:NAVIGATION:URL left 4$$$$IF:REP:1$$/$$REP:1$$$$END$$$$END$$$$END$$$$IF!:id3/:NAVIGATION:URL left 4$$$$XDOM$$$$IF!:/pro:NAVIGATION:URL left 4$$$$IF:REP:1$$/$$REP:1$$$$END$$$$END$$$$NAVIGATION:URL$$$$END$$$$END$$$$IF:FORM:IDVISITE$$?idvisite=$$FORM:IDVISITE$$$$END$$">$$END$$$$NAVIGATION:LIBELLE pcase htmlencode$$$$IF!:NAVIGATION_NBR:NAVIGATION:I$$</a> &gt; $$END$$
+						
+						$$A:VAR=@@NAVIGATION:NBR exec XX-1@@$$
+						
+						$$IF=:VAR:NAVIGATION:I$$
+							$$A:PAGE:TITRERUBPERE=@@NAVIGATION:LIBELLE@@$$
+						$$END$$
+						
+						$$IF=:NAVIGATION_NBR:NAVIGATION:I$$
+							$$A:PAGE:TITRERUB=@@NAVIGATION:LIBELLE@@$$
+							$$INCL:TITRE_PAGE.HTM$$
+						$$END$$
+						
+					$$LOOP$$				
+					$$BFIN$$
+					$$END$$
+			</div>	
+			$$INCL:EDITO.HTM$$
+		

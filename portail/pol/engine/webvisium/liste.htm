@@ -1,0 +1,217 @@
+$$DYN:ID3:NOCACHE:NAV$$
+$$DYN:ID3:NOCACHE:SQL$$
+$$DYN:ID3:NOCACHE:BASE$$
+$$DYN:ID3:NOCACHE:FULL$$
+$$E:E3:CAT:WV:SLPRO$$
+$$A:TAGALIAS=gestion_webvisium$$
+$$A:CSS_LISTEANN=1$$
+$$A:WV=1$$
+$$A:NO_LINK=1$$
+$$A:NO_SUP=1$$
+$$A:NO_VISU=1$$
+$$A:LEGEND_CENSURE=1$$
+$$A:CSS_WEBVISIUM=1$$
+$$INCL:HAUTX.HTM$$
+
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+<div id="img_webvisum"><img src="$$WEBVISIUMIMG$$webvisium.gif" border=0></div>
+
+
+$$E:SLPRO:INFOS_WEBVISIUM:ALIAS:WV2$$ 
+
+
+$$IF0:WV2:IDUSERPREVISITE$$
+	<div class="erre"><span>Vous n'avez pas souscrit cette option, <a href="$$XDOM$$/156453/cnt.htm">pour plus d'informations cliquez-ici.</a></span></div>
+	$$A:NOAIDEWV=1$$
+$$END$$
+
+
+$$IF:WV2:IDUSERPREVISITE$$
+
+
+	<div class="wv_tutoriel"><div class="picto_tutoriel" onclick="javascript:id3_go_blank('$$XDOM$$/flash,webvisium,tutoriel.htm');"></div><span><a href="$$XDOM$$/flash,webvisium,tutoriel.htm" target="_blank">Guide pratique</a></span></div>
+
+	<div class="wv_tutoriel"><span><a href="$$XDOM$$/156681/cnt.htm?#207864">Besoin de Lentille ou Kit Complet supplémentaire ?</a></span></div>
+
+
+
+	$$A:KEYPARTNER=FAC8D1C4-77EC-4F78-8F42-A8FEF480F843$$
+	
+	$$IF:FORM:REFANNONCE$$
+	<br clear="all" /> 
+	<h3>Recherche de l'annone ayant pour référence : $$FORM:REFANNONCE$$, <a href="http://$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY removeqry refannonce$$">afficher toute la liste</a></h3>
+	$$END$$
+	
+	
+	
+	$$B:SLPRO:LISTE_ANNONCES:~idtypevisuel_filtre:QRY:IDTYPEVISUEL:~idtypetransaction_filtre:QRY:IDTYPETRANSACTION:~idtypebien_filtre:QRY:IDTYPEBIEN:~censure_filtre:QRY:CENSURE:~cpville_filtre:QRY:CP:~idtypepublication_filtre:QRY:PUBLICATION:QRY:IDTYPEPUBLICATION:~nbpieces_filtre:QRY:NBPIECES:~nbpieces_min:QRY:NBPIECES_MIN:~idtypepublication_filtre:QRY:PUBLICATION:~idannonce_filtre:QRY:ID:~refannonce_filtre:QRY:REFANNONCE:~tri:QRY:TRI:ALIAS:AGANNONCES$$	
+	
+	$$BIF0:AGANNONCES$$
+	$$A:SEARCHNULL=1$$
+	<div class="erre"><span>Aucune annonce ne correspond à votre recherche</span></div>
+	$$BFIN$$
+	
+	$$IF0:SEARCHNULL$$
+		$$INCL:LISTE_ANN_NBANN_WV.HTM$$
+	$$END$$
+	
+	$$BIF:AGANNONCES$$
+	<table class="tabinfo" cellpadding="0" cellspacing="0">	
+	
+	$$INCL:LISTE_ANNONCES_HEADER.HTM$$
+	$$INCL:LISTE_ANNONCES_TRI.HTM$$	
+	
+			$$DO:1:query:10$$ 	
+			
+			$$IF0:CANNAUXDIFF$$
+		$$A:CLICKVISU=onclick="javascript:id3_go('@@XDOM@@/@@AGANNONCES:IDANNONCE@@/annonce_visu.htm');"$$
+	$$END$$
+			
+			
+			<tr class="line_$$IF=:0:AGANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:AGANNONCES:I mod2 0 1$$impair$$END$$_new" onmouseover="this.className='line_$$IF=:0:AGANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:AGANNONCES:I mod2 0 1$$impair$$END$$_new_hover'" onmouseout="this.className='line_$$IF=:0:AGANNONCES:I mod2 0 1$$pair$$END$$$$IF!:0:AGANNONCES:I mod2 0 1$$impair$$END$$_new'">
+			<td $$CLICKVISU$$>
+			$$IF:AGANNONCES:BQ_SI_CENSURE$$<span class="img_puce_red" title="header=[] body=[Non valide]"></span>$$END$$$$IF0:AGANNONCES:BQ_SI_CENSURE$$<span class="img_puce_green" title="header=[] body=[Valide]"></span>$$END$$
+		</td>
+	<td class="bdralignleft" title="header=[$$AGANNONCES:REFANNONCE$$] body=[<div style=text-align:left;width:240px;>$$AGANNONCES:DESCRIPTIF htmlencode crlf2br$$</div>]" $$CLICKVISU$$>
+			$$AGANNONCES:REFANNONCE smalltext 12 replace ¤ &nbsp;$$
+			<input type="hidden" name="idannonce_list" value="$$AGANNONCES:IDANNONCE$$" />
+		</td>	
+		
+			$$A:TTS=@@AGANNONCES:TYPETRANSACTION replace location¤temporaire loc.¤temporaire replace vente¤fonds¤de¤commerce fonds¤de¤commerce replace vente¤de¤prestige prestige replace location¤vacances loc.¤vacances replace ¤ &nbsp; replace produit&nbsp;d'investissement investissement@@$$		
+		<td class="alignleft" title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Type de transaction] body=[$$TTS$$]" $$CLICKVISU$$>
+			$$TTS$$
+		</td>
+		<td class="bdr" $$CLICKVISU$$>
+			$$IF:AGANNONCES:SI_ELIGIBLE$$
+				$$A:AFFICO=1$$
+				<span class="img_eligible" title="header=[] body=[Eligible]"></span>
+			$$END$$
+			$$IF:AGANNONCES:SI_COUPDECOEUR$$
+				$$A:AFFICO=1$$
+				<span class="img_c2c" title="header=[] body=[Coup de c&oelig;ur]"></span>
+			$$END$$
+			$$IF0:NO_EXCLU$$
+				$$IF=:true:AGANNONCES:SI_EXCLUSIF$$
+					$$A:AFFICO=1$$
+					<span class="img_exclusif" title="header=[] body=[Exclusivité]"></span>
+				$$END$$
+			$$END$$	
+			
+			$$IF0:AFFICO$$&nbsp;$$END$$
+			$$A:AFFICO=$$
+		</td>
+		<td class="bdralignleft" title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Type de bien] body=[$$AGANNONCES:TYPEBIEN$$]" $$CLICKVISU$$>
+			$$AGANNONCES:TYPEBIEN$$
+		</td>
+		<td class="bdr" $$CLICKVISU$$>$$AGANNONCES:CP$$</td>
+		<td class="bdralignleft" title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Ville] body=[$$AGANNONCES:VILLE smalltext 20 replace ¤ &nbsp;$$]" $$CLICKVISU$$>
+			$$AGANNONCES:VILLE smalltext 20 replace ¤ &nbsp;$$
+		</td>
+		<td class="bdralignright" $$CLICKVISU$$ title="header=[<img src='$$_$$i/picto_info.gif' style='vertical-align:middle'>&nbsp;&nbsp;Prix] body=[$$IFNOTNULL:AGANNONCES:PX$$$$AGANNONCES:PX formatnumber 0$$&nbsp;&euro;$$END$$$$IFNULL:AGANNONCES:PX$$&nbsp;$$END$$]">
+			$$IFNOTNULL:AGANNONCES:PX$$$$AGANNONCES:PX formatnumber 0$$&nbsp;&euro;$$END$$$$IFNULL:AGANNONCES:PX$$&nbsp;$$END$$
+		</td>
+		<td class="bdr" $$CLICKVISU$$>$$AGANNONCES:NBPIECES sinull &nbsp;$$</td>
+		<td class="bdr" $$CLICKVISU$$>$$AGANNONCES:SURFACE sinull &nbsp;$$$$IF:AGANNONCES:SURFACE$$&nbsp;m&sup2;$$END$$</td>
+	
+	
+	
+		
+		
+		<td class="bdralignleftnopointer">
+			$$A:SIWV=$$
+			
+			
+	
+			$$IF:AGANNONCES:NBWEBVISIUM1$$ $$A:SIWV=1$$ $$END$$
+			$$IF:AGANNONCES:NBWEBVISIUM2$$ $$A:SIWV=1$$ $$END$$
+			$$A:NOASSO=0$$
+			$$IF:AGANNONCES:NBWEBVISIUM1$$ $$IF0:AGANNONCES:NBWEBVISIUM2$$  $$A:NOASSO=1$$ $$END$$ $$END$$
+			
+			$$IF0:SIWV$$
+			<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=upload&keypartner=$$KEYPARTNER$$"><span class="img_dlimg" title="header=[] body=[Ajouter une  nouvelle visite virtuelle]"></span></a>
+			$$END$$
+			
+			$$IF:SIWV$$
+				$$IF:AGANNONCES:NBWEBVISIUM1$$ 
+					$$A:URLEDIT=/@@AGANNONCES:IDANNONCE@@/webvisium,previous_version.htm$$ 
+					$$IF0:AGANNONCES:NBWEBVISIUM2$$
+					$$A:ENCOREWV1=1$$
+					$$END$$
+				$$END$$
+				$$IF:AGANNONCES:NBWEBVISIUM2$$ 
+					 $$A:URLEDIT=http://webvisium.selogerpro.com/?idannonce=@@AGANNONCES:IDANNONCE@@&keyagence=@@WV2:IDUSERPREVISITE@@&cat=image&keypartner=@@KEYPARTNER@@$$  
+				$$END$$
+				<a href="$$URLEDIT$$"><span class="img_vv_edit2" title="header=[] body=[Modifier]"></span></a>
+			$$END$$
+			$$IF=:0:NOASSO$$
+				<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=selection&keypartner=$$KEYPARTNER$$"><span class="img_wvlink" title="header=[] body=[Associer une visite virtuelle existante]"></span></a>
+			$$END$$
+		</td>
+		<td class="bdralignleftnopointer">
+			$$IF:SIWV$$$$IF:AGANNONCES:NBWEBVISIUM2$$<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=view&keypartner=$$KEYPARTNER$$" target="_blank"><span class="img_vv3" title="header=[] body=[Voir]"></span></a>$$END$$$$END$$
+		</td>
+		<td class="bdralignleftnopointer">
+			$$IF:SIWV$$$$IF:AGANNONCES:NBWEBVISIUM2$$<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=services&keypartner=$$KEYPARTNER$$"><span class="picto_wv_services" title="header=[] body=[Services]"></span></a>$$END$$$$END$$
+		</td>
+		
+		<td class="nopointer">
+	$$REM$$			$$AGANNONCES:NBWEBVISIUM1$$
+		$$AGANNONCES:NBWEBVISIUM2$$ $$END$$
+			$$IF:SIWV$$$$IF:AGANNONCES:NBWEBVISIUM2$$<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=delete&keypartner=$$KEYPARTNER$$"><span class="img_sup2" title="header=[] body=[Supprimer]"></span></a>$$END$$$$END$$
+	
+		 $$IF=:1:FORM:FORCEDEL$$<a href="http://webvisium.selogerpro.com/?idannonce=$$AGANNONCES:IDANNONCE$$&keyagence=$$WV2:IDUSERPREVISITE$$&cat=delete&keypartner=$$KEYPARTNER$$"><span class="img_sup2" title="header=[] body=[Supprimer]"></span></a>$$END$$
+		 $$IF:MODEDEV$$
+			$$AGANNONCES:NBWEBVISIUM1$$ -	$$AGANNONCES:NBWEBVISIUM2$$
+			$$END$$
+		</td>
+	</tr>
+			
+			$$LOOP$$
+		</table>
+	$$BFIN$$
+	
+	$$IF:AGANNONCES:NBRPAGES$$
+		<div class="list_nav_links_bottom">
+			
+			$$IF!:1:AGANNONCES:NBRPAGES$$
+				$$IF:AGANNONCES:LIENARRIERE$$<a href="$$AGANNONCES:LIENARRIERE$$">Page précédente</a>$$END$$
+					$$AGANNONCES:MULTIPAGE replace | &nbsp;|&nbsp;$$
+			
+					$$IF:AGANNONCES:LIENAVANT$$
+						<a href="$$AGANNONCES:LIENAVANT$$">Page suivante</a>
+					$$END$$
+			
+			$$END:nbrpages$$
+		</div>
+	
+	$$END$$
+	
+	$$INCL:LISTE_ANNONCES_LEGEND.HTM$$
+	
+	
+	<div class="line_tab" id="line_res">
+	
+		<div class="title_tab"><div class="img_puce_title">&nbsp;</div>Autres actions possibles</div>
+		
+	
+	</div>
+	
+	
+	
+	<div id="linkwv_ext">
+		<a href="http://webvisium.selogerpro.com/partner.php?keyagence=$$WV2:IDUSERPREVISITE$$&keypartner=$$KEYPARTNER$$&cat=autocreate$$REM$$http://webvisium.selogerpro.com/partners/new/list_tour.php?tour=$$KEYPARTNER$$$$END$$">Créer une visite virtuelle sans l'associer à une annonce</a><br />
+		<a href="http://webvisium.selogerpro.com/partner.php?keyagence=$$WV2:IDUSERPREVISITE$$&keypartner=$$KEYPARTNER$$&cat=listing">Accéder aux visites virtuelles non associées</a><br />&nbsp;
+	</div>
+	
+	<div class="info"><span>Vos visites virtuelles WebVisium de version 1 seront disponibles et diffusées par nos services jusqu'au 30 juin 2008.<br /> <strong><a href="$$XDOM$$/webvisium,liste_v1.htm">Retrouvez vos anciennes visites virtuelles WebVisium</a> <div style="float: right">$$REM$$<a href="$$XDOM$$/webvisium,liste_v1.htm"><div class="download_small"></div>Téléchargez vos anciens visuels actifs</a>$$END$$</div></strong></span></div>
+
+
+$$IF:ENCOREWV1$$
+<div class="info"><span>Certaines de vos annonces sont associées à des visites virtuelles WebVisium de version 1.</span></div>
+$$END$$
+
+	
+$$END$$
+
+
+$$INCL:BASX.HTM$$

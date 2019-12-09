@@ -1,0 +1,45 @@
+$$E:E3:CAT:stat_visu:SLPRO$$
+$$INCL:HAUTX.HTM$$
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+$$B:SLPRO:STATANNTOT:ALIAS:STATTOT$$
+$$B:SLPRO:STATLISTPUBLICATION:ALIAS:PUBLBCL$$
+
+	
+$$BIF:PUBLBCL$$
+	<h3>Vos statistiques annonces par publication</h3>
+	$$DO$$
+		<div class="link"><a href="$$XDOM$$/$$PUBLBCL:IDTYPEPUBLICATION$$/staann.htm">$$PUBLBCL:PUBLICATION$$</a></div>
+	$$LOOP$$
+$$BFIN$$
+
+$$BIF0:PUBLBCL$$
+<div class="erre"><span>Aucune publication Web trouvée.</span></div>
+$$BFIN$$
+
+$$IF=:21:REP:1$$
+	<script type="text/javascript">
+		var id_tiers = '$$PUBLBCL:IDTIERS$$';
+		var token = '$$PUBLBCL:TOKEN$$';
+		var ab = document.createElement('script'); ab.type = 'text/javascript'; ab.async = true;
+		ab.src = 'http://agorapro.agorabiz.com/seloger/embedjs/' + id_tiers + '/' + token;
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ab);
+	</script>
+	<noscript>Merci d'activer JavaScript pour acc&eacute;der aux statistiques</noscript>
+	<div id="agorabiz_stats"></div>
+$$END$$
+
+$$IF:REP:1$$
+	$$IF!:21:REP:1$$
+		$$INCL:STAANN.HTM$$
+		
+		$$BIF:STATTOT$$
+		$$DO:1:100$$
+		$$LOOP$$
+		<div class="btn">
+			<input type="image" src="$$_$$i/dyn/btnplusdestats.png"  onclick="id3_go('staann2.htm');"  />
+		</div>
+		$$BFIN$$
+	$$END$$
+$$END$$
+
+$$INCL:BASX.HTM$$

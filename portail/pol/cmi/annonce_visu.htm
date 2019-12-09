@@ -1,0 +1,106 @@
+$$INCL:AUTH.HTM$$
+$$E:E3:CAT:157202:SLPRO$$
+$$INCL:HAUTX.HTM$$ 
+
+$$E:CMI:BO-BUREAU:ALIAS:INFOCMISTE$$
+$$E:CMI:BO-ANNONCE:~idannonce:QRY:IDANNONCE:~toform:ALIAS:VISUANN$$
+$$B:CMI:BO-ANNONCEVISUELS:~idannonce:QRY:IDANNONCE:ALIAS:CMIPHOTOS$$
+
+$$IF=:ok:REP:1$$
+	<div class="noerre">
+		<span>Annonce enregistrée (vérification en cours)</span>
+	</div>
+	<a href="$$XDOM$$/annonce_edit_choix.htm"><img src="$$_$$i/dyn/btncreerunenouvelleannonce.png" title="Créer une nouvelle annonce" alt="Créer une nouvelle annonce" /></a>
+	&nbsp;&nbsp;
+	<a href="$$XDOM$$/annonce_edit.htm?idtypeannonce=$$VISUANN:IDTYPEANNONCE$$"><img src="$$_$$i/dyn/btncreeruneannoncedumemetype.png" title="Créer une annonce du même type" alt="Créer une annonce du même type" /></a>
+ $$END$$
+
+ $$IF0:VISUANN:IDAGENCE$$
+	<div class="erre"><span>Aucune annonce ne correspond à votre demande</span></div>
+$$END$$
+
+$$IF:VISUANN:IDANNONCE$$
+	$$B:SLPRO:GETCENSUREQUALITE:~idannonce:QRY:IDANNONCE:ALIAS:RC$$
+	$$BIF:RC$$
+	<div class="erre">
+	<div>Cette annonce est non valide, en voici $$IF=:1:RC:NBR$$la$$END$$$$IF!:1:RC:NBR$$les$$END$$ raison$$RC:NBR pluriel$$ :</div>
+		$$DO$$
+			<div>&bull;&nbsp;$$RC:LIBELLE_PUBLIC$$
+				$$IF:MODEDEV$$$$IF:RC:PRECISIONS$$<br />$$RC:PRECISIONS$$$$END$$$$END$$	
+			</div>
+		$$LOOP$$
+	</div>	
+	$$BFIN$$
+$$END$$
+
+
+$$IF:VISUANN:DTSUPPRESSION$$
+	<div class="erre"><span>Annonce effacée, pour la restaurer<a href="/liste_annonces_restore.htm?idannonces=$$FORM:IDANNONCE$$&url=/$$REP:URI$$?$$REP:QRY$$"> cliquez-ici</a></span></div>
+$$END$$
+
+$$IF:VISUANN:IDAGENCE$$
+<div class="cnt" id="cnt_visu">
+	$$B:CMI:BO-STATSANNONCE:~idAnnonce:QRY:IDANNONCE:~maxMonths:12:ALIAS:DONNEES$$
+	<div class="tab_mea">
+		<div class="line">
+			$$BIF:DONNEES$$<div class="link"><a href="$$XDOM$$/$$FORM:IDANNONCE$$/stats_plus.htm">Plus de Stats</a></div>$$BFIN$$
+			<div class="title">Statistiques</div>
+		</div>	
+		<div class="line_easy">
+			$$INCL:ANNONCE_VISU_GRAPHSTAT.HTM$$
+		</div>
+		
+		$$B:CMI:BO-DEMANDESDOCUMENTATION:~idannonce:QRY:IDANNONCE:ALIAS:LSTDEMDOC$$
+		$$BIF:LSTDEMDOC$$
+		$$DO$$
+		$$LOOP$$
+		$$BFIN$$	
+		$$IF+:0:LSTDEMDOC:NBR$$
+			<div class="line">
+				$$A:LINKMSG=@@XDOM@@/mail_list.htm?idannonce=@@FORM:IDANNONCE@@$$
+				<div class="link"><a href="$$LINKMSG$$">Voir les demandes</a></div>
+				<div class="title">Demandes documentations</div>
+			</div>	
+			<div class="line_easy4">
+				<div>			
+					<span class="img_email" onclick="javascript:id3_go('$$LINKMSG$$');"></span>
+					$$LSTDEMDOC:NBR$$ demande$$LSTDEMDOC:NBR pluriel$$ envoyé$$LSTDEMDOC:NBR pluriel$$ pour cette annonce$$IF!:1:LSTDEMDOC:NBR$$ par les internautes$$END$$.
+				</div>
+			</div>
+		$$END$$
+		
+		$$B:CMI:BO-LISTMAILAGENCECMI:~idannonce:QRY:IDANNONCE:ALIAS:LSTMAIL$$
+		$$BIF:LSTMAIL$$
+		$$DO$$
+		$$LOOP$$
+		$$BFIN$$	
+		$$IF+:0:LSTMAIL:NBR$$
+			<div class="line">
+				$$A:LINKMSG=@@XDOM@@/mail_list_terrain.htm?idannonce=@@FORM:IDANNONCE@@$$
+				<div class="link"><a href="$$LINKMSG$$">Voir les messages</a></div>
+				<div class="title">Réponses internautes</div>
+			</div>	
+			<div class="line_easy4">
+				<div>			
+					<span class="img_email" onclick="javascript:id3_go('$$LINKMSG$$');"></span>
+					$$LSTMAIL:NBR$$ message$$LSTMAIL:NBR pluriel$$ envoyé$$LSTMAIL:NBR pluriel$$ pour cette annonce$$IF!:1:LSTMAIL:NBR$$ par les internautes$$END$$.
+				</div>
+			</div>
+		$$END$$
+		
+		
+	</div>
+
+$$INCL:ANNONCE_VISU.HTM$$
+	
+</div>	
+
+$$IF0:ANNPHOTOS:NBR$$	
+	<div class="info"><span>Mettre en valeur un bien par l’ajout de photo permet d’augmenter sa visibilité et ainsi améliorer la qualité des contacts générés.</span></div>
+$$END$$ 
+
+
+$$END$$
+
+
+$$INCL:BASX.HTM$$

@@ -1,0 +1,94 @@
+<script type="text/javascript">
+<!--
+function ShowDel () {
+	
+	$$IF:FORM:IDCATPARENT$$
+ 		var redirect= "$$XDOM$$/easa,cat_edit.htm?idcategorie=$$FORM:IDCATPARENT$$"
+	$$END$$
+	$$IF0:FORM:IDCATPARENT$$
+ 		var redirect= "$$XDOM$$/easa,cat_list.htm"
+	$$END$$
+
+	
+	if (confirm("Confirmez-vous la suppression de la rubrique [ $$FORM:LIBELLE$$ ] ?"))
+		location.href="$$XDOM$$/easa,cat_del.htm?idcategorie=$$FORM:IDCATEGORIE$$&redirect="+redirect	
+
+	return false;
+}
+
+function Activer () {
+		
+	if (confirm("Confirmez-vous l'activation de la rubrique [ $$FORM:LIBELLE$$ ] ?\nAttention : Son contenu reste désactivé !"))
+		location.href="$$XDOM$$/easa,cat_active.htm?idcategorie=$$FORM:IDCATEGORIE$$&redirect=$$REP:PAGE$$"		
+		
+	return false;	
+	}
+	
+function Desactiver () {
+	if (confirm("Confirmez-vous la désactivation de la rubrique [ $$FORM:LIBELLE$$ ] ?\nAttention : Son contenu sera aussi desactivé !"))
+		location.href="$$XDOM$$/easa,cat_desactive.htm?idcategorie=$$FORM:IDCATEGORIE$$&redirect=$$REP:PAGE$$"		
+		
+	return false;	
+	}
+
+function ActiverContent () {
+		
+	if (confirm("Confirmez-vous l'activation du contenu de la rubrique [ $$FORM:LIBELLE$$ ] ?\nAttention : l'ensemble des contenus sera activé !"))
+		location.href="$$XDOM$$/easa,catcnt_active.htm?idcategorie=$$FORM:IDCATEGORIE$$&redirect=$$REP:PAGE$$"		
+		
+	return false;	
+	}
+
+
+
+function DoSave() {
+	document.forms['sauve'].submit();
+}
+        
+function AddPic(ss) {
+	if (ss=='0') {
+		document.all['edit'].frameWindow.focus();
+		Sync=SetPic;
+	}
+	window.open("$$XDOM$$/easa,cat_pic.htm?cat_id=$$FORM:IDCATEGORIE$$&dest="+ss, "glop", ",height=400,width=300,scrollbars=1,topmargin=0, leftmargin=0, marginwidth=0, marginheight=0");
+}
+
+
+function SetVgn (url,img_id) {
+	document.forms[0].vgn.src="/cgi/i.aspx?f="+url+"&w=50&h=50";
+	vgncont.style.display="inline";
+	vgninfo.innerText ="Modifier";
+	vgndel.style.display="inline";
+	document.forms[0].img_id.value=img_id;
+}
+
+
+function chg_vgn (mode) {
+	if (mode==1) { // del
+		vgncont.style.display="none";
+		document.forms[0].img_id.value="";
+		vgndel.style.display="none";
+		vgninfo.innerText ="Définir";
+	}
+	else
+	{
+		Sync=SetVgn;
+		AddPic('vgn');
+	}
+}
+
+function SetPic(url,img_id) {
+	setTimeout('fcs()',10);
+	//document.all['edit'].frameWindow.document.focus();
+	//var oCR=document.all['edit'].createRange();
+	var oCR=document.all['edit'].getRange();
+    if (oCR!=null) {
+		sHTML='<img src="'+url+'" vspace="5" hspace="5" align="left" >'
+		oCR.pasteHTML(sHTML);
+		document.all['edit'].setHTML(document.all['edit'].getHTML().replace(/http:\/\/$$REP:RSVR$$/gi,''));
+		//var sHTML = document.createElement('img');
+		//oCR.insertBefore(sHTML);
+	}
+}
+
+//--></script>

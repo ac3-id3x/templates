@@ -1,0 +1,176 @@
+$$E:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+$$IF=:new:REP:1$$
+	$$A:CAT=annonce_add$$
+$$END$$
+
+$$IF!:new:REP:1$$
+	$$A:CAT=annonce_edit$$
+$$END$$
+
+$$SET:CSS_CALENDAR=1$$
+$$E:SLPRO:ANNONCE:REP:1$$
+$$INCL:HAUT.HTM$$ 
+
+<!-- $$FORM:PAGE_OK$$ //-->
+
+
+<style type="text/css">
+	@import url("$$_$$engine/css/calendar.css");
+</style>
+
+<!-- $$REP:SRV$$ //-->  
+  
+<script type="text/javascript">
+<!--
+	$$IF=:www.selogerpro.com:REP:SRV$$
+		id3_go('/index.htm');
+	$$END$$
+//-->
+</script>
+
+$$SET:PAGE:TITRE=&eacute;dition d'une annonce$$ 
+$$SET:PGNAV=an$$ 
+
+<!-- $$SESSION:SETLANGUECOOKIE$$ $$REP:2$$ -->
+$$E:SLPRO:AGENCECORE:@@AUTH:CHECK_LOGIN:IDAGENCE@@$$ 
+$$E:SLPRO:TYPETRANSACTION:QRY:IDTYPETRANSACTION$$
+$$E:SLPRO:TYPEBIEN:QRY:IDTYPEBIEN$$ 
+$$B:SLPRO:TYPESCHAUFFAGE$$
+$$B:SLPRO:DIVISIONSLIBELLE$$ 
+$$B:SLPRO:SITUATIONS$$ 
+$$B:SLPRO:PAYS$$ 
+$$B:SLPRO:SOUSTYPESBIEN:QRY:IDTYPEBIEN:REP:1$$
+$$E:SLPRO:TESTWAG:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$ 
+$$B:IMMOBC:TYPESACTIVITE:ANN:VAL:SLPRO_ANNONCE_IDANNONCE$$ 
+$$B:SLPRO:LABELS$$ 
+$$B:SLPRO:ETATS$$
+<!-- $$FORM:PAGE_OK$$ -->
+$$B:SLPRO:TYPESINVESTISSEMENT$$ 
+$$B:SLPRO:TYPESCTC$$
+$$SET:IDTYPEBIEN=@@SLPRO:ANNONCE:IDTYPEBIEN@@$$$$SET:IDTYPEBIEN=@@FORM:IDTYPEBIEN@@$$
+$$SET:IDTYPETRANSACTION=@@SLPRO:ANNONCE:IDTYPETRANSACTION@@$$$$SET:IDTYPETRANSACTION=@@FORM:IDTYPETRANSACTION@@$$
+$$IF=:14$15:IDTYPEBIEN$$ $$A:PISCINE=1$$ $$END$$
+$$IF=:4:IDTYPETRANSACTION$$ $$A:PISCINE=1$$ $$END$$
+$$IF=:9$10:IDTYPETRANSACTION$$ 
+	$$IF=:15:IDTYPEBIEN$$ 
+		$$A:PROG9=1$$ 
+	$$END$$ 
+$$END$$
+
+$$IF:ERRE$$
+	<div class="erre"><span>$$ERRE$$</span></div>
+$$END$$
+
+$$IF:SLPRO:ANNONCE:BQ_SI_CENSURE$$
+	<div class="erre"><span>Votre annonce est censurée, pour plus d'informations contactez la hotline.</span></div>
+$$END$$
+
+$$IF=:1:SLPRO:ANNONCE:SI_FIGEE$$
+	<div class="erre"><span>Cette annonce est associée à une publication figée, vous ne pouvez la modifier.</span></div>
+$$END$$
+<br clear="all" />	
+<form action="/$$REP:URI$$" method="post" name="f_annedit" onsubmit="return ValidForm();" style="display: inline;">
+<input type="hidden" name="page_ok" value="$$XDOM$$/editann/$$REP:1$$/canaux_diffusion.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="idannonce" value="$$SLPRO:ANNONCE:IDANNONCE$$" />
+<input type="hidden" name="idagence" value="$$AUTH:CHECK_LOGIN:IDAGENCE$$" />
+<input type="hidden" name="idtypebien" value="$$SLPRO:ANNONCE:IDTYPEBIEN$$$$IF0:SLPRO:ANNONCE:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$" />
+<input type="hidden" name="idtypetransaction" value="$$SLPRO:ANNONCE:IDTYPETRANSACTION$$$$IF0:SLPRO:ANNONCE:IDTYPETRANSACTION$$$$FORM:IDTYPETRANSACTION$$$$END$$" />
+<input type="hidden" name="bq_si_censure" value="$$SLPRO:ANNONCE:BQ_SI_CENSURE$$$$IF0:SLPRO:ANNONCE:BQ_SI_CENSURE$$$$IF!:False:SLPRO:ANNONCE:BQ_SI_CENSURE$$$$FORM:BQ_SI_CENSURE$$$$END$$$$END$$" />
+<input type="hidden" name="u" value="slpro:agence_annonceedit" />
+
+
+
+
+$$INCL:ANN_EDIT_HISTO.HTM$$
+
+$$INCL:ANN_EDIT_JS.HTM$$
+
+<div id="edit_haut">
+	<div class="left">
+		<div class="oblig_txt"><div>&nbsp;&nbsp;&nbsp;</div>Champs obligatoires</div>
+	</div>
+	
+	<div class="right">
+		<!-- idannonce=$$REP:1$$ -->$$IF!:new:REP:1$$
+		<a href="javascript:id3_go('$$ID3DOM$$/$$REP:1$$/annonce_changetype.htm?idtypetransaction=$$FORM:IDTYPETRANSACTION$$&idtypebien=$$FORM:IDTYPEBIEN$$');"><img src="$$_$$i/dyn/btnmodtypeann.png" border="0" /></a>&nbsp;$$END$$
+		<a href="javascript:ssav();"><img src="$$_$$i/dyn/btnsaisieavancee.png" border="0" /></a>
+	</div>
+</div>
+
+$$INCL:ANN_EDIT_INFO_GEN_MF.HTM$$
+$$INCL:ANN_EDIT_LOCALISER.HTM$$
+$$INCL:ANN_EDIT_INFO_SUP.HTM$$
+$$INCL:ANN_EDIT_NEUF.HTM$$
+
+$$INCL:ANN_EDIT_INTER.HTM$$
+
+
+	
+$$INCL:ANN_EDIT_COORDANN.HTM$$
+$$INCL:ANN_EDIT_INFO_AV.HTM$$
+
+<input type="hidden" name="languesxml" id="languesxml" value="$$IF0:FORM:PAGE_OK$$$$SLPRO:ANNONCE:LANGUESXML htmlencode$$$$END$$$$FORM:LANGUESXML htmlencode$$" />
+<script type="text/javascript">
+	<!--
+	lang_toggle( 'libelle|prox|descriptif|situation', 'languesxml', 'en', 'libelle|prox|descriptif|situation' );
+	flag_update( 'flag_uk', 'libelle_flag|prox_flag|descriptif_flag|situation_flag');
+Division();
+
+
+$$IF=:1:PROG9$$
+function DispTableaux(){
+var objM = MM_findObj('si_maison');
+var objA = MM_findObj('si_appartement');
+var objT = MM_findObj('si_terrain');
+var objImg = MM_findObj('idbt15h');
+var tab;
+var onlyVide = false;
+
+	if (objM || objA) {
+		if (objM.checked && objA.checked) {
+			tab = neufapptmais;
+			if (!document.all){if(objImg) {objImg.height = 180;}}
+		}
+		else if (objM.checked !="") {
+			tab = neufmaison;
+			if (!document.all){if(objImg) {objImg.height = 100;}}
+		}
+		else if (objA.checked !="") {
+			tab = neufappt;
+			if (!document.all){if(objImg) {objImg.height = 170;}}
+		}
+		else {
+			tab = neufvide;
+			if (!document.all){if(objImg) {objImg.height = 30;}}
+		}
+	}
+	if(objT){
+		if (objT.checked) {
+			tab = tab + "<p>&nbsp;</p>" + neufterrain;
+		}
+	}
+	if(tab){
+		FillLayer('disptab', tab);
+	}
+}
+
+ if (!document.layers) {DispTableaux();}
+ 
+ $$END:PROG9$$
+ 
+// --></script>
+
+<div id="line_btn_ann">
+	
+	<div class="btn_left">
+		<div onclick="javascript:reinit();"><img src="$$_$$i/dyn/btnreinitialiser.png" /></div>
+	</div>
+	
+	<div class="btn_right"><input type="image" name="submit" src="$$_$$i/dyn/btnvalidermodifs.png" /></div>
+
+</div>
+
+</form>
+$$INCL:BAS.HTM$$

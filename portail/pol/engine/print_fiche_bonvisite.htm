@@ -1,0 +1,282 @@
+$$A:MEPPRINT=1$$
+$$A:TITLEPOPUP=Le bon de visite à générer pour impression$$
+$$INCL:HAUTPOP.HTM$$
+$$E:IMMOBC:AGENCECORE:VAL:AUTH_CHECK*LOGIN_IDAGENCE$$
+
+
+<script type="text/javascript">
+	<!--
+function typebien(idtypebien)
+{
+	var tab=new Array;
+	$$B:SLPRO:TYPESBIEN$$
+	$$BIF:SLPRO:TYPESBIEN$$
+	$$DO:1:999$$
+		tab[$$SLPRO:TYPESBIEN:IDTYPEBIEN$$]="$$SLPRO:TYPESBIEN:TYPEBIEN ucase$$";
+	$$LOOP$$
+	$$BFIN$$
+	document.write(tab[idtypebien]);
+}
+
+function typetransaction(idtypetransaction)
+{
+	var tab=new Array;
+	$$B:SLPRO:TYPESTRANSACTION$$
+	$$BIF:SLPRO:TYPESTRANSACTION$$
+	$$DO:1:999$$
+		tab[$$SLPRO:TYPESTRANSACTION:IDTYPETRANSACTION$$]="$$SLPRO:TYPESTRANSACTION:TYPETRANSACTION ucase$$";
+	$$LOOP$$
+	$$BFIN$$
+	document.write(tab[idtypetransaction]);
+}
+
+function validelignes()
+{
+	// ligne n°1
+	var monForm = document.frmBonVisite;
+	if ( monForm.numdossier101.value != "" || monForm.mandat101.value != "" || monForm.adresse101.value != "" ||
+			monForm.codepostal101.value != "" || monForm.ville101.value != "" || monForm.prix101.value != "" )
+	{
+		monForm.ligne101.value = "ok";
+	}
+	else
+	{
+		monForm.ligne101.value = "";
+	}
+	// ligne n°2
+	if ( monForm.numdossier102.value != "" || monForm.mandat102.value != "" || monForm.adresse102.value != "" ||
+			monForm.codepostal102.value != "" || monForm.ville102.value != "" || monForm.prix102.value != "" )
+	{
+		monForm.ligne102.value = "ok";
+	}
+	else
+	{
+		monForm.ligne102.value = "";
+	}
+	// ligne n°3
+	if ( monForm.numdossier103.value != "" || monForm.mandat103.value != "" || monForm.adresse103.value != "" ||
+			monForm.codepostal103.value != "" || monForm.ville103.value != "" || monForm.prix103.value != "" )
+	{
+		monForm.ligne103.value = "ok";
+	}
+	else
+	{
+		monForm.ligne103.value = "";
+	}
+	// ligne n°4
+	if ( monForm.numdossier104.value != "" || monForm.mandat104.value != "" || monForm.adresse104.value != "" ||
+			monForm.codepostal104.value != "" || monForm.ville104.value != "" || monForm.prix104.value != "" )
+	{
+		monForm.ligne104.value = "ok";
+	}
+	else
+	{
+		monForm.ligne104.value = "";
+	}	
+}
+// -->
+</script>
+
+<form action="print_fiche_bonvisite_e2.htm" methode="get" name="frmBonVisite" onsubmit="validelignes()">
+<input type="hidden" name="idannonce" value="$$FORM:IDANNONCE$$" />
+<div class="ssclear2"></div>
+<table cellpadding="5" cellspacing="2" class="maxwidth" border:0">
+	<tr>
+		<td align="left" valign="middle">
+		
+			$$IF:IMMOBC:AGENCECORE:SI_LOGO$$
+				<a href="javascript:print();" >
+					<img src="$$PAGE:CFG_REP_LOGOS$$$$IMMOBC:AGENCECORE:IDAGENCE right 1$$/$$IMMOBC:AGENCECORE:IDAGENCE$$.gif?$$RND:1:100000$$" border="0" />
+				</a>
+			$$END$$
+		</td>
+		<td class="normal">
+			<font class="normalg">$$IMMOBC:AGENCECORE:NOM htmlencode$$ $$IF:IMMOBC:AGENCECORE:NOM_SIEGE$$(siège: 
+	        <a href="/$$IMMOBC:AGENCECORE:IDAGENCE_SIEGE$$/detail_agence.htm">$$IMMOBC:AGENCECORE:NOM_SIEGE 
+	        htmlencode$$</a>)$$END$$</font><br />
+	        $$IMMOBC:AGENCECORE:ADRESSE htmlencode crlf2br$$
+	        <br /><br />	
+	        <font class="normalg">T&eacute;l : </font>
+	        $$IMMOBC:AGENCECORE:TEL formattel2$$
+	        $$IF0:IMMOBC:AGENCECORE:TEL$$n/c$$END$$ 
+	        $$IF:IMMOBC:AGENCECORE:TELVEN$$$$A:TELP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:TELLOC$$$$A:TELP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:TELVAC$$$$A:TELP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:TELCOM$$$$A:TELP=1$$$$END$$
+	        $$IF:TELP$$($$END$$ $$IF:IMMOBC:AGENCECORE:TELVEN$$ven : $$IMMOBC:AGENCECORE:TELVEN 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:TELLOC$$loc : $$IMMOBC:AGENCECORE:TELLOC 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:TELVAC$$vac : $$IMMOBC:AGENCECORE:TELVAC 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:TELCOM$$com : $$IMMOBC:AGENCECORE:TELCOM 
+	        formattel2$$$$END$$ $$IF:TELP$$)$$END$$
+	        <br />
+	        <font class="normalg">Fax : </font>$$IMMOBC:AGENCECORE:FAX formattel2$$$$IF0:IMMOBC:AGENCECORE:FAX$$n/c$$END$$ 
+	        $$IF:IMMOBC:AGENCECORE:FAXVEN$$$$A:FAXP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:FAXLOC$$$$A:FAXP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:FAXVAC$$$$A:FAXP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:FAXCOM$$$$A:FAXP=1$$$$END$$
+	        $$IF:FAXP$$($$END$$ $$IF:IMMOBC:AGENCECORE:FAXVEN$$ven:$$IMMOBC:AGENCECORE:FAXVEN 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:FAXLOC$$loc:$$IMMOBC:AGENCECORE:FAXLOC 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:FAXVAC$$vac:$$IMMOBC:AGENCECORE:FAXVAC 
+	        formattel2$$$$END$$ $$IF:IMMOBC:AGENCECORE:FAXCOM$$com:$$IMMOBC:AGENCECORE:FAXCOM 
+	        formattel2$$$$END$$ $$IF:FAXP$$)$$END$$<br />
+	        $$IF:IMMOBC:AGENCECORE:EMAILVEN$$$$A:MAILP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:EMAILLOC$$$$A:MAILP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:EMAILVAC$$$$A:MAILP=1$$$$END$$
+	        $$IF:IMMOBC:AGENCECORE:EMAILCOM$$$$A:MAILP=1$$$$END$$
+	        <font class="normalg">Email : </font><a href="mailto:$$IMMOBC:AGENCECORE:EMAIL$$">$$IMMOBC:AGENCECORE:EMAIL$$</a>                    
+	        $$IF0:IMMOBC:AGENCECORE:EMAIL$$n/c$$END$$ $$IF:MAILP$$($$END$$ $$IF:IMMOBC:AGENCECORE:EMAILVEN$$ven:<a href="mailto:$$IMMOBC:AGENCECORE:EMAILVEN$$">$$IMMOBC:AGENCECORE:EMAILVEN$$</a>$$END$$ 
+	        $$IF:IMMOBC:AGENCECORE:EMAILLOC$$loc:<a href="mailto:$$IMMOBC:AGENCECORE:EMAILLOC$$">$$IMMOBC:AGENCECORE:EMAILLOC$$</a>$$END$$ 
+	        $$IF:IMMOBC:AGENCECORE:EMAILVAC$$vac:<a href="mailto:$$IMMOBC:AGENCECORE:EMAILVAC$$">$$IMMOBC:AGENCECORE:EMAILVAC$$</a>$$END$$ 
+	        $$IF:IMMOBC:AGENCECORE:EMAILCOM$$com:<a href="mailto:$$IMMOBC:AGENCECORE:EMAILCOM$$">$$IMMOBC:AGENCECORE:EMAILCOM$$</a>$$END$$ 
+	        $$IF:MAILP$$)$$END$$
+	        $$IF:IMMOBC:AGENCECORE:URL$$
+	        <br /><font class="normalg">Url : </font><a href="$$IMMOBC:AGENCECORE:URL$$" target="_new">$$IMMOBC:AGENCECORE:URL$$</a> 
+	        $$END$$
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table>
+			<tr><td align="left" class="normal">Numéro de carte :</td><td><input type="text" name="num_carte" value="$$FORM:NUM_CARTE$$" /></td></tr>
+			<tr><td align="left" class="normal">Caisse de garantie :</td><td><input type="text" name="caissegarantie" value = "$$FORM:CAISSEGARANTIE$$" /></td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" class="normal14g" colspan = "2" >Reconnaissance d'indications et de visites</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="2"><img src="$$_$$/images/x.gif" width="1" height="5" alt="" /></td>
+	</tr>	
+	<tr>
+		<td class="td_fichebonvisite">
+			<table class="maxwidth" cellpadding="1" cellspacing="0">
+				<tr><td class="normal" colspan="2"><u>Coordonnées du visiteur</u></td></tr>
+				<tr><td class="normal">Nom</td><td><input type="text" name="visit_nom" value="$$FORM:VISIT_NOM$$" /></td></tr>
+				<tr><td class="normal">Adresse</td><td><input type="text" name="visit_adresse" value="$$FORM:VISIT_ADRESSE$$" /></td></tr>
+				<tr><td class="normal">Code postal</td><td><input type="text" name="visit_cp" value="$$FORM:VISIT_CP$$" maxlength="5" /></td></tr>
+				<tr><td class="normal">Ville</td><td><input type="text" name="visit_ville" value="$$FORM:VISIT_VILLE$$" /></td></tr>
+				<tr><td class="normal">Téléphone</td><td><input type="text" name="visit_tel" value = "$$FORM:VISIT_TEL$$" /></td></tr>
+				<tr><td><img src="$$_$$images/x.gif" width="1" height="1" alt="" /></td></tr>
+			</table>
+		</td>
+		<td class="td_fichebonvisite">
+			<table class="maxwidth"  cellpadding="1" cellspacing="0">
+				<tr><td class="normal" colspan="2"><u>Références</u></td></tr>
+				<tr><td class="normal">Bon de visites N° :	</td><td width="70%"><input type="text" name="bon_visit" value="$$FORM:BON_VISIT$$" /></td></tr>
+				<tr><td class="normal">Accompagnateur : 	</td><td><input type="text" name="accompagnateur" value="$$FORM:ACCOMPAGNATEUR$$" /></td></tr>
+				<tr><td class="normal">Date de visite : 	</td><td><input type="text" name="date_visite"  value="$$FORM:DATE_VISITE$$" /></td></tr>
+				<tr><td><img src="$$_$$images/x.gif" width="1" height="65" alt="" /></td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="normal">
+		<br />
+		Nous soussignés
+		<br/><br/>
+		Agissant en qualité d'acquéreurs éventuels, reconnaissons avoir demandé et reçu à l'instant de votre cabinet les noms, adresses et conditions de ventes des affaires désignées ci-après.<br/>
+		Nous déclarons que ces affaires nous ont été présentées en premier lieu par votre cabinet et que nous n'en avions aucune connaissance auparavant.<br/><br/>
+		En conséqence nous nous engageons expressément : <br/><br/>
+		- A ne communiquer à personne ces renseignements qui nous ont été donnés à titre personnel et confidentiel.<br/>
+		- A informer de notre visite de ce jour toute personne qui pourrait à l'avenir nous présenter le même bien.<br/>
+		- A ne traiter l'achat de l'une ou de plusieurs de ces affaires que par votre seul intermédiaire, même après expiration des mandats qui vous ont été remis.<br/><br/>
+		En cas de violation des engagements ci-dessus, nous serions tenus à l'entière réparation des préjudices causés à votre cabinet par son éviction, ce préjudice ne pouvant être inférieur à la commission que vous auriez perçue en concourant à l'acte.
+		<br />
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2" align="center">	
+		<table class="centrer" border=1 cellpadding="2" cellspacing="1">
+			<tr>
+				<td class="normalg">N°dossier</td>
+				<td class="normalg">Mandat</td>
+				<td class="normalg">Adresse</td>
+				<td class="normalg">Code postal</td>
+				<td class="normalg">Ville</td>
+				<td class="normalg">Prix</td>
+			</tr>
+		$$B:SLPRO:LISTE_ANNONCES$$
+		<!-- $$SLPRO:LISTE_ANNONCES:LIBELLE$$ -->
+		$$BIF:SLPRO:LISTE_ANNONCES$$
+		$$DO:1:8$$
+			<tr>
+				<td class="normal"><input type="text" name="numdossier$$SLPRO:LISTE_ANNONCES:I$$" value="$$FORM:NUMDOSSIER1$$" /></td>
+				<td class="normal">$$IF:SLPRO:LISTE_ANNONCES:NUMERO_MANDAT$$&nbsp;$$SLPRO:LISTE_ANNONCES:NUMERO_MANDAT$$$$END$$$$IF0:SLPRO:LISTE_ANNONCES:NUMERO_MANDAT$$<input type="text" name="nummandat$$SLPRO:LISTE_ANNONCES:I$$" value="$$FORM:NUMMANDAT1$$" /> $$END$$</td>
+				<td class="normal" valign="middle">
+					$$SLPRO:LISTE_ANNONCES:PRIV_ADRESSE htmlencode$$
+					$$IF0:SLPRO:LISTE_ANNONCES:PRIV_ADRESSE$$
+						$$SLPRO:LISTE_ANNONCES:ADRESSE$$$$IF0:SLPRO:LISTE_ANNONCES:ADRESSE$$<input type="text" name="adresse$$SLPRO:LISTE_ANNONCES:I$$" value="$$FORM:ADRESSE1$$" />$$END$$
+					$$END$$
+				</td>
+				<td class="normal">&nbsp;$$SLPRO:LISTE_ANNONCES:PRIV_CP htmlencode$$$$IF0:SLPRO:LISTE_ANNONCES:PRIV_CP$$$$SLPRO:LISTE_ANNONCES:CP$$$$END$$</td>
+				<td class="normal">&nbsp;$$SLPRO:LISTE_ANNONCES:PRIV_VILLE htmlencode$$$$IF0:SLPRO:LISTE_ANNONCES:PRIV_VILLE$$$$SLPRO:LISTE_ANNONCES:VILLE$$$$END$$</td>
+				<td class="normal">&nbsp;
+				$$SLPRO:LISTE_ANNONCES:PX 
+				formatnumber 0$$$$SLPRO:LISTE_ANNONCES:PX_LOYER 
+				formatnumber 0$$$$SLPRO:LISTE_ANNONCES:PX_BOUQUET 
+				formatnumber 0$$$$SLPRO:LISTE_ANNONCES:PX_BS_SEMAINE 
+				formatnumber 0$$$$IF0:SLPRO:LISTE_ANNONCES:PX_BOUQUET$$$$SLPRO:LISTE_ANNONCES:PX_VALEUR_A_LACHAT 
+				formatnumber 0$$$$END:PX_BOUQUET$$&nbsp;&euro;
+				</td>
+			</tr>
+		$$LOOP$$
+		$$BFIN$$
+		$$BIF0:SLPRO:LISTE_ANNONCES$$
+			<!-- y a rien -->
+		$$BFIN$$
+			<tr>
+				<input type="hidden" name="ligne101" value=""/>
+				<td class="normalg"><input type="text" name="numdossier101" value="$$FORM:NUMDOSSIER2$$"   /></td>
+				<td class="normalg"><input type="text" name="mandat101" value="$$FORM:MANDAT101$$" /></td>
+				<td class="normalg"><input type="text" name="adresse101" value="$$FORM:ADRESSE101$$" /></td>
+				<td class="normalg"><input type="text" name="codepostal101" value="$$FORM:CODEPOSTAL101$$" size="5" maxlength="5" /></td>
+				<td class="normalg"><input type="text" name="ville101" value="$$FORM:VILLE101$$" /></td>
+				<td class="normalg"><input type="text" name="prix101" value="$$FORM:PRIX101$$" size="10" /></td>
+			</tr>
+			<tr>
+				<input type="hidden" name="ligne102" value=""/>
+				<td class="normalg"><input type="text" name="numdossier102" value="$$FORM:NUMDOSSIER2$$" />
+				</td>
+				<td class="normalg"><input type="text" name="mandat102" value="$$FORM:MANDAT102$$" /></td>
+				<td class="normalg"><input type="text" name="adresse102" value="$$FORM:ADRESSE102$$" /></td>
+				<td class="normalg"><input type="text" name="codepostal102" value="$$FORM:CODEPOSTAL102$$" size="5" maxlength="5" /></td>
+				<td class="normalg"><input type="text" name="ville102" value="$$FORM:VILLE102$$" /></td>
+				<td class="normalg"><input type="text" name="prix102" value="$$FORM:PRIX102$$" size="10" /></td>
+			</tr>
+			<tr>
+				<input type="hidden" name="ligne103" value=""/>
+				<td class="normalg"><input type="text" name="numdossier103" value="$$FORM:NUMDOSSIER3$$"  /></td>
+				<td class="normalg"><input type="text" name="mandat103" value="$$FORM:MANDAT103$$" /></td>
+				<td class="normalg"><input type="text" name="adresse103" value="$$FORM:ADRESSE103$$" /></td>
+				<td class="normalg"><input type="text" name="codepostal103" value="$$FORM:CODEPOSTAL103$$" size="5" maxlength="5" /></td>
+				<td class="normalg"><input type="text" name="ville103" value="$$FORM:VILLE103$$" /></td>
+				<td class="normalg"><input type="text" name="prix103" value="$$FORM:PRIX103$$" size="10" /></td>
+			</tr>
+			<tr>
+				<input type="hidden" name="ligne104" value=""/>
+				<td class="normalg"><input type="text" name="numdossier104" value="$$FORM:NUMDOSSIER4$$"   /></td>
+				<td class="normalg"><input type="text" name="mandat104" value="$$FORM:MANDAT104$$" /></td>
+				<td class="normalg"><input type="text" name="adresse104" value="$$FORM:ADRESSE104$$" /></td>
+				<td class="normalg"><input type="text" name="codepostal104" value="$$FORM:CODEPOSTAL104$$" size="5" maxlength="5" /></td>
+				<td class="normalg"><input type="text" name="ville104" value="$$FORM:VILLE104$$" /></td>
+				<td class="normalg"><input type="text" name="prix104" value="$$FORM:PRIX104$$" size="10" /></td>
+			</tr>
+
+		</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><img src="$$_$$images/x.gif" width="1" height="15" alt="" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="normal">
+			Signature des visiteurs précédée de la mention "lu et approuvé".
+		</td>
+	</tr>
+</table>
+<center><input type="image" name="submit" src="$$_$$i/dyn/btngenererfiche.png" /></center>
+
+</form>
+$$INCL:BASPOP.HTM$$

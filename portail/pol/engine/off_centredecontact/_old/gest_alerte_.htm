@@ -1,0 +1,173 @@
+$$E:E3:CAT:CDC_SRECHECHES:SLPRO$$
+$$INIT::FORM:TYPEREC=-s$$
+$$SET:PAGE:IDT=MandatventeAccueil$$ $$INIT:FORM:DISPLAY=groupe$$
+$$INIT:INTRAX=1$$ 
+$$DYN:AUTH:CHECK_LOGIN:~authrequiredlevel:LOOSE$$
+
+
+<!--#include absolute="/portail/pol/engine/centredecontact/haut.htm"-->
+$$E:MANDATVENTE:CLIENT$$
+$$B:MANDATVENTE:BIENS:ALIAS:BIENS$$
+$$B:MANDATVENTE:TRANSACTIONS:ALIAS:TRANSACTIONS$$
+ $$IF:MANDATVENTE:CLIENT:PRIME_RESTANT$$
+$$IF!:compte:FORM:DISPLAY$$
+	<div style="border:1px outset #42638C; color:#42638C; font-weight:bold; float:center; padding:3px; margin-bottom:10px; width:350px;">
+		<a href="#tab" class="mvhelp" onmouseover="return escape(dcc2(this,'$$LG:PRIME escape$$'));"><img src="$$_$$engine/centredecontact/icons/lightbulb.gif" /></a> &nbsp; Offre découverte : Profitez encore de $$MANDATVENTE:CLIENT:PRIME_RESTANT formatnumber 0$$&euro; HT
+	</div>
+$$END$$
+$$END$$
+<div id="gestError"></div>
+<div class="divContent" id="divGestMandat"></div>
+<script type="text/javascript">
+<!-- 
+<!--#include absolute="/portail/pol/engine/centredecontact/javascript.htm"-->
+function changeAmount(a,b){
+	if(a=='W' || a=='w'){
+		document.getElementById(b).disabled = true;
+		document.getElementById(b).value = '';
+		document.getElementById(b).style.display = 'none';
+	}	
+	else{
+		document.getElementById(b).disabled = false;
+		document.getElementById(b).style.display = 'inline';
+	}
+}
+
+function updateList()
+{
+	var listid = MM_findObj("LISTEIDALERTE");
+	var toupdate;
+	myArray = new Array; 
+	myArray = listid.split(","); 
+	for (i=0; i < myArray.length; i++)
+	{
+		toupdate = MM_findObj("ETATALERTE_"+i);
+		toupdate.value = 'W';
+	}	
+}
+//-->
+</script>
+<div style="width:480px;">
+<div class="menu$$IF=:groupe$groupenull:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$dossiers.htm?display=groupe" onmouseover="return escape(dcc2(this,'$$LG:DOSSIER escape$$'));" class="lienMenu$$IF=:groupe:FORM:DISPLAY$$On$$END$$">Mes Recherches</a></div>
+<div class="menu$$IF=:mandat:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$contacts.htm?display=mandat" onmouseover="return escape(dcc2(this,'$$LG:AFFAIRE escape$$'));" class="lienMenu$$IF=:mandat:FORM:DISPLAY$$On$$END$$">Mes Contacts</a></div>
+<div class="menu$$IF=:compte:FORM:DISPLAY$$On$$END$$"><a href="$$BASE:FIELD$$compte.htm?display=compte" onmouseover="return escape(dcc2(this,'$$LG:COMPTE escape$$'));" class="lienMenu$$IF=:compte:FORM:DISPLAY$$On$$END$$">Mon compte</a></div>
+<div>
+
+<div class="divContent" style="width:500px" >
+	
+	
+	$$REM:20070116$$<!--	<div class="mandatventeTitre"> Résumé des recherches </div>
+	- $$MANDATVENTE:CLIENT:TOT_ALERTE_ACTIVE$$ Alerte$$MANDATVENTE:CLIENT:TOT_ALERTE_ACTIVE pluriel$$ active$$MANDATVENTE:CLIENT:TOT_ALERTE_ACTIVE pluriel$$<br />
+	- $$MANDATVENTE:CLIENT:TOT_ALERTE_INACTIVE$$ Alerte$$MANDATVENTE:CLIENT:TOT_ALERTE_INACTIVE pluriel$$ inactive$$MANDATVENTE:CLIENT:TOT_ALERTE_INACTIVE pluriel$$<br />
+	- $$MANDATVENTE:CLIENT:TOT_ALERTE_SUPP$$ Alerte$$MANDATVENTE:CLIENT:TOT_ALERTE_SUPP pluriel$$ supprim&eacute;e$$MANDATVENTE:CLIENT:TOT_ALERTE_SUPP pluriel$$ 
+	-->$$END$$	
+	<div style="width:460px;">
+		<div style="height:20px !important; height:2px; margin-top:0px !important; margin-top:-10px;">&nbsp;</div>
+		<div style="float:right;">&raquo; <a href="$$BASE:FIELD$$dossiers.htm">Revenir à l'affichage par défaut</a></div>
+		<div><div style="font-weight:bold; font-size:12px;">Liste des recherches  :</div> Cochez les recherches à modifier</div>
+	</div>
+		
+
+
+		$$REM$$ <!--
+				P:MANDATVENTE:MULTIEDITALERTE
+				Paramètres attendus en provenance du formulaire :
+				
+				Obligatoire - LISTEIDALERTE : Liste des identifiants d'alertes à modifier.
+				Optionnel - ETATALERTE_# : Code de l’état de l’alerte (A active, I Inactive ou S supprimée) où # rerésente l'id de l'alerte à modifier, cette id doit être dans la liste précédement citée.
+				Optionnel - MONTANTALERTE_# : montant de l’alerte où # rerésente l'id de l'alerte à modifier, cette id doit être dans la liste précédement citée.
+				-->
+		$$END$$		
+		
+		$$B:MANDATVENTE:LISTEALERTE::QRY:TRI::QRY:TYPEREC:QRY:TYPE:ALIAS:LISTEALERTETRI$$
+		$$BIF:LISTEALERTETRI$$
+		
+		<table cellpadding="0" cellspacing="3" class="tablealerteTri" style="width:500px">
+		<tr style="font-weight:bold; vertical-align:middle;">
+			<td style="width:130px; padding-top:4px; vertical-align:top; text-align:center;">Etat</td>
+			<td style="width:200px; text-align:center;">
+				Campagne <br />
+				<a href="#tab" onClick="triAlerte('campagne','asc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/triasc.gif" /></a>
+				<a href="#tab" onClick="triAlerte('campagne','desc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/tridesc.gif" /></a>
+			</td>
+			<td style="width:70px; text-align:center;">	
+				Transaction 
+				<a href="#tab" onClick="triAlerte('transaction','asc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/triasc.gif" /></a>
+				<a href="#tab" onClick="triAlerte('transaction','desc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/tridesc.gif" /></a>			
+			</td>
+			<td style="width:40px; text-align:center;">
+				CP <br />
+				<a href="#tab" onClick="triAlerte('cp','asc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/triasc.gif" /></a>
+				<a href="#tab" onClick="triAlerte('cp','desc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/tridesc.gif" /></a>			</td>
+			$$REM:20070116$$<td style="width:75px; text-align:center;">
+				Bien <br />
+				<a href="#tab" onClick="triAlerte('bien','asc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/triasc.gif" /></a>
+				<a href="#tab" onClick="triAlerte('bien','desc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/tridesc.gif" /></a>			</td>
+			$$END$$		
+			<td style="width:40px; text-align:center;">
+				&euro; <br />
+				<a href="#tab" onClick="triAlerte('montant','asc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/triasc.gif" /></a>
+				<a href="#tab" onClick="triAlerte('montant','desc','$$FORM:TYPEREC$$','$$FORM:TYPE$$');"><img src="$$_$$engine/centredecontact/icons/tridesc.gif" /></a>			</td>
+		</tr>
+		<form id="gestAlerte" name="gestAlerte" method="post" action="/$$REP:URI$$" onSubmit="updateList();">
+		<input type="hidden" name="u" value="mandatvente:multieditalerte" />
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="iduser" value="$$SESSION:IDUSER$$" />
+		<input type="hidden" name="idclient" value="$$SESSION:IDCLIENT$$" />		
+		<input type="hidden" name="typerec" value="$$FORM:TYPEREC$$" />	
+		<input type="hidden" name="type" value="$$FORM:TYPE$$" />	
+		<input type="hidden" name="tri" value="$$FORM:TRI$$" />	
+		$$DO$$ 
+		$$IF=:1:LISTEALERTETRI:IDCAMPAGNE_HEADINGS$$			
+			<tr style="background-color:#efefef;" $$IF!:a:LISTEALERTETRI:ETATCAMPAGNE$$id="campagneinactive"$$END$$>
+			<td colspan="6 >
+				<nobr><img src="$$_$$engine/centredecontact/icons/folder$$IF!:a:LISTEALERTETRI:ETATCAMPAGNE$$grey$$END$$.gif">
+				<b>$$LISTEALERTETRI:NOMCAMPAGNE$$</b></nobr>
+				<i>$$IF=:a:LISTEALERTETRI:ETATCAMPAGNE$$activée$$END$$ $$IF=:i:LISTEALERTETRI:ETATCAMPAGNE$$désactivée$$END$$$$IF=:s:LISTEALERTETRI:ETATCAMPAGNE$$supprimée$$END$$</i> $$LISTEALERTETRI:EMAILCAMPAGNE$$ 
+			</td>	
+			</tr>						
+		$$END$$		
+		$$IF:LISTEALERTETRI:IDALERTE$$ 
+
+		$$IF!:a:LISTEALERTETRI:ETATCAMPAGNE$$
+			$$A:INACTIVE=1$$
+		$$END$$
+		$$IF=:a:LISTEALERTETRI:ETATCAMPAGNE$$
+			$$A:INACTIVE=0$$
+		$$END$$		
+		
+		<tr>	
+			<td style="vertical-align:top;">				
+					<input type="checkbox" name="LISTEIDALERTE" id="LISTEIDALERTE$$LISTEALERTETRI:I$$" value="$$LISTEALERTETRI:IDALERTE$$" style="margin-left:-5px;" $$IF:INACTIVE$$disabled$$END$$/>
+					<input type="hidden" name="ETATALERTE_$$LISTEALERTETRI:IDALERTE$$" value=$$LISTEALERTETRI:ETATALERTE$$>
+
+				$$REM$$<!-- 				
+					$$IF=:a:LISTEALERTETRI:ETATALERTE$$&nbsp;<a  onmouseover="return escape(dcc2(this,'$$LG:DESACTIVERALERTE escape$$'));" href="#tab" onClick="gestForm('editalerte','idalerte=$$LISTEALERTETRI:IDALERTE$$,iduser=$$SESSION:IDUSER$$,etatalerte=i',event);" ><img src="$$_$$engine/centredecontact/icons/control_pause_blue.gif"></a>$$END$$  
+					$$IF!:a:LISTEALERTETRI:ETATALERTE$$&nbsp;<a  onmouseover="return escape(dcc2(this,'$$LG:ACTIVERALERTE escape$$$$IF!:a$i:LISTEALERTETRI:ETATALERTE$$ supprimée$$END$$'));" href="#tab" onClick="gestForm('editalerte','idalerte=$$LISTEALERTETRI:IDALERTE$$,iduser=$$SESSION:IDUSER$$,etatalerte=a',event);" ><img src="$$_$$engine/centredecontact/icons/control_play_blue.gif"></a>$$END$$  
+				-->$$END$$
+			</td>
+			<td style="text-align:center;">$$LISTEALERTETRI:NOMCAMPAGNE$$</td>
+			<td style="text-align:center;">$$LISTEALERTETRI:LIBTYPETRANSAC$$</td>
+			<td style="text-align:center;">$$LISTEALERTETRI:CPALERTE$$</td>
+			$$REM:20070116$$<td>$$LISTEALERTETRI:LIBTYPEBIEN$$</td>$$END$$
+			<td style="text-align:center;"><input type="text" name="MONTANTALERTE_$$LISTEALERTETRI:IDALERTE$$" id="montantalerte$$LISTEALERTETRI:I$$" size="3" value="$$IF!:W:LISTEALERTETRI:ETATALERTE$$$$LISTEALERTETRI:MONTANTALERTE formatnumber 0$$$$END$$" $$IF=:W:LISTEALERTETRI:ETATALERTE$$style="display:none;" disabled$$END$$/></td>
+		</tr>
+		<tr><td colspan="7" style="background-color:#cccccc; height:1px;"></td></tr>
+		$$END$$
+		$$LOOP$$
+		<tr>
+			<td colspan="6"><input type="submit" value="Validez vos modifications" /></td>
+		</tr>
+		</form>
+		</table>
+		$$IF=:s:FORM:TYPEREC$$<a href="$$REP:0$$?tri=$$FORM:TRI$$&typerec=-s">Masquer les recherches supprimées</a>$$END$$
+		$$IF!:s:FORM:TYPEREC$$<a href="$$REP:0$$?tri=$$FORM:TRI$$&typerec=">Afficher aussi les recherches supprimées</a>$$END$$
+		
+		$$BFIN$$
+		$$BIF0:LISTEALERTETRI$$
+		<b>[Actuellement aucune liste de recherches ne peut être affichée]</b>
+		$$BFIN$$
+</div>
+<!--#include absolute="/portail/pol/engine/centredecontact/bas.htm"-->
+
