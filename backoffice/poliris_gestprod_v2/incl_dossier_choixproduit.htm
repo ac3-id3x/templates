@@ -1,0 +1,38 @@
+$$REM$$
+====================================================================
+//// <summary>Dossier : Selection du produit pour un nouveau dossier</summary>
+//// <remarks>
+//// <para>Pages html inclues : </para>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LISTE_PRODUIT alias LTPROD </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : AUTH:VERIFICATION </para>
+//// </remarks>
+//// <update date="2007-12-24" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$B:GDP2:LISTE_PRODUIT:ALIAS:LTPROD$$
+<form id="frmnouv" name="frmnouv">
+	<h1>Nouveau dossier: Sélection du produit</h1>
+	<div  class="cadrefonce" >
+	$$IF:AUTH:VERIFICATION:DOSSIER_C$$
+		&nbsp;<center>
+		<label>Veuillez sélectionner un produit pour le dossier:</label>
+		<select id="cboproduit" name="cboproduit" >
+		$$BIF:LTPROD$$
+			$$DO$$
+				$$IF=:OUI:LTPROD:PRO_SI_VISIBLE$$
+					<option value="$$LTPROD:IDPRODUIT$$" >$$LTPROD:PRO_LIBELLE$$</option>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+	</select></center> <BR>
+	<p align=right ><input type="button" value="Valider" onclick="javascript:Creation();" ></p>
+</form>
+<script>
+		function Creation ()
+		{
+			document.frmnouv.action="/" + document.frmnouv.cboproduit.options[frmnouv.cboproduit.selectedIndex].value + "/0/dossiernouv.htm";
+			document.frmnouv.submit();
+		}
+</script>
+		$$END$$

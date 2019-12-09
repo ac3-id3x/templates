@@ -1,0 +1,112 @@
+$$REM$$
+====================================================================
+//// <summary>Permet de saisir ou de voir les informations concernant un nom de domaine</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (GDP:ETATDOSSIER,GDP:TYPE_URL) </para>
+//// </remarks>
+//// <update date="2008-01-16" author="Yann.ROZELOT">Création</update>
+====================================================================
+$$END:REM$$
+
+$$IF0:FORM:POPUP$$
+	$$INCL:HAUT_POP.HTM$$
+$$END$$
+
+
+$$E:GDP2:DOSSIER_URL:~IDDOSSIERURL:QRY:IDDOSSIERURL:ALIAS:INFOSURL$$
+$$B:GDP2:ZONE_SELECT:~TYPE:14:ALIAS:ETATURL$$
+$$B:GDP2:TYPE_URL$$
+<form action="" method="post" id="formulaire" name="formulaire">
+	<input type="hidden" name="u" value="GDP2:AJOUT_MAJURL2">
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+	<input type="hidden" name="page_err" value="/$$REP:URI$$">
+	<input type="hidden" id="iddossier" name="iddossier" value="$$REP:1$$">
+	<input type="hidden" id="iddossierurl" name="iddossierurl" value="$$INFOSURL:IDDOSSIERURL$$">
+	<input type="hidden" id="iddomaine_mapping" name="iddomaine_mapping" value="">
+	<input type="hidden" id="iddomaine_mx" name="iddomaine_mx" value="">
+	<input type="hidden" id="iduser" name="iduser" value="$$SESSION:IDUSER$$">
+	<input type="hidden" id="iddomaine" name="iddomaine" value="$$INFOSURL:IDDOMAINE$$">
+	<input type="hidden" id="delete_row" name="delete_row" value="0">
+	<input type="hidden" id="modif" name="modif" value="0">
+	<input type="hidden" id="modif_mapping" name="modif_mapping" value="0">
+	<input type="hidden" id="Conf" name="Conf" value="" />
+	<input type="hidden" id="Txt_domainpart_mx2" name="Txt_domainpart_mx2" value="" />
+	<input type="hidden" id="TxtAdresseIp" name="TxtAdresseIp" value="" />
+	<input type="hidden" id="TxtPriorite" name="TxtPriorite" value="" />
+	<input type="hidden" id="chx_type_mapping" name="chx_type_mapping" value="" />
+	<input type="hidden" id="chx_cfg_mx" name="chx_cfg_mx" value="" />
+	<input type="hidden" id="txtAutreMapping" name="txtAutreMapping" value="" />
+	<input type="hidden" id="txtDomainePart" name="txtDomainePart" value="" />
+	<input type="hidden" id="suprr_mapping_associe_domaine_mx" name="suprr_mapping_associe_domaine_mx" value="0" />
+	<input type="hidden" id="url2" name="url2" value="$$INFOSURL:URL_URL$$" />
+	
+	<!--<script language="javascript" type="text/javascript" src="$$_$$javascript/prototype.js"></script>-->
+	<script src="$$_$$javascript/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="$$_$$javascript/fonction_dns.js"></script>
+
+<div  class="cadrefonce">
+	<table>
+		<tr>
+			<td width="50%"><label for="Nom">Nom de domaine : http://www. *</label></td>
+			<td><input type="text" name="url_url" id="url_url" value="$$INFOSURL:URL_URL$$"size="30" $$IF:INFOSURL:POPUP$$readonly="readonly"$$END$$/></td>
+			<td>(*) champs obligatoires</td>
+		</tr>
+		<tr>
+			<td><label for="Etat">&nbsp;Etat de la demande : *</label></td>
+			<td>
+				<select id="idetat" name="idetat">
+					$$BIF:ETATURL$$
+					$$DO$$
+						<option value="$$ETATURL:IDETAT$$" $$IF=:INFOSURL_IDETAT:ETATURL:IDETAT$$selected$$END$$>$$ETATURL:ETAT_DESCRIPTION pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><label for="type_url">&nbsp;Type d'url : *</label></td>
+			<td>
+				<select id="idetat" name="idtypeurl">
+					$$BIF:GDP2:TYPE_URL$$
+					$$DO$$
+						<option value="$$GDP2:TYPE_URL:IDTYPEURL$$" $$IF=:INFOSURL_IDTYPEURL:GDP2:TYPE_URL:IDTYPEURL$$selected$$END$$>$$GDP2:TYPE_URL:TUR_LIBELLE pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><label for="comptesPop">&nbsp;Comptes POP :</label></td>
+			<td><textarea name="comptesPop" rows="4" cols="50">$$INFOSURL:COMPTESPOP br2crlf$$</textarea></td>
+		</tr>
+		<tr>
+			<td><label for="redirections">&nbsp;Redirections :</label></td>
+			<td><textarea name="redirections" rows="4" cols="50">$$INFOSURL:REDIRECTIONS br2crlf$$</textarea></td>
+		</tr>
+		<tr>
+			<td><label for="Commentaire">&nbsp;Commentaire :</label></td>
+			<td><textarea name="his_commentaire" rows="4" cols="50">$$INFOSURL:HIS_COMMENTAIRE br2crlf$$</textarea></td>
+		</tr>
+		<tr>
+			<td><label for="siBAL">&nbsp;Ce domaine nécessite une BAL ?</label></td>
+			<td>
+				<input type="checkbox" name="siBAL" id="siBAL" $$IF:INFOSURL:SIBAL$$checked="checked"$$END$$ />
+			</td>
+			<td width="50%" valign="bottom" align="right">
+				$$IF0:INFOSURL:URL_URL$$
+					$$IF0:GDP2:AJOUT_MAJURL2:~IDDOSSIERURL$$
+						<p align="right"><input id="btnAjouter" type="button" value="Ajouter" name="ajout" onclick="javascript:valid();"></p>
+					$$END$$
+					$$IF:GDP2:AJOUT_MAJURL2:~IDDOSSIERURL$$
+						<p align="right"><input id="btnModifier" type="button" value="Modifier" name="modification" onclick="javascript:valid();"></p>
+					$$END$$
+				$$END$$
+				$$IF:INFOSURL:URL_URL$$
+					<p align="right"><input id="btnmodifier" type="button" value="Modifier" name="modification" onclick="javascript:valid();"></p>
+				$$END$$
+			</td>
+		</tr>
+	</table>
+</div>
+</form>
+

@@ -1,0 +1,48 @@
+$$B:GDP2:PPC_UPDATEACCOUNT:ALIAS:PPC_UPDATEACCOUNT:~idfournisseur:QRY:IDFOURNISSEUR:~login:QRY:LOGIN:~password:QRY:PASSWORD:QRY:ACCOUNT:QRY:MASTERACCOUNT:QRY:NAMEACCOUNT:QRY:ISCACH$$
+$$IF0:PPC_UPDATEACCOUNT:ERRE$$
+$$BIF:PPC_UPDATEACCOUNT$$
+$$IF0:PPC_UPDATEACCOUNT:NBR$$(Aucun r&eacute;sultat... recommencez svp)$$END:PPC_UPDATEACCOUNT:NBR$$
+<script language="javascript" type="text/javascript">
+	clearCampaign();
+	clearAdgroups();
+	submitButton();		
+</script>
+$$IF+:2:PPC_UPDATEACCOUNT:NBR$$
+<input type="hidden" name="accountid" id="accountid" value="" />
+<input type="hidden" name="accountname" id="accountname" value="" />
+<select name="accountidname" id="accountidname" onchange="javascript:splitUpdateAccount('accountidname', 'accountid', 'accountname','newaccountname');">
+<option value="-1">(Choisir un compte parmi les $$PPC_UPDATEACCOUNT:NBR$$ r&eacute;sultats)</option>$$END:PPC_UPDATEACCOUNT:NBR$$	
+$$DO:1:99999$$
+$$IF=:1:PPC_UPDATEACCOUNT:NBR$$
+<input type="hidden" name="accountid" id="accountid" value="$$PPC_UPDATEACCOUNT:ACCOUNTID$$" />
+<input type="hidden" name="accountname" id="accountname" value="$$PPC_UPDATEACCOUNT:ACCOUNTNAME$$" />
+$$END:PPC_UPDATEACCOUNT:NBR$$
+$$IF+:2:PPC_UPDATEACCOUNT:NBR$$<option value="$$PPC_UPDATEACCOUNT:ACCOUNTID$$|$$PPC_UPDATEACCOUNT:ACCOUNTNAME$$" $$IF=:PPC*UPDATEACCOUNT_ACCOUNTSELECTED:PPC_UPDATEACCOUNT:ACCOUNTID$$selected$$END$$>$$END:PPC_UPDATEACCOUNT:NBR$$
+$$PPC_UPDATEACCOUNT:ACCOUNTID$$ - $$PPC_UPDATEACCOUNT:ACCOUNTNAME$$
+$$IF+:2:PPC_UPDATEACCOUNT:NBR$$</option>$$END:PPC_UPDATEACCOUNT:NBR$$$$LOOP$$
+$$IF+:2:PPC_UPDATEACCOUNT:NBR$$</select>
+<script language="javascript" type="text/javascript">
+splitUpdateAccount('accountidname', 'accountid', 'accountname','newaccountname');
+</script>
+$$END:PPC_UPDATEACCOUNT:NBR$$
+<!-- $$PPC_UPDATEACCOUNT:NBR$$ -->
+$$IF=:1:PPC_UPDATEACCOUNT:NBR$$
+<script language="javascript" type="text/javascript">
+	getCampaigns( 'login_tdl', 'pass_tdl', 'masteraccountid', 'accountid', 'idfournisseur' );
+</script>
+$$END:PPC_UPDATEACCOUNT:NBR$$
+$$IF+:2:PPC_UPDATEACCOUNT:NBR$$
+<input type="button" name="choosecampaign" value="Choisir la campagne" onclick="javascript:getCampaigns( 'login_tdl', 'pass_tdl', 'masteraccountid', 'accountid', 'idfournisseur' );" />
+<br />
+&#160;&#160;Modifier le nom de ce compte par :&#160;<input type="text" name="newaccountname" id="newaccountname" maxlength="100" size="100" value="">&#160;
+<input type="button" name="updateaccount" value="Remplacer" onclick="javascript:updateAccount( 'idfournisseur','login_tdl', 'pass_tdl', 'accountid', 'masteraccountid', 'newaccountname' );" />
+$$END:PPC_UPDATEACCOUNT:NBR$$
+$$BFIN$$
+$$END:PPC_UPDATEACCOUNT:ERRE$$
+$$IF:PPC_UPDATEACCOUNT:ERRE$$
+<script language="javascript" type="text/javascript">
+	alert("Erreur : $$PPC_UPDATEACCOUNT:ERRE$$");
+</script>
+$$END:PPC_UPDATEACCOUNT:ERRE$$
+$$BIF0:PPC_UPDATEACCOUNT$$
+$$BFIN$$

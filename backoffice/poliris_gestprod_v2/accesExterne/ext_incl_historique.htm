@@ -1,0 +1,57 @@
+$$B:GDP2:LISTE_HISTORIQUE:~ID:REP:2:~TYPE:REP:1:ALIAS:LSTHISTO$$
+
+<style>
+	.tr_alt{
+	font-size: 11px;
+	background-color: #FFF;
+	/*background-color: #F0F2E7;*/
+	color: #3B494C;
+	text-align: center;
+}
+
+.tr_alt1{
+	font-size: 11px;
+	background-color: #D6D8CD;
+	color: #3B494C;
+	text-align: center;
+}
+</style>
+$$IF=:5:REP:1$$
+<h2>Historique des états</h2>
+$$END:REP:1$$
+$$IF=:4:REP:1$$
+<h2>Suivi des demandes</h2>
+$$END:REP:1$$
+
+$$BIF:LSTHISTO$$
+<table>
+	<tr class="header">
+				<th>Date d'effet</th>
+				<th>Etat</th>
+				<th>Utilisateur</th>
+		</tr>
+
+$$DO$$
+	<tr class="$$LSTHISTO:I mod2 tr_alt1 tr_alt$$">
+		<td>
+			$$LSTHISTO:DT_CREA date 2$$
+		</td>
+		<td>
+			$$IF=:5:REP:1$$
+				$$LSTHISTO:ETAT_DESCRIPTION$$
+			$$END:REP:1$$
+			$$IF=:4:REP:1$$
+				$$LSTHISTO:HIS_COMMENTAIRE$$
+			$$END:REP:1$$
+		</td>
+		<td>
+			$$LSTHISTO:UTILISATEUR$$
+		</td>
+$$LOOP$$
+</table>
+$$BFIN$$
+
+$$BIF0:LSTHISTO$$
+Aucunes données disponibles.
+$$BFIN$$
+

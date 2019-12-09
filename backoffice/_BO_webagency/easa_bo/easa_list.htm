@@ -1,0 +1,94 @@
+<!--#include virtual="easa_bo/incl_haut.htm" -->
+<html>
+		<head>
+<title>
+Vos Sites Agence
+</title>
+<style>
+body,select,td {
+font:menu;
+background: buttonface;
+}
+
+.data {
+	background: window;
+	border:1px solid outset;
+	overflow-y: scroll;
+	padding: 4px;
+	height: 80px;
+}
+
+input,button {
+	border-size: 1px;
+	padding-left:2px;
+	font:menu;
+}
+
+h4,h5 {
+	margin: 0px;
+}
+
+.menu {
+	border-bottom: 1px solid inset;
+}
+.menu button {
+	border-bottom: 0px;
+}
+.x {
+ font-weight:bold;
+ width:100px;
+}
+</style>
+</head>
+	<body scroll="auto">
+		<form method="get" name="add" action="/">
+		<table>
+		<tr>
+		<td>		
+		<table><tr>
+		<th><h4>Vos sites agence:</h4>
+		</th>
+		</tr>				
+			$$B:EASA:BO-LISTEEASA:~idAgence:QRY:IDAGENCE:ALIAS:ELIST$$			 
+              $$BIF:ELIST$$
+                $$DO$$
+                <tr>
+                <td>
+                   <span class="x">$$ELIST:URL$$</span>
+                   </td>
+                   <td>
+                   <span class="x">$$IF:ELIST:ETAT$$ EDITEUR ACTIF $$END$$ $$IF0:ELIST:ETAT$$ EDITEUR DESACTIVE $$END$$</span>
+                   </td>                
+                   <td>
+                   <span class="x">$$ELIST:DTETAT$$</span>
+                   </td>
+                   <td>
+                   <span class="x">$$IF:ELIST:ETAT$$ <button onclick="return EnterEasa($$ELIST:IDEASA$$)">Enter</button> $$END$$</span>
+                   </td>
+                  
+                   </tr>
+                $$LOOP$$
+            $$BFIN$$            
+            <tr>              
+            </table>
+            </td>
+            <td>$$IF:ERRE$$<font color="red">$$ERRE$$<br>$$END$$</td>
+            </tr>
+           <tr>
+                <td><br>
+	   			<a href="/index2.htm">Log Off EASA</a>
+	 		</td>
+              </tr>   
+            </table>
+            </form>
+            
+<script>
+	
+	function EnterEasa(idEasa) 
+	{
+		location.href="/"+idEasa+"/easa_bo,cat_list.htm"
+		return false;	
+	}
+</script>
+</body>
+</html>

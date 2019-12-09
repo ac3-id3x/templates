@@ -1,0 +1,144 @@
+$$REM$$
+====================================================================
+//// <summary>Page d'administration des ressources : Gestion des ressources</summary>
+//// <remarks>
+//// <para>Pages html inclues : </para>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:ZONE_SELECT alias TYPECONTRAT, GDP2:ZONE_SELECT alias TYPEMETIER, GDP2:ZONE_SELECT alias TYPEAIDE, GDP2:ZONE_SELECT alias TYPESMETIER</para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LECTURE_RESSOURCE alias LECTRESS </para>
+//// <para>Liste des macros P utilisées dans cette page (sans &dollar;&dollar;) : GDP2:MAJ_RESSOURCE </para>
+//// </remarks>
+//// <update date="2007-11-28" author="jean-jacques.durmord">Création</update>
+//// <update date="2007-12-05" author="florian.adam">Modification : Ajout de la macro aliasé TYPESMETIER </update>
+//// <update date="2007-12-06" author="florian.adam">Modification : Implémentation de la macro aliasé MAJ_RESSOURCE </update>
+===============
+$$END:REM$$
+$$REM$$
+$$B:GDP2:ZONE_SELECT:~TYPE:3:ALIAS:TYPEAIDE$$
+$$E:GDP2:LECTURE_LIGNE_AIDE:~ID:REP:1:ALIAS:LIGNEAIDE$$
+$$END:REM$$
+$$E:GDP2:RESSOURCE:REP:1$$
+$$E:AUTH:VERIFICATION$$
+
+$$B:GDP2:ZONE_SELECT:~TYPE:5:ALIAS:RESPONSABLES$$
+$$B:GDP2:ZONE_SELECT:~TYPE:7:ALIAS:PRESTATAIRES$$
+$$B:GDP2:ZONE_SELECT:~TYPE:10:ALIAS:TYPESMETIER$$
+
+$$IF:AUTH:VERIFICATION:ADMINISTRATION$$
+	$$IF:GDP2:MAJ_RESSOURCE:ERRMSG$$
+		<p class="erreur" >Message d'erreur : $$GDP2:MAJ_RESSOURCE:ERRMSG$$</p>
+	$$END$$
+	<form id="frmressource" name="frmressource" action="/$$REP:URI$$" method="post" onSubmit="return validate('frmressource',var_AMAI,msg_AMAI);" >
+		<input type="hidden" name="u" value="GDP2:MAJ_RESSOURCE">
+		<input type="hidden" name="page_ok" value="administration_liste_ressource.htm">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="idressource" value="$$REP:1$$">
+		
+		<h1>Ressource</h1>
+		<div  class="cadrefonce">
+			&nbsp;
+			<table>
+				<tr>
+					<td><label for="Nom">Nom *</label></td>
+					<td ><input id="Nom" name="Nom" type="text" value="$$GDP2:RESSOURCE:RES_NOM$$" /> </td>
+					<td width="10px"></td>
+					<td><label for="Prenom" >Prénom * </label></td>
+					<td><input id="Prenom" name="Prenom"  type="text" value="$$GDP2:RESSOURCE:RES_PRENOM$$" /></td>
+				</tr>
+				<tr>
+					<td ><label for="Email">Email *</label></td>
+					<td > <input id="Email" name="Email" type="text" value="$$GDP2:RESSOURCE:RES_EMAIL$$" />  </td>
+					<td width="10px"></td>
+					<td ><label for="WebFactory">Présent à la WebFactory</label></td>
+					<td > <input id="WebFactory" name="WebFactory" type="checkbox" value="1" $$IF:GDP2:RESSOURCE:RES_PRES_WEBFACTORY$$checked="checked"$$END$$ /> </td>
+				</tr>
+				<tr>
+$$REM$$
+					<td ><label >Type de contrat *</label></td>
+					<td > 
+						<select id="TypeContrat" name="TypeContrat" >
+						<option></option>
+						</select> </td>
+$$END:REM$$
+					<td><label >Type Métier *</label></td>
+					<td> 
+						<select id="TypeMetier" name="TypeMetier">
+						$$BIF:TYPESMETIER$$
+						$$DO$$
+							<option value="$$TYPESMETIER:ID$$" $$IF=:GDP2_RESSOURCE_IDTYPEMETIER:TYPESMETIER:ID$$selected="selected"$$END$$>$$TYPESMETIER:VALEUR$$</option>
+						$$LOOP$$
+						$$BFIN$$
+					</select>
+					</td>
+					<td width="10px"></td>
+					<td><label >Type de prestataire *</label></td>
+					<td> 
+						<select id="TypePrestataire" name="TypePrestataire" class="input">
+						$$BIF:PRESTATAIRES$$
+						$$DO$$
+							<option value="$$PRESTATAIRES:ID$$" $$IF=:GDP2_RESSOURCE_IDPRESTATAIRE:PRESTATAIRES:ID$$selected="selected"$$END$$>$$PRESTATAIRES:VALEUR$$</option>
+						$$LOOP$$
+						$$BFIN$$
+						</select> 
+					</td>
+				</tr>
+				<tr>
+					<td><label >Chef de projet</label></td>
+					<td> 
+						<select id="ChefProjet" name="ChefProjet">
+						<option value="0">------------------------</option>
+						$$BIF:RESPONSABLES$$
+						$$DO$$
+							<option value="$$RESPONSABLES:ID$$" $$IF=:GDP2_RESSOURCE_IDRESSOURCE*CHEF*PROJETS:RESPONSABLES:ID$$selected="selected"$$END$$>$$RESPONSABLES:VALEUR$$</option>
+						$$LOOP$$
+						$$BFIN$$
+					</select>
+					</td>
+					<td width="10px"></td>
+					<td ><label >Actif</label ></td>
+					<td > <input id="Checkbox2" name="siactif" type="checkbox" value="1" $$IF:GDP2:RESSOURCE:RES_ACTIF$$checked="checked"$$END$$ /> </td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+	    	<p align=right ><input id="btnAMPLreset" type="reset" value="Annulation" />
+	    		&nbsp;<input id="btnAMPLvalidation" type="submit" value="Validation"  /></p>
+		</div>
+		(*) Champs obligatoires
+	</form>
+$$END$$
+$$IF0:AUTH:VERIFICATION:ADMINISTRATION$$
+	<center><p class="erreur" >Vous n'avez pas les autorisations nécessaire pour visualiser cette page</p></center>
+$$END$$	
+<script >
+/*
+				Valeur 	Origine 		Vérification 
+				-------------------------------------------------------------------------------------------------------
+				e 			empty 			l'élément ne doit pas être vide 
+				n 			number 			l'élément doit être un nombre 
+				m 			mail 				une adresse élctronique doit être exacte sur la forme 
+				r 			regexp 			la valeur doit correspondre à un modèle déterminé 
+				p 			price 			la valeur doit se présenter sous la forme "10,00" (avec virgule) 
+				p. 			price_dot 	la valeur doit se présenter sous la forme "10.00" (avec point) 
+				c 			capitalize 	Les noms propres doivent être corrigés 
+ 				t				length			Contrôle si on dépasse pas la taille max
+*/
+		var msg_AMAI = 'GESTPROD V2 - Erreur - Formulaire';
+
+		var var_AMAI = new Array()
+		var_AMAI[0] = new Array('Nom','e','Vous n\'avez pas mentionné le nom (max:50)','50');
+		var_AMAI[1] = new Array('Nom','t','Vérifier la longueur du nom (max:50)','50');
+		var_AMAI[2] = new Array('Prenom','e','Vous n\'avez pas mentionné le prénom (max:50)','50');
+		var_AMAI[3] = new Array('Prenom','t','Vérifier la longueur du prénom (max:50)','50');
+		var_AMAI[4] = new Array('Email','m','Cet mail n\'est pas valide  (max:50)','50');
+		var_AMAI[5] = new Array('Email','e','Vous n\'avez pas mentionné l\'email (max:50)','50');
+		var_AMAI[6] = new Array('Email','t','Vérifier la longueur de l\'email (max:50)','50');
+		var_AMAI[7] = new Array('TypeMetier','e','Le type métier ne peut pas être vide','');
+		var_AMAI[8] = new Array('TypeMetier','n','Le type métier doit être un nombre','');
+		var_AMAI[9] = new Array('TypePrestataire','e','Le type prestataire ne peut pas être vide','');
+		var_AMAI[10] = new Array('TypePrestataire','n','Le type prestataire doit être un nombre','');
+		var_AMAI[11] = new Array('ChefProjet','e','Le chef de projet ne peut pas être vide','');
+		var_AMAI[12] = new Array('ChefProjet','n','Le chef de projet doit être un nombre','');
+
+</script>

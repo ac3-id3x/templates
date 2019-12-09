@@ -1,0 +1,125 @@
+<!--#include virtual="easa_bo/incl_haut.htm" -->
+<html>
+	<head>
+		<style>
+body,select,td {
+font:menu;
+background: #efefde;
+}
+
+.data {
+	background: window;
+	border:1px solid outset;
+	overflow-y: scroll;
+	padding: 4px;
+	height: 80px;
+}
+
+input,button {
+	border-size: 1px;
+	padding-left:2px;
+	font:menu;
+}
+
+h4 {
+	margin: 0px;
+}
+
+.menu {
+	border-bottom: 1px solid inset;
+}
+.menu button {
+	border-bottom: 0px;
+}
+.x {
+ font-weight:bold;
+ width:100px;
+}
+</style>
+	</head>
+	<body scroll="auto">
+		<form name="sauve" action="/" method="get" id="sauve">
+		<input type="hidden" name="page_err" value="/easa_bo, admin_list.htm">
+			      
+        Deplacer ici:
+    	<br> 
+    	 $$IF:FORM:IDTEXTE$$   
+			<a href="/easa_bo,cat_Arbo.htm?idTexte=$$FORM:IDTEXTE$$">Racine</a> |	
+     	$$END$$             
+	     $$IF:FORM:IDCATEGORIE$$             	       
+			<a href="/easa_bo,cat_Arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">Racine</a> |			
+	     $$END$$
+            		
+		$$B:EASA:BO-CATPATH:~idCatParent:REP:1:ALIAS:CATPATH$$ 		
+		$$BIF:CATPATH$$
+		$$DO$$		  
+		  <td>
+                 $$IF:FORM:IDTEXTE$$   
+                 <a href="/$$CATPATH:IDCATEGORIE$$/easa_bo,cat_Arbo.htm?idTexte=$$FORM:IDTEXTE$$">$$CATPATH:LIBELLE$$</a> |  
+             	$$END$$             
+             $$IF:FORM:IDCATEGORIE$$             	
+        		  <a href="/$$CATPATH:IDCATEGORIE$$/easa_bo,cat_Arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">$$CATPATH:LIBELLE$$</a> |
+             $$END$$
+		 
+		$$LOOP$$
+		$$BFIN$$		
+	  <br>
+        </tr>  
+		<table>
+		<tr>
+		<td>		
+		<table><tr>
+		<td>Catégories:</td>		
+		</tr>	
+              	
+		</font>
+			$$B:EASA:BO-CATEGORIES:~idCatParent:REP:1:ALIAS:CLIST$$			 
+              $$BIF:CLIST$$
+                $$DO$$
+                <tr>
+                <td>
+                 $$IF:FORM:IDTEXTE$$             	
+				<span class="x"><a href="/$$CLIST:IDCATEGORIE$$/easa_bo,cat_Arbo.htm?idTexte=$$FORM:IDTEXTE$$">$$CLIST:LIBELLE$$</a></span>
+             	$$END$$             
+             $$IF:FORM:IDCATEGORIE$$             	
+                      <span class="x"><a href="/$$CLIST:IDCATEGORIE$$/easa_bo,cat_Arbo.htm?idCategorie=$$FORM:IDCATEGORIE$$">$$CLIST:LIBELLE$$</a></span>
+             $$END$$
+                	
+                   </td>
+                   </tr>
+                $$LOOP$$
+            $$BFIN$$            
+            </table>
+            </td>
+            <td>$$IF:ERRE$$<font color="red">$$ERRE$$<br>$$END$$</td>
+            </tr>         
+            </table>
+             $$IF:FORM:IDTEXTE$$
+             	$$IF:REP:1$$
+             		<button id="mT" onclick="return Move();"> <img src="easa_bo/images/move.gif"> </button>
+             	$$END$$
+             $$END$$
+             $$IF:FORM:IDCATEGORIE$$             	
+                   <button id="mC" onclick="return Move();"> <img src="easa_bo/images/move.gif"> </button>             	
+             $$END$$
+                   <button id="close" onclick="window.close();"> Annuler </button>             	
+            </form>
+            
+             <script>
+            
+function Move () {
+
+	if (confirm("Confirmer le deplacement?"))
+	$$IF:FORM:IDTEXTE$$
+ 		location.href="easa_bo,txt_move.htm?idCategorie=$$REP:1$$&idTexte=$$FORM:IDTEXTE$$" 		
+	$$END$$
+	$$IF0:FORM:IDTEXTE$$
+ 		location.href="easa_bo,cat_move.htm?idCatParent=$$REP:1$$&idCategorie=$$FORM:IDCATEGORIE$$" 		
+	$$END$$	
+	return false;
+}
+
+        </script>
+        
+	</body>
+</html>

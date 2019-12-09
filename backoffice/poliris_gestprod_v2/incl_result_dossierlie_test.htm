@@ -1,0 +1,116 @@
+$$REM$$
+====================================================================
+//// <summary>Menu pour le module de dossierlie  - Résultat</summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_legende.htm, incl_pages.htm</para>
+//// <para>Rep:1 - N° du dossier</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LISTE_DOSSIERLIE alias LSTDOSL </para>
+//// </remarks>
+//// <update date="2007-12-03" author="jean-jacques.durmord">Création</update>
+=====================================================================
+$$END:REM$$
+
+<script src="$$_$$javascript/scriptaculous/global.js" type="text/javascript"></script>
+<script src="$$_$$javascript/scriptaculous/prototype.js" type="text/javascript"></script>
+<script src="$$_$$javascript/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+<script src="$$_$$javascript/scriptaculous/dragdrop.js" type="text/javascript"></script>
+
+
+<style>
+ul.sortablelist {
+list-style-image:none;
+list-style-type:none;
+margin:0px;
+padding:0px;
+}
+ul.sortabledemo li {
+margin:2px;
+padding:5px 5px;
+width:auto;
+}
+
+span.handle {
+background-color:#E8A400;
+color:white;
+cursor:move;
+}
+
+span.title {
+	margin:20px;
+	padding:5px;
+	width:100px;
+}
+
+li.bg_color_3 {
+background-color:#F0F0F0;
+border:1px solid #B4B4B4;
+cursor:move;
+clear:both;
+height:15px;
+}
+li.bg_color_1 {
+background-color:#FFFFFF;
+border:1px solid #B4B4B4;
+cursor:move;
+clear:both;
+height:15px;
+}
+</style>
+
+
+$$E:AUTH:VERIFICATION$$
+$$B:GDP2:DOSSIER_ASSOCIE:~IDDOSSIER:REP:1:ALIAS:LSTDOSL$$
+
+		<h1>Dossier lié (Dossier: $$REP:1$$)</h1>&nbsp;
+
+<div style="height:200px;">
+	<div style="float:left;border:0px solid #000000;">
+		<div style="float:left;border:0px solid #000000;margin-top:50px;">
+		<h2 style="text-align:center;border-bottom:1px solid #000000;">Dossiers associ&eacute;s</h2>
+		$$BIF:LSTDOSL$$
+			<ul class="sortabledemo" id="firstlist" style="height:150px;width:400px;margin-right:10px">
+				<span style="display: block; float: left;width:150px; font-weight:bold;">Nom du dossier</span>
+			<span style="display: block; float: left;width:150px; font-weight:bold;">Type de produit</span>
+			<span style="display: block; float: left;width:50px; font-weight:bold;">Etat</span>
+			$$DO:1:99$$
+				<li class="$$LSTDOSL:I mod2 bg_color_1 bg_color_3$$" id="firstlist_$$LSTDOSL:IDDOSSIER$$">
+					<span style="display: block; float: left;width:150px;">$$LSTDOSL:DOS_NOM$$</span>
+					<span style="display: block; float: left;width:150px;">$$LSTDOSL:PRO_LIBELLE$$</span>
+					<span style="display: block; float: left;width:50px;">$$LSTDOSL:ETA_LIBELLE$$</span>
+				</li>
+			$$LOOP$$
+		 	</ul>
+		 	$$BFIN$$
+		</div>
+		
+
+		$$INCL:MINI_RESULT_RECHERCHE.HTM$$
+	</div>
+</div>
+	
+	
+	<script type="text/javascript">
+
+   Sortable.create("firstlist",
+     {dropOnEmpty:true,containment:["firstlist","secondlist"],constraint:false});
+   Sortable.create("secondlist",
+     {dropOnEmpty:true,handle:'handle',containment:["firstlist","secondlist"],constraint:false
+			, onUpdate:function(){update_dossier_associes(Sortable.sequence('firstlist'));}
+		 }
+   );
+	 
+
+ /*	Permet de mettre à jour l'héritage d'un dossier			*/
+ /*	Paramètre :																					*/
+ /*		- id du dossier à mettre à jour 									*/
+ /*		- mode de traitement ( mise à jour père ou fils )	*/
+ /*	Retour : Renvoie une liste d'iddossier.							*/
+	function update_dossier_associes (ids) {
+		
+		//alert("ok on passe par là avec l'id numéro " + ids);
+	
+		return ids;
+	}
+ </script>

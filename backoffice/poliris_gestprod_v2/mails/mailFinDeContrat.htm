@@ -1,0 +1,62 @@
+$$E:GDP2:LECTURE_DOSSIER:~ID:REP:1:~IDPRO:REP:3:ALIAS:LCDOSSIER$$
+$$E:GDP2:PPC_BILANTDL:~ID:REP:1:ALIAS:BILANPPC$$
+$$E:ID3:DATE:1$$
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<title>Gestprod V2</title>
+	<style>
+		span {
+			width:150px;
+			float:left;
+		}
+	</style>
+</head>
+<body>
+	<div style="margin-left:10px">
+		<h1>Fin de prestation</h1>
+				<p style="text-align: justify" width="100px">
+					Le dossier "<b>$$LCDOSSIER:NOM$$</b>" est passé à l'état <b>$$LCDOSSIER:ETATDOSSIER pcase$$</b> $$IF:LCDOSSIER:DATEEFFET$$le $$LCDOSSIER:DATEEFFET date 2$$$$END$$ $$IF0:LCDOSSIER:DATEEFFET$$aujourd'hui à $$FORM:HEURE$$$$END$$<br/><br/>
+					<span>Type de dossier :</span>	$$LCDOSSIER:PRODUIT$$<br/>
+					<span>Url :</span>							<a href="http://$$LCDOSSIER:URL$$" target="_blank">$$LCDOSSIER:URL$$</a><br/>
+					<span>Responsable :</span>			$$LCDOSSIER:CHEFPROJET$$<br/>
+				</p>
+				<br/>
+				<p>
+					$$IF=:1:FORM:CHECK$$
+					Veuillez vérifier les éléments suivants :
+						<ul>
+						$$IF(:1,12,17,18:LCDOSSIER:IDPRODUIT$$
+							<li>Retrait de la publication dans SAISS</li>
+							<li>Retrait des domaines dans la conf </li>
+							<li>Changement de l'état dans Gestprod 
+								
+						$$END$$
+						$$IF(:2,9,13,14:LCDOSSIER:IDPRODUIT$$
+							<li>Changement de l'état dans Gestprod 
+						$$END$$
+						$$IF=:3:LCDOSSIER:IDPRODUIT$$
+							<li>Désactiver la vignette</li>
+							<li>Changement de l'état dans Gestprod 
+						$$END$$
+						$$IF(:5,7:LCDOSSIER:IDPRODUIT$$
+						$$IF+:0:BILANPPC:NBCLICRESTANT$$
+						<b>Attention ! Le nombre de clic n'est pas encore atteint. $$BILANPPC:NBCLICRESTANT$$ clics restants</b>
+						$$END$$
+							<li>Mettre en pause les campagnes bing et Google</li>
+							<li>Changement de l'état dans Gestprod 
+						$$END$$
+						$$IF=:15:LCDOSSIER:IDPRODUIT$$
+							<li>Retrait de la publication dans SAISS</li>
+							<li>Retrait des domaines dans la conf </li>
+							<li>Changement de l'état dans Gestprod 
+						$$END$$
+						$$IF=:20:LCDOSSIER:IDPRODUIT$$
+							<li>Changement de l'état dans Gestprod 
+						$$END$$
+						<br/>(Etat Terminé pour une fin de contrat ou Abandon pour une résiliation)</li>
+						</ul>
+					$$END:CHECK$$
+				</p>
+	</div>
+</body>

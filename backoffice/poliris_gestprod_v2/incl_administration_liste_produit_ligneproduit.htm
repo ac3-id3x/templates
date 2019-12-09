@@ -1,0 +1,89 @@
+
+$$REM$$
+====================================================================
+//// <summary>Menu pour le module d'administration produit - Liste des lignes produits</summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_legende.htm, incl_pages.htm </para>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LISTE_LIGNEPRODUIT alias LIGNESPRODUITS</para>
+//// <para>Rep:1 - N° du produit ou de la ligne à modidier</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+//// </remarks>
+//// <update date="2007-11-20" author="jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$B:GDP2:LISTE_LIGNEPRODUIT:ALIAS:LIGNESPRODUITS$$
+$$E:AUTH:VERIFICATION$$
+
+$$IF:AUTH:VERIFICATION:ADMINISTRATION$$
+		
+		<h1>Information sur les ligne de produits</h1>
+		<div  class="cadrefonce" >
+			&nbsp;
+			$$INCL:LEGENDE.HTM$$
+			&nbsp;
+			<!-- Génération du tableau -->
+			<center>
+				<table width=95%>
+					<!-- Legende -->
+					<tr >
+						<th>Actions</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Designation_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Désignation&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Designation" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Mnemonique_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Mnémonique&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Mnemonique" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=TypDonnee_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Type de donnée&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=TypDonnee" ><img src="$$_$$images/ico_croissant.png" border="0"  /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Longueur_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Longueur&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Longueur" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Actif_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Actif&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Actif" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+					</tr>
+					$$BIF:LIGNESPRODUITS$$
+					$$DO:1:10$$
+						<tr>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >
+									<a href="/0/$$LIGNESPRODUITS:IDLIGNEPRODUIT$$/administration_ajoutmodif_produit_ligneproduit.htm" >
+										<img src="$$_$$images/ico_voir.png" alt="Voir" border="0" /></a>&nbsp; 
+									<a href="/1/$$LIGNESPRODUITS:IDLIGNEPRODUIT$$/administration_ajoutmodif_produit_ligneproduit.htm" >
+										<img src="$$_$$images/ico_modifier.png" alt="Modifier" border="0"  /></a>&nbsp; 
+									<!--<img src="$$_$$images/ico_corbeille.png" alt="Supprimer" border="0"  />
+										$$LIGNESPRODUITS:IDPRODUIT$$-->
+								</td>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >
+										$$LIGNESPRODUITS:LPRO_LIBELLE$$
+								</td>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >$$LIGNESPRODUITS:LPRO_MNEMONIQUE$$</td>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >$$LIGNESPRODUITS:LPRO_TYPEDONNEE$$</td>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >$$LIGNESPRODUITS:LPRO_LONGUEUR$$</td>
+								<td class="$$LIGNESPRODUITS:I mod2 td_alt td_alt1$$" >$$LIGNESPRODUITS:LPRO_ACTIF$$</td>
+						</tr>
+					$$LOOP$$
+					$$BFIN$$
+
+				</table>
+				$$INCL:PAGES.HTM$$
+			</center>
+			&nbsp;
+			<input type="hidden" ID="tri" value="$$FORM:TRI$$">
+</div>
+$$END$$
+$$IF0:AUTH:VERIFICATION:ADMINISTRATION$$
+	<center><p class="erreur" >Vous n'avez pas les autorisations nécessaire pour visualiser cette page</p></center>
+$$END$$
+

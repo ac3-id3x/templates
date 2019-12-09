@@ -1,0 +1,80 @@
+$$REM$$
+====================================================================
+//// <summary>Page permettant l'affichage des informations clients destinataires</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page ... </para>
+//// <para>Liste des macros E utilisées dans cette page ... </para>
+//// <para>Liste des macros P utilisées dans cette page ... </para>
+//// </remarks>
+//// <update date="2011-12-06" author="florian.adam">Création</update>
+====================================================================
+$$END:REM$$
+$$E:ID3:DATE:1:-7$$
+
+<script type="text/javascript" src="/z/backoffice/poliris_gestprod_v2/javascript/rankingv2.js" ></script>
+<script type="text/javascript" src="/z/backoffice/poliris_gestprod_v2/javascript/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="/z/backoffice/poliris_gestprod_v2/javascript/highcharts/js/highcharts.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready( function () {
+				
+				//var obj1;
+		//jQuery.getJSON("http://localhost:54507/RankingService.svc/RankingTauxPositionnement1erepage/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+		jQuery.getJSON("http://service-ranking.svc.groupe-seloger.com/RankingService.svc/RankingTauxPositionnement1erepage/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+			function(data) {
+				objJson = data;
+			}).success( function () {
+										MakeGraph('graph1erepage', 'line', 50, 100, '#E8E9DF', false , 'Taux de positionnement 1ère page', 'Semaine', objJson.X, 'Taux positionnement', objJson.Y, false, 2);
+									}
+				);
+	});
+	
+	$(document).ready( function () {
+		
+				//var obj1;
+		//jQuery.getJSON("http://localhost:54507/RankingService.svc/RankingPositionGlobalMoyenHebdo/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+		jQuery.getJSON("http://service-ranking.svc.groupe-seloger.com/RankingService.svc/RankingPositionGlobalMoyenHebdo/$$REP:1$$/$$ID3:DATE:VAL date 2 replace / -$$?callback=?", 
+		
+			function(data) {
+				objJson = data;
+			}).success( function () {
+										MakeGraph('graphGlobal', 'line', 50, 100, '#E8E9DF', false , 'Position Moyenne Globale', 'Semaine', objJson.X, 'Position', objJson.Y, true, 1);
+									}
+				);
+	});
+	
+	function GetStats(elt)
+		{
+			$.ajax({ 
+					type: "GET",
+					data: 'idThematique='+elt.value+'&idDossier=$$REP:1$$',
+					url: 'incl_expression_graphe_v2.htm',
+					cache: false, 
+					success:function(html){ 
+					$('#grapheThemaExp').append(html);
+				}
+			});
+		}
+</script>
+
+<div id="graph1erepage" style="width: 100%; height: 400px; float:left;" ></div>
+<div id="graphGlobal" style="width: 100%; height: 400px; float:left;" ></div>
+<br/><br/>
+<div style="width: 600px; height: 20px; float:left;">
+$$B:GDP2:RANK-GET-THEMATIQUESVALORISEES:~idDossier:REP:1:ALIAS:RGTV$$
+$$BIF:RGTV$$
+
+<label for="idThematique">Sélectionnez une th&eacute;matique : <select id="idThematique" name="idThematique" onchange="javascript:GetStats(this);"></label>
+	<option value="0">-----------------</option>
+	$$DO$$
+	<option value="$$RGTV:IDTHEMATIQUE$$">$$RGTV:NOMTHEMATIQUE$$</option>
+	$$LOOP$$
+</select>
+$$BFIN$$
+$$BIF0:RGTV$$
+	<p>Aucune th&eacute;matique valoris&eacute;es enregistr&eacute;es</p>
+$$BFIN$$
+</div>
+
+<div id="grapheThemaExp" style="width: 100%; height: 400px; float:left;" ></div>

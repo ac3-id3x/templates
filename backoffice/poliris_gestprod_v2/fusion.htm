@@ -1,0 +1,106 @@
+$$REM$$
+====================================================================
+//// <summary>Page affichant la liste des fusions</summary>
+//// <remarks>
+//// <para>Liste des pages html inclues dans cette page (incl_haut.htm,incl_menu_gauche_fusion.htm,incl_haut_pop.htm,incl_fusion_liste_agence_accueilli.htm,incl_bas.htm). </para>
+//// <para>javascript(prototype.js,fonction_fusion.js)</para>
+//// </remarks>
+//// <update date="2008-03-27" author="Yann.ROZELOT">Création</update>
+====================================================================
+$$END:REM$$
+
+
+$$INCL:HAUT.HTM$$
+
+
+$$B:GDP2:LISTE_FUSION_AGENCE:REP:1:ALIAS:LISTE_FUSION_AGENCE$$
+
+<!--<script language="javascript" type="text/javascript" src="$$_$$javascript/prototype.js"></script>-->
+<script language="javascript" type="text/javascript" src="$$_$$javascript/jquery/1.6.1/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="$$_$$javascript/scriptaculous/scriptaculous.js?load=effects"></script>
+<script language="javascript" type="text/javascript" src="$$_$$javascript/fonctions.js"></script>
+<script language="javascript" type="text/javascript" src="$$_$$javascript/fonction_fusion.js"></script>
+<script language="javascript" type="text/javascript" src="$$_$$javascript/overlib.js"></script>
+
+<form action="" method="post" id="formulaire" name="formulaire">
+	<input type="hidden" name="idfusionagenceaccueillante" id="idfusionagenceaccueillante" value="0" />
+	<input type="hidden" name="idfusionagenceaccueilli" id="idfusionagenceaccueilli" value="0" />
+	<input type="hidden" name="iddossier" id="iddossier" value="$$REP:1$$" />
+	<input type="hidden" name="iddossier_deplacement" id="iddossier_deplacement" value="0" />
+	<input type="hidden" name="u" id="u" value="id3:redirect" />
+	<input type="hidden" name="nom_fusion" id="nom_fusion" value="" />
+	<input type="hidden" name="description_fusion" id="description_fusion" value="" />
+	<input type="hidden" name="cpt_agence" id="cpt_agence" value="0" />
+	<input type="hidden" name="idpublication" id="idpublication" value="0" />
+	<input type="hidden" name="page_ok" id="page_ok" value="$$REP:URI$$" />
+	<input type="hidden" name="page_err" id="page_err" value="$$REP:URI$$" />
+	<input type="hidden" name="iduser" id="iduser" value="$$SESSION:IDUSER$$" />
+	<input type="hidden" name="idagence_accueillante" id="idagence_accueillante" value="0" />
+	
+	<table id="conteneur" name="conteneur" >
+		<tr>
+		$$IF0:FORM:POPUP$$
+			<td id="menugauche" name="menugauche">
+				<!-- Ici on inclue la page html du menu qui fait référence à la page html visitée
+				Exemple pour la page d'administration des produits : -->
+				$$INCL:MENU_GAUCHE_FUSION.HTM$$
+			</td>
+		$$END$$
+			<td id="principal" name="principal" width="100%">
+				<h1>Fusion</h1>
+				$$INCL:SUCCES.HTM$$
+				$$INCL:ERREUR.HTM$$
+				<div id="nombre_agence_accueilli"  class="cadrefonce" name="nombre_agence_accueilli">
+				
+					$$BIF:LISTE_FUSION_AGENCE$$
+						$$DO:1:999$$
+							$$IFPREV:LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$
+								<table border="1" class="cadreclair"  name="Fusions_$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$" id="Fusions_$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$">
+								<tr>
+									<td >
+										 <input type="button" class="button" name="Bt_reduction_$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$" id="Bt_reduction_$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$" value="+" $$IF:LISTE_FUSION_AGENCE:NOM$$onclick="javascript:affiche_agence_accueilli($$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$);"$$END$$ onmouseover="javascript:popup_infos('Devoiler les agences acceuillis de cette agence acceuillante','<center>Agence(s) acceuillie(s)</center>'); return true;" onmouseout="nd(); return true;" />
+									</td>
+									<td>
+										 <input type="checkbox" name="chk_fusion" id="chk_fusion" value="$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$"/>
+									</td>
+									<td width="100%"  onmouseover="javascript:popup_infos('$$LISTE_FUSION_AGENCE:FUS_DESCRIPTION escape$$','<center>Description de la fusion</center>'); return true;" onmouseout="nd(); return true;">
+										 <b>La fusion $$LISTE_FUSION_AGENCE:FUS_NOM$$ sur l'agence $$LISTE_FUSION_AGENCE:AGP_NOM$$ créée le $$LISTE_FUSION_AGENCE:DT_FUSION$$. ($$LISTE_FUSION_AGENCE:NB_AGENCE_ACCUEILLI$$ agence(s) accueillie(s))</b>
+									</td>
+									<td>
+										 <input type="button"  value="Nouvelle acceuillie" onclick="javascript:ajoute_new_agence_accueilli($$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$);" onmouseover="javascript:popup_infos('Ajouter une ou plusieurs agence(s) acceuillie(s) à cette agence accueillante','<center>Ajouter agence acceuillie</center>'); return true;" onmouseout="nd(); return true;" />
+									</td>
+									<td>
+										<input type="button"  value="X" onclick="javascript:supprime_agence_accueillante(1,$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$);" onmouseover="javascript:popup_infos('Supprimer cette agence acceuillante','<center>Suppression</center>'); return true;" onmouseout="nd(); return true;"/>
+									</td>
+								</tr>
+							</table>
+								<div align="center"  id="agence_accueilli_$$LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$" style="display:none" >
+							$$END$$
+								$$INCL:FUSION_LISTE_AGENCE_ACCUEILLI.HTM$$
+							$$IFNEXT:LISTE_FUSION_AGENCE:IDFUSIONAGENCEACCUEILLANTE$$
+								</div>
+							$$END$$
+						$$LOOP$$
+					$$BFIN$$
+</div>
+</form>
+<form id="frm_ajouter_agence_accueillante" name="frm_ajouter_agence_accueillante" method="post" >
+	<input type="hidden" name="page_ok" id="page_ok" value="$$REP:URI$$" />
+	<input type="hidden" name="page_err" id="page_err" value="$$REP:URI$$" />
+	<input type="hidden" name="u" id="u" value="GDP2:INSERT_FUSIONS_AGENCE_ACCEUILLANTE" />
+	<input type="hidden" name="idpublication" id="idpublication" value="0" />
+	<input type="hidden" name="iduser" id="iduser" value="$$SESSION:IDUSER$$" />
+	<input type="hidden" name="iddossier" id="iddossier" value="$$REP:1$$" />
+		<div id="agence_accueillante" name="agence_accueillante">
+		</div>
+</form>
+<form id="frm_deplacer_agence_accueillante"  name="frm_deplacer_agence_accueillante" method="post"  onsubmit="return affiche_dossier();">
+	<input type="hidden" name="page_ok" id="page_ok" value="$$REP:URI$$" />
+	<input type="hidden" name="page_err" id="page_err" value="$$REP:URI$$" />
+	<input type="hidden" name="u" id="u" value="GDP2:UPDATE_DOSSIER_DES_AGENCES_ACCUEILLANTES_COCHEES" />
+	<input type="hidden" name="iduser" id="iduser" value="$$SESSION:IDUSER$$" />
+	<input type="hidden" name="id_fusion_agence_accueillante" id="id_fusion_agence_accueillante" value="0" />
+		<div id="deplacer_fusion" name="deplacer_fusion">
+		</div>
+</form>
+$$INCL:BAS.HTM$$

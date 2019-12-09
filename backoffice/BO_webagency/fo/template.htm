@@ -1,0 +1,271 @@
+<!--#include virtual="fo/incl_haut.htm" -->
+	<title>
+	$$IF:FORM:IDTEMPLATE$$ Template $$FORM:LIBELLE$$ $$END$$
+	$$IF0:FORM:IDTEMPLATE$$Nouveau Template$$END$$
+	</title>    
+</head>
+
+<body bgcolor="#FFFFFF">
+$$E:BOWEBAGENCY:TEMPLATEINFO:~idTemplate:QRY:IDTEMPLATE$$	
+
+		<form name="sauve" action="/$$REP:URI$$$$IF:FORM:IDTEMPLATE$$?idtemplate=$$FORM:IDTEMPLATE$$$$END$$" method="get" id="sauve">      
+        <input type="hidden" name="idtemplate" value="$$FORM:IDTEMPLATE$$"> 			
+        <input type="hidden" name="idtemplatetype" value="$$BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$"> 			        
+        <input type="hidden" name="idsoustype" value="$$BOWEBAGENCY:TEMPLATEINFO:IDSOUSTYPE$$"> 			                
+        <input type="hidden" name="rech" value="$$FORM:RECH$$"> 			                
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$"> 
+		<input type="hidden" name="page_err" value="/$$REP:URI$$"> 
+<br/>
+$$IF:BOWEBAGENCY:TEMPLATEINFO:ERRMSG$$<font color="red">$$BOWEBAGENCY:TEMPLATEINFO:ERRMSG crlf2br replace <br/> .<br/>$$<br><br><hr></font>$$END$$
+<table>
+	<tr>
+		<td>			
+
+    <table border="1" width="100%">
+    	     
+        <tr>
+            <td><b>Libelle</b> </td>
+            <td><b>$$BOWEBAGENCY:TEMPLATEINFO:LIBELLE htmlencode$$</b></td>
+           
+        </tr>
+                 
+        <tr>
+            <td><b>Reference</b></td>
+            <td><b>$$BOWEBAGENCY:TEMPLATEINFO:REFTEMPLATE htmlencode$$</b></td>
+        </tr>
+
+        <tr>
+            <td>Descriptif</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:DESCRIPTIF htmlencode$$</td>
+           
+        </tr>
+$$IF=:3:BOWEBAGENCY:TEMPLATEINFO:IDSOUSTYPE$$
+        <tr>
+            <td>Franchise</td>
+                <td>$$BOWEBAGENCY:TEMPLATEINFO:FRANCHISE htmlencode$$</td>           
+        </tr>            
+$$END$$            
+           
+        </tr>           
+
+        <tr>
+            <td>Commentaire</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:COMMENTAIRE htmlencode$$</td>           
+        </tr>       
+$$IF=:1:BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$        
+        <tr>
+            <td>Referencement</td>
+            <td>$$IF:BOWEBAGENCY:TEMPLATEINFO:REFERENCEMENT$$ Oui $$END$$ $$IF0:BOWEBAGENCY:TEMPLATEINFO:REFERENCEMENT$$ Non $$END$$</td>
+        </tr>
+           
+ 		  <tr>
+            <td>Flashxml</td>
+            <td>$$IF:BOWEBAGENCY:TEMPLATEINFO:FLASHXML$$ Oui $$END$$ $$IF0:BOWEBAGENCY:TEMPLATEINFO:FLASHXML$$ Non $$END$$</td>            
+        </tr>      
+         <tr>
+            <td>Promo</td>
+            <td>$$IF:BOWEBAGENCY:TEMPLATEINFO:PROMO$$ Oui $$END$$ $$IF0:BOWEBAGENCY:TEMPLATEINFO:PROMO$$ Non $$END$$</td>            
+        </tr>      
+         <tr>
+            <td>Coupdecoeur</td>
+            <td>$$IF:BOWEBAGENCY:TEMPLATEINFO:COUPDECOEUR$$ Oui $$END$$ $$IF0:BOWEBAGENCY:TEMPLATEINFO:COUPDECOEUR$$ Non $$END$$</td>            
+        </tr>      
+$$END$$  
+        <tr>
+            <td>InfoInterne:</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:DETAILS htmlencode$$</td>           
+        </tr>
+              
+          <tr>
+            <td>Date de creation</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:DTCREATION$$</td>           
+        </tr>
+         
+        <tr>
+            <td>Realisateur</td>             
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:REALISATEUR htmlencode$$</td>
+           
+        </tr>        
+         <tr>
+            <td>Modifie par</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:MODIFIE htmlencode$$</td>
+           
+        </tr>
+         $$IF:BOWEBAGENCY:TEMPLATEINFO:DTMAJ$$
+          <tr>
+            <td>Date de modification</td>
+            <td>$$BOWEBAGENCY:TEMPLATEINFO:DTMAJ$$</td>           
+        </tr>
+        $$END$$        
+   
+
+$$IF=:1:BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$ 
+	
+        <tr>
+        	 <td>Popularite:</td>
+        	  <td>$$BOWEBAGENCY:TEMPLATEINFO:POPULARITE$$</td>         
+        </tr>           
+        $$B:BOWEBAGENCY:MODULESCONCEPTION:~idTemplate:QRY:idTemplate:ALIAS:CLISTE$$
+        $$BIF:CLISTE$$
+        <tr>
+        	 <th>Packs Conception:</th>
+        	  <td></td>
+        	 </tr>         
+        	  	$$DO$$
+        	  	<tr>
+        	  	<td>$$CLISTE:LIBELLE$$</td>   <td>$$CLISTE:PRIX$$</td>
+        	 </tr>
+        	  	$$LOOP$$
+        	  
+        </tr>           
+		$$BFIN$$
+         <tr>    
+         	<td colspan="2"> <table  border="1" >
+         		<tr>
+			<TH colspan="2" align="center">Modules Aditionnels</TH> 
+			
+		</tr>
+		<tr><td>
+				<table>
+					<tr>
+						<th>Presentes sur le template</th>
+						<th>Proposees</th>
+					</tr>
+					<tr>
+						<td> 
+							$$B:BOWEBAGENCY:MODULESTREF:~idTemplate:QRY:idTemplate:ALIAS:TREF$$
+							$$BIF:TREF$$
+							<table>
+								<tr><th colspan="2">Referencement</th></tr>
+								$$DO$$
+								<tr>
+									<td>$$TREF:LIBELLE$$</td>
+									<td>$$TREF:PRIX$$ </td>
+								</tr>
+								$$LOOP$$
+							</table>
+							$$BFIN$$
+							
+							$$B:BOWEBAGENCY:MODULESTEMPLATE:~idTemplate:QRY:idTemplate:ALIAS:MTEMP$$
+							$$BIF:MTEMP$$
+							<table>
+								<tr><th colspan="2">Modules</th></tr>
+								$$DO$$
+								<tr>
+									<td>$$MTEMP:LIBELLE$$</td>
+									<td>$$MTEMP:PRIX$$ </td>
+								</tr>
+								$$LOOP$$
+							</table>
+							$$BFIN$$
+					   </td>
+  						<td>
+  							$$B:BOWEBAGENCY:MODULESPREF:~idTemplate:QRY:idTemplate:ALIAS:PREF$$ 
+  														$$BIF:PREF$$
+							<table>
+								<tr><th colspan="2">Referencement</th></tr>
+								$$DO$$
+								<tr>
+									<td>$$PREF:LIBELLE$$</td>
+									<td>$$PREF:PRIX$$ </td>
+								</tr>
+								$$LOOP$$
+							</table>
+							$$BFIN$$
+							$$B:BOWEBAGENCY:MODULESPTEMPLATE:~idTemplate:QRY:idTemplate:ALIAS:PTEMP$$
+							$$BIF:PTEMP$$
+							<table>
+								<tr><th colspan="2">Modules</th></tr>
+								$$DO$$
+								<tr>
+									<td>$$PTEMP:LIBELLE$$</td>
+									<td>$$PTEMP:PRIX$$ </td>
+								</tr>
+								$$LOOP$$
+							</table>
+							$$BFIN$$
+					   </td>
+					</tr>
+				</table>				
+				</td>
+         </tr>
+        </table>             
+    </tr>
+          
+         <tr>     
+			<td><a href="/fo,SitesExemple.htm?idTemplate=$$FORM:IDTEMPLATE$$">Sites Exemple</a></td> 
+			<td></td>
+         </tr>                  
+$$END$$      
+    </table>    	
+</td>
+</form>
+
+<td align="top">
+	<table width="100%">
+		
+		$$B:BOWEBAGENCY:TEMPLATEVISUELS:~idTemplate:QRY:idTemplate:ALIAS:BOWALISTE$$
+			$$BIF:BOWALISTE$$		            				
+			$$DO$$
+			$$IF=:1:BOWALISTE:I$$
+			<tr>       
+				<td colspan="$$BOWALISTE:NBR$$" align="center">	
+					<img width="$$BOWALISTE:STDWIDTH$$px" height="$$BOWALISTE:STDHEIGHT$$px" src="$$BOWALISTE:STDURL$$" alt="$$BOWALISTE:ORDRE$$">
+		 		</td>
+			</tr>	            				
+			$$END:I$$
+			$$LOOP$$
+		$$BFIN$$
+		<tr>
+			<tr>  <td>
+		$$BIF:BOWALISTE$$		            	
+			$$DO:3:3$$   							
+				<a href="$$BOWALISTE:IDVISUEL$$/fo,visuel.htm" target="_blank">					
+					$$IF+:2:BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$ 
+							<img width="100px" height="50px" src="$$BOWALISTE:THBURL$$" alt="$$BOWALISTE:ORDRE$$">
+					$$END$$   
+					$$IF=:1:BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$ 
+							<img width="100px" height="100px" src="$$BOWALISTE:THBURL$$" alt="$$BOWALISTE:ORDRE$$">
+					$$END$$  
+				</a>
+				<br/>
+				$$BOWALISTE:LEGENDE$$							
+			$$LOOP$$            				
+		$$BFIN$$
+		<td>
+		</tr>    
+	</table>
+	<hr/>
+	<table width="100%">
+		<tr>
+			<th align="left">UrlExemple</th>					
+		</tr>
+	 	$$B:BOWEBAGENCY:TEMPLATEURLEXEMPLE:~idTemplate:QRY:idTemplate:ALIAS:WALISTER$$
+		$$BIF:WALISTER$$		            	
+			$$DO$$
+				<tr>       
+					<td>
+						<a href="$$WALISTER:URL$$" target="_blank">$$WALISTER:URL$$</a>
+					</td><td>
+						$$WALISTER:LEGENDE$$
+					</td>					
+				</tr>    
+			$$LOOP$$            	
+		$$BFIN$$
+	</table>
+	
+	<br/>
+	<br/>
+	<hr/>		
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+<hr/>
+   
+    <a href="/fo,listTemplates.htm?idTemplateType=$$BOWEBAGENCY:TEMPLATEINFO:IDTEMPLATETYPE$$&idsousType=$$BOWEBAGENCY:TEMPLATEINFO:IDSOUSTYPE$$&rech=$$FORM:RECH$$">Retour a la liste</a>
+
+</body>
+</html>

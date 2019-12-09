@@ -1,0 +1,172 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : Dossier - Information produit </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : LECTURE_DOSSIER_PRODUIT ALIAS LCPRODEMONET </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : </para>
+	
+//// </remarks>
+//// <update date="2007-12-26" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$B:GDP2:LECTURE_DOSSIER_PRODUIT:~ID:REP:1:ALIAS:LCPRODEMONET$$
+
+<form id="frmgene" name="frmgene" >
+<div name="divinfoproduit" class="divInfoProduit" id="divinfoproduit" class="cadrefonce" align="center" >
+	&nbsp;
+	<table class="cadreclair" width="90%" cellpadding="0" cellspacing="0">
+			$$BIF:LCPRODEMONET$$
+					$$DO$$
+						$$IFPREV:LCPRODEMONET:IDCLIENT$$
+							<tr>
+								<td colspan="5"><h2>Code agence : $$LCPRODEMONET:CLI_CODE_AGENCE$$</h2></td>
+							</tr>
+							<tr class="bleu">
+								<td><h2>Nom : </h2> $$LCPRODEMONET:CLI_NOM$$</td>
+								<td colspan="3"><h2>RCS : </h2>
+												    $$LCPRODEMONET:CLI_RCS_COMMUNE_TRIBUNAL$$ 
+												    $$LCPRODEMONET:CLI_RCS_SIREN formatnumber 0$$ 
+												    $$LCPRODEMONET:CLI_RCS_NIC$$
+								</td>
+								<td nowrap="nowrap" style="text-align:center;">
+									$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+										<a href="javascript:popup('Client', '/$$REP:1$$/index_emonet.htm?idclient=$$LCPRODEMONET:IDCLIENT$$&action=visu', 750, 400, 0);" title="Plus d'infos sur $$LCPRODEMONET:CLI_CODE_AGENCE replace ' \'$$ sur E-monet">
+										    <img src="images/ico_emonet.png" border="0" alt="Plus d'infos sur $$LCPRODEMONET:CLI_CODE_AGENCE$$"></a>
+									$$END$$
+								</td>
+							</tr>
+							<tr>
+								<td colspan="5">
+									<table>
+										<td valign="top" width="70px">
+											<b><u>Contact :</u></b>
+										</td>
+										<td>
+											$$IF:LCPRODEMONET:CLI_CONTACT$$
+												<b>$$LCPRODEMONET:CLI_CONTACT$$</b>
+											$$END$$
+											<br />$$LCPRODEMONET:CLI_ADRESSE1$$
+											$$LCPRODEMONET:CLI_ADRESSE2$$
+											$$LCPRODEMONET:CLI_CP$$
+											$$LCPRODEMONET:CLI_VILLE$$
+											$$IF:LCPRODEMONET:CLI_TEL formattel$$ 
+											    <br />Tél : $$LCPRODEMONET:CLI_TEL formattel$$ 
+											$$END$$
+											$$IF:LCPRODEMONET:CLI_FAX$$ 
+											    / Fax : $$LCPRODEMONET:CLI_FAX formattel$$ 
+											$$END$$
+											$$IF:LCPRODEMONET:CLI_EMAIL$$ 
+											    <br />Email : $$LCPRODEMONET:CLI_EMAIL$$ 
+											$$END$$ 
+										</td>
+									</table>
+								</td>
+							</tr>
+							<tr class="tr_ligne_top">
+								<td colspan="5">&nbsp;</td>
+							</tr>
+						$$END$$
+						<tr class="$$LCPRODEMONET:I mod2 tr_alt tr_alt1$$">
+							<td colspan="4">
+								$$IF:LCPRODEMONET:CON_DT_DEBUT$$
+					        <b>Contrat du  <I>
+					        $$LCPRODEMONET:CON_DT_DEBUT date 2$$
+					        </I> 
+					    	$$END$$ 
+					    	$$IF:LCPRODEMONET:CON_DT_FIN$$ 
+					        au  <I>
+					        $$LCPRODEMONET:CON_DT_FIN date 2$$
+					        </I> : 
+					    	$$END$$ 
+					    	$$IF:LCPRODEMONET:MRS_LIBELLE$$
+					        <b>Contrat emonet r&eacute;sili&eacute; pour &nbsp;
+					        $$LCPRODEMONET:MRS_LIBELLE$$
+					        </b>
+					    	$$END:LCPRODEMONET:MRS_LIBELLE$$ 
+					    	$$IF:LCPRODEMONET:CON_SI_DETRUIT$$
+					        <b style="color:#ff0000">Contrat d&eacute;truit</b>
+					    	$$END:LCPRODEMONET:CON_SI_DETRUIT$$ 
+					    	$$IF0:LCPRODEMONET:CON_SI_VALIDE$$
+					        <b style="color:#ff0000">Contrat invalide</b>
+					    	$$END:LCPRODEMONET:CON_SI_VALIDE$$
+					   	
+					   	$$IF=:16:LCPRODEMONET:IDPRODUIT$$
+					   	<br/>
+							<b>URL video : &nbsp;
+					    </b>
+					    
+					     <!--Permet de visulaiser l'URL de la video pour un produit Vidéo Agence -->
+					     $$IFNOTNULL:LCPRODEMONET:DLC_URL$$
+					    	 <input type="text" $$DIG:READ$$ name="url" id="url" value="$$LCPRODEMONET:DLC_URL$$" style="width:550px;">
+								&nbsp;<a class="Aorange" target="_blank" href=$$LCPRODEMONET:DLC_URL$$>Go</a>	
+					     $$END$$
+					     $$IFNULL:LCPRODEMONET:DLC_URL$$
+					        Pas encore livrée
+					     $$END$$
+					     $$END:LCPRODEMONET:IDDOSSIER$$ 
+					    
+					    </b><br/>&nbsp;$$LCPRODEMONET:LGC_PRODUIT$$
+							 	&nbsp;<nobr>( $$LCPRODEMONET:MONTANT formatnumber 2$$ €)</nobr>
+								$$IF:LCPRODEMONET:CON_DT_RESILIATION$$
+								    <a href="#" title="Date de résiliation : $$LCPRODEMONET:CON_DT_RESILIATION date 2$$">
+								        <img src="images/ico_info.png" width="20" height="20" border="0" ></a>&nbsp;
+								$$END$$
+								$$IF=:True:LCPRODEMONET:LGC_SI_DETRUIT$$
+								    <a href="#" title="Ligne de contrat détruite">
+								    	<img src="images/ico_info.png" width="20" height="20" border="0" ></a>&nbsp;
+								$$END$$
+								$$IF=:True:LCPRODEMONET:CON_SI_DETRUIT$$
+								    <a href="#"  title="Contrat détruit">
+								    	<img src="images/ico_info.png" width="20" height="20" border="0" ></a>&nbsp;
+								$$END$$	
+								<br/>
+								$$IF:LCPRODEMONET:LGC_VOLUME$$
+								&nbsp;Quantité : $$LCPRODEMONET:LGC_VOLUME$$
+								$$END:LGC_VOLUME$$
+								<br/><br/>
+								Iddevis : $$LCPRODEMONET:IDDEVIS$$, Idcontrat : $$LCPRODEMONET:IDCONTRAT$$, Idlignecontrat : $$LCPRODEMONET:IDLIGNECONTRAT$$
+							</td>
+							<td style="text-align:left;">
+								$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+								    <a href="javascript:return false;" onclick="javascript:suppreliaisonproduit($$LCPRODEMONET:IDLIGNECONTRAT$$);" title="Supprimer la liaison avec le produit"><img src="images/ico_corbeille.png" width="20px" height="22px" border="0" alt="Supprimer la liaison avec le client $$LCPRODEMONET:CLI_CODE_AGENCE$$" /></a>
+								$$END$$
+								$$IF:LCPRODEMONET:LGC_COMMENTAIRE$$
+									    <a href="javascript:popup('Client','/index_emonet.htm?idcontrat=$$LCPRODEMONET:IDCONTRAT$$&action=visu', 780, 400, 0);" 
+									        title="$$LCPRODEMONET:LGC_COMMENTAIRE htmlencode$$" >
+									        <img src="images/co.gif" width="13" height="15" border="0" alt="$$LCPRODEMONET:LGC_COMMENTAIRE htmlencode$$" align="middle"></a>&nbsp;
+									$$END$$
+$$REM$$
+								$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+									<a href="javascript:popup('Client','/index_emonet.htm?idcontrat=$$LCPRODEMONET:IDCONTRAT$$&action=visu', 780, 400, 0);" 
+									    title="Modifier le contrat sur E-monet" >
+									    <img src="images/ico_modifier.png" width="18" height="20" border="0" alt="Modifier le contrat sur E-monet" align="middle"></a>&nbsp;
+									$$IF=:7:LCPRODEMONET:IDFAMILLE$$
+									    <a href="javascript:popup('Client','/index_emonet.htm?idcontrat=$$LCPRODEMONET:IDCONTRAT$$&action=visu', 780, 400, 0);" 
+									        title="$$IF=:True:LCPRODEMONET:CON_SI_FACTURABLE$$
+									            Facturable sur $$LCPRODEMONET:CON_DUREE_CONTRAT$$ mois$$END$$
+									            $$IF=:False:LCPRODEMONET:CON_SI_FACTURABLE$$Non Facturable$$END$$" >
+									        <img src="images/fa.gif" width="13" height="15" border="0" align="middle" 
+									            alt="$$IF=:True:LCPRODEMONET:CON_SI_FACTURABLE$$Facturable$$END$$
+									            $$IF=:False:LCPRODEMONET:CON_SI_FACTURABLE$$Non Facturable$$END$$"></a>&nbsp;
+									$$END$$
+								$$END$$
+$$END:REM$$						
+								$$IF:LCPRODEMONET:LGC_SI_DETRUIT$$
+								    <b style="color:#ff0000">Ligne contrat d&eacute;truite</b>&nbsp;
+								$$END:LCPRODEMONET:LGC_SI_DETRUIT$$
+								$$IF0:LCPRODEMONET:LGC_SI_VALIDE$$
+								    <b style="color:#ff0000">Ligne contrat invalide</b>&nbsp;
+								$$END:LCPRODEMONET:CON_SI_VALIDE$$
+								<input type="hidden" id="code_client" name="code_client" value="$$LCPRODEMONET:CLI_CODE_AGENCE$$" />
+							</td>
+						</tr>
+				$$LOOP$$
+			$$BFIN$$
+						<tr class="tr_ligne_bottom">
+								<td colspan="5">&nbsp;</td>
+						</tr>
+	</table>
+</div>		
+		
+</form>

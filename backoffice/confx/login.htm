@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Editeur de configuration des sites</title>
+<link rel="stylesheet" type="text/css" href="$$_$$css/style.css" />
+<link rel="shortcut icon" href="$$_$$favicon.ico" type="image/x-icon" /> 
+<!--[if gte IE 5.5000]><script type="text/javascript" src="z/slagence_X_V2/scripts/pngfix.js"></script><![endif]-->
+<style type=text/css>
+	<!--
+	*{font-family: arial; padding:0; margin: 0; border: none; font-size: 12px;}
+	body{text-align:center; padding: 20px 0 0 0;}
+	table, td{border-collapse: collapse;}
+	img#Logo{display: block; margin: 20px auto;}
+	form{width: 254px; height: 300px; padding: 5px 0; margin: auto; background: url($$_$$img/form_login_bg.gif) 0 0 no-repeat;}
+	form .erreur{color: #9f0000; font-weight: bold;}
+	form table#form_ctn{margin: 10px auto; width: 230px;}
+	form table#form_ctn td{vertical-align: middle;}
+	form table#form_ctn td.titre{padding: 2px 5px  0 0;}
+	form table#form_ctn td.input_ctn{width: 160px; background: url($$_$$img/login_input_bg.gif) 0 bottom no-repeat;}
+	form table#form_ctn td.input_ctn input{width: 140px; background: none; border: none; color: #9f0000; height: 17px; padding: 2px 10px 1px 10px;}
+	form table#form_ctn td.bt_ctn{text-align: right; padding: 4px 8px;}
+	form table#form_ctn td.bt_ctn input#btLog{width: 157px; height: 28px;}
+	
+	a#ManuelUtilisation{display: block; float: right; text-decoration: underline; background: url($$_$$img/picto_pdf.gif) left no-repeat; padding: 3px 0 3px 28px; margin: 5px 0;}
+	a#ManuelUtilisation:hover{text-decoration: none;}
+	
+	//-->
+</style>
+</head>
+
+<body>	
+<img id="Logo" src="$$_$$img/logo_confx_id3x.png" alt="" title="" />
+$$A:CHANGE=0$$
+$$IF0:REP:SRVEXT$$
+	$$A:CHANGE=1$$
+$$END$$
+$$IF=:1:PAGE:CONF_IS_ID3$$
+	$$A:CHANGE=0$$
+$$END$$
+
+$$IF=:1:CHANGE$$
+<div>Vous devez acc&egrave;der à l'&eacute;diteur de confs via votre serveur de d&eacute;veloppement attitr&eacute;.</div>
+<div>Exemple : </div>
+<ul>
+<li>Equipe portail : <a href="http://$$REP:SRV$$.x-portail.poliris.net">$$REP:SRV$$.x-portail.poliris.net</a></li>
+<li>Equipe webagency : <a href="http://$$REP:SRV$$.x-ext.poliris.net">$$REP:SRV$$.x-ext.poliris.net</a></li>
+</ul>
+$$END$$
+
+$$IF=:0:CHANGE$$
+$$IF:REP:SRVEXT$$Vous êtes sur $$REP:SRVEXT$$$$END$$
+<form method="post" action="/" name="f">
+	<p class="erreur">
+		<input type="hidden" name="u" value="auth:login" />
+		<input type="hidden" name="auth" value="" />
+		<input type="hidden" name="page_err" value="$$REP:URI$$" />
+		<input type="hidden" name="page_ok" value="/accueil.htm" />
+		$$IF:FORM:URL_FROM$$<input type="hidden" name="url_redir" value="$$FORM:URL_FROM$$" />$$END$$
+		
+		$$AUTH:LOGIN:ERRE$$
+		
+	</p>
+	$$IF:FORM:ERRE$$<p class="erreur">$$FORM:ERRE$$</p>$$END$$
+	<table id="form_ctn">
+		<tr>
+			<td class="titre">
+				<img src="$$_$$img/picto_login.png" alt="" title="" />
+			</td>
+			<td class="input_ctn">
+				<input type="text" name="login" />
+			</td>
+		</tr>
+		<tr>
+			<td class="titre">
+				<img src="$$_$$img/picto_pass.png" alt="" title="" />
+			</td>
+			<td class="input_ctn">
+				<input type="password" name="password" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="bt_ctn">
+				<input type="image" src="$$_$$img/login_bt.gif" name="Valider" value="" class="btLog" />
+				<a id="ManuelUtilisation" href="$$_$$manuel.pdf" target="_blank" title="">Manuel d'utilisation</a>
+			</td>
+		</tr>
+	</table>
+</form>
+$$END$$
+</body>
+</html>

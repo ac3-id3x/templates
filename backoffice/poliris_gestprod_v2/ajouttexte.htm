@@ -1,0 +1,130 @@
+$$REM$$
+====================================================================
+//// <summary>Page Permettant l'ajout des annauires</summary>
+//// <remarks>
+//// <para>Liste des pages html inclues dans cette page (incl_haut.htm,incl_bas.htm). </para>
+//// <para>Liste des macros B utilisées dans cette page (GDP2:LISTE_KEYWORDS,GDP2:LISTE_LANGUE)</para>
+//// <para>Liste des macros E utilisées dans cette page (GDP2:DOSSIER)</para>
+//// </remarks>
+//// <update date="2008-05-23" author="Yann.ROZELOT">Création</update>
+====================================================================
+$$END:REM$$
+
+
+$$INCL:HAUT.HTM$$
+
+$$E:GDP2:DOSSIER:REP:1$$
+
+<SCRIPT LANGUAGE="javascript" TYPE="text/javascript">
+<!--
+function confirmation(NameForm,Expression,IdKeywords)
+{
+	var texte = "Etes vous sûr de vouloir supprimer l'expression '" + Expression + "' ?";
+	
+	if(confirm(texte))
+	{
+		// Suppression de l'expression
+		eval("document." + NameForm + ".idkeywords.value = '" + IdKeywords + "_d';" );
+		eval("document." + NameForm + ".submit();");
+	}	
+}
+//-->
+</SCRIPT>
+
+<table id="conteneur" name="conteneur" >
+		<tr>
+		$$IF0:FORM:POPUP$$
+			<td id="menugauche" name="menugauche">
+				<!-- Ici on inclue la page html du menu qui fait référence à la page html visitée
+				Exemple pour la page d'administration des produits : -->
+				$$INCL:MENU_GAUCHE_GESTIONANNUAIRE.HTM$$
+			</td>
+		$$END$$
+			<td id="principal" name="principal" width="100%" >
+				<h1>Gestion des annuaires</h1>
+				<br/>
+				<br/>
+				<h2>Liste des textes existants</h2>
+					$$B:GDP2:LISTE_KEYWORDS:REP:1:0$$
+					$$BIF:GDP2:LISTE_KEYWORDS:REP$$
+						$$DO:2:99$$
+							$$IFPREV:GDP2:LISTE_KEYWORDS:REP:IDLANGUE$$
+							<table align="center" width="90%" border="0" cellspacing="1" cellpadding="2" class="cadrefonce">
+								<tr>
+									<td><img src="images/x.gif" width="1" height="1" border="0"></td>
+								</tr>
+								<tr class="bg_color_2"> 
+									<td>
+										<b>&raquo;&nbsp;$$GDP2:LISTE_KEYWORDS:REP:LAN_LIBELLE$$</b>
+									</td>
+								</tr>
+							$$END$$
+							$$IFPREV:GDP2:LISTE_KEYWORDS:REP:IDKEYWORDS$$
+								<form action="/$$REP:URI$$" method="post" name="annuaire_$$GDP2:LISTE_KEYWORDS:REP:IDKEYWORDS$$">	
+									<input type="hidden" name="u" value="GDP2:AJOUT_KEYWORDS">
+									<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+									<input type="hidden" name="page_err" value="/$$REP:URI$$">
+									<input type="hidden" name="iddossier" value="$$REP:1$$">
+									<input type="hidden" name="idlangue" value="$$GDP2:LISTE_KEYWORDS:REP:IDLANGUE$$">
+									<input type="hidden" name="idkeywords" value="$$GDP2:LISTE_KEYWORDS:REP:IDKEYWORDS$$">	
+								</form>
+							$$END$$
+							<tr class="$$GDP2:LISTE_KEYWORDS:REP:I  mod2 td_alt td_alt1$$" >
+								<td>
+									&nbsp;<a href="javascript:confirmation('annuaire_$$GDP2:LISTE_KEYWORDS:REP:IDKEYWORDS$$','$$GDP2:LISTE_KEYWORDS:REP:QUERY replace ' \'$$','$$GDP2:LISTE_KEYWORDS:REP:IDKEYWORDS$$');"><img src="images/checkbox0.gif" hspace="1" width="10" height="12" border="0"></a>
+									<a href="/$$REP:3$$/$$GDP2:LISTE_KEYWORDS:REP:IDLANGUE$$/$$REP:1$$/rapport_referencement.htm">$$GDP2:LISTE_KEYWORDS:REP:QUERY$$</a></li>
+								</td>
+							</tr>
+							$$IFNEXT:GDP2:LISTE_KEYWORDS:REP:IDLANGUE$$
+								</table>
+							$$END$$
+						$$LOOP$$
+					$$BFIN$$
+			</fieldset>
+		
+		
+			<form action="/$$REP:URI$$" method="post" name="ajout">
+				<input type="hidden" name="u" value="GDP2:AJOUT_KEYWORDS">
+				<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+				<input type="hidden" name="page_err" value="/$$REP:URI$$">
+				<input type="hidden" name="iddossier" value="$$REP:1$$">
+				<input type="hidden" name="idtypemoteur" value="0">
+				<h2>Ajout d'un texte annuaire</h2>	
+				<br>	
+				<table border="0" cellspacing="1" cellpadding="1" class="cadrefonce" width="90%">
+					<tr>
+						<td>Site : </td>
+						<td>$$GDP2:DOSSIER:DOS_URL$$</td>
+					</tr>
+					<tr>
+						<td>Langue : </td>
+						<td>
+							<select name="idlangue">
+								$$B:GDP2:LISTE_LANGUE$$
+								$$BIF:GDP2:LISTE_LANGUE$$
+								$$DO$$
+									<option value="$$GDP2:LISTE_LANGUE:IDLANGUE$$" $$IF0:FORM:IDLANGUE$$$$IF=:1:GDP2:LISTE_LANGUE:IDLANGUE$$selected$$END$$$$END$$>$$GDP2:LISTE_LANGUE:LAN_LIBELLE$$</option>
+								$$LOOP$$
+								$$BFIN$$
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">Textes annuaires : </td>
+						<td>
+							<textarea cols="40" rows="5" name="query">------ Entrer votre texte -------</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" colspan="2">
+							<input class="button" type="submit" value="Ajouter le texte annuaire" name="ajout">
+						</td>
+					</tr>
+				</table>
+
+
+	</tr>
+</table>
+</form>
+
+$$INCL:BAS.HTM$$

@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>
+Gestion des images
+</title>
+<style>
+body,select,td {
+font:menu;
+background: buttonface;
+}
+
+.data {
+	background: window;
+	border:1px solid outset;
+	overflow-y: scroll;
+	padding: 4px;
+	height: 80px;
+}
+
+input,button {
+	border-size: 1px;
+	padding-left:2px;
+	font:menu;
+}
+
+h4,h5 {
+	margin: 0px;
+}
+
+.menu {
+	border-bottom: 1px solid inset;
+}
+.menu button {
+	border-bottom: 0px;
+}
+.x {
+ font-weight:bold;
+ width:100px;
+}
+</style>
+</head>
+
+<body scroll=no onload="self.focus();">
+<script>
+
+function SetImg(url,img_id) {
+	window.opener.SetUrl(url) ;
+	self.close();
+}
+
+</script>
+<h5>Sélectionnez une image</h5>
+
+<div id=listing style="border:1px solid inset; background:window;overflow-y:scroll;height:250px; padding: 4px;">
+$$B:EASA:BO-CATPICS:~idTexte:REP:1:ALIAS:PHOTOS$$  
+$$BIF:PHOTOS$$
+$$DO$$
+<a href="#" onclick="SetImg('$$PHOTOS:PATH$$',$$PHOTOS:IDIMAGE$$);"><img src="/cgi/i.aspx?f=$$PHOTOS:PATH$$&w=100&h=100" border=1>
+	<br>$$PHOTOS:LIBELLE$$</a><br><br>
+$$LOOP$$
+$$BFIN$$
+</div>
+<form action="/pos" method="post" enctype="multipart/form-data" name="form1">
+ <h5>Envoyez une image</h5>  
+ 	 $$IF:EASA:BO-PHOTOUPLOAD:ERRMSG$$<b><font color="red">$$EASA:BO-PHOTOUPLOAD:ERRMSG$$</b><br><br><hr></font>$$END$$
+    <b>Libelle:</b> <input type=text name=libelle value="$$FORM:LIBELLE$$"><br>
+	<input type="file" name="pic">
+	<input type=hidden name=u value="EASA:BO-PHOTOUPLOAD">
+	<input type=hidden name=idTexte  value="$$REP:1$$">
+	<input type=hidden name=page_ok value="/$$REP:URI$$"> 
+	<input type=hidden name=page_err value="/$$REP:URI$$"> 
+<input type=submit value="Envoyer">
+</form>
+</body>
+</html>

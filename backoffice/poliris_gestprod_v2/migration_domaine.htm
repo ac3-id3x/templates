@@ -1,0 +1,149 @@
+$$INCL:HAUT_POP.HTM$$
+
+$$INCL:ERREUR.HTM$$
+$$INCL:MESSAGE.HTM$$
+
+$$B:GDP2:MIGRATION-DOMAINE:~DOMAIN:QRY:DOMAIN:ALIAS:MIGDOM$$
+<h2>Liste des domaines éligibles à la migration</h2>
+<form id="formulaire" method="post">
+	<input type="hidden" name="u" value="GDP2:MIGRATION-DOMAINE">
+	<input type="hidden" name="page_ok" value="$$REP:URI$$">
+	<input type="hidden" name="page_err" value="$$REP:URI$$">
+	<input type="hidden" name="siRefonte" id="siRefonte" value="1" />
+	<input type="hidden" name="idsDomaine" id="idsDomaine" value="" />
+	<input type="hidden" name="idDossier" id="idDossier" value="$$REP:1$$" />
+	<input type="hidden" name="idEtat" id="idEtat" value="$$FORM:IDETAT$$" />
+	<input type="hidden" name="idDossierToMigrate" id="idDossierToMigrate" value="0" />
+	
+$$BIF:MIGDOM$$
+	<table width="100%">
+			$$DO$$
+			$$IFPREV:MIGDOM:IDDOSSIER$$
+			$$IF+:2:MIGDOM:I$$Attention, AVANT MIGRATION si plusieurs sites sont proposés, passer en ABANDON tous les dossiers sauf le site de référence$$END$$
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<h4>
+						<input id="dosid" type="checkbox" value="$$MIGDOM:IDDOSSIER$$" style="margin-left:30px" />&nbsp;$$MIGDOM:DOS_NOM$$ ($$MIGDOM:IDDOSSIER$$) - 
+						$$MIGDOM:ETAT_DESCRIPTION$$ $$REM$$<!--<span class="dblclick" title="Double clic pour modifier l'état" alt="Double clic pour modifier l'état" id="DISPLAYEtat_$$MIGDOM:IDDOSSIER$$" ondblclick="javascript:GetId('incl_etats.htm', 'DISPLAYEtat_$$MIGDOM:IDDOSSIER$$', $$MIGDOM:IDDOSSIER$$, $$MIGDOM:IDETAT$$);" ></span>--> $$END:REM$$
+					</h4>
+				</td>
+			</tr>
+			<tr>
+				<!--<th>Sélectionner</th>-->
+				<th>Domaine</th>
+			</tr>
+			$$END:PREV$$
+			<tr class="$$MIGDOM:I mod2 tr_alt1 tr_alt$$" >
+				<!--<td width="5%">
+					
+				</td>-->
+				<td colspan="2" style="padding:0;text-align:top;"><input id="domain_$$MIGDOM:IDDOSSIERURL$$" type="checkbox" class="domain_$$MIGDOM:IDDOSSIER$$" value="$$MIGDOM:IDDOSSIERURL$$" style="margin-left:30px"/>&nbsp;$$MIGDOM:URL_URL$$</td>
+			</tr>
+			$$LOOP$$
+	</table>
+	<br/>
+	<input type="button" id="btnValide" value="Valider la migration" style="margin:8px 0px 0px 8px;"/><input type="button" id="btnAnnule" value="Annuler" style="margin:8px 0px 0px 8px;" />
+	<script>
+		
+		function valideForm ()
+		{
+			if(checkDomain())
+			{
+				var myForm = $('#formulaire');
+				//var i=myForm.getInputs('checkbox');
+				var listInputCheckBox = $("input[class^=domain_]");
+				var listId = '';
+				listInputCheckBox.each(function(item)
+		  				{
+		  					if(this.checked == true)
+			      			listId += this.value + ',';
+		  				});
+		  	$('#idsDomaine').val(listId);
+		  	
+		  	if(listId != '')
+		  	{
+		  		myForm.submit();
+		  		return true;
+		  	}
+		  	else
+		  	{
+		  		alert("Vous devez sélectionner au moins une url pour la migrer.");
+		  		return false;
+		  	}
+		  }
+	  }
+	  
+	  /* Permet de sélectionner ou déselectionner les checkbox filles (tous les domaines en dessous du domaine principal)*/
+	  $("#dosid").click(function() {
+		  var all = $(this);
+		  $('input[type=checkbox]').each(function() {
+		       $(this).prop("checked", all.prop("checked"));
+		  });
+		});
+	  
+	  /* Permet de vérifier que les cases à cocher seléctionnées font partie du même dossier */
+	  function checkDomain()
+	  {
+	  	var retour = false;
+	  	var myForm = $('#formulaire');
+	  	// Récupération de tous les input de type checkbox
+			//var i=myForm.getInputs('checkbox');
+			var listInputCheckBox = $("input[class^=domain_]");//$("formulaire input[type=checkbox]");
+			var listId = '';
+			var identifiant = 0;
+			
+			/*if($("#dosid")) {
+				identifiant = $("#dosid").val();
+			}*/
+			// Je parcours chaque input de type checkbox
+			listInputCheckBox.each(function(i) {
+					// Si il est coché
+					if(this.checked) {
+						var val = 0;
+						val = this.className.split('_')[1]; // Si oui, je peux spliter dessus et récupérer la valeur en position 1
+						
+						// Tant que val et identifiant sont égaux alors on renvoie true
+						if ((val === identifiant) || (identifiant === 0)) {
+								// ok, c'est bon.
+								retour = true;
+						} else {
+								retour = false;
+						}
+						
+						identifiant = val;
+					}
+			})
+			
+			if (!retour) {
+				alert("Impossible de sélectionner des domaines provenant de plusieurs dossier");
+			}
+				
+			return retour;
+	  }
+	  
+  	//$('btnValide').observe('click', valideForm);
+  	$('#btnValide').click(function() {
+  		valideForm();
+  	});
+  	
+  	//$('btnAnnule').observe('click', function () {window.opener.location.reload();window.close();});
+  	$('#btnAnnule').click(
+  	function() {
+  		window.opener.location.reload();window.close();
+  	}
+  	);
+	  	
+	</script>
+</form>
+$$BFIN$$
+$$BIF0:MIGDOM$$
+Aucun dossier avec ce nom de domaine a été trouvé.<br/><br/>
+<ul>
+	<li>Vérifiez l'orthographe du nom de domaine recherché : $$FORM:DOMAIN$$</li>
+	<li>Vérifez que le site qui est "refondu" soit dans l'état <i>Terminé</i> ou <i>Fait l'objet d'une refonte</i></li>
+</ul>
+$$BFIN$$
+$$INCL:BAS.HTM$$

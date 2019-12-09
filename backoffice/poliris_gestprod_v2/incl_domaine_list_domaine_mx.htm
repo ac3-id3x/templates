@@ -1,0 +1,52 @@
+$$REM$$
+====================================================================
+//// <summary>Permet d'afficher une liste des domaines_mx </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (GDP:LISTE_DOMAINE_MX)</para>
+//// </remarks>
+//// <update date="2008-01-17" author="Yann.ROZELOT">Création</update>
+=====================================================================
+$$END:REM$$
+
+$$B:GDP2:LISTE_DOMAINE_MX:VAL:INFOSURL_IDDOMAINE:ALIAS:LISTE_MX$$
+$$IF:LISTE_MX:NBR$$ 
+	<legend><h2>Résultat de la recherche : $$LISTE_MX:NBR$$ configuration$$LISTE_MX:NBR pluriel$$ MX</h2></legend>
+	<center>
+		<!-- Legende -->
+		$$INCL:LEGENDE.HTM$$
+		&nbsp;
+		<!-- Génération du tableau -->
+		<table width="95%"  >
+			<tr >
+				<th nowrap="nowrap" >Action</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					Target&nbsp;
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					Priorité
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Date_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					Date<sup>Créa</sup>&nbsp;
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Date" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>		
+			</tr>
+			$$BIF:LISTE_MX$$
+				$$DO:1:999$$
+					<tr class="$$LISTE_MX:I mod2 td_alt td_alt1$$">
+						<td>
+							<a href="javascript:suppression_mx($$LISTE_MX:IDDOMAINE_MX$$);"><img src="$$_$$/images/ico_corbeille.png" border="0" alt="Supprimer le mx"/></a>
+						</td>
+						<td>$$LISTE_MX:MX_TARGET$$</td>
+						<td>$$LISTE_MX:MX_PRIORITE$$</td>
+						<td>$$LISTE_MX:DT_CREA_DMX date 2$$</td>
+					</tr>
+				$$LOOP$$
+			$$BFIN$$					
+		</table>
+	</center>
+$$END$$

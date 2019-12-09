@@ -1,0 +1,223 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : Information sur le dossier </summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_dossier_information_base_centrale.htm, incl_dossier_information_produit.htm, incl_dossier_informations_complementaires.htm, incl_ajoutmodif_suividossier.htm,incl_dossier_informations_generales.htm ,incl_dossier_information_clients_destinataire.htm
+//// </remarks>
+//// <update date="2007-12-12" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$E:GDP2:DOSSIER:REP:1$$
+	$$IF:GDP2:MAJ_DOSSIER:ERREUR$$
+		<p class="erreur"><img src="images/exclamation.png" />Message d'erreur : $$GDP2:MAJ_DOSSIER:ERREUR$$</p>
+	$$END$$
+
+	$$IF=:1:GDP2:DOSSIER:IDPRODUIT$$
+		$$IF:GDP2:DOSSIER:DT_MISE_EN_LIGNE_MANUELLE$$
+			<center><p class="erreur"><img src="images/exclamation.png" />Attention ! Ce site est en ligne.</p></center>
+		$$END$$
+	$$END:IDPRODUIT$$
+			<h1>Informations produit
+				<!--<a href="#" class="aOrange" onclick="javascript:slide_div('divinfoproduit', 'divinfoproduit_title');"><span id="divinfoproduit_title">Plus d'info</span></a>-->
+$$BIF:LCPRODEMONET$$
+				<a href="javascript:return false;" onclick="javascript:slide_div('divinfoproduit', null, null, 'img_infoproduit', '$$_$$images/reduire_2.gif', '$$_$$images/derouler_2.gif');"><img id="img_infoproduit" src="$$_$$images/derouler_2.gif" /></a>
+$$BFIN:LCPRODEMONET$$
+				$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+					<a href="javascript:popup('Client', '/$$REP:1$$/dossier_recherche_client.htm', 600, 400, 0);" class="Aorange" >E-Monet</a>
+				$$END$$ 
+			</h1>
+			<div class="cadrefonce">
+				$$INCL:DOSSIER_INFORMATION_PRODUIT.HTM$$
+			</div>
+			<h1>Informations clients destinataires
+				<!--<a href="#" class="aOrange" onclick="javascript:slide_div('divclientdest', 'divclientdest_title');"><span id="divclientdest_title">Plus d'info</span></a>-->
+$$BIF:LCCLIENTDEST$$
+				<a href="javascript:return false;" onclick="javascript:slide_div('divclientdest', null, null, 'img_clientdest', '$$_$$images/reduire_2.gif', '$$_$$images/derouler_2.gif');"><img id="img_clientdest" src="$$_$$images/derouler_2.gif" /></a>
+$$BFIN:LCCLIENTDEST$$
+				</h1>
+				<a class="AnoUnderline" name="infobc"></a> <!-- Ancre pour la partie info bc --> 
+			<div  class="cadrefonce" >
+				$$INCL:DOSSIER_INFORMATION_CLIENTS_DESTINATAIRE.HTM$$
+			</div>
+			<h1>Informations de la base centrale
+			$$BIF:LCBCAGENCE$$
+				$$BIF0:LCBCGRP$$
+							<a href="javascript:return false;" onclick="javascript:slide_div('divinfobc', null, null, 'img_divinfobc', '$$_$$images/reduire_2.gif', '$$_$$images/derouler_2.gif');"><img id="img_divinfobc" src="$$_$$images/derouler_2.gif" /></a>
+				$$BFIN:LCBCGRP$$
+			$$BFIN:LCBCAGENCE$$
+			$$BIF:LCBCGRP$$
+				$$BIF0:LCBCAGENCE$$
+							<a href="javascript:return false;" onclick="javascript:slide_div('divinfobc', null, null, 'img_divinfobc', '$$_$$images/reduire_2.gif', '$$_$$images/derouler_2.gif');"><img id="img_divinfobc" src="$$_$$images/derouler_2.gif" /></a>
+				$$BFIN:LCBCAGENCE$$
+			$$BFIN:LCBCGRP$$
+			$$BIF:LCBCGRP$$
+				$$BIF:LCBCAGENCE$$
+							<a href="javascript:return false;" onclick="javascript:slide_div('divinfobc', null, null, 'img_divinfobc', '$$_$$images/reduire_2.gif', '$$_$$images/derouler_2.gif');"><img id="img_divinfobc" src="$$_$$images/derouler_2.gif" /></a>
+				$$BFIN:LCBCAGENCE$$
+			$$BFIN:LCBCGRP$$
+				$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+		        <a href="javascript:popup('Publication', '/$$REP:1$$/dossier_result_agence.htm', 600, 400, 0);" class="Aorange" >Agence</a>&nbsp;
+		        <a href="javascript:popup('Publication', '/$$REP:1$$/dossier_result_groupement.htm', 650, 400, 0);" class="Aorange" >Groupement</a>
+		    $$END$$
+				</h1>
+				$$IF:GDP2:MAJ_PUBLICATION:ERREUR$$
+				<p class="erreur"><img src="images/exclamation.png" />$$GDP2:MAJ_PUBLICATION:ERREUR$$</p>
+				$$END:MAJ_PUBLICATION:ERREUR$$
+			<div  id="divinfobc_parent" class="cadrefonce" >
+				$$INCL:DOSSIER_INFORMATION_BASE_CENTRALE.HTM$$
+			</div>						
+			<h1>Informations sur le dossier</h1>
+			<div  class="cadrefonce" >
+<form id="frmenregistrement" name="frmenregistrement" method="post" >
+		<input type="hidden" name="u" value="GDP2:MAJ_DOSSIER">
+		<input type="hidden" name="page_ok" value="$$REP:URI$$">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="iddossier" value="$$REP:1$$">
+		<input type="hidden" name="iduser"	value="$$AUTH:VERIFICATION:IDUSER$$">
+		<input type="hidden" name="mailuser"	value="$$GDP2:USER_INFO:EMAIL$$">
+		<input type="hidden" name="nomuser"	value="$$GDP2:USER_INFO:PRENOM$$ $$GDP2:USER_INFO:NOM$$">
+		<input type="hidden" name="actif"	value="1" >
+		<input type="hidden" id="idproduit" name="idproduit" 
+					$$IF=:dossier.htm:REP:0$$value="$$LCDOSSIER:IDPRODUIT$$" $$END$$
+					$$IF=:dossiernouv.htm:REP:0$$value="$$REP:3$$"$$END$$ >
+				$$INCL:DOSSIER_INFORMATIONS_GENERALES.HTM$$
+
+				$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES.HTM$$
+			</div>
+			$$INCL:AJOUTMODIF_SUIVIDOSSIER.HTM$$
+
+
+		<p style="display:inline;float:left;">
+			<input id="btnDIAnnulation" type="button" onClick="javascript:resetAll();" value="Annulation" />
+					$$IF:AUTH:VERIFICATION:DOSSIER_D$$
+			&nbsp;<input id="btnDISupression" type="button" value="Suppression" onclick="Suppression();" />
+		$$END$$
+	</p>
+	<p style="display:inline;float:right;" >
+		$$IF0:AUTH:VERIFICATION:DOSSIER_W$$
+			$$IF:AUTH:VERIFICATION:DOSSIER_C$$
+				&nbsp;<input id="btnDIValidation" type="submit" value="Validation" />
+			$$END$$
+		$$END$$
+		$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+			&nbsp;<input id="btnDIValidation" type="button" value="Validation" onclick="validateMix();" />
+		$$END$$
+	</p>
+		<br style="clear:both;"/>
+</form>
+(*) Champs obligatoires
+<form id="form_config" name="form_config" action="" method="post">
+					<input type="hidden" id="u" name="u" value="GDP2:MAJ_CONF_ID3X" />
+					<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+					<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+					<input type="hidden" id="idconfig" name="idconfig" value="$$INFWEB:IDCONFIG$$" />
+					<input type="hidden" id="si_config_wap" name="si_config_wap" value="0" />
+					<input type="hidden" id="si_config_imode" name="si_config_imode" value="0" />
+					<input type="hidden" id="idconfig_fille_wap" name="idconfig_fille_wap" value="$$INFWAP:IDCONFIG$$" />
+					<input type="hidden" id="idconfig_fille_imode" name="idconfig_fille_imode" value="$$INFIMODE:IDCONFIG$$" />
+					<input type="hidden" id="idcommercial" name="idcommercial" value="$$LCDOSSIER:IDCOMMERCIAL$$" />
+					<input type="hidden" id="dos_url" name="dos_url" value="$$LCDOSSIER:URL$$" />
+					<input type="hidden" name="dos_nom" value="$$LCDOSSIER:NOM$$" />
+					<input type="hidden" name="idproduit" value="$$LCDOSSIER:IDPRODUIT$$">
+					<input type="hidden" id="iddossier" name="iddossier" value="$$REP:1$$" />
+				
+					<input type="hidden" name="idlogin" value="$$INFWEB:VALEUR$$" />
+					<input type="hidden" id="supp_config" name="supp_config" value="0" />
+				$$IF0:INFWEB:IDCONFIG$$
+					<input type="hidden" id="action" name="action" value="a" />
+				$$END$$
+				$$IF:INFWEB:IDCONFIG$$
+					<input type="hidden" id="action" name="action" value="d" />
+				$$END$$
+					<input type="hidden" name="assoc_idconfig" id="assoc_idconfig" value="" size="10" />
+</form>
+	<form id="frmliaisonproduit" name="frmliaisonproduit" method="post">
+		<input type="hidden" name="u" value="GDP2:MAJ_LIGNECONTRAT">
+		<input type="hidden" name="page_ok" value="/$$REP:1$$/dossier.htm">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="iddossier" value="$$REP:1$$">
+		<input type="hidden" name="idproduit" value="$$LCDOSSIER:IDPRODUIT$$">
+		<input type="hidden" name="iduser"	value="$$AUTH:VERIFICATION:IDUSER$$" >
+		<input type="hidden" name="mailuser"	value="$$GDP2:USER_INFO:EMAIL$$" >
+		<input type="hidden" name="nomuser"	value="$$GDP2:USER_INFO:PRENOM$$ $$GDP2:USER_INFO:NOM$$" >
+		<input type="hidden" name="chselection" value="0" >
+		<input type="hidden" name="actif"	value="0" >	
+	</form>
+	<form id="frmliaisonagence" name="frmliaisonagence" method="post">
+			<input type="hidden" name="u" value="GDP2:MAJ_PUBLICATION">
+			<input type="hidden" name="page_ok" value="/$$REP:1$$/dossier.htm">
+			<input type="hidden" name="page_err" value="$$REP:URI$$">
+			<input type="hidden" name="iddossier" value="$$REP:1$$">
+			<input type="hidden" name="iduser"	value="$$AUTH:VERIFICATION:IDUSER$$" >
+			<input type="hidden" name="mailuser"	value="$$GDP2:USER_INFO:EMAIL$$" >
+			<input type="hidden" name="nomuser"	value="$$GDP2:USER_INFO:PRENOM$$ $$GDP2:USER_INFO:NOM$$" >
+			<input type="hidden" name="type" value="1">
+			<input type="hidden" name="actif"	value="1" >
+			<input type="hidden" name="chselection" value="0" >
+	</form>
+	<form id="form_cnxweb2" name="form_cnxweb2" method="post">
+		<input type="hidden" name="u" value="GDP2:MAJ_LOGIN_CNXWEB" />
+		<input type="hidden" name="iddossier" value="$$REP:1$$" />
+		<input type="hidden" id="idloginx" name="idlogin" value="$$CNXWEB:IDLOGIN$$" />
+$$REM$$ <input type="hidden" id="cnx_dosnom" name="cnx_dosnom" value="" /> $$END$$
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		
+		<input type="hidden" name="logincnxweb_hid" id="logincnxweb_hid" value="" />
+		<input type="hidden" name="email" id="cnx_email" value="aim@seloger.com">
+		<input type="hidden" name="dos_url" id="cnx_dos_url" value="$$LCDOSSIER:URL$$">
+		<input type="hidden" name="idcnxweb_hid" id="idcnxweb_hid" value="" />
+	</form>
+<script>
+	function suppreliaisonproduit (lignecontrat)
+	{
+		document.frmliaisonproduit.chselection.value = lignecontrat ;
+		document.frmliaisonproduit.actif.value = "2";
+		document.frmliaisonproduit.submit();
+	}
+	function suppreliaisonpublication (agence ,type )
+	{
+		document.frmliaisonagence.chselection.value = agence ;
+		document.frmliaisonagence.type.value = type ;
+		document.frmliaisonagence.actif.value = "2";
+		document.frmliaisonagence.submit();
+	}
+	
+	function validateMix()
+	{
+		$$IF=:1:LCDOSSIER:IDPRODUIT$$
+		if (validate('frmenregistrement',var_DIC,msg_DIC) == false ) 
+		{
+			return false;
+		}
+		$$END:LCDOSSIER:IDPRODUIT$$
+		if (validate('frmenregistrement',var_DIG,msg_DIG) == false )
+		{
+			return false;
+		}
+		if (validate('frmenregistrement',var_SD,msg_SD) == false ) 
+		{
+			return false;
+		}
+		
+		document.frmenregistrement.submit();
+	}
+	function resetAll()
+	{
+		document.frmenregistrement.reset();
+		window.location.reload();		
+		/*alert('RESET');*/
+	}
+	function Suppression()
+	{
+		document.frmenregistrement.actif.value = 2;
+		document.frmenregistrement.submit();
+	}
+	function AfficheDate() 
+	{                       
+		document.getElementById("dtjour").value = AffDate();
+	}                                                                   
+	AfficheDate ();	
+	
+</script>

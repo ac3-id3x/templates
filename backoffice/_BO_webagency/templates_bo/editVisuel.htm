@@ -1,0 +1,61 @@
+<!--#include virtual="templates_bo/incl_haut.htm" -->	
+</head>
+<body>
+$$IF:BOWEBAGENCY:BO-VISUELEDITION:ERRMSG$$<font color="red">$$BOWEBAGENCY:BO-VISUELEDITION:ERRMSG htmlencode crlf2br$$</font>$$END$$
+$$IF0:BOWEBAGENCY:BO-VISUELEDITION:ERRMSG$$$$IF:FORM:PAGE_OK$$<font color="blue">Visuel enregistré !</br></font>$$END$$$$END$$
+</br>
+
+$$E:BOWEBAGENCY:BO-TEMPLATEVISUEL:~idVisuel:QRY:idVisuel:~toForm:true$$<!-- Pré-rempli les macros FORM: avec les valeurs venant de la BDD -->
+
+$$IF:BOWEBAGENCY:BO-TEMPLATEVISUEL:LEGENDE$$
+Legende : $$BOWEBAGENCY:BO-TEMPLATEVISUEL:LEGENDE$$<br>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-TEMPLATEVISUEL:NOMFICHIERORIGINAL$$
+Nom d'origine : $$BOWEBAGENCY:BO-TEMPLATEVISUEL:NOMFICHIERORIGINAL$$<br>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-TEMPLATEVISUEL:ORDRE$$
+Nb ordre : $$BOWEBAGENCY:BO-TEMPLATEVISUEL:ORDRE$$<br>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-TEMPLATEVISUEL:CRITERES$$
+Mots Cle : $$BOWEBAGENCY:BO-TEMPLATEVISUEL:CRITERES$$<br>
+$$END$$
+
+
+<form method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="u" value="BOWEBAGENCY:BO-VISUELEDITION" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idTypeVisuel" value="$$FORM:IDTYPEVISUEL$$" />
+	<input type="hidden" name="idtemplate" value="$$FORM:IDTEMPLATE$$" />
+	<input type="hidden" name="idCategorie" value="$$FORM:IDCATEGORIE$$" />
+	<input type="hidden" name="idVisuel" value="$$FORM:IDVISUEL$$" />
+	
+
+	
+	Fichier : <input type="file" name="visuel" /><br/>
+
+	Légende : <input type="text" name="legende" value="$$FORM:LEGENDE$$" /><br/>
+	$$IF=:4:FORM:IDTYPEVISUEL$$
+		Mots Clé : <TEXTAREA rows="10" width="100px" name="criteres">$$FORM:CRITERES$$</TEXTAREA>
+ 	$$END$$
+	<br/>
+	<input type="submit" name="" value="Enregistrer" />
+</form>
+
+
+<div id="line_btn_ann">	
+	<div class="btn_right">
+		$$IF-:4:FORM:IDTYPEVISUEL$$
+		<a href="/templates_bo,template.htm?idtemplate=$$FORM:IDTEMPLATE$$"><img src="templates_bo/images/btnrevenir.png" /></div>
+		$$END$$
+		$$IF=:4:FORM:IDTYPEVISUEL$$
+		<a href="/templates_bo,bibliotheque.htm?idCategorie=$$FORM:IDCATEGORIE$$"><img  src="templates_bo/images/btnrevenir.png" /></div>
+		$$END$$
+</div>
+
+
+</body>
+</html>

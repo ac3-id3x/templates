@@ -1,0 +1,36 @@
+$$REM$$
+====================================================================
+//// <summary>Menu pour le module d'aide (Aide et Administration)  - Menu gauche</summary>
+//// <remarks>
+//// <para>Pages html inclues : </para>
+//// <para>Rep:1 - N°Id message d'aide ou Id du type d'aide</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:ZONE_SELECT alias TYPEAIDE </para>
+//// </remarks>
+//// <update date="2007-11-21" author="jean-jacques.durmord">Création</update>
+=====================================================================
+$$END:REM$$
+$$E:AUTH:VERIFICATION$$
+		
+$$B:GDP2:ZONE_SELECT:~TYPE:3:ALIAS:TYPEAIDE$$
+
+	<ul class="menugauche_principal">
+$$IF:AUTH:VERIFICATION:ADMINISTRATION$$
+		$$IF=:administration_liste_aide.htm:REP:0$$
+		<!-- Liste des aides existants -->
+			<li><a href="/1/0/administration_ajoutmodif_aide.htm" >Création d'une aide</a></li>
+		$$END$$	
+		$$IF=:administration_ajoutmodif_aide.htm:REP:0$$
+			<li><a href="/1/0/administration_ajoutmodif_aide.htm" >Création d'une aide</a></li>
+			<li><a href="/administration_liste_aide.htm" >Liste des aides</a></li>
+		$$END$$	
+$$END$$
+		$$IF=:liste_aide.htm:REP:0$$
+			$$BIF:TYPEAIDE$$
+				$$DO$$
+					<li><a href="/$$TYPEAIDE:ID$$/liste_aide.htm" >$$TYPEAIDE:VALEUR$$</a></li>
+				$$LOOP$$
+			$$BFIN$$
+		$$END$$		
+		<li><a href="http://hotline.poliris.com/index.html" >Ouverture d'un ticket de bug</a></li>	
+	</ul>

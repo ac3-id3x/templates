@@ -1,0 +1,46 @@
+<!--#include virtual="templates_bo/incl_haut.htm" -->	
+</head>
+<body>
+$$IF:BOWEBAGENCY:BO-VISUELEDITION:ERRMSG$$<font color="red">$$BOWEBAGENCY:BO-VISUELEDITION:ERRMSG htmlencode crlf2br$$</font>$$END$$
+$$IF0:BOWEBAGENCY:BO-VISUELEDITION:ERRMSG$$$$IF:FORM:PAGE_OK$$<font color="blue">Visuel enregistré !</br></font>$$END$$$$END$$
+</br>
+
+$$E:BOWEBAGENCY:BO-TEMPLATEVISUEL:~idVisuel:QRY:idVisuel:~toForm:true$$<!-- Pré-rempli les macros FORM: avec les valeurs venant de la BDD -->
+
+<br/>
+$$IF:BOWEBAGENCY:BO-IMAGEVISUEL:NOMFICHIERORIGINAL$$
+Nom d'origine : $$BOWEBAGENCY:BO-IMAGEVISUEL:NOMFICHIERORIGINAL$$<br/>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-IMAGEVISUEL:ORDRE$$
+Nb ordre : $$BOWEBAGENCY:BO-IMAGEVISUEL:ORDRE$$<br/>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-IMAGEVISUEL:LEGENDE$$
+Legende : $$BOWEBAGENCY:BO-IMAGEVISUEL:LEGENDE$$<br/>
+$$END$$
+
+$$IF:BOWEBAGENCY:BO-IMAGEVISUEL:LEGENDE$$
+Mots Clé: $$BOWEBAGENCY:BO-IMAGEVISUEL:CRITERES$$<br/>
+$$END$$
+
+<form method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="u" value="BOWEBAGENCY:BO-IMAGEEDITION" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	
+	<input type="hidden" name="idImage" value="$$FORM:IDIMAGE$$" />
+	<input type="hidden" name="idCategorie" value="$$FORM:IDCATEGORIE$$" />
+	<input type="hidden" name="idVisuel" value="$$FORM:IDVISUEL$$" />
+	<input type="hidden" name="idTypeVisuel" value="$$FORM:IDTYPEVISUEL$$" />
+
+			
+	Fichier : <input type="file" name="visuel" /><br/>
+
+	Libelle : <input type="text" name="legende" value="$$FORM:LEGENDE$$" /><br/>
+
+	Mots Clé: : <input type="text" name="criteres" value="$$FORM:CRITERES$$" /><br/>
+
+	<br/>
+	<input type="submit" name="" value="Enregistrer" />
+</form>

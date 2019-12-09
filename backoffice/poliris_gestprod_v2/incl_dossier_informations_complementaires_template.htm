@@ -1,0 +1,105 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : Dossier - Informations Complémentaire - Template </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : LECTURE_ANNEXE_DOSSIER, ZONE_SELECT </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : LECTURE_LIGNE_DOSSIER  </para>
+	
+//// </remarks>
+//// <update date="2007-12-18" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$B:GDP2:LECTURE_ANNEXE_DOSSIER:~ID:REP:1:~MNEMO:TEMPLATE:ALIAS:TEMPLATE$$
+$$B:GDP2:ZONE_SELECT:~TYPE:13:ALIAS:CBOTEMPLATE$$	
+
+	$$BIF:TEMPLATE$$
+	<tr>
+		<td><label>Templates Associées</label></td>
+		<td colspan="4">
+			
+			<table>
+				<tr>
+					<th colspan="2">Action</th>
+					<th>Référence</th>
+					<th>Titre</th>
+				</tr>
+				
+					$$DO$$
+						<tr>
+							<td class="$$TEMPLATE:I mod2 td_alt td_alt1$$" nowrap="nowrap" > 
+								<a href="http://templates2.agences.seloger.net/161881/$$TEMPLATE:IDTEMPLATE$$/plus_annonce_full.htm?lang=FR" target="template" >
+									<img src="$$_$$images/ico_voir.png" alt="Voir" border="0" /></a>
+							</td>
+							<td class="$$TEMPLATE:I mod2 td_alt td_alt1$$" nowrap="nowrap"  > 
+								Supprimer&nbsp;<input type="checkbox"  name="supprimertemplate" value="$$TEMPLATE:IDTEMPLATE$$">&nbsp;
+							</td>
+							<td class="$$TEMPLATE:I mod2 td_alt td_alt1$$" nowrap="nowrap">$$TEMPLATE:IDTEMPLATE$$</td>
+							<td class="$$TEMPLATE:I mod2 td_alt td_alt1$$" nowrap="nowrap">$$TEMPLATE:TEM_LIBELLE_FR$$</td>								
+						</tr>
+					$$LOOP$$
+			</table>
+		</td>
+	</tr>	
+	$$BFIN$$
+	
+	$$BIF:CBOTEMPLATE$$
+	<tr>
+		<td><label>Templates</label></td>
+		<td  colspan="3" ><label>Code de référence</label>
+			<select id="cbotempl1" name="cbotempl1">
+				<option value="0">---------------------</option>
+				$$DO$$
+					<option value="$$CBOTEMPLATE:ID$$">$$CBOTEMPLATE:VALEUR$$ ($$CBOTEMPLATE:ID$$)</option>
+				$$LOOP$$
+			</select>
+		</td>
+		<td   ><a id="atemp1" href="$$URI$$" class="Aorange">Voir template</a></td>
+	</tr>	
+	<tr>
+		<td></td>
+		<td  colspan="3"  ><label>Code de référence</label>
+			<select id="cbotempl2" name="cbotempl2">
+				<option value="0">---------------------</option>
+				$$DO$$
+					<option value="$$CBOTEMPLATE:ID$$">$$CBOTEMPLATE:VALEUR$$ ($$CBOTEMPLATE:ID$$)</option>
+				$$LOOP$$
+			</select>
+		</td>
+		<td ><a id="atemp2" href="$$URI$$" class="Aorange">Voir template</a></td>
+		
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan="3" ><label>Code de référence</label>
+			<select id="cbotempl3" name="cbotempl3">
+				<option value="0">---------------------</option>
+				$$DO$$
+					<option value="$$CBOTEMPLATE:ID$$">$$CBOTEMPLATE:VALEUR$$ ($$CBOTEMPLATE:ID$$)</option>
+				$$LOOP$$
+			</select>
+		</td>
+		<td><a id="atemp3" href="$$URI$$" class="Aorange">Voir template</a></td>
+	</tr>														
+	$$BFIN$$
+<script>
+    $(document).ready( function() {
+
+        VoirTemplate = function(element) {
+            elt = $(element).parent().prev().find('select option:selected');
+            
+            if (elt.val() != 0) {
+                value = elt.val();
+                window.open('http://templates2.agences.seloger.net/161881/' + value + '/plus_annonce_full.htm?lang=FR','/id');
+            } else {
+                return false;
+            }
+        };
+
+        $("#atemp1,#atemp2,#atemp3").click( function(e) {
+            e.preventDefault();
+            VoirTemplate(this);
+            }
+        );
+    });
+</script>

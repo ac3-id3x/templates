@@ -1,0 +1,283 @@
+$$E:ID3CONF:READ:ALIAS:DETAILS:~idconfig:QRY:CFG$$
+$$B:ID3CONF:SEARCH:~mode:ALL:~s:QRY:CFG:ALIAS:LSTPARENT$$
+$$B:ID3CONF:PARAMS:~idconfig:QRY:CFG:~nbNew:QRY:NBNEW:ALIAS:LSTPARAMS$$
+$$B:ID3CONF:DOMAINES:~idconfig:QRY:CFG:ALIAS:LSTDOMAINES$$
+$$IF:DETAILS:IDCONFIG$$
+	$$A:TITRE=Edition de la conf. @@DETAILS:NOM@@.$$
+$$END$$
+$$INCL:HAUT.HTM$$
+<tr><td>
+<!-- debut espace moteur -->
+$$INCL:MOTEUR.HTM$$
+<!-- fin espace moteur -->
+</td>
+<td>
+$$IF=:True:DETAILS:EXISTE$$
+<!-- debut espace conf. -->
+<form id="frmConf" method="POST" name="conf" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="id3conf:edit">
+<input type="hidden" name="page_err" value="/config_err.htm" />
+<input type="hidden" name="page_ok" value="/config_ok.htm" />
+<input type="hidden" name="idconfig" value="$$DETAILS:IDCONFIG$$" />
+<table>
+<tr><th colspan="3" class="petit">Edition</th></tr>
+<tr>
+<td><div>Nom</div></td>
+<td><div style="text-align: center;">:</div></td>
+<td>
+<div><input type="text" class="selinput" name="nom" value="$$DETAILS:NOM htmlencode$$"  style="width: 320px;" maxlength="50"/></div>
+</td>
+</tr>
+<tr>
+<td><div>Hérité de</div></td>
+<td><div style="text-align: center;">:</div></td>
+<td>
+<div>$$BIF:LSTPARENT$$
+<select class="selinput" name="idparent" style="width: 320px;">
+<option value="NULL">Aucune</option>
+$$DO:1:65535$$
+<option value="$$LSTPARENT:IDCONFIG$$" $$IF=:LSTPARENT_IDCONFIG:DETAILS:IDPARENT$$selected="selected"$$END$$>$$LSTPARENT:NOM$$</option>
+$$LOOP$$
+</select>
+$$BFIN$$
+</div></div>
+</td>
+</tr>
+<tr>
+<td><div>Commentaires</div></td>
+<td><div style="text-align: center;">:</div></td>
+<td>
+<div><textarea name="commentaires" style="width: 320px; height: 120px;">$$DETAILS:COMMENTAIRES htmlencode$$</textarea></div>
+</td>
+</tr>
+<tr>
+<td colspan="2">$$IF:DETAILS:IDCONFIG$$
+$$IF!:0:DETAILS:DAUGHTER$$
+<div>
+<a href="/recherche.htm?mode=parent&s=$$DETAILS:IDCONFIG$$"  title="cliquer ici pour lister les conf. filles de '$$DETAILS:NOM$$'">
+<img src="/img/view_tree.png" style="padding: 0; margin: 0 5px 0 0; spacing: 0; width: 22; height: 22; border-style: none; vertical-align:text-bottom;">
+$$IF+:2:DETAILS:DAUGHTER$$lister les $$DETAILS:DAUGHTER$$ configs filles.$$END$$
+$$IF=:1:DETAILS:DAUGHTER$$voir la config fille.$$END$$
+</a>
+</div>
+$$END$$
+$$END$$
+</td>
+<td><div style="text-align: right;"><input type="submit" class="subbutton" name="valider" value="valider" title="cliquer ici pour valider les modification de la conf. '$$DETAILS:NOM$$'"/></div></td>
+</tr>
+$$IF:DETAILS:IDCONFIG$$
+$$A:WEBDEPLOY=http://@@URLDEPLOY@@/DVCS?path=%2Fconfs%2F@@DETAILS:IDCONFIG@@.xml&devserver=@@REP:SRVEXT replace .poliris.net ""@@$$
+<tr><th colspan="3" class="petit">Gestion de la conf dans Web Deploy &copy;</th></tr>
+<tr>
+<td colspan="2"><div id="viderCache">
+<a href="$$WEBDEPLOY$$" title="cliquer ici pour commiter la conf. '$$DETAILS:NOM$$' dans webdeploy" />
+<img src="/img/reload.png" style="padding: 0; margin: 0 5px 0 0; spacing: 0; width: 22; height: 22; border-style: none; vertical-align:text-bottom;">Commiter cette conf.</a>
+</div></td>
+<td>$$IF=:0:DETAILS:DAUGHTER$$
+<div>
+<a href="javascript:suppConf('$$WEBDEPLOY$$');" title="cliquer pour supprimer la conf. '$$DETAILS:NOM$$' dans webdeploy">
+<img src="/img/trashcan_empty.png" style="padding: 0; spacing: 0; width: 22; height: 22; border-style: none; vertical-align:text-bottom;">supprimer la conf.</a>
+</div>$$END$$
+</td>
+</tr>
+$$END$$
+</table>
+</form>
+<!-- fin espace conf. -->
+</td>
+<td>
+<!-- debut espace domaine -->
+<form id="frmDomaines" method="POST" name="domaines" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="id3conf:domaines">
+<input type="hidden" name="page_err" value="/config_err.htm" />
+<input type="hidden" name="page_ok" value="/config_ok.htm" />
+<input type="hidden" name="idconfig" value="$$DETAILS:IDCONFIG$$" />
+<input type="hidden" name="nb" value="$$LSTDOMAINES:NBR$$" />
+$$BIF:LSTDOMAINES$$
+<table>
+<tr><th class="petit">Domaines</th></tr>
+$$DO$$
+<tr>
+<td style="padding: 0; spacing: 0;">
+<div style="padding: 0; spacing: 0; height: 16;">
+<input type="text" class="selinput" name="nom_$$LSTDOMAINES:I$$" value="$$LSTDOMAINES:NOM htmlencode$$"  style="width: 320px; height: 16;" class="param"/>
+$$IF:LSTDOMAINES:NOM$$<a  style="padding: 0; spacing: 0; width: 16; height: 16; border-style: none;" href="http://$$LSTDOMAINES:NOM replace *. ""$$$$IF:REP:SRVEXT$$.$$REP:SRVEXT$$$$END$$/" target="site" title="cliquer pour aller vers $$LSTDOMAINES:NOM replace *. ""$$">
+<img src="/img/link_go.png" style="padding: 0; spacing: 0; width: 16; height: 16; border-style: none; vertical-align:text-bottom;"></a>$$END$$
+</div>
+</td>
+</tr>
+$$LOOP$$
+<tr>
+<td><div style="text-align: right;"><input type="submit" class="subbutton" name="valider" value="valider"   title="cliquer ici pour valider les modification des domaines de la conf. '$$DETAILS:NOM$$'" /></div></td>
+</tr>
+$$IF:ID3CONF:DOMAINES:ERRMSG$$
+<tr>
+<td><div class="erreur">$$ID3CONF:DOMAINES:ERRMSG$$</div></td>
+</tr>
+$$END$$
+</table>
+$$BFIN$$
+</form>
+<!-- fin espace domaine -->
+</td>
+</tr>
+<tr>
+<td>
+<!-- debut espace libre -->
+&nbsp;
+<!-- fin espace libre -->
+</td>
+<td colspan="2">
+<!-- debut espace paramètres -->
+
+$$BIF:LSTPARAMS$$
+
+<table style="width: 99%;">
+<tr>
+<th class="petit" colspan="2">
+	Nom
+</th>
+<th class="petit" colspan="2">
+Valeur
+
+<form method="get" action="/$$REP:URI removeqry cfg removeqry nbnew$$" name="frmNbLigne" id="frmNbLigne">
+<input type="hidden" name="cfg" value="$$FORM:CFG$$">
+<div>Nb lignes supp.
+<select name="nbnew" style="width: 35px; height: 18px; margin: 0; padding: 0px;	font-size: 8pt; vertical-align: bottom" onChange="this.form.submit();">
+	<option value="1" $$IF=:1:FORM:NBNEW$$selected="selected"$$END$$>1</option>
+	<option value="2" $$IF=:2:FORM:NBNEW$$selected="selected"$$END$$>2</option>
+	<option value="3" $$IF=:3:FORM:NBNEW$$selected="selected"$$END$$>3</option>
+	<option value="4" $$IF=:4:FORM:NBNEW$$selected="selected"$$END$$>4</option>
+	<option value="5" $$IF=:5:FORM:NBNEW$$selected="selected"$$END$$>5</option>
+	<option value="6" $$IF=:6:FORM:NBNEW$$selected="selected"$$END$$>6</option>
+	<option value="7" $$IF=:7:FORM:NBNEW$$selected="selected"$$END$$>7</option>
+	<option value="8" $$IF=:8:FORM:NBNEW$$selected="selected"$$END$$>8</option>
+	<option value="9" $$IF=:9:FORM:NBNEW$$selected="selected"$$END$$>9</option>
+	<option value="10" $$IF=:10:FORM:NBNEW$$selected="selected"$$END$$>10</option>
+	<option value="11" $$IF=:11:FORM:NBNEW$$selected="selected"$$END$$>11</option>
+	<option value="12" $$IF=:12:FORM:NBNEW$$selected="selected"$$END$$>12</option>
+	<option value="13" $$IF=:13:FORM:NBNEW$$selected="selected"$$END$$>13</option>
+	<option value="14" $$IF=:14:FORM:NBNEW$$selected="selected"$$END$$>14</option>
+	<option value="15" $$IF=:15:FORM:NBNEW$$selected="selected"$$END$$>15</option>
+	<option value="16" $$IF=:16:FORM:NBNEW$$selected="selected"$$END$$>16</option>
+	<option value="17" $$IF=:17:FORM:NBNEW$$selected="selected"$$END$$>17</option>
+	<option value="18" $$IF=:18:FORM:NBNEW$$selected="selected"$$END$$>18</option>
+	<option value="19" $$IF=:19:FORM:NBNEW$$selected="selected"$$END$$>19</option>
+	<option value="20" $$IF=:20:FORM:NBNEW$$selected="selected"$$END$$>20</option>
+</select>
+</div>
+</form>
+
+
+</th>
+<td style="background-color: #EEE; height: 30px; margin: 0px; padding: 0px;"><div>&nbsp;</div></td>
+</td>
+</tr>
+<!-- debut du formulaire des paramètres -->
+<form method="POST" action="/$$REP:PAGE$$" name="frmParams" id="frmParams">
+<input type="hidden" name="u" value="id3conf:params">
+<input type="hidden" name="page_err" value="/config_err.htm" />
+<input type="hidden" name="page_ok" value="/config_err.htm" />
+<input type="hidden" name="idconfig" value="$$DETAILS:IDCONFIG$$" />
+$$DO$$
+$$IFPREV:LSTPARAMS:IDCFG$$
+<!-- IF prev -->
+	$$IF!:LSTPARAMS_IDCFG:FORM:CFG$$
+	<tr>
+	<td colspan="5"><div>Hérité de <a href="/config.htm?cfg=$$LSTPARAMS:IDCFG$$">$$LSTPARAMS:NOMCFG$$</a></div></td>
+	</tr>
+	$$END$$
+$$END$$
+$$IFNEXT:LSTPARAMS:IDCFG$$
+<!-- IF next -->
+	$$IF=:LSTPARAMS_IDCFG:FORM:CFG$$
+	<input type="hidden" name="nb" value="$$LSTPARAMS:I$$" />
+	$$END$$
+$$END$$
+
+$$IF0:LSTPARAMS:NOMPARAM$$
+<tr class="$$LSTPARAMS:I mod2 clair fonce$$Param">
+<td colspan="2"><div><input type="text" value="$$LSTPARAMS:NOMPARAM htmlencode$$" name="nom_$$LSTPARAMS:I$$" class="param"/></div></td>
+<td colspan="2"><div><input type="text" value="$$LSTPARAMS:DATA htmlencode$$" name="data_$$LSTPARAMS:I$$" class="param"/></div></td>
+$$IF+:1:LSTPARAMS:I$$<td style="background-color: #EEE;"><div>&nbsp;</div></td>$$END$$
+</tr>
+$$END$$
+
+$$IF=:LSTPARAMS_IDCFG:FORM:CFG$$
+	$$IF:LSTPARAMS:NOMPARAM$$
+	<tr class="$$LSTPARAMS:I mod2 clair fonce$$Param">
+	<td colspan="2">
+	$$IF=:cfg_rep:LSTPARAMS:NOMPARAM$$
+	<div><input type="text" value="$$LSTPARAMS:NOMPARAM htmlencode$$" name="nom_$$LSTPARAMS:I$$" class="paramCfgRep"/>
+	<a href="http://$$URLDEPLOY$$/DVCS/Browse?path=/template/$$LSTPARAMS:DATA$$&devserver=$$REP:SRVEXT replace .poliris.net ""$$" title="cliquer ici pour parcourir ce dossier dans webdeploy">Web Deploy &copy;</a>
+	</div>
+	$$END$$
+	$$IF!:cfg_rep:LSTPARAMS:NOMPARAM$$
+	<div><input type="text" value="$$LSTPARAMS:NOMPARAM htmlencode$$" name="nom_$$LSTPARAMS:I$$" class="param"/></div>
+	$$END$$
+	</td>
+	<td colspan="2"><div><input type="text" value="$$LSTPARAMS:DATA htmlencode$$" name="data_$$LSTPARAMS:I$$" class="param"/></div></td>
+$$IF=:1:LSTPARAMS:I$$<td style="width: 60px; height: 25px background-color: #EEE; margin: 0px; padding: 0px;">
+	<div style="text-align: right; margin: 0px; padding: 0px;">
+	<input type="submit" class="subbutton" name="valider" value=">>" style="margin: 0px; padding: 0px;" />
+	</div>
+</td>$$END$$
+$$IF+:1:LSTPARAMS:I$$<td style="background-color: #EEE;"><div>&nbsp;</div></td>$$END$$
+	</tr>
+	$$END$$
+$$END$$
+
+$$IF!:LSTPARAMS_IDCFG:FORM:CFG$$
+	$$IF:LSTPARAMS:NOMPARAM$$
+		$$A:CLASS-NAME=param$$
+		$$IF=:0:LSTPARAMS:ISACTIF$$
+			$$A:CLASS-NAME=param_barre$$
+		$$END$$
+		<tr class="$$LSTPARAMS:I mod2 clair fonce$$Param">
+		<td><div class="$$CLASS-NAME$$">$$LSTPARAMS:NOMPARAM htmlencode$$</div></td>
+		<td><div class="param" style="text-align: center;">:</div></td>
+		<td colspan="2"><div class="$$CLASS-NAME$$">$$LSTPARAMS:DATA htmlencode smalltextv2 150$$</div></td>
+		<td style="background-color: #EEE;"><div>&nbsp;</div></td>
+		</tr>
+
+	$$END$$
+$$END$$
+$$IFNEXT:LSTPARAMS:IDCFG$$
+<tr>
+<td colspan="4"><div style="text-align: right;"><input type="submit" class="subbutton" name="valider" value="valider" title="cliquer ici pour valider les modification des paramètres de la conf. '$$DETAILS:NOM$$'"/>
+</tr>
+$$END$$
+$$LOOP$$
+</form>
+<!-- fin du formulaire des paramètres -->
+</table>
+$$BFIN$$
+$$BIF0:LSTPARAMS$$
+$$IF=:20:LSTPARAMS:ERRECODE$$
+<script type="text/javascript">
+	function hideForm() {
+		$('#frmConf').hide();
+		$('#frmDomaines').hide();
+		$('#frmNbLigne').hide();
+		$('#frmParams').hide();
+	}
+	hideForm();
+</script>
+	<div>Une erreur est survenue, veuillez recharger la page.</div>
+	<div><a href="/$$REP:PAGE$$" title="recharger">recharger.</a></div>
+$$END$$
+
+$$IF=:10:LSTPARAMS:ERRECODE$$
+<div>Pas de paramètres</div>
+$$END$$
+$$BFIN$$
+$$END$$
+$$IF=:False:DETAILS:EXISTE$$
+<div>Conf Id : [$$FORM:CFG$$] introuvable.</div>
+$$END$$
+<!-- fin espace paramètres -->
+</td>
+</tr>
+
+
+$$INCL:BAS.HTM$$

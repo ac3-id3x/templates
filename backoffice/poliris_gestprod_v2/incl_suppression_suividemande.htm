@@ -1,0 +1,47 @@
+$$REM$$
+====================================================================
+//// <summary>Menu pour le module de suivi demande  - Suppression</summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_legende.htm, incl_pages.htm</para>
+//// <para>Rep:1 - N° du dossier</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+//// <para>Rep:3 - Identifiant du suivi</para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : GDP2:USER_INFO </para>
+//// <para>Liste des macros P utilisées dans cette page (sans &dollar;&dollar;) : GDP2:MAJ_SUIVIDEMANDE </para>
+//// </remarks>
+//// <update date="2007-12-05" author="jean-jacques.durmord">Création</update>
+=====================================================================
+$$END:REM$$
+
+$$E:AUTH:VERIFICATION$$
+$$E:GDP2:USER_INFO$$
+	$$IF:GDP2:MAJ_SUIVIDEMANDE:ERRMSG$$
+		<p class="erreur" >Message d'erreur : $$GDP2:MAJ_SUIVIDEMANDE:ERRMSG$$</p>
+	$$END$$
+<form id="frmsuividossier" name="frmsuividossier" method="post" onSubmit="validate('frmsuividossier',var_AMSD,msg_AMSD);">
+		<input type="hidden" name="u" value="GDP2:MAJ_SUIVIDEMANDE">
+		<input type="hidden" name="page_ok" value="/$$REP:1$$/suividemande.htm">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="iddossier" value="$$REP:1$$">
+		<input type="hidden" name="idsuividemande" value="$$REP:3$$">
+		<input type="hidden" name="iduser"	value="$$AUTH:VERIFICATION:IDUSER$$" >
+		<input type="hidden" name="mailuser"	value="$$GDP2:USER_INFO:EMAIL$$" >
+		<input type="hidden" name="nomuser"	value="$$GDP2:USER_INFO:PRENOM$$ $$GDP2:USER_INFO:NOM$$" >
+		<input type="hidden" name="actif"	value="0" >
+		<h1>SUIVI DEMANDE pour le dossier : $$REP:1$$ </h1>
+		<div  class="cadrefonce" >
+		<center>
+			&nbsp;
+			<table  >
+			$$IF:AUTH:VERIFICATION:SUIVI_D$$
+				<tr>
+					<td><label>Etes-vous sur de vouloir supprimer le suivi ?</label></td>
+					<td><input id="btnAMPLvalidation" type="submit" value="Suppression"  /></p>
+					</td>
+				</tr>
+			$$END$$
+			</table>
+			</center>
+			&nbsp;
+	</div>
+</form>		

@@ -1,0 +1,58 @@
+$$REM$$
+====================================================================
+//// <summary>Page liste des comptes</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (PRS:LISTE_STATUT_COMPTE)</para>
+//// </remarks>
+//// <update date="2010-06-21" author="amine.daghmouri"></update>
+====================================================================
+$$END:REM$$
+
+$$B:PRS:GET_LISTE_RESEAU_SOCIAL:ALIAS:LISTERS$$
+$$INCL:HAUT.HTM$$
+
+<a href="/liste_comptes.htm?txtNomDossier=$$FORM:TXTNOMDOSSIER$$&txtIdDossier=$$FORM:TXTIDDOSSIER$$&cboStatutCpt=$$FORM:CBOSTATUTCPT$$&listecptspg=$$FORM:LISTECPTSPG$$">Retour</a></br>
+<h1>Liste des Réseaux Sociaux</h1><br/>
+
+$$IF:AUTH:VERIFICATION:UPDATE_LOGIN$$
+<table class="csscadrefonce">
+
+	<tr>
+		<th>Libellés </th>
+		<th>Urls</th>
+		<th>Statuts</th>
+		<th title="Compteur association actives aux comptes">Références</th>
+	</tr>
+	$$BIF:LISTERS$$
+		$$DO:1:30$$
+		<tr class="$$LISTERS:I mod2 cssTabletd_alt3 cssTabletd_alt1$$">
+			<td class="cssTableLibelleString"><a href="/reseausocial_list.htm?id_reseau_social=$$LISTERS:ID_RESEAU_SOCIAL$$">$$LISTERS:ST_LIBELLE$$</a></td>
+			<td class="cssTableLibelleString">$$LISTERS:ST_URL$$</td>
+			<td class="cssTableLibelleString">
+				$$IF=:True:LISTERS:BL_ACTIF$$
+					Activé
+				$$END$$
+				$$IF=:False:LISTERS:BL_ACTIF$$
+					Desactivé
+				$$END$$
+			</td>
+			<td>$$LISTERS:NM_REFERENCE_ACTIVE$$</td>
+		</tr>
+		$$LOOP$$
+	$$BFIN$$
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><a href="/reseausocial_list.htm?id_reseau_social=0">Nouveau réseau social</a></td>
+	</tr>
+</table>
+</br></br>
+$$INCL:RESEAUSOCIAL_FORM.HTM$$
+
+$$END$$
+$$IF0:AUTH:VERIFICATION:UPDATE_LOGIN$$
+	<center><b>Vous n'êtes pas autorisé à visualiser cette page</b></center>
+$$END$$
+
+$$INCL:BAS.HTM$$

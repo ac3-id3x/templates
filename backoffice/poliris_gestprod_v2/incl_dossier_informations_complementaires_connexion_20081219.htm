@@ -1,0 +1,235 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : Dossier - Informations Complémentaire - Connexion </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) :  </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LECTURE_LIGNE_DOSSIER, GDP2:LECTURE_AGENCEPUBLICATION, GDP2:LECTURE_CNXWEB, AUTH:GENERE_AUTO_LOGIN </para>
+	
+//// </remarks>
+//// <update date="2007-12-18" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$E:AUTH:GENERE_AUTO_LOGIN:ALIAS:GENLIEN$$
+$$E:GDP2:LECTURE_LIGNE_DOSSIER:~ID:REP:1:~MNEMO:IDLOGIN:ALIAS:IDLOGIN$$
+$$E:GDP2:LECTURE_AGENCEPUBLICATION:~ID:REP:1:~TYPE:1:ALIAS:CODELOGER$$
+$$E:GDP2:LECTURE_CNXWEB:~ID:REP:1:~TYPE:1:ALIAS:CNXWEB$$
+
+$$IF=:1:LCDOSSIER:IDPRODUIT$$
+
+$$REM$$
+<!-- MailX -->
+$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+	$$REM$$
+	<tr>
+		<td colspan="5">
+			<p class="erreur"><img src="images/exclamation.png" />$$CNXWEB:ERREUR$$</p>
+		</td>
+	</tr>
+	$$END$$
+	<tr>
+		<td><label>Liaison Mailx</label></td>
+		<td colspan="2"><a href="http://gestionmailx.poliris.com.id2/mailx_liste.htm" class="Aorange" target="Mailx">Mailx</a></td>
+		<td colspan="2"></td>
+	</tr>
+
+$$END$$
+$$END:REM$$
+<!-- SeLoger.com -->
+$$IF!:0:CODELOGER:IDPUBLICATION$$
+
+
+	<tr>
+		<td><label>Code SeLogerPro</label></td>
+		<td colspan="4">
+			$$IF!:CODELOGER:REFERENCE$$
+				<label><u>Identifiant:</u> $$CODELOGER:REFERENCE$$ / <u>Mot de passe:</u> $$CODELOGER:MOTDEPASSE$$</label>
+				&nbsp;<a href="http://www.selogerpro.com" target="selogerpro" class="Aorange">SeLogerPro.com</a>
+			$$END$$
+		</td>
+		<td colspan="2"></td>
+	</tr>
+
+$$END$$	
+<!-- CNXWEB -->
+
+$$REM$$
+<!--
+<form name="form_cnxweb" id="form_cnxweb2" method="post">
+	<input type="hidden" name="u" value="GDP2:MAJ_LOGIN_CNXWEB" />
+	<input type="hidden" name="iddossier" value="$$REP:1$$" />
+	<input type="hidden" id="idlogin" name="idlogin" value="$$CNXWEB:IDLOGIN$$" />
+	<input type="hidden" id="cnx_dosnom" name="cnx_dosnom" value="" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+-->
+$$END$$
+$$IF:GDP2:MAJ_LOGIN_CNXWEB:ERRE$$
+	<p class="erreur"><img src="images/exclamation.png" />$$GDP2:MAJ_LOGIN_CNXWEB:ERRE$$</p>
+$$END$$
+	<tr>
+		<td><label>Connexion CnxWeb</label></td>
+		$$IF0:AUTH:VERIFICATION:CNXWEB_W$$
+				$$IF:CNXWEB:LOGIN$$
+					<td colspan="4">
+						<label><u>Identifiant:</u> $$CNXWEB:LOGIN$$ / <u>Mot de passe:</u> $$CNXWEB:MOTDEPASSE$$</label>
+					</td>
+				$$END$$
+		$$END$$
+		$$MESSAGE$$
+		$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+			$$IF:AUTH:VERIFICATION:CNXWEB_W$$
+				$$IF:CNXWEB:LOGIN$$
+					<td>
+						<a href="http://bo.cnxweb.com/gestion_login.htm?idlogin=$$CNXWEB:IDLOGIN$$" target="cnxweb">$$CNXWEB:LOGIN$$</a>
+					</td>
+					<td colspan="3">
+						<a class="Aorange" href="#" onclick="javascript:createLogin2('d', 'GDP2:MAJ_LOGIN_CNXWEB',$$CNXWEB:IDLOGIN$$, null);">Dissocier</a>
+					</td>
+				$$END$$
+				$$IF0:CNXWEB:LOGIN$$
+					<td>
+						<input type="text" name="logincnxweb" id="logincnxweb" size="10" value="" />
+$$REM$$						<input type="hidden" name="email" id="email" value="stephanied@poliris.com">
+						<input type="hidden" name="dos_url" id="dos_url" value="$$LCDOSSIER:URL$$">
+$$END:REM$$
+						<a href="" onclick="javascript:createLogin2('c', 'GDP2:MAJ_LOGIN_CNXWEB','', '$$LCDOSSIER:NOM$$'); return false;" class="Aorange">Créer Login</a>
+					</td>
+					<td>
+						<nobr><input type="text" name="idcnxweb" id="idcnxweb" size="10" value="" />(ID numérique uniquement)&nbsp;</nobr>
+					</td>
+					<td>
+						<a href="" onclick="javascript:createLogin2('a', 'GDP2:MAJ_LOGIN_CNXWEB','', null); return false;" class="Aorange">Associer</a>
+					</td>
+					<script>CreaCtrl('IDCNXWEB','n',': Erreur dans l\'Id CNXWEB', '');</script>		
+				$$END$$
+			$$END$$
+		$$END$$
+	</tr>
+<!--
+</form> -->
+
+$$END$$
+
+$$IF(:1,2,3,7:LCDOSSIER:IDPRODUIT$$
+<!-- Id3X -->
+	$$IF:AUTH:VERIFICATION:DOSSIER_W$$	
+		$$IF:AUTH:VERIFICATION:CONFIG_W$$	
+			$$E:GDP2:LECTURE_ID3X:~ID:REP:1:~MNEMO:INFWEB:ALIAS:INFWEB$$
+$$REM$$
+			$$E:GDP2:LECTURE_ID3X:~ID:REP:1:~MNEMO:INFWAP:ALIAS:INFWAP$$
+			$$E:GDP2:LECTURE_ID3X:~ID:REP:1:~MNEMO:INFIMODE:ALIAS:INFIMODE$$
+$$END:REM$$
+
+$$IF:GDP2:MAJ_CONF_ID3X:ERREUR$$
+<p class="erreur"><img src="images/exclamation.png" />$$GDP2:MAJ_CONF_ID3X:ERREUR$$</p>
+$$END:IF$$
+<!--<form id="form_config" name="form_config" action="" method="post">
+	<input type="hidden" id="u" name="u" value="GDP2:MAJ_CONF_ID3X">
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+	<input type="hidden" name="page_err" value="/$$REP:URI$$">
+	<input type="hidden" id="idconfig" name="idconfig" value="$$INFWEB:IDCONFIG$$">
+	<input type="hidden" id="si_config_wap" name="si_config_wap" value="0">
+	<input type="hidden" id="si_config_imode" name="si_config_imode" value="0">
+	<input type="hidden" id="idconfig_fille_wap" name="idconfig_fille_wap" value="$$INFWAP:IDCONFIG$$">
+	<input type="hidden" id="idconfig_fille_imode" name="idconfig_fille_imode" value="$$INFIMODE:IDCONFIG$$">
+	<input type="hidden" id="idcommercial" name="idcommercial" value="$$LCDOSSIER:IDCOMMERCIAL$$">
+	<input type="hidden" id="dos_url" name="dos_url" value="$$LCDOSSIER:URL$$">
+	<input type="hidden" name="dos_nom" value="$$LCDOSSIER:NOM$$">
+	<input type="hidden" id="iddossier" name="iddossier" value="$$REP:1$$">
+
+	<input type="hidden" name="idlogin" value="$$INFWEB:VALEUR$$" />
+	<input type="hidden" id="action" name="action" value="d" />
+	<input type="hidden" id="supp_config" name="supp_config" value="0" />
+	<input type="hidden" id="action" name="action" value="a" />
+-->
+	<tr>
+		<td><label>Config Id3x</label></td>
+		$$IF:INFWEB:IDCONFIG$$
+		<td>
+			<a href="http://confx.id3x.com/config.htm?cfg=$$INFWEB:IDCONFIG$$&$$GENLIEN:AUTOCONNECT$$" target="_blank">$$INFWEB:IDCONFIG$$</a>
+			<!--<input type="hidden" name="idlogin" value="$$INFWEB:VALEUR$$" />-->
+		</td>
+		<td>
+			<a href="javascript:dissocierConfig('site');" class="Aorange">Dissocier</a>
+<!--			<input type="hidden" id="action" name="action" value="d" />
+			<input type="hidden" id="supp_config" name="supp_config" value="0" />
+-->
+		</td>
+		<td>
+			$$IF-:0:INFWEB:ETAT$$Etat: Bug $$END$$
+			$$IF=:0:INFWEB:ETAT$$Etat: Hors Ligne $$END$$
+			$$IF=:1:INFWEB:ETAT$$Etat: En Ligne $$END$$
+		</td>
+		$$END$$
+		$$IF0:INFWEB:IDCONFIG$$
+			$$IF=:1:LCDOSSIER:IDPRODUIT$$
+			<td>
+					<a href="javascript:createConfig('site');" class="Aorange">Cr&eacute;er une config</a>
+			</td>
+			$$END:LCDOSSIER:IDPRODUIT$$
+			<td>
+				<nobr><input type="text" name="txt_assoc_idconfig" id="txt_assoc_idconfig" value="" size="10" />(ID numérique uniquement)&nbsp;</nobr>
+			</td>
+			<td>
+				<a href="javascript:associerConfig('site');" class="Aorange">Associer</a>
+				<!--<input type="hidden" id="action" name="action" value="a" />-->
+			</td>
+			$$IF!:1:LCDOSSIER:IDPRODUIT$$
+			<td>
+					&nbsp;
+			</td>
+			$$END:LCDOSSIER:IDPRODUIT$$
+			<script>CreaCtrl('IDINFWEB','n',': Erreur dans l\'Id ID3x', '');</script>
+		$$END$$
+	</tr>
+$$REM$$
+<!--
+			<tr>
+				<td><label>Config WAP</label></td>
+				$$IF0:INFWAP:IDCONFIG$$
+				<td ><a href="#" class="Aorange">Cr&eacute;er une config</a></td>
+				<td>
+					<input type="text" id="assoc_idconfig_wap" name="assoc_idconfig_wap" value="" size="10" />
+				</td>
+				<td>(ID numérique uniquement)&nbsp;<a href="javascript:associerConfig('wap');" class="Aorange">Associer</a></td>
+				<script>CreaCtrl('IDINFWAP','n',': Erreur dans l\'Id WAP', '');</script>	
+				$$END$$		
+				$$IF:INFWAP:IDCONFIG$$
+				<td>
+					<a href=http://confx.id3x.com/config.htm?cfg=$$INFWEB:IDCONFIG$$" target="_blank">
+					    $$INFWAP:IDCONFIG$$
+					</a>
+					<input type="hidden" name="idlogin" value="$$INFWAP:IDCONFIG$$"></label>
+				</td>
+				<td></td>
+				<td><a href="javascript:dissocierConfig('wap');" class="Aorange">Dissocier</a></td>
+				<td></td>
+				$$END$$	
+			</tr>
+			<tr>
+				<td><label>Config I-Mode</label></td>
+				$$IF0:INFIMODE:IDCONFIG$$
+				<td ><a href="#" class="Aorange">Cr&eacute;er une config</a></td>
+				<td><input type="text" id="assoc_idconfig_imode" name="assoc_idconfig_imode" value="" size="10" /></td>
+				<td>(ID numérique uniquement)&nbsp;<a href="javascript:associerConfig('imode');" class="Aorange">Associer</a></td>
+				<script>CreaCtrl('IDINFIMODE','n',': Erreur dans l\'Id I-Mode', '');</script>
+				$$END$$
+				$$IF:INFIMODE:IDCONFIG$$
+				<td>
+					<a href="http://confx.id3x.com/config.htm?cfg=$$INFWEB:IDCONFIG$$" target="_blank">
+					    $$INFIMODE:IDCONFIG$$
+					</a>
+					<input type="hidden" name="idlogin" value="$$INFIMODE:IDCONFIG$$">
+				</td>
+				<td></td>
+				<td><a href="javascript:dissocierConfig('imode');" class="Aorange">Dissocier</a></td>
+				<td></td>
+				$$END$$
+			</tr>
+-->
+$$END:REM$$
+<!--</form>-->
+		$$END:CONFIG_W$$
+	$$END:DOSSIER_W$$
+$$END:IF$$

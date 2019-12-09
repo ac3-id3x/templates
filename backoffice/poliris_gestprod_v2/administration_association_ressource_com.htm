@@ -1,0 +1,87 @@
+$$REM$$
+====================================================================
+//// <summary>Page d'administration des associations entre les commerciaux et les chefs de projet </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:ZONE_SELECT alias COMMERCIAUX, GDP2:ZONE_SELECT alias RESPONSABLE</para>
+//// <para>Pages html inclues : incl_administration_commerciaux_associes.htm, incl_administration_commerciaux_non_associes.htm
+//// </remarks>
+//// <update date="2007-12-06" author="florian.adam"></update>
+
+====================================================================
+$$END$$
+
+$$INCL:HAUT.HTM$$
+$$B:GDP2:ZONE_SELECT:~TYPE:11:ALIAS:RESPONSABLES$$
+
+
+<table id="conteneur" name="conteneur" width="100%" >
+	<tr>
+		<td id="menugauche" width="200px" >
+		$$INCL:MENU_GAUCHE_ADM_RESSOURCE.HTM$$
+	</td>
+	<td id="principal" class="cadreclair" width="100%" >
+		<form id="frmressource" name="frmressource" action="/$$REP:URI$$" method="post" onSubmit="validate('frmressource',var_AMRS,msg_AMRS);" >
+		<input type="hidden" name="u" value="GDP2:ASSOCIATION_RESSOURCE_COMMERCIAL">
+		<input type="hidden" name="page_ok" value="$$REP:URI$$?idressource=$$GDP2:ASSOCIATION_RESSOURCE_COMMERCIAL:IDRESSOURCE$$">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="idcommerciaux" id="idcommerciaux" value="">
+		$$INCL:ERREUR$$
+		<h1>Ressource</h1>
+		<div  class="cadrefonce">
+			&nbsp;
+			<table>
+				<tr>
+					<td><label for="lstResponsable">Sélectionner un responsable :</label></td>
+					<td width="10px">&nbsp;</td>
+					<td><label for="lstResponsable">Liste des commerciaux associés : </label></td>
+					<td width="10px">&nbsp;</td>
+					<td><label for="lstResponsable">Liste des commerciaux non associés : </label></td>
+				</tr>
+				<tr>
+					<td>
+						<select id="responsable" name="responsable" onchange="javascript:GetCommerciaux('incl_administration_commerciaux_associes.htm', 'commerciaux_associes');GetCommerciaux('incl_administration_commerciaux_non_associes.htm', 'commerciaux_non_associes');Displaybutton();">
+							<option value="0">-------------------------------</option>
+						$$BIF:RESPONSABLES$$
+						$$DO$$
+							<option value="$$RESPONSABLES:ID$$" $$IF=:FORM_IDRESSOURCE:RESPONSABLES:ID$$selected="selected"$$END$$ $$IF=:GDP2_ASSOCIATION*RESSOURCE*COMMERCIAL_IDRESSOURCE:RESPONSABLES:ID$$selected="selected"$$END$$>$$RESPONSABLES:VALEUR$$</option>
+						$$LOOP$$
+						$$BFIN$$
+					</td>
+					<td width="10px">&nbsp;</td>
+					<td rowspan="3">
+						<div id="commerciaux_associes">
+						</div>
+					</td>
+					<td>
+						<input type="button" id="associer" name="associer" value="<<&nbsp;Associer" onclick="GetComToAssoc('select_commerciaux_non_associes');" />
+					</td>
+					<td rowspan="3">
+						<div id="commerciaux_non_associes" align="right">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>
+						<input type="button" id="dissocier" name="dissocier" value="Dissocier&nbsp;>>" onclick="GetComToAssoc('select_commerciaux_associes');" />
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+	</td>
+	</tr>
+</table>
+
+$$INCL:BAS.HTM$$
+
+<script>
+Displaybutton();
+GetCommerciaux('incl_administration_commerciaux_associes.htm', 'commerciaux_associes');
+GetCommerciaux('incl_administration_commerciaux_non_associes.htm', 'commerciaux_non_associes');
+</script>

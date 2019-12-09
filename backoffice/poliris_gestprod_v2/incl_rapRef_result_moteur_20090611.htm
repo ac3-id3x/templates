@@ -1,0 +1,106 @@
+﻿$$REM$$
+====================================================================
+//// <summary>Page permettant l'affichage des informations clients destinataires</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (GDP:RESULT_MOTEUR) </para>
+//// <para>Liste des macros E utilisées dans cette page (GDP:URL_MOTEUR, GDP:DOSSIER, AUTH:VERIFICATION) </para>
+//// <para>Liste des macros P utilisées dans cette page (GDP:AJOUT_KEYWORDS) </para>
+//// </remarks>
+//// <update date="2008-05-13" author="prenom.nom">Création</update>
+====================================================================
+$$END:REM$$
+		$$E:GDP2:URL_MOTEUR:REP:1$$
+		$$B:GDP2:RESULT_MOTEUR:REP:1:QRY:IDLANGUE$$
+		$$BIF:GDP2:RESULT_MOTEUR:REP$$
+		$$DO$$
+
+			$$IFPREV:GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$
+				<form action="/$$REP:URI$$" method="post" name="moteur_$$GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$">
+					<input type="hidden" name="u" value="GDP2:AJOUT_KEYWORDS">
+					<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+					<input type="hidden" name="page_err" value="/$$REP:URI$$">
+					<input type="hidden" name="iddossier" value="$$REP:1$$">
+					<input type="hidden" name="idlangue" value="$$REP:2$$">
+					<input type="hidden" name="idkeywords" value="$$GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$">
+
+					<fieldset>
+						<h2>MOTEUR DE RECHERCHE</h2>
+							<div  class="cadrefonce">
+								<div class="cadreclair">
+								<table  width="95%" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td colspan="2" class="tdRight">
+											<a name="$$GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$"></a>
+											$$IF:AUTH:VERIFICATION:DOSSIER_W$$<a href="javascript:confirmation('moteur_$$GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$','$$GDP2:RESULT_MOTEUR:REP:EXPRESSION replace ' \'$$','$$GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$');"><img src="images/checkbox0.gif" hspace="1" width="10" height="12" border="0" alt="Supprimer l'expression $$GDP2:RESULT_MOTEUR:REP:EXPRESSION$$"></a>$$END$$
+										</td>
+									</tr>
+									<tr>
+										<td nowrap><b>Date de suivi&nbsp;:&nbsp; </b></td>
+										<td>$$GDP2:DOSSIER:DT_SUIVI date 2$$</td>
+									</tr>
+									<tr>
+										<td valign="top"><b>Expression&nbsp;:&nbsp;</b></td>
+										<td width="100%"><textarea cols="40" name="query" $$FORM:TEXTAREA:PROPERTY$$>$$GDP2:RESULT_MOTEUR:REP:EXPRESSION$$</textarea></td>
+									</tr>
+									<tr>
+										<td valign="top"><b>Urls&nbsp;:&nbsp;</b></td>
+										<td width="100%">$$GDP2:URL_MOTEUR:URLS_SITE$$</td>
+									</tr>
+								</table>
+								<table align="center" width="90%" border="0" cellspacing="1" cellpadding="1">
+								<tr>
+									<th nowrap="nowrap" >
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+										Soumis :
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+									</th>
+									<th nowrap="nowrap" >
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+											Etats
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+									</th>
+									<th nowrap="nowrap" >
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+											Date
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+									</th>
+									<th nowrap="nowrap" >
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+											Visualisation dans le moteur
+										<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+									</th>
+								</tr>
+
+			$$END$$
+
+			<tr class="$$GDP2:RESULT_MOTEUR:REP:I mod2 td_alt td_alt1$$">
+				<td><a href="$$GDP2:RESULT_MOTEUR:REP:URL$$">$$GDP2:RESULT_MOTEUR:REP:ENGINENAME$$</a></td>
+				<td>
+					$$IF0:GDP2:RESULT_MOTEUR:REP:IDENGINEREPORT$$<span class="redmsg"> Pas encore vérifé </span>$$END$$
+					$$IF:GDP2:RESULT_MOTEUR:REP:IDENGINEREPORT$$
+						$$IF0:GDP2:RESULT_MOTEUR:REP:POS$$$$IF0:GDP2:RESULT_MOTEUR:REP:PAGE$$<span class="greenmsg">Présent au delà de la 5ème page</span>$$END$$$$END$$
+						$$IF:GDP2:RESULT_MOTEUR:REP:POS$$$$IF:GDP2:RESULT_MOTEUR:REP:PAGE$$<span class="greenmsg"> Présent en $$GDP2:RESULT_MOTEUR:REP:PAGE$$$$IF=:1:GDP2:RESULT_MOTEUR:REP:PAGE$$er$$END$$$$IF!:1:GDP2:RESULT_MOTEUR:REP:PAGE$$ème$$END$$ page de résultats, en $$GDP2:RESULT_MOTEUR:REP:POS$$$$IF=:1:GDP2:RESULT_MOTEUR:REP:POS$$ère$$END$$$$IF!:1:GDP2:RESULT_MOTEUR:REP:POS$$ème$$END$$ position </span>$$END$$$$END$$
+					$$END$$
+				</td>
+				<td>$$GDP2:RESULT_MOTEUR:REP:DT date 2$$</td>
+				<td align="center">
+					<a href="$$GDP2:RESULT_MOTEUR:REP:QUERY$$$$GDP2:RESULT_MOTEUR:REP:EXPRESSION urlencode20$$" target="_blank">$$GDP2:RESULT_MOTEUR:REP:URL$$</a>
+				</td>
+			</tr>
+
+			$$IFNEXT:GDP2:RESULT_MOTEUR:REP:IDKEYWORDS$$
+							<tr>
+								<td><a href="#top" class="lien">&laquo;&nbsp;Haut de page&nbsp;&raquo;</a></td>
+								<td colspan="3" class="tdRight">
+									$$IF:AUTH:VERIFICATION:DOSSIER_W$$<input class="button" type="submit" value="Modifier l'expression" name="modification">$$END$$
+								</td>
+							</tr>
+						</table>
+						</div>
+						</div>
+					</fieldset>
+				</form>
+			$$END$$
+
+		$$LOOP$$
+		$$BFIN$$

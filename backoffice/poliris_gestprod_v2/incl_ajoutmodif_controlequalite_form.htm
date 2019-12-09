@@ -1,0 +1,106 @@
+$$REM$$
+====================================================================
+//// <summary>Module Controle Qualite : Ajout Modif - Formulaire</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : LISTE_HISTORIQUE alias LSTHISTO</para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LECTURE_DOSSIER alias LCDOSSIER </para>
+//// <para>Liste des macros P utilisées dans cette page (sans &dollar;&dollar;) : MAJ_SUIVIDDOSSIER </para>
+//// </remarks>
+//// <update date="2007-12-11" author="jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+$$B:GDP2:LISTE_HISTORIQUE:~ID:REP:1:~TYPE:5:ALIAS:LSTHISTO$$
+$$E:GDP2:LECTURE_DOSSIER:~ID:REP:1:ALIAS:LCDOSSIER$$
+
+$$E:AUTH:VERIFICATION$$
+	$$IF:GDP2:MAJ_SUIVIDDOSSIER:ERRMSG$$
+		<p class="erreur" >Message d'erreur : $$GDP2:MAJ_SUIVIDDOSSIER:ERRMSG$$</p>
+	$$END$$
+<form id="frmsuividossier" name="frmsuividossier" method="post" onSubmit="return validate('frmsuividossier',var_AMSD,msg_AMSD);">
+		<input type="hidden" name="u" value="GDP2:MAJ_SUIVIDDOSSIER">
+		<input type="hidden" name="page_ok" value="/ControleQualite.htm">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="iddossier" value="$$REP:1$$">
+		<input type="hidden" name="iduser"	value="$$AUTH:VERIFICATION:IDUSER$$" >
+		<input type="hidden" name="nomuser"	value="$$GDP2:USER_INFO:PRENOM$$ $$GDP2:USER_INFO:NOM$$" >
+		<input type="hidden" name="idetat"	value="$$LCDOSSIER:IDETATDOSSIER$$" >
+		<input type="hidden" name="action"	value="0" >
+<h2>Informations sur le suivi</h2>
+	<div  class="cadrefonce" >
+		<center>
+			<table>
+				<tr>
+					<td><label>Date</label></td>
+					<td><input name="dtjour" id="dtjour" readonly="readonly" value="$$DATE$$"></td>
+					<td width="10px"></td>
+					<td><label>Commentaire</label></td>
+					<td><textarea name="commentaire" id="commentaire" cols="50" rows="3" >$$LCDOSSIER:COMMENTAIRE$$</textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<table >
+					<!-- Legende -->
+							<tr >
+								<th>Date&nbsp;</th>
+								<th>Etat</th>
+							</tr>
+							$$BIF:LSTHISTO$$
+								$$DO$$
+								<tr>
+										<td class="$$LSTHISTO:I mod2 td_alt td_alt1$$" nowrap="nowrap" >$$LSTHISTO:DT_CREA date 2$$</td>
+										<td class="$$LSTHISTO:I mod2 td_alt td_alt1$$" nowrap="nowrap" >$$LSTHISTO:ETAT_DESCRIPTION$$</td>
+								</tr>
+								$$LOOP$$
+							$$BFIN$$										
+						</table>
+					</td>
+					<td></td>
+					<td colspan="2">
+						<center>
+						<input type="submit" value="Mise à jour commentaire"><br>
+						<br>
+						<input type="button" value="Site à valider" onclick="javascript:Envoi(1);">
+						<input type="button" value="Site à refuser" onclick="javascript:Envoi(2);">
+					</center>
+					</td>
+				</tr> 
+		
+		</center>
+		&nbsp;
+	</div>
+</form>
+	<script>
+/*
+				Valeur 	Origine 		Vérification 
+				-------------------------------------------------------------------------------------------------------
+				e 			empty 			l'élément ne doit pas être vide 
+				n 			number 			l'élément doit être un nombre 
+				m 			mail 				une adresse élctronique doit être exacte sur la forme 
+				r 			regexp 			la valeur doit correspondre à un modèle déterminé 
+				p 			price 			la valeur doit se présenter sous la forme "10,00" (avec virgule) 
+				p. 			price_dot 	la valeur doit se présenter sous la forme "10.00" (avec point) 
+				c 			capitalize 	Les noms propres doivent être corrigés 
+ 				t				length			Contrôle si on dépasse pas la taille max
+*/
+		var msg_AMSD = 'GESTPROD V2 - Erreur - Formulaire';
+
+		var var_AMSD = new Array();
+		var_AMSD[0] = new Array('dtjour','e','Vous n\'avez pas mentionné la date ','');
+		var_AMSD[1] = new Array('dtjour','d',': Le format de la date n\'est pas correcte','');
+		var_AMSD[2] = new Array('commentaire','e','Vous n\'avez pas mentionner le commentaire','6000');	
+		var_AMSD[3] = new Array('commentaire','t',': cette valeur est trop grande (max:5000)','5000');				
+		
+		function Envoi(Act)
+		{
+
+			document.frmsuividossier.action.value = Act ;
+			document.frmsuividossier.submit();
+		}
+		
+		
+		function AfficheDate() {                       
+	                    
+			document.frmsuividossier.dtjour.value = AffDate();
+		}                                                                   
+		AfficheDate ();		
+	</script>

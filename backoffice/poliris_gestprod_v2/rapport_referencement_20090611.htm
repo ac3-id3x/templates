@@ -1,0 +1,106 @@
+﻿$$REM$$
+====================================================================
+//// <summary>Page permettant l'affichage du rapport de réferencement</summary>
+//// <remarks>
+//// <para>Liste des pages html inclues dans cette page (incl_rapref_result_annuaire.htm, incl_rapref_result_moteur.htm, incl_bas.htm, incl_haut.htm). </para>
+//// <para>Liste des macros B utilisées dans cette page (GDP:LISTE_LANGUE) </para>
+//// <para>Liste des macros E utilisées dans cette page (GDP:DOSSIER,GDP:URL_MOTEUR) </para>
+//// </remarks>
+//// <update date="2008-05-13" author="prenom.nom">Création</update>
+====================================================================
+$$END:REM$$
+
+$$INCL:HAUT.HTM$$
+
+<SCRIPT LANGUAGE="javascript" TYPE="text/javascript">
+<!--
+function submitform()
+{
+	var elt_idlangue = document.getElementById("langue");
+	var url = "";
+	if( elt_idlangue )
+	{
+		url = "/" + elt_idlangue.value + "/$$REP:2$$/$$REP:1$$/$$REP:0$$";
+	}
+	if( url )
+	{
+		document.location.href = url;
+	}
+}
+
+function confirmation(NameForm,Expression,IdKeywords)
+{
+	var texte = "Etes vous sûr de vouloir supprimer l'expression '" + Expression + "' ?";
+	
+	if(confirm(texte))
+	{
+		// Suppression de l'expression
+		eval("document." + NameForm + ".idkeywords.value = '" + IdKeywords + "_d';" );
+		eval("document." + NameForm + ".submit();");
+	}	
+}
+//-->
+</SCRIPT>
+
+<!-- DATE : $$GDP2:DOSSIER:DT_SUIVI date 2$$ -->
+
+$$E:GDP2:DOSSIER:REP:1$$
+
+<table id="conteneur" name="conteneur" >
+	<tr>
+		<td id="menugauche" name="menugauche">
+					<!-- Ici on inclue la page html du menu qui fait référence à la page html visitée
+					Exemple pour la page d'administration des produits : 
+		-->
+		$$INCL:MENU_GAUCHE_RAPREF.HTM$$
+		</td>
+		<td id="principal" name="principal">
+			<table align="center" width="90%" border="0" cellspacing="1" cellpadding="1">
+				<tr>
+					<td>
+						La v&eacute;rification des positions pour ce site est 
+						$$IF:GDP2:URL_MOTEUR:SI_RANKING_ACTIF$$<span class="blackmsg">Active</span>$$END$$
+						$$IF0:GDP2:URL_MOTEUR:SI_RANKING_ACTIF$$<span class="redmsg">Inactive</span>$$END$$
+						.
+					</td>
+				</tr>
+				<tr>
+			    	<td> 
+						$$B:GDP2:LISTE_LANGUE:REP:1$$
+						
+						$$BIF:GDP2:LISTE_LANGUE:REP$$
+						Choississez la langue :
+						<select id="langue" name="langue" onChange="submitform();">
+							$$DO$$
+								$$IF=:1:GDP2:LISTE_LANGUE:REP:NBR$$
+									$$IF!:1:GDP2:LISTE_LANGUE:REP:IDLANGUE$$
+										$$IF=:1:REP:2$$
+											<script>
+												window.location="/$$GDP2:LISTE_LANGUE:REP:IDLANGUE$$/$$REP:2$$/$$REP:1$$/rapport_referencement.htm";
+											</script>
+										$$END$$
+									$$END$$
+								$$END$$
+							
+								<option value="$$GDP2:LISTE_LANGUE:REP:IDLANGUE$$" $$IF=:REP_2:GDP2:LISTE_LANGUE:REP:IDLANGUE$$selected$$END$$>$$GDP2:LISTE_LANGUE:REP:LAN_LIBELLE$$</OPTION>
+							$$LOOP$$
+						</select>
+						$$BFIN$$
+						
+					
+						$$INCL:RAPREF_RESULT_ANNUAIRE.HTM$$
+					
+						$$INCL:RAPREF_RESULT_MOTEUR.HTM$$
+					
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+$$INCL:BAS.HTM$$
+
+
+
+

@@ -1,0 +1,122 @@
+$$REM$$
+====================================================================
+//// <summary>Page d'administration produit : Gestion de l'enchainement des états du produit </summary>
+//// <remarks>
+//// <para>Pages html inclues : </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) : AUTH:VERIFICATION, LECTURE_ETAT_PRODUIT alias INFOETAT</para>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LECTURE_ETAT_PRODUIT alias PRODETAT, GDP2:LISTE_PRODUIT_ETAT alias PRODETATSUIV </para>
+//// <para>Liste des macros P utilisées dans cette page (sans &dollar;&dollar;) : GDP2:MAJ_PRODUIT_ENCH </para>
+//// <para>Rep:1 - N° du produit ou de la ligne à modidier</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+//// <para>Rep:3 - Identifiant de l'état</para>
+//// </remarks>
+//// <update date="2007-11-19" author="jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$E:AUTH:VERIFICATION$$
+$$E:GDP2:LECTURE_ETAT_PRODUIT:~ID:REP:1:~ETAT:REP:3:ALIAS:INFOETAT$$
+$$B:GDP2:LECTURE_ETAT_PRODUIT:~ID:REP:1:ALIAS:ENCHETAT$$
+$$B:GDP2:LISTE_PRODUIT_ETAT:~ID:REP:1:~ETAT:REP:3:ALIAS:PRODETATSUIV$$
+
+$$IF:AUTH:VERIFICATION:ADMINISTRATION$$
+	$$IF:GDP2:MAJ_PRODUIT_ENCH:ERRMSG$$
+		<p class="erreur" >Message d'erreur : $$GDP2:MAJ_PRODUIT_ENCH:ERRMSG$$</p>
+	$$END$$
+
+	<form id="frmenchproduit" name="frmenchproduit"  method="post" >
+		<input type="hidden" name="u" value="GDP2:MAJ_PRODUIT_ENCH">
+		<input type="hidden" name="page_ok" value="$$REP:URI$$">
+		<input type="hidden" name="page_err" value="$$REP:URI$$">
+		<input type="hidden" name="id" value="$$REP:1$$">
+		<input type="hidden" name="etat" value="$$REP:3$$">
+
+	<h1> Enchainement des états  
+			$$IF!:administration_produit.htm:REP:0$$
+				pour le produit : 
+				$$IF=:0:REP:1$$ "nouveau produit" $$END$$
+				$$IF!:0:REP:1$$ $$ENCHETAT:TXTNOM$$ $$END$$
+			$$END$$</h1>
+		<div  class="cadrefonce">
+			&nbsp;
+			<table width="80%" >
+				<tr>
+						<th>Action</th>
+						<th>Etat</th>
+						<th>Actif</th>
+				<tr>
+				$$BIF:ENCHETAT$$
+					$$DO$$
+						$$IF=:1:ENCHETAT:SEL$$
+						<tr>
+							<td class="td_alt1" >
+								$$IF=:0:REP:2$$
+									<a href="/$$ENCHETAT:IDETAT$$/0/$$REP:1$$/administration_produit.htm" >
+										<img src="$$_$$images/ico_voir.png" alt="Voir" border="0" /></a>&nbsp; 
+								$$END$$
+								$$IF=:1:REP:2$$
+									<a href="/$$ENCHETAT:IDETAT$$/1/$$REP:1$$/administration_ajoutmodif_produit_ench.htm" >
+										<img src="$$_$$images/ico_modifier.png" alt="Modifier" border="0"  /></a>								
+								$$END$$
+							</td>
+							<td class="td_alt1" >$$ENCHETAT:ETAT_DESCRIPTION$$</td>
+							<td class="td_alt1" >
+								$$IF:ENCHETAT:PETA_ACTIF$$ Actif $$END$$
+								$$IF0:ENCHETAT:PETA_ACTIF$$ Inactif $$END$$
+							</td>
+						</tr>
+						$$END$$
+					$$LOOP$$
+				$$BFIN$$
+			</table>
+		</div>
+			<br>
+			<H1> Liste des étapes pour l'état : $$INFOETAT:ETAT$$ </H1>
+			<div  class="cadrefonce">
+			&nbsp;
+				$$BIF:PRODETATSUIV$$
+					<table>
+						<tr><td colspan=2 >
+						<label>L'état est : 
+						Inactif <input type="radio" name="optactif" id="optactif" value="0" checked="checked" >
+						Actif <input type="radio" name="optactif" id="optactif" value="1" $$IF:INFOETAT:ACTIF$$ checked="checked" $$END$$ ></label>
+						</td><tr>
+						<tr><td valign=top >	
+						<table >
+						<tr><td>
+							$$DO$$
+								$$IF=:1:PRODETATSUIV:ACTIF$$
+									$$PRODETATSUIV:I mod2 <td> <tr><td>$$
+											<label>$$PRODETATSUIV:ETAT_DESCRIPTION$$ :&nbsp; </label>
+											</td><td>
+											<input type="checkbox" name="chkETAT" id="chkETAT" $$IF=:1:PRODETATSUIV:ACTIF$$ checked="checked" $$END$$ value="$$PRODETATSUIV:IDETAT$$" > &nbsp;
+											<input type="hidden" name="idEtat" id="idEtat" value="$$PRODETATSUIV:IDETAT$$">
+									$$PRODETATSUIV:I mod2 </td></tr> </td><td>&nbsp;</td>$$
+								$$END$$
+							$$LOOP$$
+							</table>
+						</td><td valign=top >
+							<table >					
+							$$DO$$
+								$$IF=:0:PRODETATSUIV:ACTIF$$
+									$$PRODETATSUIV:I mod2 <td> <tr><td>$$
+											<label>$$PRODETATSUIV:ETAT_DESCRIPTION$$ :&nbsp; </label>
+											</td><td> 
+											<input type="checkbox" name="chkETAT" id="chkETAT" $$IF=:1:PRODETATSUIV:ACTIF$$ checked="checked" $$END$$ value="$$PRODETATSUIV:IDETAT$$" > &nbsp;
+											<input type="hidden" name="idEtat" id="idEtat" value="$$PRODETATSUIV:IDETAT$$">
+									$$PRODETATSUIV:I mod2 </td></tr> </td><td>&nbsp;</td>$$
+								$$END$$
+							$$LOOP$$
+							</table>
+						</td></tr></table>	
+					$$IF=:1:REP:2$$
+	    			<p align=right ><input id="btnAMPLreset" type="reset" value="Annulation" />
+	    			&nbsp;<input id="btnAMPLvalidation" type="submit" value="Validation"  /></p>
+					$$END$$	
+				$$BFIN$$
+		</div>
+	</form>	
+$$END$$
+$$IF0:AUTH:VERIFICATION:ADMINISTRATION$$
+	<center><p class="erreur" >Vous n'avez pas les autorisations nécessaire pour visualiser cette page</p></center>
+$$END$$	

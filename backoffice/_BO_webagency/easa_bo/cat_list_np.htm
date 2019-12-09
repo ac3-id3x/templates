@@ -1,0 +1,148 @@
+<!--#include virtual="easa_bo/incl_haut.htm" -->
+<html>
+$$E:EASA:BO-EASA$$
+	<head><title>Editeur articles  $$FORM:URL$$</title>
+		<style>
+body,select,td {
+font:menu;
+background: #efefde;
+}
+
+.data {
+	background: window;
+	border:1px solid outset;
+	overflow-y: scroll;
+	padding: 4px;
+	height: 80px;
+}
+
+input,button {
+	border-size: 1px;
+	padding-left:2px;
+	font:menu;
+}
+
+h4 {
+	margin: 0px;
+}
+
+.menu {
+	border-bottom: 1px solid inset;
+}
+.menu button {
+	border-bottom: 0px;
+}
+.x {
+ font-weight:bold;
+ width:100px;
+}
+</style>
+
+<script type="text/javascript" src="/easa_bo,js,cat_list.js"></script>
+	</head>
+	<body scroll="auto">
+		<form method="get" name="add" action="/">
+		<input type="hidden" name="page_err" value="/easa_bo, admin_list.htm">
+		<table>
+			$$B:EASA:BO-CATEGORIES:~idEasa:REP:1:ALIAS:CLIST$$			 
+              $$BIF:CLIST$$
+
+			<tr>
+		<th><h4>IDEASA= $$CLIST:IDEASA$$</h4>
+		</th>
+
+	</tr>
+		<tr>
+		<td>		
+		<table>			
+		<tr>
+		<th><h4>Catégories:</h4>
+		</th>
+		</tr>		
+		</font>
+                $$DO$$
+                <tr>
+                <td>
+                   <span class="x"><a href="/easa_bo,cat_edit.htm?idCategorie=$$CLIST:IDCATEGORIE$$">$$CLIST:LIBELLE$$</a></span>
+                   </td>
+                   </tr>
+                $$LOOP$$
+            $$BFIN$$            
+            <tr>
+                <td>
+                   <span class="x"><a href="/easa_bo,cat_corbeille.htm">Corbeille</a></span>
+                </td>
+              </tr>                            
+            </table>
+            </td>
+            <td>$$IF:ERRE$$<font color="red">$$ERRE$$<br>$$END$$</td>
+            </tr>
+           <tr>
+                <td><br><a href="/easa_bo,cat_edit.htm">Créer une catégorie fille</a></td>
+	 		</tr>
+	 		
+	 		<tr><td>&nbsp;</td></tr>
+	 				
+	 		
+	 		<tr><td>
+	 			
+		
+	   $$B:EASA:BO-CATEGORIES:~idEasa:REP:1:ALIAS:OCLIST$$
+	$$BIF:OCLIST$$ 
+	<th align="left">Ordre des catégories</th>
+	    <table>
+	        <tr>
+	            <td>
+	                 <select multiple="multiple" name="catorder" id="catorder" size="10">
+	              		$$DO$$
+	                    <option value="$$OCLIST:IDCATEGORIE$$">$$OCLIST:LIBELLE$$ 
+	                	$$LOOP$$
+	                </select>	             
+	            </td>
+	            <td>
+	                <button onclick="return moveItem(-1,document.getElementById('catorder'));" ><img src="easa_bo/images/up.gif"></button><br>
+	                <button onclick="return moveItem(+1,document.getElementById('catorder'));" ><img src="easa_bo/images/down.gif"></button>
+	            
+	            </td>
+	        </tr>
+	    </table>
+	    <button onclick="return submitCatOrdre(document.getElementById('catorder'),$$REP:1$$,0,'/$$REP:PAGE urlencode$$');">  Enregistrer l'ordre</button>	
+	    <button onclick="return submitCatOrdre(document.getElementById('catorder'),$$REP:1$$,1,'/$$REP:PAGE urlencode$$');">  Effacer l'ordre</button>	
+	$$BFIN$$
+	  </form>
+	        
+            
+<HR/>
+ 	<td>
+	 	</tr>
+	 		
+	 		<tr>
+                <td><br>
+	            
+Recherche dans le contenu du site:
+<div style="width:200px;">
+	<form name="search" method="get" action="/easa_bo,searchCnt.htm">
+	Cnt_id:<input type=text name=cnt_id>
+	<input type=submit value="Go"/>	
+	</form>
+</div>
+     		</td>
+	 		
+              </tr>   
+    
+    <hr>
+	 	<td>
+	 	</tr>
+	 		
+	 		<tr>
+                <td><br>
+	   			<a href="/easa_bo,admin_list.htm">Log Off EASA</a>
+	 		</td>
+	 		
+              </tr>   
+            </table>
+          
+    
+            
+	</body>
+</html>

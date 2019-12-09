@@ -1,0 +1,68 @@
+$$REM$$
+====================================================================
+//// <summary>Menu haut</summary>
+//// <remarks>
+//// <para>Liste des macro E : USER_INFO, AUTH:VERIFICATION</para>
+//// <para>Liste des pages html : incl_message.htm
+//// </remarks>
+//// <update date="2007-11-15" author="florian.adam">Création</update>
+
+====================================================================
+$$END:REM$$
+
+$$E:AUTH:VERIFICATION$$
+$$E:GDP2:USER_INFO$$
+
+<div id="menuhaut_principal">
+	<img src="$$_$$images/logo_gestprod.gif" />
+	<ul>
+		$$IF:AUTH:VERIFICATION:DOSSIER_C$$
+		<li><img src="$$_$$images/ico_ajouter_dossier.png" />&nbsp;<a href="dossier_choixproduit.htm">Ajout</a></li>
+		$$END:DOSSIER_C$$
+		<li><img src="$$_$$images/ico_rechercher.png" />&nbsp;<a href="#" onclick="javascript:affiche_recherche();">Recherche</a></li>
+	</ul>
+	<ul class="right">		
+		<li><img src="$$_$$images/ico_aide.png" />&nbsp;<a href="liste_aide.htm">Aide</a></li>
+		$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+		<li><img src="$$_$$images/ico_referencement.png" />&nbsp;<a href="#">Référencement</a></li>
+		$$END:DOSSIER_W$$
+		<li>Bienvenue $$GDP2:USER_INFO:PRENOM$$&nbsp;$$GDP2:USER_INFO:NOM$$</li>
+		<li><a href="#" onclick="document.formudecon.submit();">Déconnexion</a></li>
+	</ul>
+		<form action="/index.htm" name="formudecon" method="post">
+			<input type="hidden" name="u" value="AUTH:LOGOUT" />
+			<input type="hidden" name="page_err" value="$$REP:URI$$" />
+			<input type="hidden" name="page_ok" value="/login.htm" />
+		</form>
+</div>
+<div id="menuhaut_secondaire">
+	<form action="/recherche_resultat.htm" name="formrecherche" >
+		Recherche (Nom, URL et Config)&nbsp;<input type="text" name="dos_nom" class="text" />&nbsp;
+		<input type="hidden" name="typRecherche" id="typRecherche" value="1" />
+		<input type="submit" name="btngo" id="btngo" value="Go" class="bouton" />&nbsp;
+	</form>
+	<form>
+		<input type="button" name="btnconfig" id="btnconfig" value="Config ID3x" class="bouton" onclick="javascript:popup('Conf ID3X', 'http://conf.id3x.com.id2/gestprod_auto_login.htm?login=poliris&password=y4plupr0m0', 800, 600, false)"/>
+	</form>
+	
+	<ul>
+		$$IF:AUTH:VERIFICATION:FUSION_R$$
+		<li><a href="search_fusions_agence.htm"><span>Rechercher une fusion</span></a></li>
+		$$END:FUSION_R$$
+		$$IF:AUTH:VERIFICATION:COMPTES_TDL_R$$
+		<li><a href="tete_probleme.htm"><span>Tdl à problème</span></a></li>
+		$$END:COMPTES_TDL_R$$
+		$$IF:AUTH:VERIFICATION:DOMAINE_W$$
+		<li><a href="/10/Gestion_url.htm"><span>Gestion des domaines</span></a></li>
+		$$END:DOMAINE_W$$
+		$$IF:AUTH:VERIFICATION:CTRQUALITE_R$$
+		<li><a href="/ControleQualite.htm"><span>Ctrl qualités</span></a></li>
+		$$END:CTRQUALITE_R$$
+		$$IF:AUTH:VERIFICATION:ADMINISTRATION$$
+		<li><a href="/administration.htm"><span>Administration</span></a></li>
+		$$END:ADMINISTRATION$$
+	</ul>
+	$$INCL:MESSAGE.HTM$$
+</div>
+
+

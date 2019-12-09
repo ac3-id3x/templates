@@ -1,0 +1,151 @@
+﻿$$REM$$
+====================================================================
+//// <summary>Menu pour le module d'administration</summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_haut.htm, incl_bas.htm</para>
+//// </remarks>
+//// <update date="2007-11-13" author="jean-jacques.durmord">Création</update>
+//// <update date="2007-11-19" author="jean-jacques.durmord">Modification du commentaire</update>
+//// <update date="2007-11-19" author="jean-jacques.durmord">Modification de la présentation: remplacement des divs dans le conteneur par un tableau</update>
+//// <update date="2007-11-28" author="jean-jacques.durmord">Rajout de l'administration des ressources</update>
+=======================================================================
+$$END:REM$$
+
+<html>
+<style>
+    .graph { 
+        position: relative; /* IE is dumb */
+        /*width: $$PPC_BILANTDL_GLOBAL:NBJOURRESTANTROUND$$px;*/
+        border: 1px solid #B1D632; 
+        padding: 2px 0px 2px 2px;
+    }
+    .graph .bar1 { 
+        display: block;
+        position: relative;
+        background: #B1D632; 
+        text-align: center; 
+        color: #333; 
+        height: 2em; 
+        line-height: 2em;            
+    }
+    
+    .graph .bar2 { 
+        display: block;
+        position: relative;
+        background: #B1D600; 
+        text-align: center; 
+        color: #333; 
+        height: 2em; 
+        line-height: 2em;            
+    }
+    .graph .bar span { position: absolute; left: 1em; }
+</style>
+
+$$E:GDP2:PPC_BILANTDL:25524:-1:ALIAS:PPC_BILANTDL_GLOBAL$$
+
+<body>
+	<div class="graph" style="width:100px;">
+	    <strong class="bar1" style="width: 24px;">24%</strong>
+	</div>
+	<div class="graph" style="width:$$PPC_BILANTDL_GLOBAL:NBJOURRESTANTROUND$$px;" >
+		<strong class="bar1" style="width: $$PPC_BILANTDL_GLOBAL:NBJOURRESTANT$$px;">$$PPC_BILANTDL_GLOBAL:NBJOURRESTANT$$ jours restant</strong>
+	</div>
+	<div class="graph" style="width:$$PPC_BILANTDL_GLOBAL:NB_CLICK_COMMANDE$$px;" >
+		<strong class="bar1" style="width: $$PPC_BILANTDL_GLOBAL:NBCLICRESTANT$$px;">$$PPC_BILANTDL_GLOBAL:NBCLICRESTANT$$ clics restant</strong>
+	</div>
+
+	<div style="width:$$PPC_BILANTDL_GLOBAL:NB_CLICK_COMMANDE$$px; height:20px; background-color:#92B7D3;margin: 2px 2px 2px 2px;padding: 2px 0px 2px 2px;">
+		<div style="width:$$PPC_BILANTDL_GLOBAL:NBCLICTOTAL$$%; height:20px; background-color:#5B93BF; border-right:1px #FFF solid;">
+			$$PPC_BILANTDL_GLOBAL:NBCLICTOTAL$$
+		</div>
+	</div>
+	
+		<div style="width:100px; height:20px; background-color:#92B7D3;margin: 2px 2px 2px 2px;padding: 2px 0px 2px 2px;">
+		<div style="width:$$PPC_BILANTDL_GLOBAL:POURCENTAGETOTAL$$%; height:20px; background-color:#5B93BF; border-right:1px #FFF solid;">
+		</div>
+	</div>
+
+
+	</body>
+</html>
+
+<!--
+MACRO E :
+
+
+      //----------------------------------------------------------------------
+			//// <summary>
+			//// Affiche les stats de tdl pour un dossier.
+			//// </summary>
+			//// <remarks>
+			//// Macro de test, ne pas effacer s'il vous plait.
+			//// </remarks>
+			////<param type="arg" name="1" optional="false">Id du dossier</param>
+      ////<param type="arg" name="2" optional="false">-1: Tous les fournisseurs, cumulés. 0/NULL: Tous les fournisseurs détaillés. Ou bien l'id du fournisseur</param>
+
+			////<returns inloop="true" name="dt_suivi">La date (mois/année) des statistiques</returns>
+      ////<returns inloop="true" name="idfournisseur">Le fournisseur concerné</returns>
+      ////<returns inloop="true" name="nb_click">Le nombre de clicks du mois</returns>
+      ////<returns inloop="true" name="taux_click">Le rapport click/impression du mois</returns>
+      ////<returns inloop="true" name="cout_moyen_click">Le cout moyen, par click, du mois</returns>
+      ////<returns inloop="true" name="cout_global_click">Le cout total (du mois)</returns>
+      ////<returns inloop="true" name="nb_impression">Le nombre d'affichages du mois</returns>
+      ////<returns inloop="true" name="nb_click_restant">Le nombre de clicks restants</returns>
+      ////<returns inloop="true" name="pourcentageJournalier">Le pourcentage d'avancement (run rate) par jour, du mois</returns>
+      ////<returns inloop="false" name="ERRE">Le message d'erreur</returns>
+      ////<update date="2007-06-22" author="florian.adam">Création</update>
+			//----------------------------------------------------------------------
+        case "PPC_BILANTDL":
+			{
+				int iddossier = F.ForceInt(indexedArgs[1]);
+				int idfournisseur = F.ForceInt(indexedArgs[2]);
+				
+				if ((iddossier > 0))
+        {
+				
+					stmt = "SELECT DATEADD(d, nbjourrestant, GETDATE()) AS dt_fin, GETDATE() AS dt_suivi, ROUND(nbjourrestant, -1)+10 AS nbjourrestantround ,* FROM dbo.BILAN_SUIVI_TDL(" + F.SqlFieldInt(iddossier) + ", null)";
+					using (Sql oSql = new Sql("gestprodv2", id3Context))
+						returnValues = oSql.ExecCached(stmt);
+				}
+
+				break;
+			}
+-->
+
+
+
+<h1>Test pour Djamila ci-dessous</h1>
+<h3>
+	En fait je me suis trompé, il faut la librairie prototype.js et scriptaculous.js.<br/>
+	L'avantage de scriptaculous c'est que tu n'es pas obligé de prendre toute la librairie.<br/>
+	Ici je n'ai pris que prototype.js et effects.js.
+</h3>
+<script src="$$_$$javascript/prototype.js" type="text/javascript"></script>
+<script src="$$_$$javascript/scriptaculous/effects.js" type="text/javascript"></script>
+
+<div id="test"  style="float:left;background:#B1D600;position:absolute;width:200px;">
+<ul>
+	<li><a onclick="Effect.SlideDown('quisommenous');return false;" href="#">Qui sommes nous ?</a>
+	</li>
+</ul>
+<div name="quisommenous" id="quisommenous" class="cadrefonce" style="display:none;height:120px;" >
+	<ul style="float:left;background:#5B93BF;width:50%;">
+		<li>Titre 1</li>
+		<li>Titre 2</li>
+		<li>Titre 3</li>
+		<li>Titre 4</li>
+	</ul>
+</div>
+<ul>
+	<li><a onclick="Effect.SlideDown('quisommenous2');return false;" href="#">Qui sommes nous 2 ?</a>
+	</li>
+</ul>
+<div name="quisommenous2" id="quisommenous2" class="cadrefonce" style="display:none;" >
+	<ul style="float:left;background:#5B93BF;width:50%;">
+		<li>Titre 1</li>
+		<li>Titre 2</li>
+		<li>Titre 3</li>
+		<li>Titre 4</li>
+	</ul>
+</div>
+</div>

@@ -1,0 +1,131 @@
+<!--#include virtual="templates_bo/incl_haut.htm" -->	
+    
+</head>
+<body>
+
+<table width="100%">
+   <tr>
+    <td></td>
+  </tr>   
+       
+   <tr>
+    <td>
+      $$IF:FORM:IDCATEGORIE$$		
+      $$E:BOWEBAGENCY:BO-CATEGORIE:~idCategorie:QRY:IDCATEGORIE$$		
+		<form name="save" action="/$$REP:PAGE$$" method="post" id="sauve">      
+		<input type=hidden name="u" value="BOWEBAGENCY:BO-EDITCATEGORIE">
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$"> 
+		<input type="hidden" name="page_err" value="/$$REP:URI$$"> 
+		<input type="hidden" name="IDCATEGORIE" value="$$BOWEBAGENCY:BO-CATEGORIE:IDCATEGORIE$$"> 		
+
+		  <table>       	
+		   		<tr>
+			       	<td> Renommer la categorie</td>
+			       	<td> Libelle:  <input type="text" style="width: 200px;" name="libelle" value="$$BOWEBAGENCY:BO-CATEGORIE:LIBELLE$$"/></td>		       	
+			       	 <td><input type="submit" name="saveCat" value="Renommer" />
+						</td>		       	 
+			      </tr> 
+			    </table>
+		  <br/>
+			$$IF:BOWEBAGENCY:BO-EDITCATEGORIE:ERRMSG$$<font color="red">$$BOWEBAGENCY:BO-EDITCATEGORIE:ERRMSG crlf2br replace	 <br/> .<br/>$$
+				<br><hr></font>
+			$$END$$	       
+		
+		</form>
+	$$END$$
+    	</td>
+  </tr>   
+        
+
+<form method="get" name="liste" action="/$$REP:PAGE$$">	
+<input type="hidden" name="IDCATEGORIE" value="$$FORM:IDCATEGORIE$$"> 
+              
+   <tr>
+   	<td> 
+   		<table>       	
+   		<tr>
+	       	<td> Rechercher par </td>
+	       	<td> Libelle/Mots clés:  <input type="text" style="width: 200px;" name="rechImg"/></td>		       	
+	       	 <td> <button type="submit">Search</button></td>		       	 
+	      </tr>  
+	    </table>
+	</td>
+    </tr>  
+	<tr>
+		<td>		
+
+<table border="1" cellspan="1" width="50%">
+	$$IF:FORM:IDCATEGORIE$$
+		<tr><td colspan="5"><a href="/templates_bo,editVisuel.htm?idCategorie=$$FORM:IDCATEGORIE$$&idTypeVisuel=4">Ajouter des Images</a></td></tr>
+		<tr><td colspan="5"></tr>
+	$$END$$
+	$$IF0:FORM:IDCATEGORIE$$
+		<tr><td colspan="3"></tr>
+	$$END$$		
+	<tr>
+		<th>Image</th>
+		<th>Libelle</th>
+		<th>Mots clés</th>
+	$$IF:FORM:IDCATEGORIE$$
+		<th>Modifier</th>
+		<th>Supprimer</th>
+	$$END$$
+	</tr>
+	
+	
+ 	$$B:BOWEBAGENCY:BO-BIBLIMAGES:~idCategorie:QRY:idCategorie:~rechImg:QRY:rechImg:ALIAS:BOWALISTE$$
+	$$BIF:BOWALISTE$$		            	
+		$$DO$$
+		<tr align="top">            			
+			 <td align="center"><a href="$$BOWALISTE:IDVISUEL$$/templates_bo,visuel.htm"  target="_blank">
+			 	 	<img width="150px" height="150px" src="$$BOWALISTE:STDURL$$" alt="$$BOWALISTE:ORDRE$$">
+			 	 </a>
+			</td>
+			<td>$$BOWALISTE:LEGENDE$$</td>
+			<td>$$BOWALISTE:CRITERES$$</td>
+    $$IF:FORM:IDCATEGORIE$$
+    		<td>
+			<button id="mod$$BOWALISTE:IDVISUEL$$" onclick="return Modifier($$BOWALISTE:IDVISUEL$$);"> <img src="templates_bo/images/btnmodifier.png"> 
+							</button>
+	 	</td>
+	 	<td>
+		   <button id="dl$$BOWALISTE:IDVISUEL$$" width="20px" onclick="return ShowDel($$BOWALISTE:IDVISUEL$$, '$$BOWALISTE:LEGENDE$$');"><img src="templates_bo/images/del.gif"> 
+							</button>
+					</td>	
+	$$END$$
+		</tr>    
+		$$LOOP$$            	
+	$$BFIN$$
+</table>
+	
+</form>
+
+<script>
+function Visuel(rep) 
+{
+	window.open(rep + '/visuel.htm','visuel','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=950,height=750,top='+(window.screen.Height/2 - 200)+',left='+(window.screen.Width/2 - 225));
+	return false;	
+}
+
+function ShowDel(idVisuel, legende) 
+{	
+	if (confirm("Confirmer la suppression de l'image "+ legende+"?"))
+		location.href="/templates_bo,visuelSuppr.htm?idVisuel="+idVisuel+"&redirect=/$$REP:PAGE urlencode$$";
+	return false;
+}
+
+
+function Modifier(idVisuel) 
+{	
+	location.href="/templates_bo,editVisuel.htm?idVisuel="+idVisuel+"&idCategorie=$$FORM:IDCATEGORIE$$&redirect=/$$REP:PAGE urlencode$$";
+	return false;
+}
+
+</script>
+<br/>
+<div id="line_btn_ann">
+	<div class="btn_right"><a href="/templates_bo,listeCategories.htm"><img src="templates_bo/images/btnrevenir.png" /></div>
+</div>
+
+</body>
+</html>

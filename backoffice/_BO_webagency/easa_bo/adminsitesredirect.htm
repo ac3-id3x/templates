@@ -1,0 +1,164 @@
+<!--#include virtual="easa_bo/incl_haut.htm" -->
+<html>
+<head>
+<title>
+Gestion des redirections sites Agence
+</title>
+<style>
+body,select,td {
+font:menu;
+background: buttonface;
+}
+
+.data {
+	background: window;
+	border:1px solid outset;
+	overflow-y: scroll;
+	padding: 4px;
+	height: 80px;
+}
+
+input,button {
+	border-size: 1px;
+	padding-left:2px;
+	font:menu;
+}
+
+h4,h5 {
+	margin: 0px;
+}
+
+.menu {
+	border-bottom: 1px solid inset;
+}
+.menu button {
+	border-bottom: 0px;
+}
+.x {
+ font-weight:bold;
+ width:100px;
+}
+</style>
+
+<script>
+	
+	function id3_go(u) {
+	document.location.href = u;
+}
+
+function ShowDelRedirect(idUrl) {
+		
+			 if (confirm("Supprimer la redirection?")) {			 	
+					javascript:id3_go('$$XDOM$$/easa_bo,saredirectdelete.htm?idurl='+idUrl+ '&redirect=$$REP:URL$$');					
+				}
+	
+		return false;
+	}
+	
+</script>
+	
+</head>
+	<body scroll="auto">
+		<table>
+			   <tr>
+                <td><br>
+	   			<a href="easa_bo,admin_list.htm">Retour EASA</a>  
+	 		</td>
+	 		        </tr>   
+	 		        <tr>
+                <td align="center"><br><h4>
+	 		Gestion des redirections sites Agence</h4>
+	 		</td>
+              </tr>   
+              
+       <tr>
+       	<td>        		
+		<form method="get" name="add" action="$$REP:URL$$">
+       		<table border="1" cellspan="1">       	
+       		<tr>
+		       	<td> Rechercher par </td>
+		       	<td> old URL:  <input type="text" style="width: 250px;" name="rurl" value="$$FORM:RURL htmlencode$$" /></td>
+		       	<td> new URL:  <input type="text" style="width: 250px;" name="nurl" value="$$FORM:NURL htmlencode$$" /></td>		       	
+		       	<td> <input type="submit" value="Rechercher"/></td>		       	 
+		      </tr>  
+		    </table>
+		</form>
+		</td>
+        </tr>   
+       
+		<tr>
+		<td>		
+		
+			$$B:EASA:BO-LISTEREDIRECTSA:ALIAS:ELIST$$			 
+      $$BIF:ELIST$$
+      <table border="1" cellspan="0" colspan="0">
+      <tr>
+				<th colspan="5"><h4>Les sites agence:</h4></th>
+			</tr>
+			<tr>
+				<td colspan="5">$$ELIST:MULTIPAGE$$</td>
+			</tr>
+			<tr>				
+				<td>Date enregistrement	</td>
+				<td> Old URL  </td>
+				<td>New URL  </td>								
+				<td>Commentaire</td>
+				<td>Supprimer</td>
+			</tr>
+          $$DO:1:20$$
+					<tr>
+						<td>$$ELIST:DT$$</td>
+						<td width="25%">$$ELIST:OLDURL htmlencode$$</td>
+						<td width="25%"> <b>$$ELIST:NEWURL htmlencode$$ <b></td>
+						<td width="25%"><b>$$ELIST:AUTHOR$$<b> : $$ELIST:COMMENTAIRE htmlencode$$</td>         
+						<td align="center">
+							<button onclick="ShowDelRedirect($$ELIST:IDURL$$);" title="Supprimer la redirection"><img src="easa_bo/images/del.png" alt="Supprimer la redirection"></button></td>                  
+					</tr>
+          $$LOOP$$
+          <tr>
+          	<td colspan="5">$$ELIST:MULTIPAGE$$ </td>
+          </tr>             
+      $$BFIN$$
+       
+       
+          
+        
+      $$BIF0:ELIST$$ 
+      <tr><td colspan="5"> 
+      			<p>Pas d'url correspondante a votre recherche.<br/>Attention!Les urls de redirection sont automatiquement supprimes apres 6mois!</p>
+      		</td>
+      </tr>
+      $$BFIN$$   
+          	
+      </table>
+            
+          <br/><br/><hr/>
+          
+      <table>
+      	<tr>
+      		<td align= "center" colspan="2"><strong>Ajouter une redirection </strong></td>
+				</tr>       	 
+	      <form method="post"  id="f_addurl" action="$$REP:URI$$">
+					<input type="hidden" name="u" value="EASA:EASA-SAISIE-REDIRECTSA" />
+					<input type="hidden" name="page_ok" value="$$REP:URI$$" />
+					<input type="hidden" name="page_err" value="$$REP:URI$$" />				
+				 <tr><td><strong>Url :</strong> </td><td>	<input type="text" name="oldUrl" size="100" maxlength="256"></td></tr>
+				 <tr><td><strong>Url de redirection :</strong> </td><td>  	<input type="text" name="newUrl" size="100" maxlength="256"></td></tr>
+				 <tr><td><strong>Commentaire :</strong> </td><td> 	<input type="text" name="comment" size="100" maxlength="500"></td></tr>
+	
+					 <tr><td colspan="2" align= "center"> <input type="submit" value="Enregistrer"/></td>	</tr>
+					
+					
+       $$IF:EASA:EASA-SAISIE-REDIRECTSA:ERRMSG$$
+      	<tr><td colspan="2"><font color="red">$$EASA:EASA-SAISIE-REDIRECTSA:ERRMSG$$</td> </tr>   
+      $$END$$
+       $$IF:EASA:EASA-SAISIE-REDIRECTSA:OKMSG$$
+      	<tr><td colspan="2"><font color="green">$$EASA:EASA-SAISIE-REDIRECTSA:OKMSG$$</td> </tr>   
+      $$END$$
+			</form>	            
+   
+      </table>
+            
+            
+</body>
+</html>

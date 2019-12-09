@@ -1,0 +1,140 @@
+$$B:GDP2:EXT-DOSSIER-CARIM:~IDTIERS:REP:1::ALIAS:EDC$$
+
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+				font-size: 11px;
+			}
+			div p {
+				color: #3B494C;
+				font-style: normal;
+		    text-align: left;	
+			}
+			
+			a {
+		    color: #3B494C;
+		    font-style: normal;
+		    font-weight: bolder;
+		    text-decoration: underline;
+			}
+			
+			h2 {
+		    border-bottom: 1px solid #D6D7CD;
+		    bottom: 0;
+		    color: #3B494C;
+		    font-size: 12px;
+		    font-style: normal;
+		    font-weight: bold;
+		    margin: 2px 0 10px 0;
+		    padding-bottom: 0;
+		    text-align: left;	
+			}
+			
+			th {
+		    background-color: #3B494C;
+		    color: #D6D7CD;
+		    font-size: 12px;
+		    text-align: center;
+			}
+			
+			.hover {
+				cursor: pointer;
+				background-color: red;
+				font-size: 11px;
+			}
+			
+		
+			
+			div {
+				margin-top:30px;
+			}
+			
+		</style>
+		<script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("tr:even").css({"background-color": "#D6D8CD", "font-size": "11px", "color": "#3B494C", "text-align": "center"});
+  			$("tr:odd").css({"background-color": "#FFFFFF", "font-size": "11px", "color": "#3B494C", "text-align": "center"});
+				
+				$("tr:even,tr:odd").mouseover(function() {
+					  	$(this).toggleClass("hover");
+					  }
+	  			).mouseout(function () {
+	  					$(this).toggleClass("hover");
+
+	  				}
+	  			);
+				$("tr").not($("tr.header")).click(function() {
+						$('#histoEtat').html('').html("Chargement de données ...");
+						$('#histoCommentaire').html('').html("Chargement de données ...");
+						$('#infoConnexion').html('').html("Chargement de données ...");
+						
+						jQuery.ajax({
+								type: 'GET',
+								url: '/' + $(this).attr('name') + '/5/accesExterne,ext_incl_historique.htm',
+								success: function(data, textStatus, jqXHR) {
+									$('#histoEtat').html('').html(data);
+								},
+								error: function(data, textStatus, jqXHR) {
+									$('#histoEtat').html('').html("une erreur s'est produite, contactez le service informatique de gestion");
+								}
+							}),
+							jQuery.ajax({
+								type: 'GET',
+								url: '/' + $(this).attr('name') + '/4/accesExterne,ext_incl_historique.htm',
+								success: function(data, textStatus, jqXHR) {
+									$('#histoCommentaire').html('').html(data);
+								},
+								error: function(data, textStatus, jqXHR) {
+									$('#histoCommentaire').html('').html("une erreur s'est produite, contactez le service informatique de gestion");
+								}
+							})
+					}
+				);
+		});
+
+		</script>
+	</head>
+<body bgcolor="#ECECEE">
+
+	<h2>Liste des produits</h2>
+
+		<table style="margin-left:0;">
+			<tr class="header">
+				<th>Type de produit</th>
+				<th>Produit</th>
+				<th>Etat actuel</th>
+				<th>Date de r&eacute;ception</th>
+				<th>Commercial</th>
+				<th>Responsable</th>
+				<th>Url</th>
+		</tr>
+			$$BIF:EDC$$
+				$$DO$$
+					$$IFPREV:EDC:IDPRODUIT$$
+					<tr name="$$EDC:IDDOSSIER$$">
+						<td>$$EDC:TYPEPRODUIT$$</td>
+						<td>$$EDC:PRO_LIBELLE$$</td>
+						<td>$$EDC:ETAT_DESCRIPTION$$</td>
+						<td nowrap="nowrap" >$$EDC:DT_CREA date 2$$</td>
+						<td nowrap="nowrap" >$$EDC:COMMERCIAL$$</td>
+						<td nowrap="nowrap" >$$EDC:RESPONSABLE$$</td>
+						<td nowrap="nowrap" >$$EDC:DOS_URL$$</td>
+					</tr>
+					$$END:PREV$$
+				$$LOOP$$
+			$$BFIN$$
+		</table>
+		<div id="infoConnexion">
+			
+		</div>
+		<div id="histoEtat">
+			
+		</div>
+		<div id="histoCommentaire">
+			
+		</div>
+</body>
+</html>

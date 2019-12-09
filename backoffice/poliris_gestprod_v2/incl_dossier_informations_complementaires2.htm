@@ -1,0 +1,221 @@
+$$REM$$
+====================================================================
+//// <summary>Module Dossier : Dossier - Informations Complémentaire </summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) :  ZONE_SELECT alias CBOCOMMERCIAL,CBORESPONSABLE,CBOETATDOCUMENT,CBOINTERVENANT , LECTURE_ANNEXE_DOSSIER </para>
+//// <para>Liste des macros E utilisées dans cette page (sans &dollar;&dollar;) :  LECTURE_LIGNE_DOSSIER alias INTERVENANT1,INTERVENANT2 ; LECTURE_DOSSIER alias LCDOSSIER </para>
+//// <para>Pages html inclues :</para>	
+//// </remarks>
+//// <update date="2007-12-17" author="ext-jean-jacques.durmord">Création</update>
+===============
+$$END:REM$$
+
+$$E:AUTH:VERIFICATION$$
+$$E:GDP2:LECTURE_DOSSIER:~ID:REP:1:~IDPRO:REP:3:ALIAS:LCDOSSIER$$
+
+$$B:GDP2:LECTURE_ANNEXE_DOSSIER:~ID:REP:1:~MNEMO:LSTURL:ALIAS:URL$$
+$$B:GDP2:LISTE_HISTORIQUE:~ID:REP:1:~TYPE:5:ALIAS:LSTHISTO$$
+
+
+$$IF:AUTH:VERIFICATION:DOSSIER_R$$ $$A:DIG:LECTURE=0$$ $$END$$
+$$IF:AUTH:VERIFICATION:DOSSIER_W$$ $$A:DIG:LECTURE=1$$ $$END$$
+$$IF:AUTH:VERIFICATION:DOSSIER_C$$ $$A:DIG:LECTURE=1$$ $$END$$
+
+$$IF:AUTH:VERIFICATION:SUIVI_R$$ $$A:DIG:LECTURES=0$$ $$END$$
+$$IF:AUTH:VERIFICATION:SUIVI_W$$ $$A:DIG:LECTURES=1$$ $$END$$
+$$IF:AUTH:VERIFICATION:SUIVI_C$$ $$A:DIG:LECTURES=1$$ $$END$$
+
+$$IF=:0:DIG:LECTURE$$	
+	$$A:DIG:READ=readonly$$
+	$$A:DIG:DISA=disabled$$
+$$END$$
+$$IF=:0:DIG:LECTURES$$	
+	$$A:DIG:READS=readonly$$
+	$$A:DIG:DISAS=disabled$$
+$$END$$
+
+<script>
+/*
+				Valeur 	Origine 		Vérification 
+				-------------------------------------------------------------------------------------------------------
+				e 			empty 			l'élément ne doit pas être vide 
+				n 			number 			l'élément doit être un nombre 
+				m 			mail 				une adresse élctronique doit être exacte sur la forme 
+				r 			regexp 			la valeur doit correspondre à un modèle déterminé 
+				p 			price 			la valeur doit se présenter sous la forme "10,00" (avec virgule) 
+				p. 			price_dot 	la valeur doit se présenter sous la forme "10.00" (avec point) 
+				c 			capitalize 	Les noms propres doivent être corrigés 
+ 				t				length			Contrôle si on dépasse pas la taille max
+*/
+		var msg_DIC = 'GESTPROD V2 - Erreur - Formulaire (Informations complémentaire)';
+		var var_DIC = new Array();
+		function CreaCtrl(NomObj, TyCtrl, Texte, Ctrl)
+		{
+			//alert(NomObj);
+			var Nbr = var_DIC.length;
+			var_DIC[0] = new Array('cbotempl1','n','Impossible de récupérer la tempalte','');
+			var_DIC[1] = new Array('cbotempl2','n','Impossible de récupérer la tempalte','');
+			var_DIC[2] = new Array('cbotempl3','n','Impossible de récupérer la tempalte','');
+		}
+</script>
+
+<h2>Informations complémentaires</h2>
+	<div  class="cadrefonce" >
+
+		<table>
+			$$IF(:1,2,6,7:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td><label>URL: Etat des domaines à transférer:</label></td>
+				$$BIF:URL$$
+				<td colspan="2">
+					<select id="cbourltransf" name="cbourltransf" $$DIG:DISA$$ >
+						$$DO$$
+							$$IF=:2:URL:IDTYPEURL$$
+								<option value="$$URL:IDDOSSIERURL$$">$$URL:URL_URL$$</option>
+								$$A:URL:TRANS=1$$
+							$$END:IF$$
+						$$LOOP$$
+					
+					$$IF!:1:URL:TRANS$$<option value="" disabled="disabled" selected="selected" >Aucune url &agrave; transf&eacute;rer.</option>$$END$$
+					</select>
+				</td>
+				$$BFIN$$
+				<td colspan="2" >
+					$$IF=:1:URL:TRANS$$
+						&nbsp;<a   class="Aorange" href="javascript:void();" onclick="window.open('http://www.' + $(cbourltransf).options[$(cbourltransf).selectedIndex].text,'_blank');return true;" >Go</a>
+						&nbsp;<a   class="Aorange" href="javascript:void();" onclick="window.open('http://www.whois.sc/' + $(cbourltransf).options[$(cbourltransf).selectedIndex].text,'_blank');return true;">Whois</a>
+					$$END$$
+				</td>
+			</tr>
+			<tr>
+				<td><label>URL: Etat des domaines à réserver:</label></td>
+				$$BIF:URL$$
+				<td colspan="2">
+					<select id="cbourlreserv" name="cbourlreserv" $$DIG:DISA$$ >
+					$$BIF:URL$$
+						$$DO$$
+							$$IF=:3:URL:IDTYPEURL$$
+								<option value="$$URL:URL_URL$$">$$URL:URL_URL$$ $$REM$$($$URL:ETAT_DESCRIPTION$$)$$END$$</option>
+								$$A:URL:RESER=1$$
+							$$END$$
+						$$LOOP$$
+					$$BFIN$$
+					$$IF!:1:URL:RESER$$<option value="" disabled="disabled" selected="selected" >Aucune url &agrave; r&eacute;server.</option>$$END$$
+					</select>
+				</td>
+				$$BFIN$$
+				<td colspan="2" >
+					$$IF=:1:URL:RESER$$
+						&nbsp;<a class="Aorange" href="javascript:void();" onclick="window.open('http://www.' + $(cbourlreserv).options[$(cbourlreserv).selectedIndex].text,'_blank');return true;" >Go</a>
+						&nbsp;<a class="Aorange" href="javascript:void();" onclick="window.open('http://www.whois.sc/' + $(cbourlreserv).options[$(cbourlreserv).selectedIndex].text,'_blank');return true;">Whois</a>
+					$$END$$
+				</td>
+			</tr>
+			$$END$$
+			$$IF:1:LCDOSSIER:IDPRODUIT$$
+				$$E:GDP2:LECTURE_LIGNE_DOSSIER:~ID:REP:1:~MNEMO:MAQUETTE:ALIAS:MAQUETTE$$
+				$$E:GDP2:LECTURE_LIGNE_DOSSIER:~ID:REP:1:~MNEMO:INTERVIEW:ALIAS:INTERVIEW$$
+				$$E:GDP2:LECTURE_LIGNE_DOSSIER:~ID:REP:1:~MNEMO:MISEENLIGNE:ALIAS:MISEENLIGNE$$
+			<tr>
+					<td><label>Maquette Demandée</label></td>
+					<td><input type="checkbox" name="maquette" $$DIG:DISA$$
+						id="maquette" 
+						$$IF=:1:MAQUETTE:VALEUR$$ checked="checked" $$END$$></td>
+					<td width="10px"></td>
+					<td><label>Interview site demandé</label></td>
+					<td><input type="checkbox" name="interview" $$DIG:DISA$$
+						id="interview" 
+						$$IF=:1:INTERVIEW:VALEUR$$ checked="checked" $$END$$></td>
+			</tr>
+			$$END$$
+			$$IF(:1,12,13,14:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td><label>Date de mise en ligne</label></td>
+				<td><input type="text" name="miseenligne" $$DIG:READ$$
+					id="miseenligne" value="$$MISEENLIGNE:VALEUR$$" ></td>
+				<td width="10px"></td>
+				<td> </td>
+				<td> </td>
+			</tr>
+				<script>CreaCtrl('miseenligne','d',': Erreur dans la date de mise en ligne', '');</script>		
+			$$END$$
+			$$IF(:1,4,6,7,12,13,14:LCDOSSIER:IDPRODUIT$$
+				$$E:GDP2:LECTURE_LIGNE_DOSSIER:~ID:REP:1:~MNEMO:LIVRAISON:ALIAS:LIVRAISON$$
+				<tr>
+					<td><label>Date de livraison</label></td>
+					<td><input type="text" name="livraison" $$DIG:READ$$
+						id="livraison" value="$$LIVRAISON:VALEUR$$" ></td>
+					<td width="10px"></td>
+					<td> </td>
+					<td> </td>
+				</tr>
+				<script>CreaCtrl('LIVRAISON','d',': Erreur dans la date de livraison', '');</script>			
+			$$END$$
+			$$IF:REP:1$$
+				<tr>
+					<td style="vertical-align:top;"><label>Date de changement d'état</label></td>
+					<td>
+						<table style="margin-left:0;">
+							<th colspan="2">Date&nbsp;</th>
+							<th colspan="2">Etat</th>
+							<th colspan="2">Par</th>
+							$$BIF:LSTHISTO$$
+								$$DO$$
+									<tr>
+										<td colspan="2" class="$$LSTHISTO:I mod2 td_alt td_alt1$$" nowrap="nowrap" >$$LSTHISTO:DT_CREA date 2$$</td>
+										<td colspan="2" class="$$LSTHISTO:I mod2 td_alt td_alt1$$" nowrap="nowrap" >$$LSTHISTO:ETAT_DESCRIPTION$$</td>
+										<td colspan="2" class="$$LSTHISTO:I mod2 td_alt td_alt1$$" nowrap="nowrap" >$$LSTHISTO:UTILISATEUR$$</td>
+									</tr>
+								$$LOOP$$
+							$$BFIN$$
+						</table>
+					</td>
+				</tr>
+			$$END$$				
+			$$IF(:1,2,3,7,12,13,14:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td>
+				$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES_CONNEXION2.HTM$$
+				</td>
+			</tr>
+			$$END$$
+			$$IF=:1:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td>
+				$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES_TEMPLATE.HTM$$
+				</td>
+			</tr>
+			$$END$$
+			$$IF(:2,5,6,7:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td>
+					$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES_REFERENCEMENT.HTM$$
+				</td>
+			</tr>
+			$$END$$
+			$$IF=:3:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td>
+					$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES_VIGNETTE.HTM$$
+				</td>
+			</tr>
+			$$END$$
+$$REM$$
+<!-- FA le 14/10/2008 : On s'est enfin aperçu que les webtel n'existait plus !? -->
+			$$IF=:4:LCDOSSIER:IDPRODUIT$$
+			<tr>
+				<td>
+					$$INCL:DOSSIER_INFORMATIONS_COMPLEMENTAIRES_WEBTEL.HTM$$
+				</td>
+			</tr>
+			$$END$$
+$$END:REM$$
+			<tr>
+				<td><label>Commentaire</label></td>
+				<td colspan="4">
+					<textarea id="dos_commentaire" name="dos_commentaire" rows="5" cols="60" $$DIG:DISAS$$>$$LCDOSSIER:COMMENTAIRE$$</textarea>
+				</td>
+			</tr>
+
+	</table>		
+	</div>

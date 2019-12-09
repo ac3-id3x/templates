@@ -1,0 +1,102 @@
+$$REM$$
+====================================================================
+//// <summary>Menu pour le module de dossierlie  - Résultat</summary>
+//// <remarks>
+//// <para>Pages html inclues : incl_legende.htm, incl_pages.htm</para>
+//// <para>Rep:1 - N° du dossier</para>
+//// <para>Rep:2 - Type d'accès 0 en Lecture, 1 en modification</para>
+
+//// <para>Liste des macros B utilisées dans cette page (sans &dollar;&dollar;) : GDP2:LISTE_DOSSIERLIE alias LSTDOSL </para>
+//// </remarks>
+//// <update date="2007-12-03" author="jean-jacques.durmord">Création</update>
+=====================================================================
+$$END:REM$$
+$$E:AUTH:VERIFICATION$$
+$$B:GDP2:LISTE_DOSSIERLIE:~IDDOSSIER:REP:1:ALIAS:LSTDOSL$$
+
+		<h1>Dossier lié (Dossier: $$REP:1$$)</h1>
+		<div  class="cadrefonce" >
+		<center>
+			&nbsp;
+			<!-- Génération du tableau -->
+			$$INCL:LEGENDE.HTM$$
+			<table width="95%"  >
+					<!-- Legende -->
+					<tr >
+						<th>A. dossier</th>
+						<th>A. S.demande</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Dossier_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Nom du dossier&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Dossier" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=url_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Url du dossier&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=url" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Produit_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Produit&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Produit" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Etat&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat" ><img src="$$_$$images/ico_croissant.png" border="0"  /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Dated_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Date de début&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Dated" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+						<th>
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Datef_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+							Date de Fin&nbsp;
+							<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Datef" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+						</th>
+					</tr>
+					$$BIF:LSTDOSL$$
+						$$DO:1:15$$
+							<tr>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >
+										$$IF0:AUTH:VERIFICATION:DOSSIER_W$$
+												$$IF:AUTH:VERIFICATION:DOSSIER_R$$
+													<a href="/0/$$LSTDOSL:IDDOSSIER$$/dossier.htm" >
+													<img src="$$_$$images/ico_voir.png" alt="Voir" border="0" /></a>&nbsp;
+											$$END$$
+										$$END$$	
+											$$IF:AUTH:VERIFICATION:DOSSIER_W$$
+												<a href="/1/$$LSTDOSL:IDDOSSIER$$/dossier.htm" >
+													<img src="$$_$$images/ico_modifier.png" alt="Modifier" border="0"  /></a>&nbsp;
+											$$END$$
+										
+									</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >
+											$$IF0:AUTH:VERIFICATION:SUIVI_W$$										
+												$$IF:AUTH:VERIFICATION:SUIVI_R$$
+
+												<a href="/0/$$LSTDOSL:IDDOSSIER$$/suividemande.htm" >
+													<img src="$$_$$images/ico_voir.png" alt="Voir" border="0" /></a>&nbsp;
+												$$END$$
+											$$END$$
+											$$IF:AUTH:VERIFICATION:SUIVI_W$$
+												<a href="/1/$$LSTDOSL:IDDOSSIER$$/suividemande.htm" >
+													<img src="$$_$$images/ico_modifier.png" alt="Modifier" border="0"  /></a>&nbsp;
+											$$END$$
+										
+									</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:DOS_NOM$$</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:DOS_URL$$</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:PRO_LIBELLE$$</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:ETAT_DESCRIPTION$$</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:DATEDEBUT date 2$$</td>
+									<td class="$$LSTDOSL:I mod2 td_alt td_alt1$$" >$$LSTDOSL:DATEFIN date 2$$</td>
+							</tr>
+						$$LOOP$$
+					$$BFIN$$					
+			</table>						
+		 $$INCL:PAGES.HTM$$ 
+			</center>
+			&nbsp;
+	</div>

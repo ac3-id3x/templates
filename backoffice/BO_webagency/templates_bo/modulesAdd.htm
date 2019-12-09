@@ -1,0 +1,145 @@
+<!--#include virtual="templates_bo/incl_haut.htm" -->	
+<title>Modules additionnels</title>
+</head>
+<body>
+$$IF:BOWEBAGENCY:BO-EDITMODULESADD:ERRMSG$$<font color="red">$$BOWEBAGENCY:BO-EDITMODULESADD:ERRMSG htmlencode crlf2br$$</font>$$END$$
+$$IF0:BOWEBAGENCY:BO-EDITMODULESADD:ERRMSG$$$$IF:FORM:PAGE_OK$$<font color="blue">Ok !</font>$$END$$$$END$$
+
+	<form method="POST" action="/$$REP:URI$$">
+	<input type="hidden" name="u" value="BOWEBAGENCY:BO-EDITMODULESADD" />
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+	<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+	<input type="hidden" name="idtemplate" value="$$FORM:IDTEMPLATE$$" />
+	
+<a href="/templates_bo,template.htm?idtemplate=$$FORM:IDTEMPLATE$$"><img  src="templates_bo/images/btnrevenir.png" /></a>
+	<br/>
+<input type="submit" name="" value="Enregistrer" />	
+
+	<!--les Modules selectionnes presentes sur le template [ref ou md]-->
+	$$B:BOWEBAGENCY:BO-MODULESTEMPLATE:~idTemplate:QRY:IDTEMPLATE:ALIAS:BOWAMATS$$
+	$$BIF:BOWAMATS$$  
+	$$DO$$		
+		$$A:IDSELECTMTTMP=@@IDSELECTMTTMP@@,@@BOWAMATS:IDMODULE@@$$
+	$$LOOP$$            	
+	$$BFIN$$	
+	$$A:IDSELECTMT=@@IDSELECTMTTMP@@$$
+
+	<!--les Modules selectionnes proposees avec le template [conc, ref ou mod]-->
+	$$B:BOWEBAGENCY:BO-MODULESTEMPLATEADD:~idTemplate:QRY:IDTEMPLATE:ALIAS:BOWAMATP$$
+	$$BIF:BOWAMATP$$  
+	$$DO$$		
+		$$A:IDSELECTMPTMP=@@IDSELECTMPTMP@@,@@BOWAMATP:IDMODULE@@$$
+	$$LOOP$$            	
+	$$BFIN$$
+	$$BIF0:BOWAMATP$$  			
+		$$A:SELECTALL=1$$	
+	$$BFIN$$
+		
+	$$A:IDSELECTMP=@@IDSELECTMPTMP@@$$
+		
+	<br/>
+	<hr/>
+	Packs :<br/>
+	<table  border="1" cellspan="1">
+	<!--les pack conception proposees pour le template -->
+	$$B:BOWEBAGENCY:BO-MODULESCONCEPTION:ALIAS:BOWAMTC$$
+	$$BIF:BOWAMTC$$  
+			$$DO$$
+			<tr><td>					
+				<input type="checkbox" name="mc_$$BOWAMTC:IDMODULE$$"  value=1 
+				$$IF(:IDSELECTMP:BOWAMTC:IDMODULE$$checked="checked"$$END$$
+				$$IF=:1:SELECTALL$$checked="checked"$$END$$>
+			</td>
+			<td>$$BOWAMTC:LIBELLE$$</td>
+			<td>$$BOWAMTC:PRIX$$</td>
+			</tr>           
+			$$LOOP$$            	
+			$$BFIN$$
+    </table>
+	<br/>
+	<hr/>
+		
+	
+	Referencement :<br/>
+	<table  border="1" cellspan="1">
+		<tr>
+			<TH colspan="2">Presents</th>
+			<TH  colspan="3">Proposees</th>
+		</tr>
+	<!--les modules referencement presents/proposees pour le template -->
+		$$B:BOWEBAGENCY:BO-MODULESREFERENCEMENT:ALIAS:BOWAMR$$
+		$$BIF:BOWAMR$$  
+			$$DO$$
+			<tr>
+				<td>	
+				<!--les modules referencement presents sur le template -->				
+				<input type="checkbox" name="mr_$$BOWAMR:IDMODULE$$"  value=1 $$IF(:IDSELECTMT:BOWAMR:IDMODULE$$checked="checked"$$END$$>
+			</td>
+			<td>$$BOWAMR:LIBELLE$$</td>
+			
+			<td>					
+				<!--les modules referencement proposees pour le template -->				
+				<input type="checkbox" name="mrp_$$BOWAMR:IDMODULE$$"  value=1 
+				$$IF(:IDSELECTMP:BOWAMR:IDMODULE$$checked="checked"$$END$$
+				$$IF=:1:SELECTALL$$checked="checked"$$END$$>
+			</td>
+			<td>$$BOWAMR:LIBELLE$$</td>
+			<td>$$BOWAMR:PRIX$$</td>
+			</tr>           
+			$$LOOP$$            	
+			$$BFIN$$
+    </table>
+	<br/>
+	<hr/>
+
+	
+	<table  border="1" cellspan="1">
+	<tr>
+		<th colspan="5">Modules Additionnels</th>	
+	</tr>
+	<tr>
+		<th>Presentes sur le template</th>	
+		<th>Modules Proposées /Prix</th>			
+	</tr>
+	<tr>
+	<td>
+		<table>
+		<!--select les modules presentes sur le template -->
+		$$B:BOWEBAGENCY:BO-MODULESADD:ALIAS:BOWAMAC$$
+		$$BIF:BOWAMAC$$            	
+			$$DO$$
+			<tr><td>					
+				<input type="checkbox" name="ma_$$BOWAMAC:IDMODULE$$"  value=1 $$IF(:IDSELECTMT:BOWAMAC:IDMODULE$$checked="checked"$$END$$>
+			</td>
+			<td>$$BOWAMAC:LIBELLE$$</td>
+			<td></td>
+			</tr>           
+			$$LOOP$$            	
+			$$BFIN$$
+		</table>
+	</td>
+	<td>
+		<table>
+		
+	$$BIF:BOWAMAC$$            	
+		$$DO$$
+		<tr><td>			
+			<input type="checkbox" name="map_$$BOWAMAC:IDMODULE$$"  value=1 
+			$$IF(:IDSELECTMP:BOWAMAC:IDMODULE$$checked="checked"$$END$$
+			$$IF=:1:SELECTALL$$checked="checked"$$END$$>		
+		</td>
+		<td>$$BOWAMAC:LIBELLE$$</td>
+		<td>$$BOWAMAC:PRIX$$</td>
+		</tr>           
+		</tr>           
+		$$LOOP$$            	
+		  $$BFIN$$
+</table>
+</td>
+
+	
+</form>
+
+
+</body>
+</html>

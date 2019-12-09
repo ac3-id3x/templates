@@ -1,0 +1,70 @@
+$$REM$$
+====================================================================
+//// <summary>Page permettant le paremetrage d'un domaine</summary>
+//// <remarks>
+//// <para>Liste des pages html inclues dans cette page (incl_haut.htm,incl_menu_gauche_domaine.htm,incl_domaine_infos_url.htm,incl_domaine_chx_config.htm,incl_domaine_result_url.htm,incl_bas.htm). </para>
+//// <para>javascript(javascript/prototype.js,fonction_dns.js)</para>
+//// </remarks>
+//// <update date="2008-01-16" author="Yann.ROZELOT">Création</update>
+
+====================================================================
+$$END:REM$$
+
+<script language="javascript" type="text/javascript">
+
+	function valid()
+	{
+		var erreur="";
+		var fieldfocus="";
+		var domaine = document.formulaire.url_url;
+	   
+	   	if( domaine.value == "")
+	   	{
+	   		erreur += "Vous devez saisir un nom de domaine\n";
+	   		fieldfocus = domaine;
+	   	}
+	   
+		if( erreur == "") {
+			domaine.value = suppression_www(domaine.value);
+			
+			if( ( domaine.value.indexOf( "/" ) > 0) || ( domaine.value.indexOf( ":" ) > 0) || ( domaine.value.indexOf( "," ) > 0) || ( domaine.value.indexOf( "www" ) > 0) || ( domaine.value.indexOf( "http" ) > 0) ) {
+	   		erreur += "Caractère ( / , : ) ou mot (http, www) interdits dans le domaine !!!\n";
+	   		fieldfocus = domaine;
+			} else {
+				document.formulaire.submit();
+				$$IF:FORM:POPUP$$
+					reloadopener();
+				$$END$$
+			}
+		}
+		if(erreur != "") 
+		{
+			alert(erreur);
+			fieldfocus.focus();
+		}
+	}
+</script>
+
+<form action="" method="post" name="formulaire">
+	<input type="hidden" name="u" value="GDP:AJOUT_MAJURL">
+	<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+	<input type="hidden" name="page_err" value="/$$REP:URI$$">
+	<input type="hidden" id="iddossier" name="iddossier" value="$$REP:1$$">
+	<input type="hidden" id="iddossierurl" name="iddossierurl" value="$$INFOSURL:IDDOSSIERURL$$">
+	<input type="hidden" id="modif" name="modif" value="0">
+
+	<script language="javascript" type="text/javascript" src="$$_$$javascript/fonction_dns.js"></script>
+	
+	<table>
+		<tr>
+			<td>
+				$$INCL:DOMAINE_INFOS_URL2.HTM$$
+			</td>
+		</tr>
+		<tr>
+			<td>
+				$$INCL:DOMAINE_RESULT_URL2.HTM$$
+			</td>
+		</tr>
+	</table>
+</form>

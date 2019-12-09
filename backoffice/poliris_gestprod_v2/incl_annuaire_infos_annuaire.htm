@@ -1,0 +1,186 @@
+$$REM$$
+====================================================================
+//// <summary>Page permettant d'avoir les informations concernant un annauire</summary>
+//// <remarks>
+//// <para>Pages html inclues : </para>
+//// <para>Liste des macros B utilisées : </para>
+//// </remarks>
+//// <update date="2008-09-23" author="yann.ROZELOT"></update>
+
+====================================================================
+$$END:REM$$
+
+$$B:GDP2:LISTE_ZONES:ALIAS:LISTE_ZONES$$
+$$B:GDP2:LISTE_PAYS:ALIAS:LISTE_PAYS$$
+$$B:GDP2:LISTE_REGIONS:ALIAS:LISTE_REGIONS$$
+$$B:GDP2:LISTE_LANGUES:ALIAS:LISTE_LANGUES$$
+
+
+<table width="100%">
+	<tr>
+		<td  class="cadreclair" >
+			$$INCL:SUCCES.HTM$$
+			$$INCL:ERREUR.HTM$$
+			<h1>Ajouter un annuaire</h1>
+			<div class="cadrefonce" width="90%">
+				<table id="infosAnnuaire" name="infosAnnuaire">
+					<tr>
+						<td align="left" width="10%">
+							<label for="lblAnnuaire">Nom annuaire</label> 
+						</td>
+						<td width="10%">
+							<input type="text" size="32" name="TxtNomAnnuaire" id="TxtNomAnnuaire" value=""> 
+						</td>
+						<td align="left" width="10%">
+							<label for="lblZone">Choix zone</label>
+						</td>
+						<td>
+							<div id="divZone" name="divZone">
+								<select OnChange="javascript:affiche_pays_langue();" name="lstChoixZone" id="lstChoixZone" >
+									<option value="zone" selected>Choisissez une zone
+									$$BIF:LISTE_ZONES$$
+										$$DO:1:999$$
+											<option value="$$LISTE_ZONES:IDZONE$$">$$LISTE_ZONES:LIBELLE_ZONE$$
+										$$LOOP$$
+									$$BFIN$$	
+								</select> 
+							</div>
+						</td>
+						<td align="left">
+							<label for="lblLangue" id="lblLangue" style="display:none">Choix langue</label>
+						</td>
+						<td>
+							<div id="divLangue" name="divLangue" style="display:none">
+								<select name="lstChoixLangue" id="lstChoixLangue">
+									<option value="langue" selected>Choisissez une langue
+									$$BIF:LISTE_LANGUES$$
+										$$DO:1:999$$
+											<option value="$$LISTE_LANGUES:IDLANGUE$$">$$LISTE_LANGUES:LAN_LIBELLE$$
+										$$LOOP$$
+									$$BFIN$$	
+								</select> 
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td align="left" width="10%">
+							<label for="lblUrlAnnuaire">Url annuaire</label> 
+						</td>
+						<td>
+							<input type="text" size="32" name="TxtUrlAnnuaire" id="TxtUrlAnnuaire" value="http://www."> 
+						</td>
+						<td align="left">
+							<label for="lblPays" id="lblPays" style="display:none">Choix pays</label>
+						</td>
+						<td>
+							<div id="divPays" name="divPays" style="display:none">
+								<select name="lstChoixPays" id="lstChoixPays">
+									<option value="pays" selected>Choisissez un pays
+									$$BIF:LISTE_PAYS$$
+										$$DO:1:999$$
+											<option value="$$LISTE_PAYS:IDPAYS$$">$$LISTE_PAYS:PAYS_EN$$
+										$$LOOP$$
+									$$BFIN$$	
+								</select> 
+							</div>
+						</td>
+						<td align="left">
+							<label for="lblPageRank" id="lblPageRank" style="display:none">pageRank</label>
+						</td>
+						<td>
+							<!--<input type="text" size="10" name="txtPageRank" id="txtPageRank" value="" style="display:none">-->
+							<select name="lstChoixPageRank" id="lstChoixPageRank" style="display:none">
+									<option value="PageRank" selected>Choisir PageRank
+									<option value="0">0
+									<option value="1">1
+									<option value="2">2
+									<option value="3">3
+									<option value="4">4
+									<option value="5">5
+									<option value="6">6
+									<option value="7">7
+									<option value="8">8
+									<option value="9">9
+									<option value="10">10
+							</select> 
+						</td>
+					</tr>
+					<tr>
+						<td align="left" width="10%">
+							<label for="lblUrlSoumissionAnnuaire">Url de soumission</label> 
+						</td>
+						<td>
+							<input type="text" size="32" name="TxtUrlSoumissionAnnuaire" id="TxtUrlSoumissionAnnuaire" value="http://www."> 
+						</td>
+						<td align="left">
+							<label for="lblRegion" id="lblRegion" style="display:none">Choix région</label>
+						</td>
+						<td>
+							<div id="divRegion" name="divRegion" style="display:none">
+								<select name="lstChoixRegion" id="lstChoixRegion" onchange="javascript:affiche_departements_regions(this.value);" >
+									<option value="region" selected>Choisissez une région
+										$$BIF:LISTE_REGIONS$$
+											$$DO:1:999$$
+												<option value="$$LISTE_REGIONS:DEPS$$">$$LISTE_REGIONS:REGION$$
+											$$LOOP$$	
+										$$BFIN$$
+								</select> 
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td align="left" width="10%" >
+							<label for="lblUrlInscriptionAnnuaire">Url d'inscription</label> 
+						</td>
+						<td>
+							<input type="text" size="32" name="TxtUrlInscriptionAnnuaire" id="TxtUrlInscriptionAnnuaire" value="http://www."> 
+						</td>
+					</td>
+						<td align="left" >
+							<label for="lblDepartement" id="lblDepartement" style="display:none" >Choix département</label>
+						</td>
+						<td>
+							<div id="divDepartement" name="divDepartement" style="display:none" >
+								$$INCL:ANNUAIRE_DEPARTEMENT.HTM$$
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+						</td>
+						<td align="left">
+							<label for="lblVille" id="lblVille" style="display:none">Choix ville</label>
+						</td>
+						<td>
+							<div id="divVille" name="divVille" style="display:none"  >
+								$$INCL:ANNUAIRE_VILLE.HTM$$
+							</div>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<label for="lblObservation" id="lblObservation" style="display:none">Observations</label>
+							<textarea name="txtObservation"  id="txtObservation" rows="5" cols="141" style="display:none"> </textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="button" id="BtnSauvegarder" name="BtnSauvegarder" value="Sauvegarder" style="display:none" onclick="javascript:AjouterUpdateAnnuaire();">
+							
+						</td>
+					</tr>
+				</table> 
+			</div>
+			<div>
+			$$INCL:ANNUAIRE_LISTE_ANNUAIRE.HTM$$
+			</div>
+		</td>
+	</tr>
+</table>
+
+
+

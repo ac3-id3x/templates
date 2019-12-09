@@ -1,0 +1,64 @@
+$$REM$$
+====================================================================
+//// <summary>Permet d'afficher la liste des mappings</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (GDP:LISTE_DOMAINE_MAPPING)</para>
+//// </remarks>
+//// <update date="2008-01-17" author="Yann.ROZELOT">Création</update>
+=====================================================================
+$$END:REM$$
+$$B:GDP2:LISTE_DOMAINE_MAPPING:~IDDOMAINE:VAL:INFOSURL_IDDOMAINE:~IDDOMAINEMAPPING:VAL:INFOSURL_IDDOMAINE*MAPPING:~MAP:MAP:ALIAS:LISTE_MAP_DOMAINE$$
+$$IF:LISTE_MAP_DOMAINE:NBR$$
+	<legend><h2>Nombre de mapping associés $$LISTE_MAP_DOMAINE:NBR$$</h2></legend>
+	<center>
+		<!-- Legende -->
+		$$INCL:LEGENDE.HTM$$
+		&nbsp;
+		<!-- Génération du tableau -->
+		<table width="95%"  >
+			<tr >
+				<th nowrap="nowrap" >Action</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					DomainePart&nbsp;
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Nom" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					Target
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Etat" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>
+				<th nowrap="nowrap" >
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Date_d" ><img src="$$_$$images/ico_decroissant.png" border="0" /></a>&nbsp;
+					Date<sup>Créa</sup>&nbsp;
+					<a href="$$REP:0$$?$$REP:QRY removeqry tri$$&tri=Date" ><img src="$$_$$images/ico_croissant.png" border="0" /></a>
+				</th>
+			</tr>
+			$$BIF:LISTE_MAP_DOMAINE$$
+				$$DO:1:999$$
+				<tr class="$$LISTE_MAP_DOMAINE:I mod2 td_alt td_alt1$$">
+					<td>
+						<a href="javascript:modify_mapping($$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$);"><img src="$$_$$images/ico_modifier.png" border="0" align="top" /></a>
+						<a href="javascript:suppresion_mapping($$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$);"><img src="$$_$$/images/ico_corbeille.png" border="0" align="top" alt="Supprimer le mapping" /></a>
+					</td>
+					<td>$$LISTE_MAP_DOMAINE:MAP_DOMAINEPART$$.$$URL$$</td>
+					<input type="hidden" id="map_domainpart_$$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$" name="map_domainpart_$$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$" value="$$LISTE_MAP_DOMAINE:MAP_DOMAINEPART$$">
+					<td>$$LISTE_MAP_DOMAINE:MAP_TARGET$$</td>
+					<input type="hidden" id="map_target_$$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$" name="map_target_$$LISTE_MAP_DOMAINE:IDDOMAINE_MAPPING$$" value="$$LISTE_MAP_DOMAINE:MAP_TARGET$$">
+					<td>$$LISTE_MAP_DOMAINE:DT_CREA date 2$$</td>
+				</tr>
+				$$LOOP$$
+				<tr>
+					<td colspan="6">
+					&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" align="left">
+						<b>&raquo;&nbsp;<a href="domaine.htm?iddossierurl=$$FORM:IDDOSSIERURL$$&modif=1" class="lien">Nouveau mapping pour le domaine ($$INFOSURL:URL_URL$$)</a></b>
+					</td>
+				</tr>
+			$$BFIN$$					
+		</table>
+	</center>
+$$END$$

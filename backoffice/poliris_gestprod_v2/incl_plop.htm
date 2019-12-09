@@ -1,0 +1,85 @@
+ $$REM$$
+ ====================================================================
+//// <summary>Page permettant la recherche de fusion</summary>
+//// <remarks>
+//// <para>Liste des pages html inclues dans cette page (incl_select_search_agence.htm,incl_liste_agence.htm,incl_liste_fusion_agence_accueillie_pour_une_agence.htm,incl_liste_fusion_agence_accueillante_pour_une_agence.htm). </para>
+//// <para>Liste des macros B utilisées dans cette page (GDP:LISTE_AGENCE)</para>
+//// </remarks>
+//// <update date="2008-03-27" author="Yann.ROZELOT">Création</update>
+====================================================================
+$$END:REM$$
+
+
+
+$$INCL:HAUT.HTM$$
+
+
+
+
+<form id="formulaire_agence_acueilli"  name="formulaire_agence_acueilli" method="post" onsubmit="return affiche_liste();">
+	<input type="hidden" name="u" id="u" value="ID3:REDIRECT" />
+	<input type="hidden" name="page_ok" id="page_ok" value="$$REP:URI$$" />
+	<input type="hidden" name="page_err" id="page_err"  value="$$REP:URI$$" />
+	<input type="hidden" name="idagence_accueillante" id="idagence_accueillante" value="$$FORM:IDAGENCE_ACCUEILLANTE$$" />
+	<input type="hidden" name="rentre_ds_macro" id="rentre_ds_macro" value="0" />
+	<input type="hidden" name="rentre_ds_macro2" id="rentre_ds_macro2" value="0" />
+	<input type="hidden" name="affiche_bt_select_agence" id="affiche_bt_select_agence" value="0" />
+	<input type="hidden" name="iduser"  id="iduser" value="$$SESSION:IDUSER$$" />
+	<div class="cadrefonce">
+		<div class="cadreclair" width="95%">
+			<table border="1">
+				<tr>
+					<td>
+						Recherche par:
+					</td>
+					<td>
+						<select name="Lst_critere" id="Lst_critere">
+							<option value="0">----------------------------</option>
+							<option value="1">Département</option>
+							<option value="2">Nom</option>
+							<option value="3">Login</option>
+							<option value="4">Tél</option>
+							<option value="5">Contact</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="Txt_search" name="Txt_search" />
+					</td>
+					<td>
+						<input type="submit" class="button" id="Btn_search_agence_accueilli" name="Btn_search_agence_accueilli" value="Rechercher" onclick="affiche_tbl_select_agence();"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="div_liste_agence" name="div_liste_agence" >
+		<table width="100%">
+			<tr>
+				<td>
+					$$IF:LISTE_AGENCE:NBR$$
+						$$INCL:FUSION_LISTE_AGENCE.HTM$$
+					$$END$$
+				</td>
+			</tr>
+		</table>
+		$$IF:LISTE_AGENCE:NBR$$
+			$$INCL:FUSION_LISTE_FUSION_AGENCE_ACCUEILLIE_POUR_UNE_AGENCE.HTM$$
+		$$END$$
+		$$IF:LISTE_AGENCE:NBR$$
+			$$INCL:FUSION_LISTE_FUSION_AGENCE_ACCUEILLANTE_POUR_UNE_AGENCE.HTM$$
+		$$END$$
+		$$IF=:1:FORM:AFFICHE_BT_SELECT_AGENCE$$
+			$$IF:LISTE_AGENCE:NBR$$
+				<table width="100%" id="tbl_button_select_agence">
+					<tr>
+						<td>
+							<input type="button" class="button" name="Btn_ajouter_agence_search" id="Btn_ajouter_agencesearch" value="Selectionner agence"  onclick="affiche_fusion_accueillante_accueillies();" />
+						</td>
+					</tr>
+				</table>
+			$$END$$
+		$$END$$
+	</div>
+</form>
+
+$$INCL:BAS.HTM$$

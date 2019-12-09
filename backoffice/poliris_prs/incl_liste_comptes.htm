@@ -1,0 +1,89 @@
+$$REM$$
+====================================================================
+//// <summary>Page qui contient l'include des listes de compte</summary>
+//// <remarks>
+//// <para>Liste des macros B utilisées dans cette page (PRS:LISTE_COMPTES)</para>
+//// </remarks>
+//// <update date="2010-06-21" author="amine.daghmouri"></update>
+====================================================================
+$$END:REM$$
+
+$$IF:REP:QRY$$
+$$B:PRS:LISTE_COMPTES:ALIAS:LISTECPTS$$
+$$END$$
+
+$$E:PRS:LISTE_INFORMATIONS_COMPTE:~ID:REP:1:ALIAS:LINFOCPT$$
+
+<!--Section ERREUR-->
+$$BIF0:LISTECPTS$$
+	<p class="erreur">
+		<img src="images/exclamation.png" />
+		Aucun enregitrement ne correspond à votre rechreche.
+	</p>
+$$BFIN:LISTECPTS$$	
+<!--Section Liste des comptes--> 
+$$IF:REP:QRY$$
+$$BIF:LISTECPTS$$
+<h2>
+	<ul style="margin:0;padding:0">
+		<li class="cssLibelletitreprincipal" style="display:inline;" class="cssLiTitre">Liste des comptes</li>
+		<li class="cssLibelletitreNbrDiff" style="display:inline;"  class="cssLiTitre">(</li>
+		<li class="cssLibelletitreNBR" style="display:inline;"  class="cssLiTitre">$$LISTECPTS:NBR$$ </li>
+		<li class="cssLibelletitreNbrDiff" style="display:inline;"  class="cssLiTitre">enregistrement(s) trouvé(s)) </li>
+	</ul>
+	</br>
+	
+</h2>
+<table  class="csscadrefonce">
+	<!--Ligne titre des comptes--> 
+	<tr colspan="7">
+		<th colspan="1">ID compte RS</th>
+		<th colspan="1">ID dossier</th>
+		<th colspan="2">Nom du dossier</th>
+		<th colspan="3">
+			$$IF=:1:FORM:CBOSTATUTCPT$$
+				Date d'activation
+			$$END$$
+			$$IF=:2:FORM:CBOSTATUTCPT$$
+				Date de désactivation
+			$$END$$
+			$$IF=:3:FORM:CBOSTATUTCPT$$
+				Date de réactivation
+			$$END$$
+		</th>
+	</tr>
+	<!--lignes liste des comptes--> 
+ 	$$DO:1:30$$
+		$$IFPREV:LISTECPTS:ID_COMPTE$$
+			<tr colspan="6" class="$$LISTECPTS:I mod2 cssTabletd_alt3 cssTabletd_alt1$$">
+				<td width=7% colspan="1" class="cssTableLibelleNumerique" class="cssTabletdhidden">
+					<a href="$$LISTECPTS:ID_COMPTE$$/compte_form.htm?txtNomDossier=$$FORM:TXTNOMDOSSIER$$&txtIdDossier=$$FORM:TXTIDDOSSIER$$&cboStatutCpt=$$FORM:CBOSTATUTCPT$$&listecptspg=$$FORM:LISTECPTSPG$$&id=$$LISTECPTS:ID_SITE_EXTERNE$$&typeid=$$LISTECPTS:ST_TYPE_ID_SITE_EXTERNE$$",500,500,0);">$$LISTECPTS:ID_COMPTE$$</a>				
+				</td>
+				<td width=10%  colspan="1" class="cssTableLibelleNumerique" class="cssTabletdhidden">
+					$$LISTECPTS:ID_DOSSIER$$  
+				</td>
+				<td width=40% colspan="2" class="cssTableLibelleString">       
+				   $$LISTECPTS:ST_NOM_DOSSIER$$
+			   </td>
+				<td width=15% colspan="3" class="cssTableLibelleDate">
+					$$IF=:1:FORM:CBOSTATUTCPT$$
+						$$LISTECPTS:DT_CREATION date 1$$
+					$$END$$
+					$$IF=:2:FORM:CBOSTATUTCPT$$
+						$$LISTECPTS:DT_DESACTIVATION date 1$$
+					$$END$$
+					$$IF=:3:FORM:CBOSTATUTCPT$$
+						$$LISTECPTS:DT_REACTIVATION date 1$$
+					$$END$$
+				</td>	
+			</tr>
+		$$END:IFPREV:LISTECPTS:ID_COMPTE$$	
+	$$LOOP$$
+</table>	
+$$BFIN$$
+$$END$$
+<br/>
+<br/>
+$$IF:REP:QRY$$ $$INCL:PAGES.HTM$$ $$END$$
+
+
