@@ -1,0 +1,119 @@
+<div class="ttl-bien">$$LG:LIEN:TOUTES pcase$$</div>
+$$B:IMMOBW:ANN:1:QRY:LANG:::REP:1::d_dt_maj:~limit:QRY:MAXMODULEBERLIN:~NOSTAT:1:ALIAS:ANNLISTE$$
+$$BIF:ANNLISTE$$
+	<p class="nbr-bien">$$ANNLISTE:NBR$$ $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR lcase$$ $$LG:VOTRERECHERCHE lcase$$ $$ANNLISTE:PHRASE$$</p>
+	<div id="zoneResultats">
+	$$DO$$
+			$$A:TITLE_SELECTION_INDEX=$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$IF:FORM:LANG$$
+					$$IF!:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+					$$END$$
+					$$IF=:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+					$$END$$
+				$$END$$
+				$$IF0:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				<div class="blocModule borderModule shadow" id="annonce$$ANNLISTE:IDANNONCE$$">
+						$$IF:ANNLISTE:SI_COUPDECOEUR$$
+							<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+						$$END:COUPDECOEUR$$
+						$$IF:ANNLISTE:SI_EXCLUSIF$$
+							<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+						$$END:SI_EXCLUSIF$$
+						$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+							<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+						$$END$$
+						$$IF:ANNLISTE:SI_PROMO$$
+							<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+						$$END:SI_PROMO$$
+						<div class="infoModule">
+							<ul>
+								<li><h1>$$ANNLISTE:IDTYPEBIEN gettypebien$$</h1></li>
+								<li>
+								$$IF:ANNLISTE:NB_PIECES$$
+								$$ANNLISTE:NB_PIECES$$
+									$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+									$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$			
+								$$END$$	
+								</li>
+								<li><h2>$$ANNLISTE:AVILLE$$</h2></li>
+							</ul>			
+						</div>
+						$$IF:ANNLISTE:C175_URL$$
+							<img src="$$ANNLISTE:C175_URL$$" width="175" height="175" />
+						$$END$$
+						$$IF0:ANNLISTE:C175_URL$$
+							<img src="$$_$$images/global/sans_photo.jpg" width="175" height="175" />
+						$$END$$
+				</div>
+			</a>
+	$$LOOP$$
+		<div class="clear"></div>
+	</div>
+$$BFIN$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		resize();
+		gestionAnnonce('blocModule');
+	});
+</script>
+<div class="plus-crit">
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$FORM:LANG$$" title="">
+	$$IF!:FR:FORM:LANG$$
+	More research criteria
+	$$END$$
+	$$IF=:FR:FORM:LANG$$
+	Plus de critères de recherche
+	$$END$$	
+	</a>
+</div>
+<div class="l-mode fleft">
+	<div class="tlbien">PARIS</div>
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VENTES:2$$
+	$$BIF:TYPEBIEN_VENTES$$
+	$$DO$$
+		<li>
+			<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_VENTES:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:VENTES pcase$$ $$TYPEBIEN_VENTES:DEF_LIBELLE lcase$$">
+				$$TYPEBIEN_VENTES:DEF_LIBELLE pcase$$ 
+				( $$TYPEBIEN_VENTES:NBANN$$ 
+				$$IF-:2:TYPEBIEN_VENTES:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+				$$IF+:2:TYPEBIEN_VENTES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$ )
+			</a>
+		</li>
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCS:1$$
+	$$BIF:TYPEBIEN_LOCS$$
+	$$DO$$
+		<li>
+			<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOCS:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ $$TYPEBIEN_LOCS:DEF_LIBELLE lcase$$">
+			$$TYPEBIEN_LOCS:DEF_LIBELLE pcase$$  
+			( $$TYPEBIEN_LOCS:NBANN$$
+			$$IF-:2:TYPEBIEN_LOCS:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+			$$IF+:2:TYPEBIEN_LOCS:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$ )
+			</a>
+		</li>
+	$$LOOP$$
+	$$BFIN$$
+</div>
+<div class="r-mode fleft">
+	Appartements, bureaux, locaux commerciaux<br />
+	Spécialisé Rive Gauche et Banlieue Sud<br />
+	Affilié à la caisse de garantie FNAIM sous le numéro<br /> 
+	44486
+	<p><a href="http://www.fnaim.fr/" target="_blank"><img src="images/lg_fnaim.gif" alt="" /><br /></a></p>
+</div>
+<div class="clear"></div>
