@@ -1,0 +1,90 @@
+$$IF+:2:TYPE_TRANSACTION:NBR$$
+	$$A:MINIMOBILEAUTRE_AFFICHAGE=1$$
+$$END$$
+$$IF-:3:TYPE_TRANSACTION:NBR$$
+	$$A:MINIMOBILEAUTRE_AFFICHAGE=0$$
+$$END$$
+$$BIF:TYPE_TRANSACTION$$
+	$$DO$$
+		$$IF=:1:TYPE_TRANSACTION:I$$
+			$$A:SEARCHTAB1TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+			$$A:SEARCHTAB1LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+		$$END$$
+		$$IF=:2:TYPE_TRANSACTION:I$$
+	      $$A:SEARCHTAB2TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+	      $$A:SEARCHTAB2LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+      	$$END$$
+      	$$IF=:3:TYPE_TRANSACTION:I$$
+	      $$A:SEARCHTAB3TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+	      $$A:SEARCHTAB3LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+      	$$END$$
+	$$LOOP$$		
+$$BFIN$$
+<div class="hidden-tablet hidden-desktop">
+    <ul class="width-100-pourcent bg-white margin-bottom-5 pagination-centered radius-3 clearfix display-table">
+		<li class="display-cell bg-block border-solid-right-primary-1" style="width: $$IF=:1:MINIMOBILEAUTRE_AFFICHAGE$$ 33.33% $$END$$ $$IF!:1:MINIMOBILEAUTRE_AFFICHAGE$$ 50% $$END$$; $$IF=:1:MOBILE1_IDTTCACHE$$display:none;$$END$$">
+            <a class="bold btn btn-block padding-bottom-5 padding-top-5 btn-idtt-selected" data-idtt="$$SEARCHTAB1TYPE$$""
+			   href="javascript:void(0)" onclick="changeMiniMobileType('$$SEARCHTAB1TYPE$$', this)">
+				$$SEARCHTAB1LABEL$$
+            </a>
+		</li>
+		<li class="bg-block-gradient display-cell border-solid-right-primary-1" style="width: $$IF=:1:MINIMOBILEAUTRE_AFFICHAGE$$ 33.33% $$END$$ $$IF!:1:MINIMOBILEAUTRE_AFFICHAGE$$ 50% $$END$$; $$IF=:1:MOBILE2_IDTTCACHE$$display:none;$$END$$">
+            <a class="btn btn-block" data-idtt="$$SEARCHTAB2TYPE$$"
+			   href="javascript:void(0)" onclick="changeMiniMobileType('$$SEARCHTAB2TYPE$$', this)">
+				$$SEARCHTAB2LABEL$$
+            </a>
+		</li>
+		$$IF+:4:TYPE_TRANSACTION:NBR$$  
+			$$IF=:1:MINIMOBILEAUTRE_AFFICHAGE$$
+				<li class="bg-block-gradient display-cell" style="width: 33.33%;">
+		            <a class="btn btn-block btn-other"
+		               href="javascript:void(0)" onclick="changeMiniMobileType('other', this)" data-idtt="autres">
+		                $$LG:AUTRE pcase$$
+		            </a>
+		      	</li>
+			$$END$$
+		$$END$$
+		$$IF=:3:TYPE_TRANSACTION:NBR$$  
+			<li class="bg-block-gradient display-cell border-solid-primary-1" style="width:33.33%;">
+	            <a class="btn btn-block" data-idtt="$$SEARCHTAB3TYPE$$"
+				   href="javascript:void(0)" onclick="changeMiniMobileType('$$SEARCHTAB3TYPE$$', this)">
+					$$SEARCHTAB3LABEL$$
+	            </a>
+	      </li>
+		$$END$$
+    </ul>
+    $$BIF:TYPE_TRANSACTION$$
+    <div class="margin-bottom-5 display-none margin-top-10" id="mini-mobile-type-other">
+        <select class="width-100-pourcent" data-placeholder="$$LG:TYPEDETRANSACTION pcase$$"
+				onchange="changeSelectMiniMobileType(this)">
+        $$DO$$
+            $$IF):MINI*IDTTCACHE$SEARCHTAB1TYPE$SEARCHTAB2TYPE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+            $$IF):SEARCHTAB2TYPE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+            $$IF):SEARCHTAB1TYPE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+            <option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$">
+                $$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+                $$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$
+                $$IF=:1:MINI_NBVISIBLES$$($$TYPE_TRANSACTION:NBANN$$)$$END$$
+            </option>
+            $$END$$
+            $$END$$
+            $$END:MINI*IDTTCACHE$$
+        $$LOOP$$
+        </select>
+    </div>
+    $$BFIN$$
+
+    <div id="Mini_Villes" class="relative  margin-top-10">
+        <!--#include absolute="webagency/A_ID3X/4perf/moteur/suggest/incl_input.htm" -->
+        <!--#include absolute="webagency/A_ID3X/4perf/moteur/suggest/incl_json.htm" -->
+    </div>
+</div>
+
+<div class="control-group margin-0">
+    <div class="$$TYPEBOUTON$$ btn-important btn-block bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$"
+		 onclick="initIdttField()">
+		$$LG:RECHERCHER pcase$$
+	</div>
+</div>
+
+
