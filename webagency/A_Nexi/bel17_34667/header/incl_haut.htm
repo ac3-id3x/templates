@@ -1,0 +1,140 @@
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_UI=1$$
+$$INIT:CSS_SELECT_MENU=1$$
+$$INIT:CSS_FANCY=1$$
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+$$IF:FAVICON$$
+<link rel="shortcut icon" type="image/x-icon" href="$$FAVICON$$" />
+$$END$$
+
+$$REM$$
+<script language="javascript"> 
+
+function disableselect(e){ 
+return false 
+} 
+
+function reEnable(){ 
+return true 
+} 
+
+//if IE4+ 
+document.onselectstart=new Function ("return false") 
+document.oncontextmenu=new Function ("return false") 
+//if NS6 
+if (window.sidebar){ 
+document.onmousedown=disableselect 
+document.onclick=reEnable 
+} 
+
+</script> 
+$$END$$
+
+
+
+</head>
+
+<body class="$$LANGUE$$">
+<div id="Header"></div>
+$$REM$$<!--<div class="bloc-rs">-->$$END$$
+	<a href="$$URL_FACEBOOK$$" title="" class="pictos pic-fb"></a>
+	<a href="$$URL_TWITTER$$" title="" class="pictos pic-tw"></a>
+	<a href="#" title="" class="pictos pic-in"></a>
+	<a href="#" title="" class="pictos pic-p"></a>
+	<a href="#" title="" class="pictos pic-yt"></a>
+	<a href="#" title="" class="pictos pic-gplus"></a>
+	<a href="$$URLBASE$$/flux,rss.htm?lang=$$LANGUE$$" title="" class="pictos pic-rss"></a>
+</div><!--div.bloc-rs-->
+<div id="wrapper">
+	<div id="wrap">
+		<div class="link-top">
+			<a href="$$URLBASE$$" title="Accueil BelleVue Immo">$$LG:ACCUEIL pcase$$</a>  |  
+			<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$" title="">$$LG:MASELECT pcase$$ : <span id="NbAnnPanier"></span> $$LG:ANNONCE lcase$$(s)</a>  |  
+			<a href="$$URLBASE$$/suivi,client.htm?lang=$$LANGUE$$" title="">$$IF=:FR:LANGUE$$Espace vendeur$$END$$$$IF!:FR:LANGUE$$Seller area$$END$$</a>  |  
+			<a href="$$URLBASE$$/immo,recrutement.htm?lang=$$LANGUE$$" title="">$$LG:RECRUTEMENT pcase$$</a>  |  
+			$$IF=:FR:LANGUE$$	<a href="$$URLBASE$$/index.htm?lang=en" title=""><img src="images/flag_en.gif" alt="" /><br /></a>$$END$$
+			$$IF=:EN:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=fr" title=""><img src="images/flag_fr.gif" alt="" /><br /></a>$$END$$
+			
+			
+			$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+</script>
+$$BFIN$$
+$$BIF0:CHECKBASKET$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		nbAnnoncePanier(0);	
+	});
+</script>
+$$BFIN$$
+
+		</div>
+		<div class="logo fleft">
+			<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" title=""><img src="images/logo.gif" alt="" /><br /></a>
+		</div>
+		<div class="coords fonts fright">
+			<span>Axel</span> FESSART  :  06 71 18 88 88<br />
+			<span>Agence</span>  :  $$AGENCE_TEL formattel$$<br />
+			<span>Annie</span> FESSART  :  06 86 90 38 84
+		</div>
+		<div class="clear"></div>
+		<div class="mn fonts">
+			<ul class="$$LANGUE$$">
+				<!--#include virtual="menu/incl_menu.htm" -->
+			</ul>
+			<div class="clear"></div>
+		</div><!--div.mn-->
+	$$IF=:INDEX.HTM$RECHERCHE,BASIC.HTM:REP:0$$
+	<form method="get" action="/moteur,mini,prevalidation.htm" id="Mini_Moteur">
+		<div id="Nav_Moteur">
+			<div class="blocMoteur">
+				<div class="blocSelectSearch marg-select">
+					<!--#include virtual="moteur/mini/incl_type_transaction_liste.htm" -->
+				</div>
+				<div class="blocSelectSearch">
+					<!--#include virtual="moteur/mini/incl_type_bien_liste.htm" -->
+				</div>
+				<div class="blocSelectSearch">
+					<!--#include virtual="moteur/mini/incl_villes.htm" -->
+				</div>
+				<div class="btnSearch" id="Mini_Bouton"></div>
+			</div>
+		</div>
+		<div class="moreCriteres">
+			<div class="moteurCriteres">
+				<!--#include virtual="moteur/mini/moteur.htm" -->
+				<div class="clear"></div>	
+			</div>
+			<div class="plusCriteres">$$LG:PLUSCRIT pcase$$</div>
+		</div>
+	</form>
+	$$END$$
+	
+	
+		$$IF!:INDEX-CHR.HTM$INDEX.HTM:REP:0$$		
+			<div id="navigue">
+				<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" class="backhome">$$LG:RETOURACC pcase$$</a>
+		$$END$$
+		
+	
+		
+		<!--#include virtual="header/ttl_pages.htm" -->
+		$$IF:TITRE_PAGE$$<div class="ttl-page fonts">$$TITRE_PAGE$$</div>$$END$$

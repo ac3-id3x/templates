@@ -1,0 +1,294 @@
+$$INIT:CSS_CARTO=1$$
+$$INIT:CSS_DETAIL_COMPACT=1$$
+$$INIT:JS_GALERIE=1$$
+$$INIT:JS_DETAIL_COMPACT=1$$
+$$INIT:JS_UI=1$$
+$$INIT:JS_DETAIL=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+
+$$IF:ANNDETAIL:COOR-CONTACT$$		
+	$$A:NOMAGENCE_DETAIL=@@ANNDETAIL:COOR-CONTACT@@$$
+$$END$$
+$$IF0:ANNDETAIL:COOR-CONTACT$$	
+	$$IF:ANNDETAIL:COOR-NOM$$		
+		$$A:NOMAGENCE_DETAIL=@@ANNDETAIL:COOR-NOM ucase@@$$
+	$$END$$
+$$END$$
+
+<!--#include virtual="/recherche/incl_fil_ariane.htm" -->
+
+<!--#include virtual="/detail/incl_variables_form.htm" -->	
+
+$$IF0:ANNDETAIL:IDTYPETRANSACTION$$
+	<p class="confirm">$$LG:DESOLE pcase$$.</p>
+	<p><strong>$$LG:ANNPLUSDISPO$$</strong></p>		
+	<p class="lien">
+		<a href="http://$$REP:RSRV$$" title="">$$LG:RETOURACC pcase$$</a>
+	</p>
+$$END$$
+
+$$IF:ANNDETAIL:IDTYPETRANSACTION$$
+<div id="WrapDetail" itemscope itemtype="http://schema.org/Product">
+	<a href="$$ANNDETAIL:URLVIRTUELLE$$" style="display:none;" itemprop="url"></a>
+	<div id="TitleBien">
+		<h1 itemprop="name">
+			<!--#include virtual="/detail/incl_detail_titre.htm" -->	
+		</h1>
+		<!--#include virtual="/detail/incl_detail_retour_compact.htm" -->	
+		$$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+			<div class="WrapBtnTop" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span class="BtnPrix bgcolor1 txtcolor2" itemprop="price"><!--#include virtual="/detail/incl_prix.htm" --><meta itemprop="priceCurrency" content="EUR" /></span></div>
+		$$END$$
+	</div>
+	<div class="clear"></div>
+		
+	<div id="GalerieAnnonce">
+		<!--#include virtual="/detail/incl_galerie_compact.htm" -->		
+		<div class="GalerieOptions">
+			<div class="WrapBtnSelect bgcolor2">				
+				<!--#include virtual="/detail/incl_outil_ajout_selection.htm" -->				
+			</div>			
+			$$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+			$$BIF:VIDEO$$
+				<span>$$LG:AFFICHAGE pcase$$</span>
+				$$DO:1:1$$
+					<a href="$$VIDEO:URL$$" class="FancyBoxYT iframe BtnOptions bgcolor2" title="Vidéo">Vid&eacute;o</a>
+				$$LOOP$$
+			$$BFIN$$
+			$$IF:ANNDETAIL:VIDEO_URL$$
+				$$BIF0:VIDEO$$<span>Affichage</span>$$BFIN$$
+				<a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="FancyBoxVideo iframe BtnOptions bgcolor2" rel="100x800" title="Vidéo">Vid&eacute;o</a>
+			$$END:ANNDETAIL:VIDEO_URL$$
+			
+			
+			$$IF:ANNDETAIL:ID360$$
+				$$BIF0:VIDEO$$
+					$$IF0:ANNDETAIL:VIDEO_URL$$
+						<span>Affichage</span>
+					$$END$$
+				$$BFIN$$
+				$$IF=:3:ANNDETAIL:IDTYPEVISUEL360$$
+						$$A:LIEN_360=/@@ANNDETAIL:IDPUBLICATION@@/@@ANNDETAIL:IDANNONCE@@/detail,visuel_3dzoom.htm$$
+				$$END$$
+				$$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+					$$A:LIEN_360=/@@ANNDETAIL:IDPUBLICATION@@/@@ANNDETAIL:IDANNONCE@@/detail,visuel_360previsite.htm$$
+				$$END$$
+				$$IF=:9:ANNDETAIL:IDTYPEVISUEL360$$
+					$$A:LIEN_360=/@@ANNDETAIL:IDPUBLICATION@@/@@ANNDETAIL:IDANNONCE@@/detail,visuel_egg.htm$$
+				$$END$$	
+				<a href="$$LIEN_360$$" class="FancyBoxGrd iframe BtnOptions bgcolor2" title="360">360</a>							
+			$$END:ID360$$
+			$$IF:ANNDETAIL:360_URL$$
+				$$BIF0:VIDEO$$$$IF0:ANNDETAIL:ID360$$<span>Affichage</span>$$END$$$$BFIN$$
+				<a href="$$ANNDETAIL:360_URL$$" class="FancyBoxGrd iframe BtnOptions bgcolor2" title="$$LG:VISITEVIRTUELLE pcase$$">$$LG:VISITEVIRTUELLE pcase$$</a>
+			$$END:360_URL$$		
+
+		</div>
+	</div>
+
+
+
+
+	<div id="InfosAnnonce">
+		<div class="BtnTel"><a href="#AffichTel" class="FancyBox bgcolor2" title="$$LG:TELEPHONEZNOUS pcase$$">$$LG:TELEPHONEZNOUS pcase$$</a></div>
+			<div id="WrapAffichTel">
+				<div id="AffichTel">
+					<!--#include virtual="/detail/incl_telephonez_nous.htm" -->							
+				</div>
+			</div>
+		<div id="BlocSouhaite">
+			<div class="BtnSouhaite"><a title="$$LG:ETRERAPPEL pcase$$" href="#FormSouhaite" id="FormSouhaite1" onclick="$('#SelectSujet').val('1');MajMsg('#SelectSujet');" class="FancyBox bgcolor1">$$LG:ETRERAPPEL pcase$$</a></div>
+			<div class="BtnSouhaite"><a title="$$LG:VISITERCEBIEN pcase$$" href="#FormSouhaite" id="FormSouhaite3" onclick="$('#SelectSujet').val('3');MajMsg('#SelectSujet');" class="FancyBox bgcolor1">$$LG:VISITERCEBIEN pcase$$</a></div>
+			<div class="clear"></div>
+			<div class="BtnSouhaite"><a title="$$LG:PLUSDETAILS pcase$$" href="#FormSouhaite" id="FormSouhaite2" onclick="$('#SelectSujet').val('2');MajMsg('#SelectSujet');" class="FancyBox bgcolor1">$$LG:PLUSDETAILS pcase$$</a></div>
+			$$IF:BOUTON_CALCUL$$
+			<div class="BtnSouhaite"><a title="$$LG:CALC$$" href="/outils,calculettes.htm?lang=$$LANGUE$$" id="calculettesDetail" class="bgcolor1">$$LG:CALC pcase$$</a></div>
+			$$END$$
+			$$IF0:BOUTON_CALCUL$$
+				$$IF!:1$4:ANNDETAIL:IDTYPETRANSACTION$$
+					<!--#include virtual="/detail/incl_bouton_estimation_autres.htm" -->	
+				$$END$$
+				$$IF=:1$4:ANNDETAIL:IDTYPETRANSACTION$$
+					<!--#include virtual="/detail/incl_bouton_estimation_vendre.htm" -->	
+				$$END$$
+			$$END$$
+		</div>
+		
+		<div id="WrapFormSouhaite">
+			<div id="FormSouhaite">
+				<!--#include virtual="/detail/incl_formulaire.htm" -->
+			</div>	
+		</div>
+	
+
+
+
+		
+		<div class="clear"></div>
+		<div id="OngAnnonces">
+			<h2 id="Description" class="Ong bgcolor1 open">$$LG:DESCRIPTIONANN pcase$$<span></span></h2>
+				<div class="OngAnnonceContent first">
+						<!--#include virtual="/detail/incl_descriptif_h3_compact.htm" -->		
+						
+						$$IF:ANNDETAIL:DT_DISPO$$
+							<div class="datedispo txtcolor2">$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</div>
+						$$END$$
+												
+						$$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+							$$IF=:1:IMMOBW:DISPOVAC:OK$$
+							<a href="#CalendrierDispo" title="$$LG:CALENDRIERDISPO pcase$$" class="FancyBox datedispo txtcolor2">$$LG:CALENDRIERDISPO pcase$$</a>
+							<div id="WrapCalendrierDispo" style="display: none;">
+								<div id="CalendrierDispo">
+										<!--#include virtual="/detail/incl_calendrier_locations_vacances.htm" -->
+								 </div>
+							</div>
+							$$END$$
+						$$END$$
+						
+						$$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+							<a href="#LotsDispo" title="$$LG:LOTSDISPO pcase$$" class="FancyBox lotdispo txtcolor2">$$LG:LOTSDISPO pcase$$</a>
+							<div id="WrapLotsDispo" style="display: none;">
+								<div id="LotsDispo">
+									<!--#include virtual="/detail/incl_neuf.htm" -->
+								</div>           
+							</div>           
+						$$END$$
+						<div class="clear"></div>
+								
+						<!--#include virtual="/detail/incl_descriptif_compact.htm" -->
+						<br /><br />						
+				</div>
+				
+			<h2 class="Ong bgcolor1" title="$$LG:FICHESIGNALETIQUE pcase$$" id="Fiche"><!--#include virtual="/detail/incl_detail_titre_fiche_pdf.htm" --><span></span></h2>
+				<div class="OngAnnonceContent">
+					<!--#include virtual="/detail/incl_compact_signaletique.htm" -->
+					
+					$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$
+					<!--#include virtual="/detail/incl_visuel_pdf.htm" -->	
+				</div>		
+				$$IF!:4:ANNDETAIL:IDTYPETRANSACTION$$
+				<h2 class="Ong bgcolor1" title="$$LG:DPE pcase$$" id="DPE">$$LG:DPE pcase$$<span></span></h2>
+					<div class="OngAnnonceContent">
+						<!--#include virtual="/detail/incl_dpe.htm" -->
+					</div>		
+				$$END$$
+				
+			<h2 class="Ong bgcolor1" title="$$LG:CONTACT pcase$$" id="Contact">$$IF=:FR:LANGUE$$Contact de l'agence$$END$$$$IF!:FR:LANGUE$$$$LG:ADRESSSEAGENCE pcase$$$$END$$<span></span></h2>
+				<div class="OngAnnonceContent contactannonce"itemscope itemtype="http://schema.org/RealEstateAgent">
+					$$E:IMMOBW:AGENCE:VAL:ANNDETAIL_IDPUBLICATION:ALIAS:AG$$
+					<meta itemprop="name" content=" $$AG:NOM$$ "/ >
+					<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->				
+					<!--#include virtual="detail/incl_agence_fax.htm" -->
+					$$REM$$<!--#include virtual="detail/incl_agence_email.htm" -->
+					<!--#include virtual="detail/incl_agence_url.htm" -->$$END$$
+					<!--#include virtual="detail/incl_agence_presentation.htm" -->
+					<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+					<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+					<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->		
+					<!--#include virtual="detail/incl_agence_geo.htm" -->
+					$$IF:ANNDETAIL:IDTYPECTC1$$
+					<div class="ctc_neuf" id="blocContactPromoteur">
+						<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+					</div><!-- fin .ctc_neuf -->
+					$$END:IDTYPECTC1$$
+					$$IF:ANNDETAIL:IDTYPECTC2$$
+					<div class="ctc_neuf" id="blocContactCommercialisateur">
+							<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+					</div><!-- fin .ctc_neuf -->
+					$$END:IDTYPECTC1$$
+					$$IF:ANNDETAIL:ADRBUREAU$$
+					<div class="ctc_neuf">
+						<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+					</div><!-- fin .ctc_neuf -->
+					$$END:ADRBUREAU$$
+					<!--#include virtual="/detail/incl_texte_agence.htm" -->					
+				</div>		
+				
+		</div>	
+	</div>
+	
+	<div class="clear"></div>
+	
+	$$REM$$
+	<div id="Bookmarks">
+		<!--#include virtual="/detail/incl_bookmarks_compact.htm" -->	
+	</div>
+	$$END$$
+
+	<div id="BtnWidget">
+	<div id="BtnWidgetinterne">
+		<a class="FancyBoxFriend iframe" href="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/contact,ami.htm?lang=$$LANGUE$$&popup=1"><span class="Msg"></span>$$LG:ENVOYERAMI pcase$$</a><!--
+		--><a class="FancyBoxPrint iframe" href="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,fiche_visite.htm?lang=$$LANGUE$$" rel="nofollow"><span class="Print"></span>$$LG:IMPRIMER pcase$$</a>
+	</div>	
+	</div>
+	
+	<div class="clear"></div>
+	$$IF=:FR:LANGUE$$
+	<br />
+	<div id="WrapInfosAnnonce">
+		<div id="NavInfosAnnonce">
+			$$REM$$<h2 class="poiH2 activepoi bgcolor2">Points d'int&eacute;r&ecirc;ts</h2>$$END$$
+			<h2 class="infosH2">$$LG:INFOSLOCALES pcase$$</h2>
+			<div class="clear"></div>
+		</div> 
+	</div>
+$$REM$$	
+	<div id="POI">
+		<a name="poi"></a>
+	  <!--#include virtual="/detail/incl_poi_compact.htm" -->
+	</div>
+$$END$$
+	<div id="InfosLocales">
+		<a name="InfosLocales"></a>
+	  <!--#include virtual="/detail/ville.htm" -->
+	</div>
+	$$END$$
+
+	<div class="clear"></div>
+
+
+$$B:IMMOBW:ANN:ALIAS:ANNLISTE::QRY:LANG:::ADD:ci=+ANNDETAIL_CODEINSEE+&idtt=+ANNDETAIL_IDTYPETRANSACTION+&idtypebien=+ANNDETAIL_IDTYPEBIEN+&nb_pieces=+ANNDETAIL_NB*PIECES+&rayon=5::d_dt_crea:~NOSTAT:1$$
+			$$BIF:ANNLISTE$$
+				$$IF>:2:ANNLISTE:NBR$$
+								<div id="AnnonceSimi">
+										<h2>$$LG:ANNSIMILAIRESA$$
+														$$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+														$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase$$
+														$$END$$	
+														$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$
+														
+														$$IF:ANNDETAIL:NB_PIECES$$
+														de $$ANNDETAIL:NB_PIECES$$
+														$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+														$$IF!:0$1:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+														$$END:NB_PIECES$$
+														
+														$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+														$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+														$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+														$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+														$$END$$								
+														$$LG:A lcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+														$$LG:ALENTOURSSIMILAIRES lcase$$</h2>
+										<!--#include virtual="/detail/incl_annonces_similaires_compact.htm" -->	
+										
+									</div>
+
+	$$END$$
+$$BFIN$$
+<div class="clear"></div>
+<div id="Glossaire_Ctn">
+				<!--#include virtual="/detail/incl_glossaire.htm" -->
+</div><!-- fin .glossaire_ctn -->
+
+<div id="AgenceMentions">			
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:ML$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:CARTEPROT$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:2:ALIAS:CARTEPROG$$
+		<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+</div>
+$$END$$
+
+
+
+
+<!--#include virtual="immo/incl_retour_haut.htm" -->

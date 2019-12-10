@@ -1,0 +1,49 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+	<style type="text/css">
+	.clear {clear:both;}
+	#box_form {min-height:400px;}
+	#box_form h1 {width:100%; text-align:center; font-family: 'osp-dindin',Arial,sans-serif;font-size:22px; color:#b9c0a0; background:url($$_$$images/logo_formbox.png) left center no-repeat; padding:20px 0; margin:0;}
+	#box_form p {width:100%; text-align:center; font-family: 'osp-dindin',Arial,sans-serif;font-size:16px; color:#b9c0a0; padding:20px 0; margin:0;}
+	#box_form textarea {display:block; width:80%; margin:20px auto;}
+	#box_form input[type="submit"] {display:block; width:175px; margin:0 auto; background:url($$_$$images/bg_btn_formbox.png) no-repeat; color:#00763c; font-size:22px; font-family: 'osp-dindin',Arial,sans-serif; height:42px; padding-bottom:10px; border:0; cursor:pointer;}
+	#box_form #logo_formbox {float:right;}
+	</style>
+</head>
+
+<div id="box_form">
+
+	<h1>
+	$$IF0:FORM:LANG$$
+		$$A:LANGUE=FR$$
+	$$END$$
+	&nbsp;
+	</h1>
+	<p><strong>$$IF=:FR:LANGUE$$Aidez nous à améliorer notre site$$END$$
+	$$IF!:FR:LANGUE$$Your opinion matters$$END$$</strong></p>
+	<p>Votre opinion est importante, merci de nous indiquer ce qui vous plait ou ce qui est à améliorer</p>
+		
+	<form method="post" id="FormContactAgence_Ctn" action="immo,avis_ok.htm?lang=$$LANGUE$$">
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="page_ok" value="immo,avis_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+		<input type="hidden" name="page_err" value="immo,message.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+		<input type="hidden" name="cfg_form" value="message" />
+		<input type="hidden" name="cfg_emails" value="message" />
+		<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+		<input type="hidden" name="idPublication" value="$$REP:1$$" />						
+						
+		$$IF:ERRE$$
+			<div class="attention">$$LG:ATTENTION pcase$$</div>
+			<div class="erre">$$ERRE$$</div>
+		$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$					
+					 				
+		<textarea class="inputTextarea inputMessage required" name="message" cols="40" rows="10" onkeyup="limite(this,350);" onkeydown="limite(this,350);">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+		<input type="submit" id="boutonEnvoiAgence" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+	</form>
+	
+	<div class="clear"></div>
+		
+</div>

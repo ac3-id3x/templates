@@ -1,0 +1,90 @@
+<div class="photo_ctn">
+	$$IF0:ANNDETAIL:IDPHOTO$$
+	<div id="SansPhoto">
+		<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->	
+		$$IF0:ANNDETAIL:C175URL0$$
+			$$IF:ANNDETAIL:SI_LOGO$$
+					<!--#include virtual="detail/incl_no_photo_logo.htm" -->
+			$$END$$
+		$$END$$
+	</div>
+	$$END:SANSPHOTO$$
+	$$IF:ANNDETAIL:IDPHOTO$$
+	
+	
+	$$END$$
+	$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+	$$BIF:GALERIE$$
+
+	
+	
+	<div class="ad-gallery">
+		<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->
+  	<div class="ad-image-wrapper"></div>
+  	<div class="ad-controls"></div>
+  	<div class="ad-nav">
+  		<div class="texte_agrandir">Agrandir les photos</div>
+    	<div class="ad-thumbs">
+      <ul class="ad-thumb-list">
+      	<!-- BOUCLE IMAGES -->
+      	$$DO$$	
+        	<li><a href="$$IF:GALERIE:BIG_URL$$$$GALERIE:BIG_URL$$$$END$$$$IF0:GALERIE:BIG_URL$$$$GALERIE:URL$$$$END$$"$$IF=:1:GALERIE:I$$ itemprop="image"$$END$$>
+        		$$A:ALTIMAGE=@@ANNDETAIL:IDTYPEBIEN gettypebien pcase@@ @@ANNDETAIL:LIBELLE lcase@@ @@ANNDETAIL:VILLE@@ - Photo @@GALERIE:I@@$$
+        		$$IF=:1:RESIZEGALERIE$$
+        			<img src="$$GALERIE:CARRE_URL$$" width="60" height="60"  alt="$$ALTIMAGE$$"/>
+        		$$END$$
+        		$$IF!:1:RESIZEGALERIE$$
+        			<img src="$$GALERIE:CARRE_URL$$" width="60" height="60"  alt="$$ALTIMAGE$$" />
+        		$$END$$
+        	</a></li>
+        $$LOOP$$
+      </ul>
+    	</div>
+  	</div>
+	</div>
+  $$BFIN$$
+	<a href="#" class="hd txtcolor2 zoomGallery bgcolor2" title="$$IF=:FR:LANGUE$$Afficher les photos en grand format$$END$$$$IF!:FR:LANGUE$$$$LG:AGRANDIR pcase$$$$END$$"><img src="$$_$$images/picto-resize.png" alt="Agrandir" /> <span>Agrandir</span></a>
+</div>
+<script language="javascript" type="text/javascript">
+	$(document).ready(function() {
+		// GALLERY
+		var galleries = $('.ad-gallery').adGallery({
+			display_next_and_prev: true,
+			$$IF=:1:MOUSECHANGEPHOTO$$
+				mouse_over:true,
+			$$END$$
+			$$REM$$
+				move_pictos:false,
+			$$END$$
+			callbacks: {
+				afterImageVisible: function() {
+					var numLi = $('.ad-thumb-list').find('li').length;
+					$$IF=:1:RESIZEGALERIE$$
+					if(numLi <= 5) {
+					$$END$$
+					$$IF!:1:RESIZEGALERIE$$
+					if(numLi <= 3) {
+					$$END$$
+						$('.ad-back').hide();
+						$('.ad-forward').hide();
+					}
+					$('.zoomGallery').lightBox();
+					$('.hd').each(function() {
+						var urlPicture = $(this).parent().find('.ad-image').children('a').attr('href');
+						$(this).attr('href',urlPicture);
+					});
+				}
+			}
+		});
+		// LIGHTBOX DIAPO
+		$('.zoomDiaporama').lightBox();
+	});
+</script>
+
+
