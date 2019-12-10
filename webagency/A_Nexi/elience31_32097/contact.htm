@@ -1,0 +1,194 @@
+<!--#include virtual="header/incl_haut.htm" -->
+$$SET:PAGE:IDT=CTC$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_contact_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_contact_ok.htm" />
+	<input type="hidden" name="page_err" value="contact.htm" />
+	<input type="hidden" name="cfg_form" value="contact$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="contact" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	
+
+	<!--vos coordonnées--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2" id="formContact">
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>
+			
+			Faites-nous parvenir votre message. <br />
+Nous vous répondrons dans les meilleurs délais. 
+
+			</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td width="30%" class="col1">$$LG:AI5$$ <span>*</span> :</td>
+		<td width="70%"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td class="col1">$$LG:PRENOM$$ <span>*</span> :</td>
+		<td><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	
+
+
+
+	$$IF!:FR:LANGUE$$
+	<tr> 
+		<td class="col1">$$LG:PAYS$$ <span>*</span> :</td>
+		<td ><input class="imputForm" type="text" name="2pays" size="25" value="$$FORM:2PAYS$$" /></td>
+	</tr>
+	$$END$$	  
+	<tr> 
+		<td class="col1">$$LG:TEL pcase$$ <span>*</span> :</td>
+		<td ><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td class="col1">$$LG:FAX pcase$$ :</td>
+		<td ><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></td>
+	</tr>
+	<tr> 
+		<td class="col1">$$LG:AI6$$ <span>*</span> :</td>
+		<td ><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+	
+	<tr> 
+		<td class="col1">Je souhaite <span>*</span> :</td>
+		<td>
+		<select name="Souhait" class="inputSelect">
+			<option value="Faire gérer mon bien" >Faire gérer mon bien</option>
+			<option value="Faire gérer ma copropriété" >Faire gérer ma copropriété</option>
+			<option value="Vendre mon bien" >Vendre mon bien</option>
+			<option value="Louer mon bien" >Louer mon bien</option>
+			<option value="Acheter un logement" >Acheter un logement</option>
+			<option value="Louer un logement" >Louer un logement</option>
+		</select>
+		
+		</td>
+	</tr>
+	<tr> 
+		<td class="col1">type <span>*</span> :</td>
+		<td>
+		
+		<select name="Type" class="inputSelect">
+			<option value="Appartement" >Appartement</option>
+			<option value="T1 / studio" >T1 / studio</option>
+			<option value="T2" >T2</option>
+			<option value="T3" >T3</option>
+			<option value="T4" >T4</option>
+			<option value="T4" >T5</option>
+			<option value="Autre" >Autre</option>
+			<option value="Autre" >Maison</option>
+		</select>
+		
+		</td>
+	</tr>
+	<tr>
+		<td class="col1">Localisation du bien / copropriété : $$LG:VILLE$$ : <span>*</span></td>
+		<td><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$" /></td>
+	</tr>
+	
+	<tr>
+		<td class="col1">Quartier <span>*</span>: </td>
+		<td><input class="imputForm" type="text" name="2Quartier" size="25" value="$$FORM:2QUARTIER$$" /></td>
+	</tr>
+	
+	<tr> 
+		<td class="col1">$$LG:ADRESSE$$ <span>*</span> :</td>
+		<td>$$IF=:FR:LANGUE$$<input type="text" class="imputForm" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3" class="imputForm">$$FORM:2ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+		<tr>
+		<td class="col1">$$LG:CODEP$$ <span>*</span>:</td>
+		<td><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></td>
+	</tr>
+	<!--Votre message-->
+	
+	<tr> 
+		<td class="col1">$$LG:MESSAGE$$ :</td>
+
+
+		<td><textarea class="imputForm" name="Pmessage" cols="35" rows="3">$$FORM:PMESSAGE$$</textarea></td>
+	</tr>
+
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td colspan="2" align="center"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr>
+		<td class="col1">$$LG:OBLIGATOIRE$$</td>
+		<td><input type="image" src="images/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table>
+
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+<!--#include virtual="footer/incl_bas.htm" -->
