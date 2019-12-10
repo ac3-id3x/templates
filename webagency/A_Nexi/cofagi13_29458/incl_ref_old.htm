@@ -1,0 +1,459 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>31.03.2011 : on conditionne de force le PAGE:WAGREF_IDDOSSIER_SITE à l'intérieur du fichier</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+
+
+
+
+
+
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- =======================================================================================
+///////////// BOUCLES EN RANDOM SUR LES EXPRESSIONS REF PROVENANT DE GESTPROD  ////////////////////
+								> Selon les contrats de réf on peut avoir de 3 à 20 expressions (voire plus)
+								> on crée SEULEMENT 3 MACROS qui contiendront les mots clés (pas besoin de plus)
+								> car le RANDOM fera tourner les expressions dans ces 3 macros
+								> chaque expression possède un ID unique
+								> DONC, ne pas toucher aux lignes ci-dessous
+=====================================================================================-->$$END:REM$$
+<!--
+$$B:IMMOBW:WAGREF:ALIAS:EXPR$$
+$$BIF:EXPR$$
+$$DO$$
+	$$EXPR:FR$$
+$$LOOP$$
+	$$A:MOTCLE1=@@1_EXPR:FR@@$$$$MOTCLE1$$
+	$$A:MOTCLE2=@@2_EXPR:FR@@$$$$MOTCLE2$$
+	$$A:MOTCLE3=@@3_EXPR:FR@@$$$$MOTCLE3$$
+$$BFIN$$
+-->
+
+$$REM$$<!-- ======================================================================================
+//////////////////////// OPTIS PAR DÉFAUT, affichées sur pages non condtionnées ///////////
+												> à laisser en premier !!!!
+												> ne pas forcer la casse (majuscule, minuscule pas la casse de voiture)
+=====================================================================================-->$$END:REM$$
+$$IF:MULTIAGENCES$$
+	$$REM$$<!-- multi -->$$END:REM$$
+	$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+	$$A:PAGE:DESCREF=@@LG:IMMOBILIER pcase@@ @@CP_AGENCE cp2dep@@ @@LG:ET lcase@@ @@LG:ANNALENTOURS lcase@@ @@LG:AVEC lcase@@ @@REP:RSRV@@.$$
+	$$A:PAGE:KEYWORDS=@@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+$$END$$
+
+$$IF0:MULTIAGENCES$$
+	$$REM$$<!-- mono -->$$END:REM$$
+	$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@NOM_AGENCE@@ @@VILLE_AGENCE@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+	$$A:PAGE:DESCREF=@@LG:IMMOBILIER pcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ @@LG:AVEC lcase@@ l'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@.$$
+	$$A:PAGE:KEYWORDS=@@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+$$END$$
+
+
+
+$$REM$$<!-- ================================ index.htm ===============================-->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ (@@CP_AGENCE cp2dep@@) : @@MOTCLE1@@, @@MOTCLE2@@ @@LG:ET lcase@@ @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:VOUSRECHCONSULT2@@ @@REP:RSRV@@ : @@MOTCLE1@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:IMMOBILIER pcase@@, @@MOTCLE1@@, @@MOTCLE2@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@NOM_AGENCE@@ @@VILLE_AGENCE@@ : @@MOTCLE1@@, @@MOTCLE2@@ @@LG:ET lcase@@ @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:NOTRE pcase@@ @@LG:IMMOBILIER pcase@@ sur @@VILLE_AGENCE pcase@@ @@LG:ETSAREGION lcase@@ @@LG:AVEC lcase@@ @@LG:NOTRE lcase@@ @@LG:AGENCEIMMOBILIERE pcase@@ @@NOM_AGENCE@@ : @@MOTCLE1@@.$$
+		$$A:PAGE:KEYWORDS=@@NOM_AGENCE@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ agence-immobiliere.htm ===============================-->$$END:REM$$
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@ @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+		$$A:DESCRIPTION=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+
+$$REM$$<!-- ================================ agence,immobiliere.htm ===============================-->$$END:REM$$
+$$IF=:NOTREAGENCE:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@ @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+		$$A:DESCRIPTION=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+
+$$REM$$<!-- ================================ agences,liste.htm ===============================-->$$END:REM$$
+$$IF=:NOSAGENCES:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@ : Tout l'immobilier sur Peypin, Roquevaire, la Destrousse et sa région avec les Agences du Sud.@@$$
+		$$A:PAGE:DESCREF=Agence du Sud, agence immobilière Peypin, La Destrousse, Aubagne, Pont de L'Etoile, Roquevaire : @@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@MOTCLE1@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@, immobilier Peypin, immobilier La Destrousse, immobilier Aubagne, immobilier Pont de L'Etoile$$
+$$END$$
+
+
+$$REM$$<!-- ================================ gestion.htm ===============================-->$$END:REM$$
+$$IF=:GESTION:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:GESTIONIMMO pcase@@ @@CP_AGENCE cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@ : @@MOTCLE1@@$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@LG:GESTIONIMMO pcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@NOM_AGENCE@@ @@LG:A lcase@@ @@VILLE_AGENCE pcase@@ : @@MOTCLE1@@$$
+		$$A:PAGE:DESCREF=@@NOM_AGENCE@@, @@LG:GESTIONIMMO pcase@@ : @@VILLE_AGENCE pcase@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ estimation.htm ===============================-->$$END:REM$$
+$$IF=:ESTIM:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:ESTIMVOTREBIEN pcase@@ @@CP_AGENCE cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@ : @@MOTCLE1@@$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@LG:ESTIMVOTREBIEN pcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:ESTIMVOTREBIEN pcase@@, @@LG:IMMOBILIER lcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:ESTIMVOTREBIEN pcase@@ @@LG:AVEC lcase@@ @@NOM_AGENCE@@ @@LG:A lcase@@ @@VILLE_AGENCE pcase@@ : @@MOTCLE1@@$$
+		$$A:PAGE:DESCREF=@@NOM_AGENCE@@, @@LG:ESTIMVOTREBIEN pcase@@ : @@VILLE_AGENCE pcase@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:ESTIMVOTREBIEN pcase@@, @@LG:IMMOBILIER lcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ message.htm ===============================-->$$END:REM$$
+$$IF=:CTC:PAGE:IDT$$
+	$$IF0:REP:1$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:CONTACT pcase@@ @@REP:RSRV@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:CONTACTEZNOUS pcase@@ : @@MOTCLE1@@, @@MOTCLE2@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:CONTACT pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF:REP:1$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:CONTACT pcase@@ @@NOM_AGENCE@@ @@LG:A lcase@@ @@VILLE_AGENCE pcase@@ : @@MOTCLE1@@.$$
+		$$A:PAGE:DESCREF=@@LG:CONTACTEZNOUS pcase@@ : @@NOM_AGENCE@@ @@LG:A lcase@@ @@VILLE_AGENCE pcase@@$$
+		$$A:PAGE:KEYWORDS=@@LG:CONTACT pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ plan.htm ===============================-->$$END:REM$$
+$$IF=:PLAN:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:LIEN:PLAN pcase@@ @@REP:RSRV@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:LIEN:PLAN pcase@@ : @@MOTCLE1@@, @@MOTCLE2@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:LIEN:PLAN pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:LIEN:PLAN pcase@@ @@NOM_AGENCE@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@.$$
+		$$A:PAGE:DESCREF=@@LG:LIEN:PLAN pcase@@ @@NOM_AGENCE@@. @@MOTCLE1@@, @@MOTCLE2@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:LIEN:PLAN pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ outils.htm ===============================-->$$END:REM$$
+$$IF=:OUTILS:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:OUTILSPRATIQUES pcase@@ @@REP:RSRV@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:EFFECTUEZCOMPTES@@ : @@REP:RSRV@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:OUTILSPRATIQUES pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:OUTILSPRATIQUES pcase@@ @@NOM_AGENCE@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:EFFECTUEZCOMPTES@@ : @@AGENCE_NOM pcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:OUTILSPRATIQUES pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ calculettes.htm ===============================-->$$END:REM$$
+$$IF=:CALCULETTES:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:CALCULIMMO pcase@@ @@REP:RSRV@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:EFFECTUEZCOMPTES@@ : @@REP:RSRV@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:CALCULIMMO pcase@@ @@NOM_AGENCE@@ : @@MOTCLE1@@, @@MOTCLE2@@, @@MOTCLE3@@$$
+		$$A:PAGE:DESCREF=@@LG:EFFECTUEZCOMPTES@@ : @@AGENCE_NOM pcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ moteur,classic.htm ===============================-->$$END:REM$$
+$$IF=:MOTEUR:PAGE:IDT$$
+
+	$$IF=:1:FORM:IDTT$$
+	$$REM$$<!-- page moteur location -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCATION pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:LOC lcase@@ d'@@LG:APPARTEMENTS lcase@@ et @@LG:DE lcase@@ @@LG:MAISONS lcase@@(@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCATION lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCATION pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:LOC lcase@@ d'@@LG:APPARTEMENTS lcase@@ et @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCATION lcase@@, @@VILLE_AGENCE@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:2:FORM:IDTT$$
+	$$REM$$<!-- page moteur vente -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:VENTE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VENTES pcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ d'@@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:VENTE lcase@@, @@LG:ACHAT lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:VENTE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ - @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@. @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VENTES pcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:VENTE lcase@@, @@LG:ACHAT lcase@@, @@VILLE_AGENCE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:3:FORM:IDTT$$
+	$$REM$$<!-- page moteur locations temporaires -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCTEMP pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCTEMP lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCTEMP lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCTEMP pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCTEMP lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCTEMP lcase@@, @@VILLE_AGENCE@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:4:FORM:IDTT$$
+	$$REM$$<!-- page moteur locations vacances -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCATIONVACANCES pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCVACS lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCVACS lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LOCATIONVACANCES pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCVACS lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:LOCVACS lcase@@, @@VILLE_AGENCE@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:5:FORM:IDTT$$
+	$$REM$$<!-- page moteur viager -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@, @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:VIAGERLIBRE2 pcase@@, @@LG:VIAGEROCCUPE2 lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (@@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@), @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@VILLE_AGENCE@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (maisons et d'appartements) sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:VIAGERLIBRE2 pcase@@, @@LG:VIAGEROCCUPE2 lcase@@, @@VILLE_AGENCE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:6:FORM:IDTT$$
+	$$REM$$<!-- page moteur produits d'investissement -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:PRODUITINVEST pcase@@ @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:PRODINVES lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:PRODINVES pcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:PRODUITINVEST pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ ses @@LG:PRODINVES lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:PRODINVES pcase@@, @@VILLE_AGENCE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:7:FORM:IDTT$$
+	$$REM$$<!-- page moteur location de prestige -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:ANN:LOCPRESTIGE pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:ANN:LOCPRESTIGE lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:ANN:LOCPRESTIGE lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:ANN:LOCPRESTIGE pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:ANN:LOCPRESTIGE lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:ANN:LOCPRESTIGE lcase@@, @@VILLE_AGENCE@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:8:FORM:IDTT$$
+	$$REM$$<!-- page moteur vente prestige -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:PRESTIGE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:PRESTIGE lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:PRESTIGE pcase@@, @@LG:ACHAT lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:PRESTIGE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@VILLE_AGENCE@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:PRESTIGE lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:PRESTIGE pcase@@, @@LG:ACHAT lcase@@, @@VILLE_AGENCE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+	$$IF=:9:FORM:IDTT$$
+	$$REM$$<!-- page moteur programmes neufs -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:NOSPROGSNEUFS pcase@@ @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:LIEN:PGRNEUF lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:LIEN:PGRNEUF pcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:NOSPROGSNEUFS pcase@@, @@LG:IMMOBILIER lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ ses @@LG:LIEN:PGRNEUF lcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:LIEN:PGRNEUF pcase@@, @@VILLE_AGENCE pcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+		$$IF=:10:FORM:IDTT$$
+	$$REM$$<!-- page moteur fonds de commerce -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LIEN:FCOMMERCE pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:LIEN:FCOMMERCE lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:LIEN:FCOMMERCE lcase@@, @@LG:ACHAT lcase@@, @@CP_AGENCE cp2dep@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:LIEN:FCOMMERCE pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:FCOMMERCE pcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:LIEN:FCOMMERCE lcase@@, @@LG:ACHAT lcase@@, @@VILLE_AGENCE pcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+		$$IF=:11:FORM:IDTT$$
+	$$REM$$<!-- page moteur cession de bail -->$$END:REM$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:CESSIONDEBAIL pcase@@ @@CP_AGENCE cp2dep@@ - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:CESSIONDEBAIL lcase@@ (@@CP_AGENCE cp2dep@@ et ses alentours).$$
+			$$A:PAGE:KEYWORDS=@@LG:CESSIONDEBAIL lcase@@, @@CP_AGENCE cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+		$$END$$	
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:CESSIONDEBAIL pcase@@ sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@ - @@NOM_AGENCE@@$$
+			$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@NOM_AGENCE@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:CESSIONDEBAIL lcase@@  sur @@VILLE_AGENCE@@ @@LG:ETSAREGION lcase@@.$$
+			$$A:PAGE:KEYWORDS=@@LG:CESSIONDEBAIL lcase@@, @@LG:ACHAT lcase@@, @@VILLE_AGENCE pcase@@.$$
+		$$END$$	
+	$$END:FORM:IDTT$$
+	
+$$END:MOTEUR:IDT$$
+
+$$REM$$<!-- ================================ recherche,basic.htm / tous les résultats de recherche par requête ===============================-->$$END:REM$$
+$$IF=:RESULTATS:PAGE:IDT$$
+
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$			
+			$$A:PAGE:TITR=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@REP:RSRV@@ : @@LG:TOUTESANNONC lcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@$$
+		$$END$$
+		
+		$$IF0:MULTIAGENCES$$
+			$$REM$$<!-- mono -->$$END:REM$$
+			$$A:PAGE:TITR=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ @@NOM_AGENCE@@$$
+			$$A:PAGE:DESCREF=@@NOM_AGENCE@@ : @@LG:TOUTESANNONC lcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@$$
+		$$END$$
+		$$A:PAGE:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+$$END:RESULTATS:IDT$$
+
+$$REM$$<!-- ================================ detail,sento.htm / pour les appattemts, maisons, loft et chateaux ===============================-->$$END:REM$$
+$$IF=:DETAILANNONCE:PAGE:IDT$$
+
+	$$IF=:1$2$9$13:IMMOBW:ANNONCE:IDTYPEBIEN$$
+		$$IF:MULTIAGENCES$$
+			$$REM$$<!-- multi -->$$END:REM$$			
+			$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ 
+							@@IMMOBW:ANNONCE:LIBELLE@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:VILLE@@ : 
+							@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECE lcase@@@@IMMOBW:ANNONCE:NB_PIECES pluriel@@ @@LG:DE lcase@@ 
+							@@IMMOBW:ANNONCE:SURFACE@@ @@LG:M2 lcase@@ @@LG:AVEC lcase@@ @@IMMOBW:ANNONCE:NB_CHAMBRES@@ @@LG:CHAMBRE@@@@IMMOBW:ANNONCE:NB_CHAMBRES pluriel@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:PRIX@@ euros - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltextv2 150@@$$
+			$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+		$$END:MULTIAGENCES$$	
+		
+		$$IF0:MULTIAGENCES$$	
+			$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ 
+							@@IMMOBW:ANNONCE:LIBELLE@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:VILLE@@ : 
+							@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECES@@ @@LG:DE lcase@@ 
+							@@IMMOBW:ANNONCE:SURFACE@@ @@LG:M2 lcase@@ @@LG:AVEC lcase@@ @@IMMOBW:ANNONCE:NB_CHAMBRES@@ @@LG:CHAMBRES@@	@@LG:A lcase@@ @@IMMOBW:ANNONCE:PRIX@@ euros - @@NOM_AGENCE@@$$
+			$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltextv2 150@@$$
+			$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+		$$END:MULTIAGENCES$$
+	$$END:FORM:IDTT$$
+		
+$$REM$$<!-- ================================ detail,sento.htm / pour tous les autres types de bien  ===============================-->$$END:REM$$
+
+
+	$$IF!:1$2$9$13:IMMOBW:ANNONCE:IDTYPEBIEN$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$			
+		$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ 
+						@@IMMOBW:ANNONCE:LIBELLE@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:VILLE@@ : 
+						@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@LG:DE lcase@@ 
+						@@IMMOBW:ANNONCE:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:PRIX@@ euros - @@REP:RSRV@@$$
+		$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltextv2 150@@$$
+		$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+	$$END:MULTIAGENCES$$	
+	
+	$$IF0:MULTIAGENCES$$	
+		$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ 
+						@@IMMOBW:ANNONCE:LIBELLE@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:VILLE@@ : 
+						@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@LG:DE lcase@@ 
+						@@IMMOBW:ANNONCE:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:PRIX@@ euros - @@NOM_AGENCE@@$$
+		$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltextv2 150@@$$
+		$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+	$$END:MULTIAGENCES$$
+	$$END:FORM:IDTT$$
+		
+$$END:DETAIL:IDT$$
+
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
