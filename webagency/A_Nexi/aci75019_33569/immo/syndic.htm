@@ -1,0 +1,221 @@
+<!--#include virtual="header/incl_haut.htm" -->
+	<p>Propriétaire vous recherchez un syndic professionnel demandez votre offre personnalisée de syndic de copropriété</p>
+
+<p><strong>vos atouts :</strong></p>
+<ul>
+<li>votre gestionnaire est aussi comptable </li>
+<li>compte bancaire séparé gratuit avec accès en ligne</li>
+<li>gestion maitrisée de vos charges et renégociation des contrats </li>
+<li>service transparent adapté a tous vos besoins</li>
+<li>collaboration humaine disponible, réactive et fondée sur la confiance</li>
+<li>votre compte, PV d’AG et règlement de copropriété,…..accessible gratuitement sur notre site</li>
+<li>gestion des travaux avec mise en concurrence des entreprises (3 devis) </li>
+<li>gestion des sinistres sous 24h</li>
+<li>votre contrat de syndic de copropriété peut être soit a la carte ou en forfait tout inclus*</li>
+
+<p><em>*voir condition en agence</em></p>
+
+$$INIT:IDT=ESTIMATION$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:JS_FORMULAIRES=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+<!--#include virtual="contact/incl_multiagences_selection.htm" -->
+<!--#include virtual="contact/incl_monoagence_selection.htm" -->
+
+$$REM$$<!--// s'il y a un REP:1 //-->$$END:REM$$
+$$IF:REP:1$$
+	$$REM$$<!--// on execute la macro IMMOBW:AGENCE sur le REP:1 //-->$$END:REM$$
+	$$E:IMMOBW:AGENCE:ALIAS:CONTACT_AGENCE:REP:1$$
+	$$REM$$<!--// on vérifie l'email //-->$$END:REM$$
+	$$IF:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=1$$$$END$$
+	$$IF0:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=0$$$$END$$
+	
+	$$REM$$<!--// si le mail n'existe pas donc CHECK_EMAIL = 0 > on affiche le message d'erreur //-->$$END:REM$$
+	$$IF=:0:CHECK_EMAIL_REP$$	
+	<!--#include virtual="contact/incl_email_non_disponible.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	
+	$$REM$$<!--// si le mail existe donc CHECK_EMAIL = 1 > on affiche le formulaire de message  //-->$$END:REM$$
+	$$IF=:1:CHECK_EMAIL_REP$$
+		<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+		<form method="post" id="FormContactAgence_Ctn">
+			<div id="FormContactAgence">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			
+				<input type="hidden" name="u" value="immobw:send-agence-mail" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+				<input type="hidden" name="idTypeVisu" value="8" />$$REM$$<!--// [INPUT OBLIGATOIRE] 1 : WebAg Message | 2 : WebAg Contact | 3 : WebAg Propriétaire | 8 : WebAg Estimation (anciennement E) | 6 : OBSOLÈTE - webag alerte (anciennement O) | 9 : OBSOLÈTE - webag intercab (anciennement I) | 13 : OBSOLÈTE - webag cgu (anciennement U) //-->$$END$$
+				<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/contact,estimation_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+				<input type="hidden" name="page_err" value="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+				<input type="hidden" name="emailTemplate" value="/contact,estimation_envoi.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE]  Nom du template HTML de l'email à envoyer à l'agence //-->$$END$$
+				<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+				<input type="hidden" name="idPublication" value="$$REP:1$$" />
+
+				
+		$$REM$$<!--// On peut mettre autant d'autres champs de formulaire que l'on veut, il seront affichables dans l'email à l'aide des macros $$FORM:xxx$$ //-->$$END:REM$$
+		
+				<div id="conteneur_form">
+						
+						
+
+					$$IF:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+					
+						<div>
+							<div class="attention">$$LG:ATTENTION pcase$$</div>
+							<div class="erre">$$ERRE replace Vous¤devez¤renseigner¤un¤email¤valide. Please¤fill¤the¤email¤field. replace Vous¤devez¤renseigner¤un¤nom¤valide. Please¤fill¤the¤last¤name¤field. replace Vous¤devez¤renseigner¤un¤prenom¤valide. Please¤fill¤the¤first¤name¤field. replace Vous¤devez¤renseigner¤un¤numéro¤de¤téléphone¤valide. Please¤fill¤the¤phone¤number¤field. replace Vous¤devez¤renseigner¤un¤type¤de¤bien¤valide. Please¤fill¤the¤type¤of¤property¤field. replace Vous¤devez¤renseigner¤une¤surface¤valide. Please¤fill¤the¤living¤space¤property¤field. replace Vous¤devez¤renseigner¤une¤ville¤valide¤pour¤le¤bien. Please¤fill¤the¤city¤of¤property¤field.$$</div>
+						</div>
+						
+					$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+					$$IF0:FORMESTIMCACHEIDTT$$
+<!--2 col-->
+						<div class="col1">
+							Mon rôle dans l'immeuble <span class="obligatoire">*</span> :
+						</div>
+						
+						<div class="col2">
+							<select name="typetransaction" class="inputSelect">
+								<option value="2">Président</option>
+								<option value="1">Membre</option>
+								<option value="3">Propriétaire</option>
+							</select>
+						</div>
+						<div class="clear"></div>
+
+					$$END:FORMESTIMCACHEIDTT$$
+					$$IF:FORMESTIMCACHEIDTT$$
+						<input type="hidden" name="typetransaction" value="2" />	
+					$$END:FORMESTIMCACHEIDTT$$
+
+<!--2 col-->
+						<div class="col1">
+							nombre d’appartements dans votre résidence <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputNbPieces number required" name="nombrepieces" maxlength="3" value="$$FORM:NOMBREPIECES$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+						adresse de l’immeuble <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputSurface number required" name="surface" maxlength="4" value="$$FORM:SURFACE$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							code postal de l’immeuble :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputTerrain" name="terrain" maxlength="5" value="$$FORM:TERRAIN$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							ville de l’immeuble <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputVille required" name="villebien" maxlength="25" value="$$FORM:VILLEBIEN$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+
+<!--2 col-->
+						<div class="col1 message_ctn">
+							$$LG:PRECIS pcase$$ :
+						</div>
+						<div class="col2 message_ctn">
+							<textarea class="inputTextarea inputMessage" name="message" cols="40" rows="4" onkeyup="limite(this,350);" onkeydown="limite(this,350);">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>						
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+						<div class="pointillesBas">
+							<h1>$$LG:COORD3 pcase$$</h1>							
+						</div>
+						
+<!--2 col-->
+						<div class="col1 civ_ctn">
+							$$LG:CIVILITE pcase$$ :
+						</div>
+						<div class="col2 civ_ctn">
+								<label><input type="radio" class="inputRadio" name="civ" value="Melle" /> $$LG:MADEMOISELLE pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mme" /> $$LG:MADAME pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mr" /> $$LG:MONSIEUR pcase$$</label>
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:NOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputNom required" name="nomFamille" maxlength="25" value="$$FORM:NOMFAMILLE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">	
+							$$LG:PRENOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputPrenom required" name="prenom" maxlength="25" value="$$FORM:PRENOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:ADRESSE pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputAdresse" name="adresse" maxlength="40" value="$$FORM:ADRESSE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:CODEP pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputCP" name="cpuser" maxlength="8" value="$$FORM:CPUSER$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:VILLE pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputVille" name="ville" maxlength="25" value="$$FORM:VILLE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:TEL pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputTel required" name="telephone" maxlength="15" value="$$FORM:TELEPHONE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+<!--2 col-->
+						<div class="col1">
+							$$LG:EMAIL pcase$$ <span class="obligatoire">*</span> :
+							<br />
+							<br />
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputEmail email required" name="email" maxlength="60" value="$$FORM:EMAIL$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+							<br />
+							<br />
+						</div>
+						<div class="clear"></div>
+<!--2 col-->					
+						<div class="pointillesHaut">
+							<p><span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span></p>
+
+							<input type="submit" id="boutonEnvoiEstimation" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+							<div class="clear"></div>
+						</div>						
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</form>
+		
+		<!--#include virtual="legal/incl_formulaire_cgu.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$END:REP:1$$
+
+<!--#include virtual="footer/incl_bas.htm" -->
