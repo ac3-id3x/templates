@@ -1,0 +1,181 @@
+<!--#include virtual="header/incl_haut.htm" -->
+<script type="text/javascript" src="$$_$$script/globals.js"></script>
+<script type="text/javascript">
+<!--
+
+
+function trim(str)
+//------------------------------------------------------------------------------
+{
+   return str.replace(/(^\s*)|(\s*$)/g,"");
+}
+
+//--------------------------------
+function toEuro(value,nbdecimales)
+//--------------------------------
+{
+    var negatif=value<0?true:false;
+    var string=new String(Math.floor(Math.abs(value)));
+    var result="";
+    var indice=string.length;
+    while (indice>3)
+    {
+       result=" "+string.substring(indice-3,indice)+result;
+       indice-=3;
+    }
+    if (indice>0)
+       result=string.substring(Math.max(indice-3,0),indice)+result;
+    if (nbdecimales==2)
+    {
+       value=Math.floor(100*(Math.abs(value)-Math.floor(Math.abs(value))));
+       if (value<10) result+=",0"+value;
+       else result+=","+value;
+    }
+    result+=" €";
+    if (negatif) result="- "+result;
+    return result;
+	// return Math.round(value)+ " €";
+}
+
+//------------------------------------------------------------------------------
+function codeTouche(evenement)
+//------------------------------------------------------------------------------
+// implémentation différente selon le navigateur
+{
+   for (prop in evenement)
+      if(prop=='which')
+         return(evenement.which);
+   return(evenement.keyCode);
+}
+
+//------------------------------------------------------------------------------
+function scanInteger(evenement)
+//------------------------------------------------------------------------------
+{
+   var reCarSpeciaux = /[\x00\x08\x0D]/;
+   var reCarValides = /\d/;
+   var codeDecimal  = codeTouche(evenement);
+   var car = String.fromCharCode(codeDecimal);
+   var autorisation = (reCarValides.test(car) || reCarSpeciaux.test(car));
+   return autorisation;
+}
+
+//------------------------------------------------------------------------------
+/*function setParagrahText(elementPID,newText)
+//------------------------------------------------------------------------------
+{
+  var elementP;
+  var old_child;
+  var new_child;
+  elementP=document.getElementById(elementPID);
+  old_child=elementP.firstChild;
+  new_child=document.createTextNode(newText);
+  elementP.replaceChild(new_child,old_child);
+}*/
+
+//------------------------------------------------------------------------------
+/*function ControlInteger(saisie_value,paragraph_id)
+//------------------------------------------------------------------------------
+{
+    var alert_msg=" ";
+    if (saisie_value=="")
+       alert_msg=" (*) obligatoire";
+    setParagrahText(paragraph_id,alert_msg);
+}*/
+
+//------------------------------------------------------------------------------
+// fonctions spécifiques
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+function window_onload()
+//------------------------------------------------------------------------------
+{
+	document.getElementById("Natop").value="Neuf";
+	document.getElementById("Localisation").value="I";
+	document.getElementById("MontantAchat").value="";
+/*  	ControlInteger(document.getElementById("MontantAchat").value,"MontantAchatP");*/
+	Calcul();
+}
+
+//------------------------------------------------------------------------------
+function Calcul()
+//------------------------------------------------------------------------------
+{
+	var Natop=document.getElementById("Natop").value;
+	var Localisation=document.getElementById("Localisation").value;
+	var MontantAchat=document.getElementById("MontantAchat").value;
+
+	if (trim(MontantAchat)=="")
+    {
+    	var comment="";
+    	document.getElementById("EmolumentsNotaire").value=comment;
+    	document.getElementById("DroitsEtTaxes").value=comment;
+    	document.getElementById("FormalitesDebours").value=comment;
+    	document.getElementById("Total").value=comment;
+
+    }
+    else
+    {
+    	document.getElementById("EmolumentsNotaire").value=toEuro(FEmolumentsNotaire(MontantAchat,Localisation),0)+"           ";
+    	document.getElementById("DroitsEtTaxes").value=toEuro(FDroitsNotaire(MontantAchat,Natop),0)+"           ";
+    	document.getElementById("FormalitesDebours").value=toEuro(FFormalitesDeboursNotaire(Localisation),0)+"           ";
+    	document.getElementById("Total").value=toEuro(FFraisNotaire( MontantAchat,Localisation, Natop),0)+"           ";
+    }
+}
+
+//-->
+</script>
+
+
+
+
+ 
+  <form name="theform" id="theform02" class="fondhaut_annexe" action="post">
+    <input id="Localisation" value="I" type="hidden" />
+<div class="italic" align="left"> Montant de vos frais : Indiquez le montant de votre transaction en Euros.</div>
+
+<table border="0" cellspacing="10" cellpadding="5"  align="center">
+  <tr>
+    <td  align="right"><label for="Natop">Type d&acute;op&eacute;ration</label></td>
+    <td  align="right">
+    	<select name="Natop" id="Natop" onchange="Calcul();" class="edit" >
+            <option value="AchatNeuf" selected="selected">Achat d&acute;un logement neuf</option>
+            <option value="Ancien">Achat d&acute;un logement ancien</option>
+          </select></td>
+  </tr>
+  <tr>
+    <td  align="right"><label for="MontantAchat">Montant de l&acute;achat</label></td>
+    <td align="right"> <input name="MontantAchat" type="text" id="MontantAchat"
+				       onkeypress="return scanInteger(event);"
+				       onkeyup="Calcul();" size="20" maxlength="10"  class="edit" /></td>
+  </tr>
+  <tr>
+    <td  align="right"><label for="EmolumentsNotaire">Emoluments du notaire</label></td>
+    <td align="right"><input type="text" name="EmolumentsNotaire" id="EmolumentsNotaire" size="20"  class="edit" /></td>
+  </tr>
+  <tr>
+    <td  align="right"><label for="DroitsEtTaxes">Taxes</label></td>
+    <td align="right"><input type="text" name="DroitsEtTaxes" id="DroitsEtTaxes" size="20"  class="edit" /></td>
+  </tr>
+  <tr>
+    <td  align="right"><label for="FormalitesDebours">Frais de d&eacute;bours et frais annexes <sup>(1)</sup></label></td>
+    <td align="right"><input type="text" name="FormalitesDebours" id="FormalitesDebours" size="20"  class="edit" /></td>
+  </tr>
+  <tr>
+    <td  align="right" class="totalbas">
+      <label for="Total"><span class="gras">TOTAL</span></label>
+    </td>
+    <td align="right"><input type="text" id="Total" name="Total" size="17" readonly="readonly"  class="edit" /></td>
+  </tr>
+</table>
+  </form><div class="txtlegende">(1) Il s&acute;agit d&acute;un montant estim&eacute;, qui ne varie pas forcement en fonction du montant de l&acute;acquisition.<br /><br /><br /></div>    
+
+
+
+
+
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->

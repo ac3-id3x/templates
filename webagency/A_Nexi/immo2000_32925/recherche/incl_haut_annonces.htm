@@ -1,0 +1,198 @@
+$$REM$$====================================================================
+//// <summary>incl_haut des pages de resultats</summary>
+//// <remarks>
+//// <para>Affiché sur page résultat carte et liste</para>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_bas_annonces.htm</para>
+//// <para>Contient les conditions du title par défaut</para>
+//// <para>Les scripts nécessaires à cette page sont dans : slagence_X_V3/scripts/incl_scripts.htm</para>
+//// </remarks>
+//// <update date="2010-06-18" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+	<div id="RechHaut">
+
+		<div id="RechHautPictoResult">
+
+			<p
+			$$IF:ANNLISTE:NBR$$
+				$$IF0:ANNLISTE:SIPANIER$$class="results"$$END$$
+			$$END$$
+			$$IF0:ANNLISTE:NBR$$class="results_null"$$END$$			
+			$$IF:ANNLISTE:SIPANIER$$
+				$$IF0:ANNLISTE:NBR$$class="results_null"$$END$$
+				$$IF:ANNLISTE:NBR$$class="results_selection"$$END$$				
+			$$END$$><!-- --></p>
+			
+			<!-- ////////////////////////////////////////////////////// -->
+			
+		</div>
+	
+		$$IF:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== si x annonce(s) ==================== -->$$END:REM$$
+		$$IF0:ANNLISTE:SIPANIER$$
+		<!-- annonces trouvees -->
+		<h1>
+			$$IF=:RESULTATSCARTE:IDT$$
+				$$LG:CARTEGEOLOC pcase$$			
+			$$END:RESULTATSCARTE:IDT$$						
+			$$IF=:RESULTATS:IDT$$
+				$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$
+				$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$
+				$$ANNLISTE:PHRASE pcase$$
+				$$REM$$<!-- 20.11.2009 : ajout condition sous type de bien (Lisbonne) -->$$END:REM$$
+				$$IF:FORM:IDSOUSTYPEBIEN$$
+					$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+					<br />
+					$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+					$$END:!FORM:IDSOUSTYPEBIEN$$
+				$$END:FORM:IDSOUSTYPEBIEN$$			
+			$$END:RESULTATS:IDT$$
+		</h1>
+		
+		<h2>
+$$REM$$<!-- ==================== nom de l'agence si idpublication  ==================== -->$$END:REM$$	
+			$$IF:REP:1$$
+				$$LISTEAG:NOM ucase$$ $$LG:VOUSPROPOSE lcase$$
+			$$END:REP:1$$
+		
+			$$IF:FORM:IDPUBLICATION$$
+				$$LISTEAG:NOM ucase$$ $$LG:VOUSPROPOSE lcase$$
+			$$END:FORM:IDPUBLICATION$$
+			
+$$REM$$<!-- ==================== nb annonces  ==================== -->$$END:REM$$	
+			$$ANNLISTE:NBR formatnumber 0$$
+			$$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBR pluriel$$$$END:FR$$
+			<span>
+				$$IF=:FR:LANGUE$$correspondant &agrave; cette recherche$$END:FR$$
+				$$IF!:FR:LANGUE$$$$LG:TROUVE lcase$$ $$END:FR$$
+			</span>
+		</h2>
+		$$END:ANNLISTE:SIPANIER$$	
+
+$$REM$$<!-- ==================== fin si x annonce(s) ==================== -->$$END:REM$$
+		$$END:ANNLISTE:NBR$$
+		
+		$$IF0:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== si 0 annonce ==================== -->$$END:REM$$
+			$$IF0:ANNLISTE:SIPANIER$$
+			<h1>
+				$$IF=:RESULTATSCARTE:IDT$$
+					$$LG:CARTEGEOLOC pcase$$			
+				$$END:RESULTATSCARTE:IDT$$
+				$$IF=:RESULTATS:IDT$$
+					$$ANNLISTE:PHRASE pcase$$
+				$$END:RESULTATS:IDT$$
+			</h1>
+			<h2>
+				
+				<span>
+					$$LG:AUCUNEANN pcase$$				
+				</span>
+			
+			</h2>
+			$$END:ANNLISTE:SIPANIER$$
+			
+$$REM$$<!-- ==================== fin si 0 annonce ==================== -->$$END:REM$$
+		$$END:ANNLISTE:NBR$$
+		
+		
+		$$IF:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on est dans le panier ==================== -->$$END:REM$$
+			$$IF:ANNLISTE:NBR$$
+			<!-- selection remplie -->		
+			<h1 id="NbAnnSelection"></h1>
+			$$END:ANNLISTE:NBR$$
+			
+			$$IF0:ANNLISTE:NBR$$
+			<!-- selection vide -->
+			<h1>$$LG:SELECTANNONCEVIDE pcase$$</h1>				
+			$$END:ANNLISTE:NBR$$
+			
+			<h2><span><!--#include virtual="immo/incl_retour_page_precedente.htm" --></span></h2>
+			
+$$REM$$<!-- ==================== FIN si on est dans le panier ==================== -->$$END:REM$$
+		$$END:ANNLISTE:SIPANIER$$
+		
+		<div class="clear"><!-- --></div>
+
+$$REM$$<!-- ==================== bloc agence si REP:1 ==================== -->$$END:REM$$
+		$$IF:REP:1$$
+			$$E:IMMOBW:AGENCE:REP:1:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:REP:1$$
+		
+		$$IF:FORM:IDPUBLICATION$$
+			$$E:IMMOBW:AGENCE:QRY:IDPUBLICATION:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:FORM:IDPUBLICATION$$		
+
+
+
+		$$IF0:ANNLISTE:SIPANIER$$
+		<!--#include virtual="recherche/incl_haut_annonces_onglets.htm" -->
+		$$END:ANNLISTE:SIPANIER$$
+
+
+<div id="bloc-moteur">
+	<div id="Titre">$$LG:RECHERCHERAPIDE$$</div><!--#include virtual="moteur/mini/moteur.htm" -->
+</div><!--div#bloc-moteur-->
+	<div class="clear"><!-- --></div>
+		<div id="RechHautLiens">
+			$$IF0:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on est PAS dans le panier ==================== -->$$END:REM$$
+			<!--#include virtual="/recherche/incl_haut_annonces_liens.htm" -->
+			
+			$$IF!:RECHERCHE,CARTE.HTM:REP:0$$
+				$$IF>:1:ANNLISTE:NBR$$
+					<!--#include virtual="/recherche/incl_tri.htm" -->
+				$$END:ANNLISTE:NBR$$
+			$$END:REP:0$$
+			
+			$$END:ANNLISTE:SIPANIER$$
+			
+			$$IF:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on EST dans le panier ==================== -->$$END:REM$$
+			$$IF:ANNLISTE:NBR$$
+			$$REM$$<!-- ==================== ET que le panier est rempli ==================== -->$$END:REM$$
+				<a class="hautLiens" href="javascript:pop('recherche,imprimer.htm?lang=$$LANGUE$$',970,500,50,200);" title="">$$LG:IMPRIMERSELEC pcase$$</a>
+				<a class="hautLiens" href="javascript:viderPanier();" title="">$$LG:VIDERSELEC pcase$$</a>
+			$$END:ANNLISTE:NBR$$
+			
+			$$END:ANNLISTE:SIPANIER$$
+			<div class="clear"><!-- --></div>
+			
+		</div><!-- #RechHautLiens -->
+		
+		
+		$$IF:ANNLISTE:SIPANIER$$
+		$$REM$$<!-- ==================== si on EST dans le panier ==================== -->$$END:REM$$			
+			$$IF0:ANNLISTE:NBR$$									
+			$$REM$$<!-- ==================== ET que le panier est VIDE ==================== -->$$END:REM$$
+				$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSACSDISPOS$$
+				$$BIF:TRANSACSDISPOS$$
+				<div class="transacDispo">
+					<p>$$LG:TEXTEVILLESDPT pcase$$ :</p>					
+					$$DO$$
+					<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSACSDISPOS:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="">$$TRANSACSDISPOS:DESCRIPTIONLG pcase$$</a>
+					$$LOOP$$
+					<div class="clear"><!-- --></div>			
+				</div>
+				$$BFIN$$															
+			$$END:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== FIN si on EST dans le panier ==================== -->$$END:REM$$					
+		$$END:ANNLISTE:SIPANIER$$
+		
+		
+		$$IF=:RESULTATS:IDT$$
+			$$IF:ANNLISTE:NBRPAGES$$
+			<div id="RechPagesHaut">
+				<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+			</div>
+			<!-- fin #RechPagesHaut -->
+			$$END:ANNLISTE:NBRPAGES$$		
+		$$END:RESULTATS:IDT$$
+		
+	</div><!-- #RechHaut -->
+	
+	
+	
