@@ -1,0 +1,132 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+
+$$IF=:10$11:FORM:IDTT$$
+	$$A:TAILLEMOTEURRESULTATS=0$$
+	$$A:TAILLERESULTATS=12$$
+$$END$$
+
+	<!--#include virtual="recherche/incl_recherche_haut.htm" -->
+	
+	<div class="row-fluid">
+		<div class="span12">
+			<h1 class="phrase-recherche margin-bottom-10">$$ANNLISTE:PHRASE pcase$$ $$IF!:1:HIDE_SOUSTYPEBIEN$$$$IF!:9:FORM:IDTT$$<!--#include virtual="recherche/incl_libelle_recherche.htm" -->$$END$$$$END$$</h1>
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div class="$$TAILLEMOTEURRESULTATS$$">
+			<p>$$LG:V5NOUVELLESANNONCES pcase$$</p>
+			<div class="row-fluid">
+				<div class="span12">
+					<!--#include virtual="recherche/incl_bouton_alerte.htm" -->					
+				</div>	
+			</div>		
+		</div>
+		<div class="$$TAILLERESULTATS$$ padding-left-20 border-solid-left-block-2 padding-bottom-15">
+			<p>$$LG:V5ACTUELLEMENT pcase$$</p>
+			<!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->
+		</div>
+	</div>
+	
+	$$IF=:2:FORM:IDTT$$
+		$$IF=:1:GARANTIEREVENTE$$
+		<div class="row-fluid">
+			<div class="$$TAILLEMOTEURRESULTATS$$ pagination-centered">
+				<a href="http://www.arthurimmo.com/immo,garantie-revente.htm" target="_blank" class="active margin-top-15" title="Garantie revente"><img src="$$-$$images/gallian-listing.png" alt="Pour les surprises de la vie, il y a la garantie revente offerte !"></a>
+			</div>
+			<div class="$$TAILLERESULTATS$$ small">
+				<span class="big">					
+						Cette icône indique que ce bien bénéficie de la garantie revente
+				</span>
+				<a href="http://www.arthurimmo.com/immo,garantie-revente.htm" target="_blank" class="" title="Garantie revente"><img src="$$-$$images/gallian-picto2.png" alt="Garantie revente"></a>
+			</div>
+		</div>
+		$$END$$
+	$$END$$
+	
+	<div class="row-fluid margin-top-10">
+		<div class="span12">
+			<!--#include virtual="recherche/incl_alerte.htm" -->
+		</div>
+	</div>	
+	<hr class="margin-bottom-15">
+	
+	<!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+	$$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+	$$IF=:1:CANONICAL$$
+    	$$IF:SEO_RESULTS_CONTENT$$
+      <div class="row-fluid margin-bottom-20 hidden-phone">
+          <p class="span12">$$SEO_RESULTS_CONTENT smalltextv2 1000$$</p>
+      </div>
+      $$END$$
+	$$END$$
+	
+	<!--#include virtual="recherche/incl_recherche_onglets.htm" -->
+	
+	<div class="row-fluid">
+		$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+		$$IF:TAILLEMOTEURRESULTATS$$
+		    <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+		$$END$$
+		$$IF0:TAILLEMOTEURRESULTATS$$
+			<form method="GET" action="/$$REP:URI$$" id="Mini_Moteur" class="relative">
+				<input type="hidden" name="pres" value="$$PRESENTATION$$" class="hidden-pres">
+				<input type="hidden" name="idtt" value="$$FORM:IDTT$$" class="hidden-idtt">
+			</form>
+		$$END$$
+		$$BIF:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative margin-top-10" id="recherche-listing">
+			<!--#include virtual="recherche/incl_basic_resultats.htm" -->			
+			<!--#include virtual="recherche/incl_recherche_alerte.htm" -->
+		</div>
+			$$IF0:ANNLISTE:SIPANIER$$
+				$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+				<!--#include virtual="recherche/incl_calcul_selection.htm" -->
+			$$END$$
+		$$BFIN$$
+		$$BIF0:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative margin-top-10" id="recherche-listing">
+			<!--#include virtual="recherche/incl_no_resultats.htm" -->
+			<!--#include virtual="recherche/incl_recherche_alerte.htm" -->
+		</div>
+		$$BFIN$$
+		$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES RIGHT -->$$END$$
+
+		
+	</div>
+	$$IF0:ANNLISTE:SIPANIER$$
+	<div class="row-fluid">
+		<div class="span12">
+			<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+		</div>
+	</div>
+	$$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+	$$BIF:ANNLISTE$$
+	<div class="row-fluid">
+		<div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+			<h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+			<hr>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<!--#include virtual="recherche/incl_basic_resultats.htm" -->
+	</div>
+	$$BFIN$$
+	$$BIF0:ANNLISTE$$
+		<!--#include virtual="recherche/incl_recherche_aucun_resultats.htm" -->
+	$$BFIN$$
+$$END$$

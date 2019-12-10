@@ -1,0 +1,72 @@
+$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+
+<!--#include virtual="header/params_global.htm" -->
+<div class="$$IF=:INLINE:TYPEMOTEUR$$ margin-bottom-0$$END$$">	
+$$BIF:VILLESANNONCESALPHA$$
+	$$IF=:1:MINIVILLES_SELECT$$
+	<select name="ci" id="cpVilles" class="cpVilles center$$IF=:1:MINIVILLES_MULTIPLES$$ multiselect$$END$$"$$IF=:1:MINIVILLES_MULTIPLES$$ multiple="multiple" data-placeholder="<!--#include virtual="moteur/mini/incl_text_ville.htm" -->"$$END$$>
+		$$IF!:1:MINIVILLES_MULTIPLES$$
+		<option value="" selected="selected"><!--#include virtual="moteur/mini/incl_text_ville.htm" --></option>
+		$$END$$
+		$$IF=:1:MINIVILLES_MULTIPLES$$
+			<option value="" selected="selected" class="all-selected">$$LG:TOUTESVILLES2 pcase$$</option>
+		$$END$$		
+		$$IF!:1:MINIVILLESCACHEPORTEFEUILLE$$
+			$$DO$$
+				$$IF:VILLESANNONCESALPHA:CODEINSEE$$
+					<option value="$$VILLESANNONCESALPHA:CODEINSEE$$"$$IF(:FORM_CI:VILLESANNONCESALPHA:CODEINSEE$$selected$$END$$>$$VILLESANNONCESALPHA:VILLEAFF$$ $$IF=:1:MINI_VILLES_CP$$($$VILLESANNONCESALPHA:CODEINSEE codeinsee2cp$$)$$END:MINI_VILLES_CP$$</option>
+				$$END:VILLESANNONCESALPHA:CODEINSEE$$
+			$$LOOP$$
+		$$END$$
+		<!--#include virtual="moteur/mini/incl_ville_perso.htm" -->
+	</select>
+	$$END$$
+$$BFIN$$
+$$IF=:1:MINIVILLES_LIBRE$$
+	$$IF!:1:HIDETEXTMINIVILLE$$
+		<label><!--#include virtual="moteur/mini/incl_text_ville.htm"--></label>
+	$$END$$
+	<input type="text" name="cp" class="center$$IF=:1:HIDETEXTMINIVILLE$$ placeholder$$END$$" autocomplete="off" spellcheck="false"$$IF=:1:HIDETEXTMINIVILLE$$ data-value="$$LG:DESIRHABITER pcase$$" value="$$LG:DESIRHABITER pcase$$"$$END$$ >
+$$END$$
+</div>
+
+<script>
+	$(function() {
+		$("#cpVilles.multiselect").multipleSelect({
+			 position: 'top',
+			 selectAll: false,
+			 selectAllText: '$$LG:TOUTESVILLES2 pcase$$',		 
+				$$IF=:FR:LANGUE$$
+					allSelected: 'Tout est sélectionné',
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					allSelected: 'All is selected',
+				$$END$$
+				$$IF=:FR:LANGUE$$
+					countSelected: '# choix',
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					countSelected: '# choice(s)',
+				$$END$$
+				$$IF=:FR:LANGUE$$
+					noMatchesFound: 'Pas de résultat'
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					noMatchesFound: 'No result'
+				$$END$$
+		});	
+		$("#cpVilles.multiselect").change(function(){
+			if($(this).val()!=""){
+				$("input[value='']").prop("checked", false);
+			}
+		});
+		$("input[name='selectItemci']").click(function(){
+			if($(this).val()!=""){
+				$("input[value='']").prop("checked", false);
+			}else{
+				$("input[value!='']").prop("checked", false);
+				$(this).prop("checked", true);
+			}
+		});
+	});
+</script>

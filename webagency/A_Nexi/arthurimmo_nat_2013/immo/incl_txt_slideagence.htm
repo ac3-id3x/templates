@@ -1,0 +1,33 @@
+﻿$$IF=:0:MULTIAGENCES$$
+	<p><strong><em>$$AGENCE_NOM$$</em></strong></p>
+	<p>
+		$$AGENCE_ADRESSE$$<br>
+		$$AGENCE_CP$$ $$AGENCE_VILLE$$<br>
+		$$LG:MINITEL pcase$$ : $$AGENCE_TEL$$<br>
+		$$IF:AGENCE_FAX$$
+		$$LG:FAX pcase$$ : $$AGENCE_FAX$$<br>
+		$$END$$
+		$$LG:EMAIL pcase$$ : <a href="/$$AGENCE_IDPUBLICATION$$/agence,contact.htm" title="$$LG:CONTACT pcase$$">$$AGENCE_EMAIL$$</a>
+	</p>
+$$END$$
+
+$$IF=:1:MULTIAGENCES$$
+	$$BIF:COMPTE_AGENCES$$
+	<div id="liste-bloc-agence">
+			$$DO$$					
+				<p><strong><em>$$COMPTE_AGENCES:NOM$$</em></strong></p>
+				<p>
+					$$COMPTE_AGENCES:ADRESSE htmlencode crlf2br$$<br>
+					$$LG:MINITEL pcase$$ : $$COMPTE_AGENCES:TEL formattel$$<br>
+					$$LG:FAX pcase$$ : $$COMPTE_AGENCES:FAX formattel$$<br>
+					$$LG:EMAIL pcase$$ : <a href="/$$AGS:IDPUBLICATION$$/agence,contact.htm" title="">$$COMPTE_AGENCES:EMAIL$$</a>
+				</p>
+			$$LOOP$$
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+				$('#liste-bloc-agence').cycle();
+		});
+	</script>
+	$$BFIN$$
+$$END$$
