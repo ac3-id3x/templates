@@ -1,0 +1,149 @@
+<!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+<script src='$$_$$scripts/jquery.viewportchecker.min.js'></script>
+<script src='$$_$$scripts/featherlight.js'></script>
+$$IF=:RESULTATS:IDT$$
+<script type="text/javascript">
+	 calculMensualite = function(taux,prix,nmensualite,dureeemprunt,idAnnonce){
+		  prix = prix.replace(/\s/g,"");
+		  prix = parseFloat(prix);
+		  montantpret =  Math.floor(prix/1.2 * 100) / 100;
+		  mensualite = montantpret*(taux/100)/(1-Math.pow((1+taux/100/12),(-nmensualite)))/12;
+		  mensualite = Math.floor(mensualite * 100) / 100;
+		  $('.mensualite-'+idAnnonce).html(mensualite);
+	 };
+</script>
+$$END$$
+
+<script type="text/javascript">
+	 $(document).ready(function() {
+
+		  
+
+
+		  jQuery(".animate-top").addClass("anim-hide").viewportChecker({
+				classToAdd: "anim-show animated fadeInUp",
+				offset: 150
+		  });
+
+		  jQuery(".animate-left").addClass("anim-hide").viewportChecker({
+				classToAdd: "anim-show animated fadeInLeft",
+				offset: 150
+		  });
+
+		  jQuery(".animate-right").addClass("anim-hide").viewportChecker({
+				classToAdd: "anim-show animated fadeInRight",
+				offset: 150
+		  });
+
+		  jQuery(".animate-bounce").addClass("anim-hide").viewportChecker({
+				classToAdd: "anim-show animated bounceIn",
+				offset: 150
+		  });
+
+
+		 
+		  $('.anchor-link').click(function(){
+				var the_id = $(this).attr("href");
+				$('html, body').animate({
+					 scrollTop:$(the_id).offset().top
+				}, 'slow');
+				return false;
+		  });
+
+		 
+		  /*
+		  $('.toggle-sub').click(function() {
+				var sub_id = $(this).attr('data-sub');
+				var tmp = $(this).hasClass('active');
+				$('.toggle-sub').removeClass('active');
+				$('.menu-sub').removeClass('active');
+				if(tmp){
+					 $(this).removeClass('active');
+					 $("#"+sub_id).removeClass('active');
+				}else{
+					 $(this).addClass('active');
+					 $("#"+sub_id).addClass('active');
+				}
+		  })
+		  */
+
+		 
+		  $(".carousel-blog").owlCarousel({
+				items: 1,
+				loop: false,
+				autoplay: true,
+				autoplayTimeout: 10000,
+				autoplayHoverPause: true
+		  });
+
+		 
+		  $(".carousel-module").owlCarousel({
+				items: 1,
+				loop: false,
+				autoplay: true,
+				autoplayTimeout: 10000,
+				autoplayHoverPause: true
+		  });
+
+		 
+		  $(".carousel-annonces").owlCarousel({
+				responsive:{
+					 0:{
+						  items:1
+					 },
+					 361:{
+						  items:2
+					 },
+					 768:{
+						  items:3
+					 },
+					 1024:{
+						  items:4
+					 }
+				},
+				margin: 30,
+				loop: true,
+				autoplay: true,
+				autoplayTimeout: 8000,
+				autoplayHoverPause: true
+		  });
+		 
+		  $('.annonces-tabs a').click(function() {
+				var tab_id = $(this).attr('data-tab');
+				$('.annonces-tabs a').removeClass('active');
+				$('.carousel-annonces').removeClass('active');
+				$(this).addClass('active');
+				$("#"+tab_id).addClass('active');
+		  })
+
+		 
+		  $(".carousel-ekomi").owlCarousel({
+				items: 1,
+				loop: false,
+				autoplay: true,
+				autoplayTimeout: 8000,
+				nav: true,
+				navText: ["<img src='images/ekomi-arrow-left.png'>", "<img src='images/ekomi-arrow-right.png'>"],
+				dots: false
+		  });
+
+		 
+		  $$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+		  $('.btn-toggle-refine').click(function(){
+				$(this).toggleClass("open");
+				$('.rech-refine').slideToggle();
+				return false;
+		  });
+		  $$END$$
+
+
+	 });
+</script>
+
+<!-- eKomiLoader START, only needed once per page -->
+<script type="text/javascript">
+
+</script>
+<!-- eKomiLoader END, only needed once per page -->
+
+
