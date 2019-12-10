@@ -1,0 +1,47 @@
+<h1 itemprop="name" class="margin-top-10">
+    $$IF!:1:HIDE_TRANSACTION$$
+    $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+    $$IF:ANNDETAIL:SI_LIBRE$$
+    $$LG:VIAGERLIBRE2 pcase$$
+    $$END$$
+    $$IF0:ANNDETAIL:SI_LIBRE$$
+    $$LG:VIAGEROCCUPE2 pcase$$
+    $$END$$
+    $$END$$
+    $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+    $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+    $$END$$
+    $$END$$
+    $$IF!:1:HIDE_TYPEBIEN$$
+    $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+    $$END$$
+    $$IF!:1:HIDE_SOUSTYPEBIEN$$
+    $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+    - $$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+    $$END$$
+    $$END$$
+    $$IF=:1:SHOW_LIBELLE$$ $$ANNDETAIL:LIBELLE$$ $$END$$
+    $$IF!:1:HIDE_VILLE$$
+    $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+    $$END$$
+</h1>
+<div>
+    $$IF!:1:HIDEQUARTIER$$
+    $$IF:ANNDETAIL:IDQUARTIER$$<span class="quartier-annonce-detail">$$LG:QUARTIER pcase$$ : <a href="#POI" class="lien-poi" title="$$LG:DECOUVRIR pcase$$ $$ANNDETAIL:IDQUARTIER getquartier$$">$$ANNDETAIL:IDQUARTIER getquartier$$</a></span>$$END:ANNDETAIL:IDQUARTIER$$
+    $$END$$
+    $$IF:ANNDETAIL:PROX$$<span> $$IF:ANNDETAIL:IDQUARTIER$$$$IF!:1:HIDEQUARTIER$$<span class="quartier-annonce-detail">-</span>$$END$$$$END$$ <!--#include virtual="/detail/incl_prox.htm" --></span>$$END:ANNDETAIL:PROX$$$$IF:ANNDETAIL:DT_DISPO$$<p class="dt-dispo">$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</p>$$END$$</div>
+
+<p><a href="http://www.lowtaux.fr/simulation-pret-immobilier/calcul-montant-mensualite/" target="_blank" class="annonces-taux smaller italic"><i class="icon-v5-arrow-right-5"></i>&nbsp;
+    J'achète avec Lowtaux à partir de
+    $$A:PRIX=@@ANNDETAIL:PRIX replace , .@@$$
+    <script>
+        var taux = "$$TAUX replace &nbsp; ¤ $$";
+        var prix = "$$PRIX replace &nbsp; ¤ $$";
+        prix = prix.replace(/\s/g,"");
+        prix = parseFloat(prix);
+        resultat=prix*taux;
+        resultat=Math.floor(resultat * 100) / 100;
+        document.write(resultat);
+    </script>
+    €/mois
+    </a></p>

@@ -1,0 +1,107 @@
+$$INIT:IDT=CONTACT$$
+$$INIT:CSS_AGENCE=1$$
+$$A:JS_AGENCE=1$$
+
+$$IF=:INVEST:FORM:F$$
+$$A:UNIVERS=INVESTIR$$
+$$END$$
+$$IF=:VENDRE:FORM:F$$
+$$A:UNIVERS=VENDRE$$
+$$END$$
+$$IF=:LOCATIONVACANCES:FORM:F$$
+$$A:UNIVERS=LOCATIONVACANCES$$
+$$END$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid">
+    <div class="span3"></div>
+    <div class="span6">
+        <div class="row-fluid">
+            <div class="span12">
+                $$IF=:INVEST:FORM:F$$
+                <h1>AJP $$LG:INVESTISSEMENT2$$</h1>
+                <hr class="margin-bottom-10">
+                <p class="big">Investir et défiscaliser</p>
+                <p>Vous souhaitez défiscaliser ? Loi Pinel et autres dispositifs</p><br>
+                $$END$$
+                $$IF=:VENDRE:FORM:F$$
+                <h1>$$LG:VENDREBIEN pcase$$</h1>
+                <hr class="margin-bottom-10">
+                $$END$$
+                $$IF=:RAPPEL:FORM:F$$
+                <h1>$$LG:ETRERAPPEL pcase$$</h1>
+                <hr class="margin-bottom-10">
+                $$END$$
+                $$IF=:LOCATIONVACANCES:FORM:F$$
+                <h1>$$IF=:FR:LANGUE$$Locations vacances$$END$$$$IF!:FR:LANGUE$$Holiday rentals$$END$$</h1>
+                <hr class="margin-bottom-10">
+                $$END$$
+                $$IF!:INVEST$VENDRE$LOCATIONVACANCES$RAPPEL:FORM:F$$
+                $$IF!:1:H1CONTACTHIDDEN$$
+                <h1>$$LG:ENVOYMES pcase$$</h1>
+                <hr class="margin-bottom-10">
+                $$END$$
+                $$END$$
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 margin-bottom-10">
+
+
+                $$IF:ERRE$$
+                <span class="h2-like">$$LG:ERREUR$$</span>
+                <p class="small">$$ERRE$$</p>
+                $$END$$
+                <form method="post" action="/immo,contact_envoi.htm?f=$$FORM:F$$">
+                    <!--#include virtual="contact/incl_honeypot.htm" -->
+                    <input type="hidden" name="u" value="ID3:FORMMAIL" />
+                    <input type="hidden" name="page_ok" value="/immo,contact_envoi.htm" />
+                    <input type="hidden" name="page_err" value="/immo,contact.htm" />
+                    $$REM$$<!--<input type="hidden" name="page_html" value="immo,contact_email.htm" />-->$$END$$
+                    <input type="hidden" name="cfg_form" value="contact" />
+                    <input type="hidden" name="cfg_emails" value="contact" />
+                    <input type="hidden" name="subject" value="Une demande $$FORMUNIVERS$$ depuis le site !"/>
+                    <input type="hidden" name="email_to" value="production@nexi.fr"/>
+                    <input type="hidden" name="source" value="$$REP:SRV lcase$$" />
+                    <input type="hidden" name="idPublication" value="337385" />
+                    <input type="hidden" value="$$UNIVERS$$" name="univers">
+
+
+                    $$IF0:RAPPEL:FORM:F$$
+                    <input type="hidden" value="non communiqué" name="tel_from">
+                    $$END$$
+
+                    <div class="control-group">
+                        <label>$$LG:VOTRENOM pcase$$ / $$LG:VOTREPRENOM pcase$$ *</label>
+                        <input type="text" class="center" name="nom_from">
+                    </div>
+                    <div class="control-group">
+                        <label>$$LG:VILLE pcase$$</label>
+                        <input type="text" class="center" name="ville_from">
+                    </div>
+                    $$IF=:RAPPEL:FORM:F$$
+                    <div class="control-group">
+                        <label>$$LG:TEL pcase$$ *</label>
+                        <input type="text" class="center" name="tel_from">
+                    </div>
+                    $$END$$
+                    <div class="control-group">
+                        <label>$$LG:VOTREMAIL pcase$$ *</label>
+                        <input type="text" class="center" name="email_from">
+                    </div>
+                    <div class="control-group">
+                        <label>$$LG:MESSAGE pcase$$ *</label>
+                        <textarea name="message" class="center" rows="5"></textarea>
+                    </div>
+                    <p class="smaller italic">* champs obligatoires</p>
+
+                    <input type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block" value="$$IF=:RAPPEL:FORM:F$$$$LG:ETRERAPPEL pcase$$$$END$$$$IF!:RAPPEL:FORM:F$$$$LG:ENVOYMES pcase$$$$END$$" />
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
