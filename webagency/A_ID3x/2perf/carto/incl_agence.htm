@@ -1,0 +1,45 @@
+$$A:CPVILLEAGENCE= @@CV:CP@@ @@CV:VILLE@@$$
+$$A:ADRAGENCE= @@CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+	<div class="row-fluid $$IF=:FR:LANGUE$$margin-top-10$$END$$ relative" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+		<div class="span12 relative pagination-centered">
+			$$IF!:IMMOBILIERE:PAGE:WAG_STYLE_AGENCE$$
+				$$IF!:PUDAGENCE$PUDANNONCES$PUDTYPBIEN$PUDESTIMATION$PUDGESTLOC$PUDIMMOBILIER$PUDLOCAVAC$PUDNEUF$PUDPRESTIGE:IDT$$
+				<div class="z100 hidden-phone typo-black bg-white absolute bottom left padding-10 width-100-pourcent box-shadow-bottom agence-info-adresse">
+					<div class="row-fluid">
+						<div class="span8 hidden-phone pagination-left">
+						<span class="margin-right-10"><img alt="$$LG:ADRESSE pcase$$ $$CV:NOM$$" src="/z/webagency/slagence_X_V5/images/carto/pinAgence_$$PINCARTO$$.png"></span><span class="h2-like">$$CV:NOM$$</span>, $$IF!:CPVILLEAGENCE:ADRAGENCE$$<span itemprop="streetaddress">$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span> $$END$$<span itemprop="addressLocality">$$CV:VILLE$$</span> <span itemprop="postalCode">$$CV:CP$$</span>
+						</div>
+						<div class="span4 pagination-centered">
+							<a href="http://www.bing.com/maps/default.aspx?rtp=~adr.$$CV:ADRESSE$$&lvl=16" target="_blank" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ margin-top-8">$$LG:VENIRCHEZNOUS pcase$$</a>
+						</div>
+					</div>
+				</div>
+				<a href="#geo-map-agence-demut" class="hidden-desktop hidden-tablet $$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-nous-rencontrer">$$LG:VENIRCHEZNOUS pcase$$</a>
+				$$END$$		
+				<div id="geo-map-agence-demut" class="height-250 relative width-100-percent hidden-phone"></div>
+				<script type="text/javascript">
+					id3xContent.addMap({
+						container: {id: 'geo-map-agence-demut'},
+						mapData: [{
+							mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}}, popup: true },
+							filters: [ {action: 'single', key: 'idPublication', value: '$$CV:IDPUBLICATION$$'} ]
+						}],
+						options: { listing: true }
+					});
+				</script>
+			$$END$$
+			$$IF=:IMMOBILIERE:PAGE:WAG_STYLE_AGENCE$$
+				<div id="geo-map-agence-demut" class="height-350 relative width-100-percent hidden-phone border-solid-block-1 pagination-left"></div>
+				<script type="text/javascript">
+					id3xContent.addMap({
+						container: {id: 'geo-map-agence-demut'},
+						mapData: [{
+							mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}}, popup: true },
+							filters: [ {action: 'single', key: 'idPublication', value: '$$CV:IDPUBLICATION$$'} ]
+						}],
+						options: { listing: true }
+					});
+				</script>
+			$$END$$
+		</div>
+	</div>
