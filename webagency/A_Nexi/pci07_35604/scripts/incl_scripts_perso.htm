@@ -1,0 +1,51 @@
+
+<link rel='stylesheet' href='/z/webagency/slagence_X_V5/sources/css/colorbox.css'>
+<script src="$$~$$scripts/libs/jquery.colorbox.js"></script>
+<script type="text/javascript">
+	function lireCookie(nom) {
+		// Ajoute le signe égale virgule au nom
+		        // pour la recherche
+		var nom2 = nom + "=";
+		        // Array contenant tous les cookies
+		var arrCookies = document.cookie.split(';');
+		        // Cherche l'array pour le cookie en question
+		for(var i=0;i < arrCookies.length;i++) {
+			var a = arrCookies[i];
+			// Si c'est un espace, enlever
+            while (a.charAt(0)==' ') {
+              a = a.substring(1,a.length);
+            }
+			if (a.indexOf(nom2) == 0) {
+                return a.substring(nom2.length,a.length);
+            }
+		}
+		        // Aucun cookie trouvé
+		return null;
+	}
+
+    $(document).on("click","#close-rgpd",function(){
+        $.colorbox.close();        
+	    document.cookie = 'popup=1; expires=Thu, 2 Aug 2030 20:47:11 UTC; path=/'
+    });
+
+
+
+    $(document).ready(function() {
+    	var arrCookies = lireCookie('popup');
+    	if( arrCookies != 1 ) {
+	        $(".cboxElement").colorbox({
+	            closeButton: false,
+                overlayClose: false,
+                width: '80%'
+	        });
+	        $(".cboxElement").eq(0).trigger('click');
+	    }
+    });
+</script>
+<a class="cboxElement hidden" href="immo,mentions.htm"></a>
+
+$$IF=:INDEX:IDT$$
+<script>
+	$('#Mini_Ref > div').removeClass('hidden-phone');
+</script>
+$$END$$
