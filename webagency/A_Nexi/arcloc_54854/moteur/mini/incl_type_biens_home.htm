@@ -1,0 +1,24 @@
+<!--#include virtual="header/params_global.htm" -->
+$$B:IMMOBW:TYPESBIENS:QRY:IDTT:QRY:LANG:ALIAS:LISTETYPEBIENS$$
+$$BIF:LISTETYPEBIENS$$
+<div class="control-group$$IF=:INLINE:FORM:TYPEMOTEUR$$ margin-bottom-0$$END$$">
+    <select id="idtypebien" name="idtypebien" class="center$$IF=:1:MINIBIENS_MULTIPLES$$ multiselect$$END$$"$$IF=:1:MINIBIENS_MULTIPLES$$ multiple="multiple" data-placeholder="$$LG:TYPEDEBIEN pcase$$"$$END$$ onchange="$$IF=:1:MINISOUSTYPEBIENS_AFFICHAGE$$javascript:ajaxGet(this.id,'$$FORM:LANG$$','Mini_SousTypeBiens','sous_type_bien','$$FORM:TYPEMOTEUR$$');$$END$$">
+        $$IF!:1:MINIBIENS_MULTIPLES$$
+            $$IF=:1:FORM:IDTT$$
+                <option value="">$$LG:TYPEDEBIEN pcase$$ à louer</option>
+            $$END$$
+            $$IF=:2:FORM:IDTT$$
+                <option value="">$$LG:TYPEDEBIEN pcase$$ à acheter</option>
+            $$END$$
+        $$END$$
+        $$DO$$
+        $$IF=:2:FORM:IDTT$$
+            $$IF):MINI*IDTBCACHE:LISTETYPEBIENS:IDTYPEBIEN$$<option value="$$LISTETYPEBIENS:IDTYPEBIEN$$" id="idtb_$$LISTETYPEBIENS:I$$"$$IF=:FORM_IDTYPEBIEN:LISTETYPEBIENS:IDTYPEBIEN$$ selected="selected"$$END$$>$$LISTETYPEBIENS:DEF_LIBELLE$$ $$IF:1:MINIMOTEUR_NBANNVISIBLE$$($$LISTETYPEBIENS:NBANN$$)$$END$$</option>$$END$$
+        $$END$$
+        $$IF!:2:FORM:IDTT$$
+            $$IF):MINI*IDTBCACHE:LISTETYPEBIENS:IDTYPEBIEN$$<option value="$$LISTETYPEBIENS:IDTYPEBIEN$$" id="idtb_$$LISTETYPEBIENS:I$$"$$IF=:FORM_IDTYPEBIEN:LISTETYPEBIENS:IDTYPEBIEN$$ selected="selected"$$END$$>$$LISTETYPEBIENS:DEF_LIBELLE$$ $$IF:1:MINIMOTEUR_NBANNVISIBLE$$($$LISTETYPEBIENS:NBANN$$)$$END$$</option>$$END$$
+        $$END$$
+        $$LOOP$$
+    </select>
+</div>
+$$BFIN$$

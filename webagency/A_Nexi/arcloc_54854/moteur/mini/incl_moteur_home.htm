@@ -1,0 +1,106 @@
+$$SET:JS_MINI_MOTEUR=1$$
+$$SET:JS_SUGGEST=1$$
+
+
+<form class="mini-moteur moteurhome" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+	<input type="hidden" name="idqfix" value="1">
+	<!--#include virtual="moteur/incl_input_langue.htm" -->
+    <!--#include virtual="moteur/mini/incl_input_hidden.htm" -->
+    <input type="hidden" id="noResults" value="$$LG:PASDERESULTATS pcase$$">
+    <input type="hidden" id="noEnoughChar" value="$$LG:SAISIR2CARACTERES pcase$$">
+    <input type="hidden" name="idq" id="idqInput" value="$$IF:FORM:IDQ$$$$FORM:IDQ$$$$END$$">
+    <input type="hidden" name="div" id="divInput" value="$$IF:FORM:DIV$$$$FORM:DIV$$$$END$$">
+    <input type="hidden" name="idpays" id="idpaysInput" value="$$IF:FORM:IDPAYS$$$$FORM:IDPAYS$$$$END$$">
+    <input type="hidden" name="cp" id="cpInput" value="$$IF:FORM:CP$$$$FORM:CP$$$$END$$">
+    <input type="hidden" name="ci" id="ciInput" value="$$IF:FORM:CI$$$$FORM:CI$$$$END$$">
+    <input type="hidden" id="moteurUnique" value="1">
+    <input type="hidden" id="showCp" value="0">
+    <input type="hidden" id="moteurCarte" value="0">
+
+    <input type="hidden" name="idtt" id="idtt" value="2">
+
+    <div class="moteurhome-tabs">
+        <a href="javascript:void(0);" class="moteurhome-tab moteurhome-tab-idtt is-active" data-idtt="2">
+            <i class="arcloc-icon-acheter"></i>
+            $$LG:ACHETER$$
+        </a>
+        <a href="javascript:void(0);" class="moteurhome-tab moteurhome-tab-idtt" data-idtt="1">
+            <i class="arcloc-icon-louer"></i>
+            $$LG:LOUER$$
+        </a>
+        <a href="#anchor-estimation" class="moteurhome-tab">
+            <i class="arcloc-icon-estimer"></i>
+            $$LG:ESTIMER$$
+        </a>
+    </div>
+
+
+    <div class="moteurhome-body">
+
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="Mini_Biens" class="Mini_Biens moteurhome-field">
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens_home','$$TYPEMOTEUR$$','libre'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="span6">
+                <div id="Mini_Villes" class="moteurhome-field">
+                    <div class="display-none layer absolute typo-black right close-liste margin-top-12 margin-right-20 z150">
+                        <div class="bg-white"><i class="general typoicon-remove opacity-3 small cursor-pointer"></i></div>
+                    </div>
+                    <input type="text" name="saisie" class="center saisie-suggest" id="" data-value="$$LG:DESIRHABITER pcase$$" value="$$LG:DESIRHABITER pcase$$" autocomplete="off" spellcheck="false">
+                    <div class="message-suggest-liste z125 height-200 overflow-scroll bg-white absolute center display-none"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="moteurhome-more">
+            <div class="row-fluid">
+                <div class="span6">
+                    <div id="Mini_Budget" class="Mini_Budget moteurhome-field">
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget_home','$$TYPEMOTEUR$$','libre');
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div id="Mini_Surface" class="Mini_Surface moteurhome-field">
+                        <input type="text" id="MiniInputSurfaceMin" class="center moteur-input-change" name="surfacemin" value="$$IF0:FORM:SURFACEMIN$$$$LG:V5SURFACE pcase$$ ($$LG:MINI pcase$$)$$END$$$$IF:FORM:SURFACEMIN$$$$FORM:SURFACEMIN$$$$END$$" data-placeholder="$$LG:V5SURFACE pcase$$ ($$LG:MINI pcase$$)" onFocus="javascript:this.value=''">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <div class="row-fluid">
+            <div class="span6">
+                <div class="moteurhome-checkbox">
+                    <label for="rayon">$$LG:ETENDRERAYON pcase$$ 
+                        <select name="rayon" id="rayon">
+                            <option value="0">0 km</option>
+                            <option value="5">5 kms</option>
+                            <option value="10">10 kms</option>
+                            <option value="20">20 kms</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="span6">
+                <button type="submit" class="btn btn-large btn-block btn-action bouton-rechercher-moteur" data-loading-text="<i class='arcloc-icon-load'></i> $$LG:LOADING pcase$$">
+                    <i class="arcloc-icon-search"></i>
+                    $$LG:RECHERCHER pcase$$
+                </button>
+            </div>
+        </div>
+
+
+        <a href="javascript:void(0);" class="moteurhome-toggle">$$LG:PLUSCRIT pcase$$</a>
+
+    </div>
+</form>
