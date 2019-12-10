@@ -1,0 +1,348 @@
+$$REM$$
+====================================================================
+
+//// <summary> Appelé par :Pud page unique de destination à l'usage du référencement</summary>
+//// <remarks>
+//// <para> la page pud_agence ou pud_immobilier sont appelées par la page suivante : slagence_X_V2/pud.htm?kw=agenceimmobiliere+Geo : </para>
+//// <para>Utilise le style css : slagence_X_V2/styles,pud.css et /styles,annonces_pud.css</para>
+//// <para>Utilise la liste des dernières d'annonces slagence_X_V2/annonces/incl_annonces_pud_immo.htm</para>
+//// <para>Utilise les coordonnées agences défilantes  slagence_X_V2/includes/incl_coord_agence_pud.htm</para>
+//// <para>Utilise les formulaires  slagence_X_V2includes/incl_forms_pud.htm</para>
+//// </remarks>
+//// <update date="2008-08-13" author="christophe.ledoux">Création v1</update>
+//// <update date="2008-08-13" author="christophe.ledoux">Validation HTML/CSS</update>
+//// <update date="2008-08-13" author="Ravi Horner,damien.robert">Validation oK</update>
+
+
+====================================================================
+$$END$$
+<!--#include virtual="/incl_choix_wag_style.htm" -->
+<div id="Annonces01">
+	$$IF=:PUDAGENCE:PAGE:IDT$$
+	<h1 style="color:#fff; font-size:14px;" >Voici notre s&eacute;lection d'annonces : </h1>
+	$$END$$
+
+	$$B:IMMOBW:ANN:ALIAS:ANNVENTES:2:FR:::idtypebien=2&pxmin=30000&pxmax=125000&&nb_chambres=1,2,3,4&surf_terrainmin=200::d_dt_crea:~LIMIT:VAL:NBANNVENTES$$
+	$$BIF:ANNVENTES$$
+	<!-- ventes immobilieres -->
+	$$DO$$
+$$IF0:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNVENTES:IDPUBLICATION@@/@@ANNVENTES:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	<div class="ann_ctn idtt$$ANNVENTES:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$ANNVENTES:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ </p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">
+			<em>
+				<span>$$ANNVENTES:DESCRIPTIF left 105$$ ...</span>
+			</em>
+			$$IF:ANNVENTES:PHOTOURL0$$<img class="thumb" src="$$ANNVENTES:PHOTOURL0$$" width="168" height="100" alt="$$ANNVENTES:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:ANNVENTES:PHOTOURL0$$
+		</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNVENTES:LIBELLE$$</a>
+			<span>$$ANNVENTES:VILLE$$ ($$ANNVENTES:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNVENTES:PRIX$$ $$ANNVENTES:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNVENTES:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNVENTES:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both;" />
+
+	$$BFIN$$	
+	
+	  $$BIF0:ANNVENTES$$	
+			     <h2> Pas d'annonce aujourd'hui &agrave; $$FORM:CI codeinsee2ville field 1$$<br />
+			        <a href="/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;prox=5&amp;ci=$$FORM:CI field 1$$" style="font-size:18px;">> Voir les annonces dans un rayon de 5 km</a>
+			      
+			      </h2>
+	 $$BFIN$$
+	 
+	$$B:IMMOBW:ANN:ALIAS:ANNLOCS:1:FR:::::d_dt_maj:~LIMIT:VAL:NBANNLOCS$$	
+	$$BIF:ANNLOCS$$
+	<!-- locations immobilieres -->
+		<br style="clear:both" />
+   <h2>$$IF=:PUDESTIMATION:PAGE:IDT$$Derniers biens immobiliers mis en $$END$$Locations sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$IF:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNLOCS:IDPUBLICATION@@/@@ANNLOCS:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	$$IF0:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNLOCS:IDPUBLICATION@@/@@ANNLOCS:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	<div class="ann_ctn idtt$$ANNLOCS:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$ANNLOCS:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLOCS:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLOCS:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$ANNLOCS:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNLOCS:PHOTOURL0$$<img class="thumb" src="$$ANNLOCS:PHOTOURL0$$" width="168" height="100" alt="$$ANNLOCS:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLOCS:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:ANNLOCS:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLOCS:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNLOCS:LIBELLE$$</a>
+			<span>$$ANNLOCS:VILLE$$ ($$ANNLOCS:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLOCS:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNLOCS:PRIX$$ $$ANNLOCS:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNLOCS:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNLOCS:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	
+	$$LOOP$$
+	<br style="clear:both" />
+		<p class="PudLiens" ><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de location sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de locations à $$FORM:CI codeinsee2ville field 1$$</a></p><p  class="PudLiensRss" style="text-align:left"><a link rel="alternate" type="application/rss+xml" href="$$URLBASE$$/rss2.xml?idtt=1&amp;ci=$$FORM:CI field 1$$" target="_blank">Flux RSS&nbsp;</a></p>
+	$$BFIN$$	
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNNEUF:9:FR:::::d_dt_maj:~LIMIT:VAL:NBANNNEUF$$	
+	$$BIF:ANNNEUF$$
+	<!-- programme neuf -->
+	<br style="clear:both" />
+	<h2>$$IF=:PUDESTIMATION:PAGE:IDT$$Derniers biens immobiliers mis en $$END$$Programmes neuf sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$IF:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNNEUF:IDPUBLICATION@@/@@ANNNEUF:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	$$IF0:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNNEUF:IDPUBLICATION@@/@@ANNNEUF:IDANNONCE@@/plus_annonce_full.htm$$$$END$$	
+	<div class="ann_ctn idtt$$ANNNEUF:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$ANNNEUF:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNNEUF:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNNEUF:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$ANNNEUF:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNNEUF:PHOTOURL0$$<img class="thumb" src="$$ANNNEUF:PHOTOURL0$$" width="168" height="100" alt="$$ANNNEUF:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNNEUF:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:ANNNEUF:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNNEUF:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNNEUF:LIBELLE$$</a>
+			<span>$$ANNNEUF:VILLE$$ ($$ANNNEUF:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNNEUF:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNNEUF:PRIX$$ $$ANNNEUF:PRIX_UNITE htmlencode$$</a>
+				T&eacute;l:$$ANNNEUF:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNNEUF:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens" ><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de programme neuf sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de neuf à $$FORM:CI codeinsee2ville field 1$$</a></p><p  class="PudLiensRss" style="text-align:left"><a link rel="alternate" type="application/rss+xml" href="$$URLBASE$$/rss2.xml?idtt=9&amp;ci=$$FORM:CI field 1$$" target="_blank">Flux RSS&nbsp;</a></p>
+	$$BFIN$$
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVIAGER:5:FR:::::d_dt_maj:~LIMIT:VAL:NBANNVIAGER$$	
+	$$BIF:ANNVIAGER$$
+	
+	<!-- viager -->
+	<br style="clear:both" />
+	<h2>$$IF=:PUDESTIMATION:PAGE:IDT$$Derniers biens immobiliers mis en $$END$$Viager sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$IF:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNVIAGER:IDPUBLICATION@@/@@ANNVIAGER:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	$$IF0:PAGE:WAGSTYLE$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNVIAGER:IDPUBLICATION@@/@@ANNVIAGER:IDANNONCE@@/plus_annonce_full.htm$$$$END$$	
+	<div class="ann_ctn idtt$$ANNVIAGER:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$ANNVIAGER:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVIAGER:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVIAGER:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$ANNVIAGER:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNVIAGER:PHOTOURL0$$<img class="thumb" src="$$ANNVIAGER:PHOTOURL0$$" width="168" height="100" alt="$$ANNVIAGER:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVIAGER:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:ANNVIAGER:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVIAGER:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNVIAGER:LIBELLE$$</a>
+			<span>$$ANNVIAGER:VILLE$$ ($$ANNVIAGER:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVIAGER:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$ANNVIAGER:PRIX$$ $$ANNVIAGER:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNVIAGER:TELEPHONE$$
+		</p>		
+	
+	</div>
+
+	
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de viager sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de viager à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+
+<!-- /////////////////////UNIQUEMENT POUR IMMOBILIER, AGENCE IMMOBILIERE////////////////////////////////////////////// -->	
+$$IF=:PUDAGENCE$PUDIMMOBILIER:PAGE:IDT$$
+
+<!-- /////////////////////LOCATION TEMPORAIRE////////////////////////////////////////////// -->
+
+
+	$$B:IMMOBW:ANN:ALIAS:LOCTEMPO:3:FR:::::d_dt_maj:~LIMIT:VAL:NBLOCTEMPO$$	
+	$$BIF:LOCTEMPO$$
+	
+	<br style="clear:both" />
+	<h2>Location temporaire sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@LOCTEMPO:IDPUBLICATION@@/@@LOCTEMPO:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$LOCTEMPO:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$LOCTEMPO:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCTEMPO:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCTEMPO:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$LOCTEMPO:DESCRIPTIF left 105$$ ...</span></em>$$IF:LOCTEMPO:PHOTOURL0$$<img class="thumb" src="$$LOCTEMPO:PHOTOURL0$$" width="168" height="100" alt="$$LOCTEMPO:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCTEMPO:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:LOCTEMPO:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCTEMPO:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCTEMPO:LIBELLE$$</a>
+			<span>$$LOCTEMPO:VILLE$$ ($$LOCTEMPO:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCTEMPO:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCTEMPO:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCTEMPO:PRIX$$ $$LOCTEMPO:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$LOCTEMPO:TELEPHONE$$
+		</p>		
+	
+	</div>
+
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de location temporaire sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de location temporaire à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+
+
+<!-- /////////////////////LOCATION VACANCES////////////////////////////////////////////// -->
+
+
+	$$B:IMMOBW:ANN:ALIAS:LOCVACAN:4:FR:::::d_dt_maj:~LIMIT:VAL:NBLOCVACAN$$	
+	$$BIF:LOCVACAN$$
+	
+	<br style="clear:both" />
+	<h2>Location de vacances sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@LOCVACAN:IDPUBLICATION@@/@@LOCVACAN:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$LOCVACAN:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$LOCVACAN:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCVACAN:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCVACAN:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$LOCVACAN:DESCRIPTIF left 105$$ ...</span></em>$$IF:LOCVACAN:PHOTOURL0$$<img class="thumb" src="$$LOCVACAN:PHOTOURL0$$" width="168" height="100" alt="$$LOCVACAN:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCVACAN:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:LOCVACAN:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCVACAN:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCVACAN:LIBELLE$$</a>
+			<span>$$LOCTEMPO:VILLE$$ ($$LOCTEMPO:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCVACAN:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCVACAN:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCVACAN:PRIX$$ $$LOCVACAN:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$LOCVACAN:TELEPHONE$$
+		</p>		
+	
+	</div>
+
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de location de vacances sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de location de vacances à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+
+<!-- /////////////////////PRODUIT D'INVESTISSEMENT////////////////////////////////////////////// -->
+
+
+	$$B:IMMOBW:ANN:ALIAS:PRODINVEST:6:FR:::::d_dt_maj:~LIMIT:VAL:NBPRODINVEST$$	
+	$$BIF:PRODINVEST$$
+	
+	<br style="clear:both" />
+	<h2>Produit d'investissement sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@PRODINVEST:IDPUBLICATION@@/@@PRODINVEST:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$PRODINVEST:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$PRODINVEST:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$ $$PRODINVEST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$ $$PRODINVEST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$PRODINVEST:DESCRIPTIF left 105$$ ...</span></em>$$IF:PRODINVEST:PHOTOURL0$$<img class="thumb" src="$$PRODINVEST:PHOTOURL0$$" width="168" height="100" alt="$$PRODINVEST:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$ $$PRODINVEST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:PRODINVEST:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$ $$PRODINVEST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$PRODINVEST:LIBELLE$$</a>
+			<span>$$PRODINVEST:VILLE$$ ($$PRODINVEST:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$PRODINVEST:IDTYPETRANSACTION gettypetransaction pcase$$ $$PRODINVEST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$PRODINVEST:PRIX$$ $$PRODINVEST:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$PRODINVEST:TELEPHONE$$
+		</p>		
+	
+	</div>
+
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de produit d'invesstissement sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de produit d'invesstissement à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+	
+	
+	<!-- /////////////////////LOCATION PRESTIGE////////////////////////////////////////////// -->
+
+
+	$$B:IMMOBW:ANN:ALIAS:LOCPREST:7:FR:::::d_dt_maj:~LIMIT:VAL:NBLOCPREST$$	
+	$$BIF:LOCPREST$$
+	
+	<br style="clear:both" />
+	<h2>Location de prestige sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@LOCPREST:IDPUBLICATION@@/@@LOCPREST:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$LOCPREST:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$LOCPREST:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$LOCPREST:DESCRIPTIF left 105$$ ...</span></em>$$IF:LOCPREST:PHOTOURL0$$<img class="thumb" src="$$LOCPREST:PHOTOURL0$$" width="168" height="100" alt="$$LOCPREST:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:LOCPREST:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCPREST:LIBELLE$$</a>
+			<span>$$LOCPREST:VILLE$$ ($$LOCPREST:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCPREST:PRIX$$ $$LOCPREST:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$LOCPREST:TELEPHONE$$
+		</p>		
+	
+	</div>
+
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+		<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de location de prestige sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de location de prestige à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+	
+		<!-- /////////////////////VENTE PRESTIGE////////////////////////////////////////////// -->
+
+
+	$$B:IMMOBW:ANN:ALIAS:VENTEPREST:8:FR:::::d_dt_maj:~LIMIT:VAL:NBVENTEPREST$$	
+	$$BIF:VENTEPREST$$
+	<br style="clear:both" />
+	<h2>Vente de prestige sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@VENTEPREST:IDPUBLICATION@@/@@VENTEPREST:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$VENTEPREST:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$VENTEPREST:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENTEPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENTEPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$VENTEPREST:DESCRIPTIF left 105$$ ...</span></em>$$IF:VENTEPREST:PHOTOURL0$$<img class="thumb" src="$$VENTEPREST:PHOTOURL0$$" width="168" height="100" alt="$$VENTEPREST:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENTEPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:VENTEPREST:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENTEPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$VENTEPREST:LIBELLE$$</a>
+			<span>$$VENTEPREST:VILLE$$ ($$VENTEPREST:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$VENTEPREST:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENTEPREST:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$VENTEPREST:PRIX$$ $$VENTEPREST:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$VENTEPREST:TELEPHONE$$
+		</p>		
+	</div>	
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both" />
+	<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=8&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de vente de prestige sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de vente de prestige à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+	
+		
+<!-- ///////////////////////////////////////////////VENTE FOND DE COMMERCE //////////////////////////////////////-->	 
+	
+	
+	$$B:IMMOBW:ANN:ALIAS:VENFONDSCOM:10:FR:::::d_dt_maj:~LIMIT:VAL:NBVENFONDSCOM$$	
+	$$BIF:VENFONDSCOM$$
+	<br style="clear:both" />
+	<h2>Vente de fond de commerce sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@VENFONDSCOM:IDPUBLICATION@@/@@VENFONDSCOM:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$VENFONDSCOM:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$VENFONDSCOM:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$VENFONDSCOM:DESCRIPTIF left 105$$ ...</span></em>$$IF:VENFONDSCOM:PHOTOURL0$$<img class="thumb" src="$$VENFONDSCOM:PHOTOURL0$$" width="168" height="100" alt="$$VENFONDSCOM:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:VENFONDSCOM:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$VENFONDSCOM:LIBELLE$$</a>
+			<span>$$VENFONDSCOM:VILLE$$ ($$VENFONDSCOM:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$VENFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$VENFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$VENFONDSCOM:PRIX$$ $$VENFONDSCOM:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$VENFONDSCOM:TELEPHONE$$
+		</p>		
+	</div>	
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both" />
+	<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de Vente de fond de commerce sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de Vente de fond de commerce à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+		
+	<!-- ///////////////////////////////////////////////LOCATION FOND DE COMMERCE //////////////////////////////////////-->	 
+	
+	
+	$$B:IMMOBW:ANN:ALIAS:LOCFONDSCOM:11:FR:::::d_dt_maj:~LIMIT:VAL:NBLOCFONDSCOM$$	
+	$$BIF:LOCFONDSCOM$$
+	<br style="clear:both" />
+	<h2>Cession de bail sur $$FORM:CI codeinsee2ville field 1$$</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@LOCFONDSCOM:IDPUBLICATION@@/@@LOCFONDSCOM:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$
+	<div class="ann_ctn idtt$$LOCFONDSCOM:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$LOCFONDSCOM:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" /></div>
+		<p class="ann_transac">$$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$"><em><span>$$LOCFONDSCOM:DESCRIPTIF left 105$$ ...</span></em>$$IF:LOCFONDSCOM:PHOTOURL0$$<img class="thumb" src="$$LOCFONDSCOM:PHOTOURL0$$" width="168" height="100" alt="$$LOCFONDSCOM:DESCRIPTIF left 105$$ ..."  title="annonce immobiliere $$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$" />$$END:LOCFONDSCOM:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCFONDSCOM:LIBELLE$$</a>
+			<span>$$LOCFONDSCOM:VILLE$$ ($$LOCFONDSCOM:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$LOCFONDSCOM:IDTYPETRANSACTION gettypetransaction pcase$$ $$LOCFONDSCOM:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$">$$LOCFONDSCOM:PRIX$$ $$LOCFONDSCOM:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$LOCFONDSCOM:TELEPHONE$$
+		</p>		
+	</div>	
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both" />
+	<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI field 1$$&amp;lang=$$LANGUE$$" title="Toutes les dernieres annonces immobilieres de Cession de bail sur $$FORM:CI codeinsee2ville field 1$$">Voir toutes les annonces de Cession de bail à $$FORM:CI codeinsee2ville field 1$$</a></p>
+	$$BFIN$$
+	
+	
+$$END$$
+
+	<div class="clear"><!-- --></div>
+	
+</div>
+<!-- fin #Annonces01 -->
