@@ -1,0 +1,162 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+//// <update date="2010-01-18" author="laurence.moyer">reprise optis index et moteur ancien site - suppression des expressions</update>
+====================================================================
+$$END$$
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+<!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> 
+
+$$SET:PAGE:TITR=Vente d'appartement Neuf en France : Bayonne, Ile de France, Reims, Anglet, Bruges, Jarville la Malgrange  - COPRODIM$$
+$$SET:PAGE:DESCREF=L'agence immobiliere Coprodim vous propose des appartements neufs en vente dans toute la France : Bayonne, Reims, Bruges, Anglet, Jarville la Malgrange...$$
+$$SET:PAGE:KEYWORDS=Agence immobiliere Coprodim, vente appartement neuf anglet, bayonne, ile de france, bruges, reims, jarville la malgrange$$
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$IF=:INDEX:PAGE:IDT$$
+ $$A:PAGE:TITR=Vente d'appartements neufs en France - Agence immobiliere Coprodim$$
+ $$A:PAGE:DESCREF=Grand choix d'appartements neufs en vente sur toute la France avec l'agence immobiliere Coprodim : vente d'appartements neufs sur Bayonne, en Ile de France, Bruges, Reims, jarville, Anglet...$$
+ $$A:PAGE:KEYWORDS=vente appartement neuf anglet, vente appartement neuf bayonne, vente appartement neuf ile de france, vente appartement neuf bruges, vente appartement neuf reims, vente appartement neuf jarville la malgrange, agence immobiliere coprodim$$
+$$END$$
+
+$$IF=:MOTEUR,CLASSIC.HTM:REP:0$$
+ $$A:PAGE:TITR=Vente appartement neuf Ile de france, Bayonne et dans toutes les villes de France - COPRODIM$$
+ $$A:PAGE:DESCREF=Annonces immobilieres d'appartement neuf en vente dans toute la France (Jarville, Reims, Bayonne, Anglet, Bruges...)$$
+ $$A:PAGE:KEYWORDS=vente appartement neuf ile de france, anglet, bayonne, bruges, reims, jarville la malgrange, coprodim$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobili&egrave;re COPRODIM @@VILLE_AGENCE@@ - @@SRV@@$$
+$$A:PAGE:DESCREF=L'agence immobili&egrave;re Coprodim situee 49 avenue du General Michel Bizot 75012 Paris (Tel:0820209848) sp&eacute;cialiste de l'immobilier neuf dans toute la France (Bayonne, Bruges, Anglet, Reims, Jarville La Malgrange, Ile de France...)$$
+$$A:PAGE:KEYWORDS=Agence immobili&egrave;re Coprodim @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:PARTE:PAGE:IDT$$
+$$A:PAGE:TITR=Partenaire - coprodim.fr$$
+$$A:PAGE:DESCREF=Vous souhaitez devenir partenaires de Coprodm, specialiste des programmes neufs, appartement, maison, dans toute la France$$
+$$A:PAGE:KEYWORDS=Partenaire Coprodim$$
+$$END$$
+
+$$IF!:FR:LANGUE$$
+$$A:PAGE:TITR=Real Estate Coprodim$$
+$$A:PAGE:DESCREF=Coprodim Paris$$
+$$A:PAGE:KEYWORDS=Coprodim$$
+$$END$$
+
+$$IF=:DETAIL,BASIC.HTM:REP:0$$
+$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ - @@IMMOBW:ANNONCE:VILLE@@ (@@IMMOBW:ANNONCE:CP@@) - @@IMMOBW:ANNONCE:LIBELLE@@ - Coprodim @@IMMOBW:ANNONCE:VILLE@@$$
+$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:LIBELLE@@ (@@IMMOBW:ANNONCE:CP@@) - @@IMMOBW:ANNONCE:VILLE@@ @@IMMOBW:ANNONCE:PROX@@ - @@IMMOBW:ANNONCE:DESCRIPTIF htmlencode left 120@@$$
+$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:LIBELLE@@ - 
+@@IMMOBW:ANNONCE:VILLE@@$$
+$$END$$
+
+
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
