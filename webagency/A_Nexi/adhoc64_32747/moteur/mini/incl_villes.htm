@@ -1,0 +1,31 @@
+<!--#include virtual="header/params_global.htm" -->	
+$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+$$BIF:VILLESANNONCESALPHA$$
+<span class="miniBlocTitre">$$LG:VILLE pcase$$ :</span>
+<span class="miniBlocSelection">
+	<select multiple="multiple" data-placeholder="$$LG:CHOISIR pcase$$..." name="ci" class="miniForm" id="cpVilles" onchange="javascript:contentEmpty(this.id,'Mini_Quartiers|Mini_Rayon');ajaxGet('cpVilles','$$FORM:LANG$$','Mini_Quartiers','quartiers');$$IF=:1:MINI_RAYONCHECK$$javascript:ajaxGet('cpVilles','$$FORM:LANG$$','Mini_Rayon','rayon');$$END$$$$IF=:1:MINI_RAYONLISTE$$javascript:ajaxGet('cpVilles','$$FORM:LANG$$','Mini_Rayon','rayon');$$END$$">
+		$$DO$$
+			$$IF:VILLESANNONCESALPHA:CODEINSEE$$
+				<option value="$$VILLESANNONCESALPHA:CODEINSEE$$">$$VILLESANNONCESALPHA:VILLEAFF pcase$$ $$IF=:1:MINI_VILLES_CP$$($$VILLESANNONCESALPHA:CODEINSEE codeinsee2cp$$)$$END:MINI_VILLES_CP$$</option>
+			$$END:VILLESANNONCESALPHA:CODEINSEE$$
+		$$LOOP$$
+	</select>
+</span>
+$$BFIN$$
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+$("#cpVilles").dropdownchecklist({ textFormatFunction: function(options) {
+        var selectedOptions = options.filter(":selected");
+        var countOfSelected = selectedOptions.size();
+        var size = options.size();
+        switch(countOfSelected) {
+           case 0: return "<i>Aucune ville<i>";
+           case 1: return selectedOptions.text();
+           case options.size(): return "<b>Toutes les villes</b>";
+           default: return countOfSelected + " villes";
+        }
+    } });
+	});
+</script>
