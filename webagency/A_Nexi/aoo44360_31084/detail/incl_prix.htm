@@ -1,0 +1,38 @@
+$$REM$$====================================================================================
+//// <summary>Page detail annonce : prix annonce</summary>
+//// <remarks>
+//// <para>locations : conditionnement si case " charges comprises " cochée ou non dans selogerpro</para>
+//// <para>ventes : conditionnement pour afficher mention FAI qui est obligatoire</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+====================================================================================$$END$$
+
+$$IF0:ANNDETAIL:SI_PROMO$$
+
+			$$ANNDETAIL:PRIX formatnumber 0$$
+			<span class="unite">		
+				$$IF!:1:ANNDETAIL:IDTYPETRANSACTION$$
+				$$ANNDETAIL:PRIX_UNITE$$ $$IF:ANNDETAIL:PX_RENTE$$<span class="rente">($$LG:RENTE lcase$$ : $$ANNDETAIL:PX_RENTE$$ $$LG:EUROMOIS$$)</span>$$END$$
+				$$END$$
+					
+				$$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+					$$ANNDETAIL:PRIX_UNITE$$
+				$$END:1:ANNDETAIL:IDTYPETRANSACTION$$
+			</span>		 
+			<span class="periodeVac">$$ANNDETAIL:PRIX_PERIODEVAC$$</span>
+			$$IF=:2$8:ANNDETAIL:IDTYPETRANSACTION$$
+				<span class="fai">FAI</span>
+				<span class="sup1">&sup1;</span> 
+			$$END$$
+			$$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+				$$IF:ANNDETAIL:SI_LOYER_CC$$<span class="sup1"><!-- &sup1; --></span><!-- loyer charges comprises-->$$END$$
+				$$IF0:ANNDETAIL:SI_LOYER_CC$$<span class="sup1">&sup1;</span><!-- loyer + charges -->$$END$$
+			$$END$$
+
+
+$$END$$
+
+$$IF:ANNDETAIL:SI_PROMO$$
+	NC
+$$END$$
