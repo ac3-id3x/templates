@@ -1,0 +1,132 @@
+<!-- [ttl: 4h] -->
+££REM££====================================================================
+//// <summary>Sélection d'annonces affichée (souvent des cdc) sur l'index</summary>
+//// <remarks>
+//// <para>Paramétrage avec macros qui se trouvent dans incl_param.htm du site</para>
+//// <para>Paramétrages possible = fraicheur, défilant ou pas, type transac et nb annonces affichées</para>
+//// <para>Packs avantage = par défaut NOUVEAUTÉS. CDC, exclus et autres à vérifier si on a droit</para>
+//// <para>On ne démutualise pas ce fichier !</para>
+//// <para>La date de fraicheur du bien est affichée en commentaire: info utile pour chefs de projets</para>
+//// <para>On enlève ces valeurs de la qry, ça ne sert que pour le neuf : idtt= IMMOBW:ANN:~limit:IDTYPETRANSACTION IF:IMMOBW:ANN:~limit:IDANNONCEPARENT &amp;idap= IMMOBW:ANN:~limit:IDANNONCEPARENT END</para>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Reprise de x_v2 et adaptation pour x_v3</update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-07-08" author=christophe.ledoux">Updates</update>
+=====================================================================££END££
+££INIT:CSS_ANNONCES=1££
+££INIT:JS_ANNONCES=1££
+££B:IMMOBW:ANN:VAL:IDTTCC2:QRY:LANG:::VAL:TYPEANN2::d_dt_maj:~limit:VAL:MAXCC2:~NOSTAT:1:ALIAS:ANNLISTE2££
+££BIF:ANNLISTE2££
+
+££DO££
+££REM££<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->££END££
+££IF:PAGE:URLREWRITINGENABLED££
+	££IF:FORM:LANG££
+		££IF!:FR:FORM:LANG££
+			££A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@?lang=@@FORM:LANG@@££
+		££END££
+		££IF=:FR:FORM:LANG££
+			££A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@££
+		££END££
+	££END££
+	££IF0:FORM:LANG££
+		££A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@££
+	££END££
+££END££
+££IF0:PAGE:URLREWRITINGENABLED££
+	££A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE2:IDPUBLICATION@@/@@ANNLISTE2:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@££
+££END££
+££A:TITLE_SELECTION_INDEX=££
+££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+	££A:TITLE_SELECTION_INDEX=@@ANNLISTE2:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE2:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE2:AVILLE ncase@@££
+££END:WAGREF_IDDOSSIER_SITE££
+££REM££<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->££END££
+££REM££<!-- DEBUT CONSTRUCTION ANNONCE -->££END££
+	££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+	<div class="detailAnnoncesRef" id="annoncesBloc££ANNLISTE2:I££" class="item">
+	££END££
+	££IF0:PAGE:WAGREF_IDDOSSIER_SITE££
+	<div class="detailAnnonces" id="annoncesBloc££ANNLISTE2:I££" class="item">
+	££END££
+			<div class="blocContentEffet">
+				££IF:ANNLISTE2:SI_COUPDECOEUR££<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->££END££
+				££IF:ANNLISTE2:SI_EXCLUSIF££<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->££END££
+				££IF+:SELECTIONFRAICHEUR:ANNLISTE2:DT_CREA datediff now timespan days££<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->££END££
+				££IF:ANNLISTE2:SI_PROMO££<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->££END££
+				<div class="blocPhoto££IF0:ANNLISTE2:IDPHOTO££££IF=:FALSE:ANNLISTE2:SI_LOGO££ blocNoPhoto££END££££END££">
+					<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">
+					££IF:ANNLISTE2:IDPHOTO££
+						<img src="££ANNLISTE2:PHOTO_URL££" alt="££TITLE_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££" />
+					££END:ANNLISTE2:IDPHOTO££
+					££IF0:ANNLISTE2:IDPHOTO££
+						££IF=:TRUE:ANNLISTE2:SI_LOGO££
+						<div class="siLogo" style="background:url('££ANNLISTE2:URLLOGO££') 50% 50% no-repeat #fff;"></div>
+						££END:ANNLISTE2:SI_LOGO££
+					££END:ANNLISTE2:IDPHOTO££
+					</a>
+				</div>
+			</div>
+		££IF:ANNLISTE2:IDPHOTO££
+		<div class="blocNumPhotoBg"></div>
+		<div class="blocNumPhoto">
+			<span class="picto">
+				<img src="$$~$$images/selection/rech_picto_photo.png" />
+			</span>
+			<span class="libelle"><strong>££ANNLISTE2:NBPHOTOS££</strong> ££IF=:0$1:ANNLISTE2:NBPHOTOS££££LG:PHOT lcase££££END££££IF+:2:ANNLISTE2:NBPHOTOS££££LG:PHOTS lcase££££END££</span>
+			<div class="clear"></div>
+		</div>
+		££END££
+		<div class="blocTypeBien">
+			<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">
+			££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+				££ANNLISTE2:IDTYPETRANSACTION gettypetransaction pcase££ ££ANNLISTE2:IDTYPEBIEN gettypebien lcase££
+			££END:WAGREF_IDDOSSIER_SITE££
+			££IF0:PAGE:WAGREF_IDDOSSIER_SITE££
+					££ANNLISTE2:LIBELLE££
+				££END:WAGREF_IDDOSSIER_SITE££
+			</a>
+		</div>
+		<div class="blocVilleBien">
+			<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">££ANNLISTE2:AVILLE ncase££ <span>(££ANNLISTE2:ACP££)</span></a>
+		</div>
+		££IF:ANNLISTE2:SURFACE££
+			<div class="blocSurfaceBien">
+				££ANNLISTE2:SURFACE££ ££LG:M2 lcase££££IF=:EN:LANGUE££ (££ANNLISTE2:SURFACE exec XX*10.763910 formatnumber 0££ Sq Ft)££END:EN££
+				££LG:ENVIRON lcase££
+			</div>
+		££END:ANNLISTE2:SURFACE££
+		££IF:ANNLISTE2:NB_PIECES££
+			<div class="blocPiecesBien">
+				££ANNLISTE2:NB_PIECES££
+				££IF=:1:ANNLISTE2:NB_PIECES££££LG:PIECE lcase££££END££
+				££IF!:0$1:ANNLISTE2:NB_PIECES££££LG:PIECES2 lcase££££END££					
+				££IF:ANNLISTE2:NB_CHAMBRES££
+					(££ANNLISTE2:NB_CHAMBRES££ 
+					££IF=:1:ANNLISTE2:NB_CHAMBRES££££LG:CHAMBRE lcase££££END££££IF!:0$1:ANNLISTE2:NB_CHAMBRES££££LG:CHAMBRES lcase££££END££)
+				££END:ANNLISTE2:NB_CHAMBRES££
+			</div>
+		££END:ANNLISTE2:NB_PIECES££
+		££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+			<div class="blocTxtRefBien">
+				££ANNLISTE2:DESCRIPTIF smalltextv2 60 vireaccents££
+			</div>
+		££END:WAGREF_IDDOSSIER_SITE££
+			<div class="blocPrixBien">
+				££ANNLISTE2:PRIX formatnumber 0££ ££ANNLISTE2:PRIX_UNITE htmlencode££
+			</div>
+			<div class="blocDetailBien">
+				<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">££LG:DETAILANNONCE pcase££</a>
+			</div>
+	</div>
+££REM££<!-- FIN CONSTRUCTION ANNONCE -->££END££
+££LOOP££
+££IF=:1:DEFILE2££
+	££IF0:SELECTION_VITESSE_DEFIL2££
+		££A:SELECTION_VITESSE_DEFIL2=4000££
+	££END££
+	<script type="text/javascript">
+		$(document).ready(function() {
+			C2C_install(/* id c2c*/"div_C2C",/* prefixe c2c*/"tabc2c",/*nb affiches*/££NBAFFICHDEFILE££,/*nb total*/££IF+:21:ANNLISTE:NBR££24££END££££IF-:21:ANNLISTE:NBR££££ANNLISTE:NBR££££END££,/* vitesse */££SELECTION_VITESSE_DEFIL££,/* Mode */"random",/* si souris */true);
+		});
+	</script>
+££END:DEFILE2££
+££BFIN££
