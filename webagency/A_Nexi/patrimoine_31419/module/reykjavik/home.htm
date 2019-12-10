@@ -1,0 +1,42 @@
+$$INIT:CSS_MODULE_REYKJAVIK=1$$
+$$INIT:JS_MODULE_REYKJAVIK=1$$
+$$REM$$<!-- VARS A DECLARER AVANT INCLUDE VIRTUAL DE CE FICHIER -->$$END$$
+$$B:IMMOBW:ANN:VAL:IDTTMODULE::::VAL:TYPEANNMODULE:::~limit:VAL:MAXMODULE:~NOSTAT:1:ALIAS:LISTEMODULE$$
+<div id="blocModuleLeft" class="shadow"></div>
+<div id="blocModuleRight"">
+	<h1>$$LG:NOSNOUVEAUTES ucase$$</h1>
+	$$BIF:LISTEMODULE$$
+		<ul>
+		$$DO$$
+			$$A:TITLE_SELECTION_INDEX=$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@ANNONCEMODULE:URLVIRTUELLE@@$$
+			$$END$$
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNONCEMODULE:IDPUBLICATION@@/@@ANNONCEMODULE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANGUE@@$$
+			$$END$$
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$A:TITLE_SELECTION_INDEX=@@ANNONCEMODULE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCEMODULE:IDTYPEBIEN gettypebien lcase@@ @@ANNONCEMODULE:AVILLE ncase@@$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<li id="bienId$$LISTEMODULE:IDANNONCE$$"$$IF=:1:LISTEMODULE:I$$ class="liOn"$$END$$>
+					<div class="moduleImage">
+						<img src="$$LISTEMODULE:CARRE_URL$$" width="100" height="80" /> 
+					</div>
+					<div class="moduleInfos">
+						<div class="typetransaction">$$LISTEMODULE:IDTYPETRANSACTION gettypetransaction pcase$$</div>
+						<div class="typebien">$$LISTEMODULE:IDTYPEBIEN gettypebien pcase$$$$IF:LISTEMODULE:NB_PIECES$$, $$LISTEMODULE:NB_PIECES$$ $$IF=:1:LISTEMODULE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+							$$IF!:0$1:LISTEMODULE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$END$$</div>
+							<div class="lieu">$$LISTEMODULE:VILLE$$ $$LISTEMODULE:CP$$</div>
+					</div>
+					<div class="clear"></div>	
+			</li>
+		$$LOOP$$
+		<ul>
+	$$BFIN$$
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+	moduleHome('blocModuleRight','blocModuleLeft');
+});
+</script>
