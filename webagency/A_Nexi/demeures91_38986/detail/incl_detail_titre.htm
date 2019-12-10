@@ -1,0 +1,24 @@
+<h1 itemprop="name">
+	$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+		$$IF:ANNDETAIL:SI_LIBRE$$
+			$$LG:VIAGERLIBRE2 pcase$$
+		$$END$$
+		$$IF0:ANNDETAIL:SI_LIBRE$$
+			$$LG:VIAGEROCCUPE2 pcase$$
+		$$END$$
+	$$END$$
+	$$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+		$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+	$$END$$
+	$$IF!:1:HIDE_TYPEBIEN$$
+	  $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison�/�villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+	$$END$$
+    $$IF!:1:HIDE_SOUSTYPEBIEN$$
+      $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+         $$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+      $$END$$
+    $$END$$
+	$$IF=:1:SHOW_LIBELLE$$ $$ANNDETAIL:LIBELLE$$$$END$$, $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)$$IF:ANNDETAIL:NB_CHAMBRES$$, $$ANNDETAIL:NB_CHAMBRES$$ $$IF=:1:ANNDETAIL:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNDETAIL:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$$$END$$$$IF:ANNDETAIL:SURFACE$$ - $$ANNDETAIL:SURFACE$$ m²$$END$$</h1>
+  <div>
+	$$A:HIDE_TYPEBIEN=1$$
+$$IF:ANNDETAIL:IDQUARTIER$$ $$IF!:1:HIDE_TYPEBIEN$$$$IF!:1:HIDE_SOUSTYPEBIEN$$$$IF:ANNDETAIL:IDSOUSTYPEBIEN$$ - $$END$$$$END$$$$END$$ <span class="quartier-annonce-detail"><!--#include virtual="/detail/incl_quartier.htm" --></span>$$END:ANNDETAIL:IDQUARTIER$$$$IF:ANNDETAIL:PROX$$<span> $$IF:ANNDETAIL:IDQUARTIER$$<span class="quartier-annonce-detail">-</span>$$END$$ <!--#include virtual="/detail/incl_prox.htm" --></span>$$END:ANNDETAIL:PROX$$$$IF:ANNDETAIL:DT_DISPO$$<p>$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</p>$$END$$</div>
