@@ -1,0 +1,66 @@
+<div id="slide-agence"></div>
+<div class="row-fluid margin-top-20" id="section3">
+    <div class="span12">
+        <div class="row-fluid margin-bottom-10 typo-white ligne-titre ligne-titre-extra">
+            <h2 class="span8">Les agences du Sud</h2>
+        </div>
+    </div>
+</div>
+<div class="row-fluid margin-bottom-20">
+    $$B:IMMOBW:AGENCES:ALIAS:LISTEAGHOME:RAND:QRY:CP$$
+    $$BIF:LISTEAGHOME$$
+    $$A:I=0$$
+    $$DO$$
+     	$$A:I=@@I exec XX+1@@$$ 
+	    <div class="span4 margin-top-20 typo-white padding-10">
+	        <div class="row-fluid">
+	            <a href="$$LISTEAGHOME:URLVIRTUELLE$$"><h2 class="typo-white margin-bottom-10 h2-extra">$$LISTEAGHOME:NOM$$</h2></a>
+	        </div>
+	        <div class="row-fluid">
+	            <div class="span5">
+					<a href="$$LISTEAGHOME:URLVIRTUELLE$$"><img src="images/agences/$$LISTEAGHOME:IDPUBLICATION$$.jpg" alt="$$LISTEAGHOME:NOM$$" class="margin-top-5" /></a>
+	            </div>
+	            <div class="span7">
+	                $$LISTEAGHOME:ADRESSE crlf2br$$<br />
+	                $$LG:MINITEL pcase$$ : $$LISTEAGHOME:TEL formattel$$<br />
+	                $$LISTEAGHOME:EMAIL$$   
+	                
+	                $$IF:LISTEAGHOME:URL_DOCHONORAIRES$$
+						$$A:BAREME_URL=@@LISTEAGHOME:URL_DOCHONORAIRES@@$$
+
+						$$IF:LIBELLE_BAREME_HONORAIRES$$
+							$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+						$$END$$
+
+						$$IF0:LIBELLE_BAREME_HONORAIRES$$
+							$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+						$$END$$
+					$$END$$
+					$$IF0:LISTEAGHOME:URL_DOCHONORAIRES$$
+						$$IF:EXTENSION_BAREME_HONORAIRES$$
+							$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@LISTEAGHOME:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+							$$IF:LIBELLE_BAREME_HONORAIRES$$
+								$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+							$$END$$
+
+							$$IF0:LIBELLE_BAREME_HONORAIRES$$
+								$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+							$$END$$
+						$$END$$
+					$$END$$
+	                $$IF:BAREME_URL$$
+					<br><a href="$$BAREME_URL$$" target="_blank" class="typo-white" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+					$$END$$	              
+	            </div>
+	        </div>
+	    </div>
+	    $$IF=:3:I$$
+    		</div><div class="row-fluid margin-bottom-20">
+    		$$A:I=0$$
+    	$$END$$ 
+        
+    $$LOOP$$
+    $$BFIN$$
+</div>
+<div id="section4bis"></div>
