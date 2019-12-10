@@ -1,0 +1,105 @@
+$$REM$$================================================================================================
+//// <summary>Moteur recherche rapide</summary>
+//// <remarks>
+//// <para>Généralement placé en accueil, parfois visible sur tout la navigation</para>
+//// <para>On est obligé d'adapter le nom des macros et des incl_ par rapport aux erreurs pouvant être généré par le cfg_custom_rep</para>
+//// <para>Pour l'instant on ne met pas en place l'option des onglets carte ou liste, car on est pressés de sortir le pack avantage</para>
+//// <para>INIT:MINIMOTEUR=1 sert à conditionner le css correspondant dans styles,incl_styles.htm</para>
+//// <para>Modifier les macros du mini moteur dans votre incl_param.htm</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Recopiage de version x_v2 vers x_v3</update>
+================================================================================================$$END$$
+$$INIT:MINIMOTEUR=1$$
+
+$$REM$$<!-- ================= FICHIER DE MACROS QUI CONDITIONNE PAR DEFAUT LE MINI MOTEUR ================= -->$$END:REM$$
+$$REM$$<!-- macros mini moteur par défaut -->$$END:REM$$				<!--#include virtual="moteur/incl_moteur_param.htm" -->
+<!--#include virtual="header/all_global_param.htm" -->
+<!--#include virtual="header/incl_param.htm" -->
+
+
+
+$$REM$$<!-- === js principal === -->$$END:REM$$ <script type="text/javascript" src="scripts,mini_moteur.js?lang=$$LANGUE$$$$IF:MINIMOTEUR_IDTBCACHE$$&amp;miniidtbcache=$$MINIMOTEUR_IDTBCACHE$$$$END$$$$IF:MINIMOTEUR_SOUSTBCACHE$$&amp;minisoustbcache=$$MINIMOTEUR_SOUSTBCACHE$$$$END$$&amp;nbannvisible=$$MINIMOTEUR_NBANNVISIBLE$$&amp;wagstyle=$$PAGE:WAG_STYLE_RECHERCHE$$"></script>
+
+<form method="get" action="/moteur,mini,prevalidation.htm" id="MiniMoteur_Form" onsubmit="Envoi();$$IF0:MINIMOTEUR_IDTTUNIQUE$$return Verif();$$END$$">	
+	<div id="MiniMoteur_Ctn">
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		
+																																													
+$$REM$$<!-- /////////////////////////////// tous les critères de recherche sont à paramétrer par incl_param.htm /////////////////////////////// -->$$END:REM$$
+		$$REM$$<!-- === pour forcer le pays de son choix === -->$$END:REM$$										$$IF:MINIMOTEUR_FORCE_PAYS$$<input type="hidden" name="idpays" value="$$MINIMOTEUR_FORCE_PAYS$$" />$$END:MINIMOTEUR_FORCE_PAYS$$
+		$$REM$$<!-- === à démutualiser pour ajout input hidden persos === -->$$END:REM$$			<!--#include virtual="/moteur/mini/incl_input_hidden.htm" -->
+		
+		$$REM$$<!-- === à démutualiser pour ajout input persos === -->$$END:REM$$			<!--#include virtual="/moteur/mini/incl_moteur_inputperso.htm" -->
+		
+		$$REM$$<!-- === type de transaction === -->$$END:REM$$																<!--#include virtual="/moteur/mini/incl_type_transaction.htm" -->
+		$$REM$$<!-- === type de viager === -->$$END:REM$$ 																		$$IF:MINIMOTEUR_TYPEVIAGER$$<!--#include virtual="/moteur/mini/incl_type_viager.htm" -->$$END:MINIMOTEUR_TYPEVIAGER$$
+		$$REM$$<!-- === type de loi (produit d'investissement) === -->$$END:REM$$ 						$$IF:MINIMOTEUR_TYPELOI$$<!--#include virtual="/moteur/mini/incl_type_loi.htm" -->$$END:MINIMOTEUR_TYPELOI$$
+		$$REM$$<!-- === type de commerce === -->$$END:REM$$ 																	$$IF:MINIMOTEUR_TYPECOMMERCE$$<!--#include virtual="/moteur/mini/incl_type_commerce.htm" -->$$END:MINIMOTEUR_TYPECOMMERCE$$
+		$$REM$$<!-- === type d'activité (va avec type de commerce) === -->$$END:REM$$ 				$$IF:MINIMOTEUR_TYPEACTIVITE$$<div class="miniDiv" id="MiniTypeActivite" style="display:none;"></div>$$END:MINIMOTEUR_TYPEACTIVITE$$
+		$$REM$$<!-- === type de bien === -->$$END:REM$$ 																			<div class="miniDiv" id="MiniTypeBien"$$IF0:MINIMOTEUR_IDTTDEFAUT$$$$IF0:MINIMOTEUR_IDTTUNIQUE$$ style="display:none;"$$END$$$$END$$></div>
+		$$REM$$<!-- === sous type de bien === -->$$END:REM$$ 																	$$IF:MINIMOTEUR_SOUSTYPEDEBIEN$$<div class="miniDiv" id="MiniSousTypeBien" style="display:none;"></div>$$END:MINIMOTEUR_SOUSTYPEDEBIEN$$
+		$$REM$$<!-- === nombre de pièces (appartements) === -->$$END:REM$$ 										$$IF:MINIMOTEUR_PIECES$$<!--#include virtual="/moteur/mini/incl_nb_pieces.htm" -->$$END:MINIMOTEUR_PIECES$$
+		$$REM$$<!-- === nombre de pièces (maisons) === -->$$END:REM$$ 												$$IF:MINIMOTEUR_CHAMBRES$$<!--#include virtual="/moteur/mini/incl_nb_chambres.htm" -->$$END:MINIMOTEUR_CHAMBRES$$
+		$$REM$$<!-- === nombre de personnes (loc. vacances) === -->$$END:REM$$ 								$$IF:MINIMOTEUR_NBPERS$$<!--#include virtual="/moteur/mini/incl_nb_personnes.htm" -->$$END:MINIMOTEUR_NBPERS$$
+		$$REM$$<!-- === budget === -->$$END:REM$$																							$$IF:MINIMOTEUR_BUDGET$$<!--#include virtual="/moteur/mini/incl_budget.htm" -->$$END:MINIMOTEUR_BUDGET$$							
+		$$REM$$<!-- === budget vacances === -->$$END:REM$$																		$$IF:MINIMOTEUR_BUDGETVAC$$<!--#include virtual="/moteur/mini/incl_budget_vacances.htm" -->$$END:MINIMOTEUR_BUDGETVAC$$				
+		$$REM$$<!-- === budget viager === -->$$END:REM$$																			$$IF:MINIMOTEUR_BUDGETVIAGER$$<!--#include virtual="/moteur/mini/incl_budget_viager.htm" -->$$END:MINIMOTEUR_BUDGETVIAGER$$							
+		$$REM$$<!-- === surface === -->$$END:REM$$																						$$IF:MINIMOTEUR_SURFACE$$<!--#include virtual="/moteur/mini/incl_surface.htm" -->$$END:MINIMOTEUR_SURFACE$$		
+		$$REM$$<!-- === surface terrain === -->$$END:REM$$																		$$IF:MINIMOTEUR_SURFTERRAIN$$<!--#include virtual="/moteur/mini/incl_surface_terrain.htm" -->$$END:MINIMOTEUR_SURFTERRAIN$$
+
+		$$IF0:MINIMOTEUR_PROXIMITE$$		
+		$$REM$$<!-- === pays === -->$$END:REM$$																								$$IF:MINIMOTEUR_PAYS$$<div class="miniDiv" id="MiniPays" $$IF0:MINIMOTEUR_IDTTDEFAUT$$$$IF0:MINIMOTEUR_IDTTUNIQUE$$style="display:none;"$$END$$$$END$$></div>$$END:MINIMOTEUR_PAYS$$	
+		$$REM$$<!-- === régions étrangère === -->$$END:REM$$																	$$IF:MINIMOTEUR_REGIONETR$$<div class="miniDiv" id="MiniRegionEtr" style="display:none;"></div>$$END$$
+		$$REM$$<!-- === régions (france) === -->$$END:REM$$																		$$IF:MINIMOTEUR_REGION$$<div class="miniDiv" id="MiniRegion" style="display:none;"></div>$$END$$	
+		$$REM$$<!-- === départements === -->$$END:REM$$																				$$IF:MINIMOTEUR_DEP$$<div class="miniDiv" id="MiniDep" style="display:none;"></div>$$END$$	
+		$$REM$$<!-- === villes === -->$$END:REM$$																							$$IF:MINIMOTEUR_VILLES$$<div class="miniDiv" id="MiniVilles" style="display:none;"></div>$$END$$
+		$$REM$$<!-- === quartiers === -->$$END:REM$$																					$$IF:MINIMOTEUR_QUARTIER$$<div class="miniDiv" id="MiniQuartiers" style="display:none;"></div>$$END$$
+		$$END:MINIMOTEUR_PROXIMITE$$
+			
+		$$REM$$<!-- === proximité (champ libre : cp, dep, ville) === -->$$END:REM$$						$$IF:MINIMOTEUR_PROXIMITE$$<!--#include virtual="/moteur/mini/incl_proximite.htm" -->$$END:MINIMOTEUR_PROXIMITE$$
+		$$REM$$<!-- === rayon === -->$$END:REM$$																							$$IF:MINIMOTEUR_RAYON$$<!--#include virtual="/moteur/mini/incl_rayon.htm" -->$$END:MINIMOTEUR_RAYON$$
+		$$REM$$<!-- === situation (mer, ville, campagne etc.) === -->$$END:REM$$							$$IF:MINIMOTEUR_SITUATION$$<!--#include virtual="/moteur/mini/incl_situation.htm" -->$$END:MINIMOTEUR_SITUATION$$
+		$$REM$$<!-- === référence annonce === -->$$END:REM$$																	$$IF:MINIMOTEUR_REFERENCE$$<!--#include virtual="/moteur/mini/incl_reference.htm" -->$$END:MINIMOTEUR_REFERENCE$$
+		$$REM$$<!-- === résultat par carte géoloc ou par liste === -->$$END:REM$$							$$IF:OPTION_GEOLOC$$<!--#include virtual="/moteur/mini/incl_geolocalisation.htm" -->$$END:OPTION_GEOLOC$$
+		
+
+
+		$$REM$$<!-- === bouton validation === -->$$END:REM$$																	<!--#include virtual="/moteur/mini/incl_bouton.htm" -->
+		
+$$REM$$<!-- ////////////////////// affiche type bien si le type de transaction est deja selectionné au chargement du site ////////////////////// -->$$END:REM$$
+	<script type="text/javascript">
+		<!--
+		var divminitypecommerce = document.getElementById("MiniTypeCommerce");
+		var divminitypeactivite = document.getElementById("MiniTypeActivite");
+		var divminitypebien = document.getElementById("MiniTypeBien");
+		var divminisoustypebien = document.getElementById("MiniSousTypeBien");
+		var divminipays = document.getElementById("MiniPays");
+		var divminiregion = document.getElementById("MiniRegion");
+		var divminiregionetr = document.getElementById("MiniRegionEtr");
+		var divminidep = document.getElementById("MiniDep");
+		var divminivilles = document.getElementById("MiniVilles");
+		var divminiquartiers = document.getElementById("MiniQuartiers");
+		var divminirayon = document.getElementById("MiniRayon");
+		
+		$$IF:MINIMOTEUR_IDTTUNIQUE$$
+		ListeTypeBien($$MINIMOTEUR_IDTTUNIQUE$$);
+		$$IF=:1:MINIMOTEUR_PAYS$$ListePays($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:1:MINIMOTEUR_MINIREGION$$ListeRegion('250', $$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_MINIREGION$$$$IF=:1:MINIMOTEUR_DEP$$ListeDep($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_MINIREGION$$$$IF=:0:MINIMOTEUR_DEP$$$$IF=:1:MINIMOTEUR_VILLES$$ListeVilles($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$$$END$$$$END$$
+		$$IF=:1:MINIMOTEUR_BUDGET$$$$IF=:1:MINIMOTEUR_BUDGETTRANCHE$$ BudgetTranche($$MINIMOTEUR_IDTTUNIQUE$$);$$END$$$$END$$
+		$$END:MINIMOTEUR_IDTTUNIQUE$$
+		$$IF:MINIMOTEUR_IDTTDEFAUT$$
+		ListeTypeBien($$MINIMOTEUR_IDTTDEFAUT$$);
+		$$IF=:1:MINIMOTEUR_PAYS$$ListePays($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:1:MINIMOTEUR_MINIREGION$$ListeRegion('250', $$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_MINIREGION$$$$IF=:1:MINIMOTEUR_DEP$$ListeDep($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_MINIREGION$$$$IF=:0:MINIMOTEUR_DEP$$$$IF=:1:MINIMOTEUR_VILLES$$ListeVilles($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$$$END$$$$END$$
+		$$IF=:1:MINIMOTEUR_BUDGET$$$$IF=:1:MINIMOTEUR_BUDGETTRANCHE$$ BudgetTranche($$MINIMOTEUR_IDTTDEFAUT$$);$$END$$$$END$$
+		$$END:MINIMOTEUR_IDTTDEFAUT$$
+		
+		//-->
+	</script>		
+		
+	</div><!-- #MiniMoteur_Ctn -->
+</form><!-- #MiniMoteur_Form -->
