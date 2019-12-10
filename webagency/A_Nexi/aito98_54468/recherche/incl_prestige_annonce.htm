@@ -1,0 +1,148 @@
+<div class="ann-item row-fluid row-table" id="annonce$$ANNLISTE:IDANNONCE$$">
+    $$IF:ANNLISTE:BIGURL0$$
+        $$A:TOF=@@ANNLISTE:BIGURL0@@$$
+    $$END$$
+    $$IF0:ANNLISTE:BIGURL0$$
+        $$IF:ANNLISTE:PHOTOURL0$$
+            $$A:TOF=@@ANNLISTE:PHOTOURL0@@$$
+        $$END$$
+        $$IF0:ANNLISTE:PHOTOURL0$$
+            $$IF!:1:SANS_PHOTO_PERSO$$
+                $$A:TOF=@@~@@images/recherche/sans_photo.jpg$$
+            $$END$$
+            $$IF=:1:SANS_PHOTO_PERSO$$
+                $$A:TOF=@@_@@images/recherche/sans_photo.jpg$$
+            $$END$$
+        $$END$$
+    $$END$$
+
+    <a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$"  class="span6 ann-img" style="background-image:url($$TOF$$);">
+        <span class="ann-ville">$$ANNLISTE:VILLE pcase$$</span>
+        $$IF:ANNLISTE:SI_EXCLUSIF$$
+            <i class="ann-exclu aito-icon-exclu"></i>
+        $$END$$
+        $$IF:ANNLISTE:SI_COUPDECOEUR$$
+            <i class="ann-cdc aito-icon-heart"></i>
+        $$END$$
+    </a>
+
+    <div class="span6">
+        <div class="ann-body">
+
+            <h2 class="ann-ttl hidden-phone">
+                $$ANNLISTE:IDTYPEBIEN gettypebien pcase$$ $$ANNLISTE:VILLE pcase$$
+            </h2>
+            <p>
+                $$ANNLISTE:IDTYPEBIEN gettypebien pcase$$
+                $$ANNLISTE:IDSOUSTYPEBIEN getsoustypebien pcase$$
+                $$IF=:1:ANNLISTE:IDTYPEBIEN$$
+                    $$ANNLISTE:NB_PIECES$$ $$LG:PIECE$$$$IF+:2:ANNLISTE:NB_PIECES$$s$$END$$ 
+                $$END$$
+                $$IF:ANNLISTE:SURFACE$$$$ANNLISTE:SURFACE$$ m² $$END$$
+            </p>
+            <p class="hidden-phone">
+                $$ANNLISTE:DESCRIPTIF left 120 pcase$$...
+            </p>
+
+            $$IF0:ANNLISTE:SIPANIER$$
+
+                <!--#include virtual="recherche/incl_favoris.htm" -->
+
+                <a href="https://www.facebook.com/sharer/sharer.php?u=$$ANNLISTE:URLVIRTUELLE$$" target="_blank" class="ann-share hidden-phone">
+                    <i class="aito-icon-share"></i>
+                </a>
+
+            $$END$$
+
+            <p class="typo-important big padding-bottom-0">
+                $$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+                    $$LG:BOUQUET pcase$$ :
+                   <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:PRIX$$">$$ANNLISTE:PRIX formatnumber 0$$</span> <span class="prix-xpf-unite">XPF</span>
+                    <!--#include virtual="recherche/incl_prix_condition.htm" -->
+                $$END$$
+                $$IF!:5:ANNLISTE:IDTYPETRANSACTION$$
+                    $$IF=:4:FORM:IDTT$$
+                        $$LG:APARTIRDE$$
+                    $$END$$
+                    $$IF=:11:ANNLISTE:IDTYPETRANSACTION$$
+                        $$LG:ANN:CESSIONBAILS$$ :
+                    $$END$$
+                    <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:PRIX$$">$$ANNLISTE:PRIX formatnumber 0$$</span> <span class="prix-xpf-unite">XPF</span>
+                    $$IF=:11:ANNLISTE:IDTYPETRANSACTION$$
+                        <br>$$LG:LOYERMENSUEL$$ : $$IF:ANNLISTE:PX_LOYER$$<span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:PX_LOYER replace € ¤$$">$$ANNLISTE:PX_LOYER replace € ¤$$</span> <span class="prix-xpf-unite">XPF</span>$$END$$
+                    $$END$$
+                    <!--#include virtual="recherche/incl_prix_condition.htm" -->
+                $$END$$
+                $$IF:ANNLISTE:PX_RENTE$$
+                    $$LG:RENTE pcase$$ : <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:PX_RENTE$$">$$ANNLISTE:PX_RENTE formatnumber 0$$</span> <span class="prix-xpf-unite">XPF</span> / mois
+                $$END$$
+                $$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+                    $$IF:ANNLISTE:AGE_F$$
+                        $$LG:FEMME pcase$$ : $$ANNLISTE:AGE_F$$ ans
+                    $$END$$
+                    $$IF:ANNLISTE:AGE_H$$
+                        $$IF!:0:ANNLISTE:AGE_F$$&nbsp;$$END$$
+                        $$LG:HOMME pcase$$ : $$ANNLISTE:AGE_H$$ ans
+                    $$END$$
+                $$END$$
+                $$IF:ANNLISTE:SIBAISSEPRIX$$
+                    <span class="small pagination-centered">
+                        <!--#include virtual="recherche/incl_prix_baisse.htm" -->
+                    </span>
+                $$END$$
+            </p>
+            $$IF=:1$3$4$7:ANNLISTE:IDTYPETRANSACTION$$
+                <p class="prix-honoraires-charges hidden-phone smallest line-height-16">
+                    $$LG:CHARGES pcase$$ :
+                    $$IF:ANNLISTE:PX_CHARGES$$
+                        <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:PX_CHARGES$$">$$ANNLISTE:PX_CHARGES formatnumber 0$$</span> <span class="prix-xpf-unite">XPF</span>
+                    $$END$$
+                    $$IF0:ANNLISTE:PX_CHARGES$$
+                        N/A
+                    $$END$$<br>
+                    $$LG:HONORAIRES pcase$$ :
+                    $$IF:ANNLISTE:HONORAIRES$$
+                        <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:HONORAIRES$$">$$ANNLISTE:HONORAIRES$$</span> <span class="prix-xpf-unite">XPF</span>
+                    $$END$$
+                    $$IF0:ANNLISTE:HONORAIRES$$
+                        N/A
+                    $$END$$
+                    - $$LG:V5DEPOTGARANTIE pcase$$ :
+                    $$IF:ANNLISTE:GARANTIE$$
+                        <span class="prix-xpf-valeur" data-xpf="$$ANNLISTE:GARANTIE replace € ¤$$">$$ANNLISTE:GARANTIE replace € ¤$$</span> <span class="prix-xpf-unite">XPF</span>
+                    $$END$$
+                    $$IF0:ANNLISTE:GARANTIE$$
+                        N/A
+                    $$END$$
+                </p>
+            $$END$$
+
+
+
+            $$IF:ANNLISTE:SIPANIER$$
+                <div class="row-fluid hidden-phone margin-top-20">
+                    $$IF=:PACK2$PACK3:TYPE_OFFRE$$
+                    $$REM$$
+                        <div class="span6">
+                            <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ smaller btn-block bouton-comparer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"> <img src="$$~$$images/widget/$$PICTO_COULEUR$$/star.png" alt="$$LG:AJOUTCOMPARAISON pcase$$"> $$LG:AJOUTCOMPARAISON pcase$$</div>
+                        </div>
+                    $$END$$
+                    $$END$$
+                    <div class="span8">
+                        <div class="$$TYPEBOUTON$$ btn-jaune smaller btn-small bouton-supprimer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:SUPPRIMERSELEC pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/minus.png" alt="$$LG:SUPPRIMERSELEC pcase$$"> $$LG:SUPPRIMERSELEC pcase$$</div>
+                    </div>
+                    <div class="span4 pagination-right">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=$$ANNLISTE:URLVIRTUELLE$$" target="_blank" class="ann-share hidden-phone">
+                            <i class="aito-icon-share"></i>
+                        </a>
+                        <a href="$$LIENDETAIL$$#contactdetail" class="ann-share hidden-phone">
+                            <i class="aito-icon-mail"></i>
+                        </a>
+                    </div>
+                </div>
+            $$END$$
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,103 @@
+    $$A:PAGE_STYLE=prestige$$
+    $$A:JS_DETAIL_PERSO=1$$
+    
+    $$A:JS_METRO=1$$
+    <!--#include virtual="detail/incl_boucle_detail.htm" -->
+    <!--#include virtual="detail/incl_detail_haut.htm" -->
+    $$IF:ANNDETAIL:IDTYPETRANSACTION$$
+    <div class="row-fluid detail-annonce$$BIF:FIL$$$$IF=:1:FIL:NBR$$ margin-top-10$$END$$$$BFIN$$" itemscope itemtype="http://schema.org/Product">
+        <div class="span12">
+        <!--#include virtual="detail/incl_detail_prestige.htm" -->
+        </div>
+    </div>
+    $$END$$
+    $$IF0:ANNDETAIL:IDTYPETRANSACTION$$
+        <!--#include virtual="detail/incl_no_annonce.htm" -->
+    $$END$$
+
+</div><!-- end container -->
+
+<aside class="aside-estimation margin-top-30">
+    <div class="container">
+        <div class="aside-deco"></div>
+        <div class="aside-content">
+            <h2 class="aside-ttl">Estimer un bien similaire</h2>
+            <p class="pagination-centered margin-top-15">
+                <a href="/$$AGENCE_IDPUBLICATION$$/estimation,immobiliere.htm" title="Faire estimer" class="btn btn-neutre">Faire estimer</a>
+            </p>
+        </div>
+        <img src="$$_$$images/pub/deco-estimation.png" alt="$$LG:LIEN:ESTIMG pcase$$" class="estimation-deco">
+    </div>
+</aside>
+
+<div class="container"><!-- reprise container -->
+
+
+    <div class="detail-simi">
+            $$SET:PRIXMIN=@@ANNDETAIL:PRIX exec XX*0.80@@$$
+            $$SET:PRIXMAX=@@ANNDETAIL:PRIX exec XX*1.20@@$$
+            $$SET:IDTT=@@ANNDETAIL:IDTYPETRANSACTION@@$$
+            $$SET:IDB=@@ANNDETAIL:IDTYPEBIEN@@$$
+            $$SET:CP=@@ANNDETAIL:CP@@$$
+
+
+            $$IF=:98709:CP$$
+                $$A:CP=98709,98701,98716$$
+            $$END$$
+            $$IF=:98702$98704:CP$$
+                $$A:CP=98713,98714,98715,98702,98704,98703,98717,98718$$
+            $$END$$
+            $$IF=:98711$98712:CP$$
+                $$A:CP=98703,98717,98718,98711,98712$$
+            $$END$$
+            $$IF=:98719$98728$98735$98730$98726$98722$98725:CP$$
+                $$A:CP=98719,98728,98735,98730,98726,98722,98725$$
+            $$END$$
+            $$IF=:98716$98713:CP$$
+                $$A:CP=98709,98701,98716,98713,98714,98715$$
+            $$END$$
+            $$IF=:98703$98717$98718:CP$$
+                $$A:CP=98713,98714,98715,98702,98704,98703,98717,98718,98711,98712$$
+            $$END$$
+
+            $$SET:RAYON=0$$
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $$IF=:1:IDTT$$  
+                            var annoncesSim = 'idtt=$$IDTT$$&idtypebien=$$IDB$$&px_loyermin=$$PRIXMIN$$&px_loyermax=$$PRIXMAX$$&cp=$$CP$$&lang=$$LANGUE$$&idannonce=$$ANNDETAIL:IDANNONCE$$&rayon=$$RAYON$$';
+                        $$END$$
+                        $$IF!:1:IDTT$$
+                            var annoncesSim = 'idtt=$$IDTT$$&idtypebien=$$IDB$$&pxmin=$$PRIXMIN$$&pxmax=$$PRIXMAX$$&cp=$$CP$$&lang=$$LANGUE$$&idannonce=$$ANNDETAIL:IDANNONCE$$&rayon=$$RAYON$$';
+                        $$END$$
+
+                        $.ajax({
+                            type: "GET",
+                            data: annoncesSim,
+                            dataType: "html",
+                            url: '/detail,incl_annonces_similaires.htm',
+                            beforeSend: function() {
+                                $("#zoneAnnoncesSimilaires").html('Chargement des annonces similaires...');
+                                $("#zoneAnnoncesSimilaires").show();
+                            },
+                            success: function(data) {
+                                $("#zoneAnnoncesSimilaires").html(data);
+                            },
+                            error: function(xhr,statusText) {
+                                //console.log(xhr.status);
+                            },
+                            complete: function(xhr,statusText) {
+                                //console.log(xhr.status);
+                            }
+                        });
+                    });
+                </script>
+                <div id="zoneAnnoncesSimilaires"></div>
+
+    </div>
+
+    <!--#include virtual="detail/incl_detail_onglets_infos.htm" -->
+    <!--#include virtual="detail/incl_detail_bas.htm" -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->

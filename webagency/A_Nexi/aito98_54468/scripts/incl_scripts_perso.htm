@@ -1,0 +1,567 @@
+
+<script src="$$_$$scripts/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    var tauxconversion = 119.332;  //ça veut dire que 1 euros = xxx XPF
+
+    //Valeur du mini moteur budget à mettre en XPF !!!    
+    var afficheminbugven=0;
+    var affichemaxbugven= valmax= 80000000;
+    $$IF:FORM:PXMIN$$
+        var reelminbugven=$$FORM:PXMIN$$;
+    $$END$$
+    $$IF0:FORM:PXMIN$$
+        var reelminbugven=0;
+    $$END$$
+
+    $$IF:FORM:PXMAX$$
+        var reelmaxbugven=$$FORM:PXMAX$$;
+    $$END$$
+    $$IF0:FORM:PXMAX$$
+        var reelmaxbugven=80000000;
+    $$END$$
+
+    var stepven=2000000;
+
+    var afficheminbugloc=0;
+    var affichemaxbugloc=300000;
+
+    $$IF:FORM:PX_LOYERMIN$$
+        var reelminbugloc=$$FORM:PX_LOYERMIN$$;
+    $$END$$
+    $$IF0:FORM:PX_LOYERMIN$$
+        var reelminbugloc=0;
+    $$END$$
+    $$IF:FORM:PX_LOYERMAX$$
+        var reelmaxbugloc=$$FORM:PX_LOYERMAX$$;
+    $$END$$
+    $$IF0:FORM:PX_LOYERMAX$$
+        var reelmaxbugloc=300000;
+    $$END$$
+
+    var steploc=20000;
+
+    var BudgetLimite=affichemaxbugven;
+
+    var afficheminbugven_euros=0;
+    var affichemaxbugven_euros=700000;
+    $$IF:FORM:PXMIN$$
+        var reelminbugven_euros=Math.round( $$FORM:PXMIN$$ / tauxconversion);
+    $$END$$
+    $$IF0:FORM:PXMIN$$
+        var reelminbugven_euros=0;
+    $$END$$
+
+    $$IF:FORM:PXMAX$$
+        var reelmaxbugven_euros=Math.round( $$FORM:PXMAX$$ / tauxconversion);
+    $$END$$
+    $$IF0:FORM:PXMAX$$
+        var reelmaxbugven_euros=700000;
+    $$END$$
+
+    var stepven_euros= 25000;
+
+    var afficheminbugloc_euros=0;
+    var affichemaxbugloc_euros=3000;
+
+    $$IF:FORM:PX_LOYERMIN$$
+        var reelminbugloc_euros=Math.round( $$FORM:PX_LOYERMIN$$ / tauxconversion);
+    $$END$$
+    $$IF0:FORM:PX_LOYERMIN$$
+        var reelminbugloc_euros=0;
+    $$END$$
+    $$IF:FORM:PX_LOYERMAX$$
+        var reelmaxbugloc_euros=Math.round( $$FORM:PX_LOYERMAX$$ / tauxconversion);
+    $$END$$
+    $$IF0:FORM:PX_LOYERMAX$$
+        var reelmaxbugloc_euros=3000;
+    $$END$$
+
+
+
+    var steploc_euros=200;
+
+    var BudgetLimite_euros=reelmaxbugven_euros;
+    
+$(document).ready(function () {
+
+
+	var monnaie = lireCookie('monnaie');
+	if( monnaie == "euros" ){
+		reelminbugven_start = reelminbugven_euros;
+		reelmaxbugven_start = reelmaxbugven_euros;
+		stepven_start = stepven_euros;
+		BudgetLimite_start = BudgetLimite_euros;
+	}else{
+		reelminbugven_start = reelminbugven;
+		reelmaxbugven_start = reelmaxbugven;
+		stepven_start = stepven;
+		BudgetLimite_start = BudgetLimite;
+	}
+
+
+
+	function separateurMillier(num) {
+        return ("" + num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, function($1) { return $1 + " " });
+    }
+
+    function lireCookie(nom) {
+        // Ajoute le signe égale virgule au nom
+                // pour la recherche
+        var nom2 = nom + "=";
+                // Array contenant tous les cookies
+        var arrCookies = document.cookie.split(';');
+                // Cherche l'array pour le cookie en question
+        for(var i=0;i < arrCookies.length;i++) {
+            var a = arrCookies[i];
+            // Si c'est un espace, enlever
+            while (a.charAt(0)==' ') {
+              a = a.substring(1,a.length);
+            }
+            if (a.indexOf(nom2) == 0) {
+                return a.substring(nom2.length,a.length);
+            }
+        }
+                // Aucun cookie trouvé
+        return null;
+    }
+
+    function lisibilite_nombre(nbr){
+        var nombre = ''+nbr;
+        var retour = '';
+        var count=0;
+        for(var i=nombre.length-1 ; i>=0 ; i--){
+            if(count!=0 && count % 3 == 0)
+                retour = nombre[i]+' '+retour ;
+            else
+                retour = nombre[i]+retour ;
+            count++;
+        }
+        return retour;
+    }
+
+    function convert_xpf_to_euros(){
+        $(".prix-xpf-valeur").each(function(){
+            var prix = $(this).data("xpf"); //on récupère le prix XPF
+            if( prix ) {
+                prix = prix.toString().replace(/\s/g,""); //on nettoie, notamment les espaces
+                prix = prix.toString().replace("&nbsp;","");
+                prix = parseInt(prix,10);  //on force en entier
+                prix = Math.round( prix / tauxconversion );  //on fait le calcul de conversion
+                prix = separateurMillier(prix); //on sépare les milliers
+                $(this).text(prix);  //on remet calcule le prix en euros.    
+            }
+            
+        });
+        $(".prix-xpf-unite").text("€");
+        if($("#idtt").val()==1 || $("#idtt").val()==4) {
+            SliderInitiate(steploc_euros,afficheminbugloc_euros,affichemaxbugloc_euros,reelmaxbugloc_euros,reelminbugloc_euros);          
+        }else{
+            SliderInitiate(stepven_euros,afficheminbugven_euros,affichemaxbugven_euros,reelmaxbugven_euros,reelminbugven_euros);
+        }
+   }
+
+    function convert_euros_to_xpf(){
+        $(".prix-xpf-valeur").each(function(){
+            $(this).text($(this).data("xpf"));  //on remet la valeur en XPF
+        });
+        $(".prix-xpf-unite").text("XPF");
+        if($("#idtt").val()==1 || $("#idtt").val()==4) {
+            SliderInitiate(steploc,afficheminbugloc,affichemaxbugloc,reelmaxbugloc,reelminbugloc);      
+        }else{
+            SliderInitiate(stepven,afficheminbugven,affichemaxbugven,reelmaxbugven,reelminbugven);
+        }
+    }
+    
+	function SliderInitiate(valstep,valmin,valmax,reelmax,reelmin){
+    	var monnaie = lireCookie('monnaie');
+        $("#valmax").val(valmax);
+        BudgetLimite=reelmax;
+        $("#slider-budget").slider("option" , "min" , valmin);
+        $("#slider-budget").slider("option", "step", valstep);
+        $("#slider-budget").slider("option" , "max" , valmax);
+        $("#DisplayBudgetMin").html( lisibilite_nombre(reelmin));
+        if(valmax>=reelmax){
+            $("#DisplayBudgetMax").html( lisibilite_nombre(reelmax));
+        }else{
+            $("#DisplayBudgetMax").html( lisibilite_nombre(reelmax) + " et +");
+        }
+
+        if( monnaie == "euros" ){                	
+        	$("#MiniInputBudgetMin").val( Math.round(reelmin * tauxconversion ));
+        }else {
+        	$("#MiniInputBudgetMin").val(reelmin);	
+        }
+        if(valmax > reelmax){
+            $("#MiniInputBudgetMax").val("");
+        } else {
+        	if( monnaie == "euros" ){                	
+            	$("#MiniInputBudgetMax").val( 0 );
+                $("#DisplayBudgetMax").html( Math.round(valmax * tauxconversion )  + " et +" );
+            }else{
+            	$("#MiniInputBudgetMax").val( 0 );
+                $("#DisplayBudgetMax").html( valmax + " et +" );
+            }
+        }
+        $("#slider-budget").slider("option", "values", [reelmin,reelmax] );
+    }
+
+
+    /* ==========================================================================
+    == MINIMOTEUR ==
+    ========================================================================== */
+
+    $('.moteur-toggle').click(function () {
+        $('.moteur-content').toggleClass('is-open');
+    });
+
+    /* ==========================================================================
+    == CONTACT DETAIL ==
+    ========================================================================== */
+
+    $('.detail-contact-toggle').click(function () {
+        $('.detail-contact-body').toggleClass('is-open');
+    });
+
+
+
+    	/* ==========================================================================
+    == SLIDER BUDGET ==
+    ========================================================================== */
+
+	
+
+    $("#idtt").change(function() {
+        if($(this).val()==1 || $(this).val()==4) {
+            $("#MiniInputBudgetMin").attr("name","px_loyermin");
+            $("#MiniInputBudgetMax").attr("name","px_loyermax");
+        	if( monnaie == "euros" ){
+				SliderInitiate(steploc_euros,afficheminbugloc_euros,affichemaxbugloc_euros,reelmaxbugloc_euros,reelminbugloc_euros);
+        	}else{
+            	SliderInitiate(steploc,afficheminbugloc,affichemaxbugloc,reelmaxbugloc,reelminbugloc);                	
+        	}
+        } else {            
+            $("#MiniInputBudgetMin").attr("name","pxmin");
+            $("#MiniInputBudgetMax").attr("name","pxmax");
+        	if( monnaie == "euros" ){
+            	SliderInitiate(stepven_euros,afficheminbugven_euros,affichemaxbugven_euros,reelmaxbugven_euros,reelminbugven_euros);
+            }else{
+            	SliderInitiate(stepven,afficheminbugven,affichemaxbugven,reelmaxbugven,reelminbugven);
+            }
+        }
+    });
+
+    
+
+    $( "#slider-budget" ).slider({            	
+        range: true,
+        orientation: "horizontal",
+        min: reelminbugven_start,
+        step: stepven_start,
+        max: reelmaxbugven_start,
+        values: [ reelminbugven_start, reelmaxbugven_start ],
+        slide: function( event, ui ) {
+        	var monnaie = lireCookie('monnaie');
+            var varmin=lisibilite_nombre(ui.values[0]);
+            var varmax=lisibilite_nombre(ui.values[1]);
+            if(ui.values[1]>=BudgetLimite_start){
+                $("#MiniInputBudgetMax").val("");
+            }else{
+            	if( monnaie == "euros" ){  
+                	$("#MiniInputBudgetMax").val(Math.round(ui.values[1] * tauxconversion ));
+                }else{
+					$("#MiniInputBudgetMax").val(ui.values[1]);
+                }
+            }
+            $("#DisplayBudgetMin").html( varmin );
+
+            if( ui.values[1] == $("#valmax").val() ){
+                var etplus = " et +";
+            }else{
+                var etplus = "";
+            }
+            $("#DisplayBudgetMax").html( varmax + etplus );
+            if( monnaie == "euros" ){  
+            	$("#MiniInputBudgetMin").val(Math.round(ui.values[0] * tauxconversion ));
+            }else{
+            	$("#MiniInputBudgetMin").val(ui.values[0]);
+            }
+        }
+    });
+
+    if( monnaie == "euros" ){        
+        if($("#idtt").val()==1 || $("#idtt").val()==4) {
+            SliderInitiate(steploc_euros,afficheminbugloc_euros,affichemaxbugloc_euros,reelmaxbugloc_euros,reelminbugloc_euros);    	 
+        }else{
+            SliderInitiate(stepven_euros,afficheminbugven_euros,affichemaxbugven_euros,reelmaxbugven_euros,reelminbugven_euros);
+        }
+    }else{
+        if($("#idtt").val()==1 || $("#idtt").val()==4) {
+            SliderInitiate(steploc,afficheminbugloc,affichemaxbugloc,reelmaxbugloc,reelminbugloc);    
+        }else{
+            SliderInitiate(stepven,afficheminbugven,affichemaxbugven,reelmaxbugven,reelminbugven);
+        }
+    	
+    }
+
+
+
+
+/* ==========================================================================
+    == FIN SLIDER BUDGET ==
+    ========================================================================== */
+
+
+    /* ==========================================================================
+    == XPF c'est la joie ==
+    ========================================================================== */
+    
+    $('.currency-checkbox').change(function () {
+        console.log("Changer la monnaie !");
+        if( $(this).prop("checked") ){
+            convert_xpf_to_euros();
+            document.cookie = 'monnaie=euros; expires=Thu, 2 Aug 2030 20:47:11 UTC; path=/'
+        }else{
+            convert_euros_to_xpf();
+            document.cookie = 'monnaie=xpf; expires=Thu, 2 Aug 2030 20:47:11 UTC; path=/'
+        }
+    });
+
+    //Si le cookie indique qu'on veut la monnaie en euros, alors au chargement de la page on convertie tout
+    if( monnaie == "euros" ){
+        $(".currency-checkbox").prop("checked",true);  //on coche la case
+        convert_xpf_to_euros(); // on lance la convertion
+    }else{
+        //On fait rien car par défaut on récupère les prix en XPF.
+    }
+
+
+    /* ==========================================================================
+    == FIN XPF ==
+    ========================================================================== */
+
+
+});
+</script>
+
+
+$$IF=:INDEX$DETAILANNONCE:IDT$$
+
+    $$REM$$<!-- SLIDER -->$$END$$
+	<!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+
+$$END$$
+
+$$IF=:INDEX$RESULTATS$ALERTEIMMO:IDT$$
+    $$REM$$<!-- SUPPORT SVG SUR VIEILLE VERSION DE JQUERY -->$$END$$
+    <script src="$$_$$scripts/js/jquery.svg.min.js"></script>
+    <script src="$$_$$scripts/js/jquery.svgdom.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /* ==========================================================================
+            == MINIMOTEUR ==
+            ========================================================================== */
+
+            $('.mini-maparea').on("change", "input", function () {
+                var zone_id = $(this).data('zone');
+                $("[data-zone='" + zone_id + "']").toggleClass("is-active");
+                console.log(zone_id);
+            });
+            $("svg").on("click", ".mini-maparea", function () {
+                var zone_id = $(this).data('zone');;
+                if ($(this).hasClass("is-active")) {
+                    $("input[data-zone='" + zone_id + "']").prop("checked", false);
+                } else {
+                    $("input[data-zone='" + zone_id + "']").prop("checked", true);
+                }
+                $("[data-zone='" + zone_id + "']").toggleClass("is-active");
+            });
+
+
+            /* ==========================================================================
+            == ALERTE EMAIL  ==
+            ========================================================================== */
+            $("#Mini_Moteur").submit(function(e){
+                 if( $("#idtt").val() == '' ){
+                    alert("$$LG:CHOISIRIDTT$$");
+                    e.preventDefault();
+                 }
+            });
+            $$IF=:ALERTEIMMO:IDT$$
+            $("#Mini_Moteur").submit(function(){
+                if( $("#idtt").val() == 1 ){
+                    var facteur = 1.2;
+                }else{
+                    var facteur = 1.1;
+                }
+                
+                var min = $("#MiniInputBudgetMin").val();
+                var max = $("#MiniInputBudgetMax").val();
+
+                min = min.toString().replace(/\s/g,""); //on nettoie, notamment les espaces
+                min = min.toString().replace("&nbsp;","");
+                min = parseInt(min,10);  //on force en entier
+                min = Math.round( min / facteur ); 
+
+                max = max.toString().replace(/\s/g,""); //on nettoie, notamment les espaces
+                max = max.toString().replace("&nbsp;","");
+                max = parseInt(max,10);  //on force en entier
+                max = Math.round( max * facteur ); 
+
+                $("#MiniInputBudgetMin").val( min );
+                $("#MiniInputBudgetMax").val( max );
+
+            });
+            $$END$$
+
+        });
+    </script>
+$$END$$
+
+
+$$IF=:INDEX:IDT$$
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            /* ==========================================================================
+            == SLIDER HOME ==
+            ========================================================================== */
+
+            $('.aside-slider .owl-carousel').owlCarousel({
+                items: 1,
+                loop: false,
+                nav: false,
+                dots: false,
+                navText: false,
+                autoplay: true,
+                autoplayTimeout: 6000,
+                animateOut: 'fadeOut'
+            });
+
+
+            /* ==========================================================================
+            == MODULE ==
+            ========================================================================== */
+
+            $('.module-nav a').click(function () {
+                var tab_id = $(this).attr('data-module');
+
+                $('.module-nav a').removeClass('is-active');
+                $('.module').removeClass('is-active');
+
+                $(this).addClass('is-active');
+                $("#" + tab_id).addClass('is-active');
+            });
+
+            if (winW <= 767) {
+
+                $('.module-mobile').owlCarousel({
+                    items: 1,
+                    loop: false,
+                    dots: false,
+                    autoplay: true,
+                    autoplayTimeout: 8000,
+                    autoplayHoverPause: true,
+                    autoplaySpeed: 1000,
+                    nav: true,
+                    navText: ["<i class='aito-icon-arrow-left'></i>", "<i class='aito-icon-arrow-right'></i>"],
+                    responsive:{
+                        0:{
+                            items: 1
+                        },
+                        480:{
+                            items: 2
+                        }
+                    }
+                })
+
+            }
+
+            /* ==========================================================================
+            == MODULE EXTRA ==
+            ========================================================================== */
+
+            $('.extra').owlCarousel({
+                items: 1,
+                loop: false,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 8000,
+                autoplayHoverPause: true,
+                autoplaySpeed: 1000,
+                nav: true,
+                navText: ["<i class='aito-icon-arrow-left'></i>", "<i class='aito-icon-arrow-right'></i>"]
+            });
+        });
+    </script>
+
+$$END$$
+
+
+
+$$IF=:DETAILANNONCE:IDT$$
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        /* ==========================================================================
+        == GALERIE DETAIL ==
+        ========================================================================== */
+
+        $('.detail-carousel').owlCarousel({
+            items: 1,
+            loop: false,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 8000,
+            autoplayHoverPause: true,
+            autoplaySpeed: 1000,
+            nav: true,
+            navText: ["<i class='aito-icon-arrow-left'></i>", "<i class='aito-icon-arrow-right'></i>"]
+        })
+
+    });
+</script>
+
+$$END$$
+
+
+$$IF=:1:JS_RECHERCHE_PERSO$$
+    <script>
+        var typeLocalite = 0;
+    </script>
+    <script src="$$_$$scripts/js/recherche.js"></script>
+    <script type="text/javascript">
+        if(winW > tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js",true);
+            // var sNew = document.createElement("script");
+            // sNew.async = true;
+            // sNew.src = "/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js";
+            // var s0 = document.getElementsByTagName('script')[0];
+            // s0.parentNode.insertBefore(sNew, s0);
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_DETAIL_PERSO$$
+    <script type="text/javascript">
+        if(winW > tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js",true);
+        }
+
+    $(document).ready(function () {
+        $(".detail-infos-item-plus").click(function(){
+            $(".detail-infos").find(".detail-infos-item").removeClass("display-none");
+            $(this).hide();
+        });
+    });
+    </script>
+    <script src="$$_$$scripts/js/detail_annonce.js"></script>
+$$END$$
+
+
+
+
+$$IF=:1:JS_ESTIMATION_PERSO$$
+    <script src="$$_$$scripts/js/estimation.js"></script>
+$$END$$

@@ -1,0 +1,32 @@
+$$REM$$<!-- Fil d'ariane n'apparait que si CP/CI existe et unique dans la Query -->$$END$$
+
+$$A:URL_KELQUARTIER_TOPVILLE=$$
+
+$$IF=:FR:LANGUE$$
+    $$IF0:ANNLISTE:SIPANIER$$
+        $$IF+:2:FIL:NBR$$
+            $$BIF:FIL$$
+                $$A:LIMITE=@@FIL:NBR@@$$
+                $$A:LIMITE1=@@FIL:NBR exec XX-1@@$$
+                    <ul class="breadcrumb hidden-phone">
+                        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <a href="$$URLBASE$$" title="$$LG:ACCUEIL pcase$$" itemprop="url"><span itemprop="title">$$LG:ACCUEIL pcase$$</span></a>
+                        </li>
+                        $$DO$$
+                            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                                <a href="$$FIL:URLVIRTUELLE$$" title="$$FIL:LIBELLE$$" itemprop="url"><span itemprop="title">$$FIL:LIBELLE$$</span></a>
+                            </li>
+                            $$IF=:4:FIL:I$$
+                                $$A:URL_KELQUARTIER_TOPVILLE=@@FIL:URLVIRTUELLE@@$$
+                            $$END$$
+                        $$LOOP$$
+                        $$IF:ANNDETAIL:URLVIRTUELLE$$
+                            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                                <span itemprop="title" class="ville typo-important">$$IF=:1:NOVILLA$$$$REF_FIL replace Maison / villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$REF_FIL$$$$END$$</span>
+                            </li>
+                        $$END$$
+                    </ul>
+            $$BFIN$$
+        $$END$$
+    $$END$$
+$$END$$

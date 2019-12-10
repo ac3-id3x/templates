@@ -1,0 +1,108 @@
+
+
+
+
+<div class="detail-top">
+
+    <h1 itemprop="name" class="detail-ttl">
+        $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction$$
+        $$ANNDETAIL:IDTYPEBIEN gettypebien$$
+        $$ANNDETAIL:VILLE$$
+        $$IF:ANNDETAIL:IDSOUSTYPEBIEN$$
+            - $$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+        $$END$$
+        $$IF:ANNDETAIL:NB_PIECES$$
+            - $$ANNDETAIL:NB_PIECES$$ $$LG:PIECE$$$$IF+:2:ANNDETAIL:NB_PIECES$$s$$END$$
+        $$END$$
+
+    </h1>
+    <div class="detail-px">
+        <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+        <!--#include virtual="detail/incl_detail_prix.htm" -->
+    </div>
+    <div class="hidden-phone">
+        <!--#include virtual="detail/incl_detail_ref.htm" -->
+    </div>
+</div>
+
+
+<div class="row-fluid">
+    <div class="span8">
+
+        <div class="detail-gallery">
+            <!--#include virtual="detail/incl_detail_galerie.htm" -->
+            <!-- $$IF:ANNDETAIL:SI_EXCLUSIF$$
+            <i class="detail-gallery-exclu aito-icon-exclu"></i>
+            $$END$$ -->
+            $$IF:ANNDETAIL:SI_COUPDECOEUR$$
+                <i class="detail-gallery-cdc aito-icon-heart"></i>
+            $$END$$
+            <div class="detail-gallery-infos">
+                <div class="pull-right h3-like">
+                    <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+                    <!--#include virtual="detail/incl_detail_prix.htm" -->
+                </div>
+                <span class="big bold">$$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ à $$ANNDETAIL:VILLE pcase$$</span><br>
+                $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+                $$IF:ANNDETAIL:SURFACE$$
+                    | $$ANNDETAIL:SURFACE$$ m²
+                $$END$$
+            </div>
+        </div>
+
+
+
+        <div class="hidden-tablet hidden-desktop">
+            $$REM$$<!-- ici emplacement du form sur mobile, mais on peut pas avoir 2 forms -->$$END$$
+        </div>
+
+        <div class="detail-desc">
+            <h2 class="detail-desc-ttl">Description</h2>
+            <p itemprop="description">
+                <!--#include virtual="detail/incl_detail_descriptif.htm" -->
+            </p><br>
+
+            <div class="detail-infos">
+                $$BIF:FICHE$$
+                    $$A:O=0$$
+                    $$DO:1:999$$
+                        $$IF=:Pièces:FICHE:LIB$$
+                            $$A:NBPIECE=@@FICHE:VAL@@ @@FICHE:LIB@@,$$
+                        $$END$$
+                        $$IF!:Etage$Alarme$Parkings$Année de construction:FICHE:LIB$$
+                        $$A:O=@@O exec XX+1@@$$
+                        <div class="detail-infos-item$$IF>:7:O$$ display-none$$END$$">
+                            <span>$$FICHE:LIB striphtml$$</span>
+                            <span class="pull-right typo-body">$$IF0:FICHE:VAL$$Oui$$END$$ $$IF:FICHE:VAL$$ $$IF=:0:FICHE:VAL$$Non$$END$$ $$IF!:0:FICHE:VAL$$ $$FICHE:VAL striphtml$$ $$END$$$$END$$</span>
+                        </div>
+                        $$END$$
+                    $$LOOP$$
+                $$BFIN$$
+
+            </div>
+            $$IF>:7:O$$
+                <div class="pagination-centered margin-top-10">
+                    <a href="javascript:void(0);" class="small detail-infos-item-plus">$$LG:PLUSDETAILS pcase$$</a>
+                </div>
+                $$END$$
+
+
+        </div>
+
+    </div>
+    <div class="span4">
+            <!--#include virtual="detail/incl_detail_widget.htm" -->
+        <a id="contactdetail" name="contactdetail"></a>
+        <div class="">
+            <!--#include virtual="detail/incl_detail_contact.htm" -->
+        </div>
+
+
+        <a href="/alerte,immo.htm" class="display-inline margin-top-20 hidden-tablet hidden-phone" title="$$LG:ALERTEMAIL pcase$$">
+            <img src="$$_$$images/pub/bg-alerte.jpg" alt="$$LG:ALERTEMAIL pcase$$">
+        </a>
+
+    </div>
+</div>
+
+

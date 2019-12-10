@@ -1,0 +1,119 @@
+$$INIT:QUERYESTIMATION=idtypebien=1,2&photo=10$$
+$$INIT:IDT=ESTIMATION$$
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:CVESTIMATION$$
+$$E:OBSERVATOIRE:MELURL$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="estimation/incl_title_estimation.htm" -->
+<!-- estim lead detection : $$ESTIMATIONLEAD$$ -->
+<div class="row-fluid">
+	<div class="span12">
+
+	<h1 class="jaune">$$H1_ESTIMATION$$</h1>
+
+	<hr class="hidden-phone">
+	$$IF=:FR:LANGUE$$
+        $$IF0:REP:1$$
+$$REM$$<!--ESTIMATION V2-->$$END$$
+            $$IF=:1:ESTIMATIONLEAD$$
+                $$IF!:1:PAGE:MEL_CFG_V1$$
+                    <!--#include virtual="header/incl_text_estimation.htm" -->
+                    <link rel="stylesheet" href="/z/webagency/slagence_X_V5/bower_components/estimation/dist/assets/css/estimation_form.min.css">
+                    
+                        <script type="text/javascript" src="/z/webagency/slagence_X_V5/bower_components/estimation/dist/assets/js/estimationForm.js"$$IF:XDEV$$ data-report-suite="selogerpolirisdev"$$END$$$$IF0:XDEV$$ data-report-suite="selogerpolirisprod"$$END$$>
+                        </script>
+                    
+                    $$REM$$                   
+                    <script type="text/javascript"$$IF:XDEV$$ data-report-suite="selogerpolirisdev"$$END$$$$IF0:XDEV$$ data-report-suite="selogerpolirisprod"$$END$$>
+
+                        <!--#include virtual="bower_components/estimation/dist/assets/js/estimationForm.js" -->
+                    </script>
+                    $$END$$
+                    <script type="text/javascript">
+                    $jq.support.cors = true;
+                        var textperso = {
+                                step0: {
+                                title: "$$TITLE_BIENVENUE$$",
+                                intro: "$$INTRO_BIENVENUE$$"
+                            },
+                            contact: {
+                                par1: "$$CONTACT_PARTI_ONE$$",
+                                par2: "$$CONTACT_PARTI_TWO$$",
+                                CTA: "$$CONTACT_BTN$$"
+                            },
+                            noestim: {
+                                par1: "$$NO_ESTIM_PART_ONE$$",
+                                par2: "$$NO_ESTIM_PART_TWO$$"
+                            }
+                        }
+                        $jq(document).ready(function(){
+                            $jq('.estimation-test').estimation({
+                                type:"poliris",
+                                color: "$$IF:PAGE:MEL_CFG_COULEUR$$$$PAGE:MEL_CFG_COULEUR$$$$END$$$$IF0:PAGE:MEL_CFG_COULEUR$$#a5a5a5$$END$$",
+                                text:textperso,
+                                preEstim: "/api/estimation/ObtenirFaisabilite",
+                                sauvegardeAppart: "/api/estimation/SauvegarderEstimationAppartement",
+                                sauvegardeMaison: "/api/estimation/SauvegarderEstimationMaison",
+                                estimAppart: "/api/estimation/ObtenirEstimationAppartement",
+                                estimMaison: "/api/estimation/ObtenirEstimationMaison",
+                                ClefIdentification : "$$PAGE:MEL_CFG_JETON$$",
+                                server : "http://evaluation-svc.pericles.fr",
+                                autocomplete : "bower_components,estimation,dist,assets,json,autocomplete.json"
+                            });
+                        })
+                    </script>
+$$REM$$<!--TEXTE AVANT FORMULAIRE-->$$END$$
+$$IF!:1:HIDEESTIMATIONTOP$$
+                    <!--#include virtual="estimation/incl_estimation_top.htm" -->
+$$END$$
+$$REM$$<!--FORMULAIRE-->$$END$$
+                    <div class="row-fluid">
+                        <div class="estimation-test"></div>
+                    </div>
+$$REM$$<!--APRES FORMULAIRE-->$$END$$
+                    $$IF!:1:HIDEFORMBOTTOM$$
+                        <!--#include virtual="estimation/incl_estimation_bottom.htm" -->
+                    $$END$$
+                $$END$$
+$$REM$$<!--ESTIMATION V1-->$$END$$
+                $$IF=:1:PAGE:MEL_CFG_V1$$
+        			$$IF=:1:FORM:IDTYPEBIEN$$
+        				$$A:TAILLE=700$$
+        			$$END$$
+        			$$IF=:2:FORM:IDTYPEBIEN$$
+        				$$A:TAILLE=920$$
+        			$$END$$
+        			$$IF:FORM:IDTYPEBIEN$$
+                        <!--#include virtual="estimation/incl_texte_estimation.htm" -->
+        				<iframe src="$$OBSERVATOIRE:MELURL:URL$$&o=INTP-0001&idtypebien=$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$1$$END$$"  width="960" height="$$TAILLE$$" scrolling="no" style="overflow-y:hidden;border:0;" frameborder="0"></iframe>
+
+        			$$END$$
+        			$$IF0:FORM:IDTYPEBIEN$$
+        				<!--#include virtual="estimation/incl_select_estimation.htm" -->
+        			$$END$$
+                $$END$$
+    		$$END$$
+$$REM$$<!--ESTIMATION AUTRE (pas estim en ligne)-->$$END$$
+    		$$IF=:0:ESTIMATIONLEAD$$
+    			$$IF:REP:1$$
+    				<!--#include virtual="estimation/incl_formulaire_estimation.htm" -->
+    			$$END$$
+    			$$IF0:REP:1$$
+    				<!--#include virtual="estimation/incl_agences_estimation.htm" -->
+    			$$END$$
+    		$$END$$
+        $$END$$
+    	$$IF:REP:1$$
+            $$IF:REP:1$$
+                <!--#include virtual="estimation/incl_formulaire_estimation.htm" -->
+            $$END$$
+            $$IF0:REP:1$$
+                <!--#include virtual="estimation/incl_agences_estimation.htm" -->
+            $$END$$
+    	$$END$$
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		<!--#include virtual="estimation/incl_construction_estimation.htm" -->
+	$$END$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
