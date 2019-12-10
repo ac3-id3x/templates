@@ -1,0 +1,39 @@
+<h2>$$AGENCE_NOM$$, agence immobilière dans La Seine-et-Marne</h2>
+<p>$$LG:BIENVENUESUR pcase$$ $$REP:RSRV$$.
+	$$IF=:FR:LANGUE$$Notre agence est situ&eacute;e &agrave; $$AGENCE_VILLE$$ et vous propose des annonces immobili&egrave;res de$$END:LANGUE$$
+	$$IF!:FR:LANGUE$$Our estate agency is located in $$AGENCE_VILLE$$ and offers ads for$$END:LANGUE$$
+	$$REM$$<!-- //////////////////////////////////////							
+		> idtt volontairement exclues du site :
+		3 = location temporaire
+		4 = location vacances								
+		6 = produit d'investissement
+		7 = location de prestige
+		8 = vente de prestige
+		9 = vente neuf
+		11 = cession de bail
+	////////////////////////////////////// -->$$END:REM$$
+		
+	$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCE_IDTT_DISPOS$$
+	$$BIF:AGENCE_IDTT_DISPOS$$$$DO$$
+	$$IF!:3$4$6$7$8$9$11:AGENCE_IDTT_DISPOS:IDTYPETRANSACTION$$
+	$$AGENCE_IDTT_DISPOS:DESCRIPTIONLG lcase$$, 
+	$$END:AGENCE_IDTT_DISPOS:IDTYPETRANSACTION$$
+	$$LOOP$$$$BFIN$$						
+				
+	$$IF=:FR:LANGUE$$&agrave;$$END:LANGUE$$
+	$$IF!:FR:LANGUE$$in$$END:LANGUE$$
+				
+	$$REM$$<!-- //////////////////////////////////////
+	Liens classés par ordre décroissant de nombre d'annonces
+	IDTT = 2,6,8
+	////////////////////////////////////// -->$$END:REM$$
+	
+	$$B:IMMOBW:NBANN_VILLES:ALIAS:VILLES_VENTES:~tri:d_nbann:~idtypetransaction:2,6,8$$
+	$$BIF:VILLES_VENTES$$							
+	$$DO:1:10$$
+	$$VILLES_VENTES:VILLE$$,								
+	$$LOOP$$
+	$$IF+:10:VILLES_VENTES:NBR$$...$$END$$
+	$$BFIN$$
+
+</p>
