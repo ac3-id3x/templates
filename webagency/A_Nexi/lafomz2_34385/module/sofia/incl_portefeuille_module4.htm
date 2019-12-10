@@ -1,0 +1,282 @@
+﻿				
+				$$REM$$<!-- //// comptage initial nb annonces par type de transaction //// -->$$END$$
+		
+			
+				$$A:TOT_1_LOC=0$$ 
+				$$A:TOT_2_VEN=0$$
+				$$A:TOT_3_LOCTEMP=0$$
+				$$A:TOT_4_LOCVAC=0$$
+				$$A:TOT_5_VIAGER=0$$
+				$$A:TOT_6_PROD=0$$
+				$$A:TOT_7_LOCPRES=0$$
+				$$A:TOT_8_VENPRES=0$$
+				$$A:TOT_9_NEUF=0$$
+				$$A:TOT_10_FONDCOM=0$$
+				$$A:TOT_11_CESSIONB=0$$
+
+
+
+				$$REM$$<!-- //// on compte //// -->$$END$$
+				$$BIF:TRANSAC_DISPOS4$$		
+				
+				$$DO$$						
+				$$IF=:1:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_1_LOC=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:2:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_2_VEN=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:3:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_3_LOCTEMP=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:4:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_4_LOCVAC=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:5:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_5_VIAGER=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:6:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_6_PROD=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:7:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_7_LOCPRES=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:8:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_8_VENPRES=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:9:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_9_NEUF=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:10:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_10_FONDCOM=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$IF=:11:TRANSAC_DISPOS4:IDTYPETRANSACTION$$$$A:TOT_11_CESSIONB=@@TRANSAC_DISPOS4:NBANN@@$$$$END$$
+				$$LOOP$$
+				$$BFIN$$
+		
+				<ul id="AgImmoPortefeuille_module">				
+$$REM$$<!-- ////////////////////////////////////////////vente////////////////////////////////////////////////// 
+ /////////////////////////////////// 02.12.2010 c/o Lisbonne, on enleve TOT_8_VENPRES dans script qui additionne les ventes (calculs pas bons) 
+ /////////////////////////////////// 02.12.2010 c/o Lisbonne, on cache idtypebien=6 (boutique), car lien mort (pourquoi ? va savoir c'est dynamique mais avant �a marchait) -->$$END$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$A:JETON=0$$
+					$$DO$$		
+					$$IF=:2:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+						<script type="text/javascript">document.write(eval($$TOT_2_VEN$$+$$TOT_6_PROD$$))</script>&nbsp;
+						$$IF=:RU:LANGUE$$Продажа$$END$$
+						$$IF!:RU:LANGUE$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						$$END$$
+						</a>						
+					</li>
+					$$END$$
+					$$LOOP$$		
+					$$BFIN$$
+
+				
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////vente prestige/////////////////////////////////////////////////// -->$$END:REM$$
+
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:8:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+								$$IF=:RU:LANGUE$$Элитная Недвижимость$$END$$
+							$$IF!:RU:LANGUE$$											
+								$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+								$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+							$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+					
+		
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$REM$$<!-- /////////////////////////////////////////////location///////////////////////////////////////////////// -->$$END$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:1:TRANSAC_DISPOS4:IDTYPETRANSACTION$$	
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							<script type="text/javascript">document.write(eval($$TOT_1_LOC$$+$$TOT_7_LOCPRES$$+$$TOT_11_CESSIONB$$))</script>&nbsp;
+							$$IF=:RU:LANGUE$$Аренда$$END$$
+							$$IF!:RU:LANGUE$$								
+								$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+								$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+							$$END$$
+						</a>
+					</li>			
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+			
+				
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////////locations temporaires/////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:3:TRANSAC_DISPOS4:IDTYPETRANSACTION$$			
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+			
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$REM$$<!-- //////////////////////////////////////////////locations vacances//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:4:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+					
+			
+
+$$REM$$<!-- //////////////////////////////////////////viagers//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:5:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+				
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////produits d'investissement//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:6:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+			
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////////loc prest//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:7:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+				
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+ $$REM$$<!-- ===== options dispo seulement sur pack avantage + pericles ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////programmes neufs/////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:9:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$""
+						$$REM$$<!-- si pack avantage -->$$END:REM$$
+						$$IF=:1:PAGE:WAG_TYPE_PACK$$
+						style="
+						$$REM$$<!-- si no option neuf -->$$END:REM$$
+						$$IF!:1:RESULTATS_NEUF$$display:none;$$END:1:RESULTATS_NEUF$$
+						$$REM$$<!-- si option neuf -->$$END:REM$$
+						$$IF=:1:RESULTATS_NEUF$$display:block;$$END:1:RESULTATS_NEUF$$
+						"
+						$$END:PAGE:WAG_TYPE_PACK$$
+						>
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+				
+
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////fond de commerce//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:10:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF=:RU:LANGUE$$Коммерческая Недвижимость$$END$$
+							$$IF!:RU:LANGUE$$		
+								$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$LG:FONDDECOMMERCE lcase$$$$END$$		
+								$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$LG:LIEN:FCOMMERCE lcase$$$$END$$
+							$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+			
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== cach� si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////////cession de bail//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS4$$
+					$$DO$$
+					$$IF=:11:TRANSAC_DISPOS4:IDTYPETRANSACTION$$
+					<li class="typeTransac$$IF=:0:JETON$$ open$$END$$"">
+						<span class="PucePort"></span>
+						<a href="$$URLBASE$$/485390/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSAC_DISPOS4:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS4:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS4:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS4:NBANN$$$$TRANSAC_DISPOS4:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					
+$$END:1:PAGE:WAG_TYPE_PACK$$
+				</ul>	
+				
+				
+				
+				

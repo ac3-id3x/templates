@@ -1,0 +1,314 @@
+<!--#include virtual="header/incl_haut.htm" -->
+$$SET:IDT=COMMERCE$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:JS_MOTEUR=1$$
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("input[name='idtt']").click(function(){
+		
+		// à améliorer pour éviter de lancer l'exécution si l'onglet est déjà ouvert
+			id = $(this).val();
+			$(".budget").find("select").val("");
+			$(".budget").hide();
+			$("#budget"+id).show();
+			if( id == 11 || id == 1){
+				$("#loyer").show();	
+			}else{
+				$("#loyer").hide();	
+				$("#loyer").find("select").val("");	
+			}
+			
+			
+			$(".listcommerce").find("ul").hide();
+			$(".listcommerce").find("ul input[type='checkbox']").prop("checked",false);
+			$(this).closest("li").find("ul").show();
+			$(this).closest("li").find("ul input[name='idtypebien']").prop("checked",true);
+		
+		
+		
+		
+		
+	});
+	
+	$("input[name='idtypecommerce']").click(function(){
+		var sep = "";
+		var valeur = "";
+		$("#idtypeactivite").val("");
+		$("input[name='idtypecommerce']").each(function( index ) {
+			if( $(this).data("activite") && $( this ).prop("checked") ){
+				valeur = valeur + sep + $(this).data("activite");
+				sep=",";
+			}			
+		});
+		$("#idtypeactivite").val(valeur);		
+	});
+});
+</script>
+
+
+
+<div class="ttl-pages">$$LG:LIEN:PROFESSIONNELS pcase$$</div>
+<div id="Moteur">
+
+<h1>$$LG:LIEN:MOTRECH pcase$$</h1>
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/moteur,prerecherche.htm" name="annonces" id="annonces" onsubmit="return verifField();">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="idtypeactivite" id="idtypeactivite" value="" />
+
+<table class="moteurTable moteurMargin">
+	<tr id="RechDetailleeCommerce" style="display: block;">
+		<td class="col1">
+			<h2>$$LG:TYPEDETRANSACTION pcase$$</h2>
+			<ul class="listcommerce">
+				<li>
+					<label>
+						<input type="radio" name="idtt" value="10" checked="checked">&nbsp;$$LG:ANN:FONDSCOM pcase$$
+					</label>
+						<ul>	
+						
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="5" data-activite="30" />Bar + (Presse - Tabac - FDJ- PMU)</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="12" />Bar pur</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="1" data-activite="1" />Boulangerie Patisserie</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="3" data-activite="" />Coiffure Beauté (esthétique Bar à sourire)</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="118" />Crêperie</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="6" data-activite="" />Fleuriste</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="10" />Hôtel Bureau</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="10" />Hôtel Restaurant</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="1" data-activite="" />Métier de bouche (Epicerie-Supérette-Supermarché-Boucherie-Charcuterie)</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="117" />Pizzéria</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="35" />Presse</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="4" data-activite="" />Prêt à porter – Chaussure</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="11" />Restaurant – Brasserie</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="14" />Restauration rapide - VAE – Sandwicherie</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="2" data-activite="107" />Salon de thé</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="6" data-activite="" />Service à la personne</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypecommerce" value="5" data-activite="30" />Tabac - e-cigarette</label></li>
+
+						
+						</ul>
+				</li>
+				<li>
+					<label>
+						<input type="radio" name="idtt" value="2">&nbsp;$$LG:MURSCOMMERC pcase$$
+					</label>
+					<ul style="display: none;">
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="7"  />$$LG:LOCAL pcase$$</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="6"  />$$LG:BOUTIQUE pcase$$</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="5"  />$$LG:COMMERCE pcase$$</label></li>
+					</ul>
+				</li>
+				<li>
+					<label>
+						<input type="radio" name="idtt" value="11">&nbsp;$$LG:ANN:CESSIONBAILS pcase$$
+					</label>
+				</li>
+				<li>
+					<label>
+						<input type="radio" name="idtt" value="1">&nbsp;$$LG:ANN:LOCATIONS pcase$$
+					</label>
+					<ul style="display: none;">
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="8" />$$LG:BUREAU pcase$$</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="7"  />$$LG:LOCAL pcase$$</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="6"  />$$LG:BOUTIQUE pcase$$</label></li>
+						<li class="comlist"><label><input type="checkbox" name="idtypebien" value="5"  />$$LG:COMMERCE pcase$$</label></li>
+					</ul>
+				</li>
+			</ul>
+
+			
+			
+			
+		</td><!-- .col1 -->
+		<td class="col2">
+			<h2>$$LG:RECHREF pcase$$</h2>
+			<input id="ref_ann_input" type="text" class="inputText" name="refannonce" value="" />
+
+			<div id="budget10" class="budget">
+			<h2>$$LG:BUDGET pcase$$</h2>
+			<select name="pxbtw">
+				<option value="">Tout budget</option>
+				<option value="0/50000">- 50 K€</option>
+				<option value="50000/100000">50-100 K€</option>
+				<option value="100000/200000">100-200 K€</option>
+				<option value="200000/300000">200-300 K€</option>
+				<option value="300000/500000">300-500 K€</option>
+				<option value="500000/+">+ 500 K€</option>
+			</select>
+			</div>
+		
+			<div id="budget2" class="budget" style="display: none;">
+				<h2>$$LG:BUDGET pcase$$</h2>
+			<select name="pxbtw">
+				<option value="">Tout budget</option>
+				<option value="0/100000">-100 K€</option>
+				<option value="100000/200000">100-200 K€</option>
+				<option value="200000/400000">200-400 K€</option>
+				<option value="400000/+">+ 400 K€</option>
+			</select>
+			</div>
+			
+			<div id="budget11" class="budget" style="display: none;">
+				<h2>$$LG:BUDGET pcase$$</h2>
+			<select name="px_cessionbtw">
+				<option value="">Tout budget</option>
+				<option value="0/20000">- 20 K€</option>
+				<option value="20000/50000">20-50 K€</option>
+				<option value="50000/100000">50-100 K€</option>
+				<option value="100000/200000">100-200 K€</option>
+				<option value="200000/+">+ 200 K€</option>
+			</select>
+			</div>
+
+			<div  id="loyer" style="display: none;">
+			<h2>$$LG:LOYERMENSUEL pcase$$</h2>
+			<select name="px_loyerbtw">
+				<option value="">Tout budget</option>
+				<option value="0/200">- 200 €</option>
+				<option value="500/1000">500-1000 €</option>
+				<option value="1000/1500">1000 - 1500 €</option>
+				<option value="1500/+">+ 1500 €</option>
+			</select>
+		
+		</div>
+		
+			<div id="champLibreVille">
+				<h2 class="moteurMargin">$$LG:ENTREZCPVILLEDPT pcase$$</h2>
+				<!--#include virtual="moteur/incl_villes_champs_libres.htm" -->
+			</div>
+			
+			<h2 class="moteurMargin">$$LG:ETENDRERECH pcase$$</h2>
+		  <!--#include virtual="moteur/incl_rayon.htm" -->
+			
+		</td><!-- .col2 -->
+		<td class="col3">
+		
+		</td><!-- .col3 -->
+	</tr>
+</table>
+<div id="MoteurBouton">
+	<input type="submit" class="inputSubmit" value="Rechercher" />
+</div>
+
+
+
+</div> <!-- #moteur -->
+
+
+</form>
+
+
+$$REM$$
+
+
+<!-- $$FORM:IDTT$$ -->
+<div class="pointillesBas">
+	<h1 class="titre_commerce">$$LG:LIEN:MOTRECH  pcase$$</h1>
+	<h3 class="selection comselec"><strong>$$LG:SELECTIONNEZ$$<a href="/liste_transactions.htm" class="selection"></a></strong></h3>
+	<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/moteur,prerecherche.htm" name="annonces" id="annonces" onsubmit="return verifField();">
+	$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+    <input type="hidden" name="idtypebien" id="idtypebien99" value="" />
+</div>
+
+	<!-- TYPE DE COMMERCE -->
+	$$IF!:0:PAGE:TYPEDECOM$$
+	<!-- <div><h2>$$LG:TYPEDECOM$$</h2></div> -->
+	<div>
+		<h2 class="selecsoustitre">$$LG:TYPEDETRANSACTION$$ :</h2>
+		<label class="labelTypeTransac" for="idtt10"  value="10" name="idtt" onclick="javascript:checkPrices();"><input type="radio" id="idtt10" name="idtt" value="10" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:10:FORM:IDTT$$checked="checked"$$END$$ $$IF0:FORM:IDTT$$checked="checked"$$END$$ /> $$LG:MINIFONDSCOM$$</label>
+		<label class="labelTypeTransac" for="idtt11" value="11" name="idtt" onclick="javascript:checkPrices();"><input type="radio" id="idtt11" name="idtt" value="11" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:11:FORM:IDTT$$checked="checked"$$END$$ /> $$LG:MINIBAIL$$</label>
+		$$IF0:COM:LOCS$$<label class="labelTypeTransac" for="idtt1" value="1" name="idtt" onclick="javascript:checkPrices();"><input type="radio" id="idtt1" name="idtt" value="1" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:1:FORM:IDTT$$checked="checked"$$END$$ /> $$LG:LOCATION$$</label>$$END$$
+		$$IF0:COM:VENS$$<label class="labelTypeTransac" for="idtt2" value="2" name="idtt" onclick="javascript:checkPrices();"><input type="radio" id="idtt2" name="idtt" value="2" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:2:FORM:IDTT$$checked="checked"$$END$$ /> $$LG:VENTE$$</label>$$END$$
+		</div>
+	<div>
+		<div id="typebien" style="display:none;">
+		<ul>
+			<li class="comlist"><input type="checkbox" name="idtypebien" value="7"  $$IF=:7:FORM:idtypebien$$checked="checked"$$END$$  />$$LG:LOCAL pcase$$</li>
+			<li class="comlist"><input type="checkbox" id="idtb4 name="idtypebien" value="4" $$IF=:4:FORM:idtypebien$$checked="checked"$$END$$  />$$LG:TERRAIN pcase$$</li>
+			<li class="comlist"><input type="checkbox" id="idtb11 name="idtypebien" value="11"$$IF=:11:FORM:idtypebien$$checked="checked"$$END$$  />$$LG:IMMEUBLE pcase$$</li>
+			<li class="comlist"><input type="checkbox" id="idtb8 name="idtypebien" value="8" $$IF=:8:FORM:idtypebien$$checked="checked"$$END$$ />$$LG:BUREAU pcase$$</li>
+			<li class="comlist"><input type="checkbox" id="idtb6 name="idtypebien" value="6" $$IF=:6:FORM:idtypebien$$checked="checked"$$END$$  />$$LG:BOUTIQUE pcase$$</li>
+		</ul>
+		</div>
+		<div id="typecommerce">
+		<h2 class="selecsoustitre">$$LG:TYPEDECOM$$ :</h2><br />
+		<ul>	
+		<li class="comlist"><input type="checkbox" name="idtypecommerce" value="1" $$IF=:1:FORM:idtypecommerce$$checked="checked"$$END$$ /> Alimentation</li>
+		<li class="comlist"><input type="checkbox" id="idtc2" name="idtypecommerce" value="2"  $$IF=:2:FORM:idtypecommerce$$checked="checked"$$END$$ /> Caf&eacute; - H&ocirc;tel - Restaurant</li>
+		<li class="comlist"><input type="checkbox" id="idtc9" name="idtypecommerce" value="9" $$IF=:9:FORM:idtypecommerce$$checked="checked"$$END$$ /> Divers</li>
+		<li class="comlist"><input type="checkbox" id="idtc7" name="idtypecommerce" value="7"  $$IF=:7:FORM:idtypecommerce$$checked="checked"$$END$$ /> Equipement maison</li>
+		<li class="comlist"><input type="checkbox" id="idtc3" name="idtypecommerce" value="3" $$IF=:3:FORM:idtypecommerce$$checked="checked"$$END$$ /> Esth&eacute;tique et Coiffure</li>
+		<li class="comlist"><input type="checkbox" id="idtc5" name="idtypecommerce" value="5" $$IF=:5:FORM:idtypecommerce$$checked="checked"$$END$$ /> Librairie - Papeterie - Journaux</li>
+		<li class="comlist"><input type="checkbox" id="idtc8" name="idtypecommerce" value="8" $$IF=:8:FORM:idtypecommerce$$checked="checked"$$END$$ /> M&eacute;dical - Para-m&eacute;dical</li>
+		<li class="comlist"><input type="checkbox" id="idtc4" name="idtypecommerce" value="4" $$IF=:4:FORM:idtypecommerce$$checked="checked"$$END$$ /> Pr&ecirc;t &agrave; porter</li>
+		<li class="comlist"><input type="checkbox" id="idtc6" name="idtypecommerce" value="6" $$IF=:6:FORM:idtypecommerce$$checked="checked"$$END$$ /> Service pour la personne</li>
+		</ul>
+		</div>
+		</div>
+	$$END$$
+	<!-- Budget -->
+	$$IF=:1:PAGE:BUDGET$$
+	
+	<div><h2 class="selecsoustitre">$$LG:BUDGET$$</h2></div>
+
+	<div><strong>$$LG:MINI$$&nbsp;:</strong>&nbsp;<input class="imputForm" type="text" name="pxmin" size="10" value="" />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>$$LG:MAXI$$&nbsp;:</strong>&nbsp;<input class="imputForm" type="text" name="pxmax" size="10" value="" />
+		<font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+		<select name="euro">
+			<option value="1">&euro;</option>
+			<option value="0">FF</option>
+		</select></font>
+		</div>
+	$$END$$
+	<!-- Surface -->
+	$$IF=:1:PAGE:SURFACE$$
+
+	<div><h2 class="selecsoustitre">$$LG:SURFACE$$</h2></div>
+	<div><strong>$$LG:MINI$$&nbsp;:</strong>&nbsp;<input class="imputForm" type="text" name="surfacemin" size="10" />
+		m&sup2;&nbsp;&nbsp;<strong>$$LG:MAXI$$&nbsp;:</strong>&nbsp;<input class="imputForm" type="text" name="surfacemax" size="10" /> m&sup2;</div>
+	$$END$$
+	<!-- Proximité -->
+	$$IF=:1:PAGE:PROXIMITE$$
+
+	
+	<div><h2 class="selecsoustitre">$$LG:VILLES$$</h2></div>
+	
+	<div><i>($$LG:ZONEDESAISIE$$)</i><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 1$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 2$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 3$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 4$$" /><br />
+		(<i><a href="javascript:openCodes_Postaux();">$$LG:RETROUVER$$</a></i>)
+		</div>
+	$$END$$
+	
+	<!-- Annonces fraicheur -->
+	$$IF!:0:PAGE:FRAICHEUR$$
+	
+	<div><ul><li class="comlist"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />&nbsp;$$LG:NOUV$$</li></ul></div>
+	$$END$$
+	<!-- Préliste -->
+	$$IF=:1:PAGE:PRELISTE$$
+	
+	<div><font size="1">$$LG:DETAILANN$$</font>&nbsp;
+		<input type="radio" name="preliste" value="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm" checked onclick="javascript:document.forms['annonces'].action = 'moteur/prerecherche.htm';" /><br />
+		<font size="1">$$LG:PRELISTE$$</font>&nbsp;
+		<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = 'moteur/prerecherche_liste.htm';" />
+		</div>
+	$$END$$
+	<!-- Validation Form -->
+
+
+			<div id="MoteurBouton">			
+			<input type="submit" class="inputSubmit" value="$$LG:RECHERCHER pcase$$" />
+		</div>
+
+
+	</form>
+
+<script language="javascript" type="text/javascript">checkPrices();</script>
+
+$$END$$
+
+<!--#include virtual="footer/incl_bas.htm" -->
