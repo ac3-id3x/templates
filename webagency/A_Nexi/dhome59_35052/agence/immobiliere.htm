@@ -1,0 +1,710 @@
+$$REM$$====================================================================
+//// <summary>Affiche toutes les infos concernant l'agence</summary>
+//// <remarks>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V3/styles/agence-immobiliere.css</para>
+//// <para>Portefeuille d'annonces + vignettes des 4 dernières annonces apparaîssent si l'agence a souscrit à un contrat de référencement</para>
+//// <para>MENTIONS LEGALES : SI MODIFS > MODIFIER AUSSI LE FICHIER "LEGAL,MENTIONS.HTM"</para>
+//// </remarks>
+//// <update date="2010-06-10" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOTREAGENCE$$
+$$INIT:CSS_AGENCE=1$$
+$$INIT:JS_BING=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ - @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE lcase@@ à @@CV:VILLE@@ est spécialiste de l'immobilier à @@CV:VILLE@@ (@@CV:CP@@).$$
+	$$A:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ à @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@TITLE@@.$$
+	$$A:KEYWORDS=@@CV:NOM@@, @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<div id="AgImmo_Ctn" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/RealEstateAgent"$$END$$>
+	<!--#include virtual="agence/incl_titre_h3.htm" -->
+$$REM$$<!-- ============================== gauche ============================== -->$$END:REM$$
+			<div id="AgImmoGauche" style="position:relative;">
+				<div id="AgImmoVitrine_Ctn">
+					$$IF:CV:SIPHOTOAGENCE$$
+						<img src="$$CV:URL_PHOTOAGENCE$$" class="photo-agence-detail"/>
+					$$END$$
+					$$IF0:CV:SIPHOTOAGENCE$$
+						$$IF:CV:SI_LOGO$$
+							<img src="$CV:URLLOGO$"/>
+							<div style="background:url('$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg') 50% 50% no-repeat;width:300px; height:200px;position:absolute;top:0;left:0;"></div>
+						$$END$$
+						$$IF0:CV:SI_LOGO$$
+							$$REM$$<img src="$$~$$images/agences/sans_photo.png" class="snsphotos"/>$$END$$
+							<div style="background:url('$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg') 50% 50% no-repeat;width:300px; height:200px;position:absolute;top:0;left:0;"></div>
+						$$END$$
+					$$END$$
+				</div><!-- #AgImmoVitrine_Ctn -->
+				
+				
+$$REM$$<!-- ==================== carte geoloc sur option (par défaut depuis 12.01.2011) ==================== -->$$END:REM$$	
+				<!--#include virtual="carto/incl_BingMap_agences.htm" -->
+
+				
+				<div id="AgImmoMentions">
+					$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+					<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+				</div><!-- #AgImmoMentions -->
+				
+			</div><!-- #AgImmoGauche -->
+			
+$$REM$$<!-- ============================== droite ============================== -->$$END:REM$$
+			<div id="AgImmoDroite">
+				
+				<h2 $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="name"$$END$$>$$CV:NOM ucase$$</h2>
+				<!--microdonnées agences-->
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+					<div itemprop="description" style="display:none">$$CV:TXT_PUBLIC left 200$$</div>
+					<div itemprop="url" style="display:none">$$IF:CV:URLVIRTUELLE$$$$CV:URLVIRTUELLE$$$$END$$$$IF0:CV:URLVIRTUELLE$$$$AGENCE_URLVIRT$$$$END$$</div>
+					$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Mo $$HEURE:LUNDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:LUNDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:LUNDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:LUNDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+					$$IF:HEURE:MARDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Tu $$HEURE:MARDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MARDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:MARDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MARDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+					$$IF:HEURE:MERCREDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="We $$HEURE:MERCREDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MERCREDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MERCREDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+					$$IF:HEURE:JEUDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Th $$HEURE:JEUDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:JEUDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:JEUDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:JEUDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+					$$IF:HEURE:VENDREDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Fr $$HEURE:VENDREDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:VENDREDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:VENDREDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+					$$IF:HEURE:SAMEDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Sa $$HEURE:SAMEDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:SAMEDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:SAMEDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+			    $$IF:HEURE:FERMETURE-EX$$<meta itemprop="exceptionalClosing" content="Ec du $$HEURE:FERMETURE-EX-DEBUT date dddd_dd_MMMM lcase$$ au $$HEURE:FERMETURE-EX-FIN date dddd_dd_MMMM_yyyy lcase$$">$$END$$
+				$$END$$
+				
+				<p class="cv_adresse">
+					$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">$$END$$
+					<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="streetAddress"$$END$$>$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br /></span>
+					<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="postalCode"$$END$$>$$CV:CP$$</span><span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="addressLocality" $$END$$> $$CV:VILLE ucase$$</span></div>
+				</p>
+				<p id="AgImmo_telfax">
+					$$REM$$<!-- tous les téls -->$$END$$
+					$$IF:CV:TEL$$<!-- tel standard--><label><span >$$LG:MINITEL$$ :</span> <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="telephone" $$END$$>$$CV:TEL formattel$$</span></label><br />$$END:TEL$$
+					
+					<label><span>Dominique SIBILE :</span> 06.74.332.335</label><br />
+					<label><span>Stéphanie HUART :</span> 07.71.064.068</label><br />
+					<label><span>Olivier DAL :</span> 07.71.145.840</label><br />
+
+					$$REM$$
+						$$IF:CV:TELVEN$$<label><span>$$LG:MINITEL$$ $$LG:VENTES lcase$$ :</span> $$CV:TELVEN formattel$$</label><br />$$END:TELVEN$$
+						$$IF:CV:TELLOC$$<label><span>$$LG:MINITEL$$ $$LG:LOCATION lcase$$ :</span> $$CV:TELLOC formattel$$</label><br />$$END:TELLOC$$
+					$$END$$
+					$$IF:CV:TELVAC$$<label><span>$$LG:MINITEL$$ $$LG:LOCVAC lcase$$ :</span> $$CV:TELVAC formattel$$</label><br />$$END:TELVAC$$
+					$$IF:CV:TELCOM$$<label><span>$$LG:MINITEL$$ $$LG:COMEETENT lcase$$ :</span> $$CV:TELCOM formattel$$</label><br />$$END:TELCOM$$
+					
+					$$REM$$<!-- tous les faxs -->$$END$$
+					$$IF:CV:FAX$$<!-- fax standard --><label><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label><br />$$END:FAX$$
+					$$IF:CV:FAXVEN$$<label><span>$$LG:FAX$$ $$LG:VENTES lcase$$ :</span> $$CV:FAXVEN formattel$$</label><br />$$END:FAXVEN$$
+					$$IF:CV:FAXLOC$$<label><span>$$LG:FAX$$ $$LG:LOCATION lcase$$ :</span> $$CV:FAXLOC formattel$$</label><br />$$END:FAXLOC$$
+					$$IF:CV:FAXVAC$$<label><span>$$LG:FAX$$ $$LG:LOCVAC lcase$$ :</span> $$CV:FAXVAC formattel$$</label><br />$$END:FAXVAC$$
+					$$IF:CV:FAXCOM$$<label><span>$$LG:FAX$$ $$LG:COMEETENT lcase$$ :</span> $$CV:FAXCOM formattel$$</label><br />$$END:FAXCOM$$
+				</p>
+				
+				<p id="AgImmo_responsables">
+					$$REM$$<!-- tous les responsables -->$$END$$
+					$$IF:CV:RESPAG$$<label class="respAgence"><span>$$LG:RESPAGENCE pcase$$ :</span> $$CV:RESPAG ncase$$</label><br />$$END:RESPAG$$
+					$$IF:CV:RESPVEN$$<label class="cntvente"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label><br />$$END$$
+					$$IF:CV:RESPLOC$$<label class="cntloc"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label><br />$$END$$
+					$$IF:CV:RESPVAC$$<label class="cntvac"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label><br />$$END$$
+					$$IF:CV:RESPCOM$$<label class="cntrespcom"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label><br />$$END$$
+					$$IF:CV:EMAIL$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ :</span> <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></label><br />$$END:EMAIL$$
+					$$IF:CV:EMAILLOC$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ $$LG:LOCATION lcase$$ :</span> <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAILLOC encodemail javascript$$</a></label><br />$$END:EMAIL$$
+					$$IF:CV:EMAILVEN$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ $$LG:VENTE lcase$$ :</span> <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAILVEN encodemail javascript$$</a></label><br />$$END:EMAIL$$
+					$$IF:CV:URL$$<label class="cnturl"><span>$$LG:SITE pcase$$ :</span> <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="url"$$END$$>$$CV:URL$$</a></label><br />$$END:URL$$
+				</p>	
+				
+				<p class="AgImmoContact">
+					<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$"
+						title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$">
+					$$LG:NOUSECRIRE pcase$$</a>
+				</p>
+				<p class="AgImmoEstimation">
+					<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,estimation.htm?lang=$$LANGUE$$" 
+						title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:DEMANDERESTIM pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$">
+					$$LG:DEMANDERESTIM pcase$$</a>
+				</p>
+				<div class="clear">&nbsp;</div>
+				
+				
+				<!--#include virtual="agence/incl_txt_public.htm" -->
+
+				$$B:IMMOBW:ACTIVITE_AGENCE:~idagence:VAL:CV_IDAGENCE:ALIAS:TA$$
+				$$BIF:TA$$
+				<div id="AgImmoServices">			
+$$REM$$<!-- ============================== type activités from selogerpro ============================== -->$$END:REM$$
+				<h4 id="AgImmo_activites">$$LG:NOSSERVICES pcase$$ </h4>				
+				<ul>
+					$$DO$$
+					<li>$$TA:DESCRIPTION pcase$$</li>
+					$$LOOP$$
+				</ul>
+			  </div>				
+				$$BFIN$$
+				
+				$$E:IMMOBW:HORAIRE_OUVERTURE_AGENCE:~IDAGENCE:VAL:CV_IDAGENCE:ALIAS:HEURE$$
+$$REM$$<!-- ============================== horaires from selogerpro ============================== -->$$END:REM$$
+$$REM$$<!-- =========== si le lundi est rempli alors on affiche le reste =========== -->$$END:REM$$
+				<div id="Horaires">
+
+				<h4 id="AgImmo_horaires">$$LG:HORAIRESOUVERT pcase$$</h4>
+				
+					<div>			
+						<p class="lundi jour">$$LG:LUNDI pcase$$</p>			
+						<p class="lundi heuresAM">
+							$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:LUNDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:LUNDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="lundi heuresPM">
+							$$IF:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:LUNDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:LUNDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+					
+					<div>			
+						<p class="jour">$$LG:MARDI pcase$$</p>			
+						<p class="heuresAM">
+							$$IF:HEURE:MARDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MARDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MARDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="heuresPM">
+							$$IF:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MARDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MARDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+					
+					<div>			
+						<p class="jour">$$LG:MERCREDI pcase$$</td>			
+						<p class="heuresAM">
+							$$IF:HEURE:MERCREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MERCREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MERCREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="heuresPM">	
+							$$IF:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MERCREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+				
+					
+					<div>			
+						<p class="jour">$$LG:JEUDI pcase$$</p>			
+						<p class="heuresAM">
+							$$IF:HEURE:JEUDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:JEUDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:JEUDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="heuresPM">	
+							$$IF:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:JEUDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:JEUDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+					
+					<div>			
+						<p class="jour">$$LG:VENDREDI pcase$$</p>			
+						<p class="heuresAM">
+							$$IF:HEURE:VENDREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:VENDREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:VENDREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="heuresPM">	
+							$$IF:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:VENDREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+					
+					<div>			
+						<p class="jour">$$LG:SAMEDI pcase$$</td>			
+						<p class="heuresAM">
+							$$IF:HEURE:SAMEDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:SAMEDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:SAMEDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIMATINHEUREOUVERTURE$$-$$END$$
+						</p>
+						<p class="heuresPM">	
+							$$IF:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:SAMEDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</p>
+						<div class="clear"></div>		
+					</div>
+				
+				$$IF:HEURE:COMMENTAIRES$$<p class="comments">$$HEURE:COMMENTAIRES$$</p>$$END$$
+				
+				</div>
+				
+				$$IF:CV:LANGUESPARLEES$$
+				<h4 id="AgImmo_langues">$$LG:LANGUESPARLEES pcase$$</h4>
+$$REM$$<!-- ============================== langues parlées from selogerpro ============================== -->$$END:REM$$
+				<p id="AgImmo_languesparlees">
+					$$IF=:FR:LANGUE$$
+					$$CV:LANGUESPARLEESFR ncase$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+					$$CV:LANGUESPARLEESEN ncase$$
+					$$END$$
+				</p>
+				$$END:LANGUESPARLEES$$
+
+
+$$REM$$<!-- ============================== portefeuille agence ============================== -->$$END:REM$$
+				$$REM$$<!-- //// comptage initial nb annonces par type de transaction //// -->$$END$$
+				$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSAC_DISPOS:QRY:IDP$$
+			
+				$$A:TOT_1_LOC=0$$ 
+				$$A:TOT_2_VEN=0$$
+				$$A:TOT_3_LOCTEMP=0$$
+				$$A:TOT_4_LOCVAC=0$$
+				$$A:TOT_5_VIAGER=0$$
+				$$A:TOT_6_PROD=0$$
+				$$A:TOT_7_LOCPRES=0$$
+				$$A:TOT_8_VENPRES=0$$
+				$$A:TOT_9_NEUF=0$$
+				$$A:TOT_10_FONDCOM=0$$
+				$$A:TOT_11_CESSIONB=0$$
+
+				$$REM$$<!-- //// on compte //// -->$$END$$
+				$$BIF:TRANSAC_DISPOS$$
+				
+$$REM$$<!-- ============================== s'il y a au moins une annonce on affiche le titre ============================== -->$$END$$
+				<h4 id="portefeuilleAgence">$$LG:PORTEFEUILLE pcase$$</h4>				
+				
+				$$DO$$						
+				$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_1_LOC=@@TOT_1_LOC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_2_VEN=@@TOT_2_VEN@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_3_LOCTEMP=@@TOT_3_LOCTEMP@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_4_LOCVAC=@@TOT_4_LOCVAC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_5_VIAGER=@@TOT_5_VIAGER@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_6_PROD=@@TOT_6_PROD@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_7_LOCPRES=@@TOT_7_LOCPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_8_VENPRES=@@TOT_8_VENPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_9_NEUF=@@TOT_9_NEUF@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_10_FONDCOM=@@TOT_10_FONDCOM@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_11_CESSIONB=@@TOT_11_CESSIONB@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+				$$LOOP$$
+				$$BFIN$$
+				
+				<ul id="AgImmoPortefeuille">				
+$$REM$$<!-- ////////////////////////////////////////////vente////////////////////////////////////////////////// 
+ /////////////////////////////////// 02.12.2010 c/o Lisbonne, on enleve TOT_8_VENPRES dans script qui additionne les ventes (calculs pas bons) 
+ /////////////////////////////////// 02.12.2010 c/o Lisbonne, on cache idtypebien=6 (boutique), car lien mort (pourquoi ? va savoir c'est dynamique mais avant ça marchait) -->$$END$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$		
+					$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+						<script type="text/javascript">document.write(eval($$TOT_2_VEN$$+$$TOT_6_PROD$$))</script>&nbsp;
+						$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+						$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$		
+					$$BFIN$$
+
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VENTES:2:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_VENTES$$
+					<li>
+						<ul>
+							$$DO$$
+							
+							<li class="subList">
+							<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VENTES:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:VENTES pcase$$ $$TYPEBIEN_VENTES:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_VENTES:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_VENTES:NBANN$$
+								$$IF-:2:TYPEBIEN_VENTES:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_VENTES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+							</a>
+							</li>
+							
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////vente prestige/////////////////////////////////////////////////// -->$$END:REM$$
+
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=8&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+					
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_PRESTIGE:8:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_PRESTIGE$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=8&amp;idtypebien=$$TYPEBIEN_PRESTIGE:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:PRESTIGE pcase$$ $$TYPEBIEN_PRESTIGE:DEF_LIBELLE lcase$$">
+									$$TYPEBIEN_PRESTIGE:DEF_LIBELLE pcase$$ : 
+									$$TYPEBIEN_PRESTIGE:NBANN$$
+									$$IF-:2:TYPEBIEN_PRESTIGE:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+									$$IF+:2:TYPEBIEN_PRESTIGE:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$REM$$<!-- /////////////////////////////////////////////location///////////////////////////////////////////////// -->$$END$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$	
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							<script type="text/javascript">document.write(eval($$TOT_1_LOC$$+$$TOT_7_LOCPRES$$+$$TOT_11_CESSIONB$$))</script>&nbsp;
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>			
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+			
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCS:1:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_LOCS$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOCS:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ $$TYPEBIEN_LOCS:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_LOCS:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_LOCS:NBANN$$
+								$$IF-:2:TYPEBIEN_LOCS:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_LOCS:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////////locations temporaires/////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$			
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCTEMP:3:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_LOCTEMP$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;idtypebien=$$TYPEBIEN_LOCTEMP:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCTMP pcase$$ $$TYPEBIEN_LOCTEMP:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_LOCTEMP:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_LOCTEMP:NBANN$$
+								$$IF-:2:TYPEBIEN_LOCTEMP:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_LOCTEMP:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>	
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$REM$$<!-- //////////////////////////////////////////////locations vacances//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=4&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+					
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCVAC:4:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_LOCVAC$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=4&amp;idtypebien=$$TYPEBIEN_LOCVAC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCVAC pcase$$ $$TYPEBIEN_LOCVAC:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_LOCVAC:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_LOCVAC:NBANN$$
+								$$IF-:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>	
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+
+$$REM$$<!-- //////////////////////////////////////////viagers//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VIAGER:5:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_VIAGER$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;idtypebien=$$TYPEBIEN_VIAGER:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:VIAGERS pcase$$ $$TYPEBIEN_VIAGER:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_VIAGER:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_VIAGER:NBANN$$
+								$$IF-:2:TYPEBIEN_VIAGER:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_VIAGER:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>	
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////produits d'investissement//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=6&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_PRODINVES:6:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_PRODINVES$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=6&amp;idtypebien=$$TYPEBIEN_PRODINVES:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:INVESTISSEMENT pcase$$ $$TYPEBIEN_PRODINVES:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_PRODINVES:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_PRODINVES:NBANN$$
+								$$IF-:2:TYPEBIEN_PRODINVES:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_PRODINVES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>	
+						$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////////loc prest//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=7&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCPRESTIGE:7:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_LOCPRESTIGE$$
+					<li>		
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=7&amp;idtypebien=$$TYPEBIEN_LOCPRESTIGE:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCPST pcase$$ $$TYPEBIEN_LOCPRESTIGE:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_LOCPRESTIGE:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_LOCPRESTIGE:NBANN$$
+								$$IF-:2:TYPEBIEN_LOCPRESTIGE:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_LOCPRESTIGE:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+
+ $$REM$$<!-- ===== options dispo seulement sur pack avantage + pericles ===== -->$$END:REM$$
+$$REM$$<!-- ///////////////////////////////////////////programmes neufs/////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac"
+						$$REM$$<!-- si pack avantage -->$$END:REM$$
+						$$IF=:1:PAGE:WAG_TYPE_PACK$$
+						style="
+						$$REM$$<!-- si no option neuf -->$$END:REM$$
+						$$IF!:1:RESULTATS_NEUF$$display:none;$$END:1:RESULTATS_NEUF$$
+						$$REM$$<!-- si option neuf -->$$END:REM$$
+						$$IF=:1:RESULTATS_NEUF$$display:block;$$END:1:RESULTATS_NEUF$$
+						"
+						$$END:PAGE:WAG_TYPE_PACK$$
+						>
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>		
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_NEUF:9:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_NEUF$$
+					<li
+						$$REM$$<!-- si pack avantage -->$$END:REM$$
+						$$IF=:1:PAGE:WAG_TYPE_PACK$$
+						style="
+						$$REM$$<!-- si no option neuf -->$$END:REM$$
+						$$IF!:1:RESULTATS_NEUF$$display:none;$$END:1:RESULTATS_NEUF$$
+						$$REM$$<!-- si option neuf -->$$END:REM$$
+						$$IF=:1:RESULTATS_NEUF$$display:block;$$END:1:RESULTATS_NEUF$$
+						"
+						$$END:PAGE:WAG_TYPE_PACK$$
+						>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&amp;idtypebien=$$TYPEBIEN_NEUF:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:PGRNEUF pcase$$ $$TYPEBIEN_NEUF:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_NEUF:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_NEUF:NBANN$$
+								$$IF-:2:TYPEBIEN_NEUF:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_NEUF:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+
+
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////fond de commerce//////////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=10&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$LG:FONDDECOMMERCE lcase$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$LG:LIEN:FCOMMERCE lcase$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_FONDCOMM:10:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_FONDCOMM$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=10&amp;idtypebien=$$TYPEBIEN_FONDCOMM:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:FCOMMERCE pcase$$ $$TYPEBIEN_FONDCOMM:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_FONDCOMM:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_FONDCOMM:NBANN$$
+								$$IF-:2:TYPEBIEN_FONDCOMM:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_FONDCOMM:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$
+$$END:1:PAGE:WAG_TYPE_PACK$$
+
+$$IF!:1:PAGE:WAG_TYPE_PACK$$ $$REM$$<!-- ===== caché si id pack 1 > pack avantage ===== -->$$END:REM$$
+$$REM$$<!-- //////////////////////////////////////////////cession de bail//////////////////////////////////////////////// -->$$END:REM$$
+					$$BIF:TRANSAC_DISPOS$$
+					$$DO$$
+					$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+					<li class="typeTransac">
+						<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=11&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+							$$TRANSAC_DISPOS:NBANN$$
+							$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+							$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+						</a>
+					</li>
+					$$END$$
+					$$LOOP$$
+					$$BFIN$$
+						
+					$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_CESSIONBAIL:11:~IDPUBLICATION:QRY:IDP$$
+					$$BIF:TYPEBIEN_CESSIONBAIL$$
+					<li>
+						<ul>
+							$$DO$$
+							<li class="subList">
+								<a href="$$URLBASE$$/$$IF:MULTIAGENCES$$$$FORM:IDP$$/$$END$$recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=11&amp;idtypebien=$$TYPEBIEN_CESSIONBAIL:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:CESSIONBAILS pcase$$ $$TYPEBIEN_CESSIONBAIL:DEF_LIBELLE lcase$$">
+								$$TYPEBIEN_CESSIONBAIL:DEF_LIBELLE pcase$$ : 
+								$$TYPEBIEN_CESSIONBAIL:NBANN$$
+								$$IF-:2:TYPEBIEN_CESSIONBAIL:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+								$$IF+:2:TYPEBIEN_CESSIONBAIL:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+								</a>
+							</li>
+							$$LOOP$$
+						</ul>
+					</li>
+					$$BFIN$$				
+$$END:1:PAGE:WAG_TYPE_PACK$$
+				</ul>
+
+			</div><!-- #AgImmoDroite -->
+			<div class="clear"></div>
+			
+			<!--#include virtual="immo/incl_retour_haut.htm" -->
+</div><!-- #AgImmo_Ctn -->
+<!--#include virtual="footer/incl_bas.htm" -->

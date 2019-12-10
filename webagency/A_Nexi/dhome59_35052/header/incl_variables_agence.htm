@@ -1,0 +1,37 @@
+$$REM$$<!-- ==================================================================
+//// <summary>Récupère infos agence</summary>
+//// <remarks>
+//// <para>FAIRE TOUT SON POSSIBLE POUR NE PAS DÉMUTUALISER CE FICHIER, car macros utilisées dans plusieurs pages</para>
+//// <para>Toujours dans le header grâce à incl_doctype_strict</para>
+//// <para>Fonctionne avec header/incl_variables.htm mais on sépare quand même en cas de démutualisation</para>
+//// </remarks>
+//// <update date="2010-01-26" author="lisbonne.siriphol">Création</update>
+==================================================================== -->$$END$$
+$$REM$$<!-- on reprend la même boucle de incl_variables.htm (qui vérifie si multiagences ou non) -->$$END:REM$$
+$$BIF:COMPTE_AGENCES$$
+$$REM$$<!-- même si les packs avantage sont censé n'avoir qu'une agence, on sécurise en faisant une boucle 1:1 -->$$END:REM$$
+$$DO:1:1$$
+$$A:AGENCE_NOM=@@COMPTE_AGENCES:NOM@@$$
+$$A:AGENCE_ADRESSE=@@COMPTE_AGENCES:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+$$A:AGENCE_CP=@@COMPTE_AGENCES:CP@@$$
+$$A:AGENCE_VILLE=@@COMPTE_AGENCES:VILLE@@$$
+$$A:AGENCE_TEL=@@COMPTE_AGENCES:TEL formattelus@@$$
+$$A:AGENCE_FAX=@@COMPTE_AGENCES:FAX formattel@@$$
+$$A:AGENCE_EMAIL=@@COMPTE_AGENCES:EMAIL@@$$
+$$A:AGENCE_IDPUBLICATION=@@COMPTE_AGENCES:IDPUBLICATION@@$$
+$$A:AGENCE_ID=@@COMPTE_AGENCES:IDAGENCE@@$$
+$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@$$
+	$$END$$
+$$LOOP$$$$BFIN$$
+
+$$A:URL_FACEBOOK=@@PAGE:URL_FACEBOOK@@$$
+$$A:URL_TWITTER=@@PAGE:URL_TWITTER@@$$
