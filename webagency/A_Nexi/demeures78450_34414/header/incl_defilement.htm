@@ -1,0 +1,27 @@
+$$INIT:JS_DEFILEMENT=1$$
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+	$$BIF:AGS$$
+		$$DO$$
+			coord[$$AGS:I exec XX-1$$]="adr_$$AGS:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+	$(document).ready(function() {
+		Adresse();
+	});
+</script>
+$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+$$BIF:AGS$$
+	$$DO$$
+	<div id="adr_$$AGS:IDPUBLICATION$$" style="display:none; color: #fff; font-size: 16px; ">
+		<strong>$$AGENCE_NOM$$</strong><br>
+		$$AGS:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 $$ $$AGENCE_CP$$ $$AGENCE_VILLE$$<br />
+		$$LG:MINITEL pcase$$ : $$AGS:TEL formattel$$ 
+		$$IF:AGS:FAX$$
+		 - $$LG:FAX pcase$$ : $$AGS:FAX formattel$$<br />
+		$$END:AGENCE_FAX$$
+		$$LG:EMAIL pcase$$ : $$A:MAIL=eaubonne@lci-immo.com$$$$MAIL encodemail javascript full$$<br />
+	</div>
+	$$LOOP$$
+$$BFIN$$
