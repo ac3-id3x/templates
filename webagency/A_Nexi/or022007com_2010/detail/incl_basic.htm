@@ -1,0 +1,305 @@
+<div id="DetailAnnonce">
+	
+	$$IF0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce inexistante =============== -->$$END:REM$$
+	<!--#include virtual="/detail/incl_no_annonce.htm" -->
+	$$END:0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$	
+	
+	
+	$$IF:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce existante =============== -->$$END:REM$$
+	
+	<div id="LiensRetour">
+		<!--#include virtual="/detail/incl_retour_page_precedente.htm" -->
+		<!--#include virtual="/detail/incl_retour_accueil.htm" -->
+		<!--#include virtual="detail/incl_lien_form_contact.htm" -->		
+		<!--#include virtual="detail/incl_maj.htm" -->		
+		<div class="clear"><!-- --></div>	
+	</div><!-- fin #LiensHaut -->
+	
+	<table id="Titre">
+		<tr>
+			<td id="TypeTransaction">
+			<!--#include virtual="/detail/incl_type_transaction.htm" -->
+			</td>
+			<td id="Ref_Ctn">
+				<div id="Ref">
+					<p><!--#include virtual="/detail/incl_refannonce.htm" --></p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<!-- fin #Titre -->
+	
+	<div id="Annonce_Wrap">
+		<div id="Annonce_Ctn">			
+			<table id="InfosPrix">				
+				<tr>
+					<td class="titre_ctn">
+						$$IF!:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+						<h6 class="titre prix"><!--#include virtual="/detail/incl_prix.htm" --></h6>							
+						$$END$$
+					</td>
+					<td class="titre_ctn">
+						<h6 class="titre libelle"><!--#include virtual="/detail/incl_libelle.htm" --></h6>
+					</td>
+					<td class="titre_ctn">
+						<h6 class="titre ville"><!--#include virtual="/detail/incl_ville.htm" --></h6>
+					</td>
+				</tr>
+				<tr>
+					<td class="infosPrix">
+						<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+						<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+					</td>
+					<td class="infosLibelle">
+						$$IF:IMMOBW:ANNONCE:SURFACE$$<p class="surface"><!--#include virtual="/detail/incl_surface.htm" --></p>$$END:IMMOBW:ANNONCE:SURFACE$$
+						$$IF:IMMOBW:ANNONCE:SURF_TERRAIN$$<p class="surface"><!--#include virtual="/detail/incl_surface_terrain.htm" --></p>$$END:SURF_TERRAIN$$							
+						
+						$$IF:IMMOBW:ANNONCE:NB_PIECES$$
+			    	<p class="nb_pieces"><!--#include virtual="/detail/incl_nb_pieces.htm" --></p>
+						$$END:NB_PIECES$$
+						<!--#include virtual="/detail/incl_dispo.htm" -->
+					</td>
+					<td class="infosVille">
+						<script type="text/javascript">dispMetro('$$IMMOBW:ANNONCE:IDANNONCE getlieux escape$$');</script>
+						$$IF:IMMOBW:ANNONCE:IDQUARTIER$$<p class="quartier"><!--#include virtual="/detail/incl_quartier.htm" --></p>$$END:IMMOBW:ANNONCE:IDQUARTIER$$
+						$$IF:IMMOBW:ANNONCE:PROX$$<p class="prox"><!--#include virtual="/detail/incl_prox.htm" --></p>$$END:IMMOBW:ANNONCE:PROX$$
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<div class="glossaire_ctn">
+							<!--#include virtual="/detail/incl_glossaire.htm" -->
+						</div>
+					</td>
+				</tr>
+			</table>				
+		
+			
+			$$REM$$
+			<!-- ///// vu le détail basic où tout est en bloc, si pas de photo, et ben on affiche rien ///// -->
+			<!--///////////////////////////////// sans photo /////////////////////////////////-->
+			
+			
+			
+			$$IF0:IMMOBW:ANNONCE:IDPHOTO$$
+			
+			
+			
+			<!-- // sans photo / dans CSS // -->					
+			<div id="SansPhoto_Ctn">
+				<div id="SansPhoto"><!-- --></div>
+				<p>$$LG:NOPHOTO pcase$$</p>
+			</div>
+			$$END:SANSPHOTO$$			
+			$$END:REM$$		
+
+
+$$IF!:10:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+
+			$$IF:IMMOBW:ANNONCE:IDPHOTO$$
+				$$IF!:LIGHT:PAGE:WAG_DETAIL_GALERIE$$
+				<!--#include virtual="/detail/incl_galerie_ascenseur.htm" -->
+				$$END$$
+				$$IF=:LIGHT:PAGE:WAG_DETAIL_GALERIE$$
+				<!--#include virtual="/detail/incl_galerie_light.htm" -->
+				$$END$$			
+			$$END:IMMOBW:ANNONCE:IDPHOTO$$	
+$$END$$		
+$$IF=:10:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+<div style="text-align: center; margin-top: 15px;">
+<img src="$$_$$recherche/img_light/sans_photo_commerce.jpg" alt="" />
+</div>
+$$END$$		
+			
+			$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$		
+			<div id="AutresVisuels_Ctn"
+				$$IF0:IMMOBW:ANNONCE:IDLIEN$$
+				$$IF0:IMMOBW:ANNONCE:VIDEO_URL$$
+				$$IF0:IMMOBW:ANNONCE:ID360$$						
+				$$IF0:IMMOBW:ANNONCE:360_URL$$
+				$$BIF0:PDF$$
+				style="display: none;"
+				$$BFIN$$
+				$$END:360_URL$$
+				$$END:ID360$$
+				$$END:VIDEO_URL$$
+				$$END:IDLIEN$$
+				>
+				<h6>$$LG:AUTRESVISUELS pcase$$</h6>
+				<table id="AutresVisuels">				
+					<tr>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_pdf.htm" -->						
+						</td>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_360.htm" -->							
+						</td>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_video_externe.htm" -->					
+						</td>
+						<td>
+$$REM$$<!-- ============ lien externe ajouté le 03.11.2009 [Lisbonne]============ -->$$END$$				
+							<!--#include virtual="/detail/incl_visuel_lien_externe.htm" -->
+						</td>			
+					</tr>
+				</table>
+				<div id="AutresVisuels_Fin"><!-- --></div>
+			</div><!-- fin #AutresVisuels -->
+		</div><!-- fin #Annonce_Ctn -->
+		<div id="InfosAnnonce">
+			<!--#include virtual="/detail/incl_descriptif.htm" -->
+			<!--#include virtual="/detail/incl_neuf.htm" -->			
+			$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+			$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+			<div id="InfosComp_Ctn">
+				<h6>$$LG:FICHESIGNALETIQUE pcase$$</h6>
+				<div id="InfosComp">
+					$$DO$$
+						<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$</p>
+					$$LOOP$$				
+					<div class="clear"><!-- --></div>
+				</div><!-- fin #InfosComp -->
+			</div><!-- fin #InfosComp_Ctn -->		
+			$$BFIN$$
+			
+			<!--#include virtual="/detail/incl_dpe.htm" -->
+			
+		</div><!-- fin #InfosAnnonce -->
+		
+		<div id="Annonce_Bas">
+			
+			<div id="Outils_Ctn"><!-- -->
+					
+				<div id="Outils"><!-- -->
+					<h6>$$LG:LIEN:OUT pcase$$</h6><!-- -->
+					<hr />
+					<!--#include virtual="/detail/incl_outil_ajout_selection.htm" -->				
+					<!--#include virtual="/detail/incl_outil_voir_selection.htm" -->
+					<!--#include virtual="/detail/incl_outil_imprimer.htm" -->
+					<!--#include virtual="/detail/incl_outil_envoi_ami.htm" -->	
+					<div class="clear"><!-- --></div>
+				</div><!-- fin #Outils -->
+				
+				<div id="Bookmark_Ctn"><!-- -->				
+					<h6>$$LG:PARTAGEZ pcase$$</h6>
+					<hr />
+					<!--#include virtual="/detail/incl_bookmarks.htm" -->
+				</div><!-- fin #Bookmarks_Ctn -->
+				
+			</div><!-- fin #Outils_Ctn -->
+					
+			<div id="AgenceContact_Wrap"><!-- -->			
+				
+				<div id="TitreContact"><!-- -->
+					<h6>$$LG:CONTACTERAGENCE pcase$$</h6>
+					
+					<a id="AgenceMentions" href="#" title="">
+						<em>						
+							<span>
+								<!--#include virtual="detail/incl_mentions_legales.htm" -->
+							</span>
+						</em>					
+						$$LG:LIEN:MENTION pcase$$
+					</a>
+					
+					<div class="clear"><!-- --></div>
+					<hr />
+				</div><!-- fin #TitreContact -->
+					
+					
+				<table id="AgenceContact">
+					<tr>
+						<td class="detail_form_col1">
+							<!--#include virtual="/detail/incl_logo_agence.htm" -->
+							<div class="coords_agence">
+								$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+								<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->
+								<!--#include virtual="detail/incl_agence_tel.htm" -->
+								<!--#include virtual="detail/incl_agence_fax.htm" -->
+								<!--#include virtual="detail/incl_agence_email.htm" -->
+								<!--#include virtual="detail/incl_agence_url.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+							</div><!-- fin .coords_agence -->
+							
+							<div class="clear"><!-- --></div>
+							
+							$$IF:IMMOBW:ANNONCE:IDTYPECTC1$$
+							<!--// contact 1 programme neuf (en general promoteur) //-->
+							<div class="ctc_neuf">
+								<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:IDTYPECTC1$$
+							
+							$$IF:IMMOBW:ANNONCE:IDTYPECTC2$$
+							<!--// contact 2 programme neuf (en general commercialisateur) //-->
+							<div class="ctc_neuf">
+									<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:IDTYPECTC1$$
+							
+							$$IF:IMMOBW:ANNONCE:ADRBUREAU$$
+							<!--// bureau de vente programme neuf //-->
+							<div class="ctc_neuf">
+								<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:ADRBUREAU$$
+							
+							<!--#include virtual="/detail/incl_texte_agence.htm" -->						
+							
+						</td>
+						
+						$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+						$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+						
+						$$IF:CHECKMAIL$$
+						<td class="detail_form_col2">
+							
+							$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+							$$REM$$<!-- // si message envoye // -->$$END:REM$$
+							<script type="text/javascript">
+								<!--
+								document.location= '/$$REP:2$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+								//-->
+							</script>
+							$$END:AGENCEMAIL:OK$$						
+							
+							$$IF=:FR:LANGUE$$
+							<h6>Vous souhaitez obtenir des renseignements sur ce bien ?<span>Merci de remplir le formulaire ci dessous :</span></h6>
+							$$END$$
+							$$IF!:FR:LANGUE$$<h6>$$LG:DEMANDINFOS pcase$$</h6>$$END$$
+							
+							$$IF=:1:FORM:CTC$$
+							<!-- // formulaire envoye // -->	
+							<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+							$$END:FORM:CTC$$
+							
+							$$IF!:1:FORM:CTC$$
+							<!-- // formulaire de contact // -->
+							<!--#include virtual="detail/incl_formulaire.htm" -->
+							$$END:FORM:CTC$$
+							
+							$$REM$$<!-- // conditions generales d'utilisation  // -->$$END:REM$$
+							<!--#include virtual="/incl_cgu_formulaire.htm" -->
+							
+						</td>
+						$$END:CHECKMAIL$$
+					</tr>
+				</table><!-- fin #AgenceContact -->			
+			
+			</div><!-- fin #AgenceContact_Wrap-->			
+			
+			
+		</div><!-- fin #Annonce_Bas -->
+		
+	</div><!-- fin #Annonce_Wrap -->
+	
+	<!--#include virtual="detail/incl_retour_haut.htm" -->
+	
+	$$REM$$<!-- fin si annonce existante -->$$END:REM$$
+	$$END:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	
+</div><!-- fin #DetailAnnonce -->
