@@ -1,0 +1,111 @@
+$$REM$$ /*====================================================================================
+//// <summary>Page vitrine d'une agence > agence,immobiliere.htm</summary>
+//// <remarks>
+//// <para>Contient conditions sur ID LOGO pour la photo d'agence</para>
+//// <para>Méthode : 1) déclaration macros par défaut / 2) include fichier de macros mutualisé / 3) inlude fichier demacros démutualisé</para>
+//// <para>Le fichier se stylise tout seul grâce aux macros, et possibilité de le customiser par commun.css</para>
+//// <para>Liste des macros générales pour faciliter la customisation des sites</para>
+//// <para>FICHIER À NE PAS DÉMUTUALISER, car les updates ne pourront pas s'appliquer aux sites qui le feront</para>
+//// <para>Utilise les mêmes classes que la page agences,liste.htm</para>
+//// </remarks>
+//// <update date="2011-01-06" author="lisbonne.siriphol">Maj liens vers formulaires</update>
+//// <update date="2010-02-24" author="lisbonne.siriphol">Création v3</update>
+//// <update date="2009-09-10" author="lisbonne.siriphol">Création v2</update>
+//// <update date="2007-11-12" author="lisbonne.siriphol">Création v1</update>
+==================================================================================== */ $$END$$
+
+$$REM$$ /* ============================================================================================
+ //////////////////////////////////// MACROS CHEMIN DES REPERTOIRES ///////////////////////////////////
+============================================================================================= */$$END$$
+<!--#include virtual="styles/macros_path.htm" -->
+
+$$REM$$ /* ===============================================================================================================
+ /////////////////////////// MACROS PAR DEFAUT (modifiables dans votre styles/all_global_macros.htm)//////////////////////////
+================================================================================================================ */$$END$$
+<!--#include virtual="styles/macros_pictos.htm" -->
+$$REM$$ /* largeur photo */ $$END$$															$$A:AGIMMOPHOTOWIDTH=300px$$
+$$REM$$ /* hauteur photo */ $$END$$															$$A:AGIMMOPHOTOHEIGHT=200px$$
+$$REM$$ /* sans photo agence */ $$END$$ 												$$A:SANS_PHOTO_AGENCE=@@PATH_IMG_XV3@@/agences/sans_photo.png$$
+
+$$REM$$ /* ============================================================================================
+ ////////////////////////////////////// MACROS GENERALES PERSOS //////////////////////////////////////
+============================================================================================= */$$END$$
+<!--#include virtual="styles/all_global_macros.htm" -->
+
+
+
+/* === conteneur 1 : div === */
+#AgImmo_Ctn{padding: 20px 0;}
+#AgImmo_Ctn h2{font-size: 1.8em; font-weight: 100; padding: 0 0 3px 0; margin: 0 0 3px 0; border-bottom: $$BORDER_POINTILLES$$;}
+#AgImmo_Ctn h4{font-size: 1.6em; font-weight: normal; color: $$TXT_TITRE_RUBRIQUE$$; padding: 0 0 3px 0; margin: 20px 0 3px 0; border-bottom: $$BORDER_POINTILLES$$;}
+#AgImmo_Ctn h6{font-weight: normal; color: $$TXT_PRINCIPAL$$; padding: 5px 0 0 0;}
+/* titre page + lien liste agences */
+#AgImmo_Ctn h3{font-size: 1.3em; font-weight: normal; color: $$TXT_TITRE_RUBRIQUE$$;}
+#AgImmo_Ctn h3 a{display: block; float: right; text-decoration: underline;}
+#AgImmo_Ctn h3 a:hover{text-decoration: none;}
+/* === conteneur 2 : table === */
+#AgImmo{width: 100%; border-collapse: collapse; margin: 10px 0;}
+#AgImmo td{border-collapse: collapse; vertical-align: top;}
+#AgImmo *{}
+/* ======================= td gauche ======================= */
+#AgImmoGauche{width: $$AGIMMOPHOTOWIDTH$$;}
+/* conteneur photo agence */
+#AgImmoVitrine_Ctn{width: $$AGIMMOPHOTOWIDTH$$; height: $$AGIMMOPHOTOHEIGHT$$; border: $$BORDER_SECONDAIRE$$; margin: 0 0 20px 0;
+			$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+			$$IF=:TRUE:CV:SI_LOGO$$
+				background: url('$$CV:URLLOGO$$') 50% 50% no-repeat #fff;
+			$$END:CV:SI_LOGO$$				
+			$$IF!:TRUE:CV:SI_LOGO$$
+				background: url('$$SANS_PHOTO_AGENCE$$') 0 0 no-repeat $$BG_CDC$$ !important;
+				background: $$BG_CDC$$;
+				filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$$SANS_PHOTO_AGENCE$$', sizingMethod='scale');					
+			$$END:CV:SI_LOGO$$
+			}
+/* photo agence */
+#AgImmoVitrine{width: $$AGIMMOPHOTOWIDTH$$; height: $$AGIMMOPHOTOHEIGHT$$; background: url($$_$$images/agences/$$FORM:IDP$$.jpg) 50% 50% no-repeat;}
+
+
+/* ======================= td droite ======================= */
+#AgImmoDroite{padding: 0 0 0 30px;}
+#AgImmoDroite p{padding: 0 0 1em 0; line-height: 1.4em;}
+#AgImmoDroite p,
+#AgImmoDroite p *{font-size: 1em; line-height: 18px;}
+#AgImmoDroite p label{display: block;}
+#AgImmoDroite p label.respAgence{}
+#AgImmoDroite p span{}
+#AgImmoDroite ul{text-decoration: none; background:none; list-style: none;}
+#AgImmoDroite ul li{padding: 2px 12px; margin: 0 0 0 5px;}
+/* liens vers formulaires */
+#AgImmoDroite .AgImmoContact,
+#AgImmoDroite .AgImmoEstimation{padding: 0; margin: 0;}
+#AgImmoDroite .AgImmoContact a,
+#AgImmoDroite .AgImmoEstimation a{display: block; float: left; background: $$BOUTON_BG$$; color: $$BOUTON_TXT$$; font-weight: bold; text-decoration: none; padding: 5px 10px; margin: 0 5px 0 0;}
+/* liste services de l'agence */
+#AgImmoServices {} 
+#AgImmoDroite li{background: $$PICTO_FLECHE$$;}
+/* portefeuille agence */
+ul#AgImmoPortefeuille *{color: $$TXT_PRINCIPAL$$;}
+ul#AgImmoPortefeuille li.typeTransac{margin: 15px 0 0 0; background: none;}
+ul#AgImmoPortefeuille li{background: none;}
+ul#AgImmoPortefeuille li.typeTransac a{color: $$TXT_TITRE_RUBRIQUE$$;}
+ul#AgImmoPortefeuille li ul li.subList{padding: 4px 12px; background: $$PICTO_FLECHE$$; border-bottom: $$BORDER_POINTILLES$$;}
+/* mentions légales */
+#AgImmoMentions{color: $$TXT_SECONDAIRE$$;}
+#AgImmoMentions h6{font-size: 10px; font-weight: normal;}
+#AgImmoMentions p{text-align: justify; font-size: 10px; color: $$TXT_SECONDAIRE$$;}
+/* horaires d'ouvertures */
+#Horaires{clear: both;}
+#Horaires h3{font-size: 1.4em; padding: 0 0 5px 0; margin: 0 0 10px 0;}
+#Horaires table{width: 80%; border-collapse: collapse; margin: 5px auto 0 auto;}
+#Horaires td{border-collapse: collapse; padding: 5px 10px; border-bottom: $$BORDER_POINTILLES$$;}
+#Horaires td span{}
+#Horaires td span.am1,
+#Horaires td span.pm1{padding: 3px 2px 3px 10px;}
+#Horaires td span.am2,
+#Horaires td span.pm2{padding: 3px 10px 3px 2px;}
+#Horaires td span.am2{margin: 0 10px 0 0;}
+#Horaires td.jour{width: 100px; text-align: left;}
+#Horaires td.heuresAM,
+#Horaires td.heuresPM{width: 130px; text-align: center;}
+#Horaires p.comments{text-align: center; padding: 1em 0;}
+
