@@ -1,0 +1,49 @@
+$$REM$$====================================================================
+//// <summary>Liste de toutes les agences du site</summary>
+//// <remarks>
+//// <para>Fichier à ne PAS démutualiser</para>
+//// <para>Si multiagences, sélection de toutes les agences par bouton radio</para>
+//// <para>Utilisation macro MULTIAGENCES créée dans fichier mutualisé header/incl_variables.htm</para>
+//// </remarks>
+//// <update date="2010-06-14" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+
+
+$$REM$$<!--// s'il y a plusieurs agences sur le site //-->$$END:REM$$
+$$IF:MULTIAGENCES$$
+$$REM$$<!--// s'il n'y a pas de REP:1 on affiche la liste des agences //-->$$END:REM$$
+$$IF0:REP:1$$
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script type="text/javascript">
+	<!--
+	function valider(id) {
+		document.location.href='/'+id+'/$$REP:0$$?$$REP:QRY$$';
+		}
+	// -->
+</script>
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$BIF:COMPTE_AGENCES$$
+<form action="/$$REP:0$$?$$REP:QRY$$" method="post" id="FormContactListeAgences">
+<h1>$$COMPTE_AGENCES:NBR$$ $$LG:AGENCESAVOTRSERVICE lcase$$</h1>
+<h1>
+	$$IF=:CONTACTAGENCE:IDT$$
+		$$LG:PARVENIRMESSAGE pcase$$
+	$$END:IDT$$
+	$$IF=:ESTIMATION:IDT$$
+		$$LG:DEMANDEZESTIM pcase$$
+	$$END:IDT$$
+</h1>
+<h2>$$LG:SELECTIONA pcase$$</h2>
+<ul>
+	$$DO$$
+	<li>
+		<input type="radio" value="$$COMPTE_AGENCES:IDPUBLICATION$$" onclick="valider(this.value)" name="agence"$$IF0:COMPTE_AGENCES:EMAIL$$ disabled="disabled"$$END:COMPTE_AGENCES:EMAIL$$ /> 
+		<strong>$$COMPTE_AGENCES:NOM$$</strong>, $$COMPTE_AGENCES:ADRESSE ncase$$ $$IF0:COMPTE_AGENCES:EMAIL$$<span class="obligatoire"> - $$LG:EMAIL pcase$$ $$LG:MININONDISPO lcase$$ -</span>$$END:COMPTE_AGENCES:EMAIL$$
+	</li>
+	$$LOOP$$
+</ul>
+</form>
+$$BFIN$$
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$END:REP:1$$
+$$END:MULTIAGENCES$$
