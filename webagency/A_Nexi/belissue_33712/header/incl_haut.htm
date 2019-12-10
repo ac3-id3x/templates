@@ -1,0 +1,66 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+$$IF:FAVICON$$
+<link rel="shortcut icon" type="image/x-icon" href="$$FAVICON$$" />
+$$END$$	
+</head>
+<body>
+	<div id="Header"></div>
+	<div id="wrapper">
+		<div id="logo">
+			<a href="$$LIENACCUEIL$$"><img src="images/skin/logo.png" /></a><br />
+		</div><!--div#logo-->
+		<div id="left-top">
+			<div id="flag">
+				$$IF=:EN:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=fr" title=""><img src="images/skin/flag_fr.gif" alt=""><br /></a>$$END$$
+				$$IF=:FR:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=en" title=""><img src="images/skin/flag_en.gif" alt=""><br /></a>$$END$$
+			</div>
+			<div class="clear"></div>
+			<div id="bloc-moteur">
+				<div class="nbr-biens">
+				<strong>$$IF=:FR:LANGUE$$Nos biens immobiliers à$$END$$		$$IF=:EN:LANGUE$$Our properties at$$END$$ Croissy sur Seine :</strong> 
+				
+				$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:PORTEFEUILLE$$
+				$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCES:QRY:IDP$$
+				$$BIF:AGENCEANNONCES$$	
+				$$DO$$	
+					$$IF=:2:AGENCEANNONCES:IDTYPETRANSACTION$$		
+						$$LG:VENTE pcase$$ ( <span>$$AGENCEANNONCES:NBANN$$</span>  )
+					$$END$$
+					$$IF=:1:AGENCEANNONCES:IDTYPETRANSACTION$$		
+						$$LG:LOCATION pcase$$ ( <span>$$AGENCEANNONCES:NBANN$$</span>  )
+					$$END$$
+				$$LOOP$$
+				$$BFIN$$
+				</div>
+				<!--#include virtual="moteur/mini/moteur.htm" -->
+			</div><!--div#bloc-moteur-->
+			<div style="clear:right;"></div>
+		</div><!--div.left-top-->
+		<div class="clear1"></div>
+		<div id="hd-menu">
+			<ul id="nav" class="$$LANGUE$$">
+				<!--#include virtual="menu/incl_menu.htm" --> 
+			</ul>
+		</div><!--div#hd-menu-->
+		<div class="clear"></div>
+		<div id="content">
+		$$IF!:INDEX.HTM:REP:0$$<div id="navigue">$$END$$
+		
+		$$IF=:immo,gestion.htm:REP:0$$
+			$$A:TITRE_PAGE=@@LG:LIEN:GEST@@$$
+		$$END$$
+
+		$$IF:TITRE_PAGE$$<h1 class="ttl_page">$$TITRE_PAGE$$</h1>$$END$$
+		
+			$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+				$$IF=:2:FORM:IDTT$$
+					<a id="link_aligre" href="http://www.agencealigre.com/recherche,basic.htm?idtt=2&lang=fr" target="_blank">Retrouvez l’ensemble de nos annonces<br />de notre service transaction</a>
+				$$END$$
+			$$END$$
