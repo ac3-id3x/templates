@@ -1,0 +1,121 @@
+<!-- [ttl: 4h] -->
+££INIT:CSS_MODULE_TALLINN=1££
+££INIT:JS_MODULE_TALLINN=1££
+££INIT:JS_UI=1££
+<div id="moduleTallinn" ££IF=:1:ROTATEMODULE££ class="rotateTallin"££END££>
+	<ul>
+		<li id="bloc1">
+			<div class="blocTitre">
+				<h1>1</h1>
+				<div class="verticalText">££LG:NOUVEAUTES ucase££</div>
+			</div>	
+			<div class="contentAnnonce">
+				<div class="blocNavAnnonce">
+					<div class="upNav"></div>
+					<div class="downNav"></div>	
+				</div>
+				<div class="listingAnnonce">
+				££B:IMMOBW:ANN:VAL:IDTTMODULE1:QRY:LANG:::VAL:TYPEANNMODULE1::d_dt_maj:~limit:VAL:MAXSLIDER1:~NOSTAT:1:ALIAS:MODULE1££	
+				££BIF:MODULE1££	
+				<ul id="slide_annonces">
+					<div class="slide">
+					££DO££
+					<li ££IF=:1:MODULE1:I££class="actifLiTallinn"££END££>
+						<div class="contentInfosBien">
+							<div class="typeBien">££MODULE1:IDTYPETRANSACTION gettypetransaction pcase££ ££MODULE1:IDTYPEBIEN gettypebien pcase££</div>	
+							<div class="villeBien">££MODULE1:AVILLE pcase££ ££MODULE1:ACP pcase left 2££</div>
+							<div class="prixBien">££MODULE1:PRIX££ ££MODULE1:PRIX_UNITE££</div>
+							$$REM$$<div class="infosBien">
+							££MODULE1:NB_PIECES££
+							££IF=:1:MODULE1:NB_PIECES££££LG:PIECE lcase££££END££
+							££IF+:2:MODULE1:NB_PIECES££££LG:PIECES2 lcase££££END££	
+							</div>
+							<div class="infosBien">
+							££MODULE1:NB_CHAMBRES££
+							££IF=:1:MODULE1:NB_CHAMBRES££££LG:CHAMBRE lcase££££END££
+							££IF+:2:MODULE1:NB_CHAMBRES££££LG:CHAMBRES lcase££££END££	
+							</div>$$END$$
+							££IF:MODULE1:SURFACE££
+								<div class="infosBien surf">
+								££MODULE1:SURFACE££ ££MODULE1:SURF_UNITE££
+								</div>
+							££END££
+							$$REM$$
+							££IF:MODULE1:IDQUARTIER££
+								<div class="infosBien">
+								££MODULE1:IDQUARTIER getquartier££
+								</div>
+							££END££
+							££IF0:MODULE1:IDQUARTIER££
+								££IF:MODULE1:QUARTIER££
+								<div class="infosBien">
+								££MODULE1:QUARTIER pcase££
+								</div>
+								££END££
+							££END££
+							$$END$$
+						</div>
+						££A:TITLE_SELECTION_INDEX=££
+						££IF:PAGE:URLREWRITINGENABLED££
+							££IF:FORM:LANG££
+								££IF!:FR:FORM:LANG££
+									££A:LIEN_SELECTION_INDEX=@@MODULE1:URLVIRTUELLE@@?lang=@@FORM:LANG@@££
+								££END££
+								££IF=:FR:FORM:LANG££
+									££A:LIEN_SELECTION_INDEX=@@MODULE1:URLVIRTUELLE@@££
+								££END££
+							££END££
+							££IF0:FORM:LANG££
+								££A:LIEN_SELECTION_INDEX=@@MODULE1:URLVIRTUELLE@@££
+							££END££
+						££END££
+						££IF0:PAGE:URLREWRITINGENABLED££
+							££A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@MODULE1:IDPUBLICATION@@/@@MODULE1:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@££
+						££END££
+						££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+							££A:TITLE_SELECTION_INDEX=@@MODULE1:IDTYPETRANSACTION gettypetransaction pcase@@ @@MODULE1:IDTYPEBIEN gettypebien lcase@@ @@MODULE1:AVILLE ncase@@££
+						££END:WAGREF_IDDOSSIER_SITE££
+						<div class="contentPhotoBien">
+							££IF:MODULE1:SI_COUPDECOEUR££
+								<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+							££END:COUPDECOEUR££
+							££IF:MODULE1:SI_EXCLUSIF££
+								<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+							££END:SI_EXCLUSIF££
+							££IF+:SELECTIONFRAICHEUR:MODULE1:DT_CREA datediff now timespan days££
+								<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+							££END££
+							££IF:MODULE1:SI_PROMO££
+								<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+							££END:SI_PROMO££
+							<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">
+								££IF:MODULE1:PHOTO_URL££
+									<img src="££MODULE1:PHOTO_URL££" />
+								££END££
+								££IF0:MODULE1:PHOTO_URL££
+									<img src="££MODULE1:C175_URL££" />
+								££END££
+							</a>
+						</div>
+						<div class="clear"></div></li>
+					
+					
+					$$REM$$<!-- ici si c'est un multiple de 4 on ferme et on ouvre un nouveau div.slide -->$$END$$
+					££IF=:4$8$12$16:MODULE1:I££
+					</div><!-- .slide -->
+					<div class="slide">
+					££END££
+					
+					££LOOP££
+					</div><!-- .slide -->
+				</ul>
+				££BFIN££
+				</div>
+			</div>
+			<div class="clear"></div>
+		</li>
+		
+		
+		<div class="clear"></div>
+	</ul>
+</div>
