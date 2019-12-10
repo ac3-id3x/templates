@@ -1,0 +1,370 @@
+$$REM$$====================================================================
+//// <summary>Calculettes simples en javascripts</summary>
+//// <remarks>
+//// <para>Page qui doit remplacer provisoirement les outils meilleurs taux</para>
+//// <para>Copie et adaptation de xv2, pas de specs d'origine trouvés</para>
+//// <para>Fonctionne avec plusieurs scripts js qu'on appelle directement de cette page, car incl_scripts.htm va devenir trop lourd</para>
+//// </remarks>
+//// <update date="2010-08-24" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=CALCULETTES$$
+$$INIT:CSS_OUTILS=1$$
+$$INIT:JS_CALCUL=1$$
+$$INIT:JS_UI=1$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:JS_FORMULAIRES=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+
+$$A:TITLE=@@LG:CALCULIMMO pcase@@$$
+$$A:DESCRIPTION=@@LG:EFFECTUEZCOMPTES@@$$
+
+$$IF=:1:FORM:FINANCEMENT$$
+	$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE=@@LG:CONTACT pcase@@ @@CONTACT_AGENCE:NOM@@$$
+		$$A:DESCRIPTION=@@LG:CONTACTERAGENCES pcase@@ @@CONTACT_AGENCE:NOM@@ @@CONTACT_AGENCE:VILLE@@$$
+		$$A:KEYWORDS=@@LG:CONTACT lcase@@ @@LG:IMMOBILIER lcase@@, @@CONTACT_AGENCE:NOM@@, @@LG:IMMOBILIER lcase@@ @@CONTACT_AGENCE:VILLE@@$$
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+	$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE=@@LG:CONTACT pcase@@ @@REP:RSRV@@$$
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+$$END$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="outils/incl_param_outils.htm" -->
+
+$$IF=:1:FORM:FINANCEMENT$$
+	<!--#include virtual="contact/incl_nocnxweb.htm" -->
+	<!--#include virtual="contact/incl_multiagences_selection.htm" -->
+	<!--#include virtual="contact/incl_monoagence_selection.htm" -->
+	
+	$$REM$$<!--// s'il y a un REP:1 //-->$$END:REM$$
+	$$IF:REP:1$$
+	$$REM$$<!--// on execute la macro IMMOBW:AGENCE sur le REP:1 //-->$$END:REM$$
+	$$E:IMMOBW:AGENCE:ALIAS:CONTACT_AGENCE:REP:1$$
+	$$REM$$<!--// on vérifie l'email //-->$$END:REM$$
+	$$IF:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=1$$$$END$$
+	$$IF0:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=0$$$$END$$
+	
+	$$REM$$<!--// si le mail n'existe pas donc CHECK_EMAIL = 0 > on affiche le message d'erreur //-->$$END:REM$$
+	$$IF=:0:CHECK_EMAIL_REP$$	
+	<!--#include virtual="contact/incl_email_non_disponible.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	
+	$$REM$$<!--// si le mail existe donc CHECK_EMAIL = 1 > on affiche le formulaire de message  //-->$$END:REM$$
+	$$IF=:1:CHECK_EMAIL_REP$$
+		<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+		<form method="post" id="FormContactAgence_Ctn">
+			<div id="FormContactAgence">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			
+				<input type="hidden" name="u" value="immobw:send-agence-mail" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+				<input type="hidden" name="idTypeVisu" value="1" />$$REM$$<!--// [INPUT OBLIGATOIRE] 1 : WebAg Message | 2 : WebAg Contact | 3 : WebAg Propriétaire | 8 : WebAg Estimation (anciennement E) | 6 : OBSOLÈTE - webag alerte (anciennement O) | 9 : OBSOLÈTE - webag intercab (anciennement I) | 13 : OBSOLÈTE - webag cgu (anciennement U) //-->$$END$$
+				<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/contact,agence_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+				<input type="hidden" name="page_err" value="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+				<input type="hidden" name="emailTemplate" value="/contact,agence_envoi.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE]  Nom du template HTML de l'email à envoyer à l'agence //-->$$END$$
+				<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+				<input type="hidden" name="idPublication" value="$$REP:1$$" />
+
+				
+		$$REM$$<!--// On peut mettre autant d'autres champs de formulaire que l'on veut, il seront affichables dans l'email à l'aide des macros $$FORM:xxx$$ //-->$$END:REM$$
+		
+				<div id="conteneur_form">
+						<div class="pointillesBas">
+							<!--#include virtual="contact/agence_phrase_haut.htm" -->
+						</div>
+					$$IF:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+						<div>
+							<div class="attention">$$LG:ATTENTION pcase$$</div>
+							<div class="erre">$$ERRE$$</div>
+						<div>
+					$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+						<div class="col1 civ_ctn">
+							$$LG:CIVILITE pcase$$ :
+						</div>
+						<div class="col2 civ_ctn">
+								<label><input type="radio" class="inputRadio" name="civ" value="Melle" /> $$LG:MADEMOISELLE pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mme" /> $$LG:MADAME pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mr" /> $$LG:MONSIEUR pcase$$</label>
+						</div>
+					  <div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:NOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2" required>
+							<input type="text" class="inputText inputNom required" name="nomFamille" maxlength="25" value="$$FORM:NOMFAMILLE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+					  <div class="clear"></div>
+					 
+						<div class="col1">	
+							$$LG:PRENOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputPrenom required" name="prenom" maxlength="25" value="$$FORM:PRENOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+					 	<div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:ADRESSE pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputAdresse" name="adresse" maxlength="40" value="$$FORM:ADRESSE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					 	<div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:CODEP pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputCP" name="cp" maxlength="8" value="$$FORM:CP$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					 	<div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:VILLE pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputVille" name="ville" maxlength="25" value="$$FORM:VILLE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					 	<div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:TEL pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputTel  required" name="telephone" maxlength="15" value="$$FORM:TELEPHONE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+					 
+						<div class="col1">
+							$$LG:EMAIL pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputEmail email required" name="email" maxlength="60" value="$$FORM:EMAIL$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clear"></div>
+					 				
+						<div class="col1 message_ctn">
+							$$LG:MESSAGE pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2 message_ctn">
+							<textarea class="inputTextarea inputMessage required" name="message" cols="40" rows="4" onkeyup="limite(this,350);" onkeydown="limite(this,350);">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>						
+					 	<div class="clear"></div>
+					 		
+						<div class="champsobligatoires_ctn pointillesHaut">
+							<p><span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span></p>
+						</div>
+						<div class="bouton_ctn pointillesHaut">
+							<input type="submit" id="boutonEnvoiAgence" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+						</div>
+						<div class="clear"></div>
+					 				
+					</div>
+					<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</form>
+		
+		<!--#include virtual="legal/incl_formulaire_cgu.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$END:REP:1$$
+$$END$$
+
+
+<form method="get" action="#">
+	<div id="CalculettesPicto"></div>
+		<p class="ttl_outils">$$LG:CALCULIMMO pcase$$</p>
+		<p>$$LG:EFFECTUEZCOMPTES pcase$$.</p>
+	<div class="clear"></div>
+	<div id="Outils">
+		$$REM$$<!-- ================== outil 1 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil1">$$LG:CALMONTEMPR$$</h3>
+		<div class="accordion_content outil1">			
+			<table>
+				<tr>
+					<th>$$LG:MENSOUHAIT pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="emprunt_mens" id="emprunt_mens" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 765 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:DUR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="emprunt_nbmens" id="emprunt_nbmens" maxlength="3" />
+	          <input type="radio" name="emprunt_duree" value="m" />
+	          <label>$$LG:MO lcase$$</label>
+	          <input type="radio" name="emprunt_duree" value="a" checked="checked" />
+	          <label>$$LG:AN lcase$$</label>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="emprunt_taux" id="emprunt_taux" value="$$TAUX_INT$$" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5 / sans espace, ni virgule)</em>
+					</td>
+				</tr>				
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="emprunt_calculer" id="emprunt_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('emprunt')" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:MONTEMPR pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="emprunt_emprunt" id="emprunt_emprunt" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 2 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil2">$$LG:REMBOUEMPR$$</h3>
+		<div class="accordion_content outil2">			
+			<table>
+				<tr>
+					<th>$$LG:MONTEMPR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="mens_emprunt" id="mens_emprunt" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 115000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:DUR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="mens_nbmens" id="mens_nbmens"  maxlength="3" />
+	          <input type="radio" name="mens_duree" value="m" />
+	          <label>$$LG:MO lcase$$</label>
+	          <input type="radio" name="mens_duree" value="a" checked="checked" />
+	          <label>$$LG:AN lcase$$</label>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="mens_taux" id="mens_taux" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5)</em>
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="mens_calculer" id="mens_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('mens')" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:MENS pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="mens_mens" id="mens_mens" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 3 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil3">$$LG:DUREMPR$$</h3>
+		<div class="accordion_content outil3">			
+			<table>
+				<tr>
+					<th>$$LG:MONTEMPR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_emprunt" id="nbmens_emprunt" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 115000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+		
+				<tr>
+					<th>$$LG:APINIT pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_apport" id="nbmens_apport" maxlength="7" />
+            <label>&euro;</label>
+					</td>
+				</tr
+				<tr>
+					<th>$$LG:MENS pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_mens" id="nbmens_mens" maxlength="4" />
+            <label>&euro;</label>
+            <em>(ex: 765 / sans espace, ni virgule)</em>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="nbmens_taux" id="nbmens_taux" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="nbmens_calculer" id="nbmens_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('nbmens');" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:DUR pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="nbmens_nbmens" id="nbmens_nbmens" />
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 4 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil4">$$LG:ESTIM$$</h3>
+		<div class="accordion_content outil4">	
+			<p>$$LG:GARANT$$</p>
+			<table>
+				<tr>
+					<th>$$LG:REVMENS pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="revenus_mensuels" id="revenus_mensuels" maxlength="6" />
+            <label>&euro;</label>
+            <em>(ex: 2000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:RATIO pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="revenus_ratio" id="revenus_ratio" value="33.3" maxlength="4" />
+						<label>%</label>
+						<em>(ex: 33.3 / sans espace, ni virgule)</em>   
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="loyer_calculer" id="loyer_calculer" value="$$LG:CALCUL pcase$$" onclick="estimeLoyer()" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>Montant maximal de votre loyer :</strong></th>
+					<td>
+						<input class="inputResult" type="text" id="montant_loyer" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+	</div><!-- #Outils -->   
+</form>
+$$IF:FORM:CALCULETTES$$
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$( "#Outils" ).accordion({ active: $$FORM:CALCULETTES$$ });
+	});
+	</script>
+$$END$$
+<!--#include virtual="immo/incl_retour_haut.htm" -->
+<!--#include virtual="footer/incl_bas.htm" -->
