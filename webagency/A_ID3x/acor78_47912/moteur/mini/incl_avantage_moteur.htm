@@ -1,0 +1,74 @@
+$$SET:JS_MINI_MOTEUR=1$$
+$$SET:CSS_MINI_MOTEUR=1$$
+$$IF=:1:MOTEURMOBILE$$
+<form class="form-$$TYPEMOTEUR$$ hidden-tablet hidden-desktop moteur-avantage-mobile margin-top-20 mini-moteur padding-20" action="/moteur,prevalidation.htm" method="get">
+   <input type="hidden" name="idqfix" value="1">
+   <input type="hidden" name="idtt" value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$" id="idtt-mobile">
+   <!--#include virtual="moteur/incl_input_langue.htm" -->
+   <div>
+      <!--#include virtual="moteur/mini/incl_mobile.htm" -->
+   </div>
+</form>
+$$END$$
+
+
+<div class="minimotperso margin-top-30">
+   <div class="$$SITEFLUIDE$$">
+
+      <form class="form-$$TYPEMOTEUR$$ $$IF=:1:MOTEURMOBILE$$hidden-phone$$END$$ mini-moteur" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+         <input type="hidden" name="idqfix" value="1">
+         <!--#include virtual="moteur/incl_input_langue.htm" -->
+         <div class="moteur-avantage relative clearfix">
+
+            <div class="minimotperso-idtt">
+               <a href="javascript:void(0);" title="$$LG:VENTE pcase$$" class="child active" data-idtt="2">$$LG:LIEN:ACH pcase$$</a>
+               <a href="/immo,vendre.htm" class="child">$$LG:LIEN:VENDRE pcase$$</a>
+               <a href="javascript:void(0);" title="$$LG:LOCATION pcase$$" class="child" data-idtt="1">$$LG:LIEN:LOUER pcase$$</a>               
+               <a href="/estimation,immobiliere.htm" class="child">$$LG:ESTIMER pcase$$</a>               
+            </div>
+
+            <div class="row-fluid margin-top-20">
+
+
+               <div id="Mini_Biens" class="Mini_Biens $$TAILLEMOTEUR$$">
+                  <script type="text/javascript">
+                     $(document).ready(function() {                        
+                        ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+                        });
+                  </script>
+               </div>
+
+               <div id="Mini_Villes" class="relative Mini_Villes $$TAILLEMOTEUR$$">
+                  $$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+                  $$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+                  $$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+                  <!--#include virtual="moteur/suggest/incl_input.htm" -->
+               </div>
+
+               <div id="Mini_Bouton" class="Mini_Bouton $$TAILLEMOTEUR$$">
+                  <!--#include virtual="moteur/mini/incl_moteur_bouton.htm" -->
+               </div>
+
+            </div>
+
+
+            $$IF=:1:MINI_IDTTUNIQUE$$
+            <input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+            $$END$$
+            <!--#include virtual="moteur/mini/incl_input_hidden.htm" -->
+
+            
+
+         </div>
+
+
+         $$IF=:INDEX:IDT$$
+         $$IF=:1:MOTEUR_VILLES_REF$$
+         <!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->
+         $$END$$
+         $$END$$
+
+      </form>
+
+   </div>
+</div>
