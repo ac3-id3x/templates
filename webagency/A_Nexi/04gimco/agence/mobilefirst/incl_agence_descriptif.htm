@@ -1,0 +1,60 @@
+$$IF=:1:TXT_PUBLIC_PERSO$$
+    $$A:AGENCE_DESC=1$$
+$$END$$
+$$IF:CV:TXT_PUBLIC$$
+    $$A:AGENCE_DESC=1$$
+$$END$$
+$$IF!:FR:LANGUE$$
+    $$IF:TXT_PUBLIC_PERSO_CONTENU_NOFR$$
+        $$A:AGENCE_DESC=1$$
+    $$END$$
+$$END$$
+
+$$IF=:1:AGENCE_DESC$$
+    <div class="agence-descriptif">
+
+        <h2 class="h1-like agence-descriptif-ttl">
+            $$IF:H2_AGENCE$$
+                $$IF:LANGUE$$
+                    $$IF!:FR:LANGUE$$
+                        $$LG:LIEN:QSN pcase$$
+                    $$END$$
+                    $$IF=:FR:LANGUE$$
+                        $$H2_AGENCE$$
+                    $$END$$
+                $$END$$
+                $$IF0:LANGUE$$
+                    $$H2_AGENCE$$
+                $$END$$
+            $$END$$
+            $$IF0:H2_AGENCE$$
+                $$LG:VOTREAGENCE pcase$$ - $$CV:NOM pcase$$
+            $$END$$
+        </h2>
+
+        $$IF=:FR:LANGUE$$
+            $$IF!:1:TXT_PUBLIC_PERSO$$
+                $$IF:CV:TXT_PUBLIC$$
+                    <div itemprop="description" class="agence-descriptif-txt margin-bottom-15">
+                        $$CV:TXT_PUBLIC crlf2br$$
+                    </div>
+                $$END$$
+            $$END$$
+            $$IF=:1:TXT_PUBLIC_PERSO$$
+                <div class="agence-descriptif-txt margin-bottom-15">
+                    <!--#include virtual="agence/incl_txt_perso.htm" -->
+                </div>
+            $$END$$
+        $$END$$
+        $$IF!:FR:LANGUE$$
+            $$IF:TXT_PUBLIC_PERSO_CONTENU_NOFR$$
+                $$TXT_PUBLIC_PERSO_CONTENU_NOFR$$
+            $$END$$
+        $$END$$
+
+        <div class="agence-descriptif-more hidden-desktop">
+            <a href="javascript:void(0);" class="btn btn-mini btn-block btn-action" title="$$LG:LIRESUITE pcase$$">$$LG:LIRESUITE pcase$$</a>
+        </div>
+
+    </div>
+$$END$$
