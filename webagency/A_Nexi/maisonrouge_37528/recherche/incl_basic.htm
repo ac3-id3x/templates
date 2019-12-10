@@ -1,0 +1,94 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+<!--#include virtual="recherche/incl_recherche_haut.htm" -->
+	<div class="row-fluid hidden-phone">
+		$$IF!:1:PHRASELIGHT$$
+			<div class="span9">
+				<h1 class="phrase-recherche">$$ANNLISTE:PHRASE pcase replace ¤en¤france  $$
+					<!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->	
+				</h1>
+			</div>
+			<div class="span3">
+				<div class="row-fluid margin-top-10 hidden-phone">
+					<div class="span12">
+						<!--#include virtual="recherche/incl_bouton_selection.htm" -->
+					</div>
+				</div>
+			</div>
+		$$END$$
+		$$IF=:1:PHRASELIGHT$$
+			<div class="span12 xbiggest">
+				<h1 class="phrase-recherche">$$ANNLISTE:PHRASE pcase$$
+					<!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->	
+				</h1>
+			</div>
+			<div class="row-fluid">
+				<div class="span3 underline-phrase"></div>
+			</div>
+		$$END$$
+		<hr$$IF:SEO_RESULTS_CONTENT$$ class="margin-bottom-5"$$END$$ >
+	</div>
+	<!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+	$$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+	$$IF=:1:CANONICAL$$
+    	$$IF:SEO_RESULTS_CONTENT$$
+      <div class="row-fluid margin-bottom-20 hidden-phone">
+          <p class="span12">$$SEO_RESULTS_CONTENT smalltextv2 1000$$</p>
+      </div>
+      $$END$$
+  $$END$$
+	<div class="row-fluid">
+		$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+		$$IF:TAILLEMOTEURRESULTATS$$
+		    <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+		$$END$$
+		$$BIF:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative" id="recherche-listing">
+			<!--#include virtual="recherche/incl_basic_resultats.htm" -->
+		</div>	
+			$$IF0:ANNLISTE:SIPANIER$$
+				$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+				<!--#include virtual="recherche/incl_calcul_selection.htm" -->
+			$$END$$
+		$$BFIN$$
+		$$BIF0:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative" id="recherche-listing">
+			<!--#include virtual="recherche/incl_no_resultats.htm" -->
+		</div>
+		$$BFIN$$
+		$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES RIGHT -->$$END$$
+	</div>
+	$$IF0:ANNLISTE:SIPANIER$$
+	<div class="row-fluid">
+		<div class="span12">
+			<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+		</div>
+	</div>
+	$$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+	$$BIF:ANNLISTE$$
+	<div class="row-fluid">
+		<div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+			<h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+			<hr>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<!--#include virtual="recherche/incl_basic_resultats.htm" -->
+	</div>
+	$$BFIN$$
+	$$BIF0:ANNLISTE$$
+		<!--#include virtual="recherche/incl_recherche_aucun_resultats.htm" -->
+	$$BFIN$$
+$$END$$
