@@ -1,0 +1,157 @@
+$$INIT:IDT=FICHEVISITE$$
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@
+							@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@
+							@@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@) @@LG:DE lcase@@
+							@@ANNDETAIL:SURFACE replace , .@@ m²,							
+							@@ANNDETAIL:PRIX@@ euros
+							avec @@ANNDETAIL:COOR-NOM@@
+							$$
+				
+	$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF_GEN smalltextv2 150@@$$
+			
+	$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+							@@LG:ANNONCEIMMO pcase@@ @@ANNDETAIL:VILLE@@,
+							@@ANNDETAIL:COOR-NOM@@,
+							@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase@@,
+							@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@,							
+							@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@, 
+							@@ANNDETAIL:NB_PIECES@@ @@LG:PIECES lcase@@				
+							$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:FICHE pcase@@$$				
+	$$A:DESCRIPTION=Cette fiche vous sera très utile lors de la visite du bien que vous avez sélectionné$$			
+	$$A:KEYWORDS=@@LG:LIEN:FICHE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+	
+	$$REM$$<!-- ================= FICHIER DE MACROS QUI CONDITIONNE LES OPTIONS À FAIRE APPARAÎTRE OU NON ================= -->$$END:REM$$
+	$$REM$$<!-- macros css par défaut -->$$END:REM$$																					<!--#include virtual="styles/all_global_macros.htm" -->
+	$$REM$$<!-- macros paramétrage options site -->$$END:REM$$																<!--#include virtual="header/incl_param.htm" -->
+	$$REM$$<!-- macros pictos -->$$END:REM$$																									<!--#include virtual="styles/macros_fiche_visite.htm" -->
+	
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$<!--#include virtual="referencement/incl_expressions_defaut.htm" -->$$END:REF$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$<!--#include virtual="referencement/incl_expressions_ref.htm" -->$$END:REF$$
+	<!--#include virtual="header/incl_titre.htm" -->
+	<meta name="robots" content="noindex" />
+	<link href="styles,fiche_visite.css?lang=$$LANGUE$$" rel="stylesheet" type="text/css" />
+	<script src="scripts,metro.js" type="text/javascript"></script>
+	
+</head>
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:ALIAS:ANNDETAIL$$
+<body $$REM$$onload="javascript:window.print();"$$END:REM$$>
+	<div id="Wrap">
+<!-- ======================================================================== -->
+		<div id="Header">		
+			<a class="fermer" href="javascript:window.close()" title="">$$LG:FERMER pcase$$</a>
+			<a class="retour" href="#"onclick="javascript:window.print();" title="">$$LG:IMPRIMER pcase$$</a>
+			<div class="clear"><!-- --></div>
+		</div><!-- #Header -->
+<!-- ======================================================================== -->
+		<div id="Ctn">
+			$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+			<table id="Coords">
+				<tr>
+					<td class="col1">
+						<img src="images/mini-logo2.gif" width="312" height="42" /><br />
+						<p class="txt-footer">
+			"$$AGENCE_NOM$$"<br />
+			Hôtel de Berton de Crillon - 7, rue du Roi René - 84000 Avignon<br /> 
+			$$LG:MINITEL pcase$$ : +33 (0)432 76 38 26 - Mobile : +33 (0)676 82 80 30<br /><br />
+		</p>
+					</td>
+				</tr>
+			</table><!-- #Coords -->
+			
+			<table id="Ann">
+				<tr>
+					
+					<td class="col1">
+						
+						<div class="photo_ctn">
+							<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->
+			
+							$$IF:ANNDETAIL:IDPHOTO$$
+							<img class="grandePhoto" src="$$ANNDETAIL:PHOTOURL0$$"
+							alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+							title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$" 
+							/>						
+							$$END:IDPHOTO$$
+						</div>
+						
+						
+						
+						$$B:IMMOBW:PHOTOS:ALIAS:THUMBS:REP:1$$						
+						$$BIF:THUMBS$$
+						<!-- petites vignettes -->						
+						$$IF>:2:THUMBS:NBR$$
+							$$DO:1:10$$
+								$$IF>:2:THUMBS:I$$
+								<img class="petitePhoto" src="$$THUMBS:BIG_URL$$" 
+								alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$" 
+								title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+								 />
+								$$END:THUMBS:I$$
+							$$LOOP$$
+							<div class="clear"><!-- --></div>
+						$$END:THUMBS:NBR$$
+						$$BFIN$$
+						
+						
+					</td>
+					<td class="col2">
+
+						<h1 id="Libelle">$$ANNDETAIL:LIBELLE$$</h1>						
+						<!--#include virtual="/detail/incl_descriptif.htm" -->
+						
+						$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$			
+						<p>
+							$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+							$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+							$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+						</p>
+						$$END$$
+						
+						<script type="text/javascript">dispMetroFicheVisite('$$ANNDETAIL:IDANNONCE getlieux escape$$');</script>
+						<div class="clear"><!-- --></div><br /><br />
+												<p class="reference">$$LG:REFERENCE pcase$$ : $$ANNDETAIL:REFANNONCE$$</p>
+						$$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$<br /><br /><h1 id="PrixAnn"><!--#include virtual="/detail/incl_prix.htm" --></h1>$$END:IDTYPETRANSACTION$$
+						<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+						<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+						<!--#include virtual="/detail/incl_dispo.htm" -->
+						
+
+												
+					</td>
+				</tr>
+			</table><!-- #Ann -->
+			<br />
+			<!--#include virtual="/detail/incl_dpe_mini.htm" -->
+			<br />
+			
+					  
+			<table class="blocInfos" style="padding:10px;">
+				<tr>
+					<td class="paddingBas">$$LG:DATEVISITE pcase$$ :</td>
+					<td class="paddingBas"><input type="text" class="size1" value="" /></td>
+					<td class="paddingBas">$$LG:HEURERDV pcase$$ :</td>
+					<td class="paddingBas"><input type="text" class="size1" value="" /></td>					
+				</tr>
+			</table><!-- .blocInfos -->
+			
+			
+
+		</div><!-- #Ctn -->
+<!-- ======================================================================== -->
+	</div><!-- #Wrap -->	
+</body>
+</html>

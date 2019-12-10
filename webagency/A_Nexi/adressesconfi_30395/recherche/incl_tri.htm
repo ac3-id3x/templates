@@ -1,0 +1,66 @@
+<script type="text/javascript">
+	<!--
+	function Trier( idname ) {
+		var obj = document.getElementById(idname);
+		if( obj ) {
+			var critereTri = obj.options[obj.selectedIndex].value;
+			location.href= '$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry$$idtt=2&' + critereTri ;
+		}
+	}
+	//-->
+</script>
+	
+$$IF=:RESULTATS:IDT$$
+<form id="Tri" action="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+	<div id="Tri_Ctn">							
+		$$LG:TRIER pcase$$ :	
+		<select name="triAnn" id="TriAnn" onchange="Trier(this.id);" style="width:200px;">
+			
+			<optgroup class="optionPrix" label="$$LG:PRIX pcase$$">
+			<option class="pxcroissant" $$IF=:a_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:a_px:FORM:TRI$$selected="selected"$$END$$ value="tri=a_px&amp;lang=$$LANGUE$$">$$LG:PRIX pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ value="tri=d_px&amp;lang=$$LANGUE$$">$$LG:PRIX pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:800000:FORM:PXMAX$$selected="selected"$$END$$ value="pxmax=800000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$- de 800.000 &euro;$$END$$$$IF=:EN:LANGUE$$Less than 800.000 &euro;$$END$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:1300000:FORM:PXMAX$$selected="selected"$$END$$ value="pxmin=800000&amp;pxmax=1300000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$De 800.000 &euro; &agrave; 1.300.000 &euro;$$END$$$$IF=:EN:LANGUE$$From 800.000 &euro; to 1.300.000 &euro;$$END$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:2300000:FORM:PXMAX$$selected="selected"$$END$$ value="pxmin=1300000&amp;pxmax=2300000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$De 1.300.000 &euro; &agrave; 2.300.000 &euro;$$END$$$$IF=:EN:LANGUE$$From 1.300.000 &euro; to 2.300.000 &euro;$$END$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:5000000:FORM:PXMAX$$selected="selected"$$END$$ value="pxmin=2300000&amp;pxmax=5000000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$De 2.300.000 &euro; &agrave; 5.000.000 &euro;$$END$$$$IF=:EN:LANGUE$$From 2.300.000 &euro; to 5.000.000 &euro;$$END$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:10000000:FORM:PXMAX$$selected="selected"$$END$$ value="pxmin=5000000&amp;pxmax=10000000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$De 5.000.000 &euro; &agrave; 10.000.000 &euro;$$END$$$$IF=:EN:LANGUE$$From 5.000.000 &euro; to 10.000.000 &euro;$$END$$</option>
+			
+			<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:10000000:FORM:PXMIN$$selected="selected"$$END$$ value="pxmin=10000000&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$+ de 10.000.000 &euro;$$END$$$$IF=:EN:LANGUE$$Above 10.000.000 &euro;$$END$$</option>
+			
+			</optgroup>		
+$$IF!:56$504:FORM:IDPAYS$$										
+			<option class="optionExclu" $$IF=:d_dt_crea:FORM:TRI$$selected="selected"$$END$$ $$IF=:1:FORM:SI_EXCLUSIF$$selected="selected"$$END$$ value="si_exclusif=1&amp;tri=a_px&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$$$LG:EXCLUSIVITES pcase$$$$END$$$$IF=:EN:LANGUE$$Exclusives$$END$$</option>
+$$END$$			
+			
+			
+			<option class="optionDate" $$IF=:1:FORM:SI_PROMO$$selected="selected"$$END$$ $$IF=:d_si_exclusif,d_dt_crea:FORM:TRI$$selected="selected"$$END$$ value="si_promo=1&amp;tri=$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$d_dt_crea"> $$LG:NOUVEAUTES pcase$$</option>
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:1:FORM:SI_COUPDECOEUR$$selected="selected"$$END$$ value="si_coupdecoeur=1&amp;tri=a_px&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Coups de coeur$$END$$$$IF=:EN:LANGUE$$Our selection$$END$$</option>
+$$IF!:56$504:FORM:IDPAYS$$							
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:13:FORM:IDTYPEBIEN$$selected="selected"$$END$$ value="idtypebien=13&amp;tri=a_px&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Châteaux et demeures historiques$$END$$$$IF=:EN:LANGUE$$Castles and historic residences$$END$$</option>
+$$END$$			
+$$IF!:56$504:FORM:IDPAYS$$	
+			<optgroup class="optionPrix" label="Régions">
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:84,13,04:FORM:CP$$selected="selected"$$END$$ value="cp=84,13,04&amp;tri=a_px&amp;lang=$$LANGUE$$">Provence</option>
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:30,34,48:FORM:CP$$selected="selected"$$END$$ value="cp=30,34,48&amp;tri=a_px&amp;lang=$$LANGUE$$">Languedoc</option>
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:-84,-13,-04,-30,-34,-48:FORM:CP$$selected="selected"$$END$$ value="cp=-84,-13,-04,-30,-34,-48&amp;tri=a_px&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Autres régions$$END$$$$IF=:EN:LANGUE$$Others regions$$END$$</option>
+			</optgroup>
+$$END$$
+$$IF=:56$504:FORM:IDPAYS$$	
+			<optgroup class="optionPrix" label="$$LG:PAYS pcase$$">
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:56:FORM:IDPAYS$$selected="selected"$$END$$ value="idpays=56&amp;tri=a_px&amp;lang=$$LANGUE$$">Belgique</option>
+			<option class="optionCdc" $$IF=:d_si_coupdecoeur:FORM:TRI$$selected="selected"$$END$$ $$IF=:504:FORM:IDPAYS$$selected="selected"$$END$$ value="idpays=504&amp;tri=a_px&amp;lang=$$LANGUE$$">Maroc</option>
+			</optgroup>
+$$END$$
+			
+			
+	
+
+		</select>		
+	</div>
+</form><!-- fin #Tri -->
+$$END:RESULTATS:IDT$$
