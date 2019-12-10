@@ -1,0 +1,73 @@
+<!-- [ttl: 4h] -->
+££INIT:JS_MODULE_OSLO=1££
+££INIT:CSS_MODULE_OSLO=1££
+££REM££<!-- VARS A METTRE AVANT APPEL INCLUDE VIRTUAL -->££END££
+££B:IMMOBW:ANN:VAL:IDTTMODULE:QRY:LANG:::VAL:TYPEANNMODULE::d_dt_maj:~limit:VAL:MAXSLIDER:~NOSTAT:1:ALIAS:MODULEOSLO££
+££BIF:MODULEOSLO££
+££SET:MOITIE=@@MODULEOSLO:NBR exec XX/2 exec XX+1 formatnumber 0@@££
+<div id="moduleOslo">
+	<div class="prev"></div>
+		<div class="masqueModule">
+			<div id="contentModule">
+			££DO££
+				££A:TITLE_SELECTION_INDEX=££
+				££IF:PAGE:URLREWRITINGENABLED££
+					££IF:FORM:LANG££
+						££IF!:FR:FORM:LANG££
+							££A:LIEN_SELECTION_INDEX=@@MODULEOSLO:URLVIRTUELLE@@?lang=@@FORM:LANG@@££
+						££END££
+						££IF=:FR:FORM:LANG££
+							££A:LIEN_SELECTION_INDEX=@@MODULEOSLO:URLVIRTUELLE@@££
+						££END££
+					££END££
+					££IF0:FORM:LANG££
+						££A:LIEN_SELECTION_INDEX=@@MODULEOSLO:URLVIRTUELLE@@££
+					££END££
+				££END££
+				££IF0:PAGE:URLREWRITINGENABLED££
+					££A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@MODULEOSLO:IDPUBLICATION@@/@@MODULEOSLO:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@££
+				££END££
+				££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+					££A:TITLE_SELECTION_INDEX=@@MODULEOSLO:IDTYPETRANSACTION gettypetransaction pcase@@ @@MODULEOSLO:IDTYPEBIEN gettypebien lcase@@ @@MODULEOSLO:AVILLE ncase@@££
+				££END:WAGREF_IDDOSSIER_SITE££
+				££IF=:0:MAXSLIDER exec XX/2 exec XX+1££
+					<div class="clear"></div>
+				££END££
+						<div class="flipping shadow££IF+:MOITIE:MODULEOSLO:I££ down££END££££IF0:MODULEOSLO:C175URL0££££IF0:MODULEOSLO:SI_LOGO££ blocNoPhoto££END££££END££" id="flipper££MODULEOSLO:I££">
+						££IF:MODULEOSLO:SI_COUPDECOEUR££
+							<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+						££END:COUPDECOEUR££
+						££IF:MODULEOSLO:SI_EXCLUSIF££
+							<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+						££END:SI_EXCLUSIF££
+						££IF+:SELECTIONFRAICHEUR:MODULEOSLO:DT_CREA datediff now timespan days££
+							<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+						££END££
+						££IF:SI_PROMO££
+							££IF:MODULEOSLO:SI_PROMO££
+							<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+							££END:SI_PROMO££
+						££END:SI_PROMO££
+						££IF:MODULEOSLO:C175_URL££
+							<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££"><img src="££MODULEOSLO:C175_URL££" /></a>
+						££END££
+						££IF0:MODULEOSLO:C175URL0££
+							££IF:MODULEOSLO:SI_LOGO££
+								<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££"><div class="logoOslo"><img src="££MODULEOSLO:URLLOGO££" /></div></a>
+							££END££
+						££END££
+						<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££" class="contentAnnonce">
+							<div class="titreAnnonce">££MODULEOSLO:IDTYPETRANSACTION gettypetransaction pcase££ ££MODULEOSLO:IDTYPEBIEN gettypebien ncase££</div>
+							<div class="localisationAnnonce">££MODULEOSLO:AVILLE pcase££ (££MODULEOSLO:CP££)</div>
+							<div class="prixAnnonce">££MODULEOSLO:PRIX££ ££MODULEOSLO:PRIX_UNITE££</div>
+							<div class="descriptionAnnonce">££MODULEOSLO:DESCRIPTIF left 75££...</div>
+						</a>
+					</div>
+			££LOOP££
+			</div>
+			<div class="clear"></div>
+	</div>
+	<div class="next"></div>
+	<div class="clear"></div>
+</div>
+££BFIN££

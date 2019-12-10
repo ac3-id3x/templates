@@ -1,0 +1,48 @@
+$$INIT:GEOLOC=1$$
+$$IF0:ZOOMAGENCESDEFAUT$$
+	$$A:ZOOMAGENCESDEFAUT=15$$
+$$END:ZOOMAGENCESDEFAUT$$
+$$DYN:ID3:NODEBUGPOPUP$$
+
+
+
+<script type="text/javascript">
+	<!--
+  var langue = '$$LANGUE$$';
+  var linkPlusDetails = '$$LG:PLUSDETAILS pcase$$';
+  var baseUrl = '$$-$$';
+  var zoomAgencesDefaut = '$$ZOOMAGENCESDEFAUT$$';
+	//-->
+</script>
+<div id="MapMicrosoft">
+	<div id="AgencesBingMap" style="position:relative; width: 100%; height:300px;"></div>
+</div><!-- #MapMicrosoft -->
+
+$$B:IMMOBW:CARTO-AGENCES-MARKERS:~cp:QRY:CP:~idPublication:QRY:IDP:ALIAS:CARTO$$
+
+<script type="text/javascript">
+	<!--
+	$(document).ready(function() {
+		addOnLoadEvent("makeMap();");
+	});
+	function makeMap()
+		{
+			var arrayOfAgencies = new Array();	
+			try
+			{
+				$$BIF:CARTO$$
+				$$DO$$
+					$$IF:CARTO:LATITUDE$$
+						arrayOfAgencies.push({idPublication:$$CARTO:IDPUBLICATION$$,idAgence:$$CARTO:IDAGENCE$$,nom:'$$CARTO:NOM  escape htmlencode$$',tel:'$$CARTO:TEL formattel$$',fax:'$$CARTO:FAX$$',email:'$$CARTO:EMAIL$$',surl:'$$CARTO:URL$$',adresse:'$$CARTO:ADRESSE escape$$',respag:'$$CARTO:RESPAG  escape htmlencode$$',latitude:'$$CARTO:LATITUDE replace , .$$',longitude:'$$CARTO:LONGITUDE replace , .$$',logo:'$$CV:IDAGENCE$$',idLogo:'$$CV:IDAGENCE right 1$$'});
+					$$END$$
+				$$LOOP$$
+				$$BFIN$$
+				GetAgencesMap(arrayOfAgencies,VEDashboardSize.Tiny);
+			}
+			catch(err)
+			{
+				//alert(err.description);
+			}	
+		}	
+	//-->
+</script>
