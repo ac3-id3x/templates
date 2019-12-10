@@ -1,0 +1,235 @@
+
+<P>$$INCL:HAUT.HTM$$ 
+ 
+  <SCRIPT LANGUAGE="JavaScript"><!--
+
+function calc(what)
+{
+	switch(what) {
+		case 'mens':
+			T = document.monform.mens_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				C = document.monform.mens_emprunt.value.replace(',','.');
+				n = document.monform.mens_nbmens.value.replace(',','.');
+				if (document.monform.mens_duree[1].checked) n *= 12;
+				document.monform.mens_mens.value = Math.round(100*C*(t/(1-(1/Math.pow(1+t,n)))))/100;
+			}
+			break;
+		case 'emprunt':
+			T = document.monform.emprunt_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				//n = document.monform.emprunt_nbmens.value.replace(',','.');
+				n = document.monform.emprunt_nbmens.value.replace(',','.');
+				if (document.monform.emprunt_duree[1].checked) n *= 12;
+				m = document.monform.emprunt_mens.value.replace(',','.');
+				document.monform.emprunt_emprunt.value = Math.round(m*((1-(1/Math.pow(1+t,n)))/t));
+			}
+			break;
+		case 'nbmens':
+			T = document.monform.nbmens_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				C = document.monform.nbmens_emprunt.value.replace(',','.');
+				m = document.monform.nbmens_mens.value.replace(',','.');
+				document.monform.nbmens_nbmens.value = Math.round(Math.log(-1/(((C/m)*t)-1))/Math.log(1+t));
+				document.monform.nbmens_nbmens.value += ' mois (' + Math.round(document.monform.nbmens_nbmens.value/12) + ' an' + ((Math.round(document.monform.nbmens_nbmens.value/12)>1)?'s':'') + ')';
+			}
+			break;
+	};
+}
+// --></SCRIPT>
+</P>
+<TABLE WIDTH="414" CELLSPACING="0" CELLPADDING="10" ALIGN="center" CLASS="tabFond1">
+  <TR>
+    <TD><BR>
+      <SPAN CLASS="txtCouleur1">$$LG:CALCULER2$$ <A HREF="#mensualites">$$LG:MENSU$$</A>, 
+        <A HREF="#duree">$$LG:DUREE$$</A>, $$LG:OU$$ <A HREF="#montant">$$LG:MONTANT$$</A> $$LG:VOTREPRET$$ <BR>
+      </SPAN>
+      <FORM METHOD="get" ACTION="" NAME="monform">
+      <INPUT TYPE="hidden" NAME="lang" VALUE="$$LANGUE$$">
+        <TABLE WIDTH="400" CELLPADDING="2" ALIGN="center">
+          <TR> 
+            <TD COLSPAN="2" CLASS="tabTitre"><B>&nbsp;•<A NAME="mensualite"></A> 
+              $$LG:CALCEMPR$$</B> </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >&raquo; $$LG:SAISIEMENS$$<BR>
+              <FONT SIZE="1">$$LG:SANSESP$$</FONT> </TD>
+            <TD VALIGN="top" WIDTH="154" ALIGN="left" > 
+              <INPUT class="imputForm" TYPE="text" NAME="emprunt_mens" SIZE="10">
+							Euros </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >&raquo; $$LG:SAISIEDUREE$$<BR>
+              <FONT SIZE="1">$$LG:PRECISOBL$$</FONT> 
+              <INPUT TYPE="radio" NAME="emprunt_duree" VALUE="m">
+              <FONT SIZE="1">$$LG:MOIS$$</FONT> 
+              <INPUT TYPE="radio" NAME="emprunt_duree" VALUE="a" checked>
+              <FONT SIZE="1">$$LG:ANNEE$$</FONT> </TD>
+            <TD WIDTH="154" ALIGN="left" > 
+              <INPUT class="imputForm" TYPE="text" NAME="emprunt_nbmens" SIZE="10">
+            </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373">&raquo; $$LG:SAISIET$$<BR>
+              <FONT SIZE="1">$$LG:EXSAISIET$$</FONT> </TD>
+            <TD WIDTH="154"> 
+              <INPUT class="imputForm" TYPE="text" NAME="emprunt_taux" SIZE="10">
+              % </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34" CLASS="fond_tab2"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="2" CLASS="tabFond2">
+                <TR> 
+                  <TD > 
+                    <DIV ALIGN="center">
+                      <INPUT class="imputForm" TYPE="BUTTON" NAME="emprunt_calculer" VALUE="$$LG:CALCEMPR$$" onClick="calc('emprunt')">
+                    </DIV>
+                  </TD>
+                  <TD > 
+                    <DIV ALIGN="center">&nbsp; 
+                      <INPUT class="imputForm" TYPE="text" NAME="emprunt_emprunt" SIZE="10">
+                    </DIV>
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" CLASS="tabTitre"><B> &nbsp;•<A NAME="montant"></A> 
+              $$LG:CALCREMB$$ </B></TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="5">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > &raquo; $$LG:SAISIEEMP$$ <FONT SIZE="1"><BR>
+              $$LG:SANSESP2$$ </FONT> <BR>
+            </TD>
+            <TD WIDTH="154" > 
+              <INPUT class="imputForm" TYPE="text" NAME="mens_emprunt" SIZE="10">
+							Euros </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > 
+              <P>&raquo; $$LG:DUREE$$<BR>
+                <FONT SIZE="1">$$LG:PRECISOBL$$</FONT> 
+                <INPUT TYPE="radio" NAME="mens_duree" VALUE="m">
+                <FONT SIZE="1">$$LG:MOIS$$</FONT> 
+                <INPUT TYPE="radio" NAME="mens_duree" VALUE="a" checked>
+                <FONT SIZE="1">$$LG:ANNEE$$</FONT> <BR>
+              </P>
+            </TD>
+            <TD WIDTH="154" > 
+              <INPUT class="imputForm" TYPE="text" NAME="mens_nbmens" SIZE="10">
+            </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > 
+              <P>&raquo; $$LG:SAISIET$$<BR>
+                <FONT SIZE="1">$$LG:EXSAISIET$$</FONT> </P>
+            </TD>
+            <TD WIDTH="154" > 
+              <INPUT class="imputForm" TYPE="text" NAME="mens_taux" SIZE="10">
+              % </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="22">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34" CLASS="fond_tab2"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="2" CLASS="tabFond2">
+                <TR> 
+                  <TD> 
+                    <DIV ALIGN="center">
+                      <INPUT class="imputForm" TYPE="BUTTON" NAME="mens_calculer" VALUE="$$LG:CALCREMB2$$" onClick="calc('mens')">
+                    </DIV>
+                  </TD>
+                  <TD> 
+                    <DIV ALIGN="center">&nbsp; 
+                      <INPUT class="imputForm" TYPE="text" NAME="mens_mens" SIZE="10">
+                    </DIV>
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="5">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" CLASS="tabTitre"> <B>&nbsp;• <A NAME="duree"></A>$$LG:CALCDUREEEMP$$</B> </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > &raquo; $$LG:SAISIEEMP$$<BR>
+              <FONT SIZE="1">$$LG:SANSESP2$$</FONT> </TD>
+            <TD WIDTH="154"  > 
+              <INPUT class="imputForm" TYPE="text" NAME="nbmens_emprunt" SIZE="10">
+							Euros </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373"> &raquo; $$LG:SAISIEMENS$$<BR>
+              <FONT SIZE="1">$$LG:SANSESP$$</FONT> </TD>
+            <TD WIDTH="154" > 
+              <INPUT class="imputForm" TYPE="text" NAME="nbmens_mens" SIZE="10">
+							Euros </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > &raquo; $$LG:SAISIET$$<BR>
+              <FONT SIZE="1">$$LG:EXSAISIET$$</FONT> </TD>
+            <TD WIDTH="154"> 
+              <INPUT class="imputForm" TYPE="text" NAME="nbmens_taux" SIZE="10">
+              % </TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="5">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34" CLASS="fond_tab2"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="2" CLASS="tabFond2">
+                <TR> 
+                  <TD WIDTH="76%"> 
+                    <DIV ALIGN="center">
+                      <INPUT class="imputForm" TYPE="BUTTON" NAME="nbmens_calculer" VALUE="$$LG:CALCDUREEEMP$$" onClick="calc('nbmens')">
+                    </DIV>
+                  </TD>
+                  <TD WIDTH="24%"> 
+                    <DIV ALIGN="center">&nbsp; 
+                      <INPUT class="imputForm" TYPE="text" NAME="nbmens_nbmens" SIZE="17">
+                    </DIV>
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD>
+          </TR>
+        </TABLE>
+      </FORM>
+      <P></P>
+    </TD>
+  </TR>
+</TABLE>
+$$SET:PAGE:IDT=CALFINANC$$
+$$INCL:BAS.HTM$$
