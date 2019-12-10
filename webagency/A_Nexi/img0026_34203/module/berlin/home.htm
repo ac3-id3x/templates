@@ -1,0 +1,89 @@
+$$IF0:FORM:LANG$$
+	<div class="ttl-bien">NOS <span>COUPS DE COEUR</span></div>
+	<p class="decouvre">Découvrez nos meilleurs biens disponibles à la vente</p>
+$$END$$
+
+$$IF:FORM:LANG$$
+	$$IF=:FR:FORM:LANG$$
+	<div class="ttl-bien">NOS <span>COUPS DE COEUR</span></div>
+	<p class="decouvre">Découvrez nos meilleurs biens disponibles à la vente</p>
+	$$END$$
+		
+	$$IF!:FR:FORM:LANG$$
+	<div class="ttl-bien">OUR <span>HOT OFFERS</span></div>
+	<p class="decouvre">Discover our best goods available for sale</p>
+	$$END$$
+$$END$$
+
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1::d_dt_maj:~limit:QRY:MAXMODULEBERLIN:~NOSTAT:1:ALIAS:ANNLISTE$$
+$$BIF:ANNLISTE$$
+	<p class="nbr-bien">$$ANNLISTE:NBR$$ $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR lcase$$ $$LG:VOTRERECHERCHE lcase$$ $$ANNLISTE:PHRASE$$</p>
+	<div id="zoneResultats">
+	$$DO$$
+			$$A:TITLE_SELECTION_INDEX=$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$IF:FORM:LANG$$
+					$$IF!:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+					$$END$$
+					$$IF=:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+					$$END$$
+				$$END$$
+				$$IF0:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				<div class="blocModule borderModule shadow" id="annonce$$ANNLISTE:IDANNONCE$$">
+						$$IF:ANNLISTE:SI_COUPDECOEUR$$
+							<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+						$$END:COUPDECOEUR$$
+						$$IF:ANNLISTE:SI_EXCLUSIF$$
+							<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+						$$END:SI_EXCLUSIF$$
+						$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+							<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+						$$END$$
+						$$IF:ANNLISTE:SI_PROMO$$
+							<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+						$$END:SI_PROMO$$
+						<div class="infoModule">
+							<ul>
+								<li><h1>$$ANNLISTE:IDTYPEBIEN gettypebien$$</h1></li>
+								<li>
+								$$IF:ANNLISTE:NB_PIECES$$
+								$$ANNLISTE:NB_PIECES$$
+									$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+									$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$			
+								$$END$$	
+								</li>
+								<li><h2>$$ANNLISTE:AVILLE$$</h2></li>
+							</ul>			
+						</div>
+						$$IF:ANNLISTE:C175_URL$$
+							<img src="$$ANNLISTE:C175_URL$$" width="175" height="175" />
+						$$END$$
+						$$IF0:ANNLISTE:C175_URL$$
+							<img src="$$_$$images/global/sans_photo.jpg" width="175" height="175" />
+						$$END$$
+				</div>
+			</a>
+	$$LOOP$$
+		<div class="clear"></div>
+	</div>
+$$BFIN$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		resize();
+		gestionAnnonce('blocModule');
+	});
+</script>
+
+<div class="clear"></div>
