@@ -1,0 +1,73 @@
+<!-- Page du mini moteur -->
+<!-- Vars Mini -->
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:JS_MINI_MOTEUR=1$$
+<!-- Go -->
+$$IF0:FORM_DELETE$$
+	<form method="get" action="/moteur,mini,prevalidation.htm" id="Mini_Moteur">
+$$END$$
+	<!--#include virtual="moteur/mini/incl_perso_input.htm" -->
+	
+	$$IF=:1:MINI_TRANSACTION$$
+		<div class="miniDiv" id="Mini_Transaction">
+		<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->
+		</div>
+	$$END:MINI_TRANSACTION$$
+	$$IF=:0:MINI_TRANSACTION$$
+		$$IF!:0:MINI_IDTTDEFAUT$$
+			<input type="hidden" name="idtt"  id="idtt" value="$$MINI_IDTTDEFAUT$$" />	
+		$$END$$
+	$$END:MINI_TRANSACTION$$
+	
+	$$IF=:1:MINI_BIENS$$
+		<div class="miniDiv" id="Mini_Biens"></div>
+		<script language="javascript" type="text/javascript">
+				$(document).ready(function() {
+					ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_bien');
+				});
+		</script>
+	$$END:MINI_BIENS$$
+	
+	$$IF=:1:MINI_BUDGET$$
+		<div class="miniDiv" id="Mini_Budget">
+			<!--#include virtual="moteur/mini/incl_budget2.htm" -->	
+			<script language="javascript" type="text/javascript">
+				$(document).ready(function() {
+					testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');
+				});
+			</script>
+		</div>
+	$$END:MINI_BUDGET$$
+	
+	$$IF=:1:MINI_VILLE$$
+	<div class="miniDiv divOff" id="Mini_Villes"></div>
+		$$IF=:0:MINI_DEP$$
+			<script language="javascript" type="text/javascript">
+				$(document).ready(function() {
+					ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes');
+					$("#Mini_Villes").change(function(event){changeValue(event,'Mini_Bouton');});
+				});
+			</script>
+		$$END:MINI_DEP$$
+	$$END:MINI_VILLE$$	
+	
+	<div class="miniDiv" id="Mini_Send">	
+			<span class="miniBlocTitre"></span>
+			<span class="miniBlocSelection">
+				<input type="button" class="miniBouton" id="Mini_Bouton" value="$$LG:RECHERCHER pcase$$"/>
+				$$IF=:1:MINI_RESTRICTION$$
+					<!--#include virtual="moteur/mini/incl_infos.htm" -->	
+				$$END$$
+			</span>	
+	</div>
+	<script language="javascript" type="text/javascript">
+		$(document).ready(function() {
+			$$IF=:1:MINI_RESTRICTION$$
+				boutonEnvoi('Mini_Bouton');	
+			$$END$$
+			loadingSearch('Mini_Bouton','$$LG:LOADING pcase$$');
+		});
+	</script>
+$$IF0:FORM_DELETE$$
+	</form>
+$$END$$
