@@ -1,0 +1,87 @@
+$$INIT:IDT=LANDING$$
+$$REM$$<!-- ======================== FICHIER A NE PAS DEMUTUALISER ======================== -->$$END:REM$$
+$$REM$$<!-- ======================== VARIABLES ET PARAMS AGENCE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_var_params.htm" -->
+$$REM$$<!-- ======================== DOCTYPE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<!--#include virtual="header/incl_fichiers.htm"-->
+<body>
+
+
+   <div id="popup-carte" class="padding-20">
+      <h1 class="big">
+         Merci de renseigner les champs ci-dessous afin que nous vous fassions parvenir votre <strong class="typo-action">Carte Avantages</strong>.
+      </h1>
+      <form method="post" action="/$$REP:0$$" enctype="multipart/form-data">
+         <!--#include virtual="contact/incl_honeypot.htm" -->
+         <input type="hidden" name="u" value="ID3:FORMMAIL" />
+         <input type="hidden" name="page_ok" value="/campagne,carte_envoi.htm" />
+         <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+         <input type="hidden" name="page_html" value="/campagne,carte_email.htm" />
+         <input type="hidden" name="cfg_form" value="carte" />
+         <input type="hidden" name="cfg_emails" value="carte" />
+         <input type="hidden" name="subject" value="Recevoir la Carte Avantages"/>
+         <input type="hidden" name="email_to" value="info@arthurimmo.com, carole@arthurimmo.com"/>
+
+         <div class="row-fluid">
+            <div class="span12 margin-top-20">
+               <hr>
+               $$IF:ERRE$$
+               <span class="h3-like bold uppercase">$$LG:ERREUR$$</span>
+               <p class="small">$$ERRE$$</p>
+               $$END$$
+               <div class="control-group margin-top-15">
+                  <label class="bold">$$LG:CIVILITE pcase$$* :</label>
+                  <div class="radio">
+                     <label><input type="radio" name="carte-civil" value="1" $$IF=:1:FORM:CARTE-CIVIL$$checked$$END$$> $$LG:MONSIEUR pcase$$</label>
+                  </div>
+                  <div class="radio">
+                     <label><input type="radio" name="carte-civil" value="2" $$IF=:2:FORM:CARTE-CIVIL$$checked$$END$$> $$LG:MADAME pcase$$</label>
+                  </div>
+               </div>
+               <div class="control-group margin-top-15">
+                  <label class="bold">Vous êtes :</label>
+                  <div class="radio">
+                     <label><input type="radio" name="carte-type" value="1" $$IF=:1:FORM:CARTE-TYPE$$checked$$END$$> $$LG:PROPRIETAIRE pcase$$</label>
+                  </div>
+                  <div class="radio">
+                     <label><input type="radio" name="carte-type" value="2" $$IF=:2:FORM:CARTE-TYPE$$checked$$END$$> $$LG:LOCATAIRE pcase$$</label>
+                  </div>
+               </div>
+               <div class="formanim-grp margin-top-15">
+                  <input type="text" class="formanim-input" id="carte-nom" name="carte-nom" value="$$FORM:CARTE-NOM$$">
+                  <label class="formanim-label">$$LG:NOM pcase$$*</label>
+               </div>
+               <div class="formanim-grp margin-top-15">
+                  <input type="text" class="formanim-input" id="carte-prenom" name="carte-prenom" value="$$FORM:CARTE-PRENOM$$">
+                  <label class="formanim-label">$$LG:PRENOM pcase$$</label>
+               </div>
+               <div class="formanim-grp margin-top-15">
+                  <input type="text" class="formanim-input" id="carte-cp" name="carte-cp" value="$$FORM:CARTE-CP$$">
+                  <label class="formanim-label">$$LG:CODEP pcase$$*</label>
+               </div>
+               <div class="formanim-grp margin-top-15">
+                  <input type="text" class="formanim-input" id="carte-ville" name="carte-ville" value="$$FORM:CARTE-VILLE$$">
+                  <label class="formanim-label">$$LG:VILLE pcase$$*</label>
+               </div>
+               <div class="formanim-grp margin-top-15">
+                  <input type="email" class="formanim-input" id="email_from" name="email_from" value="$$FORM:EMAIL_FROM$$">
+                  <label class="formanim-label">$$LG:EMAIL pcase$$*</label>
+               </div>
+
+               <p class="smaller italic">* champs obligatoires</p>
+
+               <div class="control-group margin-top-20 pagination-centered">                  
+                  <button type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$" onClick="ga('send', 'event', { eventCategory: 'formulaire', eventAction: 'envoyer', eventLabel: 'demande carte avantage'});">Recevoir ma Carte Avantages</button>
+               </div>
+
+            </div>
+         </div>
+
+
+      </form>
+   </div>
+
+   <!--#include virtual="scripts/incl_scripts.htm" -->
+</body>
+</html>

@@ -1,0 +1,157 @@
+$$A:CALCULMODULO=@@ANNLISTE:I  exec XX%3$$
+$$IF=:1:CALCULMODULO$$<div class="row-fluid">$$END$$
+   <div class="span4 conteneur-annonce margin-bottom-20 pres-listing">
+      <div class="recherche-annonces" id="annonce$$ANNLISTE:IDANNONCE$$">
+         <div class="recherche-annonces-content">
+            <a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+
+               <div class="recherche-annonces-photo relative" $$IF:ANNLISTE:C250_URL$$style="background-image:url($$ANNLISTE:C250_URL$$);"$$END$$$$IF0:ANNLISTE:C250_URL$$style="background-image:url($$-$$images/recherche/sans_photo_listing.jpg);"$$END$$>
+
+                  $$IF0:ANNLISTE:SIPANIER$$
+                  $$IF!:1:PICTOANNONCELISTHOME$$
+                  <div class="absolute top left width-100-pourcent margin-left-10 small">
+                     <!--#include virtual="recherche/incl_pictos_annonce.htm" -->
+                  </div>
+                  $$END$$
+                  $$END$$
+
+
+               </div>
+
+               <div class="padding-15">
+
+                  <p class="big">
+                     $$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+                     <span class="small">$$IF:ANNLISTE:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$$$IF0:ANNLISTE:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$</span><br>
+                     $$END$$
+                     <span class="small">
+                        $$IF=:10:ANNLISTE:IDTYPETRANSACTION$$$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$$$END$$
+                        $$IF!:10:ANNLISTE:IDTYPETRANSACTION$$
+                        $$IF=:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$
+                        $$IF!:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$$$END$$
+                        $$END$$
+                        $$IF=:9:FORM:IDTT$$ : $$ANNLISTE:LIBELLE$$$$END$$
+                     </span>
+                     <span class="typo-action ville-annonce small">$$IF:ANNLISTE:VILLE$$$$ANNLISTE:VILLE gettypebien ncase$$$$END$$ $$IF!:1:CPHIDDEN$$$$IF:ANNLISTE:CP$$($$ANNLISTE:CP$$)$$END$$$$END$$</span>
+                     $$IF:ANNLISTE:QUARTIER$$
+                     <br>
+                     <span class="quartier-annonce small">
+                        $$LG:QUARTIER pcase$$ : <span class="typo-action">$$ANNLISTE:IDQUARTIER getquartier$$</span>
+                     </span>
+                     $$END$$
+                  </p>
+
+                  $$IF:ANNLISTE:PRIX$$
+                  <div class="typo-action big prix-annonce margin-top-5 display-inline align-mid" id="prix$$ANNLISTE:IDANNONCE$$">
+                     $$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+                     <span class="xsmallest typo-body">$$LG:BOUQUET pcase$$ : </span>
+                     $$END$$
+                     <span itemprop="price">$$IF=:4:FORM:IDTT$$$$LG:APARTIRDE$$ $$END$$$$ANNLISTE:PRIX$$</span>
+                     <sup class="xsmallest">$$ANNLISTE:PRIX_UNITE$$</sup>
+                     <!--#include virtual="recherche/incl_prix_condition.htm" -->
+                     <!--#include virtual="recherche/incl_prix_baisse.htm" -->
+                  </div>
+                  $$IF:ANNLISTE:PX_RENTE$$
+                  <div class="typo-action big prix-annonce" id="px_rente$$ANNLISTE:IDANNONCE$$">
+                     <span class="smaller typo-body">$$LG:RENTE pcase$$ :</span> $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$
+                  </div>
+                  $$END$$
+
+                  $$IF=:2$8:ANNLISTE:IDTYPETRANSACTION$$
+	                  $$IF!:4:ANNLISTE:IDTYPEBIEN$$
+	                  	$$IF0:ANNLISTE:XML xml NGR$$
+	                     $$IF(:AGENCESGARANTIE:ANNLISTE:IDPUBLICATION$$
+	                        <span class="display-inline align-mid margin-left-5 btn-tooltip garantie-annonce" onclick="window.open('https://www.arthurimmo.com/immo,garantie-revente.htm');return false;" data-placement="top" data-title="Garantie revente">
+	                           <img src="$$-$$images/pictos/picto-garantie.png" alt="Garantie revente">
+	                        </span>
+	                     $$END$$
+	                    $$END$$
+	                  $$END$$
+                  $$END$$
+
+                  $$END$$
+                  $$IF0:ANNLISTE:PRIX$$
+                  <div class="typo-action bigger prix-annonce" id="prix$$ANNLISTE:IDANNONCE$$"></div>
+                  <!--#include virtual="recherche/incl_prix_baisse.htm" -->
+                  $$END$$
+
+                  <p class="prix-honoraires-charges margin-top-10 small line-height-18">
+                     $$IF=:1$3$7:ANNLISTE:IDTYPETRANSACTION$$
+                     $$LG:CHARGES pcase$$ : $$IF:ANNLISTE:PX_CHARGES$$$$ANNLISTE:PX_CHARGES formatnumber 0$$ &euro;$$END$$$$IF0:ANNLISTE:PX_CHARGES$$N/A$$END$$
+                     <br>
+                     $$LG:HONORAIRES pcase$$ : $$IF:ANNLISTE:HONORAIRES$$$$ANNLISTE:HONORAIRES$$ &euro;$$END$$$$IF0:ANNLISTE:HONORAIRES$$N/A$$END$$
+                     <br>
+                     $$LG:V5DEPOTGARANTIE pcase$$ : $$IF:ANNLISTE:GARANTIE$$$$ANNLISTE:GARANTIE replace € ¤$$ &euro;$$END$$$$IF0:ANNLISTE:GARANTIE$$N/A$$END$$
+                     $$END$$
+                  </p>
+
+                  <p class="margin-top-10">
+                     <span itemprop="description">
+                        <!--#include virtual="recherche/incl_refannonce.htm" -->
+                        $$IF=:1:LONGDESCRECHERCHE$$
+                        $$IF!:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 190 pcase$$$$END$$
+                        $$IF=:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 190 $$$$END$$...
+                        $$END$$
+                        $$IF!:1:LONGDESCRECHERCHE$$
+                        $$IF!:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 95 pcase$$$$END$$
+                        $$IF=:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 95 $$$$END$$...
+                        $$END$$
+                     </span>
+                     $$IF!:0:DTMAJMASQUE$$<br />Maj : $$ANNLISTE:DT_MAJ date 2$$ $$END$$
+                     $$IF=:1:AFFREF$$<br />$$LG:REF pcase$$ : $$ANNLISTE:REFANNONCE$$$$END$$
+                  </p>
+
+                  <p class="margin-top-10 annonces-maj">Maj : $$ANNLISTE:DT_MAJ date 2$$</p>
+
+                  <div class="recherche-annonces-carac margin-top-10">
+                     $$IF:ANNLISTE:SURFACE$$
+                     <div class="annonces-carac-item">
+                        $$IF!:EN:LANGUE$$$$ANNLISTE:SURFACE$$ m² $$END$$
+                        $$IF=:EN:LANGUE$$ $$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+                     </div>
+                     $$END$$
+                     $$IF:ANNLISTE:NB_PIECES$$
+                     <div class="annonces-carac-item">
+                        <!--#include virtual="recherche/incl_pieces.htm" -->
+                        $$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                        $$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                     </div>
+                     $$END$$
+                     $$IF:ANNLISTE:NB_CHAMBRES$$
+                     <div class="annonces-carac-item">
+                        $$ANNLISTE:NB_CHAMBRES$$
+                        $$IF=:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$$$END$$
+                        $$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$$$END$$
+                     </div>
+                     $$END$$
+                  </div>
+
+               </div>
+
+            </a>
+
+            $$IF0:ANNLISTE:SIPANIER$$
+            <div class="padding-left-15 padding-bottom-15">
+               <div class="bouton-ajouter-selection-detail btn-tooltip not-log margin-top-10 typo-action hidden-med" data-placement="top" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$">
+                  <span>
+                     <span>
+                        <span class="display-inline align-mid plus small">
+                           <i class="general-enclosed icon-v5-star big"></i>
+                        </span>
+                        <span class="display-inline align-mid checkmark display-none margin-top-neg-5">
+                           <i class="general-enclosed typoicon-checkmark"></i>
+                        </span>
+                     </span>
+                  </span>
+                  <div class="display-inline align-mid margin-top-neg-5">$$LG:AJOUTERSEL pcase$$</div>
+               </div>
+            </div>
+            $$END$$
+
+
+
+
+         </div>
+      </div>
+   </div>
+   $$IF=:0:CALCULMODULO$$</div>$$END$$

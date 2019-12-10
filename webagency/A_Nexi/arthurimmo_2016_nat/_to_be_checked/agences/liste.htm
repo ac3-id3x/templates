@@ -1,0 +1,184 @@
+$$INIT:IDT=NOSAGENCES$$
+$$A:JS_LISTINGAGENCES=0$$
+$$IF=:NOSAGENCES:IDT$$
+<!--#include virtual="agences/incl_ref_agences.htm" -->
+$$END$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+$$BIF:COMPTE_AGENCES$$$$A:TOTAL_AGENCES=@@COMPTE_AGENCES:NBRESULT@@$$$$DO:1:1$$$$LOOP$$$$BFIN$$
+$$REM$$ <!-- viktor zoom? --> $$A:MAPPADDING=100$$ $$END:REM$$
+
+<div class="row-fluid">
+   <div class="span$$IF=:1:ENCART_PUB_AGENCES$$9$$END$$$$IF!:1:ENCART_PUB_AGENCES$$12$$END$$">
+      <!--#include virtual="agences/incl_phrase_agences.htm" -->
+      <div class="row-fluid txt-agence hidden-phone">
+         <div class="span12">
+            $$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+               <p class="hidden-desktop hidden-tablet">$$LG:INTROAGENCES pcase$$</p>
+            $$END$$
+            $$IF!:ACQUERIR$ESTIMATION:IDT$$
+                  $$IF=:1:AGENCES_LISTE_TXT$$
+                     $$IF0:REP:QRY$$
+                        <div class="row-fluid margin-top-10 margin-bottom-10">
+                           <div class="span12">
+                              <!--#include virtual="agences/incl_txt_perso.htm" -->
+                           </div>
+                        </div>
+                     $$END$$
+                  $$END$$
+            $$END$$
+            $$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+               <!--#include virtual="agences/incl_btn_geoloc.htm" -->
+            $$END$$
+         </div>
+      </div>
+      $$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+         $$BIF:COMPTE_AGENCES$$
+            <div class="row-fluid margin-top-10">
+               <div class="span12">
+
+                  $$IF=:ESTIMATION:IDT$$
+                     $$IF!:1:CARTO_ESTIMATION_CACHE$$
+                        <!--#include virtual="agences/incl_search_geo_agences.htm" -->
+                        <div class="row-fluid$$IF=:2:AFFICHAGE_AGENCES_LISTE$$ margin-bottom-10$$END$$" id="listing-agences">
+                           <!--#include virtual="carto/incl_agences.htm" -->
+                        </div>
+                     $$END$$
+                  $$END$$
+                  $$IF!:ESTIMATION:IDT$$
+                     $$REM$$<!--#include virtual="agences/incl_search_geo_agences.htm" -->$$END:REM$$
+                     <div class="row-fluid margin-bottom-10">
+                        <!--<div class="span4">
+                           <form action="">
+                              <select class="select-nom" name="cp">                                 
+                                 <option value="">Sélectionnez votre agence</option>
+                                 $$BIF:VILLESAGENCES$$
+                                    $$DO$$
+                                    $$A:CP=@@VILLESAGENCES:CP left 2@@$$
+                                       <option value="$$VILLESAGENCES:NOM$$" data-cp="$$VILLESAGENCES:CP$$">$$VILLESAGENCES:NOM$$ ($$VILLESAGENCES:VILLE$$)</option>
+                                    $$LOOP$$
+                                 $$BFIN$$
+                              </select>
+                           </form>
+                        </div>-->
+                        <div class="span12">
+                           <form action="">
+                              $$REM$$<!--<select class="select-ville" name="cp">                                 
+                                 <option value="">Sélectionnez votre agence</option>
+                                 $$BIF:VILLESAGENCES$$
+                                    $$DO$$                                    
+                                       <option value="$$VILLESAGENCES:CP$$" data-cp="$$VILLESAGENCES:CP$$">Arthurimmo.com $$VILLESAGENCES:VILLE$$</option>
+                                    $$LOOP$$
+                                 $$BFIN$$
+                              </select>-->$$END$$
+                              <select class="select-agence hidden-phone" name="cp" disabled="true">
+                                 <option value="">Sélectionnez votre agence</option>
+								 $$REM$$<!-- the « option » list is defined in the template « ..\webagency\A_Nexi\arthurimmo_2016_nat\carto\incl_agences.htm » -->$$END$$
+								 $$REM$$<!-- see the method « onDataLoad() » ( inside « id3xContent.addMap() ») -->$$END$$
+                              </select>
+                              <select class="select-dept" name="cp" disabled="true">
+                                 $$B:IMMOBW:AGENCES:DEP:::WITHDEP::::::QRY:REGION:ALIAS:DEPT$$
+                                 <option value="">$$LG:DEPARTEMENTS pcase$$</option>
+                                 $$BIF:DEPT$$
+                                    $$DO$$
+                                       $$IFNEXT:DEPT:DEP$$
+                                          $$IF!:97:DEPT:DEP$$
+                                             <option value="$$DEPT:DEPARTEMENT urlencode$$" data-cp="$$DEPT:DEP$$">$$DEPT:DEPARTEMENTAFF$$ ($$DEPT:DEP$$)</option>
+                                          $$END$$
+                                       $$END$$
+                                    $$LOOP$$
+                                 $$BFIN$$
+                                 <option value="972 La Martinique" data-cp="972">La Martinique (972)</option>
+                              </select>
+                              <select class="select-ville" name="cp" disabled="true">
+                                 $$B:IMMOBW:VILLESAGENCES:ALIAS:VILLESAGENCES$$
+                                 <option value="">$$LG:VILLES3 pcase$$</option>
+                                 $$BIF:VILLESAGENCES$$
+                                    $$DO$$
+                                    $$A:CP=@@VILLESAGENCES:CP left 2@@$$
+                                       <option value="$$VILLESAGENCES:CP$$ $$IF=:75:CP$$Paris$$END$$$$IF):75:CP$$$$VILLESAGENCES:VILLE urlencode$$$$END$$" data-cp="$$VILLESAGENCES:CP$$">$$VILLESAGENCES:VILLE$$ ($$VILLESAGENCES:CP$$)</option>
+                                    $$LOOP$$
+                                 $$BFIN$$
+                              </select>
+                              <span class="bloc-btn-agence">
+                                 <a href="/agences,liste.htm" class="btn-ok $$TYPEBOUTON$$ $$TYPEBOUTONACTION$$">OK</a>
+                              </span>
+                           </form>
+                        </div>
+                     </div>
+                     <div class="row-fluid$$IF=:2:AFFICHAGE_AGENCES_LISTE$$ margin-bottom-10$$END$$" id="listing-agences">
+                        <!--#include virtual="carto/incl_agences.htm" -->
+                     </div>
+                  $$END$$
+                  $$IF=:1:AFFICHAGE_AGENCES_LISTE$$
+                     <div class="row-fluid display-none zone-agence-ajax"></div>
+                  $$END$$
+               </div>
+            </div>
+         $$BFIN$$
+      $$END$$
+      $$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$
+      $$IF=:2:AFFICHAGE_AGENCES_LISTE$$
+      <hr class="margin-bottom-10">
+      $$END$$
+      <div class="row-fluid margin-top-10 margin-bottom-10">
+         <div class="span6">
+            <!--#include virtual="agences/incl_tri_agences.htm" -->
+         </div>
+         $$IF+:1:LISTEAG:NBRPAGES$$
+         <div class="span6">
+            <div class="pagination margin-bottom-10 pull-right">
+               <!--#include virtual="agences/incl_nb_pages.htm" -->
+            </div>
+         </div>
+         $$END$$
+      </div>
+      $$END$$
+
+      $$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$
+         $$BIF:LISTEAG$$
+            $$DO:1:10$$
+               $$IF!:HIDDENAGENCE:COMPTE_AGENCES:IDPUBLICATION$$
+               <div class="row-fluid $$IF!:10:LISTEAG:I$$margin-bottom-20$$END$$ margin-left-0">
+                  <!-- BLOC AGENCE -->
+                  <div class="span12 margin-left-0">
+                     <div class="row-fluid">
+                        <div class="span12 box-shadow detail-agence-liste hide-agence-$$LITSTEAG:IDPUBLICATION$$">
+                           <!--#include virtual="agences/incl_liste_agences.htm" -->
+                        </div>
+                     </div>
+                  </div>
+               <!-- END BLOC AGENCE -->
+               </div>
+               $$END$$
+            $$LOOP$$
+            $$IF=:0:AFFICHAGE_AGENCES_LISTE$$
+            <div class="row-fluid relative">
+               <!--#include virtual="carto/incl_agences.htm" -->
+            </div>
+            $$END$$
+         $$BFIN$$
+      $$END$$
+
+
+      $$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$
+          $$IF+:1:LISTEAG:NBRPAGES$$
+          <div class="row-fluid">
+              <div class="span6 hidden-phone"></div>
+              <div class="span6 margin-top-10">
+                 <div class="pagination pull-right">
+                    <!--#include virtual="agences/incl_nb_pages.htm" -->
+                 </div>
+              </div>
+            </div>
+          $$END$$
+      $$END$$
+   $$REM$$<!-- ZONE PUB -->$$END$$
+   </div>
+   $$IF=:1:ENCART_PUB_AGENCES$$
+   <div class="span3 hidden-phone">
+      <!--#include virtual="agences/incl_pub.htm" -->
+   </div>
+   $$END$$
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

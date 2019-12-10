@@ -1,0 +1,76 @@
+$$A:JS_MINI_MOTEUR=1$$
+<div class="margin-top-90 margin-bottom-20 hidden-med">$$REM$$<!--<strong class="big">$$E:IMMOBW:NBANN$$$$IMMOBW:NBANN:NBANN$$</strong> $$LG:ANNONCIMMOS lcase$$-->$$END$$</div>
+
+<div class="hidden-large minimoteur-arthurimmo-fake">
+   $$LG:DESIRHABITER pcase$$
+   <a href="javascript:void(0);" class="minimoteur-arthurimmo-fake-btn"><img src="$$-$$images/pictos/picto-search-white.png"></a>
+</div>
+
+<form class="form-$$TYPEMOTEUR$$ minimoteur-arthurimmo" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+		<input type="hidden" name="tri" value="d_dt_crea">
+   <div class="minimoteur-wrapper">
+      <div class="hidden-large bigger minimoteur-arthurimmo-close"><a href="javascript:void(0);" class="btn btn-action">X</a></div>
+      <div class="row-fluid">
+         <div class="span3">
+            <div id="Mini_Transaction">
+               $$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+               <!--#include virtual="moteur/mini/incl_type_transaction.htm" -->
+            </div>
+         </div>
+         <div class="span6">
+            <div id="Mini_Villes" class="Mini_Villes pagination-left relative">
+               $$REM$$<!-- VILLE SUGGEST -->$$END$$
+               $$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+               $$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+               $$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+               <!--#include virtual="moteur/suggest/incl_input.htm" -->
+            </div>
+         </div>
+         <div class="span3">
+            <div class="minimoteur-slider hidden-med" id="minimoteur-slider">
+               <div class="minimoteur-slider-content" id="minimoteur-slider-content">
+                  <div class="minimoteur-slider-ttl">Budget (€)</div>
+                  <div class="minimoteur-slider-nbr">
+                     <span class="DisplayBudgetMin"></span>
+                     <strong>></strong>
+                     <span class="DisplayBudgetMax"></span>
+                  </div>
+               </div>
+               <div class="minimoteur-slider-range" id="minimoteur-slider-range">
+                  <div class="row-fluid">
+                     <div class="span3 pagination-centered">
+                        <div id="slider-budget"></div>
+                     </div>
+                     <div class="span9">
+                        <div class="minimoteur-display-max">
+                           <div class="minimoteur-slider-ttl">MAX</div>
+                           <span class="DisplayBudgetMax"></span>
+                        </div>
+                        <div class="minimoteur-display-min">
+                           <div class="minimoteur-slider-ttl">MIN</div>
+                           <span class="DisplayBudgetMin"></span>
+                        </div>
+                     </div>
+                  </div>
+                  <button type="button" class="minimoteur-slider-close btn btn-small btn-action margin-top-20" id="minimoteur-slider-close"><i class="icon-v5-checkmark big"></i></button>
+               </div>
+               <input type="hidden" id="MiniInputBudgetMin" name="pxmin" value="$$LG:MINI$$">
+               <input type="hidden" id="MiniInputBudgetMax" name="pxmax" value="$$LG:MAXI$$">
+            </div>
+
+            <div id="Mini_Budget" class="Mini_Budget$$IF=:INLINE:TYPEMOTEUR$$$$IF0:TAILLEMINIBUDGET$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIBUDGET$$ $$TAILLEMINIBUDGET$$$$END$$$$END$$ hidden-large">
+               <script type="text/javascript">
+                  $(document).ready(function() {
+                     ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+                  });
+               </script>
+            </div>
+
+
+
+         </div>
+      </div>
+      <button type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-rechercher-moteur margin-top-20" data-loading-text="$$LG:LOADING pcase$$">$$LG:VOIRANN pcase$$</button>
+   </div>
+</form>
+

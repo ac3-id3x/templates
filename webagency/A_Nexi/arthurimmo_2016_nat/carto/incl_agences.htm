@@ -1,0 +1,183 @@
+	$$REM$$<!-- carte OpenStreetMap ("../agences,liste.htm") -->$$END$$
+	$$IF0:SIZE_MAP$$$$A:SIZE_MAP=400$$$$END$$
+	$$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+	<div class="row-fluid">
+		<div class="span12 relative">
+			<div id="geo-map-1a-demut" class="height-$$SIZE_MAP$$ relative width-100-pourcent overflow"></div>
+			<script type="text/javascript">
+				geoMapId = 'geo-map-1a-demut';
+				
+				// Id3 texts
+				var txtID3_FeesScale = "$$IF:LIBELLE_BAREME_HONORAIRES$$$$LIBELLE_BAREME_HONORAIRES$$$$END$$"
+										+ "$$IF0:LIBELLE_BAREME_HONORAIRES$$$$LG:ALUR_BAREMEHONORAIRES$$$$END$$",
+					txtID3_CallUs = "$$LG:V5APPELEZNOUS pcase$$",
+					txtID3_Email = "$$LG:EMAIL pcase$$",
+					txtID3_Website = "$$LG:SITEINTERNET pcase$$",
+					txtID3_AgencyManager = "$$IF!:147641$102912:AGENCE:IDTIERS$$$$LG:RESPAGENCE pcase$$$$END$$"
+											+ "$$IF=:147641$102912:AGENCE:IDTIERS$$$$LG:RESPSAGENCE pcase$$$$END$$",
+					txtID3_VisitAgency = "$$LG:DECOUVRIRAG pcase$$",
+					txtID3_Properties = "$$LG:LIEN:NOSBIENS pcase$$",
+					txtID3_EvaluateEstate = "$$LG:ESTIMBIEN pcase$$",
+					txtID3_ContactUs = "$$LG:NOUSCTC pcase$$";
+				
+				id3xContent.addMap({ container: {id: geoMapId},
+					mapData: [{
+						 mapDataType: 'AGENCIES'
+						,data: {
+							url: '/maps,ag_arthurimmo_2016_nat.js',
+							events: {
+								onDataLoad: function(mapObject, data) {
+									if (Array.isArray(data)) {
+										// agences
+										var node = document.getElementsByClassName('select-agence');
+										if (node.length > 0) {
+											var _opt = null, _sa = node[0];
+											
+											data.forEach(function(age){
+												if (age.idPublication != 413777) {
+													_opt = document.createElement('option');
+													_opt.value = age.idPublication;
+													_opt.innerHTML = age.name + " - " + age.city;
+													_opt.lat = age.latitude;
+													_opt.lon = age.longitude;
+													_sa.appendChild(_opt);
+													_sa.appendChild(document.createTextNode('\r\n'));
+												}
+											});
+											
+											_sa.addEventListener('change', function(e){ 
+												if (e.target.selectedIndex > 0) {
+													var _selected = e.target.selectedOptions[0];
+													mapObject.map.setView([_selected.lat, _selected.lon], 12);
+													
+													if ($('.select-dept').prop('selectedIndex') > 0) $('.select-dept').val('').trigger('change');
+													if ($('.select-ville').prop('selectedIndex') > 0) $('.select-ville').val('').trigger('change');
+												}
+											}, false);
+											
+											_sa.disabled = false;
+										}
+										
+										// départements
+										node = document.getElementsByClassName('select-dept');
+										if (node.length > 0) {
+											var _sd = node[0];
+											
+											_sd.addEventListener('change', function(e){
+												if (e.target.selectedIndex > 0) {
+													var coords = new Array(), _cp = e.target.selectedOptions[0].dataset.cp;
+													
+													data.forEach(function(age){
+														if (age.cp.startsWith(_cp)) coords.push([age.latitude, age.longitude]);
+													});
+													
+													if (coords.length > 0) {
+														if (coords.length > 1) {
+															mapObject.map.fitBounds(coords);
+														}
+														else {
+															mapObject.map.setView(coords[0], 12);
+														}
+													}
+													
+													if ($('.select-agence').prop('selectedIndex') > 0) $('.select-agence').val('').trigger('change');
+													if ($('.select-ville').prop('selectedIndex') > 0) $('.select-ville').val('').trigger('change');
+												}
+											}, false);
+											
+											node[0].disabled = false;
+										}
+										
+										node = document.getElementsByClassName('select-ville');
+										if (node.length > 0) node[0].disabled = false;
+										
+										$$REM$$//node = document.getElementsByClassName('bloc-btn-agence');
+										//if (node.length > 0) node[0].children[0].onclick = function() { return true; };
+										/*<a href="/agences,liste.htm" class="btn-ok $$TYPEBOUTON$$ $$TYPEBOUTONACTION$$" onclick="return false;">OK</a>*/$$END$$
+									}
+								}
+							}
+						}
+						,marker: {
+							events: {
+								onMarkerClick: function(e) {
+									var zoneAgenceAjax = $('.zone-agence-ajax');
+									if (zoneAgenceAjax.length > 0) {
+										e.sourceTarget._map.setView([e.latlng.lat, e.latlng.lng], 13);
+										zoneAgenceAjax.html('').show();
+										
+										$.ajax({
+											type: 'GET',
+											data : "idpublication=" + e.target.idP + "&lang=" + e.target.lang,
+											dataType:'html',
+											url: '/carto,incl_search_agence.htm',
+											beforeSend: function() {
+												zoneAgenceAjax.html('<div class="pagination-centered"><img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif"></div>');
+											},
+											success: function(data) {
+												zoneAgenceAjax.html(data).show();
+											},
+											error : function (jqXHR, textStatus, errorThrown) {
+												console.log(jqXHR, textStatus, errorThrown);
+											},
+											complete: function() {
+												var positionElement = $('.zone-agence-ajax').position();
+												if (positionElement != undefined) {
+													var offset = $("header").height();
+													$("html, body").animate({ scrollTop: positionElement.top - offset }, 600);
+												}
+												
+												// Id3 texts
+												var feesScaleAgency = document.getElementById('fees-scale-agency')
+													, callUsAgency = document.getElementById('call-us-agency')
+													, emailAgency = document.getElementById('email-agency')
+													, websiteAgency = document.getElementById('website-agency')
+													, urlAgency = document.getElementById('url-agency')
+													, managerAgency = document.getElementById('manager-agency')
+													, visitAgency = document.getElementById('visit-agency')
+													, propertiesAgency = document.getElementById('properties-agency')
+													, evaluateEstateAgency = document.getElementById('evaluate-estate-agency')
+													, contactUsAgency = document.getElementById('contact-us-agency');
+												
+												if (feesScaleAgency) { var aElem = feesScaleAgency.children[0]; aElem.title = txtID3_FeesScale; aElem.innerText = txtID3_FeesScale; }
+												if (callUsAgency) { callUsAgency.innerHTML = txtID3_CallUs; }
+												if (emailAgency) { emailAgency.innerHTML = txtID3_Email; }
+												if (websiteAgency) { websiteAgency.innerHTML = txtID3_Website; }
+												if (urlAgency) {
+													var aElem = urlAgency.children[0];
+													aElem.href= aElem.href.replace('https:', 'http:');
+													aElem.innerHTML = aElem.innerHTML.replace('https:', 'http:');
+												}
+
+												if (managerAgency) { managerAgency.innerHTML = txtID3_AgencyManager; }
+												if (visitAgency) { var aElem = visitAgency.children[0]; aElem.title = txtID3_VisitAgency; aElem.innerHTML = txtID3_VisitAgency; }
+												if (propertiesAgency) { var aElem = propertiesAgency.children[0]; aElem.title = txtID3_Properties; aElem.innerHTML = txtID3_Properties; }
+												if (evaluateEstateAgency) { var aElem = evaluateEstateAgency.children[0]; aElem.title = txtID3_EvaluateEstate; aElem.innerHTML = txtID3_EvaluateEstate; }
+												if (contactUsAgency) { contactUsAgency.innerHTML = txtID3_ContactUs; }
+											}
+										});
+									}
+									else {
+										window.location.href = e.target.url;
+									}
+								}
+							}
+							,icon: {defaultIcon: {color: '$$PINCARTO$$'}}
+							,popup: true
+						}
+					}],
+					options: { autoCompleteFeature: {enabled: true, inputContainerId: 'searchGeolocUser'}, listing: true }
+				});
+			</script>
+		</div>
+	</div>
+	$$END$$
+	$$IF=:0:AFFICHAGE_AGENCES_LISTE$$
+	<div id="geo-map-1b-demut" class="height-250 absolute display-none span12 hidden-phone"></div>
+	<script type="text/javascript">
+		id3xContent.addMap({ container: {id: 'geo-map-1b-demut'},
+			mapData: [{ mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}}, popup: true } }],
+			options: { autoCompleteFeature: {enabled: true, inputContainerId: 'searchGeolocUser'}, listing: true }
+		});
+	</script>
+	$$END$$

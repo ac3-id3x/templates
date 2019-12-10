@@ -1,0 +1,191 @@
+$$REM$$<!-- SI DEMUT PENSEZ A FAIRE CARTO/INCl_SEARCH_AGENCE -->$$END$$
+$$REM$$<!-- SI DEMUT AUCUNE AIDE FOURNIE -->$$END$$
+<div class="row-fluid" itemscope itemtype="https://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<!--#include virtual="agences/incl_microdonnes_agences.htm" -->
+		<!-- LOGO OR NOT -->
+		<!--#include virtual="agences/incl_liste_agences_logo.htm" -->
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span> <span class="typo-action big" itemprop="addressLocality">$$LISTEAG:VILLE pcase$$ <span  itemprop="postalCode">$$LISTEAG:CP$$</span></span></div>
+		<!--#include virtual="referencement/incl_opinionsystem_liste.htm" -->
+		$$IF=:1:MULTIAGENCES$$
+			$$A:BAREME_URL=$$
+			$$A:BAREME_LIBELLE=$$
+
+			$$IF:LISTEAG:URL_DOCHONORAIRES$$
+				$$A:BAREME_URL=@@LISTEAG:URL_DOCHONORAIRES@@$$
+
+				$$IF:LIBELLE_BAREME_HONORAIRES$$
+					$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+				$$END$$
+
+				$$IF0:LIBELLE_BAREME_HONORAIRES$$
+					$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+				$$END$$
+			$$END$$
+
+			$$IF0:LISTEAG:URL_DOCHONORAIRES$$
+				$$IF:EXTENSION_BAREME_HONORAIRES$$
+					$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@LISTEAG:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+					$$IF:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+					$$END$$
+
+					$$IF0:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+					$$END$$
+				$$END$$
+			$$END$$
+
+			$$IF:BAREME_URL$$
+				<div class="pull-right margin-right-30 margin-top-10">
+				  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+					<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+							<a href="$$BAREME_URL$$" rel="nofollow" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+					</span>
+				</div>
+				<div class="clear"></div>
+			$$END$$
+		$$END$$
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold hidden-phone">$$LG:MINITEL pcase$$</div>
+				$$REM$$ <!-- DESKTOP : TELEPHONEMASQUE = 1 --> $$END:REM$$
+				$$IF=:1:TELEPHONEMASQUE$$
+					$$IF=:1:TELEPHONEDISTINCT$$
+						$$A:SPECIAL_TEL=0$$
+						$$IF:LISTEAG:TELLOC$$
+							$$A:SPECIAL_TEL=1$$
+							<div class="hidden-phone"><span style="margin-left: 11px" id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i>&nbsp;$$LG:V5APPELEZNOUS pcase$$ $$LG:LIEN:LOC pcase$$</span>
+							<span style="margin-left: 11px" id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> <a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TELLOC replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TELLOC tel2inter replace (0) �$$$$END$$">&nbsp;$$LISTEAG:TELLOC formattel$$</a></span></span></div>
+						$$END$$
+						$$IF:LISTEAG:TELVEN$$
+							$$A:SPECIAL_TEL=1$$
+							<div class="hidden-phone"><span style="margin-left: 11px" id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i>&nbsp;$$LG:V5APPELEZNOUS pcase$$ $$LG:LIEN:VEN pcase$$</span>
+							<span style="margin-left: 11px" id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> <a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TELVEN replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TELVEN tel2inter replace (0) �$$$$END$$">&nbsp;$$LISTEAG:TELVEN formattel$$</a></span></span></div>
+						$$END$$
+						$$IF=:0:SPECIAL_TEL$$
+							<div class="hidden-phone"><span style="margin-left: 11px" id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i>&nbsp;$$LG:V5APPELEZNOUS pcase$$</span>
+							<span style="margin-left: 11px" id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> <a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$">&nbsp;<!--#include virtual="header/incl_formatel.htm" --></a></span></span></div>
+						$$END$$
+					$$END$$
+					$$IF!:1:TELEPHONEDISTINCT$$
+						<div class="hidden-phone"><span style="margin-left: 11px" id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i>&nbsp;$$LG:V5APPELEZNOUS pcase$$</span>
+						<span style="margin-left: 11px" id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> <a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$">&nbsp;<!--#include virtual="header/incl_formatel.htm" --></a></span></span></div>
+					$$END$$
+				$$END$$
+
+				$$REM$$ <!-- DESKTOP : TELEPHONEMASQUE = 0 --> $$END:REM$$
+				$$IF=:0:TELEPHONEMASQUE$$
+					$$IF=:1:TELEPHONEDISTINCT$$
+						$$A:SPECIAL_TEL=0$$
+						$$IF:LISTEAG:TELLOC$$
+							$$A:SPECIAL_TEL=1$$
+							<div class="hidden-phone"><div class="span7" style="margin-left: 11px"><a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TELLOC replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TELLOC tel2inter replace (0) �$$$$END$$">Tel $$LG:LIEN:LOC pcase$$ : $$LISTEAG:TELLOC formattel$$</a></span></div></div>
+						$$END$$
+						$$IF:LISTEAG:TELVEN$$
+							$$A:SPECIAL_TEL=1$$
+							<div class="hidden-phone"><div class="span7" style="margin-left: 11px"><a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TELVEN replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TELVEN tel2inter replace (0) �$$$$END$$">Tel $$LG:LIEN:VEN pcase$$ : $$LISTEAG:TELVEN formattel$$</a></span></div></div>
+						$$END$$
+						$$IF=:0:SPECIAL_TEL$$
+							<div class="hidden-phone"><div class="span7" style="margin-left: 11px"><a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$"><!--#include virtual="header/incl_formatel.htm" --></a></span></div></div>
+						$$END$$
+					$$END$$
+					$$IF!:1:TELEPHONEDISTINCT$$
+						<div class="hidden-phone"><div class="span7" style="margin-left: 11px"><a href="$$IF=:FR:LANGUE$$tel:$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$tel:$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$"><!--#include virtual="header/incl_formatel.htm" --></a></span></div></div>
+					$$END$$
+				$$END$$
+
+				$$REM$$ <!-- MOBILE --> $$END:REM$$
+				$$IF=:1:TELEPHONEDISTINCT$$
+					$$A:SPECIAL_TEL=0$$
+					$$IF:CV:TELLOC$$
+						$$A:SPECIAL_TEL=1$$
+						<div class="hidden-tablet hidden-desktop"><div id="numero-telephonez-nous-$$LISTEAG:I$$" class="$$TYPEBOUTON$$ btn-large btn-block btn-important hidden-tablet hidden-desktop agence-telephonez-nous"><i class="icon-v5-phone opacity-4"></i><a class="typo-white" tel="$$IF=:FR:LANGUE$$$$LISTEAG:TELLOC replace (0) �$$$$END$$$$IF!:FR:LANGUE$$$$LISTEAG:TELLOC tel2inter replace (0) �$$$$END$$">&nbsp;Tel $$LG:LIEN:LOC pcase$$ : $$LISTEAG:TELLOC formattel$$</a></div></div>
+					$$END$$
+					$$IF:CV:TELVEN$$
+						$$A:SPECIAL_TEL=1$$
+						<div class="hidden-tablet hidden-desktop"><div id="numero-telephonez-nous-$$LISTEAG:I$$" class="$$TYPEBOUTON$$ btn-large btn-block btn-important hidden-tablet hidden-desktop agence-telephonez-nous"><i class="icon-v5-phone opacity-4"></i><a class="typo-white" tel="$$IF=:FR:LANGUE$$$$LISTEAG:TELVEN replace (0) �$$$$END$$$$IF!:FR:LANGUE$$$$LISTEAG:TELVEN tel2inter replace (0) �$$$$END$$"&nbsp;>Tel $$LG:LIEN:VEN pcase$$ : $$LISTEAG:TELVEN formattel$$</a></div></div>
+					$$END$$
+					$$IF=:0:SPECIAL_TEL$$
+						<div class="hidden-tablet hidden-desktop"><div id="numero-telephonez-nous-$$LISTEAG:I$$" class="$$TYPEBOUTON$$ btn-large btn-block btn-important hidden-tablet hidden-desktop agence-telephonez-nous"><i class="icon-v5-phone opacity-4"></i><a class="typo-white" tel="$$IF=:FR:LANGUE$$$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$">&nbsp;Tel : <!--#include virtual="header/incl_formatel.htm"--></a></div></div>
+					$$END$$
+				$$END$$
+				$$IF!:1:TELEPHONEDISTINCT$$
+					<div class="hidden-tablet hidden-desktop padding-20 big"><div id="numero-telephonez-nous-$$LISTEAG:I$$" class="$$TYPEBOUTON$$  btn-action hidden-tablet hidden-desktop agence-telephonez-nous"><a class="typo-white" tel="$$IF=:FR:LANGUE$$$$LISTEAG:TEL replace (0) �$$$$END$$$$IF!:FR:LANGUE$$$$LISTEAG:TEL tel2inter replace (0) �$$$$END$$"><i class="icon-v5-mobile"></i> <!--#include virtual="header/incl_formatel.htm"--></a></div></div>
+				$$END$$
+
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				$$IF0:CONTACT_EMAIL_CLICKABLE$$
+					<div class="span7"><span id="email-spam$$LISTEAG:IDPUBLICATION$$">$$LISTEAG:EMAIL$$</span></div>
+				$$END$$
+				$$IF:CONTACT_EMAIL_CLICKABLE$$
+					<div class="span7"><span id="email-spam$$LISTEAG:IDPUBLICATION$$"></span><script type="text/javascript">$(document).ready(function() {emailSpam('$$LISTEAG:EMAIL$$','email-spam$$LISTEAG:IDPUBLICATION$$');});</script></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="$$LISTEAG:URL replace https http$$"><span itemprop="title">$$LISTEAG:URL replace https http$$</span></a></div>
+			</div>
+			$$END$$
+			$$IF!:1:HIDENOMRESPONSABLE$$
+		<div class="row-fluid listing-agences-responsable">
+			<div class="span5 bold">$$IF!:1:MULTIRESPAGENCE$$$$LG:RESPAGENCE pcase$$$$END$$$$IF=:1:MULTIRESPAGENCE$$$$LG:RESPSAGENCE pcase$$$$END$$</div>
+			<div class="span7">$$LISTEAG:RESPAG$$</div>
+		</div>
+		$$END$$
+	</div>
+</div>
+<!-- BOUTON DE NAVIGATION AGENCE -->
+<div class="row-fluid border-dotted-top-primary-1 margin-top-10 padding-10$$IF=:1:AFFICHAGE_AGENCES_LISTE$$ zone-agence-ajax$$END$$">
+	$$IF=:250:LISTEAG:IDPAYS$$
+		<div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$"><a class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-plus" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$"  data-rel="$$LISTEAG:IDPUBLICATION$$">$$LG:SAVOIR pcase$$</a></div>
+	$$END$$
+	<div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$ hidden-phone">
+		$$IF0:BIENPERSOAGENCE$$
+			<div title="$$LG:LIEN:NOSBIENS pcase$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$" data-rel="$$LISTEAG:IDPUBLICATION$$" data-langue="$$LANGUE$$">$$LG:LIEN:NOSBIENS pcase$$</div>
+		$$END$$
+		$$IF:BIENPERSOAGENCE$$
+			<a href="$$BIENPERSOAGENCE$$" title="$$LG:LIEN:NOSBIENS pcase$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$">$$LG:LIEN:NOSBIENS pcase$$</a>
+		$$END$$
+	</div>
+	$$IF=:0:AFFICHAGE_AGENCES_LISTE$$
+	<div class="span2 hidden-phone">
+		<div class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-carte-agence">$$LG:NOUSSITUER pcase$$</div></div>
+	$$END$$
+	<div class="span3">
+		$$IF=:ACQUERIR:IDT$$
+			<a href="/$$LISTEAG:IDPUBLICATION$$/acquereur,demande.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-estimation-agence">
+				$$LG:ACHETER pcase$$
+			</a>
+		$$END$$
+		$$IF!:ACQUERIR:IDT$$
+			<!--#include virtual="agences/incl_btn_estimation_liste_agences.htm" -->
+		$$END$$
+	</div>
+	<div class="span3 hidden-phone">
+		<div class="$$TYPEBOUTON$$ $$IF!:ACQUERIR$ESTIMATION:IDT$$$$TYPEBOUTONACTION$$$$END$$$$IF=:ACQUERIR$ESTIMATION:IDT$$btn-neutre$$END$$ btn-block bouton-message-agence">$$LG:NOUSCTC pcase$$</div>
+	</div>
+</div>
+<div class="row-fluid display-none zone-message-agence">
+	<!--#include virtual="agences/incl_formulaire_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-biens-agence">
+	<!--#include virtual="agences/incl_biens_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-carte-agence">
+	<!--#include virtual="agences/incl_geo_agences.htm" -->
+</div>

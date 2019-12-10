@@ -1,0 +1,94 @@
+<script>
+   $(window).load(function() {
+
+      var listingFiches = {
+         "Le mandat de vente":[
+            { url: "/immo,faq,mandat-negociateur.htm", nom: "Puis-je vérifier que le négociateur..."},
+            { url: "/immo,faq,mandat-conjoint.htm", nom: "Mon conjoint est en déplacement..."}
+         ],
+         "SCI (Société Civile Immobilière)":[
+            { url: "/immo,faq,sci-acheter.htm", nom: "J’envisage d’acheter un bien..."},
+            { url: "/immo,faq,sci-retractation.htm", nom: "La SCI qui achète un bien..."}
+         ],
+         "Viager":[
+            { url: "/immo,faq,viager-revendre.htm", nom: "J’ai acheté un bien en viager..."}
+         ],
+         "Acquisition en VEFA (Vente en Etat Futur d'Achèvement)":[
+            { url: "/immo,faq,vefa-surplans.htm", nom: "J’envisage d’acheter un bien..."}
+         ],
+         "Investissement locatif":[
+            { url: "/immo,faq,investissement-ancien.htm", nom: "Quel est l’investissement locatif..."}
+         ],
+         "Les droits de l'acquéreur":[
+            { url: "/immo,faq,acquereur-option.htm", nom: "Je suis intéressé par un bien..."},
+            { url: "/immo,faq,acquereur-notaire.htm", nom: "Puis-je choisir le notaire..."},
+            { url: "/immo,faq,acquereur-retractation.htm", nom: "Le particulier qui achète un terrain..."},
+            { url: "/immo,faq,acquereur-cuisine.htm", nom: "Lorsque j’achète un bien..."},
+            { url: "/immo,faq,acquereur-surface.htm", nom: "Que se passe-t-il s’il y a une erreur de surface..."},
+            { url: "/immo,faq,acquereur-autorisation.htm", nom: "Je désire transformer un local commercial..."}
+         ],
+         "Les droits du propriétaire":[
+            { url: "/immo,faq,proprietaire-portail.htm", nom: "Je bénéficie d’une servitude de passage..."},
+            { url: "/immo,faq,proprietaire-assemblee.htm", nom: "Copropriétaire, comment faire inscrire une question..."}
+         ],
+         "Vente immobilière et droit à la famille":[
+            { url: "/immo,faq,famille-seul.htm", nom: "Je suis marié, puis-je acheter..."},
+            { url: "/immo,faq,famille-divorce.htm", nom: "Je suis en instance de divorce..."},
+            { url: "/immo,faq,famille-testament.htm", nom: "Comment établir un testament ?"}
+         ],
+         "La fiscalité immobilière":[
+            { url: "/immo,faq,fiscalite-transition.htm", nom: "Doit-on inclure, dans la base du crédit d’impôt..."},
+            { url: "/immo,faq,fiscalite-reduction.htm", nom: "J’ai vendu mon bien immobilier..."}
+         ],
+         "Les droits du locataire":[
+            { url: "/immo,faq,locataire-priorite.htm", nom: "Je vends un bien immobilier..."},
+            { url: "/immo,faq,locataire-eaux.htm", nom: "Locataire, je constate un dégât des eaux..."},
+            { url: "/immo,faq,locataire-preavis.htm", nom: "Je déménage, quelle est la durée du préavis..."},
+            { url: "/immo,faq,locataire-garantie.htm", nom: "Le montant du dépôt de garantie..."},
+            { url: "/immo,faq,locataire-augmentation.htm", nom: "L’augmentation du loyer..."},
+            { url: "/immo,faq,locataire-echeance.htm", nom: "Est-il obligatoire d’envoyer un avis..."}
+         ],
+      };
+
+      $("#select-fiche-categorie").html('<option value="">Choisir une catégorie</option>');
+      for (var categorie in listingFiches) {
+         $("#select-fiche-categorie").append($("<option></option>").attr("value",categorie).text(categorie));
+      }
+
+      $("#select-fiche-categorie").change(function(){
+         charge_liste_fiche($(this).val());
+      });
+
+
+      function charge_liste_fiche(categorie){
+         $("#select-fiche").html('<option value="">Choisir une fiche</option>');
+         var obj = listingFiches[categorie];
+         for (var fiche in obj) {
+            if( obj[fiche].url == "/$$REP:0$$" ){
+               $("#select-fiche").append($("<option></option>").attr("value",obj[fiche].url).text(obj[fiche].nom).prop('selected', true));
+            }else{
+               $("#select-fiche").append($("<option></option>").attr("value",obj[fiche].url).text(obj[fiche].nom));
+            }
+         }
+      }
+
+      $$IF:CAT$$
+      $("#select-fiche-categorie").val("$$CAT$$");
+      charge_liste_fiche("$$CAT$$");
+      $$END$$
+
+      $("#select-fiche").change(function(){
+         window.location.href = $(this).val();
+      });
+
+   });
+
+
+</script>
+
+<select class="contenu-ttl-item" id="select-fiche"></select>
+<select class="contenu-ttl-item" id="select-fiche-categorie"></select>
+
+<div class="contenu-ttl">Foire aux questions</div>
+<h1 class="margin-top-40 typo-action">$$TTL$$</h1>
+<h2 class="h3-like"><span class="font-body">$$CAT$$</span></h2>

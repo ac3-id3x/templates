@@ -1,0 +1,557 @@
+$$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+
+<div class="detail-annonce margin-top-50" itemscope itemtype="https://schema.org/Product">
+
+   <div class="container content">
+
+      <div id="alerte-moteur" class="row-fluid display-none">
+         <form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email removeqry inscription htmlencode$$" method="post" class="form-horizontal" id="form-alerte-moteur" novalidate="novalidate">
+            <div class="span12 moteur-alerte">
+               <div class="row-fluid">
+                  <div class="span3 margin-top-15">
+                     <div class="formanim-grp$$IF:FORM:ALIERR$$$$IF0:FORM:NOM$$ error$$END$$$$END$$">
+                        <input type="text" id="nom-alerte" class="formanim-input" name="nom" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$>
+                        <label class="formanim-label">$$LG:VOTRENOM pcase$$</label>
+                     </div>
+                  </div>
+                  <div class="span3 margin-top-15">
+                     <div class="formanim-grp$$IF:FORM:ALIERR$$$$IFNOTNULL:FORM:EMAIL$$ error$$END$$$$END$$">
+                        <input type="email" id="email-alerte" class="formanim-input" name="email" $$IF:FORM:EMAIL$$value="$$FORM:EMAIL$$"$$END$$>
+                        <label class="formanim-label">$$LG:VOTREMAIL pcase$$</label>
+                     </div>
+                  </div>
+                  <div class="span3 margin-top-15">
+                     <div class="control-group margin-0" id="zone-bouton-alerte">
+                        <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row-fluid">
+                  <div class="span6">
+                     <!--#include virtual="recherche/incl_alerte_optin.htm" -->
+                  </div>
+               </div>
+               <div class="clear"></div>
+               <input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
+               <input type="hidden" name="phrase" value="$$ANNDETAIL:PHRASE$$" />
+               <input type="hidden" name="page_ok" value="/alerte,incl_creation.htm" />
+               <input type="hidden" name="page_base" value="https://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry inscription removeqry option removeqry nom removeqry email removeqry alierr htmlencode$$" />
+               <input type="hidden" name="page_err" value="/alerte,incl_creation.htm" />
+               <input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+               <input type="hidden" name="srv" value="$$SRV$$" />
+               <input type="hidden" name="idFrequenceAlerte" value="1"/>
+               <!--#include virtual="moteur/incl_input_langue.htm" -->
+               <!--#include virtual="recherche/incl_alerte_erreur.htm" -->
+            </div>
+         </form>
+      </div>
+
+      <div class="row-fluid">
+         <div class="span8">
+            $$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+            $$BIF:GALERIE$$
+            <div class="detail-gallery">
+
+                $$IF:ANNDETAIL:ID360$$
+                    $$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+                        $$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+                    $$END$$
+                    <a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ btn-important btn-small bouton-video-360">$$LG:VISITEVIRTUELLE pcase$$</a>
+                $$END$$
+                $$IF:ANNDETAIL:360_URL$$
+                    <a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" class="$$TYPEBOUTON$$ btn-important btn-small bouton-video-360">$$LG:VISITEVIRTUELLE pcase$$</a>
+                $$END$$
+
+               <div id="detail-gallery1" class="owl-carousel owl-theme">
+                  $$DO$$
+                  $$A:ALT_GALERIE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:VILLE pcase@@ @@ANNDETAIL:PRIX@@@@ANNDETAIL:PRIX_UNITE replace cc cc@@ - @@LG:PHOT pcase@@ @@GALERIE:I@@/@@GALERIE:NBR@@$$
+                  $$IF:GALERIE:BIG_URL$$
+                  <div class="item" style="background-image:url($$GALERIE:BIG_URL$$);">
+                     <span class="item-info">$$ALT_GALERIE$$</span>
+                  </div>
+                  $$END$$
+                  $$IF0:GALERIE:BIG_URL$$
+                  <div class="item" style="background-image:url($$GALERIE:URL$$);">
+                     <span class="item-info">$$ALT_GALERIE$$</span>
+                  </div>
+                  $$END$$
+                  $$LOOP$$
+               </div>
+
+               <div id="detail-gallery2" class="owl-carousel owl-theme">
+                  $$DO$$
+                  $$A:ALT_GALERIE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:VILLE pcase@@ @@ANNDETAIL:PRIX@@@@ANNDETAIL:PRIX_UNITE@@ - @@LG:PHOT pcase@@ @@GALERIE:I@@$$
+                  <div class="item"><img src="$$GALERIE:C175_URL$$" alt="$$ALT_GALERIE$$"></div>
+                  $$LOOP$$
+
+                  $$BIF:VIDEO$$
+                  $$DO:1:1$$
+                  $$A:IDVIDEO=@@VIDEO:URL replace https://www.youtube.com/embed/ ?@@$$
+                  $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+                  $$A:IDVIDEO=@@IDVIDEO trim@@$$
+                  <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="bouton-video-detail">
+                     <img src="$$-$$images/pictos/picto-video.png" alt="$$LG:VIDEO:360 pcase$$">
+                  </a>
+                  $$LOOP$$
+                  $$BFIN$$
+                  $$IF:ANNDETAIL:VIDEO_URL$$
+                      <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="bouton-video-detail">
+                         <img src="$$-$$images/pictos/picto-360-big.png" alt="$$LG:VIDEO pcase$$">
+                      </a>
+                  $$END$$
+
+               </div>
+            </div>
+            $$BFIN$$
+            $$BIF0:GALERIE$$
+            <div class="detail-gallery">
+               <div id="detail-gallery1">
+                  <div class="item" style="background-image:url($$-$$images/detail/sans_photo.jpg);"></div>
+               </div>
+            </div>
+            $$BFIN$$
+
+
+            $$BIF:VIDEO$$
+                <div class="row-fluid margin-top-10">
+                    <div class="span4">
+                        $$DO:1:1$$
+                             $$A:IDVIDEO=@@VIDEO:URL replace https://www.youtube.com/embed/ ?@@$$
+                             $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+                             $$A:IDVIDEO=@@IDVIDEO trim@@$$
+                             <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="btn btn-block btn-small btn-important bouton-video-detail">
+                                <img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VISITEVIRTUELLE pcase$$
+                             </a>
+                             <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+                                <iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+                                <h2 itemprop="name">$$TITLE$$</h2>
+                                <p itemprop="description">
+                                   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                                   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+                                </p>
+                                <meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+                             </div>
+                        $$LOOP$$
+                    </div>
+                </div>
+            $$BFIN$$
+
+            $$IF:ANNDETAIL:VIDEO_URL$$
+            <div class="row-fluid margin-top-10">
+                    <div class="span4">
+                         <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="btn btn-block btn-small btn-important bouton-video-detail">
+                            <img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VISITEVIRTUELLE pcase$$
+                         </a>
+                         <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+                            $$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+                            $$A:IDVIDEO=@@IDVIDEO trim@@$$
+                            <iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+                            <h2 itemprop="name">$$TITLE$$</h2>
+                            <p itemprop="description">
+                               $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                               $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+                            </p>
+                            <meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+                         </div>
+                     </div>
+                 </div>
+            $$END$$
+
+
+
+
+         </div>
+         <div class="span4">
+            <img src="$$-$$images/pictos/picto-arthur.png" alt="Arthurimmo $$ANNDETAIL:AGVILLE$$" class="detail-agence-picto margin-bottom-20">
+            <h2 class="detail-agence-nom" itemprop="name">
+               <a href="$$ANNDETAIL:URL$$" target="_blank" class="display-show typo-black">
+                  Notre agence<br><span class="typo-action">Arthurimmo.com $$ANNDETAIL:AGVILLE$$</span>
+               </a>
+            </h2>
+            <div class="bloc-detail-telephone margin-top-20 pagination-centered hidden-med">
+               <div id="bouton-telephonez-nous-detail" class="$$TYPEBOUTON$$ btn-action">
+                  <span id="texte-telephonez-nous-detail">
+                     <span class="icon-v5-phone"></span> $$LG:V5APPELEZNOUS pcase$$
+                  </span>
+                  <span id="numero-telephonez-nous-detail" class="display-none">
+                     <!--#include virtual="detail/incl_nom_contact.htm" -->
+                     <!--#include virtual="header/incl_formatel.htm" -->
+                  </span>
+               </div>
+            </div>
+            <!--#include virtual="detail/incl_detail_contact.htm" -->
+         </div>
+      </div>
+   </div>
+
+   <div class="detail-descriptif">
+      <div class="container">
+         <div class="row-fluid">
+            <div class="span6">
+               <div class="detail-descriptif-ttl">Détails de l'annonce<span>$$ANNDETAIL:VILLE pcase$$ <span class="xxsmallest font-body font-normal">($$ANNDETAIL:CP$$)</span></span></div>
+
+               <div class="detail-accordeon-item">
+                  <p class="detail-accordeon-item-ttl">Description</p>
+                  <div class="detail-accordeon-item-txt">
+                     $$IF=:2:ANNDETAIL:IDTYPETRANSACTION$$
+                         $$IF!:4:ANNDETAIL:IDTYPEBIEN$$
+                         $$IF0:ANNDETAIL:XML xml NGR$$
+                         $$IF(:AGENCESGARANTIE:ANNDETAIL:IDPUBLICATION$$
+                         <a class="pull-left margin-right-10 margin-top-10 btn-tooltip garantie-annonce" href="/immo,garantie-revente.htm" data-placement="top" data-title="Garantie revente">
+                            <img src="$$-$$images/pictos/picto-garantie.png" alt="Garantie revente">
+                         </a>
+                         $$END$$
+                         $$END$$
+                        $$END$$
+                     $$END$$
+                     <p>
+                        $$IF:ANNDETAIL:DESCRIPTIF$$
+                        $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                        $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+                        $$END$$
+                        $$IF0:ANNDETAIL:DESCRIPTIF$$
+                        $$ANNDETAIL:DESCRIPTIF_GEN$$
+                        $$END$$
+                     </p><br>
+
+
+                     $$REM$$$$BIF:VIDEO$$
+                     $$DO:1:1$$
+                     $$A:IDVIDEO=@@VIDEO:URL replace https://www.youtube.com/embed/ ?@@$$
+                     $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+                     $$A:IDVIDEO=@@IDVIDEO trim@@$$
+                     <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="$$TYPEBOUTON$$ btn-small btn-important bouton-video-detail">$$LG:VIDEO:360 pcase$$</a>
+                     <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+                        <iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+                        <h2 itemprop="name">$$TITLE$$</h2>
+                        <p itemprop="description">
+                           $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                           $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+                        </p>
+                        <meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+                     </div>
+                     $$LOOP$$
+                     $$BFIN$$
+                     $$IF:ANNDETAIL:VIDEO_URL$$
+                     <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="$$TYPEBOUTON$$ btn-small btn-important bouton-video-detail">$$LG:VIDEO:360 pcase$$</a>
+                     <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+                        $$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+                        $$A:IDVIDEO=@@IDVIDEO trim@@$$
+                        <iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+                        <h2 itemprop="name">$$TITLE$$</h2>
+                        <p itemprop="description">
+                           $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                           $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+                        </p>
+                        <meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+                     </div>
+                     $$END$$$$END$$
+
+                     $$IF:ANNDETAIL:LIEN_URL$$
+                     <a href="$$ANNDETAIL:LIEN_URL$$" class="$$TYPEBOUTON$$ btn-small btn-important" target="_blank">$$ANNDETAIL:LIEN_DESCRIPTIF_FR$$</a>
+                     $$END$$
+
+                     $$BIF:PDF$$
+                     <div class="margin-top-15">
+                        <ul>
+                           $$DO$$
+                           <li><a href="$$PDF:URL$$" target="_blank" rel="nofollow" class="$$TYPEBOUTON$$ btn-important btn-small bouton-pdf-detail" data-placement="top" data-title="$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$document&nbsp;$$PDF:I$$$$END$$">$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$Document&nbsp;$$PDF:I$$$$END$$</a></li>
+                           $$LOOP$$
+                        </ul>
+                     </div>
+                     $$BFIN$$
+
+                     <p id="zoneMetro"></p>
+                     <script type="text/javascript">
+                        $(document).ready(function() {
+                           dispMetro('$$ANNDETAIL:IDANNONCE getlieux escape$$','zoneMetro');
+                        });
+                     </script>
+
+                     $$IF:ANNDETAIL:XML xml TAXE_FONCIERE$$
+                     <p class="taxe-fonciere" id="taxe_fonciere$$ANNLISTE:IDANNONCE$$">
+                        $$LG:TAXEFONCIERE pcase$$ : $$ANNDETAIL:XML xml TAXE_FONCIERE$$ &euro;
+                     </p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:XML xml TAXE_HABITATION$$
+                     <p class="taxe-habitation" id="taxe_habitation$$ANNLISTE:IDANNONCE$$">
+                        $$LG:TAXEHABITATION pcase$$ : $$ANNDETAIL:XML xml TAXE_HABITATION$$ &euro;
+                     </p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:PX_RENTE$$
+                     <p class="rente-annonce" id="px_rente$$ANNLISTE:IDANNONCE$$">
+                        $$LG:RENTE pcase$$ : $$ANNDETAIL:PX_RENTE$$ $$LG:EUROMOIS$$<br />
+                     </p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:PX_VALEUR_A_LACHAT$$
+                     <p class="rente-annonce" id="px_valeur_a_lachat$$ANNLISTE:IDANNONCE$$">
+                        $$LG:VALEURACHAT pcase$$ : $$ANNDETAIL:PX_VALEUR_A_LACHAT$$ &euro;<br />
+                     </p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:CHARGES_ANNUELLES$$
+                     <p class="charges-annuelles">
+                        $$LG:CHARGESANNUELLES pcase$$ : $$ANNDETAIL:CHARGES_ANNUELLES$$ &euro;
+                     </p>
+                     $$END$$
+
+                     $$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                     <p class="prix-honoraires-charges">
+                        <strong>$$LG:CHARGES pcase$$ :</strong> $$IF:ANNDETAIL:PX_CHARGES$$$$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro;$$END$$$$IF0:ANNDETAIL:PX_CHARGES$$N/A$$END$$<br>
+                        <strong>$$LG:HONORAIRES pcase$$ :</strong> $$IF:ANNDETAIL:HONORAIRES$$$$ANNDETAIL:HONORAIRES$$ &euro;$$END$$$$IF0:ANNDETAIL:HONORAIRES$$N/A$$END$$<br>
+                        <strong>$$LG:V5DEPOTGARANTIE pcase$$ :</strong> $$IF:ANNDETAIL:GARANTIE$$$$ANNDETAIL:GARANTIE replace € ¤$$ &euro;$$END$$$$IF0:ANNDETAIL:GARANTIE$$N/A$$END$$
+                     </p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                     $$IF=:1:SHOWHONORAIRETOP$$
+                     <div class="honoraires-acquereur margin-top-15">
+                        $$LG:HONORAIRESACQUEREUR pcase$$ : $$ANNDETAIL:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC
+                     </div>
+                     $$END$$
+                     $$END$$
+                     $$IF=:250:ANNDETAIL:IDPAYS$$
+                     $$IF!:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+                     $$IF!:1:HONORAIRESINCLUS$$
+                     $$IF=:True:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                     <p class="small honoraires"><sup>*</sup> : $$LG:DONT$$ $$ANNDETAIL:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$ </p>
+                     $$END$$
+                     $$END$$
+                     $$END:IDTYPETRANSACTION$$
+                     $$END$$
+
+                     $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+                     <div class="margin-top-15">
+                        <div class="bold uppercase letter-spacing-12 typo-important">$$LG:PRIXBASSESAIS pcase$$</div>
+                        $$IF:ANNDETAIL:PX_BS_SEMAINE$$<div class="pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNDETAIL:PX_BS_SEMAINE$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                        $$IF:ANNDETAIL:PX_BS_QUINZ$$<div class="pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNDETAIL:PX_BS_QUINZ$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                        $$IF:ANNDETAIL:PX_BS_MOIS$$<div class="pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :    $$ANNDETAIL:PX_BS_MOIS$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                        <div class="bold uppercase letter-spacing-12 typo-important margin-top-15">$$LG:PRIXHAUTESAIS pcase$$</div>
+                        $$IF:ANNDETAIL:PX_HS_SEMAINE$$<div class="pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :    $$ANNDETAIL:PX_HS_SEMAINE$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                        $$IF:ANNDETAIL:PX_HS_QUINZ$$<div class="pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :    $$ANNDETAIL:PX_HS_QUINZ$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                        $$IF:ANNDETAIL:PX_HS_MOIS$$<div class="pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :    $$ANNDETAIL:PX_HS_MOIS$$ $$ANNDETAIL:PRIX_UNITE htmlencode$$</div>$$END$$
+                     </div>
+                     <div class="row-fluid">
+                        <div class="span12 margin-top-30 margin-bottom-30">
+                           <!--#include virtual="detail/incl_detail_bloc_dispo_loc_vac.htm" -->
+                        </div>
+                     </div>
+                     $$END$$
+
+                     $$IF!:1:HIDELOTSDETAIL$$
+                     $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+                     <div class="row-fluid detail-descriptif-lots margin-top-15">
+                        <div class="span12">
+                           <!--#include virtual="detail/incl_detail_lots.htm" -->
+                        </div>
+                     </div>
+                     $$END$$
+                     $$END$$
+
+                     $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                     <div class="margin-top-15">
+                        $$IF:ANNDETAIL:AGE_F$$
+                        $$LG:FEMME pcase$$ : $$ANNDETAIL:AGE_F$$ ans
+                        $$END$$
+                        $$IF:ANNDETAIL:AGE_H$$
+                        $$IF!:0:ANNDETAIL:AGE_F$$&nbsp;$$END$$
+                        $$LG:HOMME pcase$$ : $$ANNDETAIL:AGE_H$$ ans
+                        $$END$$
+                     </div>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:DT_DISPO$$
+                     <p>$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</p>
+                     $$END$$
+
+                     $$IF:ANNDETAIL:SI_COPROPRIETE$$
+                     <p>
+                        $$LG:COPROPRIETE pcase$$ ($$ANNDETAIL:NB_LOTS_COPROPRIETE$$ $$LG:LOTS$$)<br>
+                        $$LG:PROCSYNDIC pcase$$ :
+                        $$IF!:true$false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+                        $$LG:NONRENSEIGNE pcase$$
+                        $$END$$
+                        $$IF=:false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+                        $$LG:AUCUNE pcase$$
+                        $$END$$
+                        $$IF=:true:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+                        $$IF:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+                        $$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+                        $$END$$
+                        $$IF0:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+                        $$LG:OUI2$$
+                        $$END$$
+                        $$END$$
+                     </p>
+                     $$END$$
+
+                     $$IF=:2:ANNDETAIL:IDTYPETRANSACTION$$
+                     $$IF(:AGENCESGARANTIE:ANNDETAIL:IDPUBLICATION$$
+                     <p class="italic">* Cette icône indique que ce bien bénéficie de la garantie revente </p>
+                     $$END$$
+                     $$END$$
+
+                     <div class="row-fluid margin-top-20 hidden-med">
+                        <div class="span6 margin-top-10">
+                           <a id="pictocs" href="#detailpoi" class="anchor-link link-title small" >
+                              <img src="$$-$$images/pictos/picto-pin.png" alt="Géolocaliser ce bien">
+                              <span id="spancs">
+                                $$IF=:FR:LANGUE$$Géolocaliser ce bien$$END$$
+                                $$IF!:FR:LANGUE$$Geolocate this property$$END$$
+                              </span>
+                           </a>
+                        </div>
+                        <div class="span6 margin-top-10">
+                           <a href="javascript:void(0);" class="link-title small toggle-alert">
+                              <img src="$$-$$images/pictos/picto-alerte.png" alt="Recevoir une alerte">
+                              $$IF=:FR:LANGUE$$Recevoir une alerte$$END$$
+                              $$IF!:FR:LANGUE$$Receive an alert$$END$$
+                           </a>
+                        </div>
+                     </div>
+                     <div id="kelquartier-anchors" class="row-fluid margin-top-20 margin-bottom-20 hidden-med">
+                        <div class="span6 margin-top-10 kelquartier-quartier-ancre">
+                           <a href="#detailquartier" class="anchor-link link-title small">
+                              <img src="$$-$$images/pictos/picto-quartier.png" alt="Découvrir">
+                              $$IF=:FR:LANGUE$$Découvrir le quartier$$END$$
+                              $$IF!:FR:LANGUE$$Discover the neighborhood$$END$$
+                           </a>
+                        </div>
+                        <div class="span6 margin-top-10">
+                           <a href="#detailville" class="anchor-link link-title small">
+                              <img src="$$-$$images/pictos/picto-ville.png" alt="Géolocaliser ce bien">
+                              $$IF=:FR:LANGUE$$Découvrir la ville$$END$$
+                              $$IF!:FR:LANGUE$$Discover the town$$END$$
+                           </a>
+                        </div>
+                     </div>
+                     $$IF:ANNDETAIL:PRIX$$
+                     <div class="row-fluid margin-bottom-30 hidden-med">
+                        <div class="span6 margin-top-10">
+                           <a href="#annonces-simi" class="anchor-link link-title small">
+                              <img src="$$-$$images/pictos/picto-ann-similaire.png" alt="Annonces similaires">
+                              Annonces similaires
+                           </a>
+                        </div>
+                        <div class="span6 margin-top-10">
+                          $$IF=:FR:LANGUE$$
+                           <!--<a href="http://www.arthurimmo-financement.com" target="_blank" class="link-title small">-->
+                           <!--<a href="/immo,financement.htm" class="link-title small">-->
+                            <a href="/immo,financementfilled.htm?projet&price=$$ANNDETAIL:PRIXRAW$$&projet&type=$$ANNDETAIL:IDTYPEBIEN·gettypebien·lcase·replace·maison¤/¤villa·maison$$&projet&desc=$$ANNDETAIL:IDTYPEBIEN gettypebien$$ $$ANNDETAIL:SURFACE$$m2&projet%5Bnewproperty%5D=new&projet&city=$$ANNDETAIL:VILLE$$&projet&postalCode=$$ANNDETAIL:CP$$&projet&inseeCode=$$ANNDETAIL:CI$$" class="link-title small">
+                            $$REM$$ <!-- LIEN POUR IFRAME FINANCEMENT -->$$END$$
+                              <!-- <a href="/immo,financement.htm?projet%5Bprice%5D=$$ANNDETAIL:PRIXRAW$$&projet%5Btype%5D=$$ANNDETAIL:IDTYPEBIEN·gettypebien·lcase·replace·maison¤/¤villa·maison$$&projet%5Bnewproperty%5D=new&projet%5Bcity%5D=$$ANNDETAIL:VILLE$$&projet%5BpostalCode%5D=$$ANNDETAIL:CP$$&projet%5BinseeCode%5D=$$ANNDETAIL:CI$$" class="link-title small">-->
+                            $$REM$$ <!-- LIEN POUR IFRAME FINANCEMENT -->$$END$$
+                              <img src="$$-$$images/pictos/picto-dice.png" alt="Recevoir une alerte">
+                              Calculateur de prêt
+                           </a>
+                           <p class="line-height-14">Acheter ce bien avec Arthurimmo.com financement <!-- pour <script> document.write(format(Math.floor(mensualite),' ')); </script> € par mois ** --></p>
+                          $$END$$
+                        </div>
+                     </div>
+                     $$END$$
+                  </div>
+
+               </div>
+
+            </div>
+
+            <div class="span6">
+               <div class="detail-accordeon-item">
+                  <p class="detail-accordeon-item-ttl hidden-large">$$LG:LIEN:INFO pcase$$</p>
+                  <div class="detail-accordeon-item-txt">
+                     <!--#include virtual="detail/incl_detail_fiche_signaletique.htm" -->
+                  </div>
+               </div>
+               <div class="detail-accordeon-item">
+                  <p class="detail-accordeon-item-ttl hidden-large">$$LG:CONSOENERGIE pcase$$</p>
+                  <div class="detail-accordeon-item-txt">
+                     <div class="row-fluid detail-dpe">
+                        $$IF0:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+                        $$IF=:False:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+                        <div class="row-fluid">
+                           <div class="span6">
+                              <div class="detail-dpe-ttl">Consommations<span>énergétiques</span></div>
+                              $$LG:DPENONAPPLIQUABLE$$
+                           </div>
+                           <div class="span6">
+                              <div class="detail-dpe-ttl">Emissions<span>gaz à effet de serre</span></div>
+                              $$LG:DPENONAPPLIQUABLE$$
+                           </div>
+                        </div>
+                        $$END$$
+                        $$END$$
+                        $$IF!:False:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+                        <div class="row-fluid">
+                           <div class="span6">
+                              <div class="detail-dpe-ttl">Consommations<span>énergétiques</span></div>
+                              <!--#include virtual="detail/incl_dpe_conso.htm" -->
+                           </div>
+                           <div class="span6">
+                              <div class="detail-dpe-ttl">Emissions<span>gaz à effet de serre</span></div>
+                              <!--#include virtual="detail/incl_dpe_gaz.htm" -->
+                           </div>
+                        </div>
+                        $$END$$
+                     </div>
+                     <div class="row-fluid margin-top-10">
+                        $$IF=:1$3:ANNDETAIL:IDTYPETRANSACTION$$<!--#include virtual="detail/incl_alur_location.htm" -->$$END$$
+                        $$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$<!--#include virtual="detail/incl_alur_vente.htm" -->$$END$$
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+
+         </div>
+      </div>
+   </div>
+
+   <div class="ancre" id="detailpoi"></div>
+   <div class="detail-poi">
+      <div class="container">
+         <div class="detail-accordeon-item">
+            <p class="detail-accordeon-item-ttl hidden-large">$$LG:V5GEOLOCALISATION_BIEN pcase$$</p>
+            <div class="detail-accordeon-item-txt">
+               $$IF!:1:MAP_ANNONCE_HIDE$$
+               <div class="row-fluid margin-top-15">
+                  <div class="span12">
+                     <div class="map-poi" id="POI">
+                        <div class="detail-poi-ttl">$$LG:V5GEOLOCALISATION_BIEN pcase$$</div>
+						            <!--#include virtual="detail/incl_poi.htm" -->
+                     </div>
+                  </div>
+               </div>
+               $$END$$
+            </div>
+         </div>
+      </div>
+   </div>
+   
+	$$IF:ANNDETAIL:IDANNONCE$$
+	<!--#include absolute="/webagency/A_Nexi/arthurimmo_2016_nat/detail/incl_detail_kelquartier.htm" -->
+	$$END$$
+	
+   <div class="container margin-bottom-30">
+      <!--#include virtual="detail/incl_glossaire.htm" -->
+      <div class="mentions accordion" id="accordion-mentions">
+         <!--#include virtual="detail/incl_mentions.htm" -->
+      </div>
+   </div>
+
+   <div class="detail-sidebar hidden-large">
+      <div id="bouton-telephonez-nous-detail2" class="$$TYPEBOUTON$$ btn-action btn-mini">
+         <span id="texte-telephonez-nous-detail2">
+            <span class="icon-v5-phone"></span> $$LG:V5APPELEZNOUS pcase$$
+         </span>
+         <span id="numero-telephonez-nous-detail2" class="display-none">
+            <!--#include virtual="detail/incl_nom_contact.htm" -->
+            <!--#include virtual="header/incl_formatel.htm" -->
+         </span>
+      </div>
+      <a href="javascript:void(0);" class="btn btn-action btn-mini sidebar-display-form">$$LG:JESUISINTERESSE$$</a>
+   </div>
+
+</div>

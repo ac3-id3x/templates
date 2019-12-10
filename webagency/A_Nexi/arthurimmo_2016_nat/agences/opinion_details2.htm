@@ -1,0 +1,94 @@
+<!--#include virtual="header/incl_styles.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+
+$$E:IMMOBW:OPINIONSYSTEM-AGENCE:~companyId:QRY:COMPANYID:ALIAS:AG$$
+
+<div class="row-fluid">
+	<div class="span12">
+		<ul class="pagination-centered margin-top-20">$$AG:NOM$$ $$AG:VILLE$$</ul>
+		<ul class="pagination-centered margin-top-10"><span itemprop="streetaddress" class="big">$$AG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span> <span class="typo-action big" itemprop="addressLocality">$$AG:VILLE pcase$$ <span  itemprop="postalCode">$$AG:CP$$</span></span></ul>
+		<ul class="pagination-centered margin-top-10">TEST PICTO + ETOILE GLOBALE</ul>
+		<ul class="pagination-centered margin-top-20">$$AG:OS_NBRATING$$ + <span class="big bold">&#x1F604;</span> $$TA:NBGOOD$$ Avis  <span class="big bold">&#x1F610;</span> $$TA:NBNEUTRAL$$ Avis  <span class="big bold">&#x1F629;</span> $$TA:NBBAD$$ Avi(s) <a href="#" class="uppercase margin-left-40"><span itemprop="title bold">Voir l'attestation électronique</span></a></ul>
+		<ul class="padding-perso-opinion">
+			$$B:IMMOBW:OPINIONSYSTEM-TOUSAVIS:~companyId:QRY:COMPANYID:ALIAS:TA$$
+			$$BIF:TA$$
+				$$DO:1:8$$
+
+					<li class="margin-top-40 padding-20 box-shadow detail-agence-liste bg-white">
+
+						<p><span class="big bold">$$TA:SMILEY replace 1 &#x1F610; replace 2 &#x1F604;  replace 3 &#x1F629;$$ - $$TA:RATING$$</span></p>
+						<p><i>$$TA:INVOICE$$ $$TA:DATE date MMMM_yyyy$$</i></p>
+						<p><strong>$$TA:COMMENT$$</strong></p>
+						<div class="row-fluid detail-open" style="display: none;">
+							<div class="span12">
+								<ul class="padding-10">
+									<li>$$TA:QUESTION1$$ <span class="inline-block pull-right typo-action">$$TA:SCORE1$$ %</span></li>
+									<li>$$TA:QUESTION2$$ <span class="inline-block pull-right typo-action">$$TA:SCORE2$$ %</span></li>
+									<li>$$TA:QUESTION3$$ <span class="inline-block pull-right typo-action">$$TA:SCORE3$$ %</span></li>
+									<li>$$TA:QUESTION4$$ <span class="inline-block pull-right typo-action">$$TA:SCORE4$$ %</span></li>
+									<li>$$TA:QUESTION5$$ <span class="inline-block pull-right typo-action">$$TA:SCORE5$$ %</span></li>
+									<li>$$TA:QUESTION6$$ <span class="inline-block pull-right typo-action">$$TA:SCORE6$$ %</span></li>
+								</ul>
+							</div>
+						</div>
+						<div class="row-fluid bg-opinion-avis btn-opinion margin-top-20">
+							<div class="span6 pagination-centered">
+								<a href="#" class="btn-detail">Détail +</a>
+							</div>
+							<div class="span6 pagination-centered">
+								<a href="http://www.opinionsystem.fr/survey_flag.php?survey_id=$$TA:SURVEYID$$" class="typo-important">Signaler</a>
+							</div>
+						</div>
+					</li>
+				$$LOOP$$
+			$$BFIN$$
+		</ul>
+	</div>
+</div>
+
+
+
+<script>
+	$(document).ready(function(){
+  	$(".detail-open").each(function(n) {
+    	$(this).addClass("detail-open-" + n);
+    });
+		var _array = document.getElementsByClassName("btn-detail");
+		for (i = 0; i < _array.length; i++) {
+		  eval("_array[i].onclick = function(e){ $('.detail-open-" + i.toString() + "').show('slow'); };");
+		}
+
+		_array = document.getElementsByClassName("detail-open");
+		for (i = 0; i < _array.length; i++) {
+		  eval("_array[i].onclick = function(e){ $('.detail-open-" + i.toString() + "').hide('slow'); };");
+		}
+  });
+</script>
+
+
+
+<!--<div class="row-fluid">
+	<div class="span1"></div>
+  <div class="span10">
+		$$B:IMMOBW:OPINIONSYSTEM-TOUSAVIS:~companyId:QRY:COMPANYID:ALIAS:TA$$
+		$$BIF:TA$$
+		<table>
+		<tbody>
+		$$DO:1:3$$
+		<tr><td colspan="6" style="background-color:darkgrey">Détail</td></tr>
+		<tr><td>$$TA:DATE$$</td><td>$$TA:NAME$$</td><td>$$TA:INVOICE$$</td><td>$$TA:COMMENT$$</td><td>$$TA:RATING$$</td><td>($$TA:SMILEY$$)</td></tr>
+		<tr><td colspan="6" style="background-color:lightgrey">Détail+</td></tr>
+		<tr><td colspan="4">$$TA:QUESTION1$$</td><td>$$TA:SCORE1$$</td></tr>
+		<tr><td colspan="4">$$TA:QUESTION2$$</td><td>$$TA:SCORE2$$</td></tr>
+		$$LOOP$$
+		<tr><td colspan="6" style="background-color:darkgrey">Totaux</td></tr>
+		<tr><td>Bons<td><td>$$TA:NBGOOD$$</td></tr>
+		<tr><td>Neutres<td><td>$$TA:NBNEUTRAL$$</td></tr>
+		<tr><td>Mauvais<td><td>$$TA:NBBAD$$</td></tr>
+		</tbody>
+		</table>
+		$$BFIN$$
+  </div>
+  <div class="span1"></div>
+</div>
+-->

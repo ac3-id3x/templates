@@ -1,0 +1,154 @@
+<div class="recherche-tools">
+   <div class="container">
+      <!--#include virtual="recherche/incl_recherche_tools.htm" -->
+   </div>
+</div>
+
+
+<div class="container">
+
+   $$IF!:2:STYLEMOTEURREFINE$$
+      <!--#include virtual="recherche/incl_fil_rouge_refine.htm" -->
+   $$END$$
+   $$IF=:1:REFINERECHERCHE$$
+      $$A:JS_REFINE=1$$
+      <script type="text/javascript">
+         var lienAlerte= 'https://$$REP:RSRV$$/$$REP:0$$';
+         var maxpage = '$$ANNLISTE:NBRPAGES$$';
+         var btnaction = 'choix-selection-refine';
+         var btnneutre = 'choix-neutre-refine';
+         var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+         var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:PX_LOYERBTW$$$$FORM:PX_LOYERBTW$$$$END$$';
+      </script>
+      $$IF=:10$11:FORM:IDTT$$
+         $$A:PASDEREFINE=1$$
+      $$END$$
+      $$IF0:TAILLEMOTEURRESULTATS$$
+         $$A:PASDEREFINE=1$$
+      $$END$$
+      $$IF0:EMPLACEMENTMOTEURLEFT$$
+         $$IF0:EMPLACEMENTMOTEURRIGHT$$
+            $$A:PASDEREFINE=1$$
+         $$END$$
+      $$END$$
+      $$IF=:1:PASDEREFINE$$
+         <form method="GET" action="/$$REP:URI$$" id="Mini_Moteur" class="relative">
+            <input type="hidden" name="idqfix" value="1">
+            <input type="hidden" name="idtt" value="$$IF:FORM:IDTT$$$$FORM:IDTT$$$$END$$$$IF0:FORM:IDTT$$$$MINI_IDTTDEFAUT$$$$END$$" class="hidden-idtt" />
+            $$IF:FORM:CI$$
+               <input type="hidden" name="ci"  value="$$IF:FORM:CI$$$$FORM:CI$$$$END$$" class="hidden-ci auto-create-hidden"/>
+            $$END$$
+            $$IF:FORM:IDQ$$
+               <input type="hidden" name="idq" value="$$IF:FORM:IDQ$$$$FORM:IDQ$$$$END$$" class="hidden-idq auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:IDPUBLICATION$$
+               <input type="hidden" name="idpublication" value="$$FORM:IDPUBLICATION$$" class="hidden-idpublication auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:SI_EXCLUSIF$$
+               <input type="hidden" name="si_exclusif" value="$$FORM:SI_EXCLUSIF$$" class="hidden-si_exclusif auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:SI_COUPDECOEUR$$
+               <input type="hidden" name="si_coupdecoeur" value="$$FORM:SI_COUPDECOEUR$$" class="hidden-si_coupdecoeur auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:SAISIE$$
+               <input type="hidden" name="saisie" value="$$FORM:SAISIE$$" class="hidden-saisie auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:IDP$$
+               <input type="hidden" name="idp" value="$$FORM:IDP$$" class="hidden-idp auto-create-hidden"  />
+            $$END$$
+            <input type="hidden" name="pres" value="$$PRESENTATION$$" class="hidden-pres" />
+            <input type="hidden" name="polygon" value="$$FORM:POLYGON$$" class="hidden-polygon auto-create-hidden"  />
+            <!--<input type="hidden" name="tri" value="$$FORM:TRI$$" class="hidden-tri auto-create-hidden"  />-->
+            $$IF:FORM:IDTYPEBIEN$$
+               <input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" class="hidden-idtypebien auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:IDVPA$$
+               <input type="hidden" name="idvpa" value="$$FORM:IDVPA$$" class="hidden-idvpa auto-create-hidden"  />
+            $$END$$
+
+            $$IF:FORM:IDTYPEACTIVITE$$
+               <input type="hidden" name="idtypeactivite" value="$$FORM:IDTYPEACTIVITE$$" class="hidden-idtypeactivite auto-create-hidden"  />
+            $$END$$
+            $$IF:FORM:IDTYPECOMMERCE$$
+               <input type="hidden" name="idtypecommerce" value="$$FORM:IDTYPECOMMERCE$$" class="hidden-idtypecommerce auto-create-hidden"  />
+            $$END$$
+            $$IF=:0$1:FORM:SI_LIBRE$$
+               <input type="hidden" name="si_libre" value="$$FORM:SI_LIBRE$$" class="hidden-si_libre auto-create-hidden"  />
+            $$END$$
+         </form>
+         $$IF=:1:REFINERECHERCHE$$
+            <script type="text/javascript">
+               var typeLocalite = "$$MINIVILLES_LIBRE$$";
+               var lienAlerte= 'https://$$REP:RSRV$$/$$REP:0$$';
+               var maxpage = '$$ANNLISTE:NBRPAGES$$';
+               var btnaction = 'choix-selection-refine';
+               var btnneutre = 'choix-neutre-refine';
+               var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+               var pxbtw="$$FORM:PXBTW replace %2f /$$";
+               var isEpsa= "$$ESPACEPERSORECHERCHE$$";
+               var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+            </script>
+         $$END$$
+      $$END$$
+   $$END$$
+
+
+
+   $$IF0:ANNLISTE:SIPANIER$$
+      $$IF=:0:EMPLACEMENTMOTEURLEFT$$
+         $$IF=:0:EMPLACEMENTMOTEURRIGHT$$
+            $$A:TAILLERESULTATS=span12$$
+         $$END$$
+      $$END$$
+   $$END$$
+   $$IF:ANNLISTE:SIPANIER$$
+      $$A:TAILLERESULTATS=span12$$
+   $$END$$
+   <div class="row-fluid">
+      <div class="span12">
+         <div id="recherche-resultats-listing">
+            $$DO:config:config$$
+                $$A:TITLE_ANN=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE@@$$
+                $$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+               $$IF=:BASIC:PRESENTATION$$
+               <!--#include virtual="recherche/incl_basic_annonce.htm" -->
+               $$END$$
+               $$IF=:LISTING:PRESENTATION$$
+               <!--#include virtual="recherche/incl_listing_annonce.htm" -->
+               $$END$$
+               $$IF=:PRESTIGE:PRESENTATION$$
+               <!--#include virtual="recherche/incl_prestige_annonce.htm" -->
+               $$END$$
+               $$IF=:LIGHT:PRESENTATION$$
+               <!--#include virtual="recherche/incl_light_annonce.htm" -->
+               $$END$$
+            $$LOOP$$
+         </div>
+         $$REM$$<!-- PAGINATION -->$$END$$
+         $$IF+:1:ANNLISTE:NBRPAGES$$
+            <div class="pagination pagination-right margin-top-10">
+               <!--#include virtual="recherche/incl_nb_pages.htm" -->
+            </div>
+         $$END$$
+      </div>
+   </div>
+   $$IF=:1:REFINERECHERCHE$$
+      <!--LOADER-->
+      <div class="layer display-none absolute top right left bottom row-fluid">
+         <div class="z25 span12 margin-top-40">
+            <div class="row-fluid">
+               <div class="span4"></div>
+               <div class=" span4 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+                  <img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+                  <p class="typo-black pagination-centered">
+                     $$LG:VEUILLEZPATIENTER$$
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="absolute bg-picture opacity-7 top right left bottom z-25" ></div>
+      </div>
+      <!-- FINLOADER-->
+   $$END$$
+</div>
+

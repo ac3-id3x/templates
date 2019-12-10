@@ -1,0 +1,117 @@
+$$INIT:QUERYESTIMATION=idtypebien=1,2&photo=10$$
+$$INIT:IDT=ESTIMATION$$
+
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:CVESTIMATION$$
+$$E:OBSERVATOIRE:MELURL$$
+$$A:ESTIMATION-PAGE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="estimation/incl_title_estimation.htm" -->
+$$A:ADRESSE_EEL_V3_OK=1$$
+$$A:ADRESSE_EEL_V3_CONCAT=$$
+
+
+$$REM$$<!-- Définition de l'adresse en monoagence -->$$END$$
+$$IF=:0:MULTIAGENCES$$
+	$$IF:AGENCE_ADRESSE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@AGENCE_ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+	$$END$$
+	$$IF0:AGENCE_ADRESSE$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+
+	$$IF:AGENCE_CP$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@ADRESSE_EEL_V3_CONCAT@@, @@AGENCE_CP@@$$
+	$$END$$
+
+	$$IF0:AGENCE_CP$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+
+	$$IF:AGENCE_VILLE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@ADRESSE_EEL_V3_CONCAT@@ @@AGENCE_VILLE@@$$
+	$$END$$
+	$$IF0:AGENCE_VILLE$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- Définition de l'adresse en multi agences -->$$END$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF:PAGE:MEL_CFG_ADR_SIGNATAIRE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@PAGE:MEL_CFG_ADR_SIGNATAIRE@@$$
+	$$END$$
+$$END$$
+
+<!-- estim lead detection : $$ESTIMATIONLEAD$$ -->
+<div class="row-fluid">
+	<div class="span12">
+
+	$$IF=:1:PAGE:MEL_CFG_V1$$
+		<h1>$$H1_ESTIMATION$$</h1>
+	$$END$$
+
+	<hr class="hidden-phone">
+
+        $$IF0:REP:1$$
+            $$IF=:1:ESTIMATIONLEAD$$
+                $$IF!:1:PAGE:MEL_CFG_V1$$
+                    <!--#include virtual="header/incl_text_estimation.htm" -->
+
+                    <link href="/z/webagency/slagence_X_V5/estimation/module_v3/assets/css/estimationForm.css" rel="stylesheet" />
+
+                    $$REM$$<!--FORMULAIRE-->$$END$$
+                    <div class="row-fluid">
+                        <estimation id="estimation-app" ng-app="estimationApp" ng-controller="EstimationController as $ec"></estimation>
+                    </div>
+
+                    $$IF!:1:HIDEFORMBOTTOM$$
+                        <!--#include virtual="estimation/incl_estimation_bottom.htm" -->
+                    $$END$$
+                    <script type="text/javascript">
+                        var _confEstimToken = "$$PAGE:MEL_CFG_JETON$$";
+						var _confContactMail = "$$PAGE:MEL_CFG_EMAIL$$";
+						var _confAgencyName = "$$PAGE:MEL_CFG_RAISON_SOCIALE$$";
+						var _confAffichagePrix = "$$PAGE:MEL_AFFICHAGE_PRIX$$";
+						var _confLocationPlaceholder = "$$IF=:1:ADRESSE_EEL_V3_OK$$$$IF:ADRESSE_EEL_V3_CONCAT$$$$ADRESSE_EEL_V3_CONCAT rxreplace (.*)\r\n(.*) $1¤$2 trim$$$$END$$$$END$$";
+						var _confPhoneRequired = $$IF=:true:PAGE:MEL_CFG_REQUIS_TELEPHONE$$1$$END$$$$IF!:true:PAGE:MEL_CFG_REQUIS_TELEPHONE$$0$$END$$;
+						var _idTypeBien = $$IF=:1:FORM:IDTYPEBIEN$$1$$END$$$$IF!:1:FORM:IDTYPEBIEN$$2$$END$$;
+                    </script>
+                    
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationFormVendor.js"></script>
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationFormPoliris.js"></script>
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationForm.js"></script>
+
+                    <style>
+                        <!--#include virtual="estimation/module_v3/assets/css/estimationFormPoliris.htm" -->
+                    </style>
+                $$END$$
+                $$IF=:1:PAGE:MEL_CFG_V1$$
+                    $$IF=:1:FORM:IDTYPEBIEN$$
+                        $$A:TAILLE=700$$
+                    $$END$$
+                    $$IF=:2:FORM:IDTYPEBIEN$$
+                        $$A:TAILLE=920$$
+                    $$END$$
+                    $$IF:FORM:IDTYPEBIEN$$
+                        <!--#include virtual="estimation/incl_texte_estimation.htm" -->
+                        <iframe src="$$OBSERVATOIRE:MELURL:URL$$&o=INTP-0001&idtypebien=$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$1$$END$$"  width="960" height="$$TAILLE$$" scrolling="no" style="overflow-y:hidden;border:0;" frameborder="0"></iframe>
+                    $$END$$
+                    $$IF0:FORM:IDTYPEBIEN$$
+                        <!--#include virtual="estimation/incl_select_estimation.htm" -->
+                    $$END$$
+                $$END$$
+    		$$END$$
+        $$END$$
+
+        $$IF:REP:1$$
+            $$IF:REP:1$$
+                <!--#include virtual="estimation/incl_formulaire_estimation.htm" -->
+            $$END$$
+            $$IF0:REP:1$$
+                <!--#include virtual="estimation/incl_agences_estimation.htm" -->
+            $$END$$
+        $$END$$
+
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,1084 @@
+<script type="text/javascript">
+    calculMensualite = function(taux,prix,nmensualite,dureeemprunt,idAnnonce){
+        prix = prix.replace(/\s/g,"");
+        prix = parseFloat(prix);
+        montantpret =  Math.floor(prix/1.2 * 100) / 100;
+        mensualite = montantpret*(taux/100)/(1-Math.pow((1+taux/100/12),(-nmensualite)))/12;
+        mensualite = Math.floor(mensualite * 100) / 100;
+        $('.mensualite-'+idAnnonce).html(mensualite);
+    };
+</script>
+
+$$IF=:FINANCEMENT:IDT$$
+<script src="$$-$$scripts/js/financement.js"></script>
+$$END$$
+
+$$IF=:CONTACTARTHURIMMO$RECRUTEMENT:IDT$$
+<script src="$$-$$scripts/js/contact.js"></script>
+$$END$$
+
+<!--#include virtual="moteur/suggest/incl_json.htm" -->
+
+$$IF=:INDEX:IDT$$
+<script type="text/javascript">
+
+    // ===============================================
+    // == MODIF LIEN DEMENAGEMENT POST REFONTE ==
+    // ===============================================    
+
+    $('a[href*="http://services.arthurimmo.com/"]').addClass('test');
+    $('.test').attr('href','https://my.papernest.com/arthurimmo_services_demenagement/');
+
+    // ===============================================
+    // == SELECT AGENCES ==
+    // ===============================================
+
+    function btnclick(deptreg){
+        $('.bloc-btn-agence').on('click','.btn',function(e){
+            e.preventDefault();
+            var newUrl = "/agences,liste.htm?dept="+deptreg;
+            document.location.href = newUrl;
+        });
+    }
+
+    $(window).load(function() {
+        $('.select-regions').val("");
+        $('.select-dept').val("");
+        $('.select-ville').val("");
+        $('.select-regions').on('change',function(){
+            var deptreg = $(this).val();
+            var xhr = $.ajax({
+                type: 'GET',
+                data:"region="+deptreg,
+                dataType: 'html',
+                url: '/scripts,ajax_dept.htm',
+                beforeSend: function() {
+                    $('.select-dept').html("<option>chargement</option>");
+                    $('.select-dept').addClass('opacity-2');
+                    $('.select-dept').prop('disabled', 'disabled');
+                },
+                success: function(data) {
+                    $('.select-dept').removeClass('opacity-2');
+                    $('.select-dept').prop('disabled', false);
+                    $('.select-dept').html(data);
+                },error:function() {
+                },complete:function() {
+                }
+            });
+            btnclick(deptreg);
+        });
+        $('.select-dept').on('change',function(){
+            var deptreg = 'µ' + $(this).find(':selected').data("cp");
+            btnclick(deptreg);
+			
+			var xhr = $.ajax({
+                type: 'GET',
+                data:"cp="+$(this).find(':selected').data("cp"),
+                dataType: 'html',
+                url: '/scripts,ajax_ville.htm',
+                beforeSend: function() {
+                    $('.select-ville').html("<option>chargement</option>");
+                    $('.select-ville').addClass('opacity-2');
+                    $('.select-ville').prop('disabled', 'disabled');
+                },
+                success: function(data) {
+                    $('.select-ville').removeClass('opacity-2');
+                    $('.select-ville').prop('disabled', false);
+                    $('.select-ville').html(data);
+                },error:function() {
+                },complete:function() {
+                }
+            });
+        });
+		
+        $('.select-ville').on('change',function(){
+            var deptreg = $(this).val();
+            btnclick(deptreg);
+        });
+    });
+	
+    if (winW > 1280) {
+
+        // ===============================================
+        // == ANIMS ==
+        // ===============================================
+        
+        // createScript("$$-$$scripts/js/jquery.viewportchecker.min.js",true);
+        // $(window).load(function() {
+        //     $(".animate-top").addClass("anim-hide").viewportChecker({
+        //         classToAdd: "anim-show animated fadeInUp",
+        //         offset: 150
+        //     });
+        // });
+        
+        // ===============================================
+        // == PARALLAX ==
+        // ===============================================
+
+        createScript("$$-$$scripts/js/jquery.parallax-1.1.3.min.js",true);
+        $(window).load(function() {
+            $('.bloc-outils-parallax').parallax( 0, 0.2 );
+            $('.slidehome-parallax').parallax( 0, 0.10 );
+        });
+
+    }
+
+    // ===============================================
+    // == SLIDER BUDGET ==
+    // ===============================================
+
+    if (winW >= 1024) {
+        createScript("$$-$$scripts/js/jquery-ui.min.js",true);
+        $(window).load(function() {
+
+            var afficheminbugven=0;
+            var affichemaxbugven=3000000;
+            var reelminbugven=0;
+            var reelmaxbugven=3000000;
+            var stepven=20000;
+
+            var afficheminbugloc=0;
+            var affichemaxbugloc=3000;
+            var reelminbugloc=0;
+            var reelmaxbugloc=3000;
+            var steploc=100;
+
+            var BudgetLimite=reelmaxbugven;
+
+            $("#idtt").change(function() {
+                if($(this).val()==1 || $(this).val()==4) {
+                    SliderInitiate(steploc,reelminbugloc,affichemaxbugloc,reelmaxbugloc);
+                } else {
+                    SliderInitiate(stepven,reelminbugven,affichemaxbugven,reelmaxbugven);
+                }
+            });
+
+            function SliderInitiate(valstep,valmin,valmax,reelmax){
+                BudgetLimite=reelmax;
+                $("#slider-budget").slider("option" , "min" , 0);
+                $("#slider-budget").slider("option", "step", valstep);
+                $("#slider-budget").slider("option" , "max" , reelmax);
+                $(".DisplayBudgetMin").html( lisibilite_nombre(valmin));
+                $(".DisplayBudgetMax").html( lisibilite_nombre(valmax) + " et +");
+
+                $("#MiniInputBudgetMin").val(valmin);
+                if(valmax>=reelmax){
+                    $("#MiniInputBudgetMax").val("");
+                } else {
+                    $("#MiniInputBudgetMax").val(valmax + " et +");
+                }
+                $("#slider-budget").slider("option", "values", [valmin,valmax] );
+            }
+
+            function lisibilite_nombre(nbr){
+                var nombre = ''+nbr;
+                var retour = '';
+                var count=0;
+                for(var i=nombre.length-1 ; i>=0 ; i--){
+                    if(count!=0 && count % 3 == 0)
+                        retour = nombre[i]+' '+retour ;
+                    else
+                        retour = nombre[i]+retour ;
+                    count++;
+                }
+                return retour;
+            }
+
+            $( "#slider-budget" ).slider({
+                range: true,
+                orientation: "vertical",
+                min: reelminbugven,
+                step: stepven,
+                max: reelmaxbugven,
+                values: [ reelminbugven, reelmaxbugven ],
+                slide: function( event, ui ) {
+                    var varmin=lisibilite_nombre(ui.values[0]);
+                    var varmax=lisibilite_nombre(ui.values[1]);
+                    if(ui.values[1]>=BudgetLimite){
+                        $("#MiniInputBudgetMax").val("");
+                    }else{
+                        $("#MiniInputBudgetMax").val(ui.values[1]);
+                    }
+                    $(".DisplayBudgetMin").html( varmin );
+                    if( ui.values[1] == reelmaxbugven ){
+                        var etplus = " et +";
+                    }else{
+                        var etplus = "";
+                    }
+                    $(".DisplayBudgetMax").html( varmax + etplus );
+                    $("#MiniInputBudgetMin").val(ui.values[0]);
+                }
+            });
+            SliderInitiate(stepven,afficheminbugven,affichemaxbugven,reelmaxbugven);
+
+            $("#minimoteur-slider-content").click(function(event) {
+                event.stopPropagation();
+                budgetToggle();
+            });
+            $("#minimoteur-slider-close").click(function(event) {
+                event.stopPropagation();
+                budgetToggle();
+            });
+            $("#minimoteur-slider-range").click(function(event) {
+                event.stopPropagation();
+            });
+
+            $(window).click(function() {
+                $("#minimoteur-slider-range").removeClass("active");
+                $(".message-suggest-liste").hide();
+                $(".close-liste").hide();
+            });
+
+            function budgetToggle(){
+                $("#minimoteur-slider-range").toggleClass("active");
+            }
+
+            $(".message-suggest-liste").click(function(event) {
+                event.stopPropagation();
+            });
+			
+        });
+    }
+
+
+    // ===============================================
+    // == NEWSLETTER ==
+    // ===============================================
+
+
+    $('.form-newsletter').on('click','.btn-envoi-newsletter', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message').val("");
+                    $('#email-message').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
+
+    $('body').on('click','.btn-envoi-newsletter-mob', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message-mob').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message-mob').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message-mob').val("");
+                    alert(messageOK);
+                    $('#email-message-mob').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
+
+
+
+    // ===============================================
+    // == SUGGEST MOTEUR ==
+    // ===============================================
+
+    createScript("$$-$$scripts/js/moteur_suggest.js",true);
+
+</script>
+$$END$$
+
+$$IF=:LANDING$PART_FINANCEMENT:IDT$$
+<script type="text/javascript">
+    var sNew = document.createElement("link");
+    sNew.rel = 'stylesheet';
+    sNew.href = "/z/webagency/slagence_X_V5/sources/css/colorbox.css";
+    var s0 = document.getElementsByTagName('link')[0];
+    s0.parentNode.insertBefore(sNew, s0);
+    //document.write("<link rel='stylesheet' href='/z/webagency/slagence_X_V5/sources/css/colorbox.css'/>");
+</script>
+<script src="$$~$$scripts/libs/jquery.colorbox.js"></script>
+<script type="text/javascript">
+    $(window).load(function() {
+        $(".popup").colorbox({
+            close: "x",
+            title: "",
+            iframe: true,
+            width: "90%",
+            height: "80%",
+            maxWidth: 800
+        });
+    });
+</script>
+$$END$$
+
+$$IF!:INDEX:IDT$$
+<script type="text/javascript">
+
+    // ===============================================
+    // == STICKY HEADER ==
+    // ===============================================
+
+    if(winW >=  1024) {
+        $(function() {
+            $(window).scroll(function() {
+                var scroll = $(window).scrollTop();
+                if (scroll >= 50) {
+                    $(".header-sticky").addClass('resized');
+                } else {
+                    $(".header-sticky").removeClass("resized");
+                }
+            });
+        });
+    }
+
+    $("#topville-agence-select").on("change",function(){
+        var newUrl = "/agences,liste.htm?dept="+$(this).val();
+        document.location.href = newUrl;
+    });
+
+</script>
+$$END$$
+
+
+$$IF=:RESULTATS:IDT$$
+<script type="text/javascript">
+
+    // ===============================================
+    // == DISPLAY MOTEUR RECHERCHE ==
+    // ===============================================
+
+    $(window).load(function() {
+        $("#recherche-listing").on("click",".btn-display-minimot",function() {
+            $("#recherche-moteur").toggleClass("open");
+        });
+    });
+
+
+    // ===============================================
+    // == BACKTO MOTEUR RECHERCHE ==
+    // ===============================================
+
+    $(window).load(function() {
+
+        if(winW>=640){
+            $('body').append('<a href="#" class="scrollToMoteur hidden-phone hidden-tablet">scrollToMoteur</a>');
+            $(window).scroll(function(){
+                if($(this).scrollTop()>100){
+                    $('.scrollToMoteur').fadeIn()
+                }else{
+                    $('.scrollToMoteur').fadeOut()
+                }
+            });
+            $('.scrollToMoteur').click(function(){
+                $("html, body").animate({scrollTop:0},1000);
+                $("#recherche-moteur").addClass("open");
+                return false;
+            });
+        }
+
+    });
+</script>
+$$END$$
+
+$$IF=:TOPVILLE2016$TOPVILLE:IDT$$
+<script type="text/javascript">
+    $(window).load(function() {
+        if(winW < 1024) {
+            $(".detail-accordeon-item-ttl").click(function(){
+                $(this).toggleClass("active");
+                $(this).next(".detail-accordeon-item-txt").slideToggle();
+            });
+        }
+    });
+</script>
+$$END$$
+
+$$IF=:DETAILANNONCE:IDT$$
+<script type="text/javascript">
+
+    $(window).load(function() {
+
+
+        // -- POPUP WIDGET SOCIAL
+        // --------------------------------------------------
+
+        $('.has-popup').click(function(e) {
+            e.preventDefault();
+            window.open($(this).attr('href'), 'Partagez', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+            return false;
+        });
+
+
+        // ===============================================
+        // == ACCORDEON DETAIL ==
+        // ===============================================
+
+        if(winW < 1024) {
+            $(".detail-accordeon-item-ttl").click(function(){
+                $(this).toggleClass("active");
+                $(this).next(".detail-accordeon-item-txt").slideToggle();
+            });
+        }
+
+
+        // ===============================================
+        // == BTN TEL SIDEBAR DETAIL ==
+        // ===============================================
+
+        function clicPhone(a,$this){
+            $this.find('#texte-telephonez-nous'+a).hide();
+            $this.find('#numero-telephonez-nous'+a).show();
+            $this.attr('id','');
+            $this.unbind('click');
+        }
+
+        $('#bouton-telephonez-nous-detail2').click(function() {
+            var a="-detail2";
+            var $this = $(this);
+            clicPhone(a,$this);
+        });
+		
+        // Code bouton selection
+        function fixStar() {
+            var annonceBouton = $('.bouton-ajouter-selection-detail-arthurimmo')
+            annonceBouton.find('img').attr('src','$$_$$images/pictos/picto-star-ok.png');
+        };
+
+        $('.bouton-ajouter-selection-detail-arthurimmo').on('click',function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var thisIcone = $this.find('img').attr('src');
+            var idAnnonce = $this.attr('data-idannonce');
+            var idPublication = $this.attr('data-idpublication');
+            if(thisIcone.indexOf('ok')>0){
+                $.ajax({
+                    type: "GET",
+                    data: 'idannonce='+idAnnonce+'&idp='+idPublication,
+                    url: '/scripts,panier,selection_supprimer.htm',
+                    dataType: "json",
+                    cache:false,
+                    success: function(data) {
+                        $this.find('img').attr('src','$$_$$images/pictos/picto-star.png');
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: "GET",
+                    data : "idannonce="+idAnnonce+"&idpublication="+idPublication,
+                    url: '/scripts,panier,selection_ajouter.htm',
+                    dataType: "json",
+                    cache:false,
+                    success: function(data) {
+                        $this.find('img').attr('src','$$_$$images/pictos/picto-star-ok.png');
+                    }
+                });
+            };
+        });
+
+        // fin code bouton selection
+    });
+
+</script>
+$$END$$
+
+$$IF=:LEXIQUE:IDT$$
+<script type="text/javascript">
+    $(window).load(function() {
+
+        function lexChange(allletter,oneletter){
+            var lettre = $(".lex-nav").find("a[data-letter=letter-"+oneletter+"]");
+            $(".lex-nav").find("a").removeClass("active");
+            lettre.addClass("active");
+            $("#fichefaq-ttl-letter").html(lettre.html());
+            $(".lex-letter").addClass("display-none");
+            $(".lex-letter.letter-"+oneletter).removeClass("display-none");
+
+            var mot = $(".lex-letter").find("[data-word="+allletter+"]");
+            if(mot.length){
+                $(".lex-letter").find("dt,dd").addClass("display-none");
+                mot.removeClass("display-none");
+                mot.next("dd").removeClass("display-none");
+            }else{
+                $(".lex-letter").find("dt,dd").removeClass("display-none");
+            }
+        }
+		
+        var hashqry = window.location.hash.split('#');
+        if(hashqry[1] != undefined){
+            var blockletter = hashqry[1];
+            if (blockletter.length > 1){
+                var oneletter = blockletter.charAt(0);
+            }else{
+                var oneletter = blockletter;
+            }
+            var allletter = blockletter;
+        }else{
+            var allletter = 'a';
+            var oneletter = 'a';
+        }
+        lexChange(allletter,oneletter);
+
+      function reset() {
+        $(".lex-letter").addClass("display-none");
+        $(".lex-letter dt").removeClass("display-none");
+        $(".lex-letter dd").removeClass("display-none");
+      }
+
+      function reset_full() {
+        $(".lex-nav-link.active").removeClass("active");
+        $(".lex-letter").addClass("display-none");
+        $(".lex-letter dt").addClass("display-none");
+        $(".lex-letter dd").addClass("display-none");
+      }
+
+      $("#lex-search").val("");
+      $("#lex-search").on('keyup',function() {
+        reset_full();
+
+        var recherche=$("#lex-search").val();
+        var regex = new RegExp(recherche, "i");
+
+        $('.lex-letter dt').each(function(){
+            if (recherche!="") {
+                console.log($(this).text());
+                if ($(this).text().match(regex)) {
+                    $(this).next().removeClass("display-none");
+                    $(this).removeClass("display-none");
+                    $(this).parent().removeClass("display-none");
+                }
+            } else {
+                reset();
+                lexChange("a","a");
+            }
+        });
+      });
+
+        $(".lex-nav-link").click(function(){
+        reset();
+            var lettre = $(this).data("letter");
+            lettre = lettre.replace("letter-", "");
+            lexChange(lettre,lettre);
+        });
+
+        if(winW < 1024) {
+            $(".lex-letter dt").click(function(){
+                $(this).next("dd").toggleClass("hidden-med");
+            });
+        }
+
+    });
+</script>
+$$END$$
+
+$$IF=:CONTACTVENTE$CONTACTGESTION$CONTACTQUESTION:IDT$$
+<script type="text/javascript">
+    var regEmail = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
+    var regTel = new RegExp('^(01|02|03|04|05|06|0708|09)[0-9]{8}$','i');
+    $(window).load(function() {
+        $('.form-envoi-message-vente').on('click','.bouton-envoyer-vente-agence', function (e) {
+            e.preventDefault();
+            if($("textarea[name='message']").html() == ""){
+                $("textarea[name='message']").html("Pas de pr\351cisions");
+            }
+            var btn = $(this);
+            btn.button('loading');
+            $.ajax({
+                type: "POST",
+                data : $(this).closest('.form-envoi-message-vente').serialize(),
+                dataType:'json',
+                url: '/agence,incl_contact_vente_email.htm',
+                beforeSend: function() {
+                    $('.message-erreur-alerte').html('');
+                    btn.removeClass("bouton-envoyer-vente-agence");
+                },
+                success: function(data) {
+                    var idpublication = data.idpublication;
+                    if(data.message.length > 0) {
+                        $('.message-erreur-alerte').html(data.message);
+
+                        btn.button('reset');
+                        btn.addClass("bouton-envoyer-vente-agence");
+
+                        if(data.nom.length <= 0) {
+                            $('#nom-message'+idpublication).parent().addClass('error').removeClass('success');;
+                        } else {
+                            $('#nom-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                            $('#email-message'+idpublication).parent().addClass('error').removeClass('success');;
+                        } else {
+                            $('#email-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.telephone.length <= 0 || regTel.test(data.telephone) == false) {
+                            $('#telephone-message'+idpublication).parent().addClass('error').removeClass('success');;
+                        } else {
+                            $('#telephone-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+
+                        if(data.surface.length <= 0) {
+                            $('#surface-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#surface-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.terrain.length <= 0) {
+                            $('#terrain-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#terrain-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.pieces.length <= 0) {
+                            $('#pieces-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#pieces-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.dept.length <= 0) {
+                            $('#dept-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#dept-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.prix.length <= 0) {
+                            $('#prix-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#prix-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.adresse.length <= 0) {
+                            $('#adresse-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#adresse-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                        if(data.cp.length <= 0) {
+                            $('#cp-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#cp-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+
+                        if(data.ville.length <= 0) {
+                            $('#ville-message'+idpublication).parent().addClass('error').removeClass('success');
+                        } else {
+                            $('#ville-message'+idpublication).parent().removeClass('error').addClass('success');
+                        }
+                    } else {
+                        $('.message-erreur-alerte').html(messageOK);
+                        $('#nom-message'+idpublication).parent().removeClass('error').removeClass('success');
+                        $('#email-message'+idpublication).parent().removeClass('error').removeClass('success');
+                        $('#telephone-message'+idpublication).parent().removeClass('error').removeClass('success');
+                        $('#surface-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#terrain-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#pieces-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#dept-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#prix-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#adresse-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#cp-message'+idpublication).parent().removeClass('error').addClass('success');
+                        $('#ville-message'+idpublication).parent().removeClass('error').addClass('success');
+                        btn.button('reset');
+                        btn.html(boutonOK);
+                        btn.unbind('click');
+                    }
+                },
+                error : function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                },
+                complete: function() {
+                    $('.message-erreur-alerte').show('slow').delay(2500).hide('slow');
+                }
+            });
+        });
+    });
+</script>
+$$END$$
+
+$$IF=:NOSAGENCES:IDT$$
+<!--#include virtual="maps/incl_maps_prerequisites.htm" -->
+	$$A:MAP_EASY_AUTOCOMPLETE=1$$
+<!--#include virtual="maps/incl_maps.htm" -->
+<script type="text/javascript">
+    var txtID3_FeesScale = "$$IF:LIBELLE_BAREME_HONORAIRES$$$$LIBELLE_BAREME_HONORAIRES$$$$END$$"
+						 + "$$IF0:LIBELLE_BAREME_HONORAIRES$$$$LG:ALUR_BAREMEHONORAIRES$$$$END$$",
+		txtID3_CallUs = "$$LG:V5APPELEZNOUS pcase$$",
+		txtID3_Email = "$$LG:EMAIL pcase$$",
+		txtID3_Website = "$$LG:SITEINTERNET pcase$$",
+		txtID3_AgencyManager = "$$IF!:147641$102912:AGENCE:IDTIERS$$$$LG:RESPAGENCE pcase$$$$END$$"
+							 + "$$IF=:147641$102912:AGENCE:IDTIERS$$$$LG:RESPSAGENCE pcase$$$$END$$",
+		txtID3_VisitAgency = "$$LG:DECOUVRIRAG pcase$$",
+		txtID3_Properties = "$$LG:LIEN:NOSBIENS pcase$$",
+		txtID3_EvaluateEstate = "$$LG:ESTIMBIEN pcase$$",
+		txtID3_ContactUs = "$$LG:NOUSCTC pcase$$";
+</script>
+<script type="text/javascript" src="$$-$$scripts/js/listing_agences.min.js"></script>
+$$END$$
+
+<!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+<script type="text/javascript" src="$$-$$scripts/js/slick.min.js"></script>
+<script type="text/javascript">
+
+    /* ===============================================
+    == MODALS ==
+    =============================================== */
+
+    function modalMobile(winW){
+        if (winW >= 1024) {
+            $(".menu-principal").removeClass("active");
+            $(".minimoteur-arthurimmo").removeClass("active");
+            $("#recherche-moteur").removeClass("active");
+            $("#form-contact-agence").removeClass("active");
+            $("body").removeClass("modal-active");
+        }
+    }
+
+    modalMobile(winW); // au chargement de la page.
+
+    $(".menu-responsive-toggle").click(function() {
+        $(".menu-principal").addClass("active");
+        $("body").addClass("modal-active");
+    });
+    $(".menu-responsive-close a").click(function() {
+        $(".menu-principal").removeClass("active");
+        $("body").removeClass("modal-active");
+    });
+
+    $(".minimoteur-arthurimmo-fake").click(function() {
+        $(".minimoteur-arthurimmo").addClass("active");
+        $("body").addClass("modal-active");
+    });
+    $(".minimoteur-arthurimmo-close").click(function() {
+        $(".minimoteur-arthurimmo").removeClass("active");
+        $("body").removeClass("modal-active");
+    });
+
+    $(".sidebar-display-minimot").click(function() {
+        $("#recherche-moteur").addClass("active");
+        $("body").addClass("modal-active");
+    });
+    $(".sidebar-close-minimot").click(function() {
+        $("#recherche-moteur").removeClass("active");
+        $("body").removeClass("modal-active");
+    });
+
+    $(".sidebar-display-form").click(function() {
+        $("#form-contact-agence").addClass("active");
+        $("body").addClass("modal-active");
+    });
+    $(".sidebar-close-form").click(function() {
+        $("#form-contact-agence").removeClass("active");
+        $("body").removeClass("modal-active");
+    });
+
+    $(window).on('resize', function(){
+        var win = $(this);
+        modalMobile( win.width() );
+    });
+
+
+
+    /* ===============================================
+    == SCROLL ANCRES ==
+    =============================================== */
+
+    $('.anchor-link[href^="#"]').click(function(){
+        var the_id = $(this).attr("href");
+        $('html, body').animate({
+            scrollTop:$(the_id).offset().top
+        }, 'slow');
+        return false;
+    });
+
+
+    /* ===============================================
+    == LABELS FORM ==
+    =============================================== */
+
+    $(".formanim-grp").focusin(function(){
+        $(this).addClass("focused");
+    });
+    $(".formanim-grp").focusout(function(){
+        if(!$(this).find(".formanim-input").val()) {
+            $(this).removeClass("focused");
+        }
+    });
+    $(".formanim-grp").each(function(){
+        if($(this).find(".formanim-input").val()) {
+            $(this).addClass("focused");
+        }
+    });
+
+
+
+    /* ===============================================
+    == SHOW ALERTE ==
+    =============================================== */
+
+    $(window).load(function() {
+        $(".toggle-alert").click(function() {
+            $("#alerte-moteur").slideToggle();
+            $("html,body").animate({ scrollTop: 0 }, "slow");
+        });
+    });
+
+
+
+    /* ===============================================
+    == CAROUSELS ==
+    =============================================== */
+    
+    //createScript("/z/webagency/slagence_X_V5/scripts/js/carousel/owl.carousel.min.js",true);
+    $(window).load(function() {
+
+        $('.partenaires-carousel').slick({
+            autoplay: true,
+            autoplaySpeed: 0,
+            arrows: false,
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            cssEase: 'linear',
+            speed: 4000,
+            accessibility: false,
+            draggable: false,
+            lazyLoad: 'progressive',
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            swipe: false,
+            touchMove: false,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 6
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                },
+                {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }
+            ]
+        });
+
+
+        $$IF=:TOPVILLE2016$TOPVILLE:IDT$$
+        if (winW >= 1024) {
+            $('.topvilleagences-carousel').owlCarousel({
+                items: 2,
+                loop: true,
+                autoplay: true,
+                nav: false,
+                navText: "",
+                dots: true
+            });
+        }
+        $$END$$
+
+        $$IF=:INDEX$DETAILANNONCE$RESEAUEXPERT:IDT$$
+        $('.avis-carousel').owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            nav: false,
+            navText: "",
+            dots: true
+        });
+        $$END$$
+
+        $$IF=:INDEX$LANDING:IDT$$
+        $('.services-carousel').owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            nav: false,
+            navText: "",
+            dots: true
+        });
+
+        $('.blog-carousel').owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            nav: false,
+            navText: "",
+            dots: true
+        });
+
+        $$END$$
+
+        $$IF=:DETAILANNONCE$TOPVILLE2016$TOPVILLE:IDT$$
+        if(winW < 1024) {
+            $('.simi-carousel').owlCarousel({
+                items: 1,
+                loop: false,
+                autoplay: true,
+                nav: false,
+                navText: "",
+                dots: true
+            });
+        }
+        $$END$$
+
+        $$IF=:DETAILANNONCE:IDT$$
+        var sync1 = $("#detail-gallery1");
+        var sync2 = $("#detail-gallery2");
+        var slidesPerPage = 8; //globaly define number of elements per page
+        var syncedSecondary = true;
+
+        sync1.owlCarousel({
+            items : 1,
+            slideSpeed : 2000,
+            nav: true,
+            autoplay: false,
+            dots: true,
+            loop: false,
+            mouseDrag: false,
+            touchDrag: true,
+            pullDrag: false,
+            responsiveRefreshRate : 200,
+            navText: ['<','>'],
+        }).on('changed.owl.carousel', syncPosition);
+        sync2
+            .on('initialized.owl.carousel', function () {
+            sync2.find(".owl-item").eq(0).addClass("current");
+        })
+            .owlCarousel({
+            items : slidesPerPage,
+            dots: false,
+            nav: false,
+            navText: "",
+            margin: 5,
+            smartSpeed: 200,
+            slideSpeed : 500,
+            slideBy: slidesPerPage,
+            responsiveRefreshRate : 100
+        }).on('changed.owl.carousel', syncPosition2);
+
+        function syncPosition(el) {
+            var current = el.item.index;
+            sync2
+                .find(".owl-item")
+                .removeClass("current")
+                .eq(current)
+                .addClass("current");
+            var onscreen = sync2.find('.owl-item.active').length - 1;
+            var start = sync2.find('.owl-item.active').first().index();
+            var end = sync2.find('.owl-item.active').last().index();
+
+            if (current > end) {
+                sync2.data('owl.carousel').to(current, 100, true);
+            }
+            if (current < start) {
+                sync2.data('owl.carousel').to(current - onscreen, 100, true);
+            }
+        }
+
+        function syncPosition2(el) {
+            if(syncedSecondary) {
+                var number = el.item.index;
+                sync1.data('owl.carousel').to(number, 100, true);
+            }
+        }
+
+        sync2.on("click", ".owl-item", function(e){
+            e.preventDefault();
+            var number = $(this).index();
+            sync1.data('owl.carousel').to(number, 300, true);
+        });
+
+
+        $(".accordion-toggle").on("click",function(){
+            $(".accordion-toggle").addClass("collapsed");
+        });
+        $$END$$
+
+    });
+
+    $$IF=:DETAILANNONCE:IDT$$
+    $(".bouton-alerte-moteur").on("click", function(e) {
+        e.preventDefault();
+        var n = $(this);
+        n.button("loading"), $.ajax({
+            type: "POST",
+            data: $("#form-alerte-moteur").serialize(),
+            dataType: "json",
+            url: "/alerte,incl_creation.htm",
+            beforeSend: function() {
+                $(".message-erreur-alerte").html("")
+            },
+            success: function(e) {
+                e.message.length > 0 ? ($(".message-erreur-alerte").html(e.message), e.nom.length <= 0 ? $("#nom-alerte").parent().addClass("error").removeClass("success") : $("#nom-alerte").parent().removeClass("error").addClass("success"), e.email.length <= 0 || 0 == regEmail.test(e.email) ? $("#email-alerte").parent().addClass("error").removeClass("success") : $("#email-alerte").parent().removeClass("error").addClass("success")) : e.idInscription.length > 0 && ($("#nom-alerte").parent().removeClass("error").removeClass("success"), $("#email-alerte").parent().removeClass("error").removeClass("success"), $(".message-erreur-alerte").html(inscriptionOK))
+            },
+            error: function(e, n, t) {
+                console.log(e, n, t)
+            },
+            complete: function() {
+                n.button("reset"), $(".message-erreur-alerte").show("slow").delay(1500).hide("slow")
+            }
+        });
+    });
+    $$END$$
+
+    $$IF=:EXPERT:IDT$$
+    $(window).load(function() {
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1);
+            $("#"+hash).addClass("in");
+            $("#"+hash).closest(".accordion-group").find(".accordion-toggle").removeClass("collapsed");
+            $("#"+hash).closest(".accordion-group").find(".absolute").removeClass("plus");
+            $("#"+hash).closest(".accordion-group").find(".opacity-3").removeClass("typoicon-plus");
+            $("#"+hash).closest(".accordion-group").find(".absolute").addClass("minus");
+            $("#"+hash).closest(".accordion-group").find(".opacity-3").addClass("typoicon-minus");
+        }
+    });
+    $$END$$
+
+
+    $('.closebox').click(function(){
+        $.colorbox.close();
+    });
+
+</script>
+
+
+

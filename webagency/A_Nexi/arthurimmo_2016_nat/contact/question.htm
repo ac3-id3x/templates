@@ -1,0 +1,84 @@
+$$INIT:IDT=CONTACTQUESTION$$
+$$INIT:CSS_AGENCE=1$$
+$$A:JS_AGENCE=1$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div class="row-fluid">
+   <div class="span12">
+      <h2 class="typo-action biggest">Vous avez une autre question ?</h2>
+      <hr class="margin-bottom-10">
+   </div>
+</div>
+
+<form method="post" action="/$$REP:0$$" enctype="multipart/form-data">
+   <!--#include virtual="contact/incl_honeypot.htm" -->
+   <input type="hidden" name="u" value="ID3:FORMMAIL" />
+   <input type="hidden" name="page_ok" value="/contact,question_envoi.htm" />
+   <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+   <input type="hidden" name="page_html" value="/contact,question_email.htm" />
+   <input type="hidden" name="cfg_form" value="question" />
+   <input type="hidden" name="cfg_emails" value="question" />
+   <input type="hidden" name="subject" value="$$IF0:FORM:REFERER$$Foire aux questions$$END$$$$IF:FORM:REFERER$$Demande de contact depuis $$FORM:REFERER urldecode$$$$END$$"/>
+   <input type="hidden" name="email_to" value="info@arthurimmo.com, carole@arthurimmo.com"/>
+   <input type="hidden" name="referer" value="$$FORM:REFERER$$">
+
+   <div class="row-fluid">
+      <div class="span3"></div>
+      <div class="span6 margin-top-20">
+         <h3 class="bold uppercase">Votre question</h3><hr>
+         $$IF:ERRE$$
+         <span class="h3-like bold uppercase">$$LG:ERREUR$$</span>
+         <p class="small">$$ERRE$$</p>
+         $$END$$
+         <div class="formanim-grp margin-top-15">
+            <textarea class="formanim-input" id="question-msg" name="question-msg">$$FORM:QUESTION-MSG$$</textarea>
+            <label class="formanim-label">Renseignez votre question*</label>
+         </div>         
+         <h3 class="bold uppercase margin-top-30">$$LG:COORD3 pcase$$</h3><hr>         
+         <div class="control-group margin-0 margin-top-15">
+            <label>Vous êtes :</label>
+            <div class="row-fluid">
+               <div class="span4 radio"><label><input type="radio" name="question-type" value="1" checked="checked"> $$LG:PROPRIETAIRE pcase$$</label></div>
+               <div class="span4 radio"><label><input type="radio" name="question-type" value="2"> $$LG:LOCATAIRE pcase$$</label></div>
+            </div>
+         </div>
+         <div class="control-group margin-0 margin-top-15">
+            <label>$$LG:CIVILITE pcase$$* :</label>
+            <div class="row-fluid">
+               <div class="span4 radio"><label><input type="radio" name="question-civil" value="1" $$IF=:1:FORM:QUESTION-CIVIL$$checked$$END$$> $$LG:MONSIEUR pcase$$</label></div>
+               <div class="span4 radio"><label><input type="radio" name="question-civil" value="2" $$IF=:2:FORM:QUESTION-CIVIL$$checked$$END$$> $$LG:MADAME pcase$$</label></div>              
+            </div>           
+         </div>
+         <div class="formanim-grp margin-top-15">
+            <input type="text" class="formanim-input" id="question-nom" name="question-nom" value="$$FORM:QUESTION-NOM$$">
+            <label class="formanim-label">$$LG:VOTRENOM pcase$$*</label>
+         </div>
+         <div class="formanim-grp margin-top-15">
+            <input type="text" class="formanim-input" id="question-ville" name="question-ville" value="$$FORM:QUESTION-VILLE$$">
+            <label class="formanim-label">$$LG:VILLE pcase$$*</label>
+         </div>
+         <div class="formanim-grp margin-top-15">
+            <input type="tel" class="formanim-input" id="question-tel" name="question-tel" value="$$FORM:QUESTION-TEL$$">
+            <label class="formanim-label">$$LG:TEL pcase$$*</label>
+         </div>
+         <div class="formanim-grp margin-top-15">
+            <input type="email" class="formanim-input" id="question-email" name="email_from" value="$$FORM:EMAIL_FROM$$">
+            <label class="formanim-label">$$LG:EMAIL pcase$$*</label>
+         </div>        
+
+         <p class="smaller italic">* champs obligatoires</p>
+
+         <div class="control-group margin-top-20 pagination-centered">
+            <button type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$">Envoyer votre question</button>
+         </div>
+
+
+      </div>
+   </div>
+
+
+</form>
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
