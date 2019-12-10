@@ -1,0 +1,266 @@
+<script type="text/javascript">
+	
+function IsNumberString(NumStr){
+var regEx=/^[0-9]+$/;
+var ret=false;
+if (regEx.test(NumStr)) ret=true;
+return ret;
+}
+
+function checkNotEmpty( elt ) {
+	var resultat = false;
+	if( elt != null ) {
+		if( elt.value != "" ) {
+			resultat = true;
+		}
+	}
+	return resultat;
+}
+function validate(){
+	var elt_form = document.forms[ "agencemail" ];
+	var errmsg = "";
+	
+	if( elt_form ) {
+		var elt_nom = elt_form["cnom"];
+		var elt_prenom = elt_form["cprenom"];
+		var elt_telephone = elt_form["ctel"];
+		var elt_email = elt_form["from"];
+		var elt_message = elt_form["message"];
+		
+		
+		
+
+		if( ! checkNotEmpty( elt_nom ) ) {
+			errmsg += '$$LG:AI5$$ !\n';
+		}	
+		if( ! checkNotEmpty( elt_prenom ) ) {
+			errmsg += '$$LG:PRENOM$$ !\n';
+		}	
+		if(! checkNotEmpty( elt_telephone )){
+					errmsg += 'entrez un téléphone !\n';
+			}
+		if(checkNotEmpty( elt_telephone ) && ! IsNumberString(elt_telephone.value)){
+					errmsg += 'entrez un téléphone valide !\n';
+				}
+		if( ! checkNotEmpty( elt_email ) ) {
+			errmsg += '$$LG:ENTREZEMAIL$$ !\n';
+		}	else {
+			if( checkNotEmpty( elt_email ) ) {
+				if (!(elt_email.value.split('@')[1] && !elt_email.value.split('@')[2] && elt_email.value.split('@')[1].split('.')[1] && !elt_email.value.split('@')[1].split('.')[2])){
+					errmsg += '$$LG:ENTREZEMAILCORRECT$$ !\n';
+				}
+				
+			}
+		}
+			if(! checkNotEmpty( elt_message )){
+					errmsg += 'entrez un message !\n';
+			}
+		
+		if (errmsg != "") {
+			alert (errmsg);
+			return false;
+		} else {
+			return true; 
+		}
+	}
+}
+</script>
+
+
+<div id="DetailAnnonce">
+	
+	$$IF0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce inexistante =============== -->$$END:REM$$
+	<!--#include virtual="/detail/incl_no_annonce.htm" -->
+	$$END:0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$	
+	
+	
+	$$IF:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce existante =============== -->$$END:REM$$
+	
+	<div id="LiensRetour">
+		<!--#include virtual="/detail/incl_retour_page_precedente.htm" -->
+		<!--#include virtual="/detail/incl_retour_accueil.htm" -->
+		<!--#include virtual="detail/incl_lien_form_contact.htm" -->
+		<div class="majAnn"><!--#include virtual="detail/incl_maj.htm" --></div>
+		<div class="clear"><!-- --></div>	
+	</div><!-- fin #LiensHaut -->
+
+
+
+
+<table id="annonceDetail"> 
+	<tr class="offretop"> 
+		<td valign='top' width="420">
+			<div class="libelle">
+				<h1><!--#include virtual="/detail/incl_type_transaction.htm" --></h1> 
+				<span class="gris"><!--#include virtual="/detail/incl_ville.htm" --></span>
+			</div>
+		</td> 
+		<td align="right" valign='top'>
+			<div class="prix">
+				<!--#include virtual="/detail/incl_refannonce.htm" --><br />
+				<em><!--#include virtual="/detail/incl_prix.htm" --></em>
+			</div>
+		</td> 
+	</tr> 
+	<tr> 
+	<td class="offrePhoto">
+	
+		 <div class="detailannonceimgsm">
+		 	<!--#include virtual="/detail/incl_galerie_sento2.htm" -->	
+		 </div> 
+	
+	
+	</td> 
+	<td width="325" class="contenuannonce">
+		<div class="wrapannonce">
+		
+		<b>Description</b> : 
+		<!--#include virtual="/detail/incl_descriptif.htm" -->
+		</div>
+</td> 
+</tr> 
+</table> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	<div id="Annonce_Wrap">
+
+		
+	
+		
+		<div id="Annonce_Bas">
+			
+			<div id="AgenceContact_Wrap"><!-- -->			
+				
+				<div id="TitreContact"><!-- -->
+					<h6>$$LG:CONTACTERAGENCE pcase$$</h6>
+					
+					<a id="AgenceMentions" href="#" title="">
+						<em>						
+							<span>
+								<!--#include virtual="detail/incl_mentions_legales.htm" -->
+							</span>
+						</em>					
+						$$LG:LIEN:MENTION pcase$$
+					</a>
+					
+					<div class="clear"><!-- --></div>
+					<hr />
+				</div><!-- fin #TitreContact -->
+					
+					
+				<table id="AgenceContact">
+					<tr>
+						<td class="detail_form_col1">
+							<!--#include virtual="/detail/incl_logo_agence.htm" -->
+							<div class="coords_agence">
+								$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+								<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->
+								<!--#include virtual="detail/incl_agence_tel.htm" -->
+								<!--#include virtual="detail/incl_agence_fax.htm" -->
+								<!--#include virtual="detail/incl_agence_email.htm" -->
+								<!--#include virtual="detail/incl_agence_url.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+								<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+							</div><!-- fin .coords_agence -->
+							
+							<div class="clear"><!-- --></div>
+							
+							$$IF:IMMOBW:ANNONCE:IDTYPECTC1$$
+							<!--// contact 1 programme neuf (en general promoteur) //-->
+							<div class="ctc_neuf">
+								<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:IDTYPECTC1$$
+							
+							$$IF:IMMOBW:ANNONCE:IDTYPECTC2$$
+							<!--// contact 2 programme neuf (en general commercialisateur) //-->
+							<div class="ctc_neuf">
+									<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:IDTYPECTC1$$
+							
+							$$IF:IMMOBW:ANNONCE:ADRBUREAU$$
+							<!--// bureau de vente programme neuf //-->
+							<div class="ctc_neuf">
+								<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+							</div><!-- fin .ctc_neuf -->
+							$$END:ADRBUREAU$$
+							
+							<!--#include virtual="/detail/incl_texte_agence.htm" -->						
+							
+						</td>
+						
+						$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+						$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+						
+						$$IF:CHECKMAIL$$
+						<td class="detail_form_col2">
+							
+							$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+							$$REM$$<!-- // si message envoye // -->$$END:REM$$
+							<script type="text/javascript">
+								<!--
+								document.location= '/$$REP:2$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+								//-->
+							</script>
+							$$END:AGENCEMAIL:OK$$						
+							
+							$$IF=:FR:LANGUE$$
+							<h6>Vous souhaitez obtenir des renseignements sur ce bien ?<span>Merci de remplir le formulaire ci dessous :</span></h6>
+							$$END$$
+							$$IF!:FR:LANGUE$$<h6>$$LG:DEMANDINFOS pcase$$</h6>$$END$$
+							
+							$$IF=:1:FORM:CTC$$
+							<!-- // formulaire envoye // -->	
+							<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+							$$END:FORM:CTC$$
+							
+							$$IF!:1:FORM:CTC$$
+							<!-- // formulaire de contact // -->
+							<!--#include virtual="detail/incl_formulaire.htm" -->
+							$$END:FORM:CTC$$
+							
+							$$REM$$<!-- // conditions generales d'utilisation  // -->$$END:REM$$
+							<!--#include virtual="/incl_cgu_formulaire.htm" -->
+							
+						</td>
+						$$END:CHECKMAIL$$
+					</tr>
+				</table><!-- fin #AgenceContact -->			
+			
+			</div><!-- fin #AgenceContact_Wrap-->			
+			
+			
+		</div><!-- fin #Annonce_Bas -->
+		
+	</div><!-- fin #Annonce_Wrap -->
+	
+	<!--#include virtual="detail/incl_retour_haut.htm" -->
+	
+	$$REM$$<!-- fin si annonce existante -->$$END:REM$$
+	$$END:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	
+</div><!-- fin #DetailAnnonce -->
