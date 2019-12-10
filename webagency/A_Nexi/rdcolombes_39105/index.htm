@@ -1,0 +1,80 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<!--#include virtual="header/incl_fichiers.htm"-->
+<!--#include virtual="header/incl_haut.htm" -->
+
+<body style="background: #555;">
+
+$$A:TELEPHONEMASQUE=0$$
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAG$$
+
+<div class="pagination-centered margin-top-10 margin-bottom-20 big bold typo-white">
+	<div class="biggest margin-top-10 margin-bottom-20">CE SITE EST EN TRAVAUX !</div><br>
+	Retrouvez nous prochainement...
+</div>
+
+<div class="container">
+	$$BIF:LISTEAG$$			
+		$$DO$$							
+		<div class="row-fluid">
+			<!-- BLOC AGENCE -->
+			<div class="span12 margin-left-0">
+				<div class="row-fluid">
+					<div class="span12 box-shadow detail-agence-liste hide-agence-$$LITSTEAG:IDPUBLICATION$$">
+						<div class="row-fluid" itemscope itemtype="http://schema.org/RealEstateAgent">
+							<div class="span4 padding-10 pagination-centered hidden-phone">
+								<!--#include virtual="agences/incl_microdonnes_agences.htm" -->
+								<!-- LOGO OR NOT -->
+								<!--#include virtual="agences/incl_liste_agences_logo.htm" -->
+							</div>
+							<div class="span8 margin-top-10">								
+								<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+								<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span> <span class="typo-action big" itemprop="addressLocality">$$LISTEAG:VILLE pcase$$ <span  itemprop="postalCode">$$LISTEAG:CP$$</span></span></div>
+								
+							
+
+									
+									<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+										<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+										<div class="span7">$$LISTEAG:TEL formattel$$</div>
+									</div>
+									
+									$$IF:LISTEAG:EMAIL$$
+									<div class="row-fluid listing-agences-email">
+										<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+										$$IF0:CONTACT_EMAIL_CLICKABLE$$
+											<div class="span7"><span id="email-spam$$LISTEAG:IDPUBLICATION$$">$$LISTEAG:EMAIL$$</span></div>
+										$$END$$
+										$$IF:CONTACT_EMAIL_CLICKABLE$$
+											<div class="span7"><span id="email-spam$$LISTEAG:IDPUBLICATION$$"></span><script type="text/javascript">$(document).ready(function() {emailSpam('$$LISTEAG:EMAIL$$','email-spam$$LISTEAG:IDPUBLICATION$$');});</script></div>
+										$$END$$
+									</div>
+									$$END$$
+									$$IF:LISTEAG:URL$$
+									<div class="row-fluid listing-agences-url">
+										<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+										<div class="span7" itemprop="url"><a href="$$LISTEAG:URL$$"><span itemprop="title">$$LISTEAG:URL$$</span></a></div>
+									</div>
+									$$END$$
+									$$IF!:1:HIDENOMRESPONSABLE$$
+								<div class="row-fluid listing-agences-responsable">
+									<div class="span5 bold">$$IF!:1:MULTIRESPAGENCE$$$$LG:RESPAGENCE pcase$$$$END$$$$IF=:1:MULTIRESPAGENCE$$$$LG:RESPSAGENCE pcase$$$$END$$</div>
+									<div class="span7">$$LISTEAG:RESPAG$$</div>
+								</div>
+								$$END$$
+							</div>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+		<!-- END BLOC AGENCE -->
+		<hr>
+		</div>
+		
+		$$LOOP$$
+	$$BFIN$$
+	</div>
+</body>
+</html>
