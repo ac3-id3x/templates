@@ -1,0 +1,225 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$A:PAGE:TITR=Immobilier Antibes,agence immobiliere Antibes,vente location appartement maison$$
+$$A:PAGE:DESCREF=L'immobilier sur Antibes et sa region avec l'agence immobiliere ORPI Portier Immobilier a Antibes. Annonces immobilieres de location, vente et achat d'appartements, maisons et terrains a Antibes, Juan les Pins, Le Golfe Juan, Vallauris, Cap d'Antibes.$$
+$$A:PAGE:KEYWORDS=ORPI, portier immobilier Antibes Juan les pins $$
+
+
+$$REM$$
+$$IF=:FR:LANGUE$$
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Antibes, agence immobiliere Antibes, vente achat appartement maison Antibes - ORPI PORTIER IMMOBILIER$$
+$$A:PAGE:DESCREF=L'immobilier sur Antibes et sa region avec l'agence immobiliere ORPI Portier Immobilier a Antibes. Annonces immobilieres de location, vente et achat d'appartements, maisons et terrains a Antibes, Juan les Pins, Le Golfe Juan, Vallauris, Cap d'Antibes.$$
+$$A:PAGE:KEYWORDS=immobilier Antibes, agence immobiliere Antibes, annonces immobilieres Antibes, appartement Antibes, maison Antibes, villa Antibes, location maison Antibes, appartement Juan Les Pins, location appartement Antibes,Le Golfe Juan, Vallauris,Cap d antibes, gestion Antibes, immobilier, cte d'azur, maison cap d'antibes, antibes, agence immobilire, achat, vente, location, villa, villas, appartement, appartements, proprit, proprits, sophia antipolis, vacances, mediterrane, juan les pins, alpes maritimes,  $$
+$$END$$
+$$END$$
+
+$$IF!:FR:LANGUE$$
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Antibes, agence immobiliere Antibes, vente achat appartement maison Antibes - ORPI PORTIER IMMOBILIER$$
+$$A:PAGE:DESCREF=L'immobilier sur Antibes et sa region avec l'agence immobiliere ORPI Portier Immobilier a Antibes. Annonces immobilieres de location, vente et achat d'appartements, maisons et terrains a Antibes, Juan les Pins, Le Golfe Juan, Vallauris, Cap d'Antibes.$$
+$$A:PAGE:KEYWORDS=Antibes real estate, property for sale Antibes, Antibes properties, Cap D'Antibes, Property on the French Riviera, Property Antibes, Property Cannes, property south of France, Antibes apartment, Antibes villa, Antibes Vacation Rentals, Antibes Rentals, Vacation Rentals in Antibes, Antibes rental, renting in Antibes, Antibes property for rent, Antibes Rentals, vacation rental in Antibes, Juan les pins real estate, cote d azur real estate, $$
+$$END$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere @@CV:VILLE@@ - L'immobilier a @@CV:VILLE@@ (@@CV:CP@@) - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=L'agence immobiliere a @@CV:VILLE@@, specialiste de l'immobilier a @@CV:VILLE@@ (@@CV:CP@@).$$
+$$A:PAGE:KEYWORDS=Agence immobiliere @@CV:VILLE@@, @@NOM_AGENCE@@$$
+$$END$$
+ 
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site - @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ a @@VILLE_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=Annonces Vente - Rechercher une annonce de vente sur @@VILLE_AGENCE@@ et sa region - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Moteur de recherche d'annonces immobilieres de vente de maisons et appartements sur le secteur de @@VILLE_AGENCE@@ avec l'agence immobiliere @@NOM_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=Vente maison @@VILLE_AGENCE@@, vente appartement @@VILLE_AGENCE@@$$
+$$END$$
+$$END$$
+ 
+ 
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=Annonces Location - Rechercher une annonce de location sur @@VILLE_AGENCE@@ et sa region - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Moteur de recherche d'annonces immobilieres de location de maisons et appartements sur le secteur de @@VILLE_AGENCE@@ avec l'agence immobiliere @@NOM_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=Location maison @@VILLE_AGENCE@@, location appartement @@VILLE_AGENCE@@$$
+$$END$$
+$$END$$
+ 
+
+ 
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=Liste des agences immobilieres @@NOM_AGENCE@@ sur @@CV:VILLE@@ et sa region - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Les agences immobilieres @@NOM_AGENCE@@ sont specialistes de l'immobilier sur le secteur de @@CV:VILLE@@.$$
+$$A:PAGE:KEYWORDS=Agences immobilieres @@CV:VILLE@@$$
+$$END$$
+ 
+$$IF=:LISTANNONCES:PAGE:IDT$$
+$$A:PAGE:TITR=Annonces immobilieres par ville sur le secteur de @@CV:VILLE@@ ((@@CV:CP@@) - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Liste de toutes nos annonces immobilieres classees par ville sur le secteur de @@CV:VILLE@@ et sa region.$$
+$$A:PAGE:KEYWORDS=Annonces immobilieres @@CV:VILLE@@$$
+$$END$$
+ 
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=Annonces immobilieres @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@ - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Nos annonces immobilieres de @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ a @@1_IMMOBW:ANN:QRY:VILLE@@ avec l'agence @@NOM_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=annonces immobili&egrave;res, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@, @@1_IMMOBW:ANN:QRY:VILLE@@, @@1_IMMOBW:ANN:QRY:LIBELLE@@, @@2_IMMOBW:ANN:QRY:LIBELLE@@, @@3_IMMOBW:ANN:QRY:LIBELLE@@, @@4_IMMOBW:ANN:QRY:LIBELLE@@, @@5_IMMOBW:ANN:QRY:LIBELLE@@, @@6_IMMOBW:ANN:QRY:LIBELLE@@, @@7_IMMOBW:ANN:QRY:LIBELLE@@, @@8_IMMOBW:ANN:QRY:LIBELLE@@, @@9_IMMOBW:ANN:QRY:LIBELLE@@$$
+$$END$$
+ 
+$$IF=:DETAILANNONCE:PAGE:IDT$$
+$$A:PAGE:TITR=Annonce @@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:LIBELLE@@ &agrave; @@IMMOBW:ANNONCE:VILLE@@ : @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECES@@ de @@IMMOBW:ANNONCE:SURFACE@@ m² avec @@IMMOBW:ANNONCE:NB_CHAMBRES@@ @@LG:CHAMBRES@@ &agrave; @@IMMOBW:ANNONCE:PRIX@@ euros - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltext 120 htmlencode@@$$
+$$A:PAGE:KEYWORDS=annonce immobiliere, @@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@, @@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:VILLE@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:VILLE@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@,@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:VILLE@@,@@IMMOBW:ANNONCE:LIBELLE@@, @@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECES@@,@@IMMOBW:ANNONCE:NB_CHAMBRES@@ @@LG:CHAMBRES@@$$
+$$END$$
+ 
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=Estimation immobiliere - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Faire estimer son bien immobilier avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+ 
+$$IF=:ESTIMATION:PAGE:IDT$$
+$$A:PAGE:TITR=Estimation immobiliere - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Faire estimer son bien immobilier avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+ 
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=Contact - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Contacter l'agence @@NOM_AGENCE@@.$$
+$$END$$
+ 
+$$IF=:OUT:PAGE:IDT$$
+$$A:PAGE:TITR=Outils - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Outils immobiliers avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+ 
+$$IF=:OUTILS:PAGE:IDT$$
+$$A:PAGE:TITR=Outils - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Outils immobiliers avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+ 
+$$IF=:GESTION:PAGE:IDT$$
+$$A:PAGE:TITR=Gestion - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=Gestion immobiliere avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+
+$$IF=:NEUF:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier neuf - @@NOM_AGENCE@@$$
+$$A:PAGE:DESCREF=L'immobilier neuf sur Antibes et sa region avec l'agence @@NOM_AGENCE@@.$$
+$$END$$
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+$$END$$
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
