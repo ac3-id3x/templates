@@ -1,0 +1,141 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=CTC$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_message_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_message_ok.htm" />
+	<input type="hidden" name="page_err" value="message.htm" />
+	<input type="hidden" name="cfg_form" value="message$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="message" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	<strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>	
+	<!--Votre message-->
+
+	<br />
+	<!--vos coordonnées--> 
+	<table width="50%" border="0" cellspacing="0" cellpadding="2">
+
+	<tr> 
+		<td width="10%" align="left"><strong>$$LG:AI5$$ :</strong></td>
+		<td width="40%" align="left"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left"><strong>$$LG:PRENOM$$ :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Tél. Fixe :</td>
+		<td align="left"><input class="imputForm" type="text" name="2tel" size="15" value="$$FORM:2TEL$$" maxlength="20" /></td>
+	</tr>	
+	<tr> 
+		<td align="left"><strong>Portable :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:FAX pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></td>
+	</tr>
+	<tr> 
+		<td align="left"><strong>$$LG:AI6$$ :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+		<tr> 
+		<td align="left"><strong>Objet</strong> :</td>
+		<td align="left">
+		<select name="objet">
+			<option value='Demande de renseignement'>Demande de renseignement</option>
+			<option value='Demande d'estimation gratuite'>Demande d'estimation gratuite</option>
+			<option value='Mise en vente de mon bien'>Mise en vente de mon bien</option>
+			<option value='Mise en location de mon bien'>Mise en location de mon bien</option>
+		</select>	
+		</td>
+	</tr>
+	<tr> 
+		<td colspan="2">$$LG:MESSAGE$$ :</td>
+	</tr>
+	<tr>
+		<td colspan="2"><textarea class="imputForm" name="Pmessage" cols="55" rows="7">$$FORM:PMESSAGE$$</textarea>
+			<br />
+			<strong>Champs en gras = obligatoire</strong>
+		</td>
+	</tr>
+	</table>
+	<br />
+	
+	<!--validation--> 
+	<table width="50%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr> 
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table> 
+	</form>
+	</td>
+</tr>
+</table>
+<br />
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$ 

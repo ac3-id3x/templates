@@ -1,0 +1,168 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:ESTIMATION.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="page_ok_estimation.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_ok_estimation.htm" />
+	<input type="hidden" name="page_err" value="estimation.htm" />
+	<input type="hidden" name="cfg_form" value="estimation$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="estimation" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+	$$END$$
+	$$IF:FORM:REMAIL$$
+		<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+	$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<script type="text/javascript">
+		var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+		document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+      </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<input type="hidden" name="Rdesir" value="Vente" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font><br />
+	
+	<table width="60%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="30%" align="left"><strong>$$LG:AI5$$ :</strong></td>
+		<td width="70%" align="left"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left"><strong>$$LG:PRENOM$$ :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:TEL pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2TEL$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left"><strong>Portable :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:FAX pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></td>
+	</tr>
+	<tr>
+		<td align="left"><strong>$$LG:AI6$$ * :</strong></td>
+		<td align="left"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>	
+	<tr>
+		<td align="left">$$LG:ADRESSE$$ :</td>
+		<td align="left"><textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea></td>
+	</tr>
+	<tr>
+		<td><strong>Type : </strong></td>
+		<td>
+			<select name="type">
+				<option value='Studio'>Studio</option>				
+				<option value='Appartement 2 pièces'>Appartement 2 pièces</option>				
+				<option value='Appartement 3 pièces'>Appartement 3 pièces</option>				
+				<option value='Appartement 4 pièces'>Appartement 4 pièces</option>				
+				<option value='Appartement 5 pièces ou plus'>Appartement 5 pièces ou plus</option>				
+				<option value='Pavillon'>Pavillon</option>				
+				<option value='Maison ville'>Maison de ville</option>				
+				<option value='Pkg Box'>Parking ou Box</option>				
+				<option value='Terrain'>Terrain</option>				
+				<option value='Bur ou Com'>Bureau ou commerce</option>				
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Nb de chambres</td>
+		<td><input class="imputForm" type="text" name="nbchambre" size="10" value="$$FORM:NBCHAMBRE$$" /></td>
+	</tr>
+	<tr>
+		<td><strong>$$LG:SURFH$$</strong></td>
+		<td><input class="imputForm" type="text" name="Psurf" size="10" value="$$FORM:PSURF$$" /> m&sup2;</td>
+	</tr>
+	<tr>
+		<td>Vos disponibilités
+ou moyens d'accès</td>
+		<td><textarea class="imputForm" name="dispo" cols="35" rows="3">$$FORM:DISPO$$</textarea></td>
+	</tr>	
+	<tr>
+		<td>Annexes :</td>
+		<td>
+			<input type="checkbox" name="cave" value="Cave" /> Cave
+			<input type="checkbox" name="balcon" value="Balcon" /> Balcon
+			<input type="checkbox" name="terrasse" value="Terrasse" /> Terrasse
+			<input type="checkbox" name="parking" value="Parking" /> Parking
+		</td>
+	</tr>	
+	<tr>
+		<td colspan="2">Informations complémentaires (type d'immeuble, type de chauffage, gardien...) :</td>
+	</tr>
+	<tr>
+		<td colspan="2"><textarea class="imputForm" name="PPrecisions" cols="55" rows="7">$$FORM:PPRECISIONS$$</textarea></td>
+	</tr>	
+	<tr>
+		<td colspan="2" align="right"><br /><input class="boutonEnvoi" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	
+	</table>
+	<br />
+	
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$
