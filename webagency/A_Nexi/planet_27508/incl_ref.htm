@@ -1,0 +1,127 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+<!-- EXPRESSIONS ALT + TITLE --> 
+
+
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$IF=:INDEX:PAGE:IDT$$
+	$$A:PAGE:TITR=Agence immobiliere Audierne, agence immobiliere Plouhinec, annonces immobilieres Pont Croix, immobilier Audierne, immobilier Pont Croix, vente maison Audierne - Agence @@NOM_AGENCE@@ @@VILLE_AGENCE@@ $$
+	$$A:PAGE:DESCREF=L'agence immobiliere Planete Immobilier, situ&eacute;e &agrave; Pont Croix, vous presente ses annonces immobilieres de vente d'appartements et de maisons &agrave; Pont Croix, Esquibien et Plouhinec Audierne...$$
+	$$A:PAGE:KEYWORDSAgence immobiliere Audierne, agence immobiliere Plouhinec, annonces immobilieres Pont Croix, immobilier Audierne, immobilier Pont Croix, vente maison Audierne$$
+$$END$$
+
+$$IF=:ESTIMATION.HTM:REP:0$$
+	$$A:UPLINE=Estimation de votre bien immobilier a Pont Croix, Esquibien, Plouhinec, Audierne$$
+	$$A:PAGE:TITR=Estimation immobilieres Pont Croix, estimation d'appartements et de maisons sur Pont Croix, Esquibien, Plouhinec, Audierne$$
+	$$A:PAGE:DESCREF=Estimation de votre appartement ou de votre maison sur Pont Croix, Esquibien, Plouhinec, Audierne avec Planete Immobilier$$
+	$$A:PAGE:KEYWORDS=Estimation immobiliere Pont Croix, Estimation immobiliere Audierne, Estimation immobiliere appartements Audierne, Estimation immobiliere maison esquibien, Estimation immobiliere maison plouhinec$$
+$$END$$
+
+$$IF=:MESSAGE.HTM:REP:0$$
+	$$A:UPLINE=Agence immobiliere a Pont Croix : Planete immobilier$$
+	$$A:PAGE:TITR=Immobilier Pont Croix : Agence immobiliere a Pont Croix : Planete immobilier$$
+	$$A:PAGE:DESCREF=Agence immobiliere Pont Croix, Esquibien, Plouhinec, Audierne avec Planete Immobilier$$
+	$$A:PAGE:KEYWORDS=Agence immobiliere Pont Croix, Agence immobiliere Audierne, Agence immobiliere Audierne, Agence immobiliere esquibien, Agence immobiliere plouhinec$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+	$$A:UPLINE=<a href="@@URLBASE@@/immobilier-pont-croix.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Pont Croix">@@LG:IMMOBILIER pcase@@ Pont Croix</a> - <a href="@@URLBASE@@/agence-immobiliere.htm?idp=@@IDPUB_AGENCE@@&amp;lang=@@LANGUE@@" title="@@LG:AGENCEIMMOBILIERE pcase@@ Pont Croix">@@LG:AGENCEIMMOBILIERE pcase@@ Pont Croix</a> - <a href="@@URLBASE@@/agence-immobiliere-pont-croix.htm?idp=@@IDPUB_AGENCE@@&amp;lang=@@LANGUE@@" title="Planete Immobilier @@VILLE ncase@@">Planete Immobilier @@VILLE ncase@@</a>$$
+	$$A:PAGE:TITR=Agence immobili&egrave;re Planete Immobilier @@VILLE_AGENCE@@ : Agence @@VILLE_AGENCE@@ (@@CV:CP@@)$$
+	$$A:PAGE:DESCREF=Agence immobili&egrave;re @@VILLE_AGENCE@@ : L' agence immobili&egrave;re @@CV:VILLE_AGENCE@@ &agrave; @@CV:VILLE_AGENCE@@, sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous propose de nombreuses annonces immobili&egrave;res sur @@VILLE_AGENCE@@$$
+	$$A:PAGE:KEYWORDS=Agence immobili&egrave;re @@VILLE_AGENCE@@, immobilier @@VILLE_AGENCE@@, Planete Immobilier$$
+$$END$$
+
+$$IF=:ANNONCES-IMMOBILIERES.HTM:REP:0$$
+	$$A:UPLINE=<a href="@@URLBASE@@/immobilier-pont-croix.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Pont Croix">@@LG:IMMOBILIER pcase@@ Pont Croix</a> - <a href="@@URLBASE@@/immobilier-Esquibien.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Esquibien">@@LG:IMMOBILIER pcase@@ Esquibien</a> - <a href="@@URLBASE@@/immobilier-Plouhinec.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Plouhinec">@@LG:IMMOBILIER pcase@@ Plouhinec</a> - <a href="@@URLBASE@@/immobilier-Audierne.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Audierne">@@LG:IMMOBILIER pcase@@ Audierne</a>$$
+	$$A:PAGE:TITR=Annonces immobilieres Pont Croix, vente d'appartements et de maisons sur Pont Croix, Esquibien, Plouhinec, Audierne$$
+	$$A:PAGE:DESCREF=d&eacute;couvrez toutes nos annonces immobilieres de vente d'appartements et de maisons sur Pont Croix, Esquibien, Plouhinec, Audierne avec Planete Immobilier, agence immobiliere situ&eacute;e &agrave; Pont Croix.$$
+	$$A:PAGE:KEYWORDS=immobilier Pont Croix, agences immobilieres Pont Croix, agence immobiliere Pont Croix, annonces immobilieres Pont Croix, Pont Croix, vente maison Audierne, vente appartements Audierne, vente maison esquibien, vente maison plouhinec$$
+$$END$$
+
+$$IF=:PUDIMMOBILIER:PAGE:IDT$$
+	$$A:UPLINE=Immobilier @@FORM:CI codeinsee2ville field 1@@, Annonces immobilieres @@FORM:CI codeinsee2ville field 1@@, vente maison @@FORM:CI codeinsee2ville field 1@@ - Planete Immobilier$$
+	$$A:PAGE:TITR=Immobilier @@FORM:CI codeinsee2ville field 1@@, Annonces immobilieres @@FORM:CI codeinsee2ville field 1@@, vente maison @@FORM:CI codeinsee2ville field 1@@ - Planete Immobilier$$
+	$$A:PAGE:DESCREF=Achat Immobilier @@FORM:CI codeinsee2ville field 1@@ : D&eacute;couvrez nos services et toutes nos derni&egrave;res annonces immobili&egrave;res &agrave; de vente maison @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:PAGE:KEYWORDS=Immobilier @@FORM:CI codeinsee2ville field 1@@, immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+		$$A:UPLINE=<a href="@@URLBASE@@/vente-appartement-pont-croix.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Pont Croix">Vente appartement Pont Croix</a> - <a href="@@URLBASE@@/vente-appartement-audierne.htm?lang=@@LANGUE@@" title="Vente appartement audierne">Vente appartement audierne</a> - <a href="@@URLBASE@@/vente-appartement-esquibien.htm?lang=@@LANGUE@@" title="Vente appartement esquibien">Vente appartement esquibien</a> - <a href="@@URLBASE@@/recherche,basic.htm?lang=@@LANGUE@@&amp;idtt=2&amp;idtypebien=1&amp;ci=290197" title="Vente appartement plouhinec">Vente appartement plouhinec</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Planete Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res d'appartements &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente d'appartement sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+		$$A:UPLINE=<a href="@@URLBASE@@/vente-maison-pont-croix.htm?lang=@@LANGUE@@" title="Vente maison Pont Croix">Vente maison Pont Croix</a> - <a href="@@URLBASE@@/vente-maison-audierne.htm?lang=@@LANGUE@@" title="Vente appartement audierne">Vente maison audierne</a> - <a href="@@URLBASE@@/vente-maison-esquibien.htm?lang=@@LANGUE@@" title="Vente maison esquibien">Vente maison esquibien</a> - <a href="@@URLBASE@@/recherche,basic.htm?lang=@@LANGUE@@&amp;idtt=2&amp;idtypebien=2&amp;ci=290197" title="Vente maison plouhinec">Vente maison plouhinec</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Planete Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res d'appartements &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente de maison sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+
+$$IF=:EN:LANGUE$$
+	$$A:PAGE:TITR=Real Estate Pont Croix, Sale, Rental, villa, apartments, Luxury properties Pont Croix, Audierne, Plouhinec - Planete Immobilier $$
+	$$A:PAGE:DESCREF=Planete Immobilier 7 bld Général de Gaulle 29790 Pont Croix : sales all type of property in Pont Croix : apartement, house, villa...$$
+	$$A:PAGE:KEYWORDS=Real estate Pont Croix, apartement, house$$
+$$END$$
