@@ -1,0 +1,181 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+$$REM$$<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+$$REM$$<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  $$END:REM$$
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+$$REM$$<!-- Définition du NOM de l'agence à afficher sur le site -->$$END:REM$$
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+$$REM$$<!-- Définition de l'adresse à afficher sur le site  -->$$END:REM$$
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+$$REM$$<!-- Définition de la ville à afficher sur le site  -->$$END:REM$$
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+$$REM$$<!-- Définition du CP à afficher sur le site  -->$$END:REM$$
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+$$REM$$<!-- Définition du DEPARTEMENT à afficher sur le site  -->$$END:REM$$
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+$$REM$$<!-- Définition du tel à afficher sur le site  -->$$END:REM$$
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+$$REM$$<!-- Définition du fax à afficher sur le site  -->$$END:REM$$
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+$$REM$$<!-- TITRE DESCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> $$END:REM$$
+
+$$SET:PAGE:TITR=Immobilier Rugles, agence immobiliere Rugles, vente maison Rugles, Viking Immo Rugles$$
+$$SET:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@ &agrave; @@VILLE_AGENCE@@ : vente de maison sur Rugles et ses environs$$
+$$SET:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@, agence immobili&egrave;re @@VILLE_AGENCE@@ @@NOM_AGENCE@@, vente maison Rugles$$
+
+
+$$REM$$<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> $$END:REM$$
+
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Rugles -  Agence immobili&egrave;re Rugles - vente maison Rugles - Viking Immo Rugles$$
+$$A:PAGE:DESCREF=Decouvrez des annonces immobilieres de vente et location de maisons ou d’appartements sur Rugles avec l’agence immobiliere Agence Viking Immobilier Rugles. Notre agence vous propose des services de vente et d’estimation immobilier sur Rugles et ses environs.$$
+$$A:PAGE:KEYWORDS=Immobilier Rugles, vente maison Rugles, vente appartement Rugles, Agence Viking Immobilier$$
+$$END$$
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=vente maison Rugles - Immobilier Rugles$$
+$$A:PAGE:DESCREF=Consultez nos annonces de maison en vente sur Rugles et les villes voisines avec Viking Immo Rugles$$
+$$A:PAGE:KEYWORDS=vente maison Rugles$$
+$$END$$
+$$END$$
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=Locations immobilieres Rugles - Immobilier Rugles$$
+$$A:PAGE:DESCREF=Consultez nos annonces de maison en location sur Rugles et les villes voisines avec Viking Immo Rugles$$
+$$A:PAGE:KEYWORDS=location immobiliere Rugles$$
+$$END$$
+$$END$$
+
+
+$$IF=:ESTIMATION.HTM:REP:0$$
+	$$A:UPLINE=Estimation de votre bien immobilier &agrave; Rugles$$
+	$$A:PAGE:TITR=Estimation immobilier Rugles$$
+	$$A:PAGE:DESCREF=Estimation de votre maison ou appartement &agrave; Rugles avec Agence Viking Immobilier Rugles$$
+	$$A:PAGE:KEYWORDS=Estimation immobiliere Agence Viking Immobilier, estimation immobilier Rugles$$
+$$END$$
+
+$$IF=:MESSAGE.HTM:REP:0$$
+	$$A:UPLINE=Agence immobiliere &agrave; Rugles : Agence Viking Immobilier$$
+	$$A:PAGE:TITR=Immobilier Rugles : Agence immobiliere &agrave; Rugles, Agence Viking Immobilier$$
+	$$A:PAGE:DESCREF=Agence immobiliere Viking Immobilier Rugles$$
+	$$A:PAGE:KEYWORDS=Agence immobiliere Viking Immobilier Rugles$$
+$$END$$
+
+$$IF=:NOTREAGENCE:PAGE:IDT$$
+	$$A:UPLINE=<a href="@@URLBASE@@/agence-immobiliere-Rugles.htm?lang=@@LANGUE@@" title="@@LG:AGENCEIMMOBILIERE pcase@@ Rugles">@@LG:AGENCEIMMOBILIERE pcase@@ Rugles</a> - <a href="@@URLBASE@@/annonces-immobilieres-Rugles.htm?idp=@@IDPUB_AGENCE@@&amp;lang=@@LANGUE@@" title="Immobilier &agrave; Rugles avec Agence Viking Immobilier">Immobilier &agrave; Rugles avec Agence Viking Immobilier</a>$$
+	$$A:PAGE:TITR=Agence immobili&egrave;re Viking Immobilier Rugles$$
+	$$A:PAGE:DESCREF=L'agence immobili&egrave;re Viking Immobilier @@VILLE_AGENCE@@, situee 64 rue Aristide Briand, 27250 Rugles (Tel:0232246043) vous propose des biens immobiliers sur Rugles et les villes environnantes$$
+	$$A:PAGE:KEYWORDS=Agence immobili&egrave;re Rugles, agence viking immobilier Rugles$$
+$$END$$
+
+$$IF=:CONTACT,AGENCE.HTM:REP:0$$
+	$$A:UPLINE=<a href="@@URLBASE@@/annonces-immobilieres-Rugles.htm?lang=@@LANGUE@@" title="Annonces immobilieres Rugles">Annonces immobilieres Rugles</a> - <a href="@@URLBASE@@/immobilier-Rugles.htm?lang=@@LANGUE@@" title="@@LG:IMMOBILIER pcase@@ Rugles">@@LG:IMMOBILIER pcase@@ Rugles</a>$$
+	$$A:PAGE:TITR=Annonces immobilieres Rugles, vente de maisons et appartements sur Rugles$$
+	$$A:PAGE:DESCREF=D&eacute;couvrez toutes nos annonces immobilieres de vente de maisons et d'appartements sur Rugles avec Agence Viking Immobilier, agence immobilieres situ&eacute;e &agrave; Rugles.$$
+	$$A:PAGE:KEYWORDS=Agence immobilière Rugles, Annonces immobilières Rugles, Immobilier Rugles, Vente Maison Rugles, Vente Appartement Rugles, Location Rugles, Estimation immobilier Rugles$$
+$$END$$
+
+$$IF=:PUDIMMOBILIER:PAGE:IDT$$
+	$$A:UPLINE=Immobilier @@FORM:CI codeinsee2ville field 1@@, Annonces immobilieres @@FORM:CI codeinsee2ville field 1@@, vente maison @@FORM:CI codeinsee2ville field 1@@ - Agence Viking Immobilier$$
+	$$A:PAGE:TITR=Immobilier @@FORM:CI codeinsee2ville field 1@@, Annonces immobilieres @@FORM:CI codeinsee2ville field 1@@, vente maison @@FORM:CI codeinsee2ville field 1@@ - Agence Viking Immobilier$$
+	$$A:PAGE:DESCREF=Achat Immobilier @@FORM:CI codeinsee2ville field 1@@ : D&eacute;couvrez nos services et toutes nos derni&egrave;res annonces immobili&egrave;res &agrave; de vente maison et d'appartement @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:PAGE:KEYWORDS=Immobilier @@FORM:CI codeinsee2ville field 1@@, immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+		$$A:UPLINE=<a href="@@URLBASE@@/location-appartement-Rugles.htm?lang=@@LANGUE@@" title="Location appartement Rugles">Location appartement Rugles</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence Viking Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res d'appartements &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de location d'appartement sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$A:UPLINE=<a href="@@URLBASE@@/location-Rugles.htm?lang=@@LANGUE@@" title="Location Rugles">Location Rugles</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence Viking Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res de location &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de location sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+	$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$A:UPLINE=<a href="@@URLBASE@@/vente-Rugles.htm?lang=@@LANGUE@@" title="vente Rugles">Vente Rugles</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence Viking Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res de vente &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+	$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+		$$A:UPLINE=<a href="@@URLBASE@@/vente-appartement-Rugles.htm?lang=@@LANGUE@@" title="Vente appartement Rugles">Vente appartement Rugles</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence Viking Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res d'appartements &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente d'appartement sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+		$$A:UPLINE=<a href="@@URLBASE@@/vente-maison-Rugles.htm?lang=@@LANGUE@@" title="Vente maison Rugles">Vente maison Rugles</a> - <a href="@@URLBASE@@/achat-maison-Rugles.htm?lang=@@LANGUE@@" title="Achat maison Rugles">Achat maison Rugles</a>$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence Viking Immobilier$$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res de maisons &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente de maison sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans  la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+
+$$IF=:EN:LANGUE$$
+	$$A:PAGE:TITR=Real Estate Rugles, Rental, house, apartments - Agence Viking Immobilier$$
+	$$A:PAGE:DESCREF=Agence Viking Immobilier : sales all type of houses in Rugles : apartement, house, maison...$$
+	$$A:PAGE:KEYWORDS=Real estate Rugles : apartement, house$$
+$$END$$
+
+$$REM$$<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> $$END:REM$$
