@@ -1,0 +1,75 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+$$IF:FAVICON$$
+<link rel="shortcut icon" type="image/x-icon" href="$$FAVICON$$" />
+$$END$$
+
+<script type="text/javascript">
+ $(document).ready(function() {
+	
+	$("#MiniInputRef").val("$$LG:MINIRECHREF$$");
+ 
+	$('#Mini_Moteur').submit(function() {
+		if($("#MiniInputRef").val()=="$$LG:MINIRECHREF$$"){
+		 $("#MiniInputRef").val("");
+		}
+		return true;
+	 });   
+	  
+	$('#MiniInputRef').focus(function() {
+		 if($(this).val()=="$$LG:MINIRECHREF$$"){
+		$(this).val("");
+		 }
+	});
+
+	$('#MiniInputRef').blur(function() {
+		 if($(this).val()==""){
+		$(this).val("$$LG:MINIRECHREF$$");
+		 }
+	});
+ });
+ </script>
+
+</head>
+
+<body>
+<div id="Header"></div>
+$$IF=:INDEX.HTM:REP:0$$<div id="wrapper">$$END$$
+	<div id="wrap">
+		<div id="w-head">
+			<div class="logo fleft"><a href="$$LIENACCUEIL$$" title=""><img src="images/logo.gif" alt="" /><br /></a></div>
+			<div class="w-trad fright">
+				<div class="trad">
+					<!--#include virtual="menu/incl_menu_langue.htm" -->
+				</div>
+				<div class="clear"></div>
+				<div id="bloc-moteur">
+					<div class="t-mot">$$LG:VOTRERECHERCHE pcase$$</div>
+					<!--#include virtual="moteur/mini/moteur.htm" -->
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="mn fonts">
+			<ul class="$$LANGUE$$">
+				<!--#include virtual="menu/incl_menu.htm" -->
+			</ul>
+			<div class="clear"></div>
+		</div>
+		$$IF!:INDEX.HTM:REP:0$$<div id="navigue">$$END$$
+		
+		$$IF=:immo,partenaires.htm:REP:0$$
+			$$A:TITRE_PAGE=@@LG:LIEN:PART@@$$
+		$$END$$
+		$$IF=:contact,agence.htm:REP:0$$
+			$$A:TITRE_PAGE=@@LG:LIEN:CTC@@$$
+		$$END$$
+		
+		$$IF:TITRE_PAGE$$<div class="ttl-page fonts">$$TITRE_PAGE$$</div>$$END$$
