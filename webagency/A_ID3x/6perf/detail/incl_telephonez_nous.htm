@@ -1,0 +1,156 @@
+					<div class="h2-like txtcolor2">Contactez-nous par t&eacute;l&eacute;phone</div>
+					$$IF0:ANNDETAIL:IDPUBLICATION_FUSION$$
+						<div class="CoordAgenceTel">
+							<div class="h3-like">
+								$$IF:ANNDETAIL:COOR-CONTACT$$		
+									$$ANNDETAIL:COOR-CONTACT$$
+								$$END$$
+								$$IF0:ANNDETAIL:COOR-CONTACT$$	
+									$$IF:ANNDETAIL:COOR-NOM$$		
+										$$ANNDETAIL:COOR-NOM ncase$$
+									$$END$$
+								$$END$$
+							</div>
+							 $$IF:ANNDETAIL:COOR-ADRESSE$$
+							   <p> - $$ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$$$ANNDETAIL:AGCP$$ $$ANNDETAIL:AGVILLE$$</p>
+							 $$END:ANNDETAIL:COOR-ADRESSE$$					
+						</div>
+					$$END$$
+					$$IF:ANNDETAIL:IDPUBLICATION_FUSION$$
+						<div class="CoordAgenceTel">
+							<div class="h3-like">
+								$$IF:AG:CONTACT$$		
+									$$AG:CONTACT$$
+								$$END$$
+								$$IF0:AG:CONTACT$$	
+									$$IF:AG:NOM$$		
+										$$AG:NOM ncase$$
+									$$END$$
+								$$END$$
+							</div>
+							 $$IF:AG:ADRESSE$$
+							   <p> - $$AG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$$$AG:CP$$ $$AG:VILLE$$</p>
+							 $$END:AG:ADRESSE$$					
+						</div>
+					$$END$$
+					<div class="BlocAgenceTel">
+						<ul>
+							<li>Annonce > 
+								$$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+									<span>$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase$$</span>
+								$$END$$	
+								<span>$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$</span>
+								
+								$$IF:ANNDETAIL:NB_PIECES$$
+									<span>$$ANNDETAIL:NB_PIECES$$</span>
+									$$IF=:1:ANNDETAIL:NB_PIECES$$<span>$$LG:PIECE lcase$$</span>$$END$$
+									$$IF!:0$1:ANNDETAIL:NB_PIECES$$<span>$$LG:PIECES2 lcase$$</span>$$END$$
+								$$END:NB_PIECES$$
+								
+								$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+									$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$<span>$$LG:VIAGERLIBRE2 pcase$$</span>$$END$$
+									$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$<span>$$LG:VIAGEROCCUPE2 pcase$$</span>$$END$$		
+									$$IFNULL:ANNDETAIL:SI_LIBRE$$<span>$$LG:LIEN:VIAGER pcase$$</span>$$END$$
+								$$END$$
+							
+								<span>- $$ANNDETAIL:PRIX formatnumber 0$$</span>
+									$$IF!:1:ANNDETAIL:IDTYPETRANSACTION$$
+									<span>$$ANNDETAIL:PRIX_UNITE$$</span>
+									$$END$$
+										
+									$$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+										$$IF:ANNDETAIL:SI_LOYER_CC$$ 
+											<span>&euro; CC</span>
+										$$END$$ 
+										$$IF0:ANNDETAIL:SI_LOYER_CC$$
+											<span>&euro; HC</span>
+										$$END$$
+									$$END:1:ANNDETAIL:IDTYPETRANSACTION$$
+							</li>
+							<li>Localisation > <span>$$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)</span></li>
+							<li>R&eacute;f&eacute;rence > <span>$$ANNDETAIL:REFANNONCE$$</span></li>
+						</ul>
+						<strong>
+							$$LG:MINITEL pcase$$. :
+							$$IF0:ANNDETAIL:IDPUBLICATION_FUSION$$
+								$$IF:ANNDETAIL:TELEPHONE$$
+									<!-- tél entré dans l'annonce -->
+									$$ANNDETAIL:TELEPHONE formattel$$
+								$$END:ANNDETAIL:TELEPHONE$$
+								
+								$$IF0:ANNDETAIL:TELEPHONE$$
+									$$IF=:9$10$11:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél standard agence (neuf + fond de commerce + cession bail) -->
+										$$IF:AG:TEL$$
+											$$AG:TEL formattel$$
+										$$END:TEL$$
+									$$END:9$10$11:IDTYPETRANSACTION$$
+									
+									$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél spécial vente -->
+										$$IF:AG:TELVEN$$
+											$$AG:TELVEN formattel$$
+										$$END:AG:TELVEN$$
+										
+										$$IF0:AG:TELVEN$$
+											$$AG:TEL formattel$$
+										$$END:0:AG:TELVEN$$
+										
+									$$END:2$5$6$8:IDTYPETRANSACTION$$
+	
+									$$IF=:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél spécial loc -->
+										$$IF:AG:TELLOC$$
+											$$AG:TELLOC formattel$$
+										$$END:AG:TELLOC$$
+										
+										$$IF0:AG:TELLOC$$
+											$$AG:TEL formattel$$
+										$$END:0:AG:TELLOC$$
+										
+									$$END:2$5$6$8:IDTYPETRANSACTION$$			
+									
+								$$END:0:ANNDETAIL:TELEPHONE$$
+							$$END$$
+							$$IF:ANNDETAIL:IDPUBLICATION_FUSION$$
+
+									$$IF=:9$10$11:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél standard agence (neuf + fond de commerce + cession bail) -->
+										$$IF:AG:TEL$$
+											$$AG:TEL formattel$$
+										$$END:TEL$$
+									$$END:9$10$11:IDTYPETRANSACTION$$
+									
+									$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél spécial vente -->
+										$$IF:AG:TELVEN$$
+											$$AG:TELVEN formattel$$
+										$$END:AG:TELVEN$$
+										
+										$$IF0:AG:TELVEN$$
+											$$AG:TEL formattel$$
+										$$END:0:AG:TELVEN$$
+										
+									$$END:2$5$6$8:IDTYPETRANSACTION$$
+	
+									$$IF=:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+										<!-- tél spécial loc -->
+										$$IF:AG:TELLOC$$
+											$$AG:TELLOC formattel$$
+										$$END:AG:TELLOC$$
+										
+										$$IF0:AG:TELLOC$$
+											$$AG:TEL formattel$$
+										$$END:0:AG:TELLOC$$
+										
+									$$END:2$5$6$8:IDTYPETRANSACTION$$			
+							$$END$$
+						</strong>
+					</div>
+					
+					<div class="BlocAgenceTel">
+						<a href="$$URLBASE$$/$$ANNDETAIL:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" class="BtnContactMail bgcolor1">Contactez-nous par mail<span></span></a>
+						<div class="clear"></div>
+					</div>
+					
+					<p class="TelMentions">Les informations communiquées sont destinées à l'Agence immobilière éditrice de ce site. Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression de vos données personnelles (Loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique). Pour les exercer, adressez-vous à l’adresse de l'Editeur.</p>				

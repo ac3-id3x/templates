@@ -1,0 +1,131 @@
+
+
+$$IF=:RESULTATS:IDT$$
+	
+	<div id="RechPagesBas" style="display:none;">
+		$$IF:ANNLISTE:NBRPAGES$$
+		<!--#include absolute="webagency/A_ID3X/6perf/recherche/incl_nb_pages.htm" -->
+		$$END:ANNLISTE:NBRPAGES$$		
+	</div><!-- #RechPagesBas -->
+	
+$$END:RESULTATS:IDT$$
+
+$$IF=:BIENSVENDUS:IDT$$
+	$$IF:VENDU:NBRPAGES$$
+	<div id="RechPagesHaut" >
+		<!--#include absolute="webagency/A_ID3X/6perf/recherche/incl_nb_pages_biensvendus.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+	$$END:VENDU:NBRPAGES$$		
+$$END:BIENSVENDUS:IDT$$		
+
+$$IF0:ANNLISTE:SIPANIER$$
+	$$IF!:BIENSVENDUS:IDT$$
+	<div id="blocAlerteEmail" style="display:none;">
+		<div id="AlerteEmail" style="width:auto;border:none;">
+			<h4>$$LG:ALERTEGRATUITE pcase$$</h4>
+			<h3>$$IF=:FR:LANGUE$$Recevez les annonces correspondant à vos critères$$END$$$$IF!:FR:LANGUE$$$$LG:RECEVEZ pcase$$$$END$$ : <span>$$ANNLISTE:PHRASESTRI lcase$$</span></h3>
+				$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<p style="font-weight:bold;" class="optinCheck">
+						<label style="font-weight:bold; font-size:12px;">$$IF=:FR:LANGUE$$J'accepte de recevoir des informations de la part de $$URLBASE$$$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>	
+					</p>
+				$$END:OPTIN_CONTRAT$$
+			<form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" method="post" id="creerAlerte">
+				<div id="AlerteForm">
+					<input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
+					<input type="hidden" name="phrase" value="$$ANNLISTE:PHRASE$$" />
+					<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+					<input type="hidden" name="page_base" value="http://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry alierr htmlencode$$" />	
+					<input type="hidden" name="page_err" value="alerte,redirect.htm" />	
+					<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+					<input type="hidden" name="srv" value="$$SRV$$" />
+					<input type="hidden" name="lang" value="$$LANGUE$$" />
+					$$IF0:ERRE$$
+					<!-- envoi du mail de confirmation -->		
+					<input type="hidden" name="email_info" value="/alerte,inscription.htm" />					
+					$$END$$						
+				
+					$$IF:FORM:ALIERR$$
+					<div class="erre">
+						<div class="pictoErre"></div>
+						$$FORM:ALIERR$$
+						<div class="clear"></div>
+					</div>
+					$$END:ALIERR$$
+								
+					<p>						
+						$$LG:FORMATRECEPTION pcase$$ :
+						<label><input type="radio" name="si_txt" value="0" checked="checked" /> $$LG:AI9$$ $$IF=:FR:LANGUE$$(couleurs et photos, recommandé)$$END:LANGUE$$$$IF!:FR:LANGUE$$(colors and pictures, recommended)$$END:LANGUE$$</label>
+						<label><input type="radio" name="si_txt" value="1" /> $$LG:AI10$$</label>	
+					</p>
+					<p>		
+						$$IF=:FR:LANGUE$$Envoi des annonces :$$END$$
+						$$IF!:FR:LANGUE$$Reception Frequency:$$END$$
+						<label><input type="radio" name="idFrequenceAlerte" value="1" checked="checked" /> $$LG:AI19 lcase$$</label>
+						<label><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI18 lcase$$</label>					
+					</p>
+					<p>
+						$$LG:VOTRENOM pcase$$ <input type="text" class="miniForm" name="nom" maxlength="30" value="$$IF:FORM:NOM$$$$FORM:NOM$$$$END$$" />
+				  		$$LG:AI6 pcase$$ <input type="text" class="miniForm" name="email" maxlength="50" value="$$IF:FORM:EMAIL$$$$FORM:EMAIL$$$$END$$" />
+				 	 <input type="submit" class="miniBouton" value="$$LG:CREERALERTEMAIL pcase$$" onclick="location.href='/alerte,validation_ok.htm'" />
+					</p>
+				</div><!-- #AlerteForm -->
+			</form>
+			<p class="note">
+				$$LG:AI12$$
+			</p>
+			$$IF=:1:PAGE:OPTIN_CONTRAT$$
+						$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+						$$BIF:MENTIONS$$	
+							$$DO:1:1$$
+									<p style="font-size:9px;margin-bottom:5px;" class="infosLegalesEmail">
+										Les informations communiquées sont destinées à 
+										$$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ 
+										Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression 
+										de vos données personnelles (Loi du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés). 
+										Pour les exercer, adressez-vous à : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ - 
+										$$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$
+									</p>
+							$$LOOP$$
+						$$BFIN:MENTION$$		
+					$$END$$
+			<div style="position:absolute;top:-12px;right:-12px;z-index:100;width:30px;height:30px;"><a href="#" class="closeDOMWindow"><img src="$$~$$images/pictos/croix.png" /></a></div>
+		</div><!-- #AlerteEmail -->
+	</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var $background = $('#AlerteEmail').css('background-color');
+				$('#hautAlerteEmail').click(function(){ 
+				    $.openDOMWindow({ 
+				        loader:1, 
+				        loaderImagePath:'z/webagency/slagence_X_V4/images/moteur/loader.gif', 
+				        loaderHeight:11, 
+				        loaderWidth:43,
+				        height:280,
+				        width:775,
+				        windowPadding:10,
+				        borderSize:3,
+				        windowBGColor:$background,
+				        windowSourceID:'#blocAlerteEmail'
+				    }); 
+				    return false; 
+				}); 
+			});
+		</script> 
+	$$END:BIENSVENDUS:IDT$$
+$$END:ANNLISTE:SIPANIER$$
+
+$$IF0:ANNLISTE:SIPANIER$$
+	<div class="dicoImmo">
+		$$IF:ANNLISTE:NBR$$
+		$$IF=:2$6$8$10:FORM:IDTT$$<p>FAI : $$LG:FAI lcase$$$$IF=:FR:LANGUE$$, prix net, hors frais notariés, d'enregistrement et de publicité foncière$$END:FR:LANGUE$$.</p>$$END$$
+		$$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$
+		$$END:ANNLISTE:NBR$$
+		<p>$$LG:LOI78AGENCE$$ <a href="$$URLBASE$$/legal,mentions.htm?lang=$$LANGUE$$" title="">$$LG:ADR2EDITEUR$$</a>.</p>
+	</div>
+	<div class="clear pushleft"></div>	
+$$END:ANNLISTE:SIPANIER$$
+
+$$IF:ANNLISTE:NBRPAGES$$
+<!--#include absolute="webagency/A_ID3X/6perf/immo/incl_retour_haut.htm" -->	
+$$END:ANNLISTE:NBRPAGES$$

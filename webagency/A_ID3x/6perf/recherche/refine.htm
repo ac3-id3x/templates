@@ -1,0 +1,4460 @@
+$$INIT:IDT=RESULTATS$$
+$$INIT:CSS_RECHERCHE=1$$
+$$INIT:CSS_REFINE=1$$
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_METRO=1$$
+
+$$INIT:PARAMSREFINE=idtypebien,nb_pieces,nb_chambres,bilance,bilanegs,idq,si_mandatexclusif,visuels$$
+$$INIT:ADVANCEDREFINE=si_cave,si_sejour,si_est,si_parkings,si_sud,si_visavis,si_ascenseur,si_boxes,si_piscine,si_gardien,si_meuble$$	
+$$DYN:ID3:NODEBUGPOPUP$$
+
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$
+$$IF0:FORM:LANG$$$$A:LANGUE=fr$$$$END$$
+
+
+$$A:MULTIAGENCES=0$$$$B:IMMOBW:AGENCES:ALIAS:COMPTE_AGENCES:QRY:TRI:::::ALL$$$$BIF:COMPTE_AGENCES$$$$DO$$$$IF+:2:COMPTE_AGENCES:NBR$$$$A:MULTIAGENCES=1$$$$END$$$$LOOP$$$$BFIN$$
+
+$$SET:URLBASE=http://@@REP:RSRV@@$$
+
+$$A:LIENACCUEIL=/index.htm?lang=@@LANGUE@@$$
+
+
+
+
+$$IF0:SELECTIONFRAICHEUR$$
+	$$A:SELECTIONFRAICHEUR=-15$$
+$$END$$
+
+
+$$A:CARTO_ZOOM=15$$
+$$A:CARTO_PICTO=/z/webagency/slagence_X_V2/carto/picto_carto.gif$$
+$$A:CARTO_PICTO_MAISON=/z/webagency/slagence_X_V2/carto/picto_carto_detail.gif$$
+
+
+$$INIT:NBANNVENTES=2$$
+$$INIT:NBANNLOCS=2$$
+$$INIT:NBANNNEUF=2$$
+$$INIT:NBANNVIAGER=2$$
+
+
+$$A:GALERIE_VIGNETTE_CLICK=0$$
+
+
+
+
+$$IF=:RESULTATS:IDT$$$$A:RUBRIQUE=@@LG:RESULTRECH@@$$$$END$$
+
+
+
+
+$$IF=:MAP,RECHERCHE.HTM:REP:0$$$$A:RUBRIQUE=@@LG:RECHERCHEPARCARTE@@$$$$END$$
+
+
+
+
+
+
+
+
+$$IF=:MESSAGE.HTM:REP:0$$$$A:RUBRIQUE=@@LG:NOUSECRIRE@@$$$$END$$
+$$IF=:1:FORM:SI_COUPDECOEUR$$$$A:RUBRIQUE=@@LG:TITRECOEUR@@$$$$END$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$A:LG:URL:RETOUR_FORM=/index.htm$$
+
+$$BIF:COMPTE_AGENCES$$
+
+$$DO:1:1$$
+$$A:AGENCE_IDTYPEPUBLICATION=@@COMPTE_AGENCES:IDTYPEPUBLICATION@@$$
+$$A:AGENCE_NOM=@@COMPTE_AGENCES:NOM@@$$
+$$A:AGENCE_ADRESSE=@@COMPTE_AGENCES:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+$$A:AGENCE_CP=@@COMPTE_AGENCES:CP@@$$
+$$A:AGENCE_VILLE=@@COMPTE_AGENCES:VILLE@@$$
+$$A:AGENCE_TEL=@@COMPTE_AGENCES:TEL formattel@@$$
+$$A:AGENCE_FAX=@@COMPTE_AGENCES:FAX formattel@@$$
+$$A:AGENCE_EMAIL=@@COMPTE_AGENCES:EMAIL@@$$
+$$A:AGENCE_IDPUBLICATION=@@COMPTE_AGENCES:IDPUBLICATION@@$$
+$$A:AGENCE_ID=@@COMPTE_AGENCES:IDAGENCE@@$$
+$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@$$
+	$$END$$
+$$LOOP$$$$BFIN$$
+
+$$A:URL_FACEBOOK=@@PAGE:URL_FACEBOOK@@$$
+$$A:URL_TWITTER=@@PAGE:URL_TWITTER@@$$
+
+
+																	$$A:OPTION_GEOLOC=1$$
+
+
+																	$$A:OPTION_SUIVICLIENT=1$$
+
+$$INIT:HAUTRECHERCHEV2=1$$
+
+
+													$$A:OPTION_INTERNATIONAL=1$$
+																$$A:FLAG_FR=1$$
+																$$A:FLAG_EN=1$$
+																$$A:FLAG_ES=0$$
+																$$A:FLAG_DE=0$$
+																$$A:FLAG_IT=0$$
+																$$A:FLAG_NL=0$$
+																$$A:FLAG_PT=0$$
+																$$A:FLAG_RU=0$$
+																$$A:FLAG_CN=0$$
+
+
+ 																	$$A:FAVICON=@@_@@images/favicon.ico$$
+ 															$$A:PA_LOGO_HEADER=@@_@@images/logo.png$$
+ 										$$A:VISUEL_ACCUEIL=@@_@@images/visuel.jpg$$
+			$$A:PHOTO_AG_PUD=1$$
+
+
+ 						$$A:MINI_RESTRICTION=1$$
+ 														$$A:MINI_LIBELLE=Rechercher$$
+ 															$$A:MINI_NBVISIBLES=0$$
+ 					$$A:MINI_IDTTUNIQUE=0$$
+ 					$$A:MINI_IDTTDEFAUT=2$$
+ 								$$A:MINI_TRANSACTION=1$$
+ 												$$A:MINI_BIENS=1$$
+ 													$$A:MINI_BUDGET=1$$
+ 												$$A:MINI_BUDGET_SLIDER=0$$
+ 												$$A:MINI_SURFACE=1$$
+ 												$$A:MINI_SURFACE_SLIDER=0$$
+ 													$$A:MINI_REGION=0$$
+ 											$$A:MINI_DEP=0$$
+ 													$$A:MINI_VILLE=0$$
+ 												$$A:MINI_QUARTIER=0$$
+ 											$$A:MINI_RESULTATS=0$$
+ 											$$A:MINI_BUDGETTRANCHE=1$$
+ 										$$A:MINI_SURFTRANCHE=1$$
+ 											$$A:MINI_BOUTON_IMAGE=0$$
+ 											$$A:MINI_RAYONCHECK=1$$
+ 											$$A:MINI_RAYONLISTE=0$$
+ 												$$A:MINI_VILLES_CP=0$$
+ 						$$A:AUTOSUGGEST=1$$
+ 											$$A:MINI_IDTTCHECK=1$$
+ 											$$A:MINI_BIENCHECK=0$$
+ 												$$A:MINI_REF=1$$
+ 										$$A:MINI_PIECES=1$$
+ 										$$A:MINI_CHAMBRES=1$$
+
+	
+			$$A:MINI_BUDGNBTRANCHE=5$$
+	$$A:MINI_BUDGTRANCHEMIN1=0$$
+																																	$$A:MINI_BUDGTRANCHEMAX1=50000$$
+	$$A:MINI_BUDGTRANCHEMIN2=50001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX2=150000$$
+	$$A:MINI_BUDGTRANCHEMIN3=150001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX3=250000$$ 
+	$$A:MINI_BUDGTRANCHEMIN4=250001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX4=500000$$
+	$$A:MINI_BUDGTRANCHEMIN5=$$
+																																	$$A:MINI_BUDGTRANCHEMAX5=$$
+	$$A:MINI_BUDGTRANCHEMIN6=$$
+																																	$$A:MINI_BUDGTRANCHEMAX6=$$ 
+	$$A:MINI_BUDGTRANCHEMIN7=$$
+																																	$$A:MINI_BUDGTRANCHEMAX7=$$
+	$$A:MINI_BUDGTRANCHEMIN8=$$
+																																	$$A:MINI_BUDGTRANCHEMAX8=$$
+	$$A:MINI_BUDGTRANCHEMIN9=$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX9=$$
+		$$A:MINI_BUDGTRANCHEMAX=500001$$ 
+
+	
+		$$A:MINI_LOYERNBTRANCHE=4$$
+	$$A:MINI_LOYERTRANCHEMIN1=0$$
+																																	$$A:MINI_LOYERTRANCHEMAX1=500$$
+	$$A:MINI_LOYERTRANCHEMIN2=501$$
+																																	$$A:MINI_LOYERTRANCHEMAX2=1000$$
+	$$A:MINI_LOYERTRANCHEMIN3=1001$$ 
+																																	$$A:MINI_LOYERTRANCHEMAX3=1500$$
+	$$A:MINI_LOYERTRANCHEMIN4=$$
+																																	$$A:MINI_LOYERTRANCHEMAX4=$$
+	$$A:MINI_LOYERTRANCHEMIN5=$$
+																																	$$A:MINI_LOYERTRANCHEMAX5=$$
+	$$A:MINI_LOYERTRANCHEMIN6=$$
+																																	$$A:MINI_LOYERTRANCHEMAX6=$$ 
+	$$A:MINI_LOYERTRANCHEMIN7=$$ 
+																																	$$A:MINI_LOYERTRANCHEMAX7=$$
+	$$A:MINI_LOYERTRANCHEMIN8=$$
+																																	$$A:MINI_LOYERTRANCHEMAX8=$$ 
+	$$A:MINI_LOYERTRANCHEMIN9=$$
+																																	$$A:MINI_LOYERTRANCHEMAX9=$$
+		$$A:MINI_LOYERTRANCHEMAX=1501$$ 
+
+	
+						$$A:MINI_SURFNBTRANCHE=7$$	
+	$$A:MINI_SURFTRANCHEMIN1=0$$ 
+																																	$$A:MINI_SURFTRANCHEMAX1=20$$
+	$$A:MINI_SURFTRANCHEMIN2=21$$
+																																	$$A:MINI_SURFTRANCHEMAX2=40$$
+	$$A:MINI_SURFTRANCHEMIN3=41$$
+																																	$$A:MINI_SURFTRANCHEMAX3=60$$ 
+	$$A:MINI_SURFTRANCHEMIN4=61$$
+																																	$$A:MINI_SURFTRANCHEMAX4=80$$
+	$$A:MINI_SURFTRANCHEMIN5=81$$
+																																	$$A:MINI_SURFTRANCHEMAX5=100$$
+	$$A:MINI_SURFTRANCHEMIN6=101$$
+																																	$$A:MINI_SURFTRANCHEMAX6=150$$
+	$$A:MINI_SURFTRANCHEMIN7=$$ 
+																																	$$A:MINI_SURFTRANCHEMAX7=$$
+	$$A:MINI_SURFTRANCHEMIN8=$$
+																																	$$A:MINI_SURFTRANCHEMAX8=$$
+	$$A:MINI_SURFTRANCHEMIN9=$$
+																																	$$A:MINI_SURFTRANCHEMAX9=$$
+						$$A:MINI_SURFTRANCHEMAX=151$$
+
+
+													$$A:MINI_RAYONNB=2$$ 
+					$$A:MINI_RAYONLISTE=0$$
+		$$A:MINI_RAYON1=10$$
+		$$A:MINI_RAYON2=20$$
+
+
+				$$A:MOTEUR_PIECES=1$$
+			$$A:MOTEUR_CHAMBRES=1$$
+		$$A:IMMOB_ENTR=1$$
+				$$A:IMMOB_AUTRE=1$$
+			$$A:MOTEUR_VILLES=0$$
+				$$A:MOTEUR_IDTTDEFAUT=1$$
+				$$A:MOTEUR_IDTTUNIQUE=0$$
+
+
+				$$A:TB_SITE_1=1$$
+				$$A:TB_SITE_2=1$$
+				$$A:TB_SITE_3=1$$
+				$$A:TB_SITE_4=1$$
+				$$A:TB_SITE_5=1$$
+				$$A:TB_SITE_6=1$$
+				$$A:TB_SITE_7=1$$
+				$$A:TB_SITE_8=1$$
+				$$A:TB_SITE_9=1$$
+				$$A:TB_SITE_10=1$$
+				$$A:TB_SITE_11=1$$
+				$$A:TB_SITE_12=1$$
+				$$A:TB_SITE_13=1$$
+				$$A:TB_SITE_14=1$$
+				$$A:TB_SITE_15=1$$
+													$$A:MOTEUR_RAYONNB=4$$ 
+					$$A:MOTEUR_RAYONLISTE=0$$
+				$$A:MOTEUR_RAYONCHECK=1$$ 
+		$$A:MOTEUR_RAYON1=5$$
+		$$A:MOTEUR_RAYON2=10$$
+		$$A:MOTEUR_RAYON3=15$$
+		$$A:MOTEUR_RAYON4=20$$
+		$$A:MOTEUR_RAYON5=25$$
+
+
+
+ 								$$INIT:NBAFFICHDEFILE=3$$
+ 											$$INIT:TYPEANN=photo=1$$
+ 											$$INIT:DEFILE=0$$				 
+ 						$$INIT:MAXCC=3$$				 
+ 						$$INIT:FRAICHEUR=30$$		
+ 									$$INIT:SELECTIONFRAICHEUR=-30$$ 
+ 				$$INIT:IDTTCC=2$$
+ 			$$A:SELECTION_INDEX_NO_PICTO=$$		 
+ 				$$A:SELECTION_INDEX_NO_PICTO_NOUVEAU=$$		 
+          $$A:PICTO_COEUR=$$		
+
+          $$INIT:JS_FIX_DETAIL=1$$
+
+
+<!DOCTYPE html PUBLIC "
+<!--[if lt IE 7 ]><html  class="ie ie6" xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 9]><html class="ie ie9" xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$"><![endif]-->
+<!--[if gte IE 9]><!--><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$"> <!--<![endif]--><head>
+
+
+
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+
+
+
+
+
+$$IF0:MULTIAGENCES$$
+	
+	$$A:TITLE=@@REP:SRV@@ : @@LG:AGENCEIMMOBILIERE lcase@@$$
+	$$A:DESCRIPTION=Retrouvez nos annonces sur @@REP:SRV@@.$$
+	$$A:KEYWORDS=@@REP:SRV@@, @@LG:AGENCEIMMOBILIERE lcase@@$$
+$$END$$
+
+
+
+
+
+
+
+			$$A:LIEN_PORTEFEUILLE_REF=@@URLBASE@@/immobilier,annonces.htm?lang=@@LANGUE@@$$$$END:WAGREF_IDDOSSIER_SITE$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+
+
+
+$$IF0:MULTIAGENCES$$
+
+
+														$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@ @@AGENCE_NOM@@$$
+
+
+									$$A:TITLE_MENU_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@AGENCE_NOM@@$$
+									$$A:TITLE_RESULTATS_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@AGENCE_NOM@@$$
+							$$A:TITLE_MENU_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@AGENCE_NOM@@$$
+								$$A:TITLE_RESULTATS_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_RESULTATS_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_MENU_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@AGENCE_NOM@@$$
+								    $$A:TITLE_RESULTATS_NEUF=@@LG:IMMONEUF pcase@@ @@AGENCE_NOM@@$$
+								  $$A:TITLE_MENU_NEUF=@@LG:IMMONEUF pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCTEMP=@@LG:LOCTEMP pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCTEMP=@@LG:LOCTEMP pcase@@ @@AGENCE_NOM@@$$
+	$$A:TITLE_MENU_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@AGENCE_NOM@@$$
+		$$A:TITLE_RESULTATS_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_RESULTATS_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_MENU_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@AGENCE_NOM@@$$
+
+
+												$$A:TITLE_MENU_AGENCE=@@LG:AGENCEIMMOBILIERE pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@$$
+														$$A:TITLE_MENU_GESTION=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_SYNDIC=@@LG:LIEN:SYNDIC pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_PERSO=$$
+													$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMVOTREBIEN pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+														$$A:TITLE_MENU_CONTACT=@@LG:CONTACTERAGENCE pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_OUTILS=@@LG:LIEN:OUT pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_MENU_VENDRE=@@LG:VENDREBIEN pcase@@ @@AGENCE_NOM@@$$
+													$$A:TITLE_MENU_EXPERTISE=@@LG:EXPERTIM pcase@@ @@AGENCE_NOM@@$$
+
+$$END$$
+
+
+
+
+
+<!--
+$$B:IMMOBW:WAGREF:ALIAS:EXPR$$
+$$BIF:EXPR$$
+$$DO$$
+	$$EXPR:FR$$
+$$LOOP$$
+	$$A:MOTCLE1=@@1_EXPR:FR@@$$$$MOTCLE1$$
+	$$A:MOTCLE2=@@2_EXPR:FR@@$$$$MOTCLE2$$
+	$$A:MOTCLE3=@@3_EXPR:FR@@$$$$MOTCLE3$$
+$$BFIN$$
+-->
+
+
+
+
+
+
+
+
+			$$A:LIEN_PORTEFEUILLE_REF=@@URLBASE@@/immobilier/$$
+         				$$A:REFLISTEVILLES=1$$
+         				$$A:REFURLREWRITING=1$$
+         								$$A:REFRSS=1$$
+
+
+
+
+
+$$IF0:MULTIAGENCES$$
+	
+	$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@ @@AGENCE_VILLE@@$$
+	$$A:DESCRIPTION=@@LG:IMMOBILIER pcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ @@LG:AVEC lcase@@ l'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@.$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$IF=:RESULTATS$RESULTATSCARTE$ANNONCIMMOS:IDT$$
+
+	$$IF0:ANNLISTE:PAGE$$ 
+				
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+	$$IF+:1:ANNLISTE:PAGE$$ 
+				
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@)$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@ @@LG:SUR lcase@@ @@ANNLISTE:NBRPAGES@@) - @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+$$END:RESULTATS:IDT$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$IF!:FR:LANGUE$$
+$$A:TITLE=Real Estate @@AGENCE_VILLE@@, Sale, Rental, villa, apartments, Luxury properties @@AGENCE_VILLE@@ - Real Estate Agency @@AGENCE_NOM@@ @@AGENCE_VILLE@@$$
+$$A:DESCRIPTION=@@AGENCE_NOM@@ @@AGENCE_VILLE@@ @@AGENCE_ADRESSE@@ Phone @@AGENCE_TEL@@) sales all type of property in  @@AGENCE_VILLE@@ : apartement, house, villa, luxury properties in @@AGENCE_VILLE@@$$
+$$A:KEYWORDS=Real Estate @@AGENCE_VILLE@@, real estate agency @@AGENCE_VILLE@@, luxury properties, apartement, house, Farmhouse, @@AGENCE_VILLE@@, @@AGENCE_NOM@@$$
+$$END$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$IF=:TOPVILLES-RACINE.HTM:REP:URI$$
+	$$IF:MULTIAGENCES$$ 
+			$$A:TITLE=Annonces immobilières : @@REP:RSRV@@$$ 
+			$$A:DESCRIPTION=Consultez tout notre portefeuille immobilier$$ 
+			$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$END$$ 
+	$$IF0:MULTIAGENCES$$ 
+			$$A:TITLE=Annonces immobilières : @@AGENCE_NOM@@$$ 
+			$$A:DESCRIPTION=Consultez tout notre portefeuille avec @@AGENCE_NOM@@$$ 
+			$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$END$$ 
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLE.HTM$TOPVILLES-ARRONDISSEMENT.HTM$TOPVILLES-DEPARTEMENT.HTM$TOPVILLES-REGION.HTM$TOPVILLES-TTTB.HTM$TOPVILLES-TYPETRANSACTION.HTM$TOPVILLES-COUNTRIES.HTM$TOPVILLES-REGIONS.HTM$TOPVILLES-DEPARTEMENTS.HTM$TOPVILLES-COUNTRY.HTM:REP:URI$$
+	
+	$$IF:MULTIAGENCES$$ 
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ - @@REP:RSRV@@$$
+		
+		$$A:DESCRIPTION=Consultez notre portefeuille d'annonces immobilières: @@@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@  @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@$$
+		
+		$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, @@LG:IMMOBILIER pcase@@ @@ID3:URW-GETVALUES:VILLE@@$$
+	$$END$$ 
+	
+	$$IF0:MULTIAGENCES$$ 
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ : @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=Consultez notre portefeuille d'annonces immobilières: @@@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@  @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@$$
+		$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+	$$END$$ 
+$$END$$
+
+
+
+$$IF=:TOPVILLES-QUARTIER.HTM:REP:URI$$
+	$$IF:MULTIAGENCES$$ 
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ quartier @@ID3:URW-GETVALUES:QUARTIER@@: @@REP:RSRV@@$$
+		
+		$$A:DESCRIPTION=Consultez notre portefeuille d'annonces immobilières; @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ quartier @@ID3:URW-GETVALUES:QUARTIER@@$$
+		
+		$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:VILLE@@ quartier @@ID3:URW-GETVALUES:QUARTIER@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, @@LG:IMMOBILIER pcase@@ @@ID3:URW-GETVALUES:VILLE@@$$
+	$$END$$ 
+	$$IF0:MULTIAGENCES$$ 
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ quartier @@ID3:URW-GETVALUES:QUARTIER@@ : @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=Retrouvez toutes nos annonces immobilières à @@AGENCE_VILLE@@ et sa région @@FORM:CI codeinsee2ville field 1@@ avec @@AGENCE_NOM@@$$
+		$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:VILLE@@ quartier @@ID3:URW-GETVALUES:QUARTIER@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+	$$END$$ 
+$$END$$
+
+
+	
+
+	
+
+
+
+	
+$$IF=:482425:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière AB Serti Arc 2000 (73700)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière AB Serti située au coeur de la station Arc 2000 domaine Paradiski.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457721:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Aix Les Bains (73100)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Aix Les Bains. Location, Vacances Gestion et Syndic en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:482435:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Aix Les Bains (73100)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Aix Les Bains. Défiscalisation et Achat/Vente d'appartements, maisons, châlets en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457720:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Albertville (73200)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Albertville au coeur des Alpes. Location Gestion et Syndic en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:482426:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Bourg Saint Maurice (73704)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Bourg Saint Maurice. Syndic, Location vacances et siège du pôle montagne des agences CIS Immobilier en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+
+	
+$$IF=:457726:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Bourg Saint Maurice (73700 )$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Bourg Saint Maurice. Ventes et Défiscalisation en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:514625:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière AB SERTI - Bourg Saint Maurice - ARC 1600 (73700)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Bourg Saint Maurice - ARC 1600. Syndic, Location vacances et siège du pôle montagne des agences CIS Immobilier en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:482426:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Bourg Saint Maurice (73700)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Bourg Saint Maurice. Achat/Vente, Location et Gestion en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457717:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Chambéry (73000)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Chambéry. Découvrez nos services immobiliers : Achat/Vente, Location, Gestion et Syndic en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457724:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier le Bourget du Lac (73370)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située au Bourget du Lac. Entre lac et montagne : Achat/Vente, Location, Gestion et Syndic en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457731:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier les Arcs 1800 (73700)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située dans la station de ski des Arcs 1800 domaine Paradiski.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+
+	
+$$IF=:457728:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Méribel (73550)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS immobilier située au coeur de la station Méribel les 3 Vallées.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457723:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Pont de Beauvoisin (73330) Savoie$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Pont de Beauvoisin. Achat/Vente, Location, Gestion et Syndic en Savoie.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457730:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Tignes (73320)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Tignes domaine Espace Killy.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+
+	
+$$IF=:457729:FORM:IDP$$
+	$$IF=:NOTREAGENCE:IDT$$
+      $$A:TITLE=Agence immobilière CIS Immobilier Vallandry (73210)$$
+      $$A:DESCRIPTION=Présentation de l'agence immobilière CIS Immobilier située à Vallandry - Les Arcs domaine Paradiski.$$
+      $$A:KEYWORDS=$$
+  $$END$$
+$$END$$
+	
+	
+	$$IF=:IMMO,GESTION.HTM:REP:0$$
+			$$A:TITLE=Gestion Immobilière sur Chambéry, Aix-les-Bains, Le Bourget du Lac, Albertville, Pont de Beauvoisin et Bourg Saint Maurice - CIS Immobilier$$
+			$$A:DESCRIPTION=CIS Immobilier gère près de 2 000 biens immobiliers en location sur Chambéry, Aix-les-Bains, Le Bourget du Lac, Albertville, Pont de Beauvoisin et Bourg Saint Maurice. Le service gestion locative de CIS Immobilier appartient au GROUPE HABITER ALPES, groupe immobilier savoyard multi-métiers et est adhérent à la FNAIM, véritable label de qualité chez les professionnels de l’immobilier.$$
+			$$A:KEYWORDS=gestion immobiliere, gestion locative$$
+	$$END$$
+
+	
+	$$IF=:IMMO,SYNDIC.HTM:REP:0$$
+			$$A:TITLE=Syndic de copropriété en Savoie, syndic immobilier Savoie, gestion biens immobilier Savoie - CIS Immobilier$$
+			$$A:DESCRIPTION=CIS Immobilier gère près de 2 000 biens immobiliers en location sur Chambéry, Aix-les-Bains, Le Bourget du Lac, Albertville, Pont de Beauvoisin et Bourg Saint Maurice. Le service gestion locative de CIS Immobilier appartient au GROUPE HABITER ALPES, groupe immobilier savoyard multi-métiers et est adhérent à la FNAIM, véritable label de qualité chez les professionnels de l’immobilier.$$
+			$$A:KEYWORDS=Syndic de copropriété en Savoie, syndic immobilier Savoie, gestion biens immobilier Savoie$$
+	$$END$$
+
+
+
+
+
+$$IF=:IMMO,QUI-SOMMES-NOUS.HTM:REP:0$$
+			$$A:TITLE=CIS Immobilier : réseau d'agences immobilieres implantées en Savoie$$
+			$$A:DESCRIPTION=Les agences immobilières du groupe CIS Immobilier proposent une gamme complète de services immobiliers : transaction, location, location étudiante, gestion, estimation de bien, conseil, syndic de copropriété, location de vacances en cité thermale, en ville ou en montagne...$$
+			$$A:KEYWORDS=agences immobilieres Savoie$$
+$$END$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$IF!:FR:LANGUE$$
+
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+$$IF=:RESULTATS$RESULTATSCARTE$ANNONCIMMOS:IDT$$
+
+	$$IF0:ANNLISTE:PAGE$$ 
+				
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+	$$IF+:1:ANNLISTE:PAGE$$ 
+				
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@)$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@ @@LG:SUR lcase@@ @@ANNLISTE:NBRPAGES@@) - @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+$$END:RESULTATS:IDT$$
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+	
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+	
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+	
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+	
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+	
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+
+$$END$$
+
+
+
+
+$$IF=:1:PN_GOOGLE$$
+	$$IF=:1:ANNLISTE:PAGE$$
+		<link rel="next" href="$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY removeqry ANNLISTEpg$$&ANNLISTEpg=$$ANNLISTE:PAGE exec XX+1$$" />
+	$$END$$
+	$$IF=:ANNLISTE_NBRPAGES:ANNLISTE:PAGE$$
+		<link rel="prev" href="$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY removeqry ANNLISTEpg$$&ANNLISTEpg=$$ANNLISTE:PAGE exec XX-1$$" />
+	$$END$$
+	$$IF!:ANNLISTE_NBRPAGES$ANNLISTE_NBRPAGES exec (XX-1)$1:ANNLISTE:PAGE$$
+		<link rel="prev" href="$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY removeqry ANNLISTEpg$$&ANNLISTEpg=$$ANNLISTE:PAGE exec XX-1$$" />
+		<link rel="next" href="$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY removeqry ANNLISTEpg$$&ANNLISTEpg=$$ANNLISTE:PAGE exec XX+1$$" />
+	$$END$$
+$$END$$$$END:WAGREF_IDDOSSIER_SITE$$
+
+
+
+$$E:ID3:URW-GETINFOS$$
+$$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+	$$IF=:NOTREAGENCE:IDT$$
+		$$IF:FORM:LANG$$
+			<meta name="robots" content="noindex">
+			$$IF=:1:MULTIAGENCES$$
+				<link href="$$CV:URLVIRTUELLE$$" rel="canonical">
+			$$END$$
+			$$IF!:1:MULTIAGENCES$$
+				<link rel="canonical" href="$$AGENCE_URLVIRT$$" />
+			$$END$$
+		$$END$$
+		$$IF0:FORM:LANG$$
+			<meta name="robots" content="index">
+			$$IF=:1:MULTIAGENCES$$
+				<link href="$$CV:URLVIRTUELLE$$" rel="canonical">
+			$$END$$
+			$$IF!:1:MULTIAGENCES$$
+				<link rel="canonical" href="$$AGENCE_URLVIRT$$" />
+			$$END$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF:ID3:URW-GETINFOS:CANONICAL$$
+	$$IF=:DETAILANNONCE:IDT$$
+		<link rel="canonical" href="$$ANNDETAIL:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$" />
+	$$END$$
+$$END$$
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>$$TITLE$$</title>
+<meta name="description" content="$$DESCRIPTION$$" />
+<meta name="keywords" content="$$KEYWORDS$$" />
+
+
+<meta property="og:title" content="$$TITLE$$" />
+<meta property="og:type" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$website$$END$$" />
+<meta property="og:url" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$URLBASE$$/$$REP:PAGE$$$$END$$" />
+<meta property="og:image" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$URLBASE$$$$_$$images/logo.png$$END$$" />
+<meta property="og:site_name" content="$$REP:SRV$$" />
+<meta property="og:description" content="$$DESCRIPTION$$" />
+
+$$IF=:MOTEUR,RECHERCHE.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@FORM:IDTT gettypetransaction pcase@@$$
+$$END$$
+$$IF=:LEGAL,MENTIONS.HTM:REP:0$$	
+	$$A:TITRE_PAGE=@@LG:LIEN:MENTION pcase@@$$
+$$END$$
+$$IF=:PLAN,SITE.HTM:REP:0$$	
+	$$A:TITRE_PAGE=@@LG:LIEN:PLAN pcase@@$$
+$$END$$
+$$IF=:CONTACT,ESTIMATION.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:LIEN:ESTIM pcase@@$$
+$$END$$
+$$IF=:CONTACT,AGENCE.HTM:REP:0$$	
+	$$A:TITRE_PAGE=@@LG:NOUSCTC pcase@@$$
+$$END$$
+$$IF=:AGENCES,LISTE.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:NOSAGENCES pcase@@$$
+$$END$$
+$$IF=:AGENCE,IMMOBILIERE.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:LIEN:AGEN pcase@@$$
+$$END$$
+$$IF=:OUTILS,CALCULETTES.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:LIEN:OUT pcase@@$$
+$$END$$
+$$IF=:IMMO,SYNDIC.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:LIEN:SYNDIC pcase@@$$
+$$END$$
+$$IF=:IMMO,GESTION.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:GESTIONIMMO pcase@@$$
+$$END$$
+$$IF=:IMMO,DIAGNOSTICS.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:DIAGNOSTICS pcase@@$$
+$$END$$
+$$IF=:IMMO,RESEAU-ORPI.HTM$IMMO,RESEAU.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:LERES pcase@@$$
+$$END$$
+$$IF=:IMMO,REGION.HTM:REP:0$$
+	$$A:TITRE_PAGE=@@LG:REGION pcase@@$$
+$$END$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.js"></script>
+
+$$IF!:1:CSS_POPUP$$
+	$$IF!:1:CSS_IMPRIME_SELECTION$$
+		$$IF!:1:CSS_FACEBOOK$$
+			<link rel="stylesheet" href="styles,structure_global.css?lang=$$LANGUE$$"/>
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:1:CSS_AGENCE$$
+<link rel="stylesheet" href="styles,structure_agence.css"/>
+$$END:CSS_AGENCE$$
+
+$$IF=:1:CSS_CARTO$$
+<link rel="stylesheet" href="styles,structure_carto.css"/>
+$$END:CSS_CARTO$$
+
+$$IF=:1:CSS_ANNONCES$$
+<link rel="stylesheet" href="styles,structure_annonces.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_ANNONCES$$
+
+$$IF=:1:CSS_MOTEUR$$
+<link rel="stylesheet" href="styles,structure_moteur.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_MOTEUR$$
+
+$$IF=:1:CSS_RECHERCHE$$
+<link rel="stylesheet" href="styles,structure_recherche.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_RECHERCHE$$
+
+$$IF=:1:CSS_LINEA$$
+<link rel="stylesheet" href="styles,structure_linea.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_LINEA$$
+
+$$IF=:1:CSS_PANORAMA$$
+<link rel="stylesheet" href="styles,structure_panorama.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_PANORAMA$$
+
+$$IF=:1:CSS_CARRE$$
+<link rel="stylesheet" href="styles,structure_carre.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_CARRE$$
+
+$$IF=:1:CSS_FORMULAIRES$$
+<link rel="stylesheet" href="styles,structure_formulaires.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_FORMULAIRES$$
+
+$$IF=:1:CSS_FACEBOOK$$
+<link rel="stylesheet" href="$$~$$styles/structure_page_facebook.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_FACEBOOK$$
+
+$$IF=:1:CSS_BLOG$$
+<link rel="stylesheet" href="styles,structure_blog.css"/>
+$$END:CSS_BLOG$$
+
+$$IF=:1:CSS_OUTILS$$
+<link rel="stylesheet" href="styles,structure_outils.css"/>
+$$END:CSS_OUTILS$$
+
+$$IF=:1:CSS_MENTIONS$$
+<link rel="stylesheet" href="styles,structure_mentions.css"/>
+$$END:CSS_MENTIONS$$
+
+$$IF=:1:CSS_GALERIE$$
+<link rel="stylesheet" href="styles,structure_slideshow.css"/>
+<link rel="stylesheet" href="$$~$$styles/structure_lightbox.css"/>
+$$END:CSS_GALERIE$$
+
+$$IF=:1:CSS_AFFICHAGE_GALERIE$$
+<link rel="stylesheet" href="styles,structure_affichage_galerie.css"/>
+$$END:CSS_AFFICHAGE_GALERIE$$
+
+$$IF=:1:CSS_PUD$$
+<link rel="stylesheet" href="styles,structure_pud.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_PUD$$
+
+$$IF=:1:CSS_SUIVI$$
+<link rel="stylesheet" href="styles,structure_suivi.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_SUIVI$$
+
+$$IF=:1:CSS_POPUP$$
+<link rel="stylesheet" href="styles,structure_popup.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"/>
+$$END:CSS_POPUP$$
+
+$$IF=:1:CSS_ALERTE$$
+<link rel="stylesheet" href="styles,structure_alerte.css"/>
+$$END:CSS_ALERTE$$
+
+$$IF=:1:CSS_TOPVILLE$$
+<link rel="stylesheet" href="styles,structure_topville.css"/>
+$$END:CSS_TOPVILLE$$
+
+$$IF=:1:CSS_SELECT_MENU$$
+<link rel="stylesheet" href="styles,structure_select_menu.css"/>
+$$END:CSS_SELECT_MENU$$
+
+$$IF=:1:CSS_JQUERY_UI$$
+<link rel="stylesheet" href="styles,structure_ui.css"/>
+$$END:CSS_JQUERY_UI$$
+
+$$IF=:1:CSS_SUGGEST$$
+<link rel="stylesheet" href="styles,structure_suggest.css"/>
+$$END:CSS_SUGGEST$$
+
+$$IF=:1:CSS_MENU_LANGUE$$
+<link rel="stylesheet" href="styles,structure_menu_langue.css"/>
+$$END:CSS_MENU_LANGUE$$
+
+$$IF=:1:CSS_RSS$$
+<link rel="stylesheet" href="styles,structure_rss.css"/>
+$$END:CSS_RSS$$
+
+$$IF=:1:CSS_IMPRIME_SELECTION$$
+<link rel="stylesheet" href="styles,structure_selection.css"/>
+$$END:CSS_IMPRIME_SELECTION$$
+
+$$IF=:1:CSS_MODULE_REYKJAVIK$$
+<link rel="stylesheet" href="styles,module,structure_module_reykjavik.css"/>
+$$END:CSS_MODULE_REYKJAVIK$$
+$$IF=:1:CSS_MODULE_BERLIN$$
+<link rel="stylesheet" href="styles,module,structure_module_berlin.css"/>
+$$END:CSS_MODULE_BERLIN$$
+$$IF=:1:CSS_MODULE_OSLO$$
+<link rel="stylesheet" href="styles,module,structure_module_oslo.css?lang=$$LANGUE$$"/>
+$$END:CSS_MODULE_OSLO$$
+$$IF=:1:CSS_MODULE_BERNE$$
+<link rel="stylesheet" href="styles,module,structure_module_berne.css"/>
+$$END:CSS_MODULE_BERNE$$
+$$IF=:1:CSS_MODULE_ROME$$
+<link rel="stylesheet" href="styles,module,structure_module_rome.css"/>
+$$END:CSS_MODULE_ROME$$
+$$IF=:1:CSS_MODULE_SOFIA$$
+<link rel="stylesheet" href="styles,module,structure_module_sofia.css"/>
+$$END:CSS_MODULE_SOFIA$$
+$$IF=:1:CSS_MODULE_STOCKHOLM$$
+<link rel="stylesheet" href="styles,module,structure_module_stockholm.css"/>
+$$END:CSS_MODULE_STOCKHOLM$$
+$$IF=:1:CSS_MODULE_TALLINN$$
+<link rel="stylesheet" href="styles,module,structure_module_tallinn.css"/>
+$$END:CSS_MODULE_TALLINN$$
+
+$$IF=:1:CSS_ENCONSTRUCTION$$
+<link rel="stylesheet" href="$$~$$styles/structure_enconstruction.css"/>
+$$END:CSS_ENCONSTRUCTION$$
+
+$$IF=:1:CSS_RESEAU_POP$$
+<link rel="stylesheet" href="styles,structure_reseau_pop.css"/>
+$$END:CSS_RESEAU_POP$$
+
+$$IF=:1:CSS_PLAN_SITE$$
+<link rel="stylesheet" href="styles,structure_plan_site.css"/>
+$$END:CSS_PLAN_SITE$$
+
+$$IF=:1:CSS_POI$$
+<link rel="stylesheet" href="styles,structure_poi.css"/>
+$$END:CSS_POI$$
+
+$$IF=:1:CSS_PLAN_POLIRIS$$
+<link rel="stylesheet" href="styles,structure_plan_poliris.css"/>
+$$END:CSS_PLAN_POLIRIS$$
+
+$$IF=:1:CSS_ESTIMATION$$
+<link rel="stylesheet" href="styles,structure_estimation.css"/>
+$$END:CSS_ESTIMATION$$
+
+$$IF=:1:CSS_ANNONCES_BIEN$$
+<link rel="stylesheet" href="styles,structure_annonces_biens.css"/>
+$$END:CSS_ANNONCES_BIEN$$
+
+$$IF=:1:CSS_HAUT_RECHERCHE$$
+<link rel="stylesheet" href="styles,structure_haut_recherche.css"/>
+$$END$$
+
+$$IF=:1:CSS_404$$
+<link rel="stylesheet" href="styles,structure_404.css"/>
+$$END$$
+
+$$IF=:1:CSS_FANCY$$
+<link rel="stylesheet" href="$$~$$styles/structure_fancy.css"/>
+$$END$$
+
+$$IF=:1:CSS_COMPARER$$
+<link rel="stylesheet" href="$$~$$styles/structure_comparer.css"/>
+$$END$$
+
+$$IF=:1:CSS_DEMOGRA$$
+<link rel="stylesheet" href="$$~$$styles/structure_demogra.css"/>
+$$END$$
+
+$$IF=:1:CSS_DETAIL_COMPACT$$
+<link rel="stylesheet" href="styles,structure_detail_compact.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$">
+<link rel="stylesheet" href="styles,structure-carto-detail-compact.css">
+<link rel="stylesheet" type="text/css" href="styles,jquery.mCustomScrollbar.css" />
+<link rel="stylesheet" href="styles,structure_slideshow_compact.css">
+<link rel="stylesheet" href="$$~$$styles/structure_lightbox.css">
+<link rel="stylesheet" href="styles,structure_poi_compact.css">
+<link rel="stylesheet" href="styles,structure_formsouhaite.css">
+<link rel="stylesheet" href="styles,structure_fancy.css">
+$$END:CSS_DETAIL_COMPACT$$
+
+$$IF=:1:CSS_AGENCE_COMPACT$$
+<link rel="stylesheet" href="styles,structure_agence_nexi.css?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$">
+<link rel="stylesheet" href="styles,structure_fancy.css">
+$$END:CSS_AGENCE_COMPACT$$
+
+<link rel="stylesheet" href="$$~$$styles/structure_perso.css"/>$$DYN:ID3:DEVICE-REDIRECT:~includeDevices:iphone,android,wphone,bada,symbian:~url:ADD:m.+REP_MSRV+?SLRCHX=1$$
+
+
+$$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script',
+  ga('create', '$$PAGE:GOOGLEKEY_ANALYTICS$$', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+$$END:GOOGLEKEY_ANALYTICS$$<script type="text/javascript">
+			function rotateSlider(){
+				var IdAffiche = $('.anime:visible').attr('id');
+				var NoIdAffiche = parseInt(IdAffiche.replace('fond',''));
+				var total = parseInt($('.anime').length);
+				if((total-NoIdAffiche)<=0){
+        	$('#'+IdAffiche).fadeOut(2000);
+        	$('#fond1').fadeIn(2000);
+        	$('#menu-b a.on').removeClass('on');
+        	$('#menu-b a#lien1').addClass('on');
+				}else{
+					$('#'+IdAffiche).fadeOut(2000);
+        	$('#fond'+(NoIdAffiche+1)).fadeIn(2000);
+        	$('#menu-b a.on').removeClass('on');
+        	$('#menu-b a#lien'+(NoIdAffiche+1)).addClass('on');
+				}
+			}
+    $(document).ready(function() {
+        var fond_ouvert = $('#fond1');
+        $('#fond1').fadeIn();
+        $('#menu-b a').click(function() {
+					$('#menu-b a.on').removeClass('on');
+					$(this).addClass('on');
+		            var fond = $('#fond' + $(this).attr('id').substr(4));
+		            if (fond != fond_ouvert) {
+		                fond_ouvert.fadeOut();
+		                fond.fadeIn();
+		                fond_ouvert = fond;
+		            }
+		     });
+			 
+		if ( $.browser.msie && parseInt($.browser.version, 10) <= 8 ) {
+			$("#link-open").toggle(
+					function(){
+						$("#open").show();
+					},
+					function(){
+						$("#open").hide();
+					}
+				);
+		}
+
+		else {
+				$("#link-open").toggle(
+					function(){
+						$("#open").show("slide",{direction: "up"});
+					},
+					function(){
+						$("#open").hide("slide",{direction: "up"});
+					}
+					);
+		}
+
+			
+			
+			$('#navslider_prev').click(function() {
+				var IdAffiche = $('.anime:visible').attr('id');
+				var NoIdAffiche = parseInt(IdAffiche.replace('fond',''));
+				var total = parseInt($('.anime').length);
+				
+				if(NoIdAffiche<=1){
+        	$('#'+IdAffiche).fadeOut(2000);
+        	$('#fond'+total).fadeIn(2000);
+        	$('#menu-b a.on').removeClass('on');
+        	$('#menu-b a#lien'+total).addClass('on');
+				}else{
+					$('#'+IdAffiche).fadeOut(2000);
+        	$('#fond'+(NoIdAffiche-1)).fadeIn(2000);
+        	$('#menu-b a.on').removeClass('on');
+        	$('#menu-b a#lien'+(NoIdAffiche-1)).addClass('on');
+				}				
+			});			
+			$('#navslider_next').click(function() {
+				rotateSlider();
+			});
+			
+			$$IF=:INDEX.HTM:REP:0$$
+			setInterval( "rotateSlider();",7000 );	 
+			$$END$$
+			
+			
+			
+    });
+</script>
+
+<script language="JavaScript">
+function ChangeUrl(formulaire)
+   {
+   if (formulaire.ListeUrl.selectedIndex != 0)
+      {
+      location.href = formulaire.ListeUrl.options[formulaire.ListeUrl.selectedIndex].value;
+       }
+   }
+</script> 
+<link rel="stylesheet" href="styles,perso.css?lang=$$LANGUE$$&amp;idtt=$$FORM:IDTT$$">
+<link rel="stylesheet" href="$$_$$styles/chosen.css">
+
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="$$_$$styles/jquery.fancybox.css?v=2.1.0" type="text/css" media="screen" />
+<script type="text/javascript" src="$$_$$scripts/jquery.fancybox.pack.js?v=2.1.0"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".fancybox").fancybox();		
+		$(".MiniPhotoRech a").fancybox();		
+		$(".fancybox_alpes").fancybox({
+        padding :0,
+		closeBtn:false,
+			afterLoad: function(){
+				setTimeout( function() {$.fancybox.close(); },5000);
+			},
+			afterClose : function() {
+			window.location.href="http://www.alpes-horizon.com";
+			return;
+			}
+		});	
+		$(".fancybox_alpes_en").fancybox({
+        padding :0,
+		closeBtn:false,
+			afterLoad: function(){
+				setTimeout( function() {$.fancybox.close(); },5000);
+			},
+			afterClose : function() {
+			window.location.href="http://www.alpes-horizon.com/en.html";
+			return;
+			}
+		});	
+	});		
+</script>
+
+
+</head>
+<body class="$$IF=:DETAIL,SENTO.HTM$DETAIL,COMPACT.HTM:REP:0$$full-width $$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$detail-loc$$END$$$$END$$  $$LANGUE$$">
+<div id="Header"></div>
+
+
+$$IF=:INDEX.HTM:REP:0$$
+<div id="bglarge">	
+	<div class="anime" id="fond1">
+        <div class="lfixe">	
+			$$IF=:FR:LANGUE$$			
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:13315905:ALIAS:BANN1$$
+				$$IF0:BANN1:URL$$		
+					<div class="titrebanniere">$$BANN1:DESCRIPTION$$
+						<div class="descbanniere">$$BANN1:TEXTE$$</div>			
+					</div>		
+				$$END$$
+				$$IF:BANN1:URL$$
+					<a href="$$BANN1:URL$$">
+						<div class="titrebanniere">$$BANN1:DESCRIPTION$$
+							<div class="descbanniere">$$BANN1:TEXTE$$</div>			
+						</div>
+					</a>
+				$$END$$
+			$$END$$
+			$$IF!:FR:LANGUE$$			
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:15275760:ALIAS:BANN1_EN$$			
+				$$IF0:BANN1_EN:URL$$		
+				<div class="titrebanniere">$$BANN1_EN:DESCRIPTION$$
+					<div class="descbanniere">$$BANN1_EN:TEXTE$$</div>			
+				</div>
+				$$END$$			
+				$$IF:BANN1_EN:URL$$
+					<a href="$$BANN1_EN:URL$$">
+						<div class="titrebanniere">$$BANN1_EN:DESCRIPTION$$
+							<div class="descbanniere">$$BANN1_EN:TEXTE$$</div>			
+						</div>
+					</a>			
+				$$END$$
+			$$END$$
+		</div>
+    </div>
+    <div class="anime $$IF!:FR:LANGUE$$fond2en$$END$$" id="fond2">
+        <div class="lfixe">
+			$$IF=:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:13315906:ALIAS:BANN2$$				
+				$$IF0:BANN2:URL$$
+				<div class="titrebanniere">$$BANN2:DESCRIPTION$$
+					<div class="descbanniere">$$BANN2:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN2:URL$$
+				<a href="$$BANN2:URL$$">
+					<div class="titrebanniere">$$BANN2:DESCRIPTION$$
+						<div class="descbanniere">$$BANN2:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:15275761:ALIAS:BANN2_EN$$				
+				$$IF0:BANN2_EN:URL$$
+				<div class="titrebanniere">$$BANN2_EN:DESCRIPTION$$
+					<div class="descbanniere">$$BANN2_EN:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN2_EN:URL$$
+				<a href="$$BANN2_EN:URL$$">
+					<div class="titrebanniere">$$BANN2_EN:DESCRIPTION$$
+						<div class="descbanniere">$$BANN2_EN:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$	
+		</div>
+	</div>
+    <div class="anime" id="fond3">
+        <div class="lfixe">
+			$$IF=:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:13315907:ALIAS:BANN3$$
+				$$IF0:BANN3:URL$$
+				<div class="titrebanniere">$$BANN3:DESCRIPTION$$
+					<div class="descbanniere">$$BANN3:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN3:URL$$
+				<a href="$$BANN3:URL$$">
+					<div class="titrebanniere">$$BANN3:DESCRIPTION$$
+						<div class="descbanniere">$$BANN3:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:15275762:ALIAS:BANN3_EN$$
+				$$IF0:BANN3_EN:URL$$
+				<div class="titrebanniere">$$BANN3_EN:DESCRIPTION$$
+					<div class="descbanniere">$$BANN3_EN:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN3_EN:URL$$
+				<a href="$$BANN3_EN:URL$$">
+					<div class="titrebanniere">$$BANN3_EN:DESCRIPTION$$
+						<div class="descbanniere">$$BANN3_EN:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+		</div>
+    </div>
+    <div class="anime" id="fond4">
+		<div class="lfixe">
+			$$IF=:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:13315908:ALIAS:BANN4$$
+				$$IF0:BANN4:URL$$
+				<div class="titrebanniere">$$BANN4:DESCRIPTION$$
+					<div class="descbanniere">$$BANN4:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN4:URL$$
+				<a href="$$BANN4:URL$$">
+					<div class="titrebanniere">$$BANN4:DESCRIPTION$$
+						<div class="descbanniere">$$BANN4:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:15275763:ALIAS:BANN4_EN$$
+				$$IF0:BANN4_EN:URL$$
+				<div class="titrebanniere">$$BANN4_EN:DESCRIPTION$$
+					<div class="descbanniere">$$BANN4_EN:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN4_EN:URL$$
+				<a href="$$BANN4_EN:URL$$">
+					<div class="titrebanniere">$$BANN4_EN:DESCRIPTION$$
+						<div class="descbanniere">$$BANN4_EN:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+		</div>
+    </div>
+    <div class="anime" id="fond5">
+        <div class="lfixe">
+			$$IF=:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:13315909:ALIAS:BANN5$$
+				$$IF0:BANN5:URL$$
+				<div class="titrebanniere">$$BANN5:DESCRIPTION$$
+					<div class="descbanniere">$$BANN5:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN5:URL$$
+				<a href="$$BANN5:URL$$">
+					<div class="titrebanniere">$$BANN5:DESCRIPTION$$
+						<div class="descbanniere">$$BANN5:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				$$E:EASA:TEXTE:~idCategorie:23163:~idTexte:15275764:ALIAS:BANN5_EN$$
+				$$IF0:BANN5_EN:URL$$
+				<div class="titrebanniere">$$BANN5_EN:DESCRIPTION$$
+					<div class="descbanniere">$$BANN5_EN:TEXTE$$</div>			
+				</div>
+				$$END$$
+				$$IF:BANN5_EN:URL$$
+				<a href="$$BANN5_EN:URL$$">
+					<div class="titrebanniere">$$BANN5_EN:DESCRIPTION$$
+						<div class="descbanniere">$$BANN5_EN:TEXTE$$</div>			
+					</div>
+				</a>
+				$$END$$
+			$$END$$
+		</div>
+    </div>
+	<div id="navslider">
+		<div id="navslider_prev"><a href="javascript:void(0);"></a></div>
+		<div id="navslider_next"><a href="javascript:void(0);"></a></div>
+	</div>
+		
+</div><!--div#bglarge-->
+$$END$$
+
+$$IF!:INDEX.HTM:REP:0$$
+	<div class="anime-vnt">
+		<div class="bg-def 
+			$$IF:FORM:IDTT$$idtt$$FORM:IDTT$$$$END$$ 
+			$$IF:FORM:IDVPA$$idvpa$$FORM:IDVPA$$$$END$$
+			$$IF=:IMMO,SYNDIC.HTM:REP:0$$syndic$$END$$
+			$$IF=:IMMO,GESTION.HTM$IMMO,EXTRANET.HTM$SUIVI,CLIENT.HTM:REP:0$$gestion$$END$$
+			$$IF=:DETAIL,SENTO.HTM:REP:0$$detail$$END$$
+			$$IF=:DETAIL,COMPACT.HTM:REP:0$$detail$$END$$
+			$$IF=:STATIONLESARCS:IDT$$bandeau_arcs$$END$$
+			$$IF=:STATIONBOURGSTMAURICE:IDT$$bandeau_bourg$$END$$
+			$$IF=:STATIONMERIBELLES3VALLEES:IDT$$bandeau_meribel$$END$$
+			$$IF=:STATIONTIGNES:IDT$$bandeau_tignes$$END$$
+			$$IF=:STATIONVALLANDRY:IDT$$bandeau_vallandry$$END$$
+			$$IF=:AGENCESAIXLESBAINS:IDT$$bandeau_aix$$END$$
+			$$IF=:AGENCESALBERVILLE:IDT$$bandeau_albertville$$END$$
+			$$IF=:AGENCESBOURGETDULAC:IDT$$bandeau_bourget$$END$$
+			$$IF=:AGENCESCHAMBERY:IDT$$bandeau_chambery$$END$$
+			$$IF=:AGENCESPONTDUBEAUVOISIN:IDT$$bandeau_beauvoisin$$END$$
+		"></div>
+	</div>
+$$END$$
+
+
+
+<div class="bloc-rezo">
+	<ul>
+		<li><a href="$$URL_FACEBOOK$$" title=""><img src="images/icones/icone_fb.gif" alt="" /><br /></a></li>
+		<li><a href="$$URL_TWITTER$$" title=""><img src="images/icones/icone_tw.gif" alt="" /><br /></a></li>
+		<li><a href="#" title=""><img src="images/icones/icone_ggl.gif" alt="" /><br /></a></li>
+		<li><a href="$$URLBASE$$$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$" title=""><img src="images/icones/icone_mail.gif" alt="" /><br /></a></li>
+		<li><a href="$$URLBASE$$/flux,rss.htm" title=""><img src="images/icones/icone_rss.gif" alt="" /><br /></a></li>
+	</ul>
+</div><!--div.bloc-rezo-->
+
+<div id="$$IF=:INDEX.HTM:REP:0$$wrapper$$END$$$$IF!:INDEX.HTM:REP:0$$wrapper-int$$END$$">
+	<div class="wrap">
+		$$IF=:INDEX.HTM:REP:0$$
+		<!--<div id="menu-b">
+			<ul>
+				<li><a href="$$IF!:EN:LANGUE$$$$URLBASE$$/immo,agences-cis-immobilier.htm?lang=$$LANGUE$$$$END$$$$IF=:EN:LANGUE$$javascript:void(0);$$END$$" id="lien1" title="" class="on">CIS IMMOBILIER</a></li>
+				<li><a href="javascript:void(0);" id="lien2" title="">$$LG:LIEN:AGENCES ucase$$</a></li>
+				<li><a href="javascript:void(0);" id="lien3" title="">$$LG:MONTAGNE ucase$$</a></li>
+				<li><a href="javascript:void(0);" id="lien4" title="">$$IF=:EN:LANGUE$$LOCAL TOWNS$$END$$$$IF=:FR:LANGUE$$$$LG:PLAINE ucase$$$$END$$</a></li>
+				<li><a href="javascript:void(0);" id="lien5" title="">$$LG:PRESTIGE2 ucase$$</a></li>
+			</ul>
+		</div>-->
+		$$END$$
+	
+		<div class="logo">
+			$$IF!:RECHERCHE,REFINE.HTM:REP:0$$<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" title=""><img src="images/logo.png" alt="" /><br /></a>$$END$$
+			$$IF=:RECHERCHE,REFINE.HTM:REP:0$$<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" title=""><img src="images/logo.png" alt=""><br /></a>$$END$$
+		</div>
+		
+
+		
+		<div class="link-head">
+			<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" title="">$$LG:ACCUEIL pcase$$</a>  -  
+			<a href="http://blog.cis-immobilier.com" target="_blank" title="">$$LG:BLOG pcase$$</a><!--  -  
+			<a href="$$URLBASE$$/immo,extranet.htm?lang=$$LANGUE$$" title="">$$LG:ESPACECLIENT pcase$$</a>  -  
+			<a href="$$URLBASE$$/suivi,client.htm?lang=$$LANGUE$$" title="">$$IF=:FR:LANGUE$$Suivi propri&eacute;taire$$END$$$$IF!:FR:LANGUE$$Owner area$$END$$</a>-->
+			<a href="$$URLBASE$$/index.htm?lang=fr" class="lang_fr"></a>
+			<a href="$$URLBASE$$/index.htm?lang=en" class="lang_en"></a>
+		</div><!--div.link-head-->
+		
+			<div class="clear"></div>			
+			
+
+			
+		<div class="menu">
+			<ul>
+				<li><a class="fancybox_alpes$$IF!:FR:LANGUE$$_en$$END$$" href="http://www.alpes-horizon.com/$$IF=:EN:LANGUE$$en.html$$END$$" target="_blank" title="">$$LG:LOCATIONVACANCES ucase$$</a></li>
+<li class="transac"><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;tri=d_dt_crea&amp;lang=$$LANGUE$$" title="$$LG:TRANSACTION pcase$$">$$LG:VENTE pcase$$</a>
+<div class="ssmenu">
+	<div class="ssmn-col">
+		<p class="ssmn-col-ttl">En montagne</p>
+		<p class="ssmn-col-ssttl">Nos offres de vente en montagne</p>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457731&lang=$$LANGUE$$" title="Acheter aux Arcs" class="ssmn-btn">Acheter aux Arcs</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457726&lang=$$LANGUE$$" title="Acheter à Bourg St Maurice" class="ssmn-btn">Acheter à Bourg St Maurice</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457728&lang=$$LANGUE$$" title="Acheter à Méribel" class="ssmn-btn">Acheter à Méribel</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457730&lang=$$LANGUE$$" title="Acheter à Tignes" class="ssmn-btn">Acheter à Tignes</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457729&lang=$$LANGUE$$" title="Acheter à Vallandry" class="ssmn-btn">Acheter à Vallandry</a>
+	</div>
+	<img class="ssmn-sep" src="$$_$$images/ssmenu-sep1.png" alt="" />
+	<div class="ssmn-col">
+		<p class="ssmn-col-ttl">En ville</p>
+		<p class="ssmn-col-ssttl">Nos offres de vente en ville</p>	
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457721&lang=$$LANGUE$$" title="Acheter à Aix les Bains" class="ssmn-btn">Acheter à Aix les Bains</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457720&lang=$$LANGUE$$" title="Acheter à Albertville" class="ssmn-btn">Acheter à Albertville</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457724&lang=$$LANGUE$$" title="Acheter au Bourget du Lac" class="ssmn-btn">Acheter au Bourget du Lac</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457717&lang=$$LANGUE$$" title="Acheter à Chambéry" class="ssmn-btn">Acheter à Chambéry</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idpublication=457723&lang=$$LANGUE$$" title="Acheter à Pont de Beauvoisin" class="ssmn-btn">Acheter à Pont de Beauvoisin</a>
+	</div>
+	<img class="ssmn-sep" src="$$_$$images/ssmenu-sep1.png" alt="" />
+	<div class="ssmn-col">
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&si_exclusif=1&lang=$$LANGUE$$" title="$$LG:NOSEXCLUSIVITES pcase$$" class="ssmn-link">$$LG:NOSEXCLUSIVITES pcase$$</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idvpa=439&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Nos annonces prestige$$END$$$$IF!:FR:LANGUE$$Our luxury properties$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Nos annonces prestige$$END$$$$IF!:FR:LANGUE$$Our luxury properties$$END$$</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idvpa=441&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Notre sélection investisseurs$$END$$$$IF!:FR:LANGUE$$Our investors selection$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Notre sélection investisseurs$$END$$$$IF!:FR:LANGUE$$Our investors selection$$END$$</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idvpa=480&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Nos annonces neufs$$END$$$$IF!:FR:LANGUE$$Our new homes listing$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Nos annonces neufs$$END$$$$IF!:FR:LANGUE$$Our new homes listing$$END$$</a>
+		<img class="ssmn-sep2" src="$$_$$images/ssmenu-sep2.png" alt="" />
+		<a href="$$URLBASE$$/contact,estimation.htm?lang=$$LANGUE$$&c=2" title="$$IF=:FR:LANGUE$$Estimation / Mise en vente$$END$$$$IF!:FR:LANGUE$$Estimate / For sale$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Estimation / Mise en vente$$END$$$$IF!:FR:LANGUE$$Estimate / For sale$$END$$</a>
+	</div>
+</div>
+</li>
+<li class="menu-loc"><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;tri=d_dt_crea&amp;lang=$$LANGUE$$" title="$$LG:LOCATION pcase$$" title="">$$LG:LOCATION pcase$$</a>
+<div class="ssmenu">
+	<div class="ssmn-col">
+		<p class="ssmn-col-ttl">En montagne</p>
+		<p class="ssmn-col-ssttl">Nos offres de location annuelle en montagne</p>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457726&lang=$$LANGUE$$" title="Louer à Bourg St Maurice" class="ssmn-btn">Louer à Bourg St Maurice</a>
+		<a class="ssmn-img" href="http://www.alpes-horizon.com/" target="_blank"><img src="$$_$$images/ssmenu-horizon.png" alt="" /></a>
+	</div>
+	<img class="ssmn-sep" src="$$_$$images/ssmenu-sep1.png" alt="" />
+	<div class="ssmn-col">
+		<p class="ssmn-col-ttl">En ville</p>
+		<p class="ssmn-col-ssttl">Nos offres de location annuelle en ville</p>	
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457721&lang=$$LANGUE$$" title="Louer à Aix les Bains" class="ssmn-btn">Louer à Aix les Bains</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457720&lang=$$LANGUE$$" title="Louer à Albertville" class="ssmn-btn">Louer à Albertville</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457724&lang=$$LANGUE$$" title="Louer au Bourget du Lac" class="ssmn-btn">Louer au Bourget du Lac</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457717&lang=$$LANGUE$$" title="Louer à Chambéry" class="ssmn-btn">Louer à Chambéry</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idpublication=457723&lang=$$LANGUE$$" title="Louer à Pont de Beauvoisin" class="ssmn-btn">Louer à Pont de Beauvoisin</a>
+	</div>
+	<img class="ssmn-sep" src="$$_$$images/ssmenu-sep1.png" alt="" />
+	<div class="ssmn-col">
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idvpa=437&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Nos annonces spéciales étudiants$$END$$$$IF!:FR:LANGUE$$Our students listing$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Nos annonces spéciales étudiants$$END$$$$IF!:FR:LANGUE$$Our students listing$$END$$</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idvpa=446&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Nos locations neuves$$END$$$$IF!:FR:LANGUE$$Our new homes listing$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Nos locations neuves$$END$$$$IF!:FR:LANGUE$$Our new homes listing$$END$$</a>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idvpa=479&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Nos logements conventionnés$$END$$$$IF!:FR:LANGUE$$Our contracted housing$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Nos logements conventionnés$$END$$$$IF!:FR:LANGUE$$Our contracted housing$$END$$</a>
+		<img class="ssmn-sep2" src="$$_$$images/ssmenu-sep2.png" alt="" />
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&tri=d_dt_crea&idvpa=481&lang=$$LANGUE$$" title="$$IF=:FR:LANGUE$$Disponibilités immédiates$$END$$$$IF!:FR:LANGUE$$Immediate availability$$END$$" class="ssmn-link">$$IF=:FR:LANGUE$$Disponibilités immédiates$$END$$$$IF!:FR:LANGUE$$Immediate availability$$END$$</a>
+	</div>
+</div>
+</li>
+<li class="menu-gestion"><a href="$$URLBASE$$/immo,gestion.htm?lang=$$LANGUE$$" title="">$$LG:GESTION ucase$$</a></li>
+<li><a href="$$URLBASE$$/immo,syndic.htm?lang=$$LANGUE$$" title="">$$LG:LIEN:SYNDIC ucase$$</a></li>
+<li><a href="$$URLBASE$$/agences,liste.htm?lang=$$LANGUE$$&amp;tri=ville" title="">$$LG:LIEN:AGENCES ucase$$</a></li>
+<li class="menu-client">
+	<a href="/immo,espace-client.htm" title="$$LG:ESPACECLIENT pcase$$" title="">$$LG:ESPACECLIENT pcase$$</a>
+	<div class="ssmenu">
+		<div class="ssmn-col ssmn-col-lg">	
+			<p class="ssmn-col-ttl typo-vente">Vente</p>
+			<p class="ssmn-col-ssttl">Suivez la vente de votre bien,<br />étape par étape</p>
+			<a href="/suivi,client.htm" title="Accédez à votre compte" class="ssmn-btn ssmn-btn-vente">Accédez à votre compte</a><br />
+			<p class="ssmn-col-ttl typo-loc">Location à l'année</p>
+			<p class="ssmn-col-ssttl">Payez votre loyer en ligne<br />Suivez la location de votre bien, étape par étape<br>(prochainement disponible)</p>
+			<a href="/immo,extranet.htm" title="Accédez à votre compte" class="ssmn-btn ssmn-btn-location">Accédez à votre compte</a>		
+		</div>
+		<img class="ssmn-sep" src="$$_$$images/ssmenu-sep1.png" alt="" />
+		<div class="ssmn-col ssmn-col-lg">	
+			<p class="ssmn-col-ttl typo-syndic">Syndic</p>
+			<p class="ssmn-col-ssttl">Consultez le suivi de votre copropriété.<br />Payez vos charges en ligne</p>
+			<a href="/immo,extranet.htm" title="Accédez à votre compte" class="ssmn-btn  ssmn-btn-syndic">Accédez à votre compte</a><br />
+			<p class="ssmn-col-ttl typo-vac">Location vacances & cures</p>
+			<p class="ssmn-col-ssttl">Consultez et gérez votre planning de réservation<br />Vers le site www.alpes-horizon.com</p>
+			<a href="http://www.alpes-horizon.com/fr/espace-proprietaires.html " target="_blank" title="Accédez à votre compte" class="ssmn-btn ssmn-btn-vacances">Accédez à votre compte</a>
+		</div>	
+	</div>
+</li>
+
+
+<!--<li><a href="$$URLBASE$$/immo,qui-sommes-nous.htm?lang=$$LANGUE$$" title="">$$LG:LIEN:QSN pcase$$</a></li> -->
+<li class="menu-fnaim"><img src="$$_$$images/fnaim.png" /></li>
+</ul>
+		</div><!--div.menu-->
+	</div><!--div.wrap-->
+	<!--<div id="bg-g">
+		&nbsp;
+	</div>-->
+
+	
+	<div id="main">
+		<div id="$$IF=:INDEX.HTM:REP:0$$left$$END$$$$IF!:INDEX.HTM:REP:0$$left-int$$END$$" class="fleft">
+			$$IF=:RESULTATS:IDT$$<div class="layer" style="display:none;"></span><img src="/z/webagency/slagence_X_V4/images/moteur/loader.gif" /><br />$$LG:VEUILLEZPATIENTER$$</span></div>$$END$$
+			<div id="$$IF=:INDEX.HTM:REP:0$$bg-mot$$END$$$$IF!:INDEX.HTM:REP:0$$bg-mot-int$$END$$" $$IF=:RECHERCHE,REFINE.HTM:REP:0$$class="pad-search"$$END$$>
+			
+				$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+				$$IF=:2:FORM:IDTT$$
+				<!-- SI PRESTIGE -->
+				$$IF=:439:FORM:IDVPA$$
+					<div class="bg-prestige-vnt">
+						<div class="link-prest-vnt">
+							<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=439&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+								$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$ offers$$END$$
+							</a>
+						</div>
+					</div>
+				$$END$$
+				<!-- FIN SI PRESTIGE -->
+				<!-- SI INVEST -->
+				$$IF=:441:FORM:IDVPA$$
+					<div class="bg-img-invest-vnt" style="margin-top:0px;">
+					<div class="link-invest-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=441&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:LASELECTION ucase$$</font><br />$$LG:INVESTISSEURS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>The investors</font><br />selection$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI INVEST -->
+				$$END$$
+				<!-- SI NEUF -->
+				$$IF=:9:FORM:IDTT$$
+					<div class="bg-img-renover-vnt">
+					<div class="link-renover-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=480&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI NEUF -->
+				
+				
+				
+				$$IF=:1:FORM:IDTT$$
+				
+				<!-- SI LOG CONVEN -->
+				$$IF=:479:FORM:IDVPA$$
+				<div class="bg-img-logconvention">
+					<div class="link-logconvention">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOGEMENTS ucase$$</font><br />$$LG:CONVENTIONNES ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:CONVENTIONNES ucase$$</font><br />$$LG:LOGEMENTS ucase$$$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN LOG CONVEN -->
+				
+				<!-- SI ETUDIANT -->
+				$$IF=:437:FORM:IDVPA$$
+				<div class="bg-img-etudiant-loc">
+					<div class="link-etudiant-loc">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOCSPECIALES ucase$$</font><br />$$LG:ETUDIANTS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:ETUDIANTS ucase$$</font><br />$$LG:LOCSPECIALES ucase$$$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI ETUDIANT -->
+				
+				<!-- SI ETUDIANT -->
+				$$IF=:446:FORM:IDVPA$$
+				<div class="bg-img-renover-vnt">
+					<div class="link-loca">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=446&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI ETUDIANT -->
+				
+				
+				$$END$$
+				
+				$$END$$
+				
+				$$IF!:RECHERCHE,REFINE.HTM:REP:0$$
+				<h2 class="ttl-mot hx-ref">
+					$$LG:TROUVERLOGEMENT ucase$$
+				</h2>
+				$$END$$
+				
+				$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+				<div class="ttl-mot" style="font-size: 18px;">
+					$$LG:AFFINERRECHERCHE ucase$$
+				</div>
+				$$END$$
+				
+				$$IF!:RECHERCHE,REFINE.HTM:REP:0$$
+				<div class="nbr-bien">
+					$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:PORTEFEUILLE$$
+					$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCES:QRY:IDP$$
+					$$BIF:AGENCEANNONCES$$	
+					$$DO$$	
+						$$IF=:2:AGENCEANNONCES:IDTYPETRANSACTION$$		
+							<h3 class="hx-ref"><strong> $$AGENCEANNONCES:NBANN$$</strong> $$LG:BIENSVENTE  lcase$$</h3> - 
+						$$END$$
+						$$IF=:1:AGENCEANNONCES:IDTYPETRANSACTION$$		
+							<h3 class="hx-ref"><strong> $$AGENCEANNONCES:NBANN$$</strong>  $$LG:BIENSENLOC lcase$$</h3>
+						$$END$$
+					$$LOOP$$
+					$$BFIN$$
+				</div><!--div.nbr-bien-->
+				$$END$$<!-- Page du mini moteur -->
+<!-- Vars Mini -->
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:JS_MINI_MOTEUR=1$$
+<!-- Go -->
+$$IF0:FORM_DELETE$$
+	<form method="get" action="/moteur,mini,prevalidation.htm" id="Mini_Moteur" $$IF=:1:FORM:IDTT$$class="loc"$$END$$>
+$$END$$
+<input type="hidden" name="lang" value="$$LANGUE$$" class="hidden-lang" />
+<input type="hidden" name="tri" value="d_dt_crea" />
+$$IF=:RESULTATS:IDT$$
+	<input type="hidden" name="hiddenidvpa" value="$$FORM:IDVPA$$" id="hiddenidvpa" />
+$$END$$$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+		<div class="btn-raz" style="cursor:pointer">$$LG:RESET$$</div>
+	$$END$$
+	$$IF=:1:MINI_TRANSACTION$$
+		<div class="miniDiv" id="Mini_Transaction">
+		
+<span class="miniBlocTitre">$$LG:TYPEDETRANSACTION$$</span>
+<span class="miniBlocSelection">
+		$$IF!:1:MINI_IDTTCHECK$$
+			$$IF=:0:MINI_IDTTUNIQUE$$
+			$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+			$$BIF:TYPE_TRANSACTION$$		
+				1<select id="idtt" name="idtt" class="miniForm" onchange="javascript:ajaxGet(this.id,'$$LANGUE$$','Mini_Biens','type_bien');$$IF=:1:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Region','region');contentEmpty('0','Mini_Departement|Mini_Villes|Mini_Quartiers|Mini_Rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Villes','villes');$$END$$testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');">
+					$$IF=:0:MINI_IDTTDEFAUT$$<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>$$END:MINI_IDTTDEFAUT$$
+					$$DO$$
+					$$IF):MINIMOTEUR*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+						<option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF=:MINI*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+							$$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+							$$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+							$$IF=:1:MINI_NBVISIBLES$$($$TYPE_TRANSACTION:NBANN$$)$$END$$</option>
+					$$END:MINIMOTEUR_IDTBCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+					$$LOOP$$				
+				</select>	
+			$$BFIN$$
+			$$END:MINI_IDTTUNIQUE$$	
+			
+		$$END$$
+		$$IF=:1:MINI_IDTTCHECK$$
+			<input type="hidden" name="idtt" id="idtt" value="$$IF:FORM:IDTT$$$$FORM:IDTT$$$$END$$$$IF0:FORM:IDTT$$$$MINI_IDTTDEFAUT$$$$END$$" />
+			<label id="miniAcheter"><input id="idtt-radio2" name="checkidtt"  type="radio" value="2" onclick="javascript:ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_bien',testBudgetcheck('MiniSelectBudgetVente','MiniSelectBudgetLoc'));$$IF=:0:MINI_REGION$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Villes','villes');$$END$$" $$IF=:2:MINI_IDTTDEFAUT$$checked="checked"$$END$$ $$IF=:2:FORM:IDTT$$checked="checked"$$END$$/>$$LG:ACHETER pcase$$</label>
+			<label id="miniLouer"><input  id="idtt-radio1" name="checkidtt" type="radio" value="1" onclick="javascript:ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_bien',testBudgetcheck('MiniSelectBudgetVente','MiniSelectBudgetLoc'));$$IF=:0:MINI_REGION$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Villes','villes');$$END$$"  $$IF=:1:FORM:IDTT$$checked="checked"$$END$$/>$$LG:LIEN:LOUER pcase$$</label>
+			$$IF=:1:MINI_NEUF_CHECK$$
+			<label id="miniNeuf"><input  id="idtt-radio9" name="checkidtt" type="radio" value="9" onclick="javascript:ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_bien',testBudgetcheck('MiniSelectBudgetVente','MiniSelectBudgetLoc'));$$IF=:1:MINI_REGION$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Region','region');contentEmpty('0','Mini_Departement|Mini_Villes|Mini_Quartiers|Mini_Rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet('idtt','$$FORM:LANG$$','Mini_Villes','villes');$$END$$" $$IF=:1:MINI_IDTTDEFAUT$$checked="checked"$$END$$/>$$LG:NEUF pcase$$</label>
+			$$END$$
+		$$END:MINI_IDTTCHECK$$
+</span></div>
+	$$END:MINI_TRANSACTION$$
+	
+	
+	$$IF:FORM:IDPUBLICATION$$
+		<input type="hidden" name="idpublication"  id="idpublication" value="$$FORM:IDPUBLICATION$$" />
+	$$END$$
+	
+	$$IF=:RESULTATS:IDT$$
+	<div class="miniDiv" id="Mini_idvpa">
+		<span class="miniBlocTitre">$$LG:UNIVERS pcase$$</span>
+		<span class="miniBlocSelection">
+			<select class="miniForm" name="idvpa" id="idvpa"  data-placeholder="$$LG:CHOISIR pcase$$...">
+							$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:2:~langue:QRY:LANG:ALIAS:FILTREPERSO$$
+				$$BIF:FILTREPERSO$$
+					<option value="" class="aucun">$$IF=:FR:FORM:LANG$$Aucun$$END$$$$IF!:FR:FORM:LANG$$None$$END$$</option>
+					$$DO$$
+						$$IF=:1:FORM:IDTT$$
+							$$IF=:437$446$479:FILTREPERSO:IDVALEUR$$
+						 		<option value="$$FILTREPERSO:IDVALEUR$$" name="idvpa" $$IF=:FILTREPERSO_IDVALEUR:FORM:IDVPA$$selected="selected"$$END$$>$$FILTREPERSO:LIBELLEVALEUR pcase$$ </option>
+						 	$$END$$
+						$$END$$
+						$$IF!:1:FORM:IDTT$$
+								$$IF=:439$441$480:FILTREPERSO:IDVALEUR$$
+							 		<option value="$$FILTREPERSO:IDVALEUR$$" name="idvpa" $$IF=:FILTREPERSO_IDVALEUR:FORM:IDVPA$$selected="selected"$$END$$>$$FILTREPERSO:LIBELLEVALEUR pcase$$ </option>
+							 	$$END$$
+						$$END$$
+					$$LOOP$$
+				$$BFIN$$
+				
+				$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:1:~langue:QRY:LANG:ALIAS:FILTREPERSO3$$
+				$$BIF:FILTREPERSO3$$
+					$$DO$$
+						$$IF=:1:FORM:IDTT$$
+							$$IF=:437$446$479:FILTREPERSO3:IDVALEUR$$
+						 		<option value="$$FILTREPERSO3:IDVALEUR$$" name="idvpa" $$IF=:FILTREPERSO3_IDVALEUR:FORM:IDVPA$$selected="selected"$$END$$>$$FILTREPERSO3:LIBELLEVALEUR pcase$$ </option>
+						 	$$END$$
+						$$END$$
+						$$IF!:1:FORM:IDTT$$
+								$$IF=:439$441$480:FILTREPERSO3:IDVALEUR$$
+							 		<option value="$$FILTREPERSO3:IDVALEUR$$" name="idvpa" $$IF=:FILTREPERSO3_IDVALEUR:FORM:IDVPA$$selected="selected"$$END$$>$$FILTREPERSO3:LIBELLEVALEUR pcase$$ </option>
+							 	$$END$$
+						$$END$$
+					$$LOOP$$
+				$$BFIN$$</select>
+		</span>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#idvpa").chosen();
+		});
+	</script>
+	$$END$$
+	$$IF=:1:AUTOSUGGEST$$
+		<div class="miniDiv" id="Mini_Suggest">
+			$$INIT:JS_SUGGEST=1$$
+$$INIT:CSS_SUGGEST=1$$
+<span class="miniBlocTitre">$$IF!:EN:LANGUE$$$$LG:SECTEUR pcase$$$$END$$$$IF=:EN:LANGUE$$Area$$END$$</span>
+<div id="suggestionsBox" class="box"></div>
+<ul class="blocSearch" style="overflow-y:auto;display:block;">
+	<li><input type="text" name="cp" value="$$LG:MINIVILLES pcase$$" id="cpSearch" class="inputSearch" autocomplete="off"/></li>
+</ul>
+<input type="hidden" name="div" id="div" />
+<input type="hidden" name="cp" id="cp" />
+<input type="hidden" name="ci" id="ci" />
+<input type="hidden" name="idq" id="idq" /></div>
+		$$IF=:1:MINI_RAYONCHECK$$
+		<div class="miniDiv" id="Mini_Rayon">
+			<!--#include absolute="webagency/A_ID3X/6perf/header/params_global.htm" -->	
+$$IF=:1:MINI_RAYONCHECK$$
+<span class="miniBlocTitre">$$IF=:FR:LANGUE$$&Eacute;largir à$$END$$$$IF!:FR:LANGUE$$Expand to$$END$$</span>
+<span class="miniBlocSelection">
+	<label title="$$MINI_RAYON1$$" id="MiniLabelRayon1"><input type="radio" id="MiniRadioRayon1" name="rayon" value="$$MINI_RAYON1$$" /> $$MINI_RAYON1$$ km</label>
+	<label title="$$MINI_RAYON2$$" id="MiniLabelRayon2"><input type="radio" id="MiniRadioRayon2" name="rayon" value="$$MINI_RAYON2$$" /> $$MINI_RAYON2$$ km</label>
+	$$IF+:3:MINI_RAYONNB$$<label title="$$MINI_RAYON3$$" id="MiniLabelRayon3"><input type="radio" id="MiniRadioRayon3" name="rayon" value="$$MINI_RAYON3$$" /> $$MINI_RAYON3$$ km</label>$$END$$
+	$$IF+:4:MINI_RAYONNB$$<label title="$$MINI_RAYON4$$" id="MiniLabelRayon4"><input type="radio" id="MiniRadioRayon4" name="rayon" value="$$MINI_RAYON4$$" /> $$MINI_RAYON4$$ km</label>$$END$$
+	$$IF+:5:MINI_RAYONNB$$<label title="$$MINI_RAYON5$$" id="MiniLabelRayon5"><input type="radio" id="MiniRadioRayon5" name="rayon" value="$$MINI_RAYON5$$" /> $$MINI_RAYON5$$ km</label>$$END$$
+</span>	
+$$END:MINI_RAYONCHECK$$
+$$IF=:1:MINI_RAYONLISTE$$
+<span class="miniBlocTitre">$$LG:ELERGIR pcase$$</span>
+<span class="miniBlocSelection">
+	<select name="rayon" class="miniSelect" id="MiniSelectRayon">
+		<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+		<option value="$$MINI_RAYON1$$">$$MINI_RAYON1$$ km</option>
+		<option value="$$MINI_RAYON2$$">$$MINI_RAYON2$$ km</option>
+		$$IF+:3:MINI_RAYONNB$$<option value="$$MINI_RAYON3$$">$$MINI_RAYON3$$ km</option>$$END$$
+		$$IF+:4:MINI_RAYONNB$$<option value="$$MINI_RAYON4$$">$$MINI_RAYON4$$ km</option>$$END$$
+		$$IF+:5:MINI_RAYONNB$$<option value="$$MINI_RAYON5$$">$$MINI_RAYON5$$ km</option>$$END$$
+	</select>
+</span>
+$$END:MINI_RAYONLISTE$$</div>
+		$$END$$
+		$$INIT:HAUTRECHERCHEV2=1$$
+$$INIT:NBAFFICHDEFILE=3$$
+$$INIT:TYPEANN=photo=1$$
+$$INIT:DEFILE=0$$
+$$INIT:MAXCC=3$$
+$$INIT:FRAICHEUR=30$$
+$$INIT:SELECTIONFRAICHEUR=-30$$
+$$INIT:IDTTCC=2$$
+$$INIT:JS_FIX_DETAIL=1$$
+
+	$$END$$
+	
+	$$IF=:1:LIBRELOCALISATION$$
+		<div class="miniDiv" id="Mini_LocalisationLibre">
+			<!--#include absolute="webagency/A_ID3X/6perf/moteur/mini/incl_localisation_libre.htm" -->
+		</div>
+		$$IF=:1:MINI_RAYONCHECK$$
+		<div class="miniDiv" id="Mini_Rayon">
+			<!--#include absolute="webagency/A_ID3X/6perf/moteur/mini/incl_rayon.htm" -->	
+		</div>
+		$$END$$
+		$$IF=:1:MINI_RAYONLISTE$$
+		<div class="miniDiv" id="Mini_Rayon">
+			<!--#include absolute="webagency/A_ID3X/6perf/moteur/mini/incl_rayon.htm" -->	
+		</div>
+		$$END$$
+	$$END$$
+	
+	
+	$$IF=:1:MINI_BIENS$$
+		<div class="miniDiv" id="Mini_Biens">
+			
+
+
+																	$$A:OPTION_GEOLOC=1$$
+
+
+																	$$A:OPTION_SUIVICLIENT=1$$
+
+$$INIT:HAUTRECHERCHEV2=1$$
+
+
+													$$A:OPTION_INTERNATIONAL=1$$
+																$$A:FLAG_FR=1$$
+																$$A:FLAG_EN=1$$
+																$$A:FLAG_ES=0$$
+																$$A:FLAG_DE=0$$
+																$$A:FLAG_IT=0$$
+																$$A:FLAG_NL=0$$
+																$$A:FLAG_PT=0$$
+																$$A:FLAG_RU=0$$
+																$$A:FLAG_CN=0$$
+
+
+ 																	$$A:FAVICON=@@_@@images/favicon.ico$$
+ 															$$A:PA_LOGO_HEADER=@@_@@images/logo.png$$
+ 										$$A:VISUEL_ACCUEIL=@@_@@images/visuel.jpg$$
+			$$A:PHOTO_AG_PUD=1$$
+
+
+ 						$$A:MINI_RESTRICTION=1$$
+ 														$$A:MINI_LIBELLE=Rechercher$$
+ 															$$A:MINI_NBVISIBLES=0$$
+ 					$$A:MINI_IDTTUNIQUE=0$$
+ 					$$A:MINI_IDTTDEFAUT=2$$
+ 								$$A:MINI_TRANSACTION=1$$
+ 												$$A:MINI_BIENS=1$$
+ 													$$A:MINI_BUDGET=1$$
+ 												$$A:MINI_BUDGET_SLIDER=0$$
+ 												$$A:MINI_SURFACE=1$$
+ 												$$A:MINI_SURFACE_SLIDER=0$$
+ 													$$A:MINI_REGION=0$$
+ 											$$A:MINI_DEP=0$$
+ 													$$A:MINI_VILLE=0$$
+ 												$$A:MINI_QUARTIER=0$$
+ 											$$A:MINI_RESULTATS=0$$
+ 											$$A:MINI_BUDGETTRANCHE=1$$
+ 										$$A:MINI_SURFTRANCHE=1$$
+ 											$$A:MINI_BOUTON_IMAGE=0$$
+ 											$$A:MINI_RAYONCHECK=1$$
+ 											$$A:MINI_RAYONLISTE=0$$
+ 												$$A:MINI_VILLES_CP=0$$
+ 						$$A:AUTOSUGGEST=1$$
+ 											$$A:MINI_IDTTCHECK=1$$
+ 											$$A:MINI_BIENCHECK=0$$
+ 												$$A:MINI_REF=1$$
+ 										$$A:MINI_PIECES=1$$
+ 										$$A:MINI_CHAMBRES=1$$
+
+	
+			$$A:MINI_BUDGNBTRANCHE=5$$
+	$$A:MINI_BUDGTRANCHEMIN1=0$$
+																																	$$A:MINI_BUDGTRANCHEMAX1=50000$$
+	$$A:MINI_BUDGTRANCHEMIN2=50001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX2=150000$$
+	$$A:MINI_BUDGTRANCHEMIN3=150001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX3=250000$$ 
+	$$A:MINI_BUDGTRANCHEMIN4=250001$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX4=500000$$
+	$$A:MINI_BUDGTRANCHEMIN5=$$
+																																	$$A:MINI_BUDGTRANCHEMAX5=$$
+	$$A:MINI_BUDGTRANCHEMIN6=$$
+																																	$$A:MINI_BUDGTRANCHEMAX6=$$ 
+	$$A:MINI_BUDGTRANCHEMIN7=$$
+																																	$$A:MINI_BUDGTRANCHEMAX7=$$
+	$$A:MINI_BUDGTRANCHEMIN8=$$
+																																	$$A:MINI_BUDGTRANCHEMAX8=$$
+	$$A:MINI_BUDGTRANCHEMIN9=$$ 
+																																	$$A:MINI_BUDGTRANCHEMAX9=$$
+		$$A:MINI_BUDGTRANCHEMAX=500001$$ 
+
+	
+		$$A:MINI_LOYERNBTRANCHE=4$$
+	$$A:MINI_LOYERTRANCHEMIN1=0$$
+																																	$$A:MINI_LOYERTRANCHEMAX1=500$$
+	$$A:MINI_LOYERTRANCHEMIN2=501$$
+																																	$$A:MINI_LOYERTRANCHEMAX2=1000$$
+	$$A:MINI_LOYERTRANCHEMIN3=1001$$ 
+																																	$$A:MINI_LOYERTRANCHEMAX3=1500$$
+	$$A:MINI_LOYERTRANCHEMIN4=$$
+																																	$$A:MINI_LOYERTRANCHEMAX4=$$
+	$$A:MINI_LOYERTRANCHEMIN5=$$
+																																	$$A:MINI_LOYERTRANCHEMAX5=$$
+	$$A:MINI_LOYERTRANCHEMIN6=$$
+																																	$$A:MINI_LOYERTRANCHEMAX6=$$ 
+	$$A:MINI_LOYERTRANCHEMIN7=$$ 
+																																	$$A:MINI_LOYERTRANCHEMAX7=$$
+	$$A:MINI_LOYERTRANCHEMIN8=$$
+																																	$$A:MINI_LOYERTRANCHEMAX8=$$ 
+	$$A:MINI_LOYERTRANCHEMIN9=$$
+																																	$$A:MINI_LOYERTRANCHEMAX9=$$
+		$$A:MINI_LOYERTRANCHEMAX=1501$$ 
+
+	
+						$$A:MINI_SURFNBTRANCHE=7$$	
+	$$A:MINI_SURFTRANCHEMIN1=0$$ 
+																																	$$A:MINI_SURFTRANCHEMAX1=20$$
+	$$A:MINI_SURFTRANCHEMIN2=21$$
+																																	$$A:MINI_SURFTRANCHEMAX2=40$$
+	$$A:MINI_SURFTRANCHEMIN3=41$$
+																																	$$A:MINI_SURFTRANCHEMAX3=60$$ 
+	$$A:MINI_SURFTRANCHEMIN4=61$$
+																																	$$A:MINI_SURFTRANCHEMAX4=80$$
+	$$A:MINI_SURFTRANCHEMIN5=81$$
+																																	$$A:MINI_SURFTRANCHEMAX5=100$$
+	$$A:MINI_SURFTRANCHEMIN6=101$$
+																																	$$A:MINI_SURFTRANCHEMAX6=150$$
+	$$A:MINI_SURFTRANCHEMIN7=$$ 
+																																	$$A:MINI_SURFTRANCHEMAX7=$$
+	$$A:MINI_SURFTRANCHEMIN8=$$
+																																	$$A:MINI_SURFTRANCHEMAX8=$$
+	$$A:MINI_SURFTRANCHEMIN9=$$
+																																	$$A:MINI_SURFTRANCHEMAX9=$$
+						$$A:MINI_SURFTRANCHEMAX=151$$
+
+
+													$$A:MINI_RAYONNB=2$$ 
+					$$A:MINI_RAYONLISTE=0$$
+		$$A:MINI_RAYON1=10$$
+		$$A:MINI_RAYON2=20$$
+
+
+				$$A:MOTEUR_PIECES=1$$
+			$$A:MOTEUR_CHAMBRES=1$$
+		$$A:IMMOB_ENTR=1$$
+				$$A:IMMOB_AUTRE=1$$
+			$$A:MOTEUR_VILLES=0$$
+				$$A:MOTEUR_IDTTDEFAUT=1$$
+				$$A:MOTEUR_IDTTUNIQUE=0$$
+
+
+				$$A:TB_SITE_1=1$$
+				$$A:TB_SITE_2=1$$
+				$$A:TB_SITE_3=1$$
+				$$A:TB_SITE_4=1$$
+				$$A:TB_SITE_5=1$$
+				$$A:TB_SITE_6=1$$
+				$$A:TB_SITE_7=1$$
+				$$A:TB_SITE_8=1$$
+				$$A:TB_SITE_9=1$$
+				$$A:TB_SITE_10=1$$
+				$$A:TB_SITE_11=1$$
+				$$A:TB_SITE_12=1$$
+				$$A:TB_SITE_13=1$$
+				$$A:TB_SITE_14=1$$
+				$$A:TB_SITE_15=1$$
+													$$A:MOTEUR_RAYONNB=4$$ 
+					$$A:MOTEUR_RAYONLISTE=0$$
+				$$A:MOTEUR_RAYONCHECK=1$$ 
+		$$A:MOTEUR_RAYON1=5$$
+		$$A:MOTEUR_RAYON2=10$$
+		$$A:MOTEUR_RAYON3=15$$
+		$$A:MOTEUR_RAYON4=20$$
+		$$A:MOTEUR_RAYON5=25$$
+
+
+
+ 								$$INIT:NBAFFICHDEFILE=3$$
+ 											$$INIT:TYPEANN=photo=1$$
+ 											$$INIT:DEFILE=0$$				 
+ 						$$INIT:MAXCC=3$$				 
+ 						$$INIT:FRAICHEUR=30$$		
+ 									$$INIT:SELECTIONFRAICHEUR=-30$$ 
+ 				$$INIT:IDTTCC=2$$
+ 			$$A:SELECTION_INDEX_NO_PICTO=$$		 
+ 				$$A:SELECTION_INDEX_NO_PICTO_NOUVEAU=$$		 
+          $$A:PICTO_COEUR=$$		
+
+          $$INIT:JS_FIX_DETAIL=1$$$$A:IDTT=2$$
+$$IF:FORM:IDTT$$
+	$$A:IDTT=@@FORM:IDTT@@$$
+$$END$$
+
+$$IF=:2:IDTT$$
+		<span class="miniBlocTitre">$$LG:TYPEDEBIEN pcase$$</span>
+		<span class="miniBlocSelection">
+			<select id="idtypebien" name="idtypebien" class="miniForm" multiple="multiple" data-placeholder="$$LG:CHOISIR pcase$$..." >			
+				<option value="1" id="idtb_1" $$IF=:1:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:APPARTEMENT pcase$$</option>
+				<option value="2" id="idtb_2" $$IF=:2:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:MAISON pcase$$</option>
+				<option value="2.27" id="idtb_2.27" $$IF=:2.27:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:CHALET pcase$$</option>
+				<option value="4" id="idtb_4" $$IF=:4:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:LIEN:TER pcase$$</option>
+				<option value="5,6,7,8" id="idtb_5" $$IF=:5,6,7,8:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:LOCALCOM pcase$$ $$IF=:FR:LANGUE$$ou professionnel$$END$$$$IF!:FR:LANGUE$$or professionnal$$END$$</option>
+				<option value="3" id="idtb_3" $$IF=:3:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:GARAGE pcase$$ / $$LG:PARKING pcase$$</option>
+				<option value="15" id="idtb_15" $$IF=:15:FORM:IDTYPEBIEN$$selected$$END$$>$$LG:NEUF pcase$$</option>
+			</select>	
+		</span>
+$$END$$
+$$IF=:1:IDTT$$
+		<span class="miniBlocTitre">$$LG:TYPEDEBIEN pcase$$</span>
+		<span class="miniBlocSelection">
+			<select id="idtypebien" name="idtypebien" class="miniForm" multiple="multiple" data-placeholder="$$LG:CHOISIR pcase$$..." >			
+				<option value="1" id="idtb_1">$$LG:APPARTEMENT pcase$$</option>
+				<option value="2" id="idtb_2">$$LG:MAISON pcase$$</option>
+				<option value="2.27" id="idtb_2.27">$$IF=:FR:LANGUE$$Meublés$$END$$$$IF!:FR:LANGUE$$Furnished$$END$$ - $$LG:ETUDIANTS pcase$$</option>
+				<option value="3" id="idtb_3">$$LG:GARAGE pcase$$ / $$LG:PARKING pcase$$</option>
+				<option value="5,6,7,8" id="idtb_5">$$LG:LOCALCOM pcase$$ $$IF=:FR:LANGUE$$ou professionnel$$END$$$$IF!:FR:LANGUE$$or professionnal$$END$$</option>
+				<option value="15" id="idtb_15">$$LG:NEUF pcase$$</option>
+			</select>	
+		</span>
+$$END$$
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#idtypebien").chosen();
+	});
+</script>
+</div>
+		
+	$$END:MINI_BIENS$$
+	$$IF=:1:MINI_BUDGET$$
+		<div class="miniDiv" id="Mini_Budget">
+			<span class="miniBlocTitre">$$LG:BUDGET pcase$$ (&euro;)</span>
+$$IF=:1:MINI_BUDGETTRANCHE$$
+	<span class="miniBlocSelection">
+		<input type="text" class="miniFormInput" id="MiniInputBudgetMin" name="pxmin" value="$$IF:FORM:PXMIN$$$$FORM:PXMIN$$$$END$$$$IF0:FORM:PXMIN$$$$LG:MINI pcase$$$$END$$" onfocus="this.value=''" />
+		<input type="text" class="miniFormInput" id="MiniInputBudgetMax" name="pxmax" value="$$IF:FORM:PXMAX$$$$FORM:PXMAX$$$$END$$$$IF0:FORM:PXMAX$$$$LG:MAXI pcase$$$$END$$" onfocus="this.value=''" />
+	</span>
+$$END:MINI_BUDGETTRANCHE$$<script language="javascript" type="text/javascript">
+				$(document).ready(function() {
+					testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');
+				});
+			</script>
+		</div>
+	$$END:MINI_BUDGET$$
+	$$INIT:JS_SLIDER=1$$
+$$INIT:CSS_JQUERY_UI=1$$
+
+	
+$$IF=:RECHERCHE,BASIC.HTM$DETAIL,SENTO.HTM$RECHERCHE,REFINE.HTM:REP:0$$
+	$$IF=:1:MINI_SURFACE$$
+		<div class="miniDiv" id="Mini_Surface">
+			
+	<span class="miniBlocTitre">$$LG:SURFACE pcase$$ (m&sup2;)</span>
+	$$IF=:1:MINI_SURFTRANCHE$$
+	<span class="miniBlocSelection">
+		<input type="text" class="miniFormInput" id="MiniInputSurfaceMin" name="surfacemin" value="$$IF:FORM:SURFACEMIN$$$$FORM:SURFACEMIN$$$$END$$$$IF0:FORM:SURFACEMIN$$$$LG:MINI pcase$$$$END$$" onclick="this.value=''"/>
+		<input type="text" class="miniFormInput" id="MiniInputSurfaceMax" name="surfacemax" value="$$IF:FORM:SURFACEMAX$$$$FORM:SURFACEMAX$$$$END$$$$IF0:FORM:SURFACEMAX$$$$LG:MAXI pcase$$$$END$$" onclick="this.value=''"/>
+	</span>
+	$$END$$</div>
+	$$END:MINI_SURFACE$$
+$$END$$	
+
+$$IF=:INDEX.HTM:REP:0$$
+	$$IF=:1:MINI_PIECES$$
+		<div class="miniDiv" id="Mini_Pieces">
+			
+<span class="miniBlocTitre">$$LG:MININBRPIECES pcase$$</span>
+<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*CHAMBRES:1$$ checked="checked"$$END$$ />&nbsp;1&nbsp;
+<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*CHAMBRES:2$$ checked="checked"$$END$$ />&nbsp;2&nbsp;
+<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*CHAMBRES:3$$ checked="checked"$$END$$ />&nbsp;3&nbsp;
+<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*CHAMBRES:4$$ checked="checked"$$END$$ />&nbsp;4&nbsp;
+<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ checked="checked"$$END$$ />&nbsp;5 $$LG:ET lcase$$ +
+
+
+
+</div>
+	$$END$$
+	$$IF=:1:MINI_PIECES_SELECT$$
+		<div class="miniDiv" id="Mini_Pieces">
+			<span class="miniBlocTitre">$$LG:MININBRPIECES pcase$$</span>
+<select name="nb_pieces" id="nb_pieces">
+	<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="+4">5 $$LG:ET lcase$$ +</option>
+</select></div>
+	$$END$$
+$$END$$
+	
+$$IF=:RECHERCHE,BASIC.HTM$CONTACT,AGENCE.HTM$DETAIL,SENTO.HTM$RECHERCHE,REFINE.HTM:REP:0$$
+	$$IF=:1:MINI_PIECES$$
+		<div class="miniDiv nbrpieces" id="Mini_Pieces">
+			
+<span class="miniBlocTitre">$$LG:MININBRPIECES pcase$$</span>
+<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*CHAMBRES:1$$ checked="checked"$$END$$ />&nbsp;1&nbsp;
+<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*CHAMBRES:2$$ checked="checked"$$END$$ />&nbsp;2&nbsp;
+<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*CHAMBRES:3$$ checked="checked"$$END$$ />&nbsp;3&nbsp;
+<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*CHAMBRES:4$$ checked="checked"$$END$$ />&nbsp;4&nbsp;
+<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ checked="checked"$$END$$ />&nbsp;5 $$LG:ET lcase$$ +
+
+
+
+</div>
+	$$END$$
+	$$IF=:1:MINI_PIECES_SELECT$$
+		<div class="miniDiv nbrpieces" id="Mini_Pieces">
+			<span class="miniBlocTitre">$$LG:MININBRPIECES pcase$$</span>
+<select name="nb_pieces" id="nb_pieces">
+	<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="+4">5 $$LG:ET lcase$$ +</option>
+</select></div>
+	$$END$$
+	
+	$$IF=:1:MINI_CHAMBRES$$
+		<div class="miniDiv" id="Mini_Chambres">
+			<span class="miniBlocTitre">$$LG:NBRC pcase$$</span>
+<input type="checkbox" name="nb_chambres" value="1"$$IF(:FORM_NB*CHAMBRES:1$$ checked="checked"$$END$$ />&nbsp;1&nbsp;
+<input type="checkbox" name="nb_chambres" value="2"$$IF(:FORM_NB*CHAMBRES:2$$ checked="checked"$$END$$ />&nbsp;2&nbsp;
+<input type="checkbox" name="nb_chambres" value="3"$$IF(:FORM_NB*CHAMBRES:3$$ checked="checked"$$END$$ />&nbsp;3&nbsp;
+<input type="checkbox" name="nb_chambres" value="4"$$IF(:FORM_NB*CHAMBRES:4$$ checked="checked"$$END$$ />&nbsp;4&nbsp;
+<input type="checkbox" name="nb_chambres" value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ checked="checked"$$END$$ />&nbsp;5 $$LG:ET lcase$$ +</div>
+	$$END$$
+	$$IF=:1:MINI_CHAMBRES_INPUT$$
+		<div class="miniDiv" id="Mini_Chambres">
+			<span class="miniBlocTitre">$$LG:NBRC pcase$$</span>
+<input type="text" name="nb_chambresmin" value="0" class="chambresMin">
+<input type="text" name="nb_chambresmax" value="6" class="chambresMax"></div>
+	$$END$$
+$$END$$		
+	
+	
+	$$INIT:JS_SLIDER=1$$
+$$INIT:CSS_JQUERY_UI=1$$
+
+	
+	
+	
+	<div class="miniDiv divOff" id="Mini_Rayon">
+		$$INIT:HAUTRECHERCHEV2=1$$
+$$INIT:NBAFFICHDEFILE=3$$
+$$INIT:TYPEANN=photo=1$$
+$$INIT:DEFILE=0$$
+$$INIT:MAXCC=3$$
+$$INIT:FRAICHEUR=30$$
+$$INIT:SELECTIONFRAICHEUR=-30$$
+$$INIT:IDTTCC=2$$
+$$INIT:JS_FIX_DETAIL=1$$
+	
+	</div>
+
+		
+	
+	$$IF=:1:MINI_REF$$
+		<div class="miniDiv" id="Mini_Ref">
+		<span class="miniBlocTitre">$$LG:REFERENCE pcase$$</span>
+	
+	<div class="miniDivSelect" id="MiniDivChampTextRef">
+		<input type="text" class="miniInput" id="MiniInputRef" name="refannonce" value="$$FORM:REFANNONCE$$" />
+	</div><!-- #MiniDivChampTextRef -->
+	
+
+	</div>
+	$$END:MINI_REF$$
+
+<!--
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+	$$IF!:1:FORM:IDTT$$
+		<div class="miniDiv" id="Mini_Geoloc">
+			<span class="miniBlocTitre">$$LG:EXCLUSIVITES pcase$$</span>
+			<form>
+				<input type="checkbox" value="1" name="si_exclusif" />Afficher uniquement nos exclusivités
+			</form>
+		</div>
+	$$END$$
+$$END$$
+-->
+	$$A:OUVRE=0$$
+	$$IF=:1:FORM:SI_PARKINGS$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:1:FORM:SI_BOXES$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:1:FORM:SI_TERRAIN$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:1:FORM:SI_PISCINE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:1:FORM:SI_ASCENSEUR$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:8192:FORM:IDTYPECHAUFFAGE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:4096:FORM:IDTYPECHAUFFAGE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:4096,8192:FORM:IDTYPECHAUFFAGE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:7:FORM:IDTYPECUISINE$$
+		$$A:OUVRE=1$$
+	$$END$$	
+	$$IF=:3:FORM:IDTYPECUISINE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	$$IF=:3,7:FORM:IDTYPECUISINE$$
+		$$A:OUVRE=1$$
+	$$END$$
+	
+	<div class="plus-crit" >
+		<a href="javascript:void(0);" title="" id="link-open"><br /></a>
+	</div>
+	<div id="open" style="$$IF=:0:OUVRE$$display:none;$$END$$$$IF=:1:OUVRE$$display:block;$$END$$">
+		<form class="form-crit">
+			$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+		$$IF:FORM:SI_EXCLUSIF$$
+			<input type="checkbox" value="1" name="si_exclusif"  id="si_exclusif" $$IF=:1:FORM:SI_EXCLUSIF$$checked="checked"$$END$$><label>$$LG:EXCLUSIVITES pcase$$</label><br />
+		$$END$$
+		$$IF:FORM:PHOTO$$
+			<input type="checkbox" value="10" name="photo"  id="photo" $$IF=:10:FORM:PHOTO$$checked="checked"$$END$$><label>$$LG:PHOT pcase$$</label><br />
+		$$END$$
+	$$END$$
+			<input type="checkbox" value="1" name="si_parkings" $$IF=:1:FORM:SI_PARKINGS$$checked="checked"$$END$$><label>$$LG:PARKING pcase$$</label><br />
+			<input type="checkbox" value="1" name="si_boxes" $$IF=:1:FORM:SI_BOXES$$checked="checked"$$END$$><label>$$LG:GARAGE pcase$$</label><br />
+			<input type="checkbox" value="1" name="si_terrain" $$IF=:1:FORM:SI_TERRAIN$$checked="checked"$$END$$><label>$$LG:JARDIN pcase$$</label><br />
+			<input type="checkbox" value="1" name="si_piscine" $$IF=:1:FORM:SI_PISCINE$$checked="checked"$$END$$><label>$$LG:PISCINE pcase$$</label><br />
+			<input type="checkbox" value="1" name="si_ascenseur" $$IF=:1:FORM:SI_ASCENSEUR$$checked="checked"$$END$$><label>$$LG:ASCENC1 pcase$$</label><br />
+			<input type="checkbox" value="8192" name="idtypechauffage" $$IF=:8192:FORM:IDTYPECHAUFFAGE$$checked="checked"$$END$$$$IF=:4096,8192:FORM:IDTYPECHAUFFAGE$$checked="checked"$$END$$><label>$$LG:CHAUFFAGEIN pcase$$</label><br />
+			<input type="checkbox" value="4096" name="idtypechauffage" $$IF=:4096:FORM:IDTYPECHAUFFAGE$$checked="checked"$$END$$$$IF=:4096,8192:FORM:IDTYPECHAUFFAGE$$checked="checked"$$END$$><label>$$LG:CHAUFFAGECO pcase$$</label><br />
+			<input type="checkbox" value="7" name="idtypecuisine" $$IF=:7:FORM:IDTYPECUISINE$$checked="checked"$$END$$$$IF=:3,7:FORM:IDTYPECUISINE$$checked="checked"$$END$$><label>$$LG:CUISINEEQUIPEE pcase$$</label><br />
+			<input type="checkbox" value="3" name="idtypecuisine" $$IF=:3:FORM:IDTYPECUISINE$$checked="checked"$$END$$$$IF=:3,7:FORM:IDTYPECUISINE$$checked="checked"$$END$$><label>$$LG:CUISINESEPAREE pcase$$</label>	
+		</form>
+	</div>
+	
+	
+	<div class="miniDiv" id="Mini_Send">
+		
+		$$IF=:0:MINI_BOUTON_IMAGE$$
+			<span class="miniBlocTitre"></span>
+			<span class="miniBlocSelection">
+				<input type="button" class="miniBouton" id="Mini_Bouton" value="$$LG:RECHERCHER pcase$$" />
+				$$IF=:1:MINI_RESTRICTION$$<div class="miniDivInfos" id="Mini_texte">
+	<i>Veuillez sélectionner une localisation pour votre recherche.</i>
+</div>$$END$$
+			</span>
+		$$END:IMAGE$$
+	</div>
+	
+	
+	<script language="javascript" type="text/javascript">
+		$(document).ready(function() {
+			$$IF=:1:MINI_RESTRICTION$$
+				boutonEnvoi('Mini_Bouton');	
+			$$END$$
+			loadingSearch('Mini_Bouton','$$LG:LOADING pcase$$');
+		});
+	</script>
+$$IF0:FORM_DELETE$$
+	</form>
+$$END$$</div><!--div#bg-mot-->
+			
+			<script>
+			 $(document).ready(function() {
+				$('input[name="checkidtt"]').click(function() {
+					if($('input[name="idtt"]').val()==1){
+						$("#bg-mot").addClass("loc");
+						$("#bg-mot-int").addClass("loc");
+						$("#bg-mot").removeClass("ven");
+						$("#bg-mot-int").removeClass("ven");
+					};
+					if($('input[name="idtt"]').val()==2){
+						$("#bg-mot").removeClass("loc");
+						$("#bg-mot-int").removeClass("loc");
+						$("#bg-mot").addClass("ven");
+						$("#bg-mot-int").addClass("ven");
+					};
+				});
+				});
+			</script>
+	
+	$$IF=:2:FORM:IDTT$$
+			<div class="bloc-extranet">
+				$$IF!:RECHERCHE,REFINE.HTM:REP:0$$
+				<div class="ttl-calcul">
+					$$LG:ACCESEXTRANET ucase$$
+				</div>
+				$$END$$
+				
+				$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+				<div class="ttl-calcul" style="color: #7db537; ">
+					$$LG:ESPACEPRIV ucase$$
+				</div>
+				$$END$$
+					<form action="immo,espace-privilege.htm" method="get" class="form-acces">
+						<input type="hidden" name="lang" value="$$LANGUE$$"  />
+						<div>
+							<label>Login</label>
+							<input type="text" name="login" />
+						</div>
+						<div>
+							<label>$$LG:PASSWORD pcase$$</label>
+							<input type="password" name="password" />
+						</div>
+						<input type="submit" value="$$LG:SECONNEC ucase$$" class="btn-acces" />
+					</form><!--div.form-acces-->
+					<div class="clear"></div>
+			</div><!--div.bloc-extranet-->
+			
+	$$END$$
+			$$IF=:RECHERCHE,REFINE.HTM:REP:0$$
+			<br />
+			
+			
+				$$IF=:1:FORM:IDTT$$
+				
+				<!-- SI RIEN -->
+				$$IF!:437$446$479:FORM:IDVPA$$
+				<div class="bg-img-etudiant-loc">
+					<div class="link-etudiant-loc">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOCSPECIALES ucase$$</font><br />$$LG:ETUDIANTS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:ETUDIANTS ucase$$</font><br />$$LG:LOCSPECIALES ucase$$$$END$$
+						</a>
+					</div>
+				</div><br />
+				<div class="bg-img-renover-vnt">
+					<div class="link-loca">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=446&amp;lang=$$LANGUE$$" title="" class="link-loc"><font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-logconvention">
+					<div class="link-logconvention">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOGEMENTS ucase$$</font><br />$$LG:CONVENTIONNES ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:CONVENTIONNES ucase$$</font><br />$$LG:LOGEMENTS ucase$$$$END$$						
+						</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-vacances-loc">
+					<div class="link-vacances-loc">
+						<a href="$$_$$images/light_alpes$$IF!:FR:LANGUE$$_en$$END$$.png" title="" class="link-locvac fancybox_alpes$$IF!:FR:LANGUE$$_en$$END$$" target="_blank">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:LOCVAC ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:LOCVAC ucase$$ offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI RIEN -->
+				
+					<!-- SI LOG CONVEN -->
+				$$IF=:479:FORM:IDVPA$$
+				<div class="bg-img-etudiant-loc">
+					<div class="link-etudiant-loc">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+								$$IF=:FR:LANGUE$$<font>$$LG:LOCSPECIALES ucase$$</font><br />$$LG:ETUDIANTS ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:ETUDIANTS ucase$$</font><br />$$LG:LOCSPECIALES ucase$$$$END$$				
+						</a>
+					</div>
+				</div><br />
+				<div class="bg-img-renover-vnt">
+					<div class="link-loca">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=446&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div><br />
+				<div class="bg-img-vacances-loc">
+					<div class="link-vacances-loc">
+						<a href="$$_$$images/light_alpes$$IF!:FR:LANGUE$$_en$$END$$.png" title="" class="link-locvac fancybox_alpes$$IF!:FR:LANGUE$$_en$$END$$" target="_blank">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br /> $$LG:LOCVAC ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:LOCVAC ucase$$ offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN LOG CONVEN -->
+				
+				<!-- SI ETUDIANT -->
+				$$IF=:437:FORM:IDVPA$$
+				<div class="bg-img-renover-vnt">
+					<div class="link-loca">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=446&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div><br />
+				<div class="bg-img-logconvention">
+					<div class="link-logconvention">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOGEMENTS ucase$$</font><br />$$LG:CONVENTIONNES ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:CONVENTIONNES ucase$$</font><br />$$LG:LOGEMENTS ucase$$$$END$$			
+						</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-vacances-loc">
+					<div class="link-vacances-loc">
+						<a href="$$_$$images/light_alpes$$IF!:FR:LANGUE$$_en$$END$$.png" title="" class="link-locvac fancybox_alpes$$IF!:FR:LANGUE$$_en$$END$$" target="_blank">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br /> $$LG:LOCVAC ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:LOCVAC ucase$$ offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI ETUDIANT -->
+				
+				<!-- SI NEUF -->
+				$$IF=:446:FORM:IDVPA$$
+				<div class="bg-img-etudiant-loc">
+					<div class="link-etudiant-loc">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+								$$IF=:FR:LANGUE$$<font>$$LG:LOCSPECIALES ucase$$</font><br />$$LG:ETUDIANTS ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:ETUDIANTS ucase$$</font><br />$$LG:LOCSPECIALES ucase$$$$END$$		
+						</a>
+					</div>
+				</div><br />
+				<div class="bg-img-logconvention">
+					<div class="link-logconvention">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idvpa=437&amp;lang=$$LANGUE$$" title="" class="link-loc">
+							$$IF=:FR:LANGUE$$<font>$$LG:LOGEMENTS ucase$$</font><br />$$LG:CONVENTIONNES ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:CONVENTIONNES ucase$$</font><br />$$LG:LOGEMENTS ucase$$$$END$$		
+						</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-vacances-loc">
+					<div class="link-vacances-loc">
+						<a href="$$_$$images/light_alpes$$IF!:FR:LANGUE$$_en$$END$$.png" title="" class="link-locvac fancybox_alpes$$IF!:FR:LANGUE$$_en$$END$$" target="_blank">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br /> $$LG:LOCVAC ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:LOCVAC ucase$$ offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI NEUF -->
+				
+				$$END$$
+				
+				
+				
+				
+				$$IF=:2:FORM:IDTT$$
+				
+				<!-- SI RIEN -->
+				$$IF!:439$446$441$440:FORM:IDVPA$$
+				<div class="bg-prestige-vnt">
+						<div class="link-prest-vnt">
+							<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=439&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+								$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$ offers$$END$$
+							</a>
+						</div>
+					</div>
+				<br />
+					<div class="bg-img-invest-vnt" style="margin-top:0px;">
+					<div class="link-invest-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=441&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:LASELECTION ucase$$</font><br />$$LG:INVESTISSEURS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>The investors</font><br />selection$$END$$
+						</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-renover-vnt">
+					<div class="link-renover-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;tri=d_dt_crea&amp;idvpa=480&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI RIEN -->
+				
+				
+				<!-- SI PRESTIGE -->
+				$$IF=:439:FORM:IDVPA$$
+					<div class="bg-img-invest-vnt" style="margin-top:0px;">
+					<div class="link-invest-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=441&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:LASELECTION ucase$$</font><br />$$LG:INVESTISSEURS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>The investors</font><br />selection$$END$$
+						</a>
+					</div>
+				</div>
+				<br />
+				<div class="bg-img-renover-vnt">
+					<div class="link-renover-vnt">				
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idvpa=480&lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI PRESTIGE -->
+				
+				<!-- SI INVEST -->
+				$$IF=:441:FORM:IDVPA$$
+					<div class="bg-prestige-vnt">
+						<div class="link-prest-vnt">
+							<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=439&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+								$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$ offers$$END$$
+							</a>
+						</div>
+					</div>
+				<br />
+				<div class="bg-img-renover-vnt">
+					<div class="link-renover-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=d_dt_crea&idvpa=480&lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:SPECIALNEUF ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$ newhomes</font><br />special offers$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI INVEST -->
+				$$END$$
+				<!-- SI NEUF -->
+				$$IF=:9:FORM:IDTT$$
+					<div class="bg-prestige-vnt">
+						<div class="link-prest-vnt">
+							<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=439&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+								$$IF=:FR:LANGUE$$<font>$$LG:DECOUVREZOFFRES ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$$$END$$
+								$$IF!:FR:LANGUE$$<font>$$LG:DECOUVREZNOS ucase$$</font><br />$$LG:ANN:VENPRESTIGE ucase$$ offers$$END$$
+							</a>
+						</div>
+					</div>
+				<br />
+					<div class="bg-img-invest-vnt" style="margin-top:0px;">
+					<div class="link-invest-vnt">
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idvpa=441&amp;lang=$$LANGUE$$" title="" class="link-vnt">
+							$$IF=:FR:LANGUE$$<font>$$LG:LASELECTION ucase$$</font><br />$$LG:INVESTISSEURS ucase$$$$END$$
+							$$IF!:FR:LANGUE$$<font>The investors</font><br />selection$$END$$
+						</a>
+					</div>
+				</div>
+				$$END$$
+				<!-- FIN SI NEUF -->
+				$$END$$
+
+			
+		</div><!--div#left-->
+		<div id="$$IF=:INDEX.HTM:REP:0$$right$$END$$$$IF!:INDEX.HTM:REP:0$$right-int$$END$$" class="fright">
+			$$IF!:INDEX.HTM:REP:0$$<div id="main-int">$$END$$
+				$$IF=:RESULTATS:IDT$$<div class="layer-annonce" style="display:none;"></span><img src="/z/webagency/slagence_X_V4/images/moteur/loader.gif" /><br />$$LG:VEUILLEZPATIENTER$$</span></div>$$END$$
+			
+			 $$IF=:immo,syndic.htm:REP:0$$
+				$$A:TITRE_PAGE=@@LG:SYNDICCOPRO@@$$
+			 $$END$$ 
+			 
+			 $$IF=:immo,qui-sommes-nous.htm:REP:0$$
+				$$A:TITRE_PAGE=@@LG:LIEN:QSN@@$$
+			 $$END$$ 
+			 
+			  $$IF=:immo,extranet.htm:REP:0$$
+				$$A:TITRE_PAGE=Accès extranet$$
+			 $$END$$
+			 
+			  $$IF=:immo,espace-client.htm:REP:0$$
+				$$A:TITRE_PAGE=@@LG:ESPACECLIENT pcase@@$$
+			 $$END$$
+			 
+			$$IF=:immo,agences-cis-immobilier.htm:REP:0$$
+				$$A:TITRE_PAGE=Agences CIS Immobilier$$
+			 $$END$$
+			
+		
+			
+			
+			$$IF!:CONTACT,ESTIMATION.HTM$RECHERCHE,REFINE.HTM:REP:0$$<div class="ttl-pages">$$TITRE_PAGE$$</div>$$END$$
+			$$IF=:CONTACT,ESTIMATION.HTM:REP:0$$
+			<div class="ttl-pages">
+				$$IF=:1:FORM:C$$
+					$$LG:LOUERVOTREBIEN pcase$$
+				$$END$$
+				$$IF=:2:FORM:C$$
+					$$LG:METTREVENTEBIEN pcase$$
+				$$END$$
+				$$IF=:3:FORM:C$$
+					$$LG:FAIREGERERCOPRO pcase$$
+				$$END$$
+			</div>$$END$$
+			
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG::::::QRY:TRI:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VALADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+$$INIT:JS_DOM_WINDOW=1$$
+
+	$$B:IMMOBW:FIL-ARIANE-ANNONCE:ALIAS:FIL$$$$IF=:FR:LANGUE$$
+	$$IF0:ANNLISTE:SIPANIER$$
+		$$IF+:2:FIL:NBR$$
+			$$BIF:FIL$$
+				$$A:LIMITE=@@FIL:NBR@@$$
+				<div id="filAriane">
+					<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" style="float:left;margin-right:4px;">
+						<a href="$$URLBASE$$" itemprop="url"><span itemprop="title">$$LG:ACCUEIL pcase$$</span></a> > 
+					</div>
+				$$DO$$
+					<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" style="float:left;margin-right:4px;">
+						$$IF!:1:LIMITE$$
+							<a href="$$FIL:URLVIRTUELLE replace www.www. www.$$ " style="text-decoration:underline;" title="$$FIL:LIBELLE$$" itemprop="url"><span itemprop="title">$$FIL:LIBELLE$$</span></a>$$IF!:LIMITE:FIL:I$$ > $$END$$
+						$$END$$
+					</div>
+				$$LOOP$$
+				</div>
+				<div class="clear"></div>
+			$$BFIN$$
+		$$END$$
+	$$END$$
+$$END$$
+	$$IF:HAUTRECHERCHEV2$$
+		$$SET:CSS_HAUT_RECHERCHE=1$$$$IF0:ANNLISTE:SIPANIER$$
+<div id="RechHautV2">
+	<div class="result-search">$$LG:RESULTATRECHCIS pcase$$</div>
+			<h1>
+				$$IF=:437:FORM:IDVPA$$Spécial étudiants : $$END$$
+				$$IF=:446:FORM:IDVPA$$$$LG:NEUFS ucase$$ : $$END$$
+				$$IF=:439:FORM:IDVPA$$$$LG:PRESTIGE2 ucase$$ : $$END$$
+				$$IF=:441:FORM:IDVPA$$Sélection investisseurs : $$END$$
+				$$IF=:480:FORM:IDVPA$$$$LG:NEUFS ucase$$ : $$END$$
+				$$IF=:440:FORM:IDVPA$$Espace privilège : $$END$$
+				$$IF=:479:FORM:IDVPA$$Logements conventionnés : $$END$$
+				
+				
+				$$IF=:RESULTATSCARTE:IDT$$
+					$$LG:CARTEGEOLOC pcase$$			
+				$$END:RESULTATSCARTE:IDT$$						
+				$$IF=:RESULTATS:IDT$$
+					$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$
+					$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$
+					$$ANNLISTE:PHRASE pcase$$
+					
+					$$IF:FORM:IDSOUSTYPEBIEN$$
+						$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+						<br />
+						$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+						$$END:!FORM:IDSOUSTYPEBIEN$$
+					$$END:FORM:IDSOUSTYPEBIEN$$			
+				$$END:RESULTATS:IDT$$	
+				$$IF:FORM:IDTYPEBIEN$$
+					$$IF=:BIENSVENDUS:IDT$$
+						$$VENDU:NBR formatnumber 0$$
+						$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$
+						$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$
+					$$END$$
+				$$END$$
+				
+					$$IF0:VENDU:NBR$$<br /><br />
+						<span>
+							$$IF0:ANNLISTE:SIPANIER$$
+								$$ANNLISTE:NBRESULT formatnumber 0$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBRESULT pluriel$$$$END:FR$$ Trouvée
+
+							$$END$$
+							$$IF=:RESULTATS:IDT$$
+								$$IF+:200:ANNLISTE:NBRESULT$$
+									$$IF=:FR:LANGUE$$
+										<sup>* 200 premières affichées</sup>
+									$$END$$
+									$$IF!:FR:LANGUE$$
+										<sup>* First 200 displayed</sup>
+									$$END$$				
+								$$END$$
+							$$END$$
+						</span>
+					$$END$$
+				
+			</h1>
+			<div class="clear"></div>
+										
+			$$IF!:1:FORM:IDTT$$
+				<ul id="btn_biensvendus">
+				<li class="gradient $$IF=:BIENSVENDUS:IDT$$actifLiRecherche$$END$$ recherche-biens-vendus"><a href="/recherche,vendu.htm?$$REP:QRY removeqry tri htmlencode$$&tri=d_dtmutation" title="">$$LG:VOIRBIENSVENDUS ucase$$</a></li>
+				</ul>
+			$$END$$
+			
+			$$IF!:BIENSVENDUS:IDT$$
+			<div class="div25 width25">
+				<div class="alerteEmailBloc">
+					<div class="alerteEmailDeco" id="hautAlerteEmail"><a href="">$$LG:CREERALERT ucase$$</a></div>
+					<div class="texteEmail"></div>	
+				</div>
+			</div>
+			$$END$$
+			<div class="div25 width35">
+				<div class="chapeauBloc">$$LG:AFFICHERPAR pcase$$</div>
+				<div class="infoBlocNoBorder">
+					<ul class="ulLeft">
+	<li class="gradient $$IF0:ANNLISTE:SIPANIER$$$$IF=:RESULTATS:IDT$$actifLiRecherche$$END$$$$END$$ recherche-liste"><a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?$$REP:QRY removeqry idpublication removeqry tri htmlencode removeqry localisation$$&tri=d_dt_crea" title="">$$LG:LISTE2 ucase$$</a></li>
+	$$IF=:1:OPTION_GEOLOC$$
+		<li class="gradient  recherche-carte"><a href="/recherche,$$PAGE:WAG_STYLE_CARTE$$.htm?$$IF:REP:1$$idpublication=$$REP:1$$&amp;$$END$$$$REP:QRY removeqry tri htmlencode$$" title="">$$LG:CARTE ucase$$</a></li>
+	$$END$$
+	<div class="clear"></div>
+</ul>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.ulLeft li').each(function() {
+			$(this).css('cursor','pointer');
+			$(this).hover(function() {
+				$(this).addClass('rollLi');
+			}, function() {
+				$(this).removeClass('rollLi');
+			});
+		});
+	});
+</script></div>
+			</div>
+			$$IF=:RESULTATS:IDT$$
+				$$IF0:ANNLISTE:SIPANIER$$
+				<div class="div25 width25">
+					<div class="chapeauBloc">$$LG:TRIERANNPAR pcase$$</div>
+					<div class="infoBloc">
+						<script type="text/javascript">
+	function Trier( idname ) {
+		var obj = document.getElementById(idname);
+		if( obj ) {
+			var critereTri = obj.options[obj.selectedIndex].value;
+			location.href= '$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+		}
+	}
+</script>
+$$IF=:RESULTATS:IDT$$
+<form id="Tri" action="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+	$$IF0:HAUTRECHERCHEV2$$		
+	<div id="Tri_Ctn">
+	$$END$$
+		$$IF0:HAUTRECHERCHEV2$$					
+			$$LG:TRIER pcase$$ :
+		$$END$$
+		<select name="triAnn" id="TriAnn" onchange="Trier(this.id);" $$IF0:HAUTRECHERCHEV2$$	class="miniForm"$$END$$$$IF:HAUTRECHERCHEV2$$class="triListeRecherche"$$END$$>
+			<option value="" class="select">$$LG:SELECTIONNEZ2 pcase$$</option>					
+			<optgroup class="optionPrix" label="$$LG:PRIX pcase$$">
+				<option class="pxcroissant" $$IF=:a_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,a_px:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$a_px$$IF=:1$3:FORM:IDTT$$_loyer$$END$$$$IF=:4:FORM:IDTT$$_bs_semaine$$END$$"> $$LG:PRIX pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+				<option class="pxdecroissant" $$IF=:d_px:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,d_px:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$d_px$$IF=:1$3:FORM:IDTT$$_loyer$$END$$$$IF=:4:FORM:IDTT$$_bs_semaine$$END$$"> $$LG:PRIX pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+			</optgroup>
+			<optgroup class="optionSurface" label="$$LG:SURFACE pcase$$">
+				<option class="surfcroissant" $$IF=:a_surface:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,a_surface:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$a_surface"> $$LG:SURFACE pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+				<option class="surfdecroissant" $$IF=:d_surface:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,d_surface:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$d_surface"> $$LG:SURFACE pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+			</optgroup>
+			<option class="optionCp" $$IF=:a_cp:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,a_cp:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$a_cp"> $$LG:CODEP pcase$$</option>								
+			<option class="optionVille" $$IF=:a_ville:FORM:TRI$$selected="selected"$$END$$ $$IF=:d_si_exclusif,a_ville:FORM:TRI$$selected="selected"$$END$$ value="$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$d_si_exclusif,$$END$$a_ville"> $$LG:VILLE pcase$$</option>
+		</select>		
+	$$IF0:HAUTRECHERCHEV2$$		
+	</div>
+	$$END$$
+</form><!-- fin #Tri -->
+$$END:RESULTATS:IDT$$</div>
+				</div>
+				$$END$$
+			$$END$$
+			
+				<a class="pictorss" href="$$URLBASE$$/flux,rss.htm?lang=$$LANGUE$$" title=""><img src="images/picto_rss.png" alt="" /></a>					
+				<a class="pictoprint" href="javascript:void(0);" onclick="print();"><img src="images/picto_print.png" alt="" /></a>
+				
+				
+			$$IF=:RESULTATS:IDT$$
+				$$IF0:ANNLISTE:SIPANIER$$
+				<div class="div25 width15">
+					<div class="chapeauBloc">$$LG:VOIR pcase$$ $$LG:MASELECT lcase$$</div>
+					<div class="infoBloc gradient">
+						<a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$">
+						<div id="NbAnnPanier">
+							$$BIF0:CHECKBASKET$$
+								0 annonce
+							$$BFIN$$
+						</div>
+						$$BIF:CHECKBASKET$$
+						<span>
+							$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$CHECKBASKET:NBR pluriel$$$$END:FR$$
+						</span>
+						$$BFIN$$
+						<div class="clear"></div>
+						</a>
+					</div>
+				</div>
+				$$END$$
+			$$END$$
+			<div class="clear"></div>
+			$$IF!:BIENSVENDUS:IDT$$
+			<div class="phraseInscriptionEmail">
+				<p>$$LG:BATMAN pcase$$.</p>	
+			</div>
+			$$END$$
+</div>
+$$END$$
+$$IF=:FR:LANGUE$$<img src="$$_$$images/titre_prestige.jpg" class="titre_prestige" style="display:none;"/>$$END$$
+$$IF!:FR:LANGUE$$<img src="$$_$$images/titre_prestige_en.jpg" class="titre_prestige" style="display:none;"/>$$END$$$$IF=:RESULTATS:IDT$$
+			
+			<div id="RechPagesHaut" style="display:none;">
+				$$IF:ANNLISTE:NBRPAGES$$
+<div class="pageCourante">$$LG:PAG pcase$$ $$ANNLISTE:PAGE$$ / $$ANNLISTE:NBRPAGES$$</div>
+<div class="rechLiensPages">
+	<script type="text/javascript">
+			document.write('$$IF!:1$2:ANNLISTE:PAGE$$<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=1" title="$$LG:PREMIEREPAGE pcase$$"><span>&lt;&lt;</span></a>$$END$$$$IF:ANNLISTE:LIENARRIERE$$<a class="prev" href="$$ANNLISTE:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$"><span>&lt;</span></a>$$END$$$$ANNLISTE:MULTIPAGE removeqry alierr$$$$IF:ANNLISTE:LIENAVANT$$<a class="next" href="$$ANNLISTE:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$"><span>&gt;</span></a>$$END$$$$IF!:ANNLISTE_NBRPAGES$ANNLISTE_NBRPAGES exec (XX-1):ANNLISTE:PAGE$$<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=$$ANNLISTE:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><span>&gt;&gt;</span></a>$$END$$'); 
+	</script>
+	<div class="clear"></div>
+</div>$$END:ANNLISTE:NBRPAGES$$		
+			</div>
+			<!-- fin #RechPagesHaut -->
+				
+		$$END:RESULTATS:IDT$$
+	$$END$$
+	
+	$$IF=:8:FORM:IDTT$$
+		<div class="bg-prest">
+			PRESTIGE
+		</div>
+	$$END$$$$BIF:ANNLISTE$$
+<div id="RechResultat" $$IF=:1:FORM:IDTT$$class="location"$$END$$>
+$$DO:config:config$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:LIBELLE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<div class="blocAnnonce $$IF=:1:ANNLISTE:I exec XX%2$$color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$color2$$END$$" id="Annonce$$ANNLISTE:IDANNONCE$$">
+		<div class="blocPhotoAnnonce">
+			$$IF:ANNLISTE:SI_COUPDECOEUR$$$$IF!:1:PICTO_COEUR$$<div class="blocPhotoCoupCoeur"></div>$$END$$$$END:COUPDECOEUR$$
+			$$IF:ANNLISTE:SI_EXCLUSIF$$<div class="blocPhotoExclusif"></div>$$END:SI_EXCLUSIF$$
+			$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$$$IF0:ANNLISTE:SIBAISSEPRIX$$<div class="blocPhotoNouveau"></div>$$END$$$$END$$
+			$$IF:ANNLISTE:SI_PROMO$$<div class=blocPhotoPromo"></div>$$END:SI_PROMO$$
+			$$IF:ANNLISTE:IDPHOTO$$	
+				<div class="blocBigPhoto"><img src="$$ANNLISTE:PHOTOURL0$$" /></div>
+			$$END$$
+			<div class="blocPhoto2$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$">
+				
+				$$IF:ANNLISTE:C175URL0$$
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+					<img src="$$ANNLISTE:PHOTO_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				</a>
+				$$END:ANNLISTE:C175URL0$$
+				$$IF0:ANNLISTE:C175URL0$$
+					$$IF:ANNLISTE:SI_LOGO$$
+					<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">	
+						<div class="noPhotoLogo">
+	<img src="$$ANNLISTE:URLLOGO$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+</div></a>
+					$$END$$
+				$$END$$
+			</div>
+		
+				
+		</div>
+		
+		<div class="detailsAnnonce">
+			<div id="Filtres">
+<!-- Si prestige -->
+$$IF=:439:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/439.png');">
+	<span>$$LG:PRESTIGES2 ucase$$</span>
+</div>
+$$END$$
+<!-- Fin si prestige -->
+
+<!-- Si neuf -->
+$$IF=:480:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/480.png');">
+	<span>$$LG:NEUF ucase$$</span>
+</div>
+$$END$$
+$$IF=:446:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/446.png');">
+	<span>$$LG:NEUF ucase$$</span>
+</div>
+$$END$$
+<!-- Fin si neuf -->
+
+<!-- Si invest -->
+$$IF=:441:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/441.png');">
+	<span>$$LG:INVESTISSEUR ucase$$</span>
+</div>
+$$END$$
+<!-- Fin si invest -->
+
+<!-- Si vip -->
+$$IF=:440:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/440.png');">
+	<span>VIP</span>
+</div>
+$$END$$
+<!-- Fin si vip -->
+
+<!-- Si étudiant -->
+$$IF=:437:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/437.png');">
+	<span>$$LG:ETUDIANT$$</span>
+</div>
+$$END$$
+<!-- Fin si étudiant -->
+
+<!-- Si logements conventionnés -->
+$$IF=:479:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/479.png');">
+	<span>$$LG:LOGEMENTSCONV$$</span>
+</div>
+$$END$$
+<!-- Fin si logements conventionnés -->
+
+<!-- Si exclu -->
+$$IF:ANNLISTE:SI_EXCLUSIF$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/exclu.png');">
+	<span>$$LG:EXCLUSIVITE ucase$$</span>
+</div>
+$$END$$
+<!-- Fin exclu -->
+
+$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/481.png');">
+	<span>$$LG:NEW ucase$$</span>
+</div>
+$$END$$
+
+<!-- Si CDC -->
+$$IF:ANNLISTE:SI_COUPDECOEUR$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/cdc.png');">
+	<span>$$LG:SELECTION ucase$$</span>
+</div>
+$$END$$
+<!-- Fin CDC -->
+
+<!-- Si dispo -->
+$$IF=:481:ANNLISTE:IDVALEURPERSO$$
+<div class="UnFiltre" style=background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/dispo.png');">
+	<span>$$LG:DISPOIMMEDIATE$$</span>
+</div>
+$$END$$
+<!-- Fin dispo -->
+
+
+
+</div><div id="TextAnnonceRech">
+				<div class="blocVilleDetails">$$ANNLISTE:AVILLE$$ <!--($$ANNLISTE:ACP$$)-->
+					
+				</div>
+				<div class="blocLibelleDetails">
+				$$IF:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE$$
+				$$END$$
+				$$IF0:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE_FR$$
+				$$END$$
+				</div>
+				<div class="blocSurfaceDetails">
+
+					$$IF:ANNLISTE:NB_PIECES$$
+				$$ANNLISTE:NB_PIECES$$						
+					$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+							
+							$$IF:ANNLISTE:SURFACE$$ - $$END:ANNLISTE:SURFACE$$ 
+	
+				$$END:ANNLISTE:NB_PIECES$$
+				
+				
+				$$IF:ANNLISTE:SURFACE$$
+				
+					$$ANNLISTE:SURFACE field 1$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$$$END:ANNLISTE:SURFACE$$
+				</div>
+			$$IF:ANNLISTE:SURF_TERRAIN$$
+			<div class="blocSurfaceDetails">
+				$$LG:SURFT pcase$$
+				$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$
+				$$IF=:EN:LANGUE$$
+					(approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+					$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+				$$END:EN$$						
+			</div>
+				$$END:ANNLISTE:SURF_TERRAIN$$
+				<div class="blocDescAnnDetails">
+							$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$			
+								$$IF:ANNLISTE:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$END:IDTYPETRANSACTION$$
+						<p>
+							$$IF:ANNLISTE:DESCRIPTIF$$
+	$$ANNLISTE:DESCRIPTIF smalltextv2 125$$
+$$END$$
+$$IF0:ANNLISTE:DESCRIPTIF$$
+	$$IF:ANNLISTE:DESCRIPTIF_FR$$
+		$$ANNLISTE:DESCRIPTIF_FR smalltextv2 125$$
+	$$END$$
+	$$IF0:ANNLISTE:DESCRIPTIF_FR$$
+		$$LG:ANNSANSDESCR pcase$$.
+	$$END$$
+$$END$$	</p>							
+						
+$$IF:ANNLISTE:PRIX$$
+	$$IF!:9:FORM:IDTT$$
+	<div class="prixDetailAnnonce $$IF:ANNLISTE:SI_PROMO$$prixPromoDetailAnnonce$$END$$">
+		$$ANNLISTE:PRIX formatnumber 0$$
+		$$IF=:2:FORM:IDTT$$
+		€
+		$$END$$
+		$$IF=:1:FORM:IDTT$$
+			$$IF=:€CC:ANNLISTE:PRIX_UNITE$$€ <sup>Charges comprises</sup>$$END$$ 
+			$$IF=:€+CH:ANNLISTE:PRIX_UNITE$$€ <sup>+ Charges</sup>$$END$$ 
+			$$ANNLISTE:PRIX_PERIODEVAC$$
+		$$END$$
+		$$IF=:2$6$8$10:FORM:IDTT$$<sup>&nbsp;FAI</sup>$$END:2:FORM:IDTT$$
+$$IF!:1:SELECTION_INDEX_NO_PICTO$$
+$$IF!:1:MASQUE_BAISSE_PRIX$$
+$$IF=:1:ANNLISTE:IDTYPETRANSACTION$$
+    
+    $$IF=:2:ANNLISTE:IDTYPECRITEREBPLOCATION$$
+        
+        $$IF=:TRUE:ANNLISTE:SIBAISSEPRIX$$
+            <img src="$$~$$images/bandeaux/baisseprix_$$LANGUE$$.png" alt="" title="" />
+        $$END$$
+    $$END$$
+    $$IF=:3:ANNLISTE:IDTYPECRITEREBPLOCATION$$
+        
+        $$IF=:TRUE:ANNLISTE:SISELECTBAISSEPRIX$$
+            $$IF=:TRUE:ANNLISTE:SIBAISSEPRIX$$
+                <img src="$$~$$images/bandeaux/baisseprix_$$LANGUE$$.png" alt="" title="" />    
+            $$END$$
+        $$END$$
+    $$END$$
+$$END$$
+$$IF=:2$8:ANNLISTE:IDTYPETRANSACTION$$
+    
+    $$IF=:2:ANNLISTE:IDTYPECRITEREBPVENTE$$
+        
+        $$IF=:1:ANNLISTE:SIBAISSEPRIX$$
+            <img src="$$~$$images/bandeaux/baisseprix_$$LANGUE$$.png" alt="" title="" />
+        $$END$$
+    $$END$$
+    $$IF=:3:ANNLISTE:IDTYPECRITEREBPVENTE$$
+                
+        $$IF=:TRUE:ANNLISTE:SISELECTBAISSEPRIX$$
+            $$IF=:TRUE:ANNLISTE:SIBAISSEPRIX$$
+                <img src="$$~$$images/bandeaux/baisseprix_$$LANGUE$$.png" alt="" title="" />    
+            $$END$$
+        $$END$$
+    $$END$$
+$$END$$
+$$END$$
+$$END:SELECTION_INDEX_NO_PICTO$$$$IF:ANNLISTE:PX_RENTE$$<span class="rente">($$LG:RENTE lcase$$ : $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$)</span>$$END$$
+		$$IF=:1:FORM:IDTT$$<br />
+			<span class="prixCharges">
+				$$IF:ANNLISTE:PX_CHARGES$$<span class="charges">$$LG:CHARGES pcase$$ : $$ANNLISTE:PX_CHARGES formatnumber 0$$ &euro;</span> - $$END$$
+				$$IF:ANNLISTE:HONORAIRES$$<span class="honoraires">$$LG:HONORAIRES pcase$$ : $$ANNLISTE:HONORAIRES formatnumber 0$$ &euro;</span>$$END$$
+				$$IF:ANNLISTE:GARANTIE$$<span class="garantie">- $$IF!:FR:LANGUE$$ $$LG:GARANTIE pcase$$ $$END$$
+				$$IF=:FR:LANGUE$$ Dépot de garantie $$END$$ : $$ANNLISTE:GARANTIE$$</span>$$END$$	 
+			</span>
+		$$END:1:FORM:IDTT$$		
+			
+	</div>
+	$$END:9:FORM:IDTT$$
+$$END:ANNLISTE:PRIX$$</div><!-- .descrAnn -->
+				<div id="zoneMetro$$ANNLISTE:I$$"></div>
+				<script type="text/javascript">
+					$(document).ready(function() {
+						dispMetro('$$ANNLISTE:IDANNONCE getlieux escape$$','zoneMetro$$ANNLISTE:I$$');
+					});
+				</script>
+			</div>
+			
+			<div id="detail$$ANNLISTE:IDANNONCE$$" class="BtnDetailRech">	
+				<a href="$$LIENDETAIL$$" title="">		
+					<div class="pictoDetail"></div>								
+					<div class="textePicto texte-det">$$LG:PLUSDETAILS pcase$$</div>
+				</a>
+			</div>
+			<div class="clear"></div>			
+				
+		</div> <!-- .detailsAnnonce -->
+		
+		<div class="contactAnnonces">
+		
+			<div class="miniPict">
+				<div class="backgroundAnnonces">
+					$$IF:ANNLISTE:THUMBURL1$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL1$$\"><img src=$$ANNLISTE:THUMBURL1$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL2$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL2$$\"><img src=$$ANNLISTE:THUMBURL2$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL3$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL3$$\"><img src=$$ANNLISTE:THUMBURL3$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL4$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL4$$\"><img src=$$ANNLISTE:THUMBURL4$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL5$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL5$$\"><img src=$$ANNLISTE:THUMBURL5$$></a></div>
+					$$END$$
+				</div>
+			</div>
+
+						<div class="refAnnonces">
+							$$IF:ANNLISTE:DT_DISPO$$<p>$$LG:DISPOLE pcase$$ : $$ANNLISTE:DT_DISPO date 2$$</p>$$END$$
+							<p>$$LG:MAJ pcase$$ : $$ANNLISTE:DT_FRAICHEUR date 2$$</p>
+							<p>$$LG:REFER pcase$$ : $$ANNLISTE:REFANNONCE$$</p>
+						</div>			
+						<div class="contactAnnoncesMaj">				
+							<div class="liensAnn">	
+								$$IF:ANNLISTE:EMAIL$$
+									<div id="email$$ANNLISTE:IDANNONCE$$" class="BtnContactRech">		
+											<a href="$$LIENDETAIL$$#form_contact" title="">			
+											<div class="pictoContact"></div>
+											<div class="textePicto texte-select"><font>$$LG:CONTACTER1 pcase$$</font><br /> $$LG:LAGENCE lcase$$</div>
+										</a>
+									</div>					
+									$$END:EMAIL$$
+									$$IF:URL_AGENCE$$
+										$$IF:ANNLISTE:URL$$
+										<p><a href="$$ANNLISTE:URL$$" onclick="window.open(this.href); return false;">$$LG:SITEINTERNET pcase$$</a></p>
+										$$END:URL$$
+									$$END:URL_AGENCE$$
+							</div>
+						</div>
+							$$IF0:ANNLISTE:SIPANIER$$
+					<!-- selection annonce -->
+					<div id="selection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">							
+							<a href="javascript:selectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoAjoutSelection"></div>
+								<div class="textePicto texte-select">
+									$$IF=:FR:LANGUE$$<font>Ajouter à</font><br />ma sélection$$END$$
+									$$IF!:FR:LANGUE$$<font>Add to</font><br /> my selection$$END$$	
+								</div>
+							</a>
+						</div>
+						$$END$$
+						$$IF:ANNLISTE:SIPANIER$$
+						<!-- deselection annonce -->
+						<div id="deselection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">
+							<a href="javascript:deselectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoSupprimer"></div>
+								<div class="textePicto texte-select">$$LG:SUPPRIMERSELEC pcase$$</div>
+							</a>
+						</div>
+						$$END$$
+						
+						
+						
+					<div class="clear"></div>
+		</div>
+</div><!-- .blocAnnonce -->
+$$LOOP$$
+<div class="clear"></div>
+</div><!-- #RechResultat -->
+$$BFIN$$
+$$BIF0:ANNLISTE$$
+<div id="RechResultat" $$IF=:1:FORM:IDTT$$class="location"$$END$$>
+</div>
+$$BFIN$$
+<div class="clear pushleft"></div>
+
+
+$$IF=:RESULTATS:IDT$$
+	
+	<div id="RechPagesBas" style="display:none;">
+		$$IF:ANNLISTE:NBRPAGES$$
+<div class="pageCourante">$$LG:PAG pcase$$ $$ANNLISTE:PAGE$$ / $$ANNLISTE:NBRPAGES$$</div>
+<div class="rechLiensPages">
+	<script type="text/javascript">
+			document.write('$$IF!:1$2:ANNLISTE:PAGE$$<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=1" title="$$LG:PREMIEREPAGE pcase$$"><span>&lt;&lt;</span></a>$$END$$$$IF:ANNLISTE:LIENARRIERE$$<a class="prev" href="$$ANNLISTE:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$"><span>&lt;</span></a>$$END$$$$ANNLISTE:MULTIPAGE removeqry alierr$$$$IF:ANNLISTE:LIENAVANT$$<a class="next" href="$$ANNLISTE:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$"><span>&gt;</span></a>$$END$$$$IF!:ANNLISTE_NBRPAGES$ANNLISTE_NBRPAGES exec (XX-1):ANNLISTE:PAGE$$<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=$$ANNLISTE:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><span>&gt;&gt;</span></a>$$END$$'); 
+	</script>
+	<div class="clear"></div>
+</div>$$END:ANNLISTE:NBRPAGES$$		
+	</div><!-- #RechPagesBas -->
+	
+$$END:RESULTATS:IDT$$
+
+		
+
+$$IF0:ANNLISTE:SIPANIER$$
+	$$IF!:BIENSVENDUS:IDT$$
+	<div id="blocAlerteEmail" style="display:none;">
+		<div id="AlerteEmail" style="width:auto;border:none;">
+			<h4>$$LG:ALERTEGRATUITE pcase$$</h4>
+			<h3>$$IF=:FR:LANGUE$$Recevez les annonces correspondant à vos critères$$END$$$$IF!:FR:LANGUE$$$$LG:RECEVEZ pcase$$$$END$$ : <span>$$ANNLISTE:PHRASESTRI lcase$$</span></h3>
+				$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<p style="font-weight:bold;" class="optinCheck">
+						<label style="font-weight:bold; font-size:12px;">$$IF=:FR:LANGUE$$J'accepte de recevoir des informations de la part de $$URLBASE$$$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>	
+					</p>
+				$$END:OPTIN_CONTRAT$$
+			<form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" method="post" id="creerAlerte">
+				<div id="AlerteForm">
+					<input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
+					<input type="hidden" name="phrase" value="$$ANNLISTE:PHRASE$$" />
+					<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+					<input type="hidden" name="page_base" value="http://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry alierr htmlencode$$" />	
+					<input type="hidden" name="page_err" value="alerte,redirect.htm" />	
+					<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+					<input type="hidden" name="srv" value="$$SRV$$" />
+					<input type="hidden" name="lang" value="$$LANGUE$$" />
+					$$IF0:ERRE$$
+					<!-- envoi du mail de confirmation -->		
+					<input type="hidden" name="email_info" value="/alerte,inscription.htm" />					
+					$$END$$						
+				
+					$$IF:FORM:ALIERR$$
+					<div class="erre">
+						<div class="pictoErre"></div>
+						$$FORM:ALIERR$$
+						<div class="clear"></div>
+					</div>
+					$$END:ALIERR$$
+								
+					<p>						
+						$$LG:FORMATRECEPTION pcase$$ :
+						<label><input type="radio" name="si_txt" value="0" checked="checked" /> $$LG:AI9$$ $$IF=:FR:LANGUE$$(couleurs et photos, recommandé)$$END:LANGUE$$$$IF!:FR:LANGUE$$(colors and pictures, recommended)$$END:LANGUE$$</label>
+						<label><input type="radio" name="si_txt" value="1" /> $$LG:AI10$$</label>	
+					</p>
+					<p>		
+						$$IF=:FR:LANGUE$$Envoi des annonces :$$END$$
+						$$IF!:FR:LANGUE$$Reception Frequency:$$END$$
+						<label><input type="radio" name="idFrequenceAlerte" value="1" checked="checked" /> $$LG:AI19 lcase$$</label>
+						<label><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI18 lcase$$</label>					
+					</p>
+					<p>
+						$$LG:VOTRENOM pcase$$ <input type="text" class="miniForm" name="nom" maxlength="30" value="$$IF:FORM:NOM$$$$FORM:NOM$$$$END$$" />
+				  		$$LG:AI6 pcase$$ <input type="text" class="miniForm" name="email" maxlength="50" value="$$IF:FORM:EMAIL$$$$FORM:EMAIL$$$$END$$" />
+				 	 <input type="submit" class="miniBouton" value="$$LG:CREERALERTEMAIL pcase$$" onclick="location.href='/alerte,validation_ok.htm'" />
+					</p>
+				</div><!-- #AlerteForm -->
+			</form>
+			<p class="note">
+				$$LG:AI12$$
+			</p>
+			$$IF=:1:PAGE:OPTIN_CONTRAT$$
+						$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+						$$BIF:MENTIONS$$	
+							$$DO:1:1$$
+									<p style="font-size:9px;margin-bottom:5px;" class="infosLegalesEmail">
+										Les informations communiquées sont destinées à 
+										$$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ 
+										Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression 
+										de vos données personnelles (Loi du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés). 
+										Pour les exercer, adressez-vous à : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ - 
+										$$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$
+									</p>
+							$$LOOP$$
+						$$BFIN:MENTION$$		
+					$$END$$
+			<div style="position:absolute;top:-12px;right:-12px;z-index:100;width:30px;height:30px;"><a href="#" class="closeDOMWindow"><img src="$$~$$images/pictos/croix.png" /></a></div>
+		</div><!-- #AlerteEmail -->
+	</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var $background = $('#AlerteEmail').css('background-color');
+				$('#hautAlerteEmail').click(function(){ 
+				    $.openDOMWindow({ 
+				        loader:1, 
+				        loaderImagePath:'z/webagency/slagence_X_V4/images/moteur/loader.gif', 
+				        loaderHeight:11, 
+				        loaderWidth:43,
+				        height:280,
+				        width:775,
+				        windowPadding:10,
+				        borderSize:3,
+				        windowBGColor:$background,
+				        windowSourceID:'#blocAlerteEmail'
+				    }); 
+				    return false; 
+				}); 
+			});
+		</script> 
+	$$END:BIENSVENDUS:IDT$$
+$$END:ANNLISTE:SIPANIER$$
+
+$$IF0:ANNLISTE:SIPANIER$$
+	<div class="dicoImmo">
+		$$IF:ANNLISTE:NBR$$
+		$$IF=:2$6$8$10:FORM:IDTT$$<p>FAI : $$LG:FAI lcase$$$$IF=:FR:LANGUE$$, prix net, hors frais notariés, d'enregistrement et de publicité foncière$$END:FR:LANGUE$$.</p>$$END$$
+		$$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$
+		$$END:ANNLISTE:NBR$$
+		<p>$$LG:LOI78AGENCE$$ <a href="$$URLBASE$$/legal,mentions.htm?lang=$$LANGUE$$" title="">$$LG:ADR2EDITEUR$$</a>.</p>
+	</div>
+	<div class="clear pushleft"></div>	
+$$END:ANNLISTE:SIPANIER$$
+
+$$IF:ANNLISTE:NBRPAGES$$
+
+<div class="retourHaut">
+	<a href="#Header" class="boutonScroll" title="">$$LG:TOP pcase$$</a>
+</div>
+<div class="clear"></div>$$END:ANNLISTE:NBRPAGES$$<script type="text/javascript">
+	var divcontent = "RechResultat";	
+	$(document).ready(function() {
+		
+		
+		
+
+	reloadsearch();
+	
+	$('.triListeRecherche').removeAttr('onchange');
+	var maxpage="$$ANNLISTE:NBRPAGES$$";
+	usePagination(maxpage)
+
+	$('#Mini_Send .miniBlocSelection').html('');
+	var btn='<div class="miniBouton" value="Rechercher" style="cursor: pointer;"></div>';
+	$('#Mini_Send .miniBlocSelection').html(btn);
+//DETERMINE LA DIV OU SE CHARGENT LES ANNONCES					
+	
+//RELOAD AU CHANGEMENT D'IDTT
+	$('#Mini_Transaction').on('click','input',function(){
+		var qryidtt = 'idtt='+$(this).val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+		changeidvpa(qryidtt);
+		$('#idvpa').children('option').each(function(){
+				$(this).attr('selected', false);
+				$('#idvpa').trigger('liszt:updated');
+		});
+
+		$('.triListeRecherche').children('.select').attr('selected',true);
+	
+		if ($(this).val() == 1){
+			$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+			$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+			$('#MiniInputBudgetMin').attr('name','px_loyermin');
+			$('#MiniInputBudgetMax').attr('name','px_loyermax');
+			$('#RechResultat').addClass('location').removeClass('vente');
+			$('#RechHautV2').addClass('location').removeClass('vente');
+			$('#RechPagesHaut').addClass('location').removeClass('vente');
+			$('#RechPagesBas').addClass('location').removeClass('vente');
+		}else{
+			$('.triListeRecherche').find('.pxcroissant').val('a_px');
+			$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+			$('#MiniInputBudgetMin').attr('name','pxmin');
+			$('#MiniInputBudgetMax').attr('name','pxmax');
+			$('#RechResultat').addClass('vente').removeClass('location');
+			$('#RechHautV2').addClass('vente').removeClass('location');
+			$('#RechPagesHaut').addClass('vente').removeClass('location');
+			$('#RechPagesBas').addClass('vente').removeClass('location');
+		}
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+//REMISE A ZERO
+var noqry="";
+
+//LANCER LA RECHERCHE AU CLICK SUR LE BOUTON RECHERCHER
+$('#Mini_Send').on('click', '.miniBouton', function (e){
+	e.preventDefault();
+	var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+	loadInfos(divcontent,qry);	
+});
+allcheck();	
+//RELOAD AU CLICK 
+//AFFICHAGE INFO
+		$('#Mini_Pieces,#Mini_Chambres').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('#Mini_Biens').on('change','.miniForm',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('#Mini_idvpa').on('click','.chzn-results li',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('#open').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('#Mini_Rayon').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('.infoBloc').on('change','.triListeRecherche',function(){
+			$('#Mini_Moteur input[name="tri"]').val($(this).val());
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+		$('#Mini_Suggest').on('click','#suggestionsBox',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+	
+			$('.moteur-avantage').on('click', 'div[class*="conteneur-checkbox"] .h3-like', function (){
+				var liste = $(this).parent().children('.liste-checkbox')
+				if (liste.hasClass('display-none')){
+					liste.removeClass('display-none');
+					liste.addClass('display-show');
+				}else{
+					liste.removeClass('display-show');
+					liste.addClass('display-none');
+				}
+			});	
+		$('#Mini_Moteur').on('click', '.btn-raz', function (){
+		
+			$('#idvpa').val( $('#idvpa').prop('defaultSelected') );
+			$('#hiddenidvpa').val('');
+			$('#idtypebien').val( $('#idtypebien').prop('defaultSelected') );
+			$('#cpSearch').next('li').remove();
+			$('#idvpa').trigger("liszt:updated");
+			$('#idtypebien').trigger("liszt:updated");
+			$('#MiniInputBudgetMin').val('Min');
+			$('#MiniInputBudgetMax').val('Max');
+			$('#MiniInputSurfaceMin').val('Min');
+			$('#MiniInputSurfaceMax').val('Max');
+			$('#MiniInputRef').val('');
+			$('#Mini_Moteur').find('input[type="checkbox"]').each(function(){
+				$(this).attr('checked',false);
+			});
+			var qry= 'idtt=$$FORM:IDTT$$';
+			loadInfos(divcontent,qry);
+			
+		});
+	
+});
+function changeidvpa(qryidtt){
+	var xhr = $.ajax({
+		type: 'GET',
+		data:qryidtt,
+		dataType: 'html',
+		url: '/moteur,mini,incl_idvpa.htm',
+		beforeSend: function() {
+		},
+		success: function(data) {	
+			$('#idvpa').html(data);
+			$('#idvpa').trigger("liszt:updated");
+		},error:function() {
+		},complete:function() {
+		}
+	});
+}
+function closeville(){
+	$('.closeLi').on('click',function(){
+		$(this).parent('li').remove();
+		$('#ci').val('');
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+	$('#Mini_Moteur').on('click','.closeLi',function(){
+		$(this).parent('li').remove();
+		$('#ci').val('');
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+}
+function clickload(){
+	var qry=$('#moteur input,select').filter(function(){return $(this).val();}).serialize();
+	loadInfos(divcontent,qry);
+}
+function reloadsearch(){
+	var hashqry = window.location;
+	var normalqry = hashqry.search.split('?');
+	var allqry = hashqry.hash.split('#');
+	if (allqry != "" ){
+		var needqry = allqry[1];
+		if(needqry){
+			var cutqry = needqry.split('&');
+			for (i=0;i<cutqry.length;i++){
+				var fullqry = cutqry[i].split('=');
+				var forminput = fullqry[0];
+				if(fullqry[0]=='idtt'){
+							$('#idtt').val(fullqry[1]);
+							var qryidtt='idtt='+$('#idtt').val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+							changeidvpa(qryidtt);
+							if ($('#idtt').val() == 1){
+								$('#bg-mot-int').addClass('loc').removeClass('ven');
+								$('#RechResultat').addClass('location').removeClass('vente');
+								$('#RechHautV2').addClass('location').removeClass('vente');
+								$('#RechPagesHaut').addClass('location').removeClass('vente');
+								$('#RechPagesBas').addClass('location').removeClass('vente');
+							}else{
+								$('#bg-mot-int').addClass('ven').removeClass('loc');
+								$('#RechResultat').addClass('vente').removeClass('location');
+								$('#RechHautV2').addClass('vente').removeClass('location');
+								$('#RechPagesHaut').addClass('vente').removeClass('location');
+								$('#RechPagesBas').addClass('vente').removeClass('location');
+							}
+						};
+				$('#Mini_Moteur input').each(function(){
+					var thisinput = $(this).attr('name');
+					if(forminput==thisinput){
+						if($(this).attr('type')=='radio'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='checkbox'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='text'){
+							$(this).val(fullqry[1]);
+						}
+					}
+				});
+				if(forminput=='idtypebien'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (j=0;j<eachselect.length;j++){
+						$('#idtypebien').children('option').each(function(){
+							if($(this).val() == eachselect[j]){
+								$(this).attr('selected', true);
+								$('#idtypebien').trigger('liszt:updated');
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_pieces'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (k=0;k<eachselect.length;k++){
+						$('#Mini_Pieces').children('input ').each(function(){
+							if($(this).val() == eachselect[k]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_chambres'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (z=0;z<eachselect.length;z++){
+						$('#Mini_Chambres').children('input ').each(function(){
+							if($(this).val() == eachselect[z]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='ci'){
+					var allselect=fullqry[1];
+					$('#ci').val(allselect);
+					recupville(allselect);
+				}
+				else if(forminput=='idvpa'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (n=0;n<eachselect.length;n++){
+						$('#idvpa').children('option').each(function(){
+							if($(this).val() == eachselect[n]){
+								$(this).attr('selected', true);
+								$('#idvpa').trigger('liszt:updated');
+								$('#hiddenidvpa').val(eachselect[n]);
+							}
+						});
+					}
+				}
+			}
+		}
+	}else{
+		var needqry = normalqry[1];
+		if(needqry){
+			var cutqry = needqry.split('&');	
+			for (i=0;i<cutqry.length;i++){
+				var fullqry = cutqry[i].split('=');
+				var forminput = fullqry[0];
+				$('#Mini_Moteur input').each(function(){
+					var thisinput = $(this).attr('name');
+					if(thisinput=='checkidtt'){
+						if(fullqry[0]=='idtt'){
+							$('#idtt').val(fullqry[1]);
+							var qryidtt='idtt='+$('#idtt').val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+							changeidvpa(qryidtt);
+						}
+						if ($('#idtt').val()== 1){
+							$('.triListeRecherche').children('.select').attr('selected',true);
+							$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+							$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+						
+							$('#MiniInputBudgetMin').attr('name','px_loyermin');
+							$('#MiniInputBudgetMax').attr('name','px_loyermax');
+							$('#bg-mot-int').addClass('loc').removeClass('ven');
+							$('#RechResultat').addClass('location').removeClass('vente');
+							$('#RechHautV2').addClass('location').removeClass('vente');
+							$('#RechPagesHaut').addClass('location').removeClass('vente');
+							$('#RechPagesBas').addClass('location').removeClass('vente');
+						}else{
+							$('.triListeRecherche').children('.select').attr('selected',true);
+							$('.triListeRecherche').find('.pxcroissant').val('a_px');
+							$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+						
+							$('#MiniInputBudgetMin').attr('name','pxmin');
+							$('#MiniInputBudgetMax').attr('name','pxmax');
+							$('#bg-mot-int').addClass('ven').removeClass('loc');
+							$('#RechResultat').addClass('vente').removeClass('location');
+							$('#RechHautV2').addClass('vente').removeClass('location');
+							$('#RechPagesHaut').addClass('vente').removeClass('location');
+							$('#RechPagesBas').addClass('vente').removeClass('location');
+						}
+					}
+					if(forminput==thisinput){
+						if($(this).attr('type')=='radio'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='checkbox'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='text'){
+							$(this).val(fullqry[1]);
+						}
+					}
+				});
+				if(forminput=='idtypebien'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (j=0;j<eachselect.length;j++){
+						$('#idtypebien').children('option').each(function(){
+							if($(this).val() == eachselect[j]){
+								$(this).attr('selected', true);
+								$('#idtypebien').trigger('liszt:updated');
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_pieces'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (k=0;k<eachselect.length;k++){
+						$('#Mini_Pieces').children('input ').each(function(){
+							if($(this).val() == eachselect[k]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_chambres'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (z=0;z<eachselect.length;z++){
+						$('#Mini_Chambres').children('input ').each(function(){
+							if($(this).val() == eachselect[z]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='ci'){
+					var allselect=fullqry[1];
+					if(allselect != ""){
+						$('#ci').val(allselect);
+						recupville(allselect);
+					}
+				}
+				else if(forminput=='idvpa'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (n=0;n<eachselect.length;n++){
+						$('#idvpa').children('option').each(function(){
+							if($(this).val() == eachselect[n]){
+								$('#hiddenidvpa').val(eachselect[n]);
+								$(this).attr('selected', true);
+								$('#idvpa').trigger('liszt:updated');
+							}
+						});
+					}
+				}
+				
+			}
+		}
+	}
+	if (needqry != undefined){
+		loadInfos(divcontent,needqry);
+		allcheck();
+		$('#cpSearch').val('Villes, dpts, cpx');
+	}
+	
+}
+function recupville(qry){
+	var xhr = $.ajax({
+		type: 'GET',
+		data:'',
+		dataType: 'json',
+		contentType: "application/json",
+		url: '/recherche,incl_refine_villes.htm',
+		beforeSend: function() {
+		},
+		success: function(data) {	
+			var allvilles =parseInt(data.villes.length);
+			for (m=0;m<allvilles;m++){
+				if(data.villes[m].ci == qry){
+					$('.blocSearch').append('<li class="selectLi" id="'+data.villes[m].nom+'|'+data.villes[m].cp+'|ci|'+data.villes[m].ci+'"><div class="textLi">'+data.villes[m].nom+' - '+data.villes[m].cp+'</div><div class="closeLi">X</div><div class="clear"></div></li>');
+				}
+			}
+		},
+		error:function(){
+		},
+		complete:function(){
+		}
+	});
+}
+function usePagination(maxpage){
+					$('.rechLiensPages ').on('click', 'a', function (e){
+						e.preventDefault();
+						var recherche =$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+						var num=$(this).html();
+						var actif=$('.actif').html();
+						if(num == '&lt;&lt;'){
+							var qry = recherche;
+						}else if(num == '<span>&gt;&gt;</span>'){
+							var qry = recherche +'&ANNLISTEpg='+maxpage;
+						}else if(num == '<span>&gt;</span>'){
+							var gopage = parseInt(actif)+1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else if(num == '<span>&lt;</span>'){
+							var gopage = actif-1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else{
+							var qry = recherche +'&ANNLISTEpg='+num;
+						}
+						loadInfos(divcontent,qry);
+						$('html,body').animate({scrollTop: 0}, 'fast');
+					});
+}
+//UNCHECK DE TOUTE LES CHECKBOX SI TOUTE COCHEE	
+function allcheck(){
+	$('.moteur-avantage').on('click', '.checkbox input', function (){
+		var checkval = $(this).val();
+		var checkname = $(this).attr('name');
+		if(checkval != '' && checkval != 'all'){
+			$('.checkbox input[name*='+checkname+']').each(function() {
+				if($(this).val() == '' || $(this).val() == 'all'){
+					$(this).attr('checked', false);
+				}
+			});
+			clickload();
+		}else{
+			$('.checkbox input[name*='+checkname+']').each(function() {
+				$(this).attr('checked', false);
+			});
+			$(this).attr('checked', true);
+			clickload();
+		}
+	});
+}	
+//CHARGEMENT DES ANNONCES ET DU MOTEUR
+function loadInfos(divcontent,qry) {
+	var xhr = $.ajax({
+	type: 'GET',
+	data:qry,
+	dataType: 'json',
+	contentType: "application/json",
+	url: '/recherche,incl_refine_js.htm',
+	beforeSend: function() {
+		$('.layer').show();
+		$('.layer-annonce').show();
+	},
+	success: function(data) {
+		$('.layer').hide();
+		$('.layer-annonce').hide();
+		var phrase= data.phrase;
+		$("#RechHautV2 h1").html('');
+		$("#RechHautV2 h1").html(phrase);
+		location.hash = data.qry;
+		$("#RechPagesHaut").html('');
+		$('#RechPagesBas').html('');
+		if (data.pagination != ""){
+			$('#RechPagesHaut').show();
+			$('#RechPagesBas').show();
+		}else{
+			$('#RechPagesHaut').hide();
+			$('#RechPagesBas').hide();
+		}
+		var pagination = data.pagination;
+		var maxpage = data.maxpage;
+		$('#RechPagesHaut').html(pagination);
+		$('#RechPagesBas').html(pagination);
+				
+		$('#AlerteEmail h3 span').html(data.phrasealerte);
+		$('#creerAlerte').attr('action','$$REP:0$$?'+data.qry);
+		$('#AlerteForm').children('input[name="page_base"]').val('http://$$REP:RSRV$$/$$REP:0$$?'+data.qry);
+				
+		var contenu= $('#'+divcontent).html('');
+		var table = parseInt(data.annonces.length);             
+		for( i=0;i<table;i++){
+				
+			var objAnnonce = {
+				color:data.annonces[i].color,
+				idannonce:data.annonces[i].idannonce,
+				coupdecoeur : data.annonces[i].coupdecoeur,
+				exclusif : data.annonces[i].exclusif,
+				fraicheur : data.annonces[i].fraicheur,
+				promo : data.annonces[i].promo,
+				photo : data.annonces[i].photo,
+				filtres:data.annonces[i].filtres,
+				descriptif : data.annonces[i].descriptif,
+				descriptif2 : data.annonces[i].descriptif2,
+				prix : data.annonces[i].prix,
+				rechdetail:data.annonces[i].rechdetail,
+				sipanier : data.annonces[i].sipanier,
+				contactannonce2:data.annonces[i].contactannonce2,
+				contactannonce3:data.annonces[i].contactannonce3,
+				contactannonce:data.annonces[i].contactannonce,
+				miniphoto:data.annonces[i].miniphoto								
+			}
+			var afficheAnnonce = function(a){
+				if (data.idvpa!=439){
+					var photo = '<div class="blocPhotoAnnonce">'+a.coupdecoeur+a.exclusif+a.fraicheur+a.promo+a.photo;+'</div>';
+					var descriptif = '<div class="detailsAnnonce">'+a.filtres+'<div id="TextAnnonceRech">'+a.descriptif+a.descriptif2+a.prix+'</div>'+a.rechdetail+'</div><div class="contactAnnonces"><div class="miniPict"><div class="backgroundAnnonces">'+a.miniphoto+'</div></div>'+a.contactannonce+a.contactannonce2+a.contactannonce3+a.sipanier+'</div>';
+				}else{
+					var minipict = '<div class="miniPict"><div class="backgroundAnnonces">'+a.miniphoto+'</div></div>';
+					var photo ='<div class="blocPhotoAnnonce">'+a.coupdecoeur+a.exclusif+a.fraicheur+a.promo+a.photo+data.annonces[i].nbphotos+minipict+'</div>' ;
+					var descriptif =data.annonces[i].descrprest+data.annonces[i].descrprest2+data.annonces[i].descrprest3+data.annonces[i].prix+data.annonces[i].descrprest4+data.annonces[i].descrprest5;
+				}
+				var contenu= $('#'+divcontent).html();
+				$('#'+divcontent).html(contenu+'<div class="blocAnnonce '+a.color+'" id="Annonce'+a.idannonce+'">'+photo+descriptif+'</div>');
+			}
+			afficheAnnonce(objAnnonce);
+		}
+		usePagination(maxpage);
+//MISE A JOUR DE L ALERTE
+		$("input[name='qry']").val(data.qry);
+		$("input[name='phrase']").val(data.phrase);
+//MISE A JOUR DU MOTEUR
+		if (data.idvpa.length>0){
+			$('#hiddenidvpa').val(data.idvpa);
+			$('#idvpa').children('option').each(function(){
+				if($(this).val() == data.idvpa){
+					$(this).attr('selected', true);
+					$('#idvpa').trigger('liszt:updated');
+				}
+			});
+		}
+		if (data.idvpa==439){
+			$('.titre_prestige').show();
+			$('#RechResultat').addClass("prestige").removeClass("vente");
+		}else{
+			if(data.idtt==2){
+				$('#RechResultat').addClass("vente").removeClass("prestige");
+				$('.triListeRecherche').find('.pxcroissant').val('a_px');
+				$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+			}else{
+				$('#RechResultat').addClass("location").removeClass("prestige");
+				$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+				$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+			}
+			$('.titre_prestige').hide();
+		}
+		$('.triListeRecherche').find('option').each(function(){
+				$(this).attr('selected',false);
+			});
+		if(data.tri=='a_px'){
+			$('.pxcroissant').attr('selected',true);
+		}else if(data.tri=='d_px'){
+			$('.pxdecroissant').attr('selected',true);
+		}else if(data.tri=='a_px_loyer'){
+			$('.pxcroissant').attr('selected',true);
+		}else if(data.tri=='d_px_loyer'){
+			$('.pxdecroissant').attr('selected',true);
+		}else if(data.tri=='a_surface'){
+			$('.surfcroissant').attr('selected',true);
+		}else if(data.tri=='d_surface'){
+			$('.surfdecroissant').attr('selected',true);
+		}else if(data.tri=='a_cp'){
+			$('.optionCp').attr('selected',true);
+		}else if(data.tri=='a_ville'){
+			$('.optionVille').attr('selected',true);
+		} else{
+			$('.select').attr('selected',true);
+		}
+
+		var tableMoteur = parseInt(data.moteur.length);
+		var moteur = $('#content_moteur').html('');
+		var prevkey = '';
+						/*for( i=0;i<tableMoteur;i++){						
+							var idkey = data.moteur[i].idkey;
+							var keyname = data.moteur[i].keyname;
+							var queryvalue = data.moteur[i].queryvalue;
+							var valuename = data.moteur[i].valuename;
+							var nb = data.moteur[i].nb;
+							var contenupresent = $('#content_moteur').html();
+							if(nb != ""){
+								var nombre=' ('+nb+')';
+							}else{
+								var nombre='';
+							}
+							var querykey = data.moteur[i].querykey;
+							var selecte = data.moteur[i].selecte;
+							if(selecte == 1){
+								var check=' checked="checked" ';
+							}else{
+								var check='';
+							}
+							
+							var boxname= "conteneur-checkbox"+idkey;
+							var checkpresent = $("."+boxname).children('.liste-checkbox').html();
+							var addcheck = function(){
+								if(checkpresent == undefined){
+									checkpresent=""
+								}
+								$("."+boxname).children('.liste-checkbox').html(checkpresent+'<div class="control-group margin-0><div class="controls"><label class="checkbox">'+valuename+nombre+'<input type="checkbox" value="'+queryvalue+'" class="refineCheck" name="'+querykey+'"'+check+'/></label></div></div></div>');
+							}
+							if (idkey != prevkey){
+								var prevkey = idkey;
+								if (idkey==1 || idkey==2){
+									var show = "display-show";
+								}else{
+									var show = "display-none";
+								}
+								var contenu= contenupresent+'<div class="conteneur-checkbox'+idkey+'"><div class="h3-like cursor-pointer btn btn-neutre btn-block padding-5 margin-top-10">'+keyname+' <span class="caret margin-top-10 pull-right"></span></div><div class="liste-checkbox '+show+' padding-5"></div></div>';
+								var titre = 1;
+							}else{
+								var prevkey = idkey;
+								var contenu=contenupresent;
+								var titre = 0;
+							}
+							var moteur = $('.conteneur-checkbox').html();
+							var zeroquery= data.moteur[i].zeroquery;
+							$('#content_moteur').html(contenu);
+							addcheck(); 
+						}*/
+						
+						window.top.document.title = $('#RechHautV2').find('h1').text();
+	},
+	error : function (jqXHR, textStatus, errorThrown) {
+	
+		$('#'+divcontent).html('<div class="pagination-centered h2-like">$$LG:AUCUNEANN pcase$$</div>');
+		$('.layer').hide();
+		$('.layer-annonce').hide();
+	},
+	complete: function(xhr,statusText) {
+	
+		
+	}
+});
+$('#Mini_Bouton').wrap('<div class="test>');
+$('#Mini_Bouton').remove;
+closeville();
+//FERMETURE DE VILLE
+}		
+</script>
+		
+		$$IF!:INDEX.HTM:REP:0$$</div>$$END$$
+		</div><!--div#main-int-->
+		<div class="clear"></div>
+	</div>
+</div><!--div#wrapper-->
+<div id="footer">
+	<div id="main-foot">
+		<div class="bg-foot left-foot fleft">
+			<div class="main-left">
+				<div class="coords-foot">
+					<div>
+						<div class="ttl-foot">
+						$$IF=:FR:LANGUE$$Pôle $$LG:MONTAGNE ucase$$$$END$$
+						$$IF!:FR:LANGUE$$$$LG:MONTAGNE ucase$$ centre$$END$$</div>
+						BP50 - 73704 BOURG-ST-MAURICE cedex<br />
+						Tél.: 33(0)479 07 89 50
+					</div><br />
+					<div>
+						<div class="ttl-foot">
+						$$IF=:FR:LANGUE$$$$LG:SIEGESOCIAL ucase$$$$END$$
+						$$IF!:FR:LANGUE$$HEAD OFFICE$$END$$</div>
+						45, rue SOMMEILLER - 73000 CHAMBERY<br />
+						Tél.: 33(0)479 69 86 86
+					</div>
+				</div><!--div.coords-foot-->
+				<br />
+				<div class="clear"></div>
+			</div>
+		</div><!--div.bg-foot .left-foot-->
+		<div class="bg-foot center-foot fleft">
+			<div class="main-center">
+				
+				<div class="fleft">				
+						<div class="ttl-foot">
+							$$LG:LIEN:QSN pcase$$
+						</div>
+						<a href="$$URLBASE$$/immo,qui-sommes-nous.htm?lang=$$LANGUE$$">
+						$$E:EASA:TEXTE:~idCategorie:23161:~idTexte:14306645:ALIAS:QUISOMMES2FOOTER$$			
+						$$QUISOMMES2FOOTER:TEXTE truncate 120 ...$$
+						<a id="decouvrir_agence" href="$$URLBASE$$/agences,liste.htm?lang=fr&tri=ville">$$LG:DECOUVRIRAGENCESD pcase$$</a>
+						</a>	
+				</div>
+				<div class="ttl-foot">
+						$$LG:NOUSSUIVRE pcase$$
+					</div>
+					<div class="rezo-foot">
+						<div class="fb fleft">
+							<script src="http://connect.facebook.net/fr_FR/all.js#xfbml=1"></script>
+<fb:like href="http://www.facebook.com/pages/provisoire"  layout="button_count" show_faces="true" width="450" font="arial"></fb:like>
+						</div>
+						<div class="tw fleft">
+							<a href="http://twitter.com/share" class="twitter-share-button" data-url="#" data-count="horizontal" data-via="#" data-lang="fr">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+						</div>
+						<div class="fright">
+							<a href="$$URLBASE$$/flux,rss.htm?lang=$$LANGUE$$" title=""><img src="images/picto_rss.png" alt="" /><br /></a>
+						</div>
+						<div class="clear"></div>
+					</div><!--div.rezo-foot-->
+				
+				<div class="clear"></div>
+			</div>
+		</div><!--div.bg-foot .center-foot-->
+		<div class="bg-foot right-foot fright">
+			<div class="main-right">
+				
+				<div class="suivre  fright">
+					<div class="logo-foot">
+						<a href="http://www.groupe-habiter.com/" target="_blank"><img src="images/groupe-habiter.png" alt="" /></a>
+					</div><!--div.logo-foot-->
+					<div class="logo-fnaim fleft">
+						<a href="https://www.fnaim.fr/" target="_blank" title=""><img src="images/logo_fnaim.png" alt="" /><br /></a>
+					</div><!--div.logo-fnaim-->
+					<div class="clear"></div>
+				</div>
+				<div class="suivre  fleft">
+					<div class="ttl-foot">$$LG:RECRUTEMENT ucase$$</div>
+					<a href="http://www.groupe-habiter.com/carrieres-emploi/0/carrieres.html" target="_blank" title="">$$LG:VOIROFFRESEMPLOI pcase$$</a>
+				</div><!--div.suivre-->
+				<div class="clear"></div>
+				<p>
+<a href="$$URLBASE$$/legal,mentions.htm?lang=$$LANGUE lcase$$" title="$$LG:MENTIONSLEG pcase$$">$$LG:MENTIONSLEG pcase$$</a>- 
+				<a href="$$URLBASE$$/plan,site.htm?lang=$$LANGUE$$" title="">$$LG:LIEN:PLAN pcase$$</a></p>
+			</div><!--div.main-right-->
+		</div><!--div.bg-foot .right-foot-->
+		<div class="clear"></div>
+	</div>
+</div><!--div#footer-->
+
+<script type="text/javascript">
+	var ouvrirform=0;
+</script>
+
+
+
+<script type="text/javascript" src="scripts,functions.js"></script>
+
+<!--[if lte IE 6]><script src="/z/webagency/slagence_X_V4/scripts/pngfix.js" type="text/javascript"></script><![endif]-->
+
+$$IF=:1:JS_ANNONCES$$
+<script src="/z/webagency/slagence_X_V4/scripts/effects.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V4/scripts/selection_index.js" type="text/javascript"></script>
+$$END:JS_ANNONCES$$
+
+$$IF=:1:JS_EFFECTS$$
+<script src="/z/webagency/slagence_X_V4/scripts/effects.js" type="text/javascript"></script>
+$$END:JS_EFFECTS$$
+
+$$IF=:1:JS_CONTROLS$$
+<script src="/z/webagency/slagence_X_V4/scripts/controls.js" type="text/javascript"></script>
+$$END:JS_CONTROLS$$
+
+$$IF=:1:JS_MOTEUR$$
+<script src="/z/webagency/slagence_X_V4/scripts/moteur.js?lang=$$LANGUE$$" type="text/javascript"></script>
+$$END:JS_MOTEUR$$
+$$IF=:1:JS_MINI_MOTEUR$$
+<script src="scripts,mini_moteur.js?lang=$$LANGUE$$" type="text/javascript"></script>
+$$END:JS_MINI_MOTEUR$$
+
+$$IF=:1:JS_GOOGLE_PLUS$$
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+$$END:JS_GOOGLE_PLUS$$
+
+$$IF=:1:JS_DEFILEMENT$$
+<script src="/z/webagency/slagence_X_V4/scripts/coord.js" type="text/javascript"></script>
+$$END:JS_DEFILEMENT$$
+
+$$IF=:1:JS_METRO$$
+<script src="/z/webagency/slagence_X_V4/scripts/metro.js" type="text/javascript"></script>
+$$END:JS_METRO$$
+
+$$IF=:1:JS_SUIVI_CLIENT$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/suivi_client.js"></script>
+$$END:JS_SUIVI_CLIENT$$
+
+$$IF=:1:JS_BING$$
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3&mkt=fr-fr"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/BingMap.js"></script>
+$$END:JS_BING$$
+
+$$IF=:1:JS_GMAPS$$
+	$$IF:PAGE:MAP_GOOGLEKEY$$
+		$$IF!:ABQIAAAATvGIAAZ0ge4GmsDE2mjzJRTdvOH-Un-nPJSFBlUnUl1-1zJf9hSkyMu-j9Dsfo5O7gs2zSG-iZks4w:PAGE:MAP_GOOGLEKEY$$
+			<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=$$PAGE:MAP_GOOGLEKEY$$"></script>
+			<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/default_map.js"></script>
+		$$END$$
+	$$END$$
+$$END:JS_GMAPS$$
+
+	$$IF=:1:JS_POI$$
+		<script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&amp;mkt=fr-fr"></script>
+		<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/variables_map.js"></script>
+		<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/poi.js"></script>
+	$$END:JS_POI$$
+	
+
+$$IF=:1:JS_POI_COMPACT$$
+	$$IF:PAGE:MAP_GOOGLEKEY$$
+		$$IF!:ABQIAAAATvGIAAZ0ge4GmsDE2mjzJRTdvOH-Un-nPJSFBlUnUl1-1zJf9hSkyMu-j9Dsfo5O7gs2zSG-iZks4w:PAGE:MAP_GOOGLEKEY$$
+			<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=$$PAGE:MAP_GOOGLEKEY$$"></script> 
+			<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/default_map.js"></script>
+			<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/poi_compact.js"></script>
+		$$END$$
+	$$END$$
+$$END:JS_POI_COMPACT$$
+
+$$IF=:1:JS_DETAIL$$
+	<script type="text/javascript" src="scripts,detail.js?lang=$$LANGUE$$"></script>
+$$END:JS_DETAIL$$
+$$IF=:1:JS_DEMOGRA$$
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/demodata/sv6_gen_highcharts.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/demodata/sv6_gen_charts-drawer.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/demodata/sv6_gen_sitemap_global.js"></script>
+$$END$$
+
+$$IF=:1:JS_CALCUL$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/calculettes.js"></script>
+$$END:JS_CALCUL$$
+
+$$IF=:1:JS_UI$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery-ui.min.js"></script>
+$$END:JS_UI$$
+
+$$IF=:1:JS_RESULTATS$$
+<script type="text/javascript" src="scripts,resultats.js"></script>
+$$END:JS_RESULTATS$$
+
+$$IF=:1:JS_GALERIE$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/slideshow.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.lightbox.pack.js"></script>
+$$END:JS_GALERIE$$
+
+$$IF=:1:JS_FORMULAIRES$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.validate.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/validation_form.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/additional-methods.js"></script>
+
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/validation/messages_$$LANGUE$$.js"></script>
+$$END:JS_FORMULAIRES$$
+
+$$IF=:1:JS_POPPUD$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/pop_pud.js"></script>
+$$END:JS_POPPUD$$
+
+$$IF=:1:JS_BLOG$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/blog.js"></script>
+$$END:JS_BLOG$$
+
+$$IF=:1:JS_PLAN_SITE$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/plan_site.js"></script>
+$$END:JS_PLAN_SITE$$
+
+$$IF=:1:JS_MENU_LANGUE$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/menu_langue.js"></script>
+$$END:JS_MENU_LANGUE$$
+
+$$IF=:1:JS_SUGGEST$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/moteur_suggest.js"></script>
+$$END:JS_SUGGEST$$
+
+$$IF=:1:JS_MODULE_REYKJAVIK$$
+<script type="text/javascript" src="scripts,module,module_reykjavik.js"></script>
+$$END:JS_MODULE_REYKJAVIK$$
+$$IF=:1:JS_MODULE_BERLIN$$
+<script type="text/javascript" src="scripts,module,module_berlin.js"></script>
+$$END:JS_MODULE_BERLIN$$
+$$IF=:1:JS_MODULE_OSLO$$
+<script type="text/javascript" src="scripts,module,module_oslo.js"></script>
+$$END:JS_MODULE_OSLO$$
+$$IF=:1:JS_MODULE_OSLO_INTERNE$$
+<script type="text/javascript" src="scripts,module,module_oslo_interne.js"></script>
+$$END:JS_MODULE_OSLO_INTERNE$$
+$$IF=:1:JS_MODULE_BERNE$$
+<script type="text/javascript" src="scripts,module,module_berne.js"></script>
+$$END:JS_MODULE_BERNE$$
+$$IF=:1:JS_MODULE_BERNE_HOME$$
+<script type="text/javascript" src="scripts,module,module_berne_home.js"></script>
+$$END:JS_MODULE_BERNE_HOME$$
+$$IF=:1:JS_MODULE_ROME$$
+<script type="text/javascript" src="scripts,module,module_rome.js"></script>
+$$END:JS_MODULE_ROME$$
+$$IF=:1:JS_MODULE_SOFIA$$
+<script type="text/javascript" src="scripts,module,module_sofia.js"></script>
+$$END:JS_MODULE_SOFIA$$
+$$IF=:1:JS_MODULE_SOFIA_BUILDING$$
+<script type="text/javascript" src="scripts,module,module_sofia_building.js"></script>
+$$END:JS_MODULE_SOFIA_BUILDING$$
+$$IF=:1:JS_MODULE_SOFIA_BANDEAU$$
+<script type="text/javascript" src="scripts,module,module_sofia_bandeau.js"></script>
+$$END:JS_MODULE_SOFIA_BANDEAU$$
+$$IF=:1:JS_MODULE_STOCKHOLM$$
+<script type="text/javascript" src="scripts,module,module_stockholm.js"></script>
+$$END:JS_MODULE_STOCKHOLM$$
+$$IF=:1:JS_MODULE_TALLINN$$
+<script type="text/javascript" src="scripts,module,module_tallinn.js"></script>
+$$END:JS_MODULE_TALLINN$$
+
+$$IF=:1:JS_FIX_DETAIL$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/fix_detail.js"></script>
+$$END:JS_FIX_DETAIL$$
+
+$$IF=:1:JS_EVENT_GOOGLE$$
+	$$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+		<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/eventgoogle.js"></script>
+	$$END:GOOGLEKEY_ANALYTICS$$
+$$END:JS_EVENT_GOOGLE$$
+
+$$IF=:1:JS_ANIM$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/diapo.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/anim_diapo.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.easing.js"></script>
+$$END:JS_ANIM$$
+
+$$IF=:1:JS_SLIDER$$
+<script src="/z/webagency/slagence_X_V4/scripts/slider/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V4/scripts/slider/jquery.ui.slider.js" type="text/javascript"></script>
+<script src="scripts,slider,mini_moteur_perso.js?lang=$$LANGUE$$" type="text/javascript"></script>
+$$END:JS_SLIDER$$
+
+$$IF=:1:JS_MENUOVER$$
+<script  src="/z/webagency/slagence_X_V4/scripts/menu_over.js" type="text/javascript"></script>
+$$END:JS_MENUOVER$$
+
+$$IF=:1:JS_POPUP_LAFORET$$
+<script  src="/z/webagency/slagence_X_V4/packs/laforet2011/scripts/popup_laforet.js" type="text/javascript"></script>
+$$END:JS_POPUP_LAFORET$$
+
+$$IF=:1:JS_CARRE$$
+<script  src="/z/webagency/slagence_X_V4/scripts/carre.js" type="text/javascript"></script>
+$$END:JS_CARRE$$
+
+$$IF=:1:JS_RESIZE$$
+<script  src="/z/webagency/slagence_X_V4/scripts/resize.js" type="text/javascript"></script>
+$$END:JS_RESIZE$$
+
+$$IF=:1:JS_CHOSEN$$
+<script  src="/z/webagency/slagence_X_V4/scripts/chosen.jquery.js" type="text/javascript"></script>
+$$END:JS_CHOSEN$$
+
+$$IF=:1:JS_ESTIMATION$$
+<script  src="/z/webagency/slagence_X_V4/scripts/estimation.js" type="text/javascript"></script>
+$$END:JS_ESTIMATION$$
+
+$$IF=:1:JS_DOM_WINDOW$$
+<script  src="/z/webagency/slagence_X_V4/scripts/dom_window.js" type="text/javascript"></script>
+$$END:JS_DOM_WINDOW$$
+$$IF=:1:JS_FACEBOOK$$
+<script  src="/z/webagency/slagence_X_V4/scripts/page_facebook.js" type="text/javascript"></script>
+$$END:JS_FACEBOOK$$
+
+$$IF0:AFFQUARTIER$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.quartier').hide();
+		$('#Quartier').hide()
+	});	
+</script>
+$$END$$
+$$IF=:1:JS_DETAIL_COMPACT$$
+	<script src="/z/webagency/slagence_X_V4/scripts/fancybox.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.mousewheel.min.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/jquery.mCustomScrollbar.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V4/scripts/detail_compact.js"></script>	
+$$END:JS_DETAIL_COMPACT$$
+$$IF=:1:JS_AGENCE_COMPACT$$
+	<script src="/z/webagency/slagence_X_V4/scripts/fancybox.js" type="text/javascript"></script>
+	<script type="text/javascript" src="$$~$$scripts/agence_nexi.js"></script>	
+$$END:JS_AGENCE_COMPACT$$<script src="$$_$$scripts/chosen.jquery.min.js" type="text/javascript"></script>
+<script src="$$_$$scripts/jquery.bxslider.min.js" type="text/javascript"></script>
+
+ </body>
+</html>

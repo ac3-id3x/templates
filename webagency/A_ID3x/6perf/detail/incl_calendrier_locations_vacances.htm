@@ -1,0 +1,59 @@
+
+
+$$E:IMMOBW:DISPOVAC:REP:1$$
+$$IF=:1:IMMOBW:DISPOVAC:OK$$
+
+$$B:IMMOBW:CALENDRIERVAC:REP:1:12:ALIAS:CAL$$
+$$BIF:CAL$$
+<div id="CalendrierLocationsVacances">
+	<div id="CalendrierLegende">
+		<p class="dispo"><!-- --></p>
+		<p>$$LG:DISPO2 pcase$$</p>
+		<p class="nonDispo"><!-- --></p>
+		<p>$$LG:MININONDISPO pcase$$</p>
+		<div class="clear"><!-- --></div>
+	</div><!-- #CalendrierLegende -->
+	$$DO$$	
+	$$IFNOTNULL:CAL:DEBUTMOIS$$
+		<div class="calendrierMois">
+		<h4>$$CAL:DATE date MMM_yyyy pcase $$</h4>
+		<table>
+			<tr>
+				<td><strong>$$LG:SAMEDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:DIMANCHE left 1 pcase$$</strong></td>
+				<td><strong>$$LG:LUNDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:MARDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:MERCREDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:JEUDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:VENDREDI left 1 pcase$$</strong></td>
+			</tr>
+			<tr>
+				$$CAL:DEBUTMOIS repeatcode <td></td>$$
+	$$END$$
+	$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:6:CAL:WEEKDAY$$<tr>$$END$$ $$END$$
+			<!--
+				<td class="$$IF:CAL:DISPO$$dispo$$END$$$$IF0:CAL:DISPO$$nonDispo$$END$$$$IF:CAL:FINRESA$$ debutResa$$END$$$$IF:CAL:DEBUTRESA$$ finResa$$END$$">
+					$$CAL:DATE day$$
+				</td>
+			<!--
+	$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:5:CAL:WEEKDAY$$</tr>$$END$$ $$END$$
+								
+	$$IFNOTNULL:CAL:FINMOIS$$
+		$$CAL:FINMOIS repeatcode <td></td>$$
+			</tr>
+		</table>
+	</div><!-- .calendrierMois -->		
+	$$END:CAL:DEBUTMOIS$$
+	$$LOOP$$
+	<div class="clear"><!-- --></div>
+</div><!-- #CalendrierLocationsVacances -->
+$$BFIN$$
+
+
+
+		
+					
+				
+		
+
+$$END:1:IMMOBW:DISPOVAC:OK$$

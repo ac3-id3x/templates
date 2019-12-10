@@ -1,0 +1,126 @@
+$$IF0:ANNLISTE:SIPANIER$$
+<div id="RechHautV2">
+	<div class="result-search">$$LG:RESULTATRECHCIS pcase$$</div>
+			<h1>
+				$$IF=:437:FORM:IDVPA$$Spécial étudiants : $$END$$
+				$$IF=:446:FORM:IDVPA$$$$LG:NEUFS ucase$$ : $$END$$
+				$$IF=:439:FORM:IDVPA$$$$LG:PRESTIGE2 ucase$$ : $$END$$
+				$$IF=:441:FORM:IDVPA$$Sélection investisseurs : $$END$$
+				$$IF=:480:FORM:IDVPA$$$$LG:NEUFS ucase$$ : $$END$$
+				$$IF=:440:FORM:IDVPA$$Espace privilège : $$END$$
+				$$IF=:479:FORM:IDVPA$$Logements conventionnés : $$END$$
+				
+				
+				$$IF=:RESULTATSCARTE:IDT$$
+					$$LG:CARTEGEOLOC pcase$$			
+				$$END:RESULTATSCARTE:IDT$$						
+				$$IF=:RESULTATS:IDT$$
+					$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$
+					$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$
+					$$ANNLISTE:PHRASE pcase$$
+					
+					$$IF:FORM:IDSOUSTYPEBIEN$$
+						$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+						<br />
+						$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+						$$END:!FORM:IDSOUSTYPEBIEN$$
+					$$END:FORM:IDSOUSTYPEBIEN$$			
+				$$END:RESULTATS:IDT$$	
+				$$IF:FORM:IDTYPEBIEN$$
+					$$IF=:BIENSVENDUS:IDT$$
+						$$VENDU:NBR formatnumber 0$$
+						$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$
+						$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$
+					$$END$$
+				$$END$$
+				
+					$$IF0:VENDU:NBR$$<br /><br />
+						<span>
+							$$IF0:ANNLISTE:SIPANIER$$
+								$$ANNLISTE:NBRESULT formatnumber 0$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBRESULT pluriel$$$$END:FR$$ Trouvée
+
+							$$END$$
+							$$IF=:RESULTATS:IDT$$
+								$$IF+:200:ANNLISTE:NBRESULT$$
+									$$IF=:FR:LANGUE$$
+										<sup>* 200 premières affichées</sup>
+									$$END$$
+									$$IF!:FR:LANGUE$$
+										<sup>* First 200 displayed</sup>
+									$$END$$				
+								$$END$$
+							$$END$$
+						</span>
+					$$END$$
+				
+			</h1>
+			<div class="clear"></div>
+										
+			$$IF!:1:FORM:IDTT$$
+				<ul id="btn_biensvendus">
+				<li class="gradient $$IF=:BIENSVENDUS:IDT$$actifLiRecherche$$END$$ recherche-biens-vendus"><a href="/recherche,vendu.htm?$$REP:QRY removeqry tri htmlencode$$&tri=d_dtmutation" title="">$$LG:VOIRBIENSVENDUS ucase$$</a></li>
+				</ul>
+			$$END$$
+				
+				
+			$$IF!:BIENSVENDUS:IDT$$
+			<div class="div25 width25">
+				<div class="alerteEmailBloc">
+					<div class="alerteEmailDeco" id="hautAlerteEmail"><a href="">$$LG:CREERALERT ucase$$</a></div>
+					<div class="texteEmail"></div>	
+				</div>
+			</div>
+			$$END$$
+			<div class="div25 width35">
+				<div class="chapeauBloc">$$LG:AFFICHERPAR pcase$$</div>
+				<div class="infoBlocNoBorder">
+					<!--#include absolute="webagency/A_ID3X/6perf/recherche/incl_display_liste.htm" -->	
+				</div>
+			</div>
+			$$IF=:RESULTATS:IDT$$
+				$$IF0:ANNLISTE:SIPANIER$$
+				<div class="div25 width25">
+					<div class="chapeauBloc">$$LG:TRIERANNPAR pcase$$</div>
+					<div class="infoBloc">
+						<!--#include absolute="webagency/A_ID3X/6perf/recherche/incl_tri.htm" -->	
+					</div>
+				</div>
+				$$END$$
+			$$END$$
+			
+				<a class="pictorss" href="$$URLBASE$$/flux,rss.htm?lang=$$LANGUE$$" title=""><img src="images/picto_rss.png" alt="" /></a>					
+				<a class="pictoprint" href="javascript:void(0);" onclick="print();"><img src="images/picto_print.png" alt="" /></a>
+				
+				
+			$$IF=:RESULTATS:IDT$$
+				$$IF0:ANNLISTE:SIPANIER$$
+				<div class="div25 width15">
+					<div class="chapeauBloc">$$LG:VOIR pcase$$ $$LG:MASELECT lcase$$</div>
+					<div class="infoBloc gradient">
+						<a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$">
+						<div id="NbAnnPanier">
+							$$BIF0:CHECKBASKET$$
+								0 annonce
+							$$BFIN$$
+						</div>
+						$$BIF:CHECKBASKET$$
+						<span>
+							$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$CHECKBASKET:NBR pluriel$$$$END:FR$$
+						</span>
+						$$BFIN$$
+						<div class="clear"></div>
+						</a>
+					</div>
+				</div>
+				$$END$$
+			$$END$$
+			<div class="clear"></div>
+			$$IF!:BIENSVENDUS:IDT$$
+			<div class="phraseInscriptionEmail">
+				<p>$$LG:BATMAN pcase$$.</p>	
+			</div>
+			$$END$$
+</div>
+$$END$$
+$$IF=:FR:LANGUE$$<img src="$$_$$images/titre_prestige.jpg" class="titre_prestige" style="display:none;"/>$$END$$
+$$IF!:FR:LANGUE$$<img src="$$_$$images/titre_prestige_en.jpg" class="titre_prestige" style="display:none;"/>$$END$$
