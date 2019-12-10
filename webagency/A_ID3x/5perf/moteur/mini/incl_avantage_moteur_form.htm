@@ -1,0 +1,126 @@
+$$IF=:INLINE:TYPEMOTEUR$$
+	<div class="row-fluid">
+$$END$$
+$$IF=:0:MINI_IDTTUNIQUE$$
+	$$IF!:INLINE:TYPEMOTEUR$$
+		<div class="row-fluid">
+	$$END$$
+		<div id="Mini_Transaction" class="Mini_Transaction$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+			<!--#include absolute="webagency/A_ID3X/5perf/moteur/mini/incl_type_transaction.htm" -->
+		</div>
+	$$IF!:INLINE:TYPEMOTEUR$$
+		</div>
+	$$END$$
+$$END$$
+$$IF=:1:MINIBIENS_AFFICHAGE$$
+	$$IF!:INLINE:TYPEMOTEUR$$
+		<div class="row-fluid">
+	$$END$$
+		<div id="Mini_Biens" class="Mini_Biens$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+			<script type="text/javascript">
+				$(document).ready(function() {
+					ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+				});
+			</script>
+		</div>
+	$$IF!:INLINE:TYPEMOTEUR$$
+		</div>
+	$$END$$
+$$END$$
+$$IF=:1:MINISOUSTYPEBIENS_AFFICHAGE$$
+	$$IF!:INLINE:TYPEMOTEUR$$
+		<div class="row-fluid">
+	$$END$$
+		<div id="Mini_SousTypeBiens" class="Mini_SousTypeBiens$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+			<script type="text/javascript">
+				$(document).ready(function() {
+					 ajaxGet('idtt','$$LANGUE$$','Mini_SousTypeBiens','sous_type_bien','$$TYPEMOTEUR$$'$$IF:FORM:IDTYPEBIEN$$,'','idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$);
+				});
+			</script>
+		</div>
+	$$IF!:INLINE:TYPEMOTEUR$$
+		</div>
+	$$END$$
+$$END$$
+$$IF!:INLINE:TYPEMOTEUR$$
+	<div class="row-fluid">
+		<div id="Mini_Activites" class="Mini_Activites$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+			$$IF=:10:FORM:IDTT$$
+				<script type="text/javascript">
+					$(document).ready(function() {
+						ajaxGet('idtypecommerce','$$LANGUE$$','Mini_Activites','type_activites','$$TYPEMOTEUR$$'$$IF:FORM:IDTYPECOMMERCE$$,'','idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+					});
+				</script>
+			$$END$$
+		</div>
+	</div>
+$$END$$
+$$IF=:ALERTEIMMO:IDT$$
+	$$IF!:INLINE:TYPEMOTEUR$$
+		<div class="row-fluid">
+			<div id="Mini_Typeviager" class="Mini_Typeviager display-none">
+				<div class="control-group hidden-phone">
+					<label class="checkbox inline"><input type="checkbox" value="1" name="si_libre">$$LG:VIAGERLIBRE2 pcase$$</label>
+					<label class="checkbox inline"><input type="checkbox" value="0" name="si_libre">$$LG:VIAGEROCCUPE2 pcase$$</label>
+				</div>
+			</div>
+		</div>
+	$$END$$
+$$END$$
+$$IF=:1:MINIVILLES_AFFICHAGE$$
+	$$IF!:INLINE:TYPEMOTEUR$$
+	<div class="row-fluid">
+	$$END$$
+		<div id="Mini_Villes" class="relative Mini_Villes$$IF=:INLINE:TYPEMOTEUR$$$$IF0:TAILLESUGGEST$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLESUGGEST$$ $$TAILLESUGGEST$$$$END$$$$END$$">
+			$$IF=:1:MINIVILLES_SUGGEST$$
+				
+				<!--#include absolute="webagency/A_ID3X/5perf/moteur/suggest/incl_input.htm" -->
+				<!--#include absolute="webagency/A_ID3X/5perf/moteur/suggest/incl_json.htm" -->
+			$$END$$
+			$$IF!:1:MINIVILLES_SUGGEST$$
+				<script type="text/javascript">
+				$(document).ready(function() {
+						ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes_ajax','$$TYPEMOTEUR$$'$$IF:FORM:CI$$,'','ci=$$FORM:CI$$'$$END$$);
+				});
+				</script>
+				<!--#include absolute="webagency/A_ID3X/5perf/moteur/mini/incl_villes.htm" -->
+			$$END$$
+		</div>
+		$$IF!:INLINE:TYPEMOTEUR$$
+			$$IF=:INDEX:IDT$$
+				$$IF=:1:MOTEUR_VILLES_REF$$
+					<!--#include absolute="webagency/A_ID3X/5perf/moteur/mini/incl_villes_referencement.htm" -->
+				$$END$$
+			$$END$$
+		$$END$$
+	$$IF=:ALERTEIMMO:IDT$$	
+	</div>
+	$$END$$
+	$$IF!:ALERTEIMMO:IDT$$	
+		$$IF!:INLINE:TYPEMOTEUR$$
+		</div>
+		$$END$$
+	$$END$$
+$$END$$
+$$IF=:1:MINIDEPT_AFFICHAGE$$
+	$$B:IMMOBW:DEPARTEMENTSANNONCES:ALIAS:LISTEDEPTANN$$
+	$$BIF:LISTEDEPTANN$$
+		<div id="Mini_Dept" class="Mini_Dept$$IF=:INLINE:TYPEMOTEUR$$ margin-top-0$$IF0:TAILLESUGGEST$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLESUGGEST$$ $$TAILLESUGGEST$$$$END$$$$END$$">
+			<div class="control-group">	
+				<select id="cp" name="cp" class="center" onchange="javascript:ajaxGet(this.id,'$$FORM:LANG$$','Mini_Villes_dep','villes_dep_ann','$$TYPEMOTEUR$$');">
+					<option value="">$$LG:DEPARTEMENTS pcase$$</option>
+					$$DO$$
+					<option value="$$LISTEDEPTANN:DEP$$" id="iddep_$$LISTEDEPTANN:I$$"$$IF=:FORM_CP:LISTEDEPTANN:DEP$$ selected="selected"$$END$$>
+						$$LISTEDEPTANN:DEPARTEMENTAFF$$
+					</option>
+					$$LOOP$$
+				</select>
+			</div>
+		</div>
+		<div id="Mini_Villes_dep" class="Mini_Villes_dep$$IF=:INLINE:TYPEMOTEUR$$ margin-top-0$$IF0:TAILLESUGGEST$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLESUGGEST$$ $$TAILLESUGGEST$$$$END$$$$END$$">
+			<div class="control-group">	
+				
+			</div>
+		</div>
+	$$BFIN$$
+$$END$$
