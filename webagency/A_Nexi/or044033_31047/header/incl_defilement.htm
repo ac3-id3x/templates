@@ -1,0 +1,32 @@
+$$INIT:JS_DEFILEMENT=1$$
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+	$$BIF:AGS$$
+		$$DO$$
+			coord[$$AGS:I exec XX-1$$]="adr_$$AGS:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+	$(document).ready(function() {
+		Adresse();
+	});
+</script>
+$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+$$BIF:AGS$$
+	$$DO$$
+	<div id="adr_$$AGS:IDPUBLICATION$$" style="display:none;" class="blocAgenceDefilement">
+			<div class="bsm photoagence">
+					<a href="$$URLBASE$$/agence,immobiliere.htm?idp=$$AGS:IDPUBLICATION$$&amp;lang=$$LANGUE$$"><img src="images/agences/$$AGS:IDPUBLICATION$$.jpg" alt="" /></a>					
+			</div>
+			<div class="bsm coords">
+			<h3>$$LG:NOSCOORD pcase$$</h3>
+			
+				<p>$$AGS:NOM pcase$$<br />
+				$$AGS:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 $$<br />
+				$$AGS:CP$$ $$AGS:VILLE$$
+				</p>
+				
+			</div>
+	</div>
+	$$LOOP$$
+$$BFIN$$
