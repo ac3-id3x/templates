@@ -1,0 +1,27 @@
+	$$A:JS_POI=0$$
+	<div id="bloc-map-poi" class="hidden-med relative width-100-pourcent overflow">
+		<div id="geolocation-poi" class="span12 relative"></div>
+		 $$IF!:1:MAP_ANNONCE_HIDE$$
+		<script type="text/javascript">
+			var DomGeoMap = document.createElement('div');
+			DomGeoMap.id = 'geo-map-poi-demut';
+			DomGeoMap.setAttribute('style', "height:400px;");
+			DomGeoMap.setAttribute('data-color', '#FF0000');
+			document.getElementById('geolocation-poi').appendChild(DomGeoMap);
+			
+			id3xContent.addMap({
+				container: { id: 'geo-map-poi-demut' },
+				mapData: [
+					$$IF:ANNDETAIL:IDANNONCE$$
+					{ mapDataType: 'SINGLE_REALESTATE', marker: { icon: null, popup: true } }
+					$$END$$
+					$$IF0:ANNDETAIL:IDANNONCE$$
+					{ mapDataType: 'ADMINISTRATIVE_DIVISION', marker: { icon: null, popup: true }, 
+						division: {city: {label: '$$ID3:URW-GETVALUES:VILLE$$'}, country: {label: ''}, department: {label: '$$ID3:URW-GETVALUES:DEPARTEMENT$$'}, region: {label: '$$ID3:URW-GETVALUES:REGION$$'}} 
+					}
+					$$END$$
+				]
+			});
+		</script>
+		$$END$$
+	</div>
