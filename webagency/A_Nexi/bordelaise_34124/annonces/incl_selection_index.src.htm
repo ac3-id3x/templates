@@ -1,0 +1,59 @@
+££INIT:CSS_ANNONCES=1££
+
+££B:IMMOBW:ANN:VAL:IDTTCC:QRY:LANG:::VAL:TYPEANN::d_dt_maj:~limit:1:~NOSTAT:1:ALIAS:ANNLISTE££
+££BIF:ANNLISTE££
+<div id="selectionAnnonces_1">
+££DO££
+££REM££<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->££END££
+££IF:PAGE:URLREWRITINGENABLED££
+	££IF:FORM:LANG££
+		££IF!:FR:FORM:LANG££
+			££A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@££
+		££END££
+		££IF=:FR:FORM:LANG££
+			££A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@££
+		££END££
+	££END££
+	££IF0:FORM:LANG££
+		££A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@££
+	££END££
+££END££
+££IF0:PAGE:URLREWRITINGENABLED££
+	££A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@££
+££END££
+££A:TITLE_SELECTION_INDEX=££
+££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+	££A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@££
+££END:WAGREF_IDDOSSIER_SITE££
+££REM££<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->££END££
+££REM££<!-- DEBUT CONSTRUCTION ANNONCE -->££END££
+	<div class="detailAnnonces" id="annoncesBloc££ANNLISTE:I££">
+			<div class="blocContentEffet">
+				££IF:ANNLISTE:SI_COUPDECOEUR££<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->££END££
+				££IF:ANNLISTE:SI_EXCLUSIF££<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->££END££
+				££IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days££<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->££END££
+				££IF:ANNLISTE:SI_PROMO££<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->££END££
+				££IF:ANNLISTE:360_URL££<!--#include virtual="recherche/incl_bandeau_360.htm" -->££END:360_URL££
+				<div class="blocPhoto££IF0:ANNLISTE:IDPHOTO££££IF=:FALSE:ANNLISTE:SI_LOGO££ blocNoPhoto££END££££END££">
+					<a href="££LIEN_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££">
+						<img src="images/index.jpg" alt="££TITLE_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££" />
+					<!--
+					££IF:ANNLISTE:IDPHOTO££
+						<img src="££ANNLISTE:BIGURL0££" alt="££TITLE_SELECTION_INDEX££" title="££TITLE_SELECTION_INDEX££" />
+					££END:ANNLISTE:IDPHOTO££
+					££IF0:ANNLISTE:IDPHOTO££
+						££IF=:TRUE:ANNLISTE:SI_LOGO££
+						<div class="siLogo" style="background:url('££ANNLISTE:URLLOGO££') 50% 50% no-repeat #fff;"></div>
+						££END:ANNLISTE:SI_LOGO££
+					££END:ANNLISTE:IDPHOTO££
+					-->
+					</a>
+				</div>
+			</div>
+	
+	</div>
+
+££LOOP££
+<div class="clear"></div>
+</div>
+££BFIN££
