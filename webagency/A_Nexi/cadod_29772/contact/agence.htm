@@ -1,0 +1,193 @@
+$$REM$$====================================================================
+//// <summary>Formulaire de contact simple pour sites agences</summary>
+//// <remarks>
+//// <para>Utilise le fichier css : slagence_X_V3/styles/contact_agence.css</para>
+//// <para>Template mail envoyée à l'agence : slagence_X_V3/contact/agence_envoi.htm</para>
+//// <para>Utilise macro P:IMMOBW:SEND-AGENCE-MAIL ; Voir : http://macrodoc.id3x.com/IMMOBW.P.SEND-AGENCE-MAIL.html</para>
+//// <para>On utilise une macro MULTIAGENCES 0 = 1 seul agences ; 1 = plusieurs agences (voir header/incl_variables.htm)</para>
+//// </remarks>
+//// <update date="2010-03-20" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-01-07" author="kamel.malek">Page non optimisée par les référenceurs (ça date donc à redemander)</update>
+====================================================================$$END$$
+$$SET:PAGE:IDT=CONTACTAGENCE$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:CONTACT pcase@@ @@CONTACT_AGENCE:NOM@@$$
+	$$A:DESCRIPTION=@@LG:CONTACTERAGENCES pcase@@ @@CONTACT_AGENCE:NOM@@ @@CONTACT_AGENCE:VILLE@@$$
+	$$A:KEYWORDS=@@LG:CONTACT lcase@@ @@LG:IMMOBILIER lcase@@, @@CONTACT_AGENCE:NOM@@, @@LG:IMMOBILIER lcase@@ @@CONTACT_AGENCE:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:CONTACT pcase@@ @@REP:RSRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,contact_agence.css?wagstyle=@@PAGE:WAG_STYLE_RECHERCHE@@" );
+</style>$$
+
+<!--#include virtual="incl_haut.htm" -->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+<!--#include virtual="contact/incl_multiagences_selection.htm" -->
+<!--#include virtual="contact/incl_monoagence_selection.htm" -->
+
+$$REM$$<!--// s'il y a un REP:1 //-->$$END:REM$$
+$$IF:REP:1$$
+	$$REM$$<!--// on execute la macro IMMOBW:AGENCE sur le REP:1 //-->$$END:REM$$
+	$$E:IMMOBW:AGENCE:ALIAS:CONTACT_AGENCE:REP:1$$
+	$$REM$$<!--// on vérifie l'email //-->$$END:REM$$
+	$$IF:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=1$$$$END$$
+	$$IF0:CONTACT_AGENCE:EMAIL$$$$A:CHECK_EMAIL_REP=0$$$$END$$
+	
+	$$REM$$<!--// si le mail n'existe pas donc CHECK_EMAIL = 0 > on affiche le message d'erreur //-->$$END:REM$$
+	$$IF=:0:CHECK_EMAIL_REP$$	
+	<!--#include virtual="contact/incl_email_non_disponible.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	
+	$$REM$$<!--// si le mail existe donc CHECK_EMAIL = 1 > on affiche le formulaire de message  //-->$$END:REM$$
+	$$IF=:1:CHECK_EMAIL_REP$$
+		<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+		<form method="post" action="$$IF:REP:1$$/$$REP:1$$$$END$$/contact,agence.htm?lang=$$LANGUE$$" id="FormContactAgence_Ctn">
+			<div id="FormContactAgence">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			
+				<input type="hidden" name="u" value="immobw:send-agence-mail" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+				<input type="hidden" name="idTypeVisu" value="1" />$$REM$$<!--// [INPUT OBLIGATOIRE] 1 : WebAg Message | 2 : WebAg Contact | 3 : WebAg Propriétaire | 8 : WebAg Estimation (anciennement E) | 6 : OBSOLÈTE - webag alerte (anciennement O) | 9 : OBSOLÈTE - webag intercab (anciennement I) | 13 : OBSOLÈTE - webag cgu (anciennement U) //-->$$END$$
+				<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/contact,agence_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+				<input type="hidden" name="page_err" value="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+				<input type="hidden" name="emailTemplate" value="/contact,agence_envoi.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE]  Nom du template HTML de l'email à envoyer à l'agence //-->$$END$$
+				<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+				<input type="hidden" name="idPublication" value="$$REP:1$$" />
+				
+		$$REM$$<!--// On peut mettre autant d'autres champs de formulaire que l'on veut, il seront affichables dans l'email à l'aide des macros $$FORM:xxx$$ //-->$$END:REM$$
+		
+				<table>
+					<tr>
+						<td colspan="2" class="pointillesBas">
+							<h1>						
+								$$IF:MULTIAGENCES$$$$CONTACT_AGENCE:NOM$$<br />$$END:MULTIAGENCES$$
+								$$LG:PARVENIRMESSAGE pcase$$
+							</h1>
+							<p>$$LG:REMPLIRFORMULAIRE$$</p>
+						</td>
+					</tr>
+					$$IF:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+					<tr>
+						<td colspan="2">
+							<div class="attention">$$LG:ATTENTION pcase$$</div>
+							<div class="erre">$$ERRE$$</div>
+						</td>
+					</tr>
+					$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+					<tr>
+						<td class="col1" colspan="2">
+							<strong>Merci d'indiquer à quel département vous souhaitez adresser votre message ?</strong>
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+						</td>
+						<td class="civ_ctn">
+							<select name="ACTIVITE" class="inputText inputNom">
+								<option>Copropriété</option>
+								<option>Gérance </option>
+								<option>Vente </option>
+								<option>Location </option>
+								<option>Comptabilité </option>
+								<option>Immobilier d'Entreprise </option>
+								<option>Déposer une candidature </option>
+								<option>Autre</option>
+							</select>							
+						</td>
+					</tr>
+					<tr>
+						<td class="col1 civ_ctn">
+							$$LG:CIVILITE pcase$$ :
+						</td>
+						<td class="civ_ctn">
+								<label><input type="radio" class="inputRadio" name="civ" value="Melle" /> $$LG:MADEMOISELLE pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mme" /> $$LG:MADAME pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mr" /> $$LG:MONSIEUR pcase$$</label>
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:NOM pcase$$ <span class="obligatoire">*</span> :
+						</td>
+						<td>
+							<input type="text" class="inputText inputNom" name="nomFamille" maxlength="25" value="$$FORM:NOMFAMILLE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">	
+							$$LG:PRENOM pcase$$ <span class="obligatoire">*</span> :
+						</td>
+						<td>
+							<input type="text" class="inputText inputPrenom" name="prenom" maxlength="25" value="$$FORM:PRENOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:ADRESSE pcase$$ :
+						</td>
+						<td>
+							<input type="text" class="inputText inputAdresse" name="adresse" maxlength="40" value="$$FORM:ADRESSE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:CODEP pcase$$ :
+						</td>
+						<td>
+							<input type="text" class="inputText inputCP" name="cp" maxlength="8" value="$$FORM:CP$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:VILLE pcase$$ :
+						</td>
+						<td>
+							<input type="text" class="inputText inputVille" name="ville" maxlength="25" value="$$FORM:VILLE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:TEL pcase$$ <span class="obligatoire">*</span> :
+						</td>
+						<td>
+							<input type="text" class="inputText inputTel" name="telephone" maxlength="15" value="$$FORM:TELEPHONE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>
+						<td class="col1">
+							$$LG:EMAIL pcase$$ <span class="obligatoire">*</span> :
+						</td>
+						<td>
+							<input type="text" class="inputText inputEmail" name="email" maxlength="30" value="$$FORM:EMAIL$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</td>
+					</tr>
+					<tr>						
+						<td class="col1 message_ctn pointillesBas">
+							$$LG:MESSAGE pcase$$ <span class="obligatoire">*</span> :
+						</td>
+						<td class="message_ctn pointillesBas">
+							<textarea class="inputTextarea inputMessage" name="message" cols="40" rows="4" onkeyup="limite(this,350);" onkeydown="limite(this,350);">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</td>						
+					</tr>
+					<tr>						
+						<td class="champsobligatoires_ctn">
+							<p><span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span></p>
+						</td>
+						<td class="bouton_ctn">
+							<input type="submit" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+						</td>				
+					</tr>			
+				</table>
+			</div>
+		</form>
+		
+		<!--#include virtual="legal/incl_formulaire_cgu.htm" -->
+	$$END:CHECK_EMAIL_REP$$
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$END:REP:1$$
+<!--#include virtual="incl_bas.htm" -->
