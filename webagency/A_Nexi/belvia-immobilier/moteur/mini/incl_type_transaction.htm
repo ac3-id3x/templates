@@ -1,0 +1,21 @@
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+$$BIF:TYPE_TRANSACTION$$
+	<div class="control-group$$IF=:INLINE:TYPEMOTEUR$$ margin-bottom-0$$END$$">	
+		<select name="idtt" id="idtt" class="center" data-placeholder="$$LG:TYPEDETRANSACTION pcase$$" onchange="$$IF=:1:MINIBIENS_AFFICHAGE$$javascript:ajaxGet(this.id,'$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$');$$END$$$$IF=:1:MINI_BUDGET_AFFICHAGE$$ajaxGet(this.id,'$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');$$END$$$$IF!:1:MINIVILLES_SUGGEST$$$$IF=:1:MINIVILLES_AFFICHAGE$$ajaxGet(this.id,'$$LANGUE$$','Mini_Villes','villes_ajax','$$TYPEMOTEUR$$');$$END$$$$END$$">
+			$$IF=:0:MINI_IDTTDEFAUT$$<option value="" selected="selected">$$LG:TYPEDETRANSACTION pcase$$</option>$$END:MINI_IDTTDEFAUT$$
+			$$DO$$
+				$$IF):MINI*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+					<option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF=:MINI*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$$$IF=:FORM*IDTT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+					$$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+					$$IF=:2:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:ACHAT pcase$$$$END$$
+					$$IF!:9$2:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+					$$IF=:1:MINI_NBVISIBLES$$($$TYPE_TRANSACTION:NBANN$$)$$END$$</option>
+				$$END:MINI*IDTTCACHE$$
+			$$LOOP$$
+		</select>		
+	</div>
+$$BFIN$$
+$$BIF0:TYPE_TRANSACTION$$
+$$REM$$<!-- DEBUGG A CAUSE DU CP EN QRY QUI PLANTE LA IMMOBW -->$$END$$
+<!--#include virtual="moteur/mini/incl_type_transaction_unique.htm" -->	
+$$BFIN$$

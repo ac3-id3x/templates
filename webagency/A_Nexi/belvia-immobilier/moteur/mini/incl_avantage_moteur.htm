@@ -1,0 +1,217 @@
+$$A:JS_MINI_MOTEUR=1$$
+
+<form class="form-$$TYPEMOTEUR$$" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+	<input type="hidden" name="idqfix" value="1">
+	<!--#include virtual="moteur/incl_input_langue.htm" -->	
+	<div class="moteur-avantage$$IF=:INLINE:TYPEMOTEUR$$ padding-10$$END$$">
+		$$IF=:INLINE:TYPEMOTEUR$$
+			<div class="row-fluid">
+		$$END$$
+		
+			$$IF=:1:MINIVILLES_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Villes" class="relative span4">
+						$$IF=:1:MINIVILLES_SUGGEST$$
+							$$REM$$<!-- VILLE SUGGEST -->$$END$$
+							<!--#include virtual="moteur/suggest/incl_input.htm" -->
+							<span class="mini_moteur_legende smallest">Pour les recherches de ville, écrire "Saint-&Eacute;tienne" et non "St Etienne".</span>
+						$$END$$
+						$$IF!:1:MINIVILLES_SUGGEST$$
+							<script type="text/javascript">
+							$(document).ready(function() {
+									ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes','$$TYPEMOTEUR$$');
+							});
+							</script>
+						$$END$$
+					</div>
+					$$IF!:INLINE:TYPEMOTEUR$$
+						$$IF=:INDEX:IDT$$
+							$$IF=:1:MOTEUR_VILLES_REF$$
+								<!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->	
+							$$END$$
+						$$END$$
+					$$END$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			
+			
+			$$IF=:0:MINI_IDTTUNIQUE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+					<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Transaction"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Transaction $$TAILLEMOTEUR$$"$$END$$>
+						<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->	
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+					</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINIBIENS_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+					<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Biens"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Biens $$TAILLEMOTEUR$$"$$END$$>
+						<script type="text/javascript">
+							$(document).ready(function() {
+								ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+							});
+						</script>
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+					</div>
+				$$END$$
+			$$END$$
+			
+				$$IF!:INLINE:TYPEMOTEUR$$
+					<div class="row-fluid">
+						<div id="Mini_Activites"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Activites $$TAILLEMOTEUR$$"$$END$$>
+							$$IF=:10:FORM:IDTT$$
+								<script type="text/javascript">
+									$(document).ready(function() {
+										ajaxGet('idtypecommerce','$$LANGUE$$','Mini_Activites','type_activites','$$TYPEMOTEUR$$'$$IF:FORM:IDTYPECOMMERCE$$,'','idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+									});
+								</script>
+							$$END$$
+						</div>
+					</div>
+				$$END$$
+
+			
+
+			$$IF=:1:MINI_BUDGET_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Budget"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Budget $$TAILLEMOTEUR$$"$$END$$>
+						<script type="text/javascript">
+						$(document).ready(function() {
+								ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+						});
+						</script>
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			
+			$$REM$$
+				$$IF=:1:MINILISTE_AFFICHAGE$$
+					$$IF!:INLINE:TYPEMOTEUR$$
+					<div class="row-fluid">
+					$$END$$
+						<div id="Mini_Geolocalisation"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Geolocalisation$$TAILLEMOTEUR$$"$$END$$>
+							<!--#include virtual="moteur/mini/incl_geolocalisation.htm" -->
+						</div>
+					$$IF!:INLINE:TYPEMOTEUR$$
+					</div>
+					$$END$$
+				$$END$$
+				$$END$$
+			$$IF=:1:MINIRAYON_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Rayon"$$IF=:INLINE:TYPEMOTEUR$$ class="$$TAILLEMOTEUR$$"$$END$$>
+						<!--#include virtual="moteur/mini/incl_rayon.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINIREF_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Ref"$$IF=:INLINE:TYPEMOTEUR$$ class="$$TAILLEMOTEUR$$"$$END$$>
+						<!--#include virtual="moteur/mini/incl_reference.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+				$$IF=:ALERTEIMMO:IDT$$
+				  <!--#include virtual="moteur/mini/incl_alerte_inscription.htm" -->
+					<!--#include virtual="recherche/incl_alerte_optin.htm" -->
+				$$END$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Bouton"$$IF=:INLINE:TYPEMOTEUR$$ class="$$TAILLEMOTEUR$$ margin-left-0"$$END$$>
+						<!--#include virtual="moteur/mini/incl_moteur_bouton.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$IF=:1:MINI_IDTTUNIQUE$$
+				<!--#include virtual="moteur/mini/incl_type_transaction_unique.htm" -->	
+			$$END$$	
+			<!--#include virtual="moteur/mini/incl_input_hidden.htm" -->	
+		$$IF=:INLINE:TYPEMOTEUR$$
+			</div>
+		$$END$$
+	$$IF=:INLINE:TYPEMOTEUR$$
+	  $$IF=:INDEX:IDT$$
+		  $$IF=:1:MOTEUR_VILLES_REF$$
+			  <!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->	
+		  $$END$$
+	  $$END$$
+  $$END$$
+  
+  
+  	<div class="row-fluid hidden-phone relative top-30">
+  		<div class="span3"></div>
+  		<div class="span6 moteur-avantage-plus pagination-centered padding-top-10">
+  			<div class="display-none moteur-avantage-critere row-fluid margin-top-10">
+				<div class="span7">
+					$$IF=:1:MINI_SURFACE_AFFICHAGE$$
+						<div id="Mini_Surface" class="span12">
+							<div class="span4 italic"><div class="margin-top-7 pagination-right titre-surface">$$LG:SURFACE pcase$$</div></div>
+							<div class="span4"><input type="text" id="MiniInputSurfaceMin" class="center moteur-input-change" name="surfacemin" value="$$IF0:FORM:SURFACEMIN$$$$LG:MINI pcase$$$$END$$$$IF:FORM:SURFACEMIN$$$$FORM:SURFACEMIN$$$$END$$" data-placeholder="$$LG:MINI pcase$$"></div>
+							<div class="span4"><input type="text" id="MiniInputSurfaceMax" class="center moteur-input-change" name="surfacemax" value="$$IF0:FORM:SURFACEMAX$$$$LG:MAXI pcase$$$$END$$$$IF:FORM:SURFACEMAX$$$$FORM:SURFACEMAX$$$$END$$" data-placeholder="$$LG:MAXI pcase$$"></div>
+						</div>
+					$$END$$
+				</div>
+				<div class="span4">
+					$$IF=:1:MINIPIECES_AFFICHAGE$$
+						<div id="Mini_Pieces" class="span12">
+							<div class="span6 italic"><div class="margin-top-7 pagination-right titre-surface">$$LG:MININBRPIECES pcase$$</div></div>
+							<div class="span6">							
+								<select name="nb_pieces" class="center">			
+									<option value=""> --- </option>							
+									<option value="1"$$IF(:FORM_NB*PIECES:1$$ selected="selected"$$END$$> 1</option>
+									<option value="2"$$IF(:FORM_NB*PIECES:2$$ selected="selected"$$END$$> 2</option>
+									<option value="3"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 3</option>
+									<option value="4"$$IF(:FORM_NB*PIECES:4$$ selected="selected"$$END$$> 4</option>
+									<option value="+4"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 5 $$LG:ET lcase$$ +</option>
+								</select>			
+							</div>
+						</div>
+					$$END$$
+				</div>
+				<div class="span1"></div>
+  			</div>
+  			<div class="row-fluid">
+  				<div class="span4"></div>
+  				<div class="moteur-avantage-plus-action span4">
+	  				<span class="smaller">$$LG:PLUSCRIT ucase$$</span>
+  					<i class="fleche"></i>
+  				</div>
+  				<div class="span4"></div>
+  			</div>
+  		</div>  		
+  	</div>
+	</div>
+</form>
+
+<script>
+	$(document).ready(function() {
+		$(".moteur-avantage-plus-action").click(function(){
+			$(".moteur-avantage-critere").toggle("slow");
+			$(".moteur-avantage-plus-action .fleche").toggleClass("on");
+		});		
+	});
+</script>
