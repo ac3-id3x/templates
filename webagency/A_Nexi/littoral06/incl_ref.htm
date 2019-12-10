@@ -1,0 +1,153 @@
+$$REM$$
+ 
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <summary>et les expressions a utiliser dans les alt et title </summary> 
+////  <summary>et pour declarer les variables d'affichage des infos agences</summary> 
+//// <remarks>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+ 
+$$END$$
+ 
+ 
+ 
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+ 
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+ 
+ 
+ <!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> 
+ 
+$$SET:PAGE:TITR=Agence immobili&egrave;re @@NOM_AGENCE@@ - Immobilier @@VILLE_AGENCE@@ $$
+$$SET:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@ &agrave; @@VILLE_AGENCE@@$$
+$$SET:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@, agence immobili&egrave;re  @@VILLE_AGENCE@@ @@NOM_AGENCE@@$$
+ 
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+ 
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier prestige St Jean Cap Ferrat - Agence immobiliere St Jean Cap Ferrat - Agence du Littoral St Jean Cap Ferrat$$
+$$A:PAGE:DESCREF=L'immobilier de prestige sur St Jean Cap Ferrat avec l'Agence du Littoral a St Jean Cap Ferrat. Toutes les offres immobilieres de location de prestige, de location saisonniere, de villa de luxe mais aussi de vente d'appartement a St Jean Cap Ferrat.$$
+$$A:PAGE:KEYWORDS=agence immobiliere St Jean Cap Ferrat, immobilier prestige St Jean Cap Ferrat, location prestige St Jean Cap Ferrat, vente appartement St Jean Cap Ferrat, location saisonniere St Jean Cap Ferrat, villa luxe St Jean Cap Ferrat, agence du Littoral St Jean Cap Ferrat$$
+$$END$$
+
+$$IF=:ACCUEIL:PAGE:IDT$$
+$$A:PAGE:TITR=Location prestige, villa luxe, vente appartement, location saisonniere St Jean Cap Ferrat - Agence du Littoral St Jean Cap Ferrat$$
+$$A:PAGE:DESCREF=Annonces immobilieres de location de prestige, de vente d'appartement, de villa de luxe, de location saisonniere sur St Jean Cap Ferrat et sa region avec l'agence du Littoral a St Jean Cap Ferrat.$$
+$$A:PAGE:KEYWORDS=agence immobiliere St Jean Cap Ferrat, immobilier prestige St Jean Cap Ferrat, location prestige St Jean Cap Ferrat, vente appartement St Jean Cap Ferrat, location saisonniere St Jean Cap Ferrat, villa luxe St Jean Cap Ferrat, agence du Littoral St Jean Cap Ferrat$$
+$$END$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier prestige St Jean Cap Ferrat, location prestige St Jean Cap Ferrat - Agence du Littoral St Jean Cap Ferrat$$
+$$A:PAGE:DESCREF=L'agence du Littoral est specialisee dans l'immobilier de prestige et la location de prestige de biens immobiliers sur St Jean Cap Ferrat et ses environs.$$
+$$A:PAGE:KEYWORDS=immobilier prestige St Jean Cap Ferrat, location prestige St Jean Cap Ferrat$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$IF=:384379:FORM:IDP$$
+$$A:PAGE:TITR=Agence immobiliere St Jean Cap Ferrat - Agence du Littoral St Jean Cap Ferrat$$
+$$A:PAGE:DESCREF=Toutes les offres immobilieres de location saisonniere de villas de luxe a St Jean Cap Ferrat et de vente d'appartements a St Jean Cap Ferrat avec l'agence du Littoral.$$
+$$A:PAGE:KEYWORDS=agence immobiliere St Jean Cap Ferrat$$
+$$END$$
+$$END$$
+
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Agence du Littoral$$
+$$A:PAGE:DESCREF=Plan du site de l'agence du Littoral.$$
+$$A:PAGE:KEYWORDS=agence immobiliere St Jean Cap Ferrat, immobilier prestige St Jean Cap Ferrat, location prestige St Jean Cap Ferrat, vente appartement St Jean Cap Ferrat, location saisonniere St Jean Cap Ferrat, villa luxe St Jean Cap Ferrat, agence du Littoral St Jean Cap Ferrat$$
+$$END$$
+ 
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+ 
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+ 
+ 
+
+$$REM$$
+ 
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+ 
+$$END$$

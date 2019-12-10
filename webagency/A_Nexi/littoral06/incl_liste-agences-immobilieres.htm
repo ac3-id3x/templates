@@ -1,0 +1,82 @@
+$$REM$$
+=========================================================
+//// <summary>Liste des agences du site</summary>
+//// <remarks>
+//// <para>trier des agences par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste-agences-immobilieres.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// </remarks>
+//// <update date="2008-01-30" author="lisbonne.siriphol">Création</update>
+=========================================================
+$$END$$
+
+
+
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+$$BIF:LISTEAG$$
+$$DO$$
+<div class="cadreAgence">			
+	<div class="img_Ctn">
+		<a id="Img$$LISTEAG:IDPUBLICATION$$" class="imgCadreAgence" href="
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$&amp;lang=$$LANGUE lcase$$
+			$$END$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$LISTEAG:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$
+			$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:AGEN pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:VILLE scase$$$$END$$"></a>
+	</div>
+	<div class="coordsAgence">
+		<h2>$$LISTEAG:NOM$$</h2>
+		<p class="cv_adresse">
+			$$LISTEAG:ADRESSE htmlencode crlf2br$$
+		</p>
+		
+		<p>
+			
+			<span class="cv_tel">$$LG:MINITEL pcase$$ : 
+			$$IF=:FR:LANGUE$$
+			04 93 01 23 23
+			$$END$$
+			$$IF=:EN:LANGUE$$
+			+33 (0)4 93 01 23 23
+			$$END$$
+			$$IF=:RU:LANGUE$$
+				+33 (0)4 93 76 80 93
+			$$END$$	
+			</span>
+			$$IF:LISTEAG:FAX$$<br /><span class="cv_fax">$$LG:FAX pcase$$ : $$IF=:FR:LANGUE$$ 04 93 76 80 93 $$END$$ $$IF=:EN:LANGUE$$+33 (0)4 93 76 80 93 $$END$$ $$IF=:RU:LANGUE$$+33 (0)4 93 76 80 93 $$END$$</span>$$END:LISTEAG:FAX$$
+			$$IF:LISTEAG:RESPAG$$<br /><span class="cv_respag responsable">$$LG:NOMRESP pcase$$ $$LISTEAG:RESPAG ncase$$</span>$$END:LISTEAG:RESPAG$$
+		</p>
+		<p>
+			$$IF:LISTEAG:EMAIL$$<label class="cv_email"><span>$$LG:EMAIL pcase$$ : </span> 
+			$$IF!:RU:LANGUE$$
+    		<a href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:EMAIL encodemail javascript$$</a></label>$$END$$	
+    	$$END$$
+    	$$IF=:RU:LANGUE$$
+    		$$A:MAIL2=ludmila@agence-littoral.com$$$$MAIL2 encodemail javascript full$$
+    	$$END$$
+				
+				
+			$$IF:LISTEAG:URL$$<br /><label class="cv_url"><span>$$LG:SITE pcase$$ :</span> <a href="$$LISTEAG:URL$$" onclick="window.open(this.href); return false;" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:SITE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:URL$$</a></label>$$END:URL$$
+		</p>
+	</div>		
+	<div class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></div>
+</div>
+
+$$IF!:RU:LANGUE$$
+<div class="links">
+
+	<p class="links_Ctn">
+		<a class="plus" href="
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$&amp;lang=$$LANGUE lcase$$
+			$$END$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$LISTEAG:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$
+			$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:PLUSDINFOS pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:LIEN:PLUSDINFOS pcase$$</span></a>
+		<a class="message" href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+	</p>
+	<p class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></p>
+
+</div>
+$$END$$
+$$LOOP$$
+$$BFIN$$

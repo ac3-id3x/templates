@@ -1,0 +1,59 @@
+$$B:IMMOBW:PHOTOS:ALIAS:PHOTO:REP:1$$
+$$REM$$<!-- ///////////////////////////////// galerie photo version simple ///////////////////////////////// -->$$END:REM$$
+			<script type="text/javascript">
+				<!--
+				function switchImage(srcImg, srcBigImg, nbImg, nbTotalImg, descrPhoto) {
+					
+					var grandePhoto = document.getElementById('big');
+					var nbPhoto = document.getElementById('GrandePhotoNb');
+					var lienLyteBox = document.getElementById('agrandir');
+					
+					if(grandePhoto){
+						grandePhoto.src = srcImg;
+						} else {
+							alert('image non chargée');
+					}					
+					if(nbPhoto){
+						nbPhoto.innerHTML = 'Photo '+ nbImg  +'/'+ nbTotalImg + descrPhoto;
+					}
+					
+					if(lienLyteBox){
+						lienLyteBox.href = srcBigImg;
+					}
+					
+				}
+				//-->
+			</script>
+			<div id="Photo_Ctn">
+				
+				<table id="Photo">
+					<tr>						
+						<td id="GrandePhoto">
+							<!--#include virtual="/detail/incl_coupdecoeur.htm" -->	
+							<!--#include virtual="/detail/incl_sipromo.htm" -->
+							<!--#include virtual="/detail/incl_exclusif.htm" -->
+							$$BIF:PHOTO$$$$DO:1:1$$$$LOOP$$<img src="$$1_PHOTO:URL$$" id="big" alt="" title="" />
+							
+							$$BFIN$$
+						</td><!-- fin #GrandePhoto -->
+						
+						$$IF>:2:PHOTO:NBR$$
+						<td id="Vignettes">							
+							$$BIF:PHOTO$$
+							<!-- vignettes -->
+							$$DO:1:6$$
+							$$IFNOTNULL:PHOTO:N$$
+							<a 
+								
+								onmouseover="switchImage('$$PHOTO:URL$$','$$PHOTO:BIG_URL$$','$$PHOTO:N$$', '$$PHOTO:NBR$$', '$$IF:PHOTO:DESCRIPTIF_FR$$ : $$PHOTO:DESCRIPTIF_FR escape$$$$END$$');" 
+								id="Thumb$$PHOTO:N$$" 
+								title="$$LG:PHOT pcase$$ $$PHOTO:N$$/$$PHOTO:NBR$$"><img src="$$PHOTO:URL$$" /></a>
+							$$END$$
+							$$LOOP$$
+							$$BFIN$$
+							<div class="clear"><!-- --></div>											
+						</td>
+						$$END:PHOTO:NBR$$
+					</tr>
+				</table><!-- fin #Photo -->
+			</div><!-- fin #Photo_Ctn -->
