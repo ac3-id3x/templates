@@ -1,0 +1,160 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto g&eacute;oloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par d&eacute;partement puis ville et pour paris par arrondissement (depvillenom) , par d&eacute;partement (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par d&eacute;faut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affich&eacute; sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Cr&eacute;ation</update>
+====================================================================$$END$$
+$$INIT:IDT=NOSAGENCES$$
+$$INIT:JS_BING=1$$
+$$INIT:CSS_AGENCE=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa r&eacute;gion$$
+	$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa r&eacute;gion.$$
+	$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div id="AgImmo_Ctn">
+	$$IF+:2:COMPTE_AGENCES:NBR$$
+	<h3>2 $$LG:AGENCESAVOTRSERVICE lcase$$</h3>
+	$$END:COMPTE_AGENCES:NBR$$
+	
+	$$IF:OPTION_GEOLOC$$
+	<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+	$$END:OPTION_GEOLOC$$
+
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesHaut">
+		
+		$$IF+:5:COMPTE_AGENCES:NBR$$
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+			<script type="text/javascript">
+				<!--	
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+				//-->	
+			</script>
+		
+			<a name="tri"></a>
+			
+			<form id="Tri" action="/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">
+					$$LG:TRIERPAR pcase$$ :		
+					<select name="triAnn" id="TriAnn" class="miniForm" onchange="Trier(this.id);">
+						<option $$IF=:nom:FORM:TRI$$selected="selected"$$END$$ $$IF0:FORM:TRI$$selected="selected"$$END$$ value="nom"> $$LG:NOM pcase$$</option>
+						<option $$IF=:cp:FORM:TRI$$selected="selected"$$END$$ value="cp"> $$LG:CODEP pcase$$</option>
+						<option $$IF=:ville:FORM:TRI$$selected="selected"$$END$$ value="ville"> $$LG:VILLE pcase$$</option>
+						$$IF+:10:COMPTE_AGENCES:NBR$$
+						<option $$IF=:dep:FORM:TRI$$selected="selected"$$END$$ value="dep"> $$LG:DEPART pcase$$</option>
+						$$END:COMPTE_AGENCES:NBR$$				
+					</select>
+				</div>
+			</form><!-- #Tri -->
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+		
+		
+		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesHaut -->
+	
+	$$END:LISTEAG:NBRPAGES$$
+	
+$$END:COMPTE_AGENCES:NBR$$
+			<div class="txtagence">
+		<h3>Bienvenue sur le site internet du Cabinet J. RAIMON et de ses agences: Cabinet VAILLANT transaction et Cabinet VAILLANT location </h3>
+		<p>
+			Nos Cabinets <a href="http://www.cabinet-raimon.com/immobilier-paris-13eme.htm" title="Immobilier Paris 13&egrave;me ">immobiliers 
+			pr&eacute;sents sur Paris 13&egrave;me</a> et Montrouge vous proposent les services de location, gestion et transaction immobilière. Le Cabinet J. 
+			RAIMON et les Cabinets VAILLANT disposent chacun d’un service de transaction et d’un service de <a href="http://www.cabinet-raimon.com/immo,gestion.htm?lang=fr" title="Gestion Locative Paris 13eme">gestion 
+			locative, sur Paris 13&egrave;me</a>, Montrouge et l’ensemble de la r&eacute;gion parisienne, avec plusieurs milliers de lots r&eacute;unis.
+			Vous trouverez dans chacun de nos services de gestion les garanties de loyers impay&eacute;s et d&eacute;gradations immobili&egrave;res d’appartements sur Paris 13&egrave;me</a>, Montrouge et la banlieue sud.
+		</p>
+		<p>
+			Avec un fichier commun r&eacute;unissant les biens de nos trois cabinets, nous sommes sûrs de vous soumettre 
+			les meilleures offres en vente et location.<br />
+			Vous trouverez un grand choix d’appartements sur Paris 13&egrave;me et ses environs, du studio au T4 et plus, 
+			des lofts, duplex ou appartements-terrasse, des maisons de ville ou demeures bourgeoises, des biens de prestige et des locaux commerciaux.
+		</p>
+		<p>
+			Notre secteur immobilier rayonne autour de Paris 13&egrave;me, Montrouge, et sur les communes de la premi&egrave;re couronne sud de Paris, d’Issy-les-Moulineaux &agrave; 
+			Charenton-le-Pont, en passant par Vanves, Malakoff, Châtillon, Bagneux, Arcueil, Cachan, Gentilly, Villejuif, Ivry-sur-Seine, Vitry-sur-Seine.
+		</p>
+		<p>
+			Dans le cadre de la vente, location ou gestion locative de votre appartement, maison, local commercial sur Paris 13&egrave;me, Montrouge et 
+			nos autres secteurs, nos conseillers se rendront disponibles pour une estimation et vous proposeront  le mandat (de vente, location ou 
+			gestion) appropri&eacute; &agrave; vos objectifs.
+		</p>
+	</div>
+	$$DO:1:10$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$LOOP$$
+	$$BFIN$$
+	
+
+	$$REM$$
+	<div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">
+			<img src="images/logo.gif" class="snsphotos" />
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">SOPIC IMMOBILIER </h2>
+			<p id="infosAg_adresse">
+				145 RUE DE TOLBIAC
+			</p>
+			<p id="infosAg_ville">75013 Paris </p>
+			<p id="infosAg_telfax">
+				$$LG:MINITEL$$ : 01.44.24.11.40
+				$$LG:FAX$$ : 01.45.86.07.99
+			</p>
+			
+			<!--
+			<p id="infosAg_mail">
+				$$LG:EMAIL pcase$$ : <a href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:EMAIL encodemail javascript$$</a>
+			</p>
+			-->
+			<p id="infosAg_url">
+				$$LG:SITE pcase$$ : <a href="http://www.cabinet-raimon.com" onclick="this.target='_blank'">http://www.cabinet-raimon.com</a>
+			</p>
+		</div>$$END$$
+
+		<div class="clear"></div>
+	<div class="clear"></div>
+</div>
+	
+	
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
+
