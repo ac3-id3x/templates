@@ -1,0 +1,122 @@
+	<form id="form-contact-agence" class="row-fluid pair padding-20">
+		<!--#include absolute="webagency/A_ID3X/8perf/contact/incl_honeypot.htm" -->
+		<!--#include absolute="webagency/A_ID3X/8perf/detail/incl_detail_formulaire_input.htm" -->
+
+		<div class="h2-like margin-bottom-20 detail-border-titre">$$LG:NOUSCTC pcase$$</div>
+		<div class="row-fluid margin-bottom-10 clearfix">
+			$$IF0:HIDEVISITER$$
+			<div class="$$IF=:livre$prestige$rome:PAGE_STYLE$$span4$$END$$ impair padding-5 margin-bottom-5">
+				<label class="radio inline">
+					<input type="radio" name="type-message" value="3" checked
+						   data-message="Je souhaite visiter ce bien."
+						   data-type="visit"> $$LG:VISITERBIEN pcase$$
+				</label>
+			</div>
+			$$END$$
+			
+			$$IF0:HIDEPLUSDETAIL$$
+			<div class="$$IF=:livre$prestige$rome:PAGE_STYLE$$span4$$END$$ impair padding-5 margin-bottom-5">
+				<label class="radio inline">
+					<input type="radio" name="type-message" value="2"$$IF=:1:HIDEVISITER$$ checked$$END$$
+						   data-message="Je souhaite avoir plus d'information sur cette annonce."
+						   data-type="information"> $$LG:PLUSDETAILS pcase$$
+				</label>
+			</div>
+			$$END$$
+
+			$$IF0:HIDERAPPEL$$
+			<div class="$$IF=:livre$prestige$rome:PAGE_STYLE$$span4$$END$$ impair padding-5 margin-bottom-5">
+				<label class="radio inline">
+					<input type="radio" name="type-message" value="1"$$IF=:1:HIDEVISITER$$$$IF=:1:HIDEPLUSDETAIL$$ checked$$END$$$$END$$
+						   data-message="Je souhaite être rappelé par votre agence."
+						   data-type="callback"> $$LG:ETRERAPPEL pcase$$
+				</label>
+			</div>
+			$$END$$
+			$$IF=:1:HIDEVISITER$$$$IF=:1:HIDEPLUSDETAIL$$$$IF=:1:HIDERAPPEL$$
+					<input type="radio" name="type-message" value="1" checked data-message="Je souhaite avoir plus d'information sur cette annonce." data-type="information" class="display-none">
+			$$END$$$$END$$$$END$$
+		</div>
+
+		<div class="row-fluid">
+			<label class="pagination-left">
+				$$LG:NOM pcase$$ / $$LG:PRENOM lcase$$
+				<input class="span12" type="text" name="cnom" required>
+			</label>
+		</div>
+
+		<div class="row-fluid margin-bottom-10">
+			<div class="span6">
+				<label class="pagination-left">
+					$$LG:EMAIL pcase$$
+					<input class="span12" type="email" name="from" required>
+				</label>
+			</div>
+
+			<div class="span6">
+				<label class="pagination-left">
+					$$LG:TEL pcase$$
+					<input class="span12" type="tel" name="ctel" required>
+				</label>
+			</div>
+		</div>
+
+		<fieldset class="visit $$IF=:1:HIDEVISITER$$display-none$$END$$">
+			<!--#include absolute="webagency/A_ID3X/8perf/detail/incl_detail_formulaire_bloc_visiter.htm" -->
+		</fieldset>
+
+		<fieldset class="information row-fluid $$IF0:HIDEVISITER$$display-none$$END$$ margin-bottom-10">
+			<div class="$$IF=:livre$prestige:PAGE_STYLE$$span6$$END$$">
+				<label class="checkbox inline">
+					<input type="checkbox" name="detail_demande" value="Montant des charges"> $$LG:MONTANTCHARGES pcase$$
+				</label>
+
+				<br>
+
+				<label class="checkbox inline">
+					<input type="checkbox" name="detail_demande" value="Situation et environnement"> $$LG:SITUATIONENVIRONNEMENT pcase$$
+				</label>
+			</div>
+
+			<div class="$$IF=:livre$prestige:PAGE_STYLE$$span6$$END$$">
+				<label class="checkbox inline">
+					<input type="checkbox" name="detail_demande" value="Etat du bien"> $$LG:ETATBIEN pcase$$
+				</label>
+
+				<br />
+
+				<label class="checkbox inline">
+					<input type="checkbox" name="detail_demande" value="Disponibilté du bien"> $$LG:DISPOBIEN pcase$$
+				</label>
+			</div>
+		</fieldset>
+
+		<fieldset class="callback $$IF0:HIDEVISITER$$$$IF0:HIDEPLUSDETAIL$$display-none$$END$$$$END$$">
+			<!--#include absolute="webagency/A_ID3X/8perf/detail/incl_detail_formulaire_bloc_rappel.htm" -->
+		</fieldset>
+		
+		<div class="control-group margin-bottom-0 margin-top-5">
+			<span class="titre-commentaires">$$LG:COMMENTAIRES pcase$$ :</span>
+			<div>
+				<textarea name="demande_autre" class="height-50 center"> </textarea>
+			</div>
+		</div>
+
+		<div class="row-fluid margin-bottom-10 margin-top-10">
+			<div>
+				<button type="submit" class="btn-send-contact $$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-large width-100-pourcent" data-loading-text="$$LG:ENVOIENCOURS pcase$$"$$IF=:1:SUIVITRACKINGEXTERNE$$ onclick="goog_report_conversion();"$$END$$><i class="icon-v5-arrow-right-5"></i> $$LG:ENVOYMES pcase$$</button>
+			</div>
+			<div>
+				<div class="response"></div>
+			</div>
+		</div>
+		
+	</form>
+	<style>
+		@media only screen and (max-width: 767px) {
+			#form-contact-agence input[type="text"], #form-contact-agence input[type="email"], #form-contact-agence input[type="tel"] {
+				width:100%;
+			}
+		}
+	</style>
+	<!--#include virtual="detail/incl_detail_contact_js.htm" -->
