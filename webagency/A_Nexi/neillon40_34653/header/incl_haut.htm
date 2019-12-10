@@ -1,0 +1,105 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+$$IF:FAVICON$$
+<link rel="shortcut icon" type="image/x-icon" href="$$FAVICON$$" />
+$$END$$	
+</head>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+	
+	$("#MiniInputRef").val("$$LG:MINIRECHREF$$");
+ 
+	$('#Mini_Moteur').submit(function() {
+		if($("#MiniInputRef").val()=="$$LG:MINIRECHREF$$"){
+		 $("#MiniInputRef").val("");
+		}
+		return true;
+	 });   
+	  
+	$('#MiniInputRef').focus(function() {
+		 if($(this).val()=="$$LG:MINIRECHREF$$"){
+		$(this).val("");
+		 }
+	});
+
+	$('#MiniInputRef').blur(function() {
+		 if($(this).val()==""){
+		$(this).val("$$LG:MINIRECHREF$$");
+		 }
+	});
+	
+	$("#MiniInputRef").hide();
+	$('#idtt').change(function() {
+	  if( $(this).val() == 4 ){
+	  	$("#MiniInputRef").show();
+	  }else{
+	  	$("#MiniInputRef").hide();
+	  }
+	});
+	if( $('#idtt').val() == 4 ){
+		$("#MiniInputRef").show();
+	}
+	
+	
+	
+ });
+ </script>
+ 
+ 
+<body class="$$LANGUE$$">
+<div id="Header"></div>
+<div class="bg-header">
+	<div class="wrap">
+	<div class="mn">
+		<ul class="$$LANGUE$$">
+			<!--#include virtual="menu/incl_menu.htm" --> 
+		</ul>
+	</div>
+	<div class="flag">
+		$$IF=:FR:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=en" title=""><img src="images/flag_en.gif" alt="" /><br /></a>$$END$$
+		$$IF=:EN:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=fr" title=""><img src="images/flag_fr.gif" alt="" /><br /></a>$$END$$
+	</div>
+		<div class="logo fleft">
+			<a href="$$LIENACCUEIL$$" title=""><img src="images/logo.gif" alt="" /><br /></a>
+		</div>
+		<div class="coords-top fright">
+			$$LG:MINITEL pcase$$ : $$AGENCE_TEL$$
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="flash">&nbsp;</div>
+<div class="bg-moteur">
+	<div class="wrap">
+		<div id="bloc-moteur">
+		$$IF:FORM:IDTT$$
+			$$A:MINI_IDTTUNIQUE=0$$
+			$$A:MINI_IDTTDEFAUT=@@FORM:IDTT@@$$
+		$$END$$
+		$$IF0:FORM:IDTT$$
+			$$A:MINI_IDTTDEFAUT=2$$
+		$$END$$
+
+
+			<!--#include virtual="moteur/mini/moteur.htm" -->
+		</div>
+	</div>
+</div>
+<div class="w-content">
+	<div class="wrap main-content">
+	
+	$$IF=:IMMO,FNAIM.HTM:REP:0$$
+		$$A:TITRE_PAGE=La Fnaim$$
+	$$END$$
+	$$IF=:IMMO,REGION.HTM:REP:0$$
+		$$A:TITRE_PAGE=MIMIZAN ET SA REGION : QUE DU BONHEUR !$$
+	$$END$$
+	$$IF:TITRE_PAGE$$<div class="ttl-page fonts">$$TITRE_PAGE$$</div>$$END$$
