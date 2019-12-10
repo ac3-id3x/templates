@@ -1,0 +1,299 @@
+$$REM$$====================================================================
+//// <summary>Détail annonce SENTO</summary>
+//// <remarks>
+//// <para>Voir conf ID3 PAGE:WAG_STYLE_DETAIL</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2010-06-30" author="lisbonne.siriphol">Création XV3</update>
+====================================================================$$END$$
+$$INIT:CSS_ANNONCES=1$$
+$$INIT:CSS_GALERIE=1$$
+$$INIT:CSS_CARTO=1$$
+$$INIT:JS_GALERIE=1$$
+$$INIT:JS_METRO=1$$
+$$INIT:JS_GOOGLE_PLUS=1$$
+$$INIT:JS_BING=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+$$INIT:JS_DETAIL=1$$
+
+<div id="DetailAnnonce">
+	<div id="LiensRetour">
+		<!--#include virtual="/immo/incl_retour_page_precedente.htm" -->
+		<!--#include virtual="/immo/incl_retour_accueil.htm" -->
+	</div><!-- fin #LiensRetour -->
+	$$IF0:ANNDETAIL:IDTYPETRANSACTION$$
+	<!--#include virtual="/detail/incl_no_annonce.htm" -->
+	$$END:0:ANNDETAIL:IDTYPETRANSACTION$$
+	$$IF:ANNDETAIL:IDTYPETRANSACTION$$
+	<div id="Annonce_Ctn">
+		<div class="infosAnnonce_ctn">
+				<div id="photoDesc_ctn">
+					<!--#include virtual="/detail/incl_galerie_sento.htm" -->
+					<div class="clear"></div>
+					$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$
+					<div id="AutresVisuels"
+						$$IF0:ANNDETAIL:IDLIEN$$
+             $$IF0:ANNDETAIL:VIDEO_URL$$
+						$$IF0:ANNDETAIL:ID360$$						
+						$$IF0:ANNDETAIL:360_URL$$
+						$$BIF0:PDF$$
+						style="display: none;"
+						$$BFIN$$
+						$$END:360_URL$$
+						$$END:ID360$$
+             $$END:VIDEO_URL$$
+						$$END:IDLIEN$$
+						>
+						<h4>$$LG:AUTRESVISUELS pcase$$</h4>
+						<!--#include virtual="/detail/incl_visuel_pdf.htm" -->						
+						<!--#include virtual="/detail/incl_visuel_360.htm" -->
+             <!--#include virtual="/detail/incl_visuel_video_externe.htm" -->
+						<!--#include virtual="/detail/incl_visuel_lien_externe.htm" -->
+					</div>
+					<div class="clear"></div>
+					
+				</div>
+			<div id="InfosPrincipales">
+				<h4 class="typeTransactionInfos">
+					$$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+						$$LG:ALOUER pcase$$
+					$$END$$
+					$$IF=:2:ANNDETAIL:IDTYPETRANSACTION$$
+						$$LG:AVENDRE pcase$$
+					$$END$$
+					$$IF!:1$2:ANNDETAIL:IDTYPETRANSACTION$$
+						$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+					$$END$$
+				</h4>
+				
+				<h3 class="libelleTransactionInfos"><!--#include virtual="/detail/incl_libelle.htm" --></h3>$$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$<h3 class="prixTransactionInfos"><!--#include virtual="/detail/incl_prix.htm" --></h3>$$END:IDTYPETRANSACTION$$
+					<p><!--#include virtual="/detail/incl_type_transaction.htm" --></p>
+						
+					$$IF:ANNDETAIL:SURFACE$$<p><!--#include virtual="/detail/incl_surface.htm" --></p>$$END:SURFACE$$
+					$$IF:ANNDETAIL:SURF_TERRAIN$$<p><!--#include virtual="/detail/incl_surface_terrain.htm" --></p>$$END:SURF_TERRAIN$$
+					$$IF:ANNDETAIL:IDTYPEINVESTISSEMENT$$<p><!--#include virtual="/detail/incl_type_investissement.htm" --></p>$$END$$
+				<h3 class="villeTransactionInfos"><!--#include virtual="/detail/incl_ville.htm" --></h3>								
+					$$IF:ANNDETAIL:IDQUARTIER$$<p><!--#include virtual="/detail/incl_quartier.htm" --></p>$$END:ANNDETAIL:IDQUARTIER$$
+					$$IF:ANNDETAIL:PROX$$<p><!--#include virtual="/detail/incl_prox.htm" --></p>$$END:ANNDETAIL:PROX$$
+					<div id="zoneMetro"></div>
+				<script type="text/javascript">
+					// MGT JQUERY METRO
+					$(document).ready(function() {
+						dispMetro('$$ANNDETAIL:IDANNONCE getlieux escape$$','zoneMetro');
+					});
+				</script>
+				<div class="clear"></div>
+			
+					<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+					<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+					<!--#include virtual="/detail/incl_dispo.htm" -->			
+				<h3 class="referenceTransactionInfos"><!--#include virtual="/detail/incl_refannonce.htm" --></h3>
+					<p><!--#include virtual="/detail/incl_maj.htm" --></p>
+				$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+				$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+				<div id="InfosComp_Ctn">
+					<h4>$$LG:FICHESIGNALETIQUE pcase$$</h4>
+					<ul>
+					$$DO$$
+						<li>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$</li>
+					$$LOOP$$				
+					</ul>
+				</div>
+				$$BFIN$$
+				<div id="Outils">
+				<h4>$$LG:LIEN:OUT pcase$$</h4>			
+					<!--#include virtual="/detail/incl_outil_ajout_selection.htm" -->				
+					<!--#include virtual="/detail/incl_outil_voir_selection.htm" -->
+					<!--#include virtual="/detail/incl_outil_imprimer.htm" -->
+					<!--#include virtual="/detail/incl_outil_envoi_ami.htm" -->
+					<!--#include virtual="/detail/incl_outil_permalien.htm" -->	
+				</div>
+				
+			</div>
+			<div class="clear"></div>
+			<!--#include virtual="/detail/incl_descriptif.htm" -->
+			$$IF:PAGE:MAP_GOOGLEKEY$$
+				$$IF!:ABQIAAAATvGIAAZ0ge4GmsDE2mjzJRTdvOH-Un-nPJSFBlUnUl1-1zJf9hSkyMu-j9Dsfo5O7gs2zSG-iZks4w:PAGE:MAP_GOOGLEKEY$$
+		 		<div id="POI">
+		              <h4>Points d'intérêts</h4>
+		              <!--#include virtual="/detail/incl_poi.htm" -->
+		        </div>
+	              $$END:PAGE:MAP_GOOGLEKEY$$
+              $$END:PAGE:MAP_GOOGLEKEY$$  
+			<div id="zoneDPE">
+			<h4>$$LG:DPE pcase$$</h4>
+				<!--#include virtual="/detail/incl_dpe.htm" -->
+			</div>
+			<div class="clear"></div>
+			$$B:IMMOBW:ANN:ALIAS:ANNLISTE::QRY:LANG:::ADD:ci=+ANNDETAIL_CODEINSEE+&idtt=+ANNDETAIL_IDTYPETRANSACTION+&idtypebien=+ANNDETAIL_IDTYPEBIEN+&nb_pieces=+ANNDETAIL_NB*PIECES+&rayon=5::d_dt_crea:~NOSTAT:1$$
+			$$BIF:ANNLISTE$$
+				$$IF>:2:ANNLISTE:NBR$$
+				<div id="annoncesSim">
+					<h4>
+						$$LG:ANNSIMILAIRESA$$ : 								
+						$$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+						$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase$$
+						$$END$$	
+						$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$
+						
+						$$IF:ANNDETAIL:NB_PIECES$$
+						de $$ANNDETAIL:NB_PIECES$$
+						$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF!:0$1:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+						$$END:NB_PIECES$$
+						
+						$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+						$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+						$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+						$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+						$$END$$								
+						&agrave; $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+						et alentours
+					</h4>
+					<!--#include virtual="/detail/incl_annonces_similaires.htm" -->	
+				</div>
+				$$END$$
+			$$BFIN$$
+		</div>
+		<div class="moreAnnonce_ctn">
+			<div id="infosAgence">
+				<h3>$$LG:DEMANDEDERENS pcase$$</h3>
+				<h4>$$LG:CONTACTERAGENCE pcase$$</h4>
+				$$E:IMMOBW:AGENCE:VAL:ANNDETAIL_IDPUBLICATION:ALIAS:AG$$
+									
+				<!--#include virtual="detail/incl_agence_tel.htm" -->
+				$$IF:ANNDETAIL:IDTYPECTC1$$
+				<div class="ctc_neuf" id="blocContactPromoteur">
+					<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+				</div><!-- fin .ctc_neuf -->
+				$$END:IDTYPECTC1$$
+				$$IF:ANNDETAIL:IDTYPECTC2$$
+				<div class="ctc_neuf" id="blocContactCommercialisateur">
+						<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+				</div><!-- fin .ctc_neuf -->
+				$$END:IDTYPECTC1$$
+				$$IF:ANNDETAIL:ADRBUREAU$$
+				<div class="ctc_neuf">
+					<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+				</div><!-- fin .ctc_neuf -->
+				$$END:ADRBUREAU$$
+				<!--#include virtual="/detail/incl_texte_agence.htm" -->
+				$$IF:ANNDETAIL:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				$$IF:CHECKMAIL$$
+				<div id="Form_Contact">
+   				<h4>$$LG:DEMANDEDERENS pcase$$</h4>
+					$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+					$$REM$$<!-- // si message envoye // -->$$END:REM$$
+					<script type="text/javascript">
+						<!--
+						document.location= '/$$ANNDETAIL:IDPUBLICATION$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+						//-->
+					</script>
+					$$END:AGENCEMAIL:OK$$
+					$$IF=:1:FORM:CTC$$
+					$$REM$$<!-- // confirmation formulaire envoye // -->	$$END:REM$$
+					<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+					$$END:FORM:CTC$$
+					$$IF!:1:FORM:CTC$$
+					<script>
+						//s.eVar7 = "Formulaire de contact agence sur page détail";
+						//s.events = s.apl(s.events, "event9", ',',1);
+					</script>
+					<!-- // formulaire de contact // -->
+					<form method="post" action="" name="form_contact">							
+							<div id="Form_Ctn">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+								<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+								<input type="hidden" name="page_ok" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+								<input type="hidden" name="page_err" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+								<input type="hidden" name="PathTemplateMail" value="/contact,detail_formulaire_envoi.htm" />$$REM$$<!--// [INPUT FACULTATIVE] chemin template mail reçu par client > demutualisable //-->$$END$$
+								<input type="hidden" name="IDPUBLICATION" value="$$ANNDETAIL:IDPUBLICATION$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								<input type="hidden" name="idannonce" value="$$ANNDETAIL:IDANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+							$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+								<div class="pictoErre">$$IMMOBW:AGENCEMAIL:ERRE$$</div>
+							$$END$$							
+							<div class="rowForm">
+								<span class="label">
+									$$LG:AI5 pcase$$ <span>&sup2;</span>
+								</span>
+								<span class="field">
+									<input class="inputText" type="text" name="cnom" value="$$FORM:CNOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								</span>	
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<span class="label">
+									$$LG:PRENOM pcase$$
+								</span>
+								<span class="field">
+									<input class="inputText" type="text" name="cprenom" value="$$FORM:CPRENOM$$" />$$REM$$<!--// [input facultative]  //-->$$END$$
+								</span>
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<span class="label">
+									$$LG:TEL pcase$$
+								</span>
+								<span class="field">
+									<input class="inputText" type="text" name="ctel" value="$$FORM:CTEL$$" />$$REM$$<!--// [input facultative] //-->$$END$$
+								</span>	
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<span class="label">
+									$$LG:EMAIL pcase$$ <span>&sup2;</span>
+								</span>
+								<span class="field">
+									<input class="inputText" type="text" name="from" value="$$FORM:FROM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								</span>	
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<span class="label">
+									<p>$$LG:REFERENCE pcase$$ <span>&sup2;</span></p>
+								</span>
+								<span class="field">
+									<input class="inputText" type="text" name="refann" value="$$ANNDETAIL:REFANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								</span>	
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<span class="label">
+									<p>$$LG:MESS pcase$$ <span>&sup2;</span></p>
+								</span>
+								<span class="field">
+									<textarea class="inputTextarea" name="message" cols="18" rows="5">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								</span>	
+								<div class="clear"></div>
+							</div>
+							<div class="rowForm">
+								<input type="submit" class="inputSubmit" id="BoutonContactAnnonce" value="$$LG:ENVOYER2 pcase$$" />
+							</div>				
+						</div>
+					</form>
+					<p>&sup2; : $$LG:CHAMPSOBLIGATOIRES pcase$$</p>
+					$$END:FORM:CTC$$							
+				</div><!-- fin #FormContact -->
+				
+				$$END:CHECKMAIL$$
+				<div id="Bookmarks">
+				<h4>$$LG:PARTAGEZ pcase$$</h4>
+				<!--#include virtual="/detail/incl_bookmarks.htm" -->	
+				</div>
+				
+			</div>
+		</div>
+		<div id="AgenceMentions">			
+	    			$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:ML$$
+	    			$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:CARTEPROT$$
+	    			$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:2:ALIAS:CARTEPROG$$
+						<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+				</div>
+		<!--#include virtual="legal/incl_formulaire_cgu.htm" -->	
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div><br />
+	<!--#include virtual="immo/incl_retour_haut.htm" --><br /><br />
+	$$END:ANNDETAIL:IDTYPETRANSACTION$$
+</div><!-- fin #DetailAnnonce -->
+<div class="clear"></div>
