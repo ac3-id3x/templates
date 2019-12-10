@@ -1,0 +1,1157 @@
+$$REM$$<!-- SI DEMUT PENSEZ A FAIRE CARTO/INCl_SEARCH_AGENCE -->$$END$$
+$$REM$$<!-- SI DEMUT AUCUNE AIDE FOURNIE -->$$END$$
+<div class="row-fluid" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<!--#include virtual="agences/incl_microdonnes_agences.htm" -->
+		<!-- LOGO OR NOT -->
+		<!--#include virtual="agences/incl_liste_agences_logo.htm" -->
+	</div>
+	<div class="span8 margin-top-10">
+	$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span> <span class="typo-action big" itemprop="addressLocality">$$LISTEAG:VILLE pcase$$ <span  itemprop="postalCode">$$LISTEAG:CP$$</span></span></div>
+
+		$$IF=:1:MULTIAGENCES$$
+			$$A:BAREME_URL=$$
+			$$A:BAREME_LIBELLE=$$
+
+			$$IF:LISTEAG:URL_DOCHONORAIRES$$
+				$$A:BAREME_URL=@@LISTEAG:URL_DOCHONORAIRES@@$$
+
+				$$IF:LIBELLE_BAREME_HONORAIRES$$
+					$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+				$$END$$
+
+				$$IF0:LIBELLE_BAREME_HONORAIRES$$
+					$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+				$$END$$
+			$$END$$
+
+			$$IF0:LISTEAG:URL_DOCHONORAIRES$$
+				$$IF:EXTENSION_BAREME_HONORAIRES$$
+					$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@LISTEAG:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+					$$IF:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+					$$END$$
+
+					$$IF0:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+					$$END$$
+				$$END$$
+			$$END$$
+
+			$$IF:BAREME_URL$$
+				<div class="pull-right margin-right-30 margin-top-10">
+				  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+					<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+							<a href="$$BAREME_URL$$" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+					</span>
+				</div>
+				<div class="clear"></div>
+			$$END$$
+		$$END$$
+
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> <!--#include virtual="header/incl_formatel.htm" --></span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7"><!--#include virtual="header/incl_formafax.htm" --></div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7"><span id="email-spam$$LISTEAG:IDPUBLICATION$$"></span><script type="text/javascript">$(document).ready(function() {emailSpam('$$LISTEAG:EMAIL$$','email-spam$$LISTEAG:IDPUBLICATION$$');});</script></div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="$$LISTEAG:URL$$">$$LISTEAG:URL$$</a></div>
+			</div>
+			$$END$$
+			$$IF!:1:HIDENOMRESPONSABLE$$
+		<div class="row-fluid listing-agences-responsable">
+			<div class="span5 bold">$$LG:RESPAGENCE pcase$$</div>
+			<div class="span7">$$LISTEAG:RESPAG$$</div>
+		</div>
+		$$END$$
+	</div>
+</div>
+<!-- BOUTON DE NAVIGATION AGENCE -->
+<div class="row-fluid border-dotted-top-primary-1 margin-top-10 padding-10$$IF=:1:AFFICHAGE_AGENCES_LISTE$$ zone-agence-ajax$$END$$">
+	$$IF=:250:LISTEAG:IDPAYS$$
+		<div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$"><a class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$">$$LG:SAVOIR pcase$$</a></div>
+	$$END$$
+	<div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$ hidden-phone">
+		$$IF0:BIENPERSOAGENCE$$
+			<div title="$$LG:LIEN:NOSBIENS pcase$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$" data-rel="$$LISTEAG:IDPUBLICATION$$" data-langue="$$LANGUE$$">$$LG:LIEN:NOSBIENS pcase$$</div>
+		$$END$$
+		$$IF:BIENPERSOAGENCE$$
+			<a href="$$BIENPERSOAGENCE$$" title="$$LG:LIEN:NOSBIENS pcase$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$">$$LG:LIEN:NOSBIENS pcase$$</a>
+		$$END$$
+	</div>
+	$$IF=:0:AFFICHAGE_AGENCES_LISTE$$
+	<div class="span2 hidden-phone">
+		<div class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-carte-agence">$$LG:NOUSSITUER pcase$$</div></div>
+	$$END$$
+	<div class="span3">
+		$$IF=:ACQUERIR:IDT$$
+			<a href="/$$LISTEAG:IDPUBLICATION$$/acquereur,demande.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-estimation-agence">
+				$$LG:ACHETER pcase$$
+			</a>
+		$$END$$
+		$$IF!:ACQUERIR:IDT$$
+			<!--#include virtual="agences/incl_btn_estimation_liste_agences.htm" -->
+		$$END$$
+	</div>
+	<div class="span3 hidden-phone">
+		<div class="$$TYPEBOUTON$$ $$IF!:ACQUERIR$ESTIMATION:IDT$$$$TYPEBOUTONACTION$$$$END$$$$IF=:ACQUERIR$ESTIMATION:IDT$$btn-neutre$$END$$ btn-block bouton-message-agence">$$LG:NOUSCTC pcase$$	</div>
+	</div>
+</div>
+<div class="row-fluid display-none zone-message-agence">
+	<!--#include virtual="agences/incl_formulaire_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-biens-agence">
+	<!--#include virtual="agences/incl_biens_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-carte-agence">
+	<!--#include virtual="agences/incl_geo_agences.htm" -->
+</div>
+
+
+$$IF=:2:LISTEAG:I$$
+<!--cannes-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_cannes.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_cannes.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">04 93 38 00 33 </span> <span class="typo-action big" itemprop="addressLocality">Cannes <span  itemprop="postalCode">06400</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 93 38 00 33</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">04 93 38 05 20</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=lodelcannes@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--Fréjus-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_frejus.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_frejus.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">368 rue Roland Garros </span> <span class="typo-action big" itemprop="addressLocality">Fréjus <span  itemprop="postalCode">83600 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 94 95 37 55 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">04 94 95 37 84</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=lodelvar@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--ANTIBES-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_antibes.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_antibes.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">10 av du Grand Cavalier </span> <span class="typo-action big" itemprop="addressLocality">ANTIBES <span  itemprop="postalCode">06600 </span></span></div>
+
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 92 38 32 24 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">04 93 61 92 01</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.antibes@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--BEAUSOLEIL-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_beausoleil.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_beausoleil.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">Le Forum 2ème étage - 33 bd Du Général Leclerc </span> <span class="typo-action big" itemprop="addressLocality">BEAUSOLEIL <span  itemprop="postalCode">06240 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 09 52 31 39 05 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 52 31 39 05 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.menton@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--TOULON-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_toulon.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_toulon.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">9A bd de Strasbourg </span> <span class="typo-action big" itemprop="addressLocality">TOULON <span  itemprop="postalCode">83000 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 22 14 09 08</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 97 50 59 89</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=lodelvar@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--LYON-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_lyon.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_lyon.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">18, Rue des Remparts d'Ainay </span> <span class="typo-action big" itemprop="addressLocality">LYON <span  itemprop="postalCode">69002</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 82 53 52 42</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 97 50 16 69</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.lyon@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--MARSEILLE-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_marseille.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_marseille.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">10, rue de la République </span> <span class="typo-action big" itemprop="addressLocality">MARSEILLE <span  itemprop="postalCode">13001 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 84 25 54 11 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 46 51 90</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.marseille@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--TOULOUSE-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/agc_toulouse.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/agc_toulouse.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">1 esplanade Compans Caffarelli </span> <span class="typo-action big" itemprop="addressLocality">TOULOUSE <span  itemprop="postalCode">31000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 05 82 95 48 89 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 26 99 31 81</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.toulouse@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.viagerlodel.com">http://www.viagerlodel.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--VALENCE-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/valence.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/valence.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL VALENCE</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">33 rue Frédéric Chopin </span> <span class="typo-action big" itemprop="addressLocality">VALENCE <span  itemprop="postalCode">26000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 81 16 03 38</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 04 26</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.valence@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--AIX -->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/aix.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/aix.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL AIX EN PROVENCE</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">20 bd du roy René </span> <span class="typo-action big" itemprop="addressLocality">AIX en PROVENCE <span  itemprop="postalCode">13100 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i>  04 84 49 07 00 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 08 34 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.aixenprovence@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--CAISSARGUES-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/nimes.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/nimes.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL NIMES</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">3 avenue du Champ de Mars</span> <span class="typo-action big" itemprop="addressLocality">GARONS  <span  itemprop="postalCode">30128</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 48 06 02 90</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 08 35</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.nimes@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--MANS-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/lemans.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/lemans.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL LE MANS </a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">43 av Cordelet</span> <span class="typo-action big" itemprop="addressLocality">LE MANS <span  itemprop="postalCode">72000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 02 52 36 02 20 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 10 22 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.lemans@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--LILLE-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/facade_lille.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/facade_lille.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL LILLE</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">229 rue Solférino</span> <span class="typo-action big" itemprop="addressLocality">LILLE <span  itemprop="postalCode">59000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 03 66 72 58 16 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 16 71 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.lille@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--MONTPELLIER-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/Montpellier.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/Montpellier.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL MONTPELLIER</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">494 rue Léon Blum</span> <span class="typo-action big" itemprop="addressLocality">MONTPELLIER <span  itemprop="postalCode">34000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 11 93 26 77 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7"> 09 72 25 20 33 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.montpellier@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--CLERMONT -->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/Clermont-ferrand.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/Clermont-ferrand.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL AUVERGNE</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">15-17 rue du Pré la Reine </span> <span class="typo-action big" itemprop="addressLocality">CLERMONT FERRAND <span  itemprop="postalCode">63000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 04 44 05 25 79 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">09 72 25 21 63 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.auvergne@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--BORDEAUX-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/Bordeaux_lodel.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/Bordeaux_lodel.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL BORDEAUX</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">335 rue Georges BONNAC </span> <span class="typo-action big" itemprop="addressLocality">BORDEAUX <span  itemprop="postalCode">33000</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 05 35 54 56 86</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 97 10 76 41 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.gironde@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--RENNES-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/Rennes_lodel.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/Rennes_lodel.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL BRETAGNE</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">90 bis rue de Fougères </span> <span class="typo-action big" itemprop="addressLocality">RENNES <span  itemprop="postalCode">35700</span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 02 30 96 40 80</span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 90 20 98 98 </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.bretagne@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--PARIS-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/le-monde-du-viager.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/le-monde-du-viager.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>
+	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">LE MONDE DU VIAGER</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">34 Av des Champs Elysées </span> <span class="typo-action big" itemprop="addressLocality">PARIS <span  itemprop="postalCode">75008 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i>  01 85 08 94 79 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+			$$IF:LISTEAG:FAX$$
+			<div class="row-fluid listing-agences-fax">
+				<div class="span5 bold">$$LG:FAX pcase$$</div>
+				<div class="span7">08 97 50 27 59</div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=lemondeduviager@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.lemondeduviager.com">http://www.lemondeduviager.com</a></div>
+			</div>
+			$$END$$
+	</div>
+</div>
+
+<!--PARIS 9-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/etude_parisienne.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/etude_parisienne.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE PARISIENNE DU VIAGER</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">14 rue de la Bruyère </span> <span class="typo-action big" itemprop="addressLocality">PARIS <span  itemprop="postalCode">75009 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 06 68 29 64 09 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=contact@etude-viager.fr$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			$$IF:LISTEAG:URL$$
+			<div class="row-fluid listing-agences-url">
+				<div class="span5 bold">$$LG:SITEINTERNET pcase$$</div>
+				<div class="span7" itemprop="url"><a href="http://www.etude-viager.fr">http://www.etude-viager.fr</a></div>
+			</div>
+			$$END$$
+	</div>
+	
+	
+</div>
+
+
+
+
+<!--YVELINES-->
+<div class="row-fluid border-top-20" itemscope itemtype="http://schema.org/RealEstateAgent">
+	<div class="span4 padding-10 pagination-centered hidden-phone">
+		<div class="height-170 agence-idpublication" style="background:white url('$$_$$images/agences/etude_yvelines.jpg') no-repeat;background-position:50% 50%;">
+			<div style="background:url('$$_$$images/agences/etude_yvelines.jpg') no-repeat;background-position:50% 50%;" class="width-100-pourcent height-100-pourcent agence-idagence"></div>
+		</div>	</div>
+	<div class="span8 margin-top-10">
+		$$IF=:250:LISTEAG:IDPAYS$$
+			<a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+		$$END$$
+		<h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">ETUDE LODEL YVELINES</a></h2>
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">17 rue AUBER </span> <span class="typo-action big" itemprop="addressLocality">LE VESINET <span  itemprop="postalCode">78110 </span></span></div>
+		<div class="pull-right margin-right-30 margin-top-10">
+		  <span class="pull-left icon-v5-pdf margin-top-1"></span>
+			<span class="pull-left padding-left-5 margin-top-neg-1 italic cursor-pointer">
+					<a href="$$_$$bareme/bareme_108697.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+			</span>
+		</div>
+		<div class="clear"></div>
+
+			$$IF:LISTEAG:TEL$$
+			<div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+				<div class="span5 bold">$$LG:MINITEL pcase$$</div>
+				$$IF=:1:TELEPHONEMASQUE$$
+				<span id="texte-telephonez-nous-$$LISTEAG:I$$"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-$$LISTEAG:I$$" class="display-none"><i class="icon-v5-phone"></i> 01 85 39 09 08 </span></a></span>
+				$$END$$
+				$$IF=:0:TELEPHONEMASQUE$$
+				<div class="span7"><!--#include virtual="header/incl_formatel.htm" --></div>
+				$$END$$
+			</div>
+			$$END$$
+
+			$$IF:LISTEAG:EMAIL$$
+			<div class="row-fluid listing-agences-email">
+				<div class="span5 bold">$$LG:EMAIL pcase$$</div>
+				<div class="span7">$$A:MAIL=etudelodel.idf@gmail.com$$ $$MAIL encodemail javascript full$$ </div>
+			</div>
+			$$END$$
+			
+	</div>
+	
+	
+</div>
+
+$$END$$
