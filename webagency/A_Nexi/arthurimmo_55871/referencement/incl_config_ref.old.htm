@@ -1,0 +1,332 @@
+$$REM$$<!-- =========== FICHIER DE CONFIGURATION POUR LE REF =========== -->$$END:REM$$
+
+$$REM$$<!-- =========== INDEXATION DES LANGUES =========== -->$$END:REM$$
+$$REM$$<!-- =========== SI =1 toutes les langues seront indexées, SI =0 pas indexées =========== -->$$END:REM$$
+$$A:INDEXATION_LANGUE=0$$
+
+$$REM$$<!-- =========== NOM DU SITE (MULTI-AGENCES uniquement) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Cette variable est présente sur plusieurs pages du site (title de la page index, de la page agence liste...) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== Pour appeler cette variable ailleurs (dans du texte, une meta...) il faudra utiliser @@NOM_SITE_REF@@ =========== -->$$END:REM$$
+$$A:NOM_SITE_REF=$$
+
+$$REM$$<!-- =========== PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le TITLE de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est le title de l'incl_ref mutualisé qui sera affiché  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$IF=:0:MULTIAGENCES$$
+		$$A:TITLE_INDEX=$$
+
+	$$END$$
+	$$IF=:1:MULTIAGENCES$$
+		$$A:TITLE_INDEX=Expert Immobilier à @@AGENCE_VILLE@@, agence immobilière à @@AGENCE_NOM@@ @@AGENCE_VILLE@@$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$A:TITLE_INDEX=@@TITLE_INDEX@@, @@COMPTE_AGENCES:VILLE@@$$
+			$$LOOP$$
+		$$BFIN$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser la meta DESCRIPTION de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est la meta description de l'incl_ref mutualisé qui sera affichée  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$IF=:0:MULTIAGENCES$$
+		$$A:DESCRIPTION_INDEX=$$
+	$$END$$
+	$$IF=:1:MULTIAGENCES$$
+		$$A:DESCRIPTION_INDEX=Immobilier à @@AGENCE_VILLE@@ avec l'agence immobilière @@AGENCE_NOM@@ à @@AGENCE_VILLE@@ : Annonces immobilieres de vente et location de maisons, appartements sur @@AGENCE_VILLE@@ et ses environs$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$A:DESCRIPTION_INDEX=@@DESCRIPTION_INDEX@@ @@COMPTE_AGENCES:VILLE@@, $$
+			$$LOOP$$
+		$$BFIN$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser le SLOGAN de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:SLOGAN_INDEX=Expert immobilier à @@AGENCE_VILLE@@$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser l'ARCHITECTURE (H1, H2...) de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H1 =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:H1_INDEX=Agence immobilière @@AGENCE_VILLE@@$$
+$$END$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Par défaut le texte est "NOS DERNIÈRES ANNONCES IMMOBILIÈRES" =========== -->$$END:REM$$
+$$A:H2_INDEX_MODULE=@@LG:NOSDERANN pcase@@$$
+
+$$REM$$<!-- =========== Personnaliser le MODULE AGENCE de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== MONO =========== -->$$END:REM$$
+$$IF=:0:MULTIAGENCES$$
+	$$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+$$REM$$<!-- =========== MULTI =========== -->$$END:REM$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF=:FR:LANGUE$$
+		$$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+	$$END$$
+$$END$$
+$$REM$$<!-- =========== Ajout de TEXTE personnalisé pour le module BLOC AGENCE de la PAGE INDEX (MONO/MULTI) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera MASQUE (un texte par défaut sera affiché), SI =1 AFFICHAGE du texte personnalisé ci-dessous -->$$END$$
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+	$$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS REF SUR LE SLIDE AGENCE DE LA HOME =========== -->$$END:REM$$
+$$A:SLIDEAGENCE_LIENS_REF=$$
+
+
+
+$$REM$$<!-- =========== AJOUT DE CONTENU SUR LA PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera MASQUE, SI =1 AFFICHAGE du texte-->$$END$$
+$$A:ENCART_TXT_HOME=1$$
+$$REM$$<!-- SI =1 le texte sera affiché au DESSUS des modules (alerte mail, réseaux sociaux...), SI =2 en DESSOUS -->$$END$$
+$$A:POSITION_ENCART_TXT_HOME=1$$
+$$REM$$<!-- Ajout du TEXTE personnalisé -->$$END$$
+$$IF=:FR:LANGUE$$
+	$$A:ENCART_TXT_HOME_CONTENU=<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.</p>$$
+$$END$$
+
+$$REM$$<!-- =========== RAJOUT DE LIENS PERSONNALISES DANS LE MINI MOTEUR de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =1 les liens seront affichés, si =0 alors les liens seront masqués -->$$END$$
+$$A:MOTEUR_VILLES_REF=0$$
+$$REM$$<!-- Personnalisation des liens (ajout de 4 liens max) -->$$END$$
+$$A:MOTEUR_VILLE_1=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_2=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_3=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_4=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+
+$$REM$$<!-- =========== PAGE DETAIL =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS DE MICRO DONNES, SI =1 MICRODONNES AFFICHEES dans les SERPS-->$$END$$
+$$A:MICRO_DONNES_PRIX=1$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE ESTIMATION (estimation,immobiliere.htm) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_ESTIMATION=0$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:487807:REP:1$$
+$$REM$$<!-- Personnalisation du title -->$$END$$
+$$A:TITLE_ESTIMATION=$$
+$$REM$$<!-- Personnalisation de la meta description -->$$END$$
+$$A:DESCRIPTION_ESTIMATION=$$
+$$REM$$<!-- Personnalisation du H1 -->$$END$$
+$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$A:PHRASE_ESTIMATION=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,ESTIMATION (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE_ESTIMATION=$$ 
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h2 =========== -->$$END:REM$$
+$$A:H2_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,estimation (multi-agences) =========== -->$$END:REM$$
+$$A:AGENCES_LISTE_ESTIMATION_CONTENU=$$
+
+$$REM$$<!-- =========== PAGE OUTILS =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_OUTILS=0$$
+
+$$REM$$<!-- =========== PAGE REALISATION =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_REALISATION=0$$
+
+$$REM$$<!-- =========== PAGE RESPONSIVE =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_RESPONSIVE=0$$
+
+$$REM$$<!-- =========== PAGE GESTION, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_GESTION=$$
+	$$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+	$$A:H1_GESTION=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE SYNDIC, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_SYNDIC=$$
+	$$A:DESCRIPTION_SYNDIC=$$
+	$$A:H1_SYNDIC=$$
+$$END$$
+
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,LISTE (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE=Agences immobilières Arthurimmo à St Denis et St Pierre de la Réunion$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE=Découvrez nos deux agences immobilières Arthurimmo sur St Denis et St Pierre de la Réunion$$ 
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESLISTE=Expert immobilier sur St Pierre et St Denis de la Réunion</span>$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,liste (multi-agences) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 affichage du texte -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=0$$
+$$A:AGENCES_LISTE_CONTENU=$$
+
+
+$$REM$$<!-- =========== PAGE AGENCE ST PIERRE DE LA REUNION=========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543408:FORM:IDP$$
+	$$REM$$<!-- =========== Personnalisation du TITLE de la page AGENCE =========== -->$$END:REM$$
+	$$A:TITLE_AGENCE=Agence immobilière @@AGENCE_NOM@@ à @@AGENCE_VILLE@@ de la Réunion spécialiste de l'immobilier à @@AGENCE_VILLE@@ de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation de la meta DESCRIPTION de la page AGENCE =========== -->$$END:REM$$
+	$$A:DESCRIPTION_AGENCE=Agence spécialiste de l'immobilier sur @@AGENCE_VILLE@@ de la Réunion, nous vous accompagnons tout au long de votre projet immobilier sur @@AGENCE_VILLE@@ de la Réunion et ses environs$$
+	$$REM$$<!-- =========== Personnalisation du H1 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H1_AGENCE=Agence immobilière @@AGENCE_VILLE@@ de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation du H2 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H2_AGENCE=Cabinet immobilier @@AGENCE_VILLE@@ de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation du SLOGAN de la page AGENCE =========== -->$$END:REM$$
+	$$A:SLOGAN_AGENCE=<span class="bold big">Nous mettons à votre service notre double compétence ( Agent immobilier et Expert immobilier Agrée) et notre connaissance du secteur pour vous aider à réaliser votre projet immobilier.</span>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS SUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543408:FORM:IDP$$
+	$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+	$$A:SEO_PORTEFEUILLE=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-saint-denis-974/">Immobilier Saint Denis</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-saint-pierre-974/">Immobilier Saint Pierre</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-sainte-clotilde-974/">Immobilier Sainte Clotilde</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="#"></a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="#"></a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="#"></a>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DES LIENS RESEAUX SOCIAUX POUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543408:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:SOCIAL_AGENCE_FACEBOOK=$$
+	$$A:SOCIAL_AGENCE_TWITTER=$$
+	$$A:SOCIAL_AGENCE_GOOGLE_PLUS=$$
+	$$A:SOCIAL_AGENCE_YOUTUBE=$$
+	$$A:SOCIAL_AGENCE_GOOGLE_LOCAL=$$
+$$END$$
+
+
+$$REM$$<!-- =========== PAGE AGENCE ST DENIS DE LA REUNION=========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543067:FORM:IDP$$
+	$$REM$$<!-- =========== Personnalisation du TITLE de la page AGENCE =========== -->$$END:REM$$
+	$$A:TITLE_AGENCE=Agence immobilière Arthurimmo à St Denis de la Réunion spécialiste de l'immobilier à St Denis de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation de la meta DESCRIPTION de la page AGENCE =========== -->$$END:REM$$
+	$$A:DESCRIPTION_AGENCE=Agence spécialiste de l'immobilier sur St Denis de la Réunion, nous vous accompagnons tout au long de votre projet immobilier sur St Denis de la Réunion et ses environs$$
+	$$REM$$<!-- =========== Personnalisation du H1 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H1_AGENCE=Agence immobilière St Denis de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation du H2 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H2_AGENCE=Cabinet immobilier St Denis de la Réunion$$
+	$$REM$$<!-- =========== Personnalisation du SLOGAN de la page AGENCE =========== -->$$END:REM$$
+	$$A:SLOGAN_AGENCE=<span class="bold big">Nous mettons à votre service notre double compétence ( Agent immobilier et Expert immobilier Agrée) et notre connaissance du secteur pour vous aider à réaliser votre projet immobilier.</span>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS SUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543067:FORM:IDP$$
+	$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+	$$A:SEO_PORTEFEUILLE=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-saint-denis-974/">Immobilier Saint Denis</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-saint-pierre-974/">Immobilier Saint Pierre</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="http://www.sdimmo-arthurimmo.com/immobilier/tout/immo-sainte-clotilde-974/">Immobilier Sainte Clotilde</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="#"></a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="#"></a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="#"></a>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DES LIENS RESEAUX SOCIAUX POUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:543067:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:SOCIAL_AGENCE_FACEBOOK=$$
+	$$A:SOCIAL_AGENCE_TWITTER=$$
+	$$A:SOCIAL_AGENCE_GOOGLE_PLUS=https://plus.google.com/112647815467989993529/about$$
+	$$A:SOCIAL_AGENCE_YOUTUBE=$$
+	$$A:SOCIAL_AGENCE_GOOGLE_LOCAL=$$
+$$END$$
+
+
+
+$$REM$$<!-- =========== RAJOUT DE TEXTE SUR LA PAGE AGENCES,LISTE (MULTI-AGENCES) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 AFFICHAGE du texte -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=1$$
+$$A:AGENCES_LISTE_CONTENU=
+	<div class="row-fluid">
+		<div class="span12 hidden-phone">
+			<div class="typo-action bigger margin-bottom-5">Votre bien immobilier</div>
+			<div class="row-fluid relative">
+				<div class="span12">
+					<div class="bg-secondary typo-white padding-11 margin-right-20 bigger height-110 pagination-left uppercase width-450">mérite notre expertise</div>
+					<div class="bg-white top left margin-top-neg-65 margin-left-20 padding-10 z25 parallax-box-shadow span11 bloc-white-agence">
+						<div class="bold">Arthurimmo.com : 2 agences immobilières à Saint Denis de la Réunion et Saint Pierre.</div>
+						
+						<p align="justify">Avec ses 2 agences immobilières à Saint Denis de la Réunion et à Saint Pierre (au sud de l’île), Arthurimmo.com s’implante sur l’île avec la volonté de couvrir le marché immobilier de la Réunion et de vous proposer l’offre la plus diversifiée.</p>
+						
+						<p align="justify">Nos 2 agences immobilières vous proposent un service de gestion locative et de transaction immobilière, pour <a href="http://www.sdimmo-arthurimmo.com/immobilier/achat/ville/">la vente</a> et la <a href="http://www.sdimmo-arthurimmo.com/immobilier/locations/ville/">location</a> d’appartements, de maisons, villas, propriétés, terrains, immeubles et locaux commerciaux.</p>
+						
+						<p align="justify">Qualifié expert immobilier notre gérant vous garantit un niveau de compétence et de professionnalisme dans le cadre des évaluations immobilières (l’expertise sera offerte dans le cadre d’un mandat exclusif, la valeur de l’expertise sera déduite des frais d’agence en cas de vente) et pour un conseil avisé sur les aspects de marché immobilier dans le cadre d’un investissement, d’un projet de résidence principale ou secondaire. </p>
+						
+						<p align="justify">Notre partenaire promoteur immobilier nous permet également de vous proposer de façon régulière, une gamme de biens immobiliers neufs, avec la vente d’appartements en résidences sécurisées, dans différentes catégories de standing, petites copropriétés ou résidences haut de gamme. N’hésitez pas à vous renseigner auprès de nos conseillers immobiliers, dans le cadre d’un projet d’investissement locatif défiscalisé (Girardin ou Pinel), pour connaître les programmes immobiliers neufs en cours de réalisation et tous les détails sur les dispositifs légaux. </p>
+
+						<p align="justify">Retrouvez toutes nos <a href="http://www.sdimmo-arthurimmo.com.x-ext.poliris.net/immobilier/">annonces immobilières</A>, vente et location à Saint Denis, Saint Pierre et sur toute La Réunion, sur les portails immobiliers les plus consultés du web.</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+$$
+
+
+$$REM$$<!-- =========== FOOTER 1 - Personnalisation de la section "RUBRIQUES" =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le titre de la "rubrique" =========== -->$$END:REM$$
+$$A:TITLE_1_FOOTER=$$
+$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+$$A:LINK_PERSO_1_FOOTER_1=$$
+$$A:LINK_PERSO_2_FOOTER_1=$$
+$$IF=:1:MENUFOOTER_EXPERTISE_NATIONAL_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_CLASSIQUE_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=<a href="@@IF=:0:MULTIAGENCES@@/@@AGENCE_IDPUBLICATION@@/estimation,immobiliere.htm@@END@@@@IF=:1:MULTIAGENCES@@/agences,estimation.htm@@END@@" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_PAYANTE_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=<a href="/estimation,immobiliere.htm" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$						
+$$END$$
+
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+$$REM$$<!-- =========== SLOGAN FOOTER =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MONO : si cette variable n'est pas renseignée c'est l'adresse de l'agence qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MULTI : si cette variable n'est pas renseignée c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$A:SLOGAN_FOOTER=$$
+
+$$REM$$<!-- =========== ID CATEGORIE BLOG AVEC WORDPRESS, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$INIT:IDCATBLOGWORDPRESS=27974$$
+
+$$REM$$<!-- =========== Personnalisation du H de la page AGENCE LISTE =========== -->$$END:REM$$
+$$A:H1_AGENCESLISTE=<span class="hidden-phone">NOS @@LG:AGENCESAVOTRSERVICE lcase@@</span>$$
+
+$$REM$$<!-- =========== COPYRIGHT PHOTO HOME =========== -->$$END:REM$$
+
+$$A:COPY-PHOTOHOME-1=By Stéphane Batigne (Own work) [<a target="_blank" href="http://www.gnu.org/copyleft/fdl.html">GFDL</a> or <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>], <a target="_blank" href="http://commons.wikimedia.org/wiki/File%3ABaie_Saintes.JPG">via Wikimedia Commons</a>$$
+
+$$A:COPY-PHOTOHOME-2=$$
