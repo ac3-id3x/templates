@@ -1,0 +1,196 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto géoloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affiché sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOSAGENCES$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région$$
+	$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région.$$
+	$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- NE PAS METTRE &amp; dans l'appel des css -->$$END:REM$$
+$$A:STYLE=@import url( "/styles,agences_liste.css?lang=@@LANGUE@@" );$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div id="AgImmo_Ctn">
+
+	<h3>3 $$LG:AGENCESAVOTRSERVICE lcase$$</h3>
+
+	
+	$$IF:OPTION_GEOLOC$$
+	<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+	$$END:OPTION_GEOLOC$$
+
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesHaut">
+		
+		$$IF+:5:COMPTE_AGENCES:NBR$$
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+			<script type="text/javascript">
+				<!--	
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+				//-->	
+			</script>
+		
+			<a name="tri"></a>
+			
+			<form id="Tri" action="/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">
+					$$LG:TRIERPAR pcase$$ :		
+					<select name="triAnn" id="TriAnn" class="inputSelect" onchange="Trier(this.id);">
+						<option $$IF=:nom:FORM:TRI$$selected="selected"$$END$$ $$IF0:FORM:TRI$$selected="selected"$$END$$ value="nom"> $$LG:NOM pcase$$</option>
+						<option $$IF=:cp:FORM:TRI$$selected="selected"$$END$$ value="cp"> $$LG:CODEP pcase$$</option>
+						<option $$IF=:ville:FORM:TRI$$selected="selected"$$END$$ value="ville"> $$LG:VILLE pcase$$</option>
+						$$IF+:10:COMPTE_AGENCES:NBR$$
+						<option $$IF=:dep:FORM:TRI$$selected="selected"$$END$$ value="dep"> $$LG:DEPART pcase$$</option>
+						$$END:COMPTE_AGENCES:NBR$$				
+					</select>
+				</div>
+			</form><!-- #Tri -->
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+		
+		
+		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesHaut -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+$$END:COMPTE_AGENCES:NBR$$
+		
+	$$DO:1:10$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$LOOP$$
+	$$BFIN$$
+
+$$REM$$
+<table class="cadreAgence">
+		<tr>
+			<td class="agImmoVitrine_Td1">				
+				<a class="agImmoVitrine_Ctn1" >
+					<span class="agImmoVitrine_Ctn2">
+						<span class="agImmoVitrine" style="background: url('$$_$$images/agences/497112.jpg') 50% 50% no-repeat;"></span>
+					</span><!-- #AgImmoVitrine_Ctn2 -->
+				</a><!-- #AgImmoVitrine_Ctn1 --><br />
+			</td>
+			<td class="agImmoVitrine_Td2">				
+				<h2>L'IMMOBILIERE INTERNATIONALE</h2>
+				<p class="listag_adresse">
+					Espace l'Avenir <br />
+					16 rue Réaumur<br />
+					<span>17640  Vaux sur mer</span>
+				</p>
+				<p class="listag_coords">
+					<label class="listag_tel"><span>$$LG:MINITEL$$ :</span> 06 07 37 94 41</label>			
+				</p>				
+				<p class="listag_infos_plus">
+					<label class="listag_email"><span>$$LG:EMAIL pcase$$ :</span> <a href="mailto:francis.guillemont@coldwellbanker.fr">francis.guillemont@coldwellbanker.fr</a></label>
+				</p>			
+			</td>		
+		</tr>
+	</table><!-- .cadreAgence -->
+$$END$$
+	
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+$$REM$$	
+<p><strong>L'immobilier</strong> sur <strong>Saintes</strong>, <strong>Royan</strong>	,<strong>G&eacute;mozac</strong>	,<strong>la Saintonge</strong>	et <strong>la cote atlantique.</strong></p>
+
+<p>Avec <strong>2 agences immobili&egrave;res</strong>, situ&eacute;es cours Lemercier &agrave; <strong>Saintes</strong> et Place Saint Pierre &agrave; <strong>G&eacute;mozac</strong>, ainsi qu'un bureau situ&eacute; &agrave; <strong>Vaux sur mer couvrant toute la cote Royannaise</strong>, l'Immobili&egrave;re Internationale est une structure ind&eacute;pendante, adh&eacute;rente FNAIM, compos&eacute;e d'une &eacute;quipe qualifi&eacute;e pour un service immobilier performant, dans le respect des r&egrave;gles de d&eacute;ontologie de notre m&eacute;tier, avec l'assurance d'un service de professionnels &agrave; votre &eacute;coute.</p>
+
+<br/>
+<p>Notre secteur <strong>immobilier</strong> s'&eacute;tend autour de <strong>Saintes, Royan et G&eacute;mozac</strong> sur les villes et villages des environs, Port d'Envaux, Croix Chapeau, Saint Vaize, Tesson, Saint Savinien, Rioux, Bois, Saint Georges des Agouts, Saint Agnan, Saint Fort sur Gironde, Foncouverte, Chaniers, Romegoux, Neuil les Saintes, Retaud, Colombiers, Plassay, Les Essards, Bussac sur Charente, Ch&eacute;rac, Belluire, Pons, Lorignac, Boutenac Touvent, Les Mathes, Royan, Pontaillac, Vaux sur mer, Saint Palais sur mer, Saint Georges de Didonne, Meschers sur Gironde, Medis, Breuillet, Saujon, Saint Augustin, etc.</p>
+
+<br/>
+<p>D&eacute;couvrez sur ce site notre s&eacute;lection de biens &agrave; la vente<p/>
+
+<ul>
+	<li><strong>Vente</strong> de <strong>maisons</strong> sur <strong>Saintes, Royan, G&eacute;mozac</strong> et ses environs, maisons traditionnelles, maisons de plain pied, villas r&eacute;centes, maisons de ville, maisons de bourg, demeures de caract&egrave;re et propri&eacute;t&eacute;s de prestige. </li>
+	<li>Vente d'appartements sur <strong>Saintes</strong>, en cour de ville, dans le neuf ou l'ancien.</li> 
+	<li>Vente de terrains constructibles, de locaux commerciaux et fonds de commerce.</li> 
+	<li>Vente d'appartement et villas sur <strong>Royan</strong> et sa cote, vue mer, parc, face oc&eacute;an</li>
+</ul>
+<br/>
+
+<p>Dans le cadre de la vente de votre <strong>maison, appartement</strong>, sur <strong>Saintes, Royan, G&eacute;mozac</strong> et la r&eacute;gion, nos conseillers se rendront disponibles pour une estimation, bas&eacute;e sur l'exp&eacute;rience du march&eacute; <strong>immobilier</strong> de <strong>Saintes, G&eacute;mozac, Royan</strong> et sa r&eacute;gion, ainsi que sur les prestations et qualit&eacute;s du bien. Un prix parfaitement justifi&eacute; selon la cote immobili&egrave;re locale et actuelle sera pour vous l'assurance d'une vente efficace et rapide.</p>
+
+$$END$$
+	
+	
+	<!--
+<p><strong>L&rsquo;immobilier</strong> sur <strong>Saintes</strong>, <strong>Gémozac</strong> et la  région.</p>
+<p>Avec 2<strong> agences immobilières</strong>,  situées cours Lemercier à <strong>Saintes</strong> et  Place Saint Pierre à <strong>Gémozac</strong>, l&rsquo;Immobilière Internationale est une  structure indépendante, adhérente FNAIM, composée d&rsquo;une équipe qualifiée pour  un service immobilier performant, dans le respect des règles de déontologie de  notre métier, avec l&rsquo;assurance d&rsquo;un service de professionnels à votre écoute.</p>
+<p>Notre secteur <strong>immobilier</strong> s&rsquo;étend autour de <strong>Saintes</strong> et <strong>Gémozac</strong> sur les villes et  villages des environs, Port d&rsquo;Envaux, Croix Chapeau, Saint Vaize, Tesson, Saint  Savinien, Rioux, Bois, Saint Georges des Agouts, Saint Agnan, Saint Fort sur  Gironde, Foncouverte, Chaniers, Romegoux, Neuil les Saintes, Retaud,  Colombiers, Plassay, Les Essards, Bussac sur Charente, Chérac, Belluire, Pons,  Lorignac, Boutenac Touvent, Les Mathes, etc., jusqu&rsquo;à Royan et Saint Georges de  Didonne.</p>
+<p>Découvrez sur ce site notre sélection de biens à la  vente</p>
+<ul>
+  <li><strong>vente</strong> de <strong>maisons</strong> sur <strong>Saintes, Gémozac</strong> et ses environs, maisons traditionnelles, maisons  de plain pied, villas récentes, maisons de ville, maisons de bourg, demeures de  caractère et propriétés de prestige.</li>
+  <li>vente  d&rsquo;appartements sur Saintes, en cœur de ville, dans le neuf ou l&rsquo;ancien.</li>
+  <li>vente de  terrains constructibles, de locaux commerciaux et fonds de commerce.</li>
+</ul>
+<p>Dans le cadre de la <strong>vente</strong> de votre <strong>maison, appartement,</strong> sur <strong>Saintes</strong>, <strong>Gémozac</strong> et la région, nos  conseillers se rendront disponibles pour une estimation, basée sur l&rsquo;expérience  du marché <strong>immobilier</strong> de <strong>Saintes</strong> et sa région, ainsi que sur les  prestations et qualités du bien. Un prix parfaitement justifié selon la cote  immobilière locale et actuelle sera pour vous l&rsquo;assurance d&rsquo;une vente efficace  et rapide.</p>
+-->
+
+$$IF=:FR:LANGUE$$
+	<p><strong>3 Bureaux à votre service</strong> pour votre achat, vente et estimation.</p>
+	<p><strong>Saintes, Gémozac, et Vaux-Sur-Mer.</strong></p>
+	<p>Avec nos trois bureaux situés à <strong>Saintes, Gémozac et Vaux-Sur-Mer</strong>, l'Immobilière Internationale Coldwell Banker est composée d'une équipe de professionnel pour votre <strong>recherche d'achat et de vente</strong>. Nous vous proposons un service bilingue anglais / français à partir de la découverte jusqu'à l'acte de vente.</p>
+	<p>Découvrez sur ce site notre sélection de biens à la vente :</p>
+	<p>
+		<ul>
+			<li><strong>vente</strong> de <strong>maisons</strong> sur <strong>Saintes, Gémozac</strong> et ses environs, maisons traditionnelles, maisons  de plain pied, villas récentes, maisons de ville, maisons de bourg, demeures de  caractère et propriétés de prestige.</li>
+			<li>Vente d'appartement, loft, immeuble en ville, proche plage, aperçu mer, et mer et campagne.</li>
+			<li>Vente de terrain constructible.</li>
+		</ul>
+	</p>
+	<p>Pour vendre votre bien sur <strong>Saintes, Royan, Gémozac</strong> et leurs alentours, nos consultants sont disponibles pour réaliser une estimation.</p>
+$$END$$
+$$IF!:FR:LANGUE$$
+	<p><stong>3 offices at your service</strong> to help you find your new home, your sale, or your valuation.</p>
+	<p>With our three offices located in <strong>Saintes, Gemozac, and Vaux-sur-Mer</strong>, l'Immobiliere Internationale Coldwell Banker is composed of a team of professionals to help you <strong>find a new home or sell your current home</strong>. We offer a bilingual service from the beginning of your search to the signing of the Sales Deed.</p>
+	<p>Come and discover a selection of properties for sale on this site :</p>
+	<p>
+		<ul>
+			<li><strong>sale</strong> of <strong>properties</strong> in <strong>Saintes, Gemozac, Vaux-sur-Mer</strong> and their surroundings, traditional homes, bungalows, recent villas, town houses, character mansions, and prestigious properties.</li>
+			<li>sale of apartments, flats, lofts, city buildings, near the beach, seaside view and countryside.</li>
+			<li>sale of building land.</li>
+		</ul>
+	</p>
+	<p>If you wish to sell a property in <strong>Saintes, Royan, Gemozac</strong> and surroundings, our consultants are available for a valuation. </p>
+$$END$$
+
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
+
