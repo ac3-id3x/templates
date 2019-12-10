@@ -1,0 +1,886 @@
+$$INIT:IDT=RESULTATS$$
+$$INIT:CSS_RECHERCHE=1$$
+$$INIT:CSS_REFINE=1$$
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_METRO=1$$
+
+$$INIT:PARAMSREFINE=idtypebien,nb_pieces,nb_chambres,bilance,bilanegs,idq,si_mandatexclusif,visuels$$
+$$INIT:ADVANCEDREFINE=si_cave,si_sejour,si_est,si_parkings,si_sud,si_visavis,si_ascenseur,si_boxes,si_piscine,si_gardien,si_meuble$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG::::::QRY:TRI:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VALADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+<!--#include virtual="recherche/incl_haut_annonces.htm" -->
+
+$$BIF:ANNLISTE$$
+<div id="RechResultat" $$IF=:1:FORM:IDTT$$class="location"$$END$$>
+$$DO:config:config$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:LIBELLE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<div class="blocAnnonce $$IF=:1:ANNLISTE:I exec XX%2$$color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$color2$$END$$" id="Annonce$$ANNLISTE:IDANNONCE$$">
+		<div class="blocPhotoAnnonce">
+			$$IF:ANNLISTE:SI_COUPDECOEUR$$
+				<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+			$$END:COUPDECOEUR$$
+			$$IF:ANNLISTE:SI_EXCLUSIF$$
+				<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+			$$END:SI_EXCLUSIF$$
+			$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+				<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+			$$END$$
+			$$IF:ANNLISTE:SI_PROMO$$
+				<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+			$$END:SI_PROMO$$
+			$$IF:ANNLISTE:IDPHOTO$$	
+				<div class="blocBigPhoto"><img src="$$ANNLISTE:PHOTOURL0$$" /></div>
+			$$END$$
+			<div class="blocPhoto2$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$">
+				
+				$$IF:ANNLISTE:C175URL0$$
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+					<img src="$$ANNLISTE:PHOTO_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				</a>
+				$$END:ANNLISTE:C175URL0$$
+				$$IF0:ANNLISTE:C175URL0$$
+					$$IF:ANNLISTE:SI_LOGO$$
+					<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">	
+						<!--#include virtual="recherche/incl_no_photo_logo.htm" -->
+					</a>
+					$$END$$
+				$$END$$
+			</div>
+		
+				
+
+		</div>
+		
+		<div class="detailsAnnonce">
+			<!--#include virtual="recherche/incl_filtres_perso_picto.htm" -->
+			
+			<div id="TextAnnonceRech">
+				<div class="blocVilleDetails">$$ANNLISTE:AVILLE$$ <!--($$ANNLISTE:ACP$$)-->
+					
+				</div>
+				<div class="blocLibelleDetails">
+				$$IF:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE$$
+				$$END$$
+				$$IF0:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE_FR$$
+				$$END$$
+				</div>
+				<div class="blocSurfaceDetails">
+
+					$$IF:ANNLISTE:NB_PIECES$$
+				$$ANNLISTE:NB_PIECES$$						
+					$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+							
+							$$IF:ANNLISTE:SURFACE$$ - $$END:ANNLISTE:SURFACE$$ 
+	
+				$$END:ANNLISTE:NB_PIECES$$
+				
+				
+				$$IF:ANNLISTE:SURFACE$$
+				
+					$$ANNLISTE:SURFACE field 1$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$$$END:ANNLISTE:SURFACE$$
+				</div>
+			$$IF:ANNLISTE:SURF_TERRAIN$$
+			<div class="blocSurfaceDetails">
+				$$LG:SURFT pcase$$
+				$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$
+				$$IF=:EN:LANGUE$$
+					(approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+					$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+				$$END:EN$$						
+			</div>
+				$$END:ANNLISTE:SURF_TERRAIN$$
+				<div class="blocDescAnnDetails">
+							$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$			
+								$$IF:ANNLISTE:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$END:IDTYPETRANSACTION$$
+						<p>
+							<!--#include virtual="recherche/incl_descriptif.htm" -->
+						</p>							
+						<!--#include virtual="recherche/incl_prix.htm" -->
+				</div><!-- .descrAnn -->
+				<div id="zoneMetro$$ANNLISTE:I$$"></div>
+				<script type="text/javascript">
+					$(document).ready(function() {
+						dispMetro('$$ANNLISTE:IDANNONCE getlieux escape$$','zoneMetro$$ANNLISTE:I$$');
+					});
+				</script>
+			</div>
+			
+			<div id="detail$$ANNLISTE:IDANNONCE$$" class="BtnDetailRech">	
+				<a href="$$LIENDETAIL$$" title="">		
+					<div class="pictoDetail"></div>								
+					<div class="textePicto texte-det">$$LG:PLUSDETAILS pcase$$</div>
+				</a>
+			</div>
+			<div class="clear"></div>			
+				
+		</div> <!-- .detailsAnnonce -->
+		
+		<div class="contactAnnonces">
+		
+			<div class="miniPict">
+				<div class="backgroundAnnonces">
+					$$IF:ANNLISTE:THUMBURL1$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL1$$\"><img src=$$ANNLISTE:THUMBURL1$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL2$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL2$$\"><img src=$$ANNLISTE:THUMBURL2$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL3$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL3$$\"><img src=$$ANNLISTE:THUMBURL3$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL4$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL4$$\"><img src=$$ANNLISTE:THUMBURL4$$></a></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL5$$
+						<div class=\"MiniPhotoRech\"><a href=\"$$ANNLISTE:BIGURL5$$\"><img src=$$ANNLISTE:THUMBURL5$$></a></div>
+					$$END$$
+				</div>
+			</div>
+
+						<div class="refAnnonces">
+							$$IF:ANNLISTE:DT_DISPO$$<p>$$LG:DISPOLE pcase$$ : $$ANNLISTE:DT_DISPO date 2$$</p>$$END$$
+							<p>$$LG:MAJ pcase$$ : $$ANNLISTE:DT_FRAICHEUR date 2$$</p>
+							<p>$$LG:REFER pcase$$ : $$ANNLISTE:REFANNONCE$$</p>
+						</div>			
+						<div class="contactAnnoncesMaj">				
+							<div class="liensAnn">	
+								$$IF:ANNLISTE:EMAIL$$
+									<div id="email$$ANNLISTE:IDANNONCE$$" class="BtnContactRech">		
+											<a href="$$LIENDETAIL$$#form_contact" title="">			
+											<div class="pictoContact"></div>
+											<div class="textePicto texte-select"><font>$$LG:CONTACTER1 pcase$$</font><br /> $$LG:LAGENCE lcase$$</div>
+										</a>
+									</div>					
+									$$END:EMAIL$$
+									$$IF:URL_AGENCE$$
+										$$IF:ANNLISTE:URL$$
+										<p><a href="$$ANNLISTE:URL$$" onclick="window.open(this.href); return false;">$$LG:SITEINTERNET pcase$$</a></p>
+										$$END:URL$$
+									$$END:URL_AGENCE$$
+							</div>
+						</div>
+							$$IF0:ANNLISTE:SIPANIER$$
+					<!-- selection annonce -->
+					<div id="selection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">							
+							<a href="javascript:selectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoAjoutSelection"></div>
+								<div class="textePicto texte-select">
+									$$IF=:FR:LANGUE$$<font>Ajouter à</font><br />ma sélection$$END$$
+									$$IF!:FR:LANGUE$$<font>Add to</font><br /> my selection$$END$$	
+								</div>
+							</a>
+						</div>
+						$$END$$
+						$$IF:ANNLISTE:SIPANIER$$
+						<!-- deselection annonce -->
+						<div id="deselection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">
+							<a href="javascript:deselectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoSupprimer"></div>
+								<div class="textePicto texte-select">$$LG:SUPPRIMERSELEC pcase$$</div>
+							</a>
+						</div>
+						$$END$$
+						
+						
+						
+					<div class="clear"></div>
+		</div>
+</div><!-- .blocAnnonce -->
+$$LOOP$$
+<div class="clear"></div>
+</div><!-- #RechResultat -->
+$$BFIN$$
+$$BIF0:ANNLISTE$$
+<div id="RechResultat" $$IF=:1:FORM:IDTT$$class="location"$$END$$>
+</div>
+$$BFIN$$
+<div class="clear pushleft"></div>
+<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+
+
+<script type="text/javascript">
+	var divcontent = "RechResultat";	
+	$(document).ready(function() {
+		
+		
+		
+	//RECUPERATION DE LA RECHERCHE EN CAS DE RETOUR D'UN DETAIL
+	reloadsearch();
+	
+	$('.triListeRecherche').removeAttr('onchange');
+	var maxpage="$$ANNLISTE:NBRPAGES$$";
+	usePagination(maxpage)
+	//$('#Mini_Moteur').html('');
+	$('#Mini_Send .miniBlocSelection').html('');
+	var btn='<div class="miniBouton" value="Rechercher" style="cursor: pointer;"></div>';
+	$('#Mini_Send .miniBlocSelection').html(btn);
+//DETERMINE LA DIV OU SE CHARGENT LES ANNONCES					
+	
+//RELOAD AU CHANGEMENT D'IDTT
+	$('#Mini_Transaction').on('click','input',function(){
+		var qryidtt = 'idtt='+$(this).val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+		changeidvpa(qryidtt);
+		$('#idvpa').children('option').each(function(){
+				$(this).attr('selected', false);
+				$('#idvpa').trigger('liszt:updated');
+		});
+
+		$('.triListeRecherche').children('.select').attr('selected',true);
+		//$('#Mini_Moteur input[name="tri"]').val('');
+		if ($(this).val() == 1){
+			$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+			$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+			$('#MiniInputBudgetMin').attr('name','px_loyermin');
+			$('#MiniInputBudgetMax').attr('name','px_loyermax');
+			$('#RechResultat').addClass('location').removeClass('vente');
+			$('#RechHautV2').addClass('location').removeClass('vente');
+			$('#RechPagesHaut').addClass('location').removeClass('vente');
+			$('#RechPagesBas').addClass('location').removeClass('vente');
+		}else{
+			$('.triListeRecherche').find('.pxcroissant').val('a_px');
+			$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+			$('#MiniInputBudgetMin').attr('name','pxmin');
+			$('#MiniInputBudgetMax').attr('name','pxmax');
+			$('#RechResultat').addClass('vente').removeClass('location');
+			$('#RechHautV2').addClass('vente').removeClass('location');
+			$('#RechPagesHaut').addClass('vente').removeClass('location');
+			$('#RechPagesBas').addClass('vente').removeClass('location');
+		}
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+//REMISE A ZERO
+var noqry="";
+
+//LANCER LA RECHERCHE AU CLICK SUR LE BOUTON RECHERCHER
+$('#Mini_Send').on('click', '.miniBouton', function (e){
+	e.preventDefault();
+	var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+	loadInfos(divcontent,qry);	
+});
+allcheck();	
+//RELOAD AU CLICK 
+//AFFICHAGE INFO
+		$('#Mini_Pieces,#Mini_Chambres').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//TYPES DE BIEN
+		$('#Mini_Biens').on('change','.miniForm',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//IDVPA
+		$('#Mini_idvpa').on('click','.chzn-results li',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//CRITERES AVANCES
+		$('#open').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//RAYON
+		$('#Mini_Rayon').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//TRI
+		$('.infoBloc').on('change','.triListeRecherche',function(){
+			$('#Mini_Moteur input[name="tri"]').val($(this).val());
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//VILLES A LA SELECTION
+		$('#Mini_Suggest').on('click','#suggestionsBox',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//AFFICHAGE MASQUAGE DES CHECKBOX DU MOTEUR
+			$('.moteur-avantage').on('click', 'div[class*="conteneur-checkbox"] .h3-like', function (){
+				var liste = $(this).parent().children('.liste-checkbox')
+				if (liste.hasClass('display-none')){
+					liste.removeClass('display-none');
+					liste.addClass('display-show');
+				}else{
+					liste.removeClass('display-show');
+					liste.addClass('display-none');
+				}
+			});	
+		$('#Mini_Moteur').on('click', '.btn-raz', function (){
+			//$('#idvpa').find('.aucun').attr('selected',true);
+			$('#idvpa').val( $('#idvpa').prop('defaultSelected') );
+			$('#hiddenidvpa').val('');
+			$('#idtypebien').val( $('#idtypebien').prop('defaultSelected') );
+			$('#cpSearch').next('li').remove();
+			$('#idvpa').trigger("liszt:updated");
+			$('#idtypebien').trigger("liszt:updated");
+			$('#MiniInputBudgetMin').val('Min');
+			$('#MiniInputBudgetMax').val('Max');
+			$('#MiniInputSurfaceMin').val('Min');
+			$('#MiniInputSurfaceMax').val('Max');
+			$('#MiniInputRef').val('');
+			$('#Mini_Moteur').find('input[type="checkbox"]').each(function(){
+				$(this).attr('checked',false);
+			});
+			var qry= 'idtt=$$FORM:IDTT$$';
+			loadInfos(divcontent,qry);
+			
+		});
+	
+});
+function changeidvpa(qryidtt){
+	var xhr = $.ajax({
+		type: 'GET',
+		data:qryidtt,
+		dataType: 'html',
+		url: '/moteur,mini,incl_idvpa.htm',
+		beforeSend: function() {
+		},
+		success: function(data) {	
+			$('#idvpa').html(data);
+			$('#idvpa').trigger("liszt:updated");
+		},error:function() {
+		},complete:function() {
+		}
+	});
+}
+function closeville(){
+	$('.closeLi').on('click',function(){
+		$(this).parent('li').remove();
+		$('#ci').val('');
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+	$('#Mini_Moteur').on('click','.closeLi',function(){
+		$(this).parent('li').remove();
+		$('#ci').val('');
+		var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+		loadInfos(divcontent,qry);
+	});
+}
+function clickload(){
+	var qry=$('#moteur input,select').filter(function(){return $(this).val();}).serialize();
+	loadInfos(divcontent,qry);
+}
+function reloadsearch(){
+	var hashqry = window.location;
+	var normalqry = hashqry.search.split('?');
+	var allqry = hashqry.hash.split('#');
+	if (allqry != "" ){
+		var needqry = allqry[1];
+		if(needqry){
+			var cutqry = needqry.split('&');
+			for (i=0;i<cutqry.length;i++){
+				var fullqry = cutqry[i].split('=');
+				var forminput = fullqry[0];
+				if(fullqry[0]=='idtt'){
+							$('#idtt').val(fullqry[1]);
+							var qryidtt='idtt='+$('#idtt').val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+							changeidvpa(qryidtt);
+							if ($('#idtt').val() == 1){
+								$('#bg-mot-int').addClass('loc').removeClass('ven');
+								$('#RechResultat').addClass('location').removeClass('vente');
+								$('#RechHautV2').addClass('location').removeClass('vente');
+								$('#RechPagesHaut').addClass('location').removeClass('vente');
+								$('#RechPagesBas').addClass('location').removeClass('vente');
+							}else{
+								$('#bg-mot-int').addClass('ven').removeClass('loc');
+								$('#RechResultat').addClass('vente').removeClass('location');
+								$('#RechHautV2').addClass('vente').removeClass('location');
+								$('#RechPagesHaut').addClass('vente').removeClass('location');
+								$('#RechPagesBas').addClass('vente').removeClass('location');
+							}
+						};
+				$('#Mini_Moteur input').each(function(){
+					var thisinput = $(this).attr('name');
+					if(forminput==thisinput){
+						if($(this).attr('type')=='radio'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='checkbox'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='text'){
+							$(this).val(fullqry[1]);
+						}
+					}
+				});
+				if(forminput=='idtypebien'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (j=0;j<eachselect.length;j++){
+						$('#idtypebien').children('option').each(function(){
+							if($(this).val() == eachselect[j]){
+								$(this).attr('selected', true);
+								$('#idtypebien').trigger('liszt:updated');
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_pieces'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (k=0;k<eachselect.length;k++){
+						$('#Mini_Pieces').children('input ').each(function(){
+							if($(this).val() == eachselect[k]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_chambres'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (z=0;z<eachselect.length;z++){
+						$('#Mini_Chambres').children('input ').each(function(){
+							if($(this).val() == eachselect[z]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='ci'){
+					var allselect=fullqry[1];
+					$('#ci').val(allselect);
+					recupville(allselect);
+				}
+				else if(forminput=='idvpa'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (n=0;n<eachselect.length;n++){
+						$('#idvpa').children('option').each(function(){
+							if($(this).val() == eachselect[n]){
+								$(this).attr('selected', true);
+								$('#idvpa').trigger('liszt:updated');
+								$('#hiddenidvpa').val(eachselect[n]);
+							}
+						});
+					}
+				}
+			}
+		}
+	}else{
+		var needqry = normalqry[1];
+		if(needqry){
+			var cutqry = needqry.split('&');	
+			for (i=0;i<cutqry.length;i++){
+				var fullqry = cutqry[i].split('=');
+				var forminput = fullqry[0];
+				$('#Mini_Moteur input').each(function(){
+					var thisinput = $(this).attr('name');
+					if(thisinput=='checkidtt'){
+						if(fullqry[0]=='idtt'){
+							$('#idtt').val(fullqry[1]);
+							var qryidtt='idtt='+$('#idtt').val()+"&idvpa="+$('#hiddenidvpa').val()+"&lang="+$('.hidden-lang').val();
+							changeidvpa(qryidtt);
+						}
+						if ($('#idtt').val()== 1){
+							$('.triListeRecherche').children('.select').attr('selected',true);
+							$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+							$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+							//$('#Mini_Moteur input[name="tri"]').val('');
+							$('#MiniInputBudgetMin').attr('name','px_loyermin');
+							$('#MiniInputBudgetMax').attr('name','px_loyermax');
+							$('#bg-mot-int').addClass('loc').removeClass('ven');
+							$('#RechResultat').addClass('location').removeClass('vente');
+							$('#RechHautV2').addClass('location').removeClass('vente');
+							$('#RechPagesHaut').addClass('location').removeClass('vente');
+							$('#RechPagesBas').addClass('location').removeClass('vente');
+						}else{
+							$('.triListeRecherche').children('.select').attr('selected',true);
+							$('.triListeRecherche').find('.pxcroissant').val('a_px');
+							$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+							//$('#Mini_Moteur input[name="tri"]').val('');
+							$('#MiniInputBudgetMin').attr('name','pxmin');
+							$('#MiniInputBudgetMax').attr('name','pxmax');
+							$('#bg-mot-int').addClass('ven').removeClass('loc');
+							$('#RechResultat').addClass('vente').removeClass('location');
+							$('#RechHautV2').addClass('vente').removeClass('location');
+							$('#RechPagesHaut').addClass('vente').removeClass('location');
+							$('#RechPagesBas').addClass('vente').removeClass('location');
+						}
+					}
+					if(forminput==thisinput){
+						if($(this).attr('type')=='radio'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='checkbox'){
+							if($(this).val() == fullqry[1]){
+								$(this).attr('checked', true);
+							}
+						}
+						if($(this).attr('type')=='text'){
+							$(this).val(fullqry[1]);
+						}
+					}
+				});
+				if(forminput=='idtypebien'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (j=0;j<eachselect.length;j++){
+						$('#idtypebien').children('option').each(function(){
+							if($(this).val() == eachselect[j]){
+								$(this).attr('selected', true);
+								$('#idtypebien').trigger('liszt:updated');
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_pieces'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (k=0;k<eachselect.length;k++){
+						$('#Mini_Pieces').children('input ').each(function(){
+							if($(this).val() == eachselect[k]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='nb_chambres'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (z=0;z<eachselect.length;z++){
+						$('#Mini_Chambres').children('input ').each(function(){
+							if($(this).val() == eachselect[z]){
+								$(this).attr('checked',true);
+							}
+						});
+					}		
+				}
+				else if(forminput=='ci'){
+					var allselect=fullqry[1];
+					if(allselect != ""){
+						$('#ci').val(allselect);
+						recupville(allselect);
+					}
+				}
+				else if(forminput=='idvpa'){
+					var allselect=fullqry[1];
+					var eachselect=allselect.split(',');
+					for (n=0;n<eachselect.length;n++){
+						$('#idvpa').children('option').each(function(){
+							if($(this).val() == eachselect[n]){
+								$('#hiddenidvpa').val(eachselect[n]);
+								$(this).attr('selected', true);
+								$('#idvpa').trigger('liszt:updated');
+							}
+						});
+					}
+				}
+				
+			}
+		}
+	}
+	if (needqry != undefined){
+		loadInfos(divcontent,needqry);
+		allcheck();
+		$('#cpSearch').val('Villes, dpts, cpx');
+	}
+	
+}
+function recupville(qry){
+	var xhr = $.ajax({
+		type: 'GET',
+		data:'',
+		dataType: 'json',
+		contentType: "application/json",
+		url: '/recherche,incl_refine_villes.htm',
+		beforeSend: function() {
+		},
+		success: function(data) {	
+			var allvilles =parseInt(data.villes.length);
+			for (m=0;m<allvilles;m++){
+				if(data.villes[m].ci == qry){
+					$('.blocSearch').append('<li class="selectLi" id="'+data.villes[m].nom+'|'+data.villes[m].cp+'|ci|'+data.villes[m].ci+'"><div class="textLi">'+data.villes[m].nom+' - '+data.villes[m].cp+'</div><div class="closeLi">X</div><div class="clear"></div></li>');
+				}
+			}
+		},
+		error:function(){
+		},
+		complete:function(){
+		}
+	});
+}
+function usePagination(maxpage){
+					$('.rechLiensPages ').on('click', 'a', function (e){
+						e.preventDefault();
+						var recherche =$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+						var num=$(this).html();
+						var actif=$('.actif').html();
+						if(num == '&lt;&lt;'){
+							var qry = recherche;
+						}else if(num == '<span>&gt;&gt;</span>'){
+							var qry = recherche +'&ANNLISTEpg='+maxpage;
+						}else if(num == '<span>&gt;</span>'){
+							var gopage = parseInt(actif)+1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else if(num == '<span>&lt;</span>'){
+							var gopage = actif-1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else{
+							var qry = recherche +'&ANNLISTEpg='+num;
+						}
+						loadInfos(divcontent,qry);
+						$('html,body').animate({scrollTop: 0}, 'fast');
+					});
+}
+//UNCHECK DE TOUTE LES CHECKBOX SI TOUTE COCHEE	
+function allcheck(){
+	$('.moteur-avantage').on('click', '.checkbox input', function (){
+		var checkval = $(this).val();
+		var checkname = $(this).attr('name');
+		if(checkval != '' && checkval != 'all'){
+			$('.checkbox input[name*='+checkname+']').each(function() {
+				if($(this).val() == '' || $(this).val() == 'all'){
+					$(this).attr('checked', false);
+				}
+			});
+			clickload();
+		}else{
+			$('.checkbox input[name*='+checkname+']').each(function() {
+				$(this).attr('checked', false);
+			});
+			$(this).attr('checked', true);
+			clickload();
+		}
+	});
+}	
+//CHARGEMENT DES ANNONCES ET DU MOTEUR
+function loadInfos(divcontent,qry) {
+	$(".seo").hide();
+	var xhr = $.ajax({
+	type: 'GET',
+	data:qry,
+	dataType: 'json',
+	contentType: "application/json",
+	url: '/recherche,incl_refine_js.htm',
+	beforeSend: function() {
+		$('.layer').show();
+		$('.layer-annonce').show();
+	},
+	success: function(data) {
+		$('.layer').hide();
+		$('.layer-annonce').hide();
+		var phrase= data.phrase;
+		$("#RechHautV2 h1").html('');
+		$("#RechHautV2 h1").html(phrase);
+		location.hash = data.qry;
+		$("#RechPagesHaut").html('');
+		$('#RechPagesBas').html('');
+		if (data.pagination != ""){
+			$('#RechPagesHaut').show();
+			$('#RechPagesBas').show();
+		}else{
+			$('#RechPagesHaut').hide();
+			$('#RechPagesBas').hide();
+		}
+		var pagination = data.pagination;
+		var maxpage = data.maxpage;
+		$('#RechPagesHaut').html(pagination);
+		$('#RechPagesBas').html(pagination);
+					//CHANGEMENT DE L'ALERTE IMMO	
+		$('#AlerteEmail h3 span').html(data.phrasealerte);
+		$('#creerAlerte').attr('action','$$REP:0$$?'+data.qry);
+		$('#AlerteForm').children('input[name="page_base"]').val('http://$$REP:RSRV$$/$$REP:0$$?'+data.qry);
+					//RECUP DU CONTENU
+		var contenu= $('#'+divcontent).html('');
+		var table = parseInt(data.annonces.length);             
+		for( i=0;i<table;i++){
+					//RECUPERATION DES DONNE DU JSON
+			var objAnnonce = {
+				color:data.annonces[i].color,
+				idannonce:data.annonces[i].idannonce,
+				coupdecoeur : data.annonces[i].coupdecoeur,
+				exclusif : data.annonces[i].exclusif,
+				fraicheur : data.annonces[i].fraicheur,
+				promo : data.annonces[i].promo,
+				photo : data.annonces[i].photo,
+				filtres:data.annonces[i].filtres,
+				descriptif : data.annonces[i].descriptif,
+				descriptif2 : data.annonces[i].descriptif2,
+				prix : data.annonces[i].prix,
+				rechdetail:data.annonces[i].rechdetail,
+				sipanier : data.annonces[i].sipanier,
+				contactannonce2:data.annonces[i].contactannonce2,
+				contactannonce3:data.annonces[i].contactannonce3,
+				contactannonce:data.annonces[i].contactannonce,
+				miniphoto:data.annonces[i].miniphoto								
+			}
+			var afficheAnnonce = function(a){
+				if (data.idvpa!=439){
+					var photo = '<div class="blocPhotoAnnonce">'+a.coupdecoeur+a.exclusif+a.fraicheur+a.promo+a.photo;+'</div>';
+					var descriptif = '<div class="detailsAnnonce">'+a.filtres+'<div id="TextAnnonceRech">'+a.descriptif+a.descriptif2+a.prix+'</div>'+a.rechdetail+'</div><div class="contactAnnonces"><div class="miniPict"><div class="backgroundAnnonces">'+a.miniphoto+'</div></div>'+a.contactannonce+a.contactannonce2+a.contactannonce3+a.sipanier+'</div>';
+				}else{
+					var minipict = '<div class="miniPict"><div class="backgroundAnnonces">'+a.miniphoto+'</div></div>';
+					var photo ='<div class="blocPhotoAnnonce">'+a.coupdecoeur+a.exclusif+a.fraicheur+a.promo+a.photo+data.annonces[i].nbphotos+minipict+'</div>' ;
+					var descriptif =data.annonces[i].descrprest+data.annonces[i].descrprest2+data.annonces[i].descrprest3+data.annonces[i].prix+data.annonces[i].descrprest4+data.annonces[i].descrprest5;
+				}
+				var contenu= $('#'+divcontent).html();
+				$('#'+divcontent).html(contenu+'<div class="blocAnnonce '+a.color+'" id="Annonce'+a.idannonce+'">'+photo+descriptif+'</div>');
+			} //FIN FONCTION
+			afficheAnnonce(objAnnonce);
+		}	//FIN BOUCLE
+		usePagination(maxpage);
+//MISE A JOUR DE L ALERTE
+		$("input[name='qry']").val(data.qry);
+		$("input[name='phrase']").val(data.phrase);
+//MISE A JOUR DU MOTEUR
+		if (data.idvpa.length>0){
+			$('#hiddenidvpa').val(data.idvpa);
+			$('#idvpa').children('option').each(function(){
+				if($(this).val() == data.idvpa){
+					$(this).attr('selected', true);
+					$('#idvpa').trigger('liszt:updated');
+				}
+			});
+		}
+		if (data.idvpa==439){
+			$('.titre_prestige').show();
+			$('#RechResultat').addClass("prestige").removeClass("vente");
+		}else{
+			if(data.idtt==2){
+				$('#RechResultat').addClass("vente").removeClass("prestige");
+				$('.triListeRecherche').find('.pxcroissant').val('a_px');
+				$('.triListeRecherche').find('.pxdecroissant').val('d_px');
+			}else{
+				$('#RechResultat').addClass("location").removeClass("prestige");
+				$('.triListeRecherche').find('.pxcroissant').val('a_px_loyer');
+				$('.triListeRecherche').find('.pxdecroissant').val('d_px_loyer');
+			}
+			$('.titre_prestige').hide();
+		}
+		$('.triListeRecherche').find('option').each(function(){
+				$(this).attr('selected',false);
+			});
+		if(data.tri=='a_px'){
+			$('.pxcroissant').attr('selected',true);
+		}else if(data.tri=='d_px'){
+			$('.pxdecroissant').attr('selected',true);
+		}else if(data.tri=='a_px_loyer'){
+			$('.pxcroissant').attr('selected',true);
+		}else if(data.tri=='d_px_loyer'){
+			$('.pxdecroissant').attr('selected',true);
+		}else if(data.tri=='a_surface'){
+			$('.surfcroissant').attr('selected',true);
+		}else if(data.tri=='d_surface'){
+			$('.surfdecroissant').attr('selected',true);
+		}else if(data.tri=='a_cp'){
+			$('.optionCp').attr('selected',true);
+		}else if(data.tri=='a_ville'){
+			$('.optionVille').attr('selected',true);
+		} else{
+			$('.select').attr('selected',true);
+		}
+
+		var tableMoteur = parseInt(data.moteur.length);
+		var moteur = $('#content_moteur').html('');
+		var prevkey = '';
+						/*for( i=0;i<tableMoteur;i++){						
+							var idkey = data.moteur[i].idkey;
+							var keyname = data.moteur[i].keyname;
+							var queryvalue = data.moteur[i].queryvalue;
+							var valuename = data.moteur[i].valuename;
+							var nb = data.moteur[i].nb;
+							var contenupresent = $('#content_moteur').html();
+							if(nb != ""){
+								var nombre=' ('+nb+')';
+							}else{
+								var nombre='';
+							}
+							var querykey = data.moteur[i].querykey;
+							var selecte = data.moteur[i].selecte;
+							if(selecte == 1){
+								var check=' checked="checked" ';
+							}else{
+								var check='';
+							}
+							
+							var boxname= "conteneur-checkbox"+idkey;
+							var checkpresent = $("."+boxname).children('.liste-checkbox').html();
+							var addcheck = function(){
+								if(checkpresent == undefined){
+									checkpresent=""
+								}
+								$("."+boxname).children('.liste-checkbox').html(checkpresent+'<div class="control-group margin-0><div class="controls"><label class="checkbox">'+valuename+nombre+'<input type="checkbox" value="'+queryvalue+'" class="refineCheck" name="'+querykey+'"'+check+'/></label></div></div></div>');
+							}
+							if (idkey != prevkey){
+								var prevkey = idkey;
+								if (idkey==1 || idkey==2){
+									var show = "display-show";
+								}else{
+									var show = "display-none";
+								}
+								var contenu= contenupresent+'<div class="conteneur-checkbox'+idkey+'"><div class="h3-like cursor-pointer btn btn-neutre btn-block padding-5 margin-top-10">'+keyname+' <span class="caret margin-top-10 pull-right"></span></div><div class="liste-checkbox '+show+' padding-5"></div></div>';
+								var titre = 1;
+							}else{
+								var prevkey = idkey;
+								var contenu=contenupresent;
+								var titre = 0;
+							}
+							var moteur = $('.conteneur-checkbox').html();
+							var zeroquery= data.moteur[i].zeroquery;
+							$('#content_moteur').html(contenu);
+							addcheck(); 
+						}*/
+						
+						window.top.document.title = $('#RechHautV2').find('h1').text();
+	},
+	error : function (jqXHR, textStatus, errorThrown) {
+		//console.log(jqXHR, textStatus, errorThrown);
+		$('#'+divcontent).html('<div class="pagination-centered h2-like">$$LG:AUCUNEANN pcase$$</div>');
+		$('.layer').hide();
+		$('.layer-annonce').hide();
+	},
+	complete: function(xhr,statusText) {
+		//console.log(xhr, statusText);
+		
+	}
+});
+$('#Mini_Bouton').wrap('<div class="test>');
+$('#Mini_Bouton').remove;
+closeville();
+//FERMETURE DE VILLE
+}		
+</script>
+		
+		<!--#include virtual="footer/incl_bas.htm" -->

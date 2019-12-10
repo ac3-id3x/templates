@@ -1,0 +1,260 @@
+$$INIT:IDT=FICHEVISITE$$
+$$A:CSS_POPUP=1$$
+$$A:JS_METRO=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+    $$A:TITLE=
+        @@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@
+        @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@
+        @@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@) @@LG:DE lcase@@
+        @@ANNDETAIL:SURFACE replace , .@@ m²,
+        @@ANNDETAIL:PRIX@@ euros
+        avec @@ANNDETAIL:COOR-NOM@@
+    $$
+
+    $$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF_GEN smalltextv2 150@@$$
+
+    $$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+        @@LG:ANNONCEIMMO pcase@@ @@ANNDETAIL:VILLE@@,
+        @@ANNDETAIL:COOR-NOM@@,
+        @@ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase@@,
+        @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@,
+        @@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+        @@ANNDETAIL:NB_PIECES@@ @@LG:PIECES lcase@@
+    $$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+    $$A:TITLE=@@LG:LIEN:FICHE pcase@@$$
+    $$A:DESCRIPTION=Cette fiche vous sera très utile lors de la visite du bien que vous avez sélectionné$$
+    $$A:KEYWORDS=@@LG:LIEN:FICHE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+    <!--#include virtual="header/incl_variables.htm" -->
+    <!--#include virtual="header/incl_titre.htm" -->
+    <!--#include virtual="scripts/incl_init_scripts.htm" -->
+    <!--#include virtual="scripts/incl_scripts.htm" -->
+    <!--#include virtual="styles/incl_styles.htm" -->
+    <meta name="robots" content="noindex" />
+</head>
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:ALIAS:ANNDETAIL$$
+<body>
+    <div id="WrapFiche">
+        <div id="CtnFiche">
+
+            $$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+            <table id="Coords">
+                <tr>
+                    $$IF:AG:SI_LOGO$$
+                    <td class="col1">
+                        <img src="$$AG:URLLOGO$$" alt="" title="" />
+                    </td>
+                    $$END:AG:IDLOGO$$
+                    <td class="col2">
+                        <h1>$$AG:NOM ucase$$</h1>
+                        <p>$$AG:ADRESSE$$</p>
+                        <!--#include virtual="detail/incl_agence_tel.htm" -->
+                        <!--#include virtual="detail/incl_agence_email.htm" -->
+                        $$IF:URL_AGENCE$$
+                            <!--#include virtual="detail/incl_agence_url.htm" -->
+                        $$END:URL_AGENCE$$
+                    </td>
+                    <td class="col3">
+                        <div id="qrcode">
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    var url = decodeURIComponent('$$AG:URLVIRTUELLE$$');
+                                    var url = url+'?utm_medium=QRcode%26utm_source=fiche-visite';
+                                    var urlQR = 'http://chart.googleapis.com/chart?chs=95x95&cht=qr&chl='+url+'&chld=L|1';
+                                    $('#qrcode').append('<img src="'+urlQR+'" alt="" />');
+                                });
+                            </script>
+                        </div>
+                        <a href="javascript:void(0);" onclick="javascript:window.print();" class="goprint"><strong>$$LG:IMPRIMER pcase$$</strong></a>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="Tags">
+                <tr>
+                    <td class="col1">
+                        <span class="tag tag-typebien">$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction ucase$$</span>
+                        $$IF:ANNDETAIL:SI_COUPDECOEUR$$<span class="tag tag-cdc">$$LG:COUPDECOEUR ucase$$</span>$$END$$
+                        $$IF:ANNDETAIL:SI_EXCLUSIF$$<span class="tag tag-exclu">$$LG:EXCLUSIVITE ucase$$</span>$$END$$
+                        $$IF+:FRAICHEUR:ANNDETAIL:DT_CREA datediff now timespan days$$<span class="tag tag-new">$$LG:NEW ucase$$</span>$$END$$
+                    </td>
+                    <td class="col2">
+                        <span class="ref">$$LG:REFER pcase$$ : $$ANNDETAIL:REFANNONCE$$</span>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="Ann2">
+                <tr>
+                    <td class="col1">
+                        <h1>
+                            $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+                            $$IF:ANNDETAIL:NB_PIECES$$
+                                $$ANNDETAIL:NB_PIECES$$
+                                $$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                                $$IF+:2:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                            $$END$$
+                            ($$ANNDETAIL:SURFACE$$ $$ANNDETAIL:SURF_UNITE$$)
+                        </h1>
+                        <h2>$$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)</h2>
+                    </td>
+                    <td class="col2">
+                        <h2>
+                            $$IF=:1:MICRO_DONNES_PRIX$$<span itemprop="price">$$END$$
+                            $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$<span class="xxsmallest font-body">$$LG:APARTIRDE pcase$$</span> $$END$$
+                            $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$<span class="xxsmallest font-body">$$LG:ANN:CESSIONBAILS$$ : </span>$$END$$
+                            $$ANNDETAIL:PRIX$$$$IF=:1:MICRO_DONNES_PRIX$$</span>$$END$$&nbsp;$$ANNDETAIL:PRIX_UNITE$$
+                            $$IF!:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF!:1:HONORAIRESINCLUS$$*$$END$$
+                            $$END$$
+                        </h2>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="Ann">
+                <tr>
+                    <td class="col1">
+                        <div class="photo_ctn">
+                            $$IF0:ANNDETAIL:IDPHOTO$$
+                                <div id="SansPhoto" style="background:url('$AG:URLLOGO$') no-repeat;background-position:50% 50%;"></div>
+                            $$END$$
+                            $$IF:ANNDETAIL:IDPHOTO$$
+                            <img class="grandePhoto" src="$$ANNDETAIL:PHOTOURL0$$"
+                            alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+                            title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+                            />
+                            $$END:IDPHOTO$$
+                        </div>
+                        $$B:IMMOBW:PHOTOS:ALIAS:THUMBS:REP:1$$
+                        $$BIF:THUMBS$$
+                        <!-- petites vignettes -->
+                        $$IF>:2:THUMBS:NBR$$
+                            $$DO:1:4$$
+                                $$IF>:1:THUMBS:I$$
+                                <img class="petitePhoto" src="$$THUMBS:CARRE_URL$$"
+                                alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+                                title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+                                 />
+                                $$END:THUMBS:I$$
+                            $$LOOP$$
+                            <div class="clear"><!-- --></div>
+                        $$END:THUMBS:NBR$$
+                        $$BFIN$$
+                    </td>
+                    <td class="col2">
+
+                        <h4 class="ttl">Descriptif</h4>
+
+                        <!--#include virtual="/detail/incl_descriptif.htm" -->
+
+                        $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                        <p>
+                            $$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+                            $$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$
+                            $$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+                        </p>
+                        $$END$$
+
+                        <script type="text/javascript">dispMetroFicheVisite('$$ANNDETAIL:IDANNONCE getlieux escape$$');</script>
+                        <div class="clear"><!-- --></div>
+
+
+                        <!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+                        <!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+                        <!--#include virtual="/detail/incl_dispo.htm" -->
+
+                        <p><br><!--#include virtual="/detail/incl_maj.htm" --></p>
+
+                    </td>
+                </tr>
+            </table><!-- #Ann -->
+
+            $$B:IMMOBW:AFFICHANNONCES:REP:1$$
+            $$BIF:IMMOBW:AFFICHANNONCES:REP$$
+            <div id="InfosComp">
+                <h4 class="ttl">$$LG:FICHESIGNALETIQUE pcase$$</h4>
+                $$DO$$
+                    <p>
+                        <img src="$$~$$images/visite/fiche_visite_fleche.gif" alt="" title="" />
+                        $$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$
+                    </p>
+                $$LOOP$$
+                <div class="clear"><!-- --></div>
+            </div><!-- #InfosComp -->
+            $$BFIN$$
+
+            <div id="Dpe">
+                <!--#include virtual="/detail/incl_dpe.htm" -->
+            </div>
+
+            $$IF!:4:ANNDETAIL:IDTYPETRANSACTION$$
+            <h4 class="ttl">$$IF=:1$3$6$7$8$9$10$11$14$15:ANNDETAIL:IDTYPEBIEN$$A propos du prix$$END$$</h4>
+            <table class="blocInfos">
+                $$IF!:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:1$3$6$7$8$9$10$11$14$15:ANNDETAIL:IDTYPEBIEN$$
+                    <tr>
+                        <td>$$LG:CHARGES pcase$$ :</td>
+                        <td><input type="text" class="size3" value=""/> &euro; / $$LG:MOIS lcase$$</td>
+                        <td>$$LG:LIEN:SYNDIC pcase$$ :</td>
+                        <td><input type="text" class="size3" value=""/> &euro; / an</td>
+                    </tr>
+                    $$END:ANNDETAIL:IDTYPEBIEN$$
+                    <tr>
+                        <td class="paddingBas">$$LG:TAXEHABITATION pcase$$ :</td>
+                        <td class="paddingBas"><input type="text" class="size3" value=""/> &euro; / an</td>
+                        <!-- /////////////////////////// -->
+                        <td class="paddingBas">$$LG:TAXEFONCIERE pcase$$ :</td>
+                        <td class="paddingBas"><input type="text" class="size3" value=""/> &euro; / an</td>
+                        <!-- /////////////////////////// -->
+                    </tr>
+                $$END:IDTYPETRANSACTION$$
+                $$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                <tr>
+                    <td class="paddingBas">$$LG:CHARGES pcase$$ :</td>
+                    <td class="paddingBas"><input type="text" class="size3" value=""/> &euro; / an</td>
+                    <!-- /////////////////////////// -->
+                    <td class="paddingBas">$$LG:TAXEHABITATION pcase$$ :</td>
+                    <td class="paddingBas"><input type="text" class="size3" value=""/> &euro; / an</td>
+                    <!-- /////////////////////////// -->
+                </tr>
+                $$END$$
+            </table>
+            $$END:4:ANNDETAIL:IDTYPETRANSACTION$$
+
+
+            <br><h4 class="ttl">Fiche de visite</h4>
+            <table class="blocInfos">
+                <tr>
+                    <td class="paddingBas">$$LG:DATEVISITE pcase$$ :</td>
+                    <td class="paddingBas"><input type="text" class="size1" value="" /></td>
+                    <td class="paddingBas">$$LG:HEURERDV pcase$$ :</td>
+                    <td class="paddingBas"><input type="text" class="size1" value="" /></td>
+                </tr>
+                <tr>
+                    <td class="paddingBas">$$LG:ADRESSE pcase$$ :</td>
+                    <td colspan="3"><textarea></textarea></td>
+                </tr>
+                <tr>
+                    <td class="paddingBas">$$LG:COMMENTAIRES pcase$$ :</td>
+                    <td colspan="3"><textarea></textarea></td>
+                </tr>
+            </table><!-- .blocInfos -->
+
+            <!--#include virtual="detail/incl_glossaire.htm" -->
+        </div><!-- #Ctn -->
+
+<!-- ======================================================================== -->
+    </div><!-- #Wrap -->
+</body>
+</html>
