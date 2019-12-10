@@ -1,0 +1,155 @@
+$$INIT:IDT=INDEX$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="wrapper" id="bg-img">
+	<div id="makeMeScrollable">
+
+		<img src="$$_$$images/carousel/photo-1.jpg" />
+				<img src="$$_$$images/carousel/photo-3.jpg" />
+		<img src="$$_$$images/carousel/photo-4.jpg" />
+		<img src="$$_$$images/carousel/photo-2.jpg" />
+		<img src="$$_$$images/carousel/photo-5.jpg" />
+		<img src="$$_$$images/carousel/photo-6.jpg" />
+		<img src="$$_$$images/carousel/photo-7.jpg" />
+		<img src="$$_$$images/carousel/photo-8.jpg" />
+	</div>
+</div>
+<div class="wrapper bg-ong">
+	<div class="ong-index wrap">
+		<a href="$$URLBASE$$/immo,recherche.htm?lang=$$LANGUE$$" title="">
+		<div class="ong-un fleft">
+			<div class="main-ong">
+				<strong>$$LG:VOTRERECHERCHE pcase$$</strong>
+				$$IF=:FR:LANGUE$$Trouver votre bien d’après vos propres critères$$END$$
+				$$IF!:FR:LANGUE$$Find your estate according to your own criteria$$END$$
+			</div>
+		</div><!--div.ong-un-->
+		</a>
+		<a href="$$URLBASE$$/moteur,recherche.htm?idtt=2&amp;lang=$$LANGUE$$" title="">
+		<div class="ong-deux fleft">
+			<div class="main-ong">
+				<strong>$$LG:PLUSCRIT pcase$$</strong>
+				$$IF=:FR:LANGUE$$Accéder à notre moteur de recherche détaillée$$END$$
+				$$IF!:FR:LANGUE$$Access our detailed search engine$$END$$
+			</div>
+		</div><!--div.ong-deux-->
+		</a>
+		<a href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$" title="">
+		<div class="ong-trois fleft">
+			<div class="main-ong">
+				<strong>$$IF=:FR:LANGUE$$VOTRE ALERTE E-MAIL$$END$$$$IF!:FR:LANGUE$$YOUR EMAIL ALERT$$END$$</strong>
+				$$IF=:FR:LANGUE$$Créer une alerte correspondant à vos critères$$END$$
+				$$IF!:FR:LANGUE$$Create an alert matching your criteria$$END$$
+			</div>
+		</div><!--div.ong-trois-->
+		</a>
+		<div class="clear"></div>
+	</div><!--div.ong-index-->
+</div><!--div.bg-ong-->
+<div id="wrap-content" class="wrapper">
+	<div class="wrap" id="content">
+		<div class="ttl-bien">
+			$$IF=:FR:LANGUE$$<span>Les nouveautés <strong>Foch Immobilier</strong></span>$$END$$
+			$$IF!:FR:LANGUE$$<span><strong>Foch Immobilier</strong> latest properties</span>$$END$$
+
+		</div>
+		<div id="bloc-cdc">
+        	$$INIT:DEFILEROME=1$$
+
+        	$$INIT:JS_MODULE_ROME=1$$
+			$$INIT:CSS_MODULE_ROME=1$$
+
+        	$$B:IMMOBW:ANN:2:QRY:LANG:::photo=10::d_dt_crea:~limit:9:~NOSTAT:1:ALIAS:MODULEROME$$
+        	$$BIF:MODULEROME$$
+        	<div id="moduleRome" $$IF=:1:DEFILEROME$$ class="rotateRome"$$END$$>
+        		<div id="flecheGauche"></div>
+        		<div id="masqueModuleRome">
+        			<ul>
+        			$$DO$$
+        					$$A:TITLE_SELECTION_INDEX=$$
+        					$$IF:PAGE:URLREWRITINGENABLED$$
+        						$$IF:FORM:LANG$$
+        							$$IF!:FR:FORM:LANG$$
+        								$$A:LIEN_SELECTION_INDEX=@@MODULEROME:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+        							$$END$$
+        							$$IF=:FR:FORM:LANG$$
+        								$$A:LIEN_SELECTION_INDEX=@@MODULEROME:URLVIRTUELLE@@$$
+        							$$END$$
+        						$$END$$
+        						$$IF0:FORM:LANG$$
+        							$$A:LIEN_SELECTION_INDEX=@@MODULEROME:URLVIRTUELLE@@$$
+        						$$END$$
+        					$$END$$
+        					$$IF0:PAGE:URLREWRITINGENABLED$$
+        						$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@MODULEROME:IDPUBLICATION@@/@@MODULEROME:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+        					$$END$$
+        					$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+        						$$A:TITLE_SELECTION_INDEX=@@MODULEROME:IDTYPETRANSACTION gettypetransaction pcase@@ @@MODULEROME:IDTYPEBIEN gettypebien lcase@@ @@MODULEROME:AVILLE ncase@@$$
+        					$$END:WAGREF_IDDOSSIER_SITE$$
+        				<li class="annonceFlipping$$IF0:MODULEROME:PHOTO_URL$$$$IF0:MODULEROME:SI_LOGO$$ blocNoPhoto$$END$$$$END$$">
+        					$$IF:MODULEROME:SI_COUPDECOEUR$$
+        							<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+        					$$END:COUPDECOEUR$$
+        					$$IF:MODULEROME:SI_EXCLUSIF$$
+        						<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+        					$$END:SI_EXCLUSIF$$
+        					$$IF+:SELECTIONFRAICHEUR:MODULEROME:DT_CREA datediff now timespan days$$
+        						<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+        					$$END$$
+        					$$IF:SI_PROMO$$
+        					$$IF:MODULEROME:SI_PROMO$$
+        						<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+        						$$END:SI_PROMO$$
+        					$$END:SI_PROMO$$
+        					$$IF:MODULEROME:PHOTO_URL$$
+        						<div class="imageBackgroundRome"><img src="$$MODULEROME:PHOTO_URL$$" /></div>
+        					$$END$$
+        					$$IF0:MODULEROME:C175URL0$$
+        						$$IF:MODULEROME:SI_LOGO$$
+        						<div class="logoRome"><img src="$$MODULEROME:URLLOGO$$" /></div>
+        						$$END$$
+        					$$END$$
+        					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" class="contentAnnonceFlipping">
+        						<div class="infoAnnonce titreAnnonce">$$MODULEROME:AVILLE pcase$$</div>
+        						<div class="infoAnnonce">$$MODULEROME:IDTYPEBIEN gettypebien$$$$IF:MODULEROME:NB_PIECES$$, $$MODULEROME:NB_PIECES$$ $$IF=:1:MODULEROME:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+        									$$IF!:0$1:MODULEROME:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$END$$</div>
+        						<div class="infoAnnonce infoprix">$$MODULEROME:PRIX$$ $$MODULEROME:PRIX_UNITE$$</div>
+        						<div class="infoAnnonce infosavoir"><span href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:SAVOIR$$</span></div>
+        					</a>
+        				</li>
+        			$$LOOP$$
+        				<div class="clear"></div>
+        			</ul>
+        		</div>
+        		<div id="flecheDroite"></div>
+        		<div class="clear"></div>
+        	</div>
+        	<div class="clear"></div>
+        	$$BFIN$$
+        	$$IF:DEFILEROME$$
+        		<script type="text/javascript">
+        			var defileRomeSpeed = 5000;
+        		</script>
+        	$$END$$
+		</div>
+		<div class="bg-agc fleft">
+			<div class="ttl-index">$$IF=:FR:LANGUE$$Notre agence foch immobilier$$END$$$$IF!:FR:LANGUE$$Our agency Foch Immobilier$$END$$</div>
+			<div class="main-agc">
+
+				Notre <a href="$$URLBASE$$/agence-immobiliere/villers-sur-mer-14640/foch-immobilier/473653.htm"><strong>agence immobilière</strong></a> indépendante, située en bord de mer de <strong>Villers sur Mer</strong>, FOCH IMMOBILIER développe, depuis plus de 30 ans les services d’estimation et transactions immobilières en habitat et de gestion location. Notre site met en avant une sélection d’<a href="$$URLBASE$$/immobilier/"><strong>annonces immobilières à Villers sur Mer</strong></a> et Blonville sur Mer avec un grand choix de biens : de la <strong>vente</strong> d’ <a href="$$URLBASE$$/vente-appartement-villers-sur-mer.htm"><strong>appartement</strong></a>, <a href="$$URLBASE$$/vente-maison-villers-sur-mer.htm"><strong>maison</strong></a>, <a href="$$URLBASE$$/vente-villa-villers-sur-mer.htm"><strong>villa</strong></a> et <a href="$$URLBASE$$/vente-terrain-villers-sur-mer.htm"><strong>terrain</strong></a> à <strong>Villers sur Mer</strong> mais aussi la gestion locative et <a href="$$URLBASE$$/location-appartement-villers-sur-mer.htm"><strong>location d’appartements</strong></a> et <a href="$$URLBASE$$/location-maison-villers-sur-mer.htm"><strong>maisons</strong></a>. <strong>Bienvenue à Villers sur Mer !</strong>
+
+
+			</div>
+		</div><!--div.bg-agc-->
+		<div class="bg-mailto fright">
+			<div class="ttl-index">$$LG:CREERALERTEMAIL pcase$$</div>
+			<div class="main-mailto">
+				$$IF=:FR:LANGUE$$Mémorisez vos critères de recherche et soyez les premiers à être prévenus dès qu’un bien correspond à vos attentes.$$END$$
+				$$IF!:FR:LANGUE$$Memorize your search criteria and be the first to be notified when a property matching your expectations.$$END$$
+				<a href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$" title="">$$IF=:FR:LANGUE$$Créer votre alerte perso$$END$$$$IF!:FR:LANGUE$$Create your alert$$END$$</a>
+			</div>
+
+		</div><!--div.bg-mailto-->
+		<div class="clear"></div>
+	</div><!--div #content-->
+</div><!--div#wrap-content-->
+<!--#include virtual="footer/incl_bas.htm" -->
