@@ -1,0 +1,116 @@
+$$IF:ANNDETAIL:DESCRIPTIF$$
+   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+$$END$$
+$$IF0:ANNDETAIL:DESCRIPTIF$$
+   $$ANNDETAIL:DESCRIPTIF_GEN$$
+$$END$$
+<div class="row-fluid">
+      
+      <div class="not-log-detail display-inline span6">
+         <a href="#" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-ajouter-selection-detail btn-tooltip not-log" data-placement="top" data-title="$$LG:AJOUTERSEL pcase$$" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/star.png" alt="$$LG:AJOUTERSEL pcase$$" class="margin-right-5"> $$LG:AJOUTERSEL pcase$$</a>
+      </div>
+      
+      <div class="not-log-detail display-none">
+         <a href="#" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-ajouter-selection-detail-espace-perso btn-tooltip display-none loged" data-placement="top" data-title="$$LG:AJOUTERSEL pcase$$" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/star.png" alt="$$LG:AJOUTERSEL pcase$$" class="margin-right-5"> $$LG:AJOUTERSEL pcase$$</a>
+      </div>
+
+
+         $$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+         $$BIF:VIDEO$$
+            $$DO:1:1$$
+                  $$A:IDVIDEO=@@VIDEO:URL replace http://www.youtube.com/embed/ ?@@$$
+                  $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+                  $$A:IDVIDEO=@@IDVIDEO trim@@$$
+            <div class="span3">
+            <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="$$TYPEBOUTON$$ btn-small btn-important btn-block bouton-video-detail btn-tooltip" data-placement="top" data-title="$$LG:VIDEO pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO pcase$$" class="margin-right-5"> $$LG:VIDEO pcase$$</a></div>
+
+            <div itemprop="video" itemscope itemtype="http://schema.org/VideoObject" class="display-none">
+               <iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+               <h2 itemprop="name">$$TITLE$$</h2>
+               <p itemprop="description">
+                  $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                  $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+               </p>
+               <meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+            </div>
+            $$LOOP$$
+         $$BFIN$$
+
+
+
+         $$IF:ANNDETAIL:VIDEO_URL$$
+         <div class="span3">
+            <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="$$TYPEBOUTON$$ btn-small btn-important btn-block bouton-video-detail btn-tooltipest" data-placement="top" data-title="$$LG:VIDEO pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO pcase$$" class="margin-right-5"> $$LG:VIDEO pcase$$</a>
+            <div itemprop="video" itemscope itemtype="http://schema.org/VideoObject" class="display-none">
+               $$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace http://www.youtube.com/watch_popup?v= ?@@$$
+               $$A:IDVIDEO=@@IDVIDEO trim@@$$
+               <iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+               <h2 itemprop="name">$$TITLE$$</h2>
+               <p itemprop="description">
+                  $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                  $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+               </p>
+               <meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+            </div>
+         </div>
+         $$END$$
+
+      $$IF:ANNDETAIL:ID360$$
+         $$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+            $$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+         $$END$$
+      <div class="span3"><a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-video-360 btn-tooltip margin-right-5 $$IF=:1:MOBILE360_SHOW$$margin-top-10$$END$$ $$IF!:1:MOBILE360_SHOW$$hidden-phone$$END$$" data-placement="top" data-title="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/picto360.png" alt="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"></a></div>
+      $$END$$
+      $$IF:ANNDETAIL:360_URL$$
+      <div class="span3"><a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-important bouton-video-360 btn-tooltipest $$IF=:1:MOBILE360_SHOW$$margin-top-10$$END$$ $$IF!:1:MOBILE360_SHOW$$hidden-phone$$END$$" data-placement="top" data-title="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/picto360.png" class="margin-right-10" alt="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$">$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$</a></div>
+      $$END$$
+
+
+
+$$IF:ANNDETAIL:LIEN_URL$$
+  <div class="span2">
+    <a href="$$ANNDETAIL:LIEN_URL$$" class="$$TYPEBOUTON$$ btn-small btn-important btn-block btn-tooltip margin-right-5" target="_blank">$$ANNDETAIL:LIEN_DESCRIPTIF_FR$$</a>
+  </div>
+$$END$$
+
+</div>
+
+
+      $$BIF:PDF$$
+      <div class="row-fluid">
+      <ul>
+         $$DO$$
+         <li style="float:left;" class="margin-top-10"><a href="$$PDF:URL$$" target="_blank" rel="nofollow" class="$$TYPEBOUTON$$ btn-important btn-small bouton-pdf-detail margin-right-5 hidden-phone" data-placement="top" data-title="$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$document&nbsp;$$PDF:I$$$$END$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/pdf.png"> $$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$Document&nbsp;$$PDF:I$$$$END$$</a></li>
+         $$LOOP$$
+      </ul>
+      </div>
+      $$BFIN$$
+
+<!--#include absolute="webagency/A_ID3X/9perf/detail/incl_detail_descriptif_perso.htm" -->
+$$IF!:PRESTIGE:PAGE:WAG_STYLE_DETAIL$$
+  $$IF!:1:HIDELOTSDETAIL$$
+    $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+      <!--#include absolute="webagency/A_ID3X/9perf/detail/incl_detail_lots.htm" -->
+    $$END$$
+  $$END$$
+$$END$$
+$$IF:ANNDETAIL:SI_COPROPRIETE$$
+   <p><i class="icon-v5-arrow-right-6"></i>$$LG:COPROPRIETE$$ ($$ANNDETAIL:NB_LOTS_COPROPRIETE$$ $$LG:LOTS$$)</p>
+   <p><i class="icon-v5-arrow-right-6"></i>$$LG:PROCSYNDIC$$ :
+   $$IF!:true$false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+      $$LG:NONRENSEIGNE pcase$$
+   $$END$$
+   $$IF=:false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+      $$LG:AUCUNE pcase$$
+   $$END$$
+   $$IF=:true:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+      $$IF:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+         $$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+      $$END$$
+      $$IF0:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+         $$LG:OUI2$$
+      $$END$$
+   $$END$$
+   </p>
+$$END$$
