@@ -1,0 +1,487 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+$$REM$$<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+$$REM$$<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  $$END:REM$$
+$$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+$$REM$$<!-- Définition du NOM de l'agence à afficher sur le site -->$$END:REM$$
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+$$REM$$<!-- Définition de l'adresse à afficher sur le site  -->$$END:REM$$
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+$$REM$$<!-- Définition de la ville à afficher sur le site  -->$$END:REM$$
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+$$REM$$<!-- Définition du CP à afficher sur le site  -->$$END:REM$$
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+$$REM$$<!-- Définition du DEPARTEMENT à afficher sur le site  -->$$END:REM$$
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:CP cp2dep@@$$
+$$REM$$<!-- Définition du tel à afficher sur le site  -->$$END:REM$$
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+$$REM$$<!-- Définition du fax à afficher sur le site  -->$$END:REM$$
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+$$REM$$<!-- TITRE DESCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> $$END:REM$$
+
+$$REM$$<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> $$END:REM$$
+
+
+$$REM$$<!-- ================================ Optis pages  EN ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$A:PAGE:TITR=Ille et Vilaine Real Estate with the agency @@NOM_AGENCE@@ $$
+$$A:PAGE:DESCREF=Real estate in France with @@NOM_AGENCE@@ located at @@VILLE_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=real estate agency @@VILLE_AGENCE@@,real estate @@VILLE_AGENCE@@,house @@VILLE_AGENCE@@,appartment @@VILLE_AGENCE@@$$
+$$END$$
+
+
+
+
+$$REM$$<!-- ================================ recherche,basic.htm / tous les résultats de recherche par requête ===============================-->$$END:REM$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+$$A:PAGE:TITR=Annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ de @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ à @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+
+$$A:PAGE:DESCREF=D&eacute;couvrez nos annonces immobili&egrave;res sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ à @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+
+$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page Index ===============================-->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=L'Immobilier en Ille et Vilaine, et proche Rennes avec l'agence @@NOM_AGENCE@@ $$
+$$A:PAGE:DESCREF=L'immobilier comme vous l'imaginiez avec l'agence immobiliere @@NOM_AGENCE@@ à @@VILLE_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=agence immobiliere @@VILLE_AGENCE@@,immobilier @@VILLE_AGENCE@@,ventes immobilieres @@VILLE_AGENCE@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page Index  EN ===============================-->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+$$IF=:EN:LANGUE$$
+$$A:PAGE:TITR=Ille et Vilaine Real Estate with the agency @@NOM_AGENCE@@ $$
+$$A:PAGE:DESCREF=Real estate in France with @@NOM_AGENCE@@ located at @@VILLE_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=real estate agency @@VILLE_AGENCE@@,real estate @@VILLE_AGENCE@@,house @@VILLE_AGENCE@@,appartment @@VILLE_AGENCE@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recrutement-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:RECRUTEMENT-EFFICACIMMO.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Devenir agent immobilier en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Notre agence en Ille et vilaine (35) peut vous donner les moyens de devenir agent immobilier, de réussir dans ce métier et vous assurer ainsi un réel retour financier. Venez travailler aujourd’hui dans l’immobilier de demain.$$
+$$A:PAGE:KEYWORDS=Devenir agent immobilier Ille et Vilaine,Devenir agent immobilier 35,comment devenir agent immobilier 35 $$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page achat-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:ACHAT-EFFICACIMMO.HTM:REP:0$$
+$$A:PAGE:TITR=Votre immobilier sans frais d'agence en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=une seule et unique participation forfaitaire qui comprend la prise en charge et le suivi de votre dossier par un professionnel confirmé et inclue les frais de rédaction et de constitution des actes sous seing privés.$$
+$$A:PAGE:KEYWORDS=sans frais d'agence,frais agence immobiliere, fai$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page bailleur-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:BAILLEUR-EFFICACIMMO.HTM:REP:0$$
+$$A:PAGE:TITR=Confiez nous la gestion du bail de votre bien en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Nous prenons en charge votre bien, fiche technique, photos, organisation des visites. Nous examinons les candidatures et établissons le contrat de bail. Un seul un tarif,
+indépendamment du type de logement proposé.$$
+$$A:PAGE:KEYWORDS=bail immobilier ille et vilaine,bail immobilier 35, gestion locative 35,gestion locative ille et vilaine, gestion bail 35,gestion bail ille et vilaine, bailleur 35, bailleur ille et vilaine$$
+$$END$$
+
+
+$$REM$$<!-- ================================ Optis page agents-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:AGENTS-EFFICACIMMO.HTM:REP:0$$
+$$A:PAGE:TITR=Les agents immobiliers efficac'immo en Ille et Vilaine (35).$$
+$$A:PAGE:DESCREF=Vous serez pris en charge et accompagnés au cours de l'ensemble de vos démarches par des Agents qui ont la maturité des arguments qu'ils avancent.
+Leur savoir faire et la mutualisation des moyens mis en œuvre vous garantissent la sécurité et la réussite de votre transaction.$$
+$$A:PAGE:KEYWORDS=agents immobilier ille et vilaine, agents immobiliers 35$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page qui-sommes-nous.htm ===============================-->$$END:REM$$
+
+$$IF=:QUI-SOMMES-NOUS.HTM:REP:0$$
+$$A:PAGE:TITR=Un service immobilier optimal en Ille et Vilaine (35).$$
+$$A:PAGE:DESCREF=un service immobilier optimisé pour un tarif forfaitaire. Notre principe, votre satisfaction et faire perdurer notre métier d'agent immobilier en Ille et Vilaine (35).$$
+$$A:PAGE:KEYWORDS=service immobilier ille et vilaine, service immobilier 35$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page Charte-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:CHARTE-EFFICACIMMO.HTM:REP:0$$
+$$A:PAGE:TITR=Charte agence immobilière en Ille et Vilaine (35).$$
+$$A:PAGE:DESCREF=des compétences et une expérience immobilière à votre service, à moindre coût, en Ille et Vilaine (35).$$
+$$A:PAGE:KEYWORDS=competence immobiliere ille et vilaine,charte immobiliere 35,competence immobiliere 35$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page visite.htm ===============================-->$$END:REM$$
+
+$$IF=:VISITE.HTM:REP:0$$
+$$A:PAGE:TITR=Visites immobilières à Rennes (35).$$
+$$A:PAGE:DESCREF=Au cours d'un week-end "découverte", notre agence vous fera une visite des biens immobiliers que vous aurez préalablement sélectionnés avant votre arrivée. Un planning des biens à visiter sera donc prévu afin d’optimiser votre temps lors de votre venue sur Rennes.$$
+$$A:PAGE:KEYWORDS= visite immobiliere rennes, acheter immobilier rennes$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page parcours-decouverte.htm ===============================-->$$END:REM$$
+
+$$IF=:PARCOURS-DECOUVERTE.HTM:REP:0$$
+$$A:PAGE:TITR=Connaissez l'immobilier à Rennes (35) avec notre "passeport découverte".$$
+$$A:PAGE:DESCREF=Découvrez Rennes avec notre passeport découverte. Notre agence vous accompagne dans votre recherche immobilière sur Rennes.$$
+$$A:PAGE:KEYWORDS=acheter à rennes, immobilier rennes, achat immobilier rennes, acheter immobilier rennes$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page demenagement.htm ===============================-->$$END:REM$$
+
+$$IF=:DEMENAGEMENT.HTM:REP:0$$
+$$A:PAGE:TITR=Votre futur déménagement à Rennes (35)$$
+$$A:PAGE:DESCREF=pour faciliter votre déménagement à Rennes, notre agence vous propose 3 formules: le déménagement confort, le déménagement bien-être, ou encore le déménagement détente, consultez-nous.$$
+$$A:PAGE:KEYWORDS=demenager à rennes, demenagement rennes, s'installer à rennes$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page comment-profiter.htm ===============================-->$$END:REM$$
+
+$$IF=:COMMENT-PROFITER.HTM:REP:0$$
+$$A:PAGE:TITR=S'installer facilement à Rennes (35)$$
+$$A:PAGE:DESCREF=En cas d'achat d'un bien auprès de efficac’immo, Le passeport "Déménagement" vous sera proposé par notre équipe dédiée.$$
+$$A:PAGE:KEYWORDS=emmenager facilement rennes, emmenager à rennes, vivre à rennes $$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page concept-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:CONCEPT-EFFICACIMMO.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Le concept immobilier en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Efficac'immo a décidé de réduire le coût de vos démarches. l'acheteur ne paient plus de frais d'agence exorbitants.L'immobilier se doit d'évoluer, Efficac'immo est un concept à votre écoute.$$
+$$A:PAGE:KEYWORDS=concept immobilier en Ille et Vilaine,frais d'agence pas cher,recherche immobiliere 35,recherche immobiliere ille et vilaine $$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page liste-agences-immobilieres.htm ===============================-->$$END:REM$$
+
+$$IF=:LISTE-AGENCES-IMMOBILIERES.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Les agents immobiliers Efficac'immo - des agents compétents$$
+$$A:PAGE:DESCREF=Les agents immobiliers Efficac'immo sont à votre service, nous vous proposons des professionnels compétents, bénéficiant d’une solide expérience de l’immobilier.$$
+$$A:PAGE:KEYWORDS=agent immobilier ille et vilaine,agent immobilier 35$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page services-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:SERVICES-EFFICACIMMO.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Les services immobiliers Efficac'immo en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Si vous souhaitez obtenir plus d'informations : contactez-nous.$$
+$$A:PAGE:KEYWORDS=services immobiliers 35,services immobilieres ille et vilaine$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page partenaires-efficacimmo.htm ===============================-->$$END:REM$$
+
+$$IF=:PARTENAIRES-EFFICACIMMO.HTM:REP:0$$
+$$IF=:FR:LANGUE$$$
+$$A:PAGE:TITR=Les services de notre partenaire en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Découvrez les services de notre partenaire pour vous installer dans la région Ille et Vilaine sereinement$$
+$$A:PAGE:KEYWORDS=services immobiliers 35,services immobilieres ille et vilaine$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ Optis page message.htm ===============================-->$$END:REM$$
+
+$$IF=:MESSAGE.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Contactez l'agence Efficacimmo$$
+$$A:PAGE:DESCREF=notre agence immobilière est située à Chantepie, contactez-nous par téléphone, mail ou par formulaire$$
+$$A:PAGE:KEYWORDS=contact efficac immo,contacter efficac immo$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page calculettes.htm ===============================-->$$END:REM$$
+
+$$IF=:CALCULETTES.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Calcul immobilier pour un achat en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Effectuez vos comptes facilement grâce à nos différentes calculettes financières, calculez le montant de votre emprunt, son remboursement mensuel ou sa durée.$$
+$$A:PAGE:KEYWORDS=calculette immobiliere ille et vilaine,calculette immobiliere 35$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page plan.htm ===============================-->$$END:REM$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page moteur,classic.htm ===============================-->$$END:REM$$
+
+$$IF=:MOTEUR,CLASSIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Recherchez votre maison ou appartement en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Notre moteur de recherche immobilière vous permet de consulter nos annonces immobilières de maisons,villas et appartements en Ille et vilaine$$
+$$A:PAGE:KEYWORDS=recherche immobiliere Ille et Vilaine,recherche immobiliere 35,trouver une maison en ille et vilaine, trouver un appartement en ille et vilaine$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page vendeur.htm ===============================-->$$END:REM$$
+
+$$IF=:VENDEUR.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Vendre sa maison ou son appartement en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=confier à Efficac'immo la vente de votre maison ou appartement, simplicité, proximité et efficacité, consultez nous, nous sommes à votre écoute.$$
+$$A:PAGE:KEYWORDS=vente maison Ille et Vilaine,vente maison 35,vente appartement ille et vilaine,vente appartement 35$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page alerte,creer.htm ===============================-->$$END:REM$$
+
+$$IF=:ALERTE,CREER.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Soyez averti de nos dernières annonces immobilières de vente en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Paramétrez votre Alerte Immo, et recevez par mail les dernières annonces immobilières de vente ou location que nous recevons$$
+$$A:PAGE:KEYWORDS=alerte immobiliere ille et vilaine,alerte immobiliere 35$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm - location appartements à chateaugiron ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:1:FORM:IDTT$$
+$$IF=:350069:FORM:CI$$
+$$IF=:1:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Location appartements à Châteaugiron (35410)$$
+$$A:PAGE:DESCREF=Vous souhaitez louer un appartement à Châteaugiron en ille et vilaine, découvrez nos annonces immobilières de location d'appartement, T1,T2 et T3$$
+$$A:PAGE:KEYWORDS=location appartement Chateaugiron,louer appartement chateaugiron,appartement à louer chateaugiron$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page location-efficacimmo.htm  ===============================-->$$END:REM$$
+
+$$IF=:LOCATION-EFFICACIMMO.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=Louer maison ou appartement en Ille et Vilaine avec Efficac'immo$$
+$$A:PAGE:DESCREF=votre conseiller Efficac’immo vous accompagnera dans vos démarches administrative d’installation, sera en mesure de rédiger le bail du logement que vous aurez chois en cas de besoin, assurera le suivi de votre dossier jusqu’à l’état des lieux d’entrée et la remise de vos clés$$
+$$A:PAGE:KEYWORDS=louer appartement ille et vilaine,louer maison ille et vilaine,louer appartement 35,louer maison 35$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm EN ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$A:PAGE:DESCREF=Découvrez nos annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@. N'hésitez pas à nous contacter directement au 02 99 77 00 77 (prix d'un appel local) pour nous indiquer votre recherche. $$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm resultats d'annonces vente maison ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:2:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Vente de maisons à @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$A:PAGE:DESCREF=Découvrez nos annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@. N'hésitez pas à nous contacter directement au 02 99 77 00 77 (prix d'un appel local) pour nous indiquer votre recherche. $$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm resultats d'annonces vente maison Bourgbarré===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:350032:FORM:CI$$
+$$IF=:2:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Vente maison à Bourgbarre (35230)$$
+$$A:PAGE:DESCREF=Découvrez nos annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@. N'hésitez pas à nous contacter directement au 02 99 77 00 77 (prix d'un appel local) pour nous indiquer votre recherche. $$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm resultats d'annonces vente appartement ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:1:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Acheter votre appartement en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Découvrez nos annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@. N'hésitez pas à nous contacter directement au 02 99 77 00 77 (prix d'un appel local) pour nous indiquer votre recherche. $$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm resultats d'annonces location appartement ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:1:FORM:IDTT$$
+$$IF=:1:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Location d'appartements en Ille et Vilaine (35)$$
+$$A:PAGE:DESCREF=Découvrez nos annonces immobilières de @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@. N'hésitez pas à nous contacter directement au 02 99 77 00 77 (prix d'un appel local) pour nous indiquer votre recherche. $$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ @@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm - location maisons à chateaugiron ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:1:FORM:IDTT$$
+$$IF=:350069:FORM:CI$$
+$$IF=:2:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Louer votre maison à Châteaugiron (35410)$$
+$$A:PAGE:DESCREF=Vous souhaitez louer une maison à Châteaugiron, découvrez nos annonces immobilières de location de maisons en ille et vilaine.$$
+$$A:PAGE:KEYWORDS=location maison Chateaugiron,louer maison chateaugiron,maison à louer chateaugiron$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm - vente de maisons à Piré sur Seiche ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:350220:FORM:CI$$
+$$IF=:2:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Vente maisons à Pire sur Seiche (Ille-et-Vilaine)$$
+$$A:PAGE:DESCREF=Vous souhaitez acheter une maison à Piré (35), découvrez nos annonces immobilières en achat de maisons et villas.$$
+$$A:PAGE:KEYWORDS=achat maison piré sur seiche, vente maison piré sur seiche$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ Optis page recherche,basic.htm - vente d'appartements à rennes ===============================-->$$END:REM$$
+
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+$$IF=:FR:LANGUE$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:350238:FORM:CI$$
+$$IF=:1:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=Vente Appartement à Rennes (35200), quartier Bréquigny, 90m²$$
+$$A:PAGE:DESCREF=Appartement T4 au 3ème et dernier étage d'un petit collectif situé rue de nantes. Beau séjour avec balcon. Venez le découvrir.$$
+$$A:PAGE:KEYWORDS=achat appartement rennes,vente appartement rennes,appartement rennes,t4 rennes$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+
+
+
+$$REM$$<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> $$END:REM$$
+
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
