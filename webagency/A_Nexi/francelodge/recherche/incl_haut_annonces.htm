@@ -1,0 +1,333 @@
+$$REM$$
+====================================================================
+
+//// <summary>incl_haut des pages de resultats</summary>
+//// <remarks>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_bas_annonces.htm</para>
+//// <para>Contient les conditions du title par défaut</para>
+//// <para>Les scripts nécessaires à cette page sont dans : slagence_X_V2/scripts/incl_scripts.htm</para>
+//// <para>Le lien "modifier ma recherche" diffère si le site est franchisé ou non/para>
+//// </remarks>
+//// <update date="2009-11-20" author="lisbonne.siriphol">Updates phrase résultat : ajout sous types bien</update>
+//// <update date="2009-06-11" author="lisbonne.siriphol">Updates pour franchises</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+//// <update date="2009-07-29" author="christophe.ledoux">Update opti ref</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=RESULTATS$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$IF:IMMOBW:ANN:QRY:NBR$$
+	$$A:PAGE:TITR=
+		@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ 
+		@@1_IMMOBW:ANN:QRY:VILLE@@ 	
+		@@1_IMMOBW:ANN:QRY:QUARTIER@@ :
+		@@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@... 
+	$$
+	$$A:PAGE:DESCREF=immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ par @@NOM_AGENCE@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 80 htmlencode@@
+	$$
+	$$A:PAGE:KEYWORDS=
+	   @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ 
+		@@1_IMMOBW:ANN:QRY:VILLE@@,
+		agence immobili&egrave;re @@1_IMMOBW:ANN:QRY:VILLE@@, 
+	    annonces immobili&egrave;res @@1_IMMOBW:ANN:QRY:VILLE@@,
+	   @@1_IMMOBW:ANN:QRY:NOM@@ @@1_IMMOBW:ANN:QRY:VILLE@@ (@@1_IMMOBW:ANN:QRY:CP@@)
+	$$
+	$$END$$
+	$$IF0:IMMOBW:ANN:QRY:NBR$$
+			$$B:IMMOBW:AGENCES:ALIAS:AG$$
+			$$BIF:AG$$
+			$$A:AGNOM=@@1_AG:NOM@@$$
+			$$A:AGVILLE=@@1_AG:VILLE@@$$
+			$$A:AGCP=@@1_AG:CP@@$$
+			$$DO$$$$LOOP$$$$BFIN$$
+			$$A:PAGE:TITR=@@AGNOM@@, @@LG:AGENCEIMMOBILIERE pcase@@ &agrave; @@AGVILLE@@ (@@AGCP@@)$$
+	$$END$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+
+$$INCL:HAUT.HTM$$
+
+<!-- scripts pages resultats -->
+<!--#include virtual="/recherche/incl_scripts_recherche.htm" -->
+
+
+	$$IF=:4:FORM:IDTT$$
+		<style type="text/css">
+			#RechResultat .blocAnnonce .typeBien_Ctn{display: none;}
+		</style>
+	$$END$$
+
+<!--// =========================== haut recherche =========================== //-->
+<div id="RechercheWrap">
+
+<div id="RechercheContainer">
+	
+	
+	<div id="RechHaut">	
+		
+		<div id="RechHautCtn"
+			$$IF:IMMOBW:ANN:QRY:NBR$$
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$class="results"$$END$$
+			$$END$$
+			$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$			
+			$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+				$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$
+				$$IF:IMMOBW:ANN:QRY:NBR$$class="results_selection"$$END$$				
+			$$END$$			
+			>
+			
+			<div id="RechHautPictoResult">
+				<p
+				$$IF:IMMOBW:ANN:QRY:NBR$$
+					$$IF0:IMMOBW:ANN:QRY:SIPANIER$$class="results"$$END$$
+				$$END$$
+				$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$			
+				$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+					$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$
+					$$IF:IMMOBW:ANN:QRY:NBR$$class="results_selection"$$END$$				
+				$$END$$
+			><!-- --></p>		
+			</div>
+			
+			
+			$$IF:IMMOBW:ANN:QRY:NBR$$
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+					<!-- annonces trouvees -->
+					
+					<h2>
+						
+						<!--$$IMMOBW:ANN:QRY:NBRESULT formatnumber 0$$ -->
+
+						
+						$$IF!:4:FORM:IDTT$$
+							$$IF=:FR:LANGUE$$Les appartements $$END:FR$$
+							$$IF!:FR:LANGUE$$The apartments $$END:FR$$
+						$$END$$
+						$$IF=:4:FORM:IDTT$$
+							$$IF=:FR:LANGUE$$Les chambres $$END:FR$$
+							$$IF!:FR:LANGUE$$The rooms $$END:FR$$
+						$$END$$
+						
+						$$IF=:FR:LANGUE$$<span>correspondant à votre demande de</span>$$END:FR$$
+						$$IF!:FR:LANGUE$$<span> matching your request </span> $$END:FR$$
+					</h2>
+					<h1>
+						$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$
+						$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$
+						$$IF=:3:FORM:IDTT$$
+							$$IF=:FR:LANGUE$$
+								$$FORM:IDTT gettypetransaction pcase$$
+							$$END$$
+							$$IF!:FR:LANGUE$$
+								Temporary stays
+							$$END$$
+						$$END$$
+						$$IF=:4:FORM:IDTT$$
+							$$IF=:FR:LANGUE$$
+								Location de chambre
+							$$END$$
+							$$IF!:FR:LANGUE$$
+								B&B
+							$$END$$
+						$$END$$
+						
+						$$REM$$
+						<!--$$IF:FORM:IDSOUSTYPEBIEN$$
+								$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+								<br />
+								$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+								$$END:!FORM:IDSOUSTYPEBIEN$$
+								$$END:FORM:IDSOUSTYPEBIEN$$						
+						-->
+						$$END$$
+					</h1>
+					<div class="clear"><!-- --></div>				
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$
+			
+				$$IF!:1:IMMOBW:ANN:QRY:NBR$$
+					<!--#include virtual="/recherche/incl_tri.htm" -->	
+							
+							
+					$$REM$$<!-- 16.06.2009 ajout lien popup calculettes financieres -->$$END:REM$$
+					$$REM$$<!-- 25.11.2009 on cache le lien, les outils vont bientôt disparaître -->
+					$$IF=:2$5$6$8$9$10$11:FORM:IDTT$$					
+						<div id="CalculetteFinanciere"><a href="javascript:pop('http://old.seloger.com/ext,agences,index.htm?cnt=206019',800,600,50,200);" title="$$LG:CALCVOTFINANC pcase$$">$$LG:CALCVOTFINANC pcase$$</a></div>
+					$$END:FORM:IDTT$$
+					$$END:REM$$
+					
+				$$END:!1:IMMOBW:ANN:QRY:NBR$$
+				
+			$$END:IMMOBW:ANN:QRY:NBR$$			
+			
+			$$IF0:IMMOBW:ANN:QRY:NBR$$			
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+				<!-- pas d'annonce trouvee -->	
+				<h2>
+					$$IF=:FR:LANGUE$$
+						Aucun appartement ne correspond &agrave; cette demande de
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						No apartment matching this request 
+					$$END$$					
+				</h2>
+				<h1><span>$$FORM:IDTT gettypetransaction pcase$$</span></h1>
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$			
+			$$END:IMMOBW:ANN:QRY:NBR$$
+						
+			$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+			
+				$$IF:IMMOBW:ANN:QRY:NBR$$
+				<!-- selection remplie -->		
+				<h2 id="NbAnnSelection"></h2>
+				$$END:IMMOBW:ANN:QRY:NBR$$
+				
+				$$IF0:IMMOBW:ANN:QRY:NBR$$
+					<!-- selection vide -->
+					<h2>
+						$$IF=:FR:LANGUE$$
+							Votre s&eacute;lection d'appartements est vide
+						$$END$$
+						$$IF!:FR:LANGUE$$
+							Your advert selection is void 							
+						$$END$$
+					</h2>
+						$$IF!:FR:LANGUE$$
+						<h1>
+							<span>
+								Choose from our fine selection of real estate listings in 
+							</span>
+						</h1>
+						$$END$$
+					
+				$$END:IMMOBW:ANN:QRY:NBR$$
+				
+			$$END:IMMOBW:ANN:QRY:SIPANIER$$	
+			
+			
+			<div id="RechHautLiens">
+								
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+					$$REM$$
+					<!--
+							> 16.10.2009 - modif par Lisbonne
+							> on remplace les termes "modifier votre recherche" par "nouvelle recherche"
+							> car lien retourne vers moteur de recherche, et réinitialise toute la recherche
+					-->
+					$$END:REM$$
+					
+						<!-- Pas de lien vers moteur pour les chambres idtt=4 -->
+						$$IF=:3:FORM:IDTT$$		
+					<a class="modifier" href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?$$REP:QRY removeqry IMMOBW_ANN_QRYpg htmlencode$$" title="$$LG:NVELLERECH pcase$$">
+						$$LG:RECHPARCRITERES pcase$$
+					</a>
+						$$END$$
+
+					
+						$$IF=:2:FORM:IDTT$$
+						<a class="modifier" href="$$URLBASE$$/acheter.htm?lang=$$LANGUE$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+						$$END:FORM:IDTT$$
+						$$IF=:1:FORM:IDTT$$
+						<a class="modifier" href="$$URLBASE$$/louer.htm?lang=$$LANGUE$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+						$$END:FORM:IDTT$$
+
+				
+				<a class="selection" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$&amp;t=$$E:ID3:DATE:2$$$$ID3:DATE:VAL date Hmmss$$" title="" onclick="javascript:Stock('$$REP:QRY htmlencode$$');">$$LG:MASELECT pcase$$ <span id="NbAnnPanier"></span></a>
+				<a class="selection" href="javascript:popFrancelodge('$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/reserver.htm?lang=$$LANGUE$$');" title="">
+					$$IF=:FR:LANGUE$$
+						Demande de disponibilit&eacute;
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						Ask for availabilities
+					$$END$$
+					</a>
+					
+					$$IF=:1:FORM:MOTEUR$$
+					$$IF!:4:FORM:IDTT$$				
+					$$IF=:a_px_loyer:FORM:TRI$$
+						<a class="selection" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;px_loyermax=$$1_IMMOBW:ANN:QRY:PRIXRAW$$&amp;lang=$$LANGUE$$" title="">
+						$$IF=:FR:LANGUE$$
+							Appartements en dessous de $$1_IMMOBW:ANN:QRY:PRIX formatnumber 0$$ $$1_IMMOBW:ANN:QRY:PRIX_UNITE$$ 1er mois
+						$$END$$
+						
+						$$IF!:FR:LANGUE$$
+							Apartments cheaper than $$1_IMMOBW:ANN:QRY:PRIX formatnumber 0$$ $$1_IMMOBW:ANN:QRY:PRIX_UNITE$$ for the 1st month
+						$$END$$</a>					
+					$$END$$
+					$$END$$		
+					$$END$$		
+					
+					
+				<a class="alerte" href="#creerAlerteEmail" title="">$$LG:CREERALERTEMAIL pcase$$</a>
+				
+				<a class="rss" href="$$URLBASE$$/rss.xml?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" title="" onclick="window.open(this.href); return false;">$$LG:FLUXRSS$$</a>
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$
+				
+				$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+				
+					$$IF:IMMOBW:ANN:QRY:NBR$$
+					<a class="print" href="javascript:go('recherche,imprimer.htm?lang=$$LANGUE$$','panierv',850,500);" title="">$$LG:IMPRIMERSELEC pcase$$</a>
+					<a class="vider" href="javascript:viderPanier();" title="">$$LG:VIDERSELEC pcase$$</a>
+					<a class="retour" href="javascript:history.go(-1);" title="">$$LG:RETOURNER pcase$$</a><!--javascript:history.go(-1);-->
+					$$END:IMMOBW:ANN:QRY:NBR$$
+				
+					$$IF0:IMMOBW:ANN:QRY:NBR$$									
+										
+						$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSACSDISPOS$$
+						$$BIF:TRANSACSDISPOS$$	
+						$$DO$$
+							$$IF=:3:TRANSACSDISPOS:IDTYPETRANSACTION$$
+								<a class="transacDispo" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSACSDISPOS:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="">$$LG:NOSAPPARTS pcase$$</a>
+							$$END$$
+						$$LOOP$$
+						$$BFIN$$
+																
+					$$END$$
+										
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$
+				
+				<div class="clear"><!-- --></div>
+			</div>
+			<!-- fin #RechHautLiens -->		
+			
+			
+		</div>
+		<!-- fin #RechHautCtn -->		
+		
+				$$IF=:1:FORM:SI_PROMO$$
+			<h4 style="margin-top: 0;">
+			$$IF=:FR:LANGUE$$			
+Conditions d’application de la promotion<br />
+La r&eacute;duction est de 100 euros sur l'ensemble de votre s&eacute;jour, d&eacute;ductible des prix mentionn&eacute;s.<br />
+(Les promotions sont valables sur une dur&eacute;e de s&eacute;jour minimum de 12 nuits pour une arriv&eacute;e dans les 21 jours &agrave; compter de ce jour.) 
+			$$END$$
+			$$IF!:FR:LANGUE$$
+Conditions of application of the promotion<br />
+The discount is 100 euros on the overall stay, deductible from the mentioned prices.<br />
+(The promotion is valid for a minimum stay of 12 nights for arrivals within 21 days from today.)
+			$$END$$
+			</h4>
+		$$END$$
+
+		
+		<div id="RechHautEnd"><!-- --></div>
+	</div>
+	<!-- fin #RechHaut -->	
+	
+
+	
+	$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+	$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+	
+<!--// =========================== //resultats annonces // =========================== //-->	
+	<div id="RechResultat">
+		<!-- tri=a_px_loyer -->
+		$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:QRY:URLONERROR$$
+		$$BIF:IMMOBW:ANN:QRY$$	

@@ -1,0 +1,153 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=CTC$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$
+$$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut être utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="page_message_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_message_ok.htm" />
+	<input type="hidden" name="page_err" value="message.htm" />
+	<input type="hidden" name="cfg_form" value="message$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="message" />
+	$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<!-- <font size="3" color="#CC0033"><b>$$ERRE$$</b></font>
+	<strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>
+	<!--Votre message--><strong>$$IF=:FR:LANGUE$$DEMANDE TARIFS DE DISPONIBILITES DES APPARTEMENTS MEUBLES A PARIS$$END$$
+		$$IF=:EN:LANGUE$$CORPORATE RATES REQUEST FOR THE FURNISHED APARTMENTS IN PARIS$$END$$
+		</strong><br /><br />
+        <!-- $$IF=:FR:LANGUE$$Vous êtes une entreprise$$END$$ $$IF=:EN:LANGUE$$Your are a company$$END$$ -->
+        <br />
+	<!--vos coordonnées-->
+	
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><b>$$LG:COORD$$</b></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="30%">$$IF=:FR:LANGUE$$ Nom de l'entreprise * : $$END$$$$IF=:EN:LANGUE$$ Corporate name * : $$END$$</td>
+		<td width="70%"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:PRENOM$$ * :</td>
+		<td><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:ADRESSE$$ :</td>
+		<td>$$IF=:FR:LANGUE$$<input type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr>
+		<td>$$LG:VILLE$$ :</td>
+		<td><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$"></td>
+	</tr>
+	<tr>
+		<td>$$LG:CODEP$$ :</td>
+		<td><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$"></td>
+	</tr>
+
+	<tr>
+		<td>$$LG:PAYS$$ * :</td>
+		<td><input type="text" name="2pays" size="25" value="$$FORM:2PAYS$$"></td>
+	</tr>
+
+	<tr>
+		<td>$$LG:TEL$$ * :</td>
+		<td><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20">
+	</tr>
+	<tr>
+		<td>Fax :</td>
+		<td><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$"></td>
+	</tr>
+	<tr>
+		<td>$$LG:AI6$$ * :</td>
+		<td><input class="imputForm" type="text" name="2Email" size="40" maxlength="60" value="$$FORM:2EMAIL$$"></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>	
+	 <tr>
+    <td valign="top">$$LG:INFOTROUVEWEBINT$$</td>
+    <td> <input type="text" name="2TROUVER" value="$$FORM:2TROUVER$$" size="40" maxlength="50"><br /><strong>$$LG:INFOTROUVEWEB$$</strong> </td>
+  </tr>
+   <tr>
+           	<td colspan="2"><strong>$$IF=:FR:LANGUE$$Si vous avez trouvé via les pages jaunes (site ou annuaire), merci de cocher$$END$$
+           		$$IF=:EN:LANGUE$$If you found with the yellow pages (site or directory), thank you to check $$END$$
+           		</strong> <input type="checkbox" name="PJ" value="PAGES JAUNES"></td>
+  					</tr>
+          	  <tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<table cellspacing="0" cellpadding="5" class="tabFond1">
+	<tr>
+		<td colspan="2">$$LG:MESSAGE$$ :</td>
+	</tr>
+	<tr>
+		<td colspan="2"><textarea class="imputForm" name="Pmessage" cols="35" rows="3">$$FORM:PMESSAGE$$</textarea></td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td align="center" class="tabTitre"><b>$$LG:VERIFINFOS$$</b></td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif"  border="0" name="image"></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$

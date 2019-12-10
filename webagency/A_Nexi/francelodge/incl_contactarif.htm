@@ -1,0 +1,371 @@
+$$E:IMMOBW:AGENCE:REP:1$$
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$
+$$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut être utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+<form method="post" action="page_contactarif_ok.htm?lang=$$LANGUE$$" name="formcontact">
+<input type="hidden" name="idtt" value="2" />
+<input type="hidden" name="lang" value="$$LANGUE$$" />
+<input type="hidden" name="u" value="id3:formmail" />
+<input type="hidden" name="page_ok" value="page_contactarif_ok.htm" />
+<input type="hidden" name="page_err" value="contactarif.htm" />
+<input type="hidden" name="cfg_form" value="contactarif$$LANGUE$$" />
+<input type="hidden" name="cfg_emails" value="contactarif" />
+	$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+	$$END$$
+	$$END$$
+<input type="hidden" name="SRV" value="$$SRV$$" />
+<font size="3" color="#CC0033"><b>$$ERRE$$</b></font>
+<center><strong>FRANCE LODGE LOCATIONS</strong></center>
+$$IF=:EN:LANGUE$$
+<table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr valign="top" align="center">
+    <td colspan=12 height =19>
+      <!-- --------------------------------------------------------------------- -->
+      <p> <strong><font color="#8a0000" face="arial">Use the form below ( or tel
+        or fax ) to receive available furnished apartments in Paris or bed and breakfast at the dates you are staying in Paris.<br>
+        </font></strong> </td>
+  </tr>
+</table>
+<table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="" align="left" colspan="3"> &nbsp; &nbsp; &nbsp;<strong><font color="#8a0000" face="arial">
+      <input type="radio" name="2ETYPEL" id="CheckAppart" value="apartments in Paris" checked$$IF=:APARTMENTS:FORM:2ETYPEL$$ checked $$END$$ />
+      apartments furnished in Paris&nbsp;
+      <input type="radio" name="2ETYPEL" id="CheckChambre" value="Bed and breakfast in Paris" $$IF=:BB:FORM:2ETYPEL$$ checked $$END$$>
+      bed and breakfast or homestays</font></strong><br /></td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>First name</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2PRENOM" value="$$FORM:2PRENOM$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Surname</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332">
+      <input type="text" name="2NOM" value="$$FORM:2NOM$$" size=50 maxlength=50 >
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>E-mail</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"><input type="text" name="2EMAIL" value="$$FORM:2EMAIL$$" size="50" maxlength="60" >
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Fax number</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2FAX" value="$$FORM:2FAX$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Number of persons</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2NBPER" value="$$FORM:2NBPER$$" size=15 maxlength=15 > </td>
+  </tr>
+   <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Country</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2PAYS" value="$$FORM:2PAYS$$" size=50 maxlength=50 > </td>
+  </tr>
+  
+<tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Date of arrival</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2DATEARR" value="$$FORM:2DATEARR$$" size=15 maxlength=15 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Date of departure</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2DATEDEP" value="$$FORM:2DATEDEP$$" size=15 maxlength=15 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+   <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Budget max</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="BUDGET" value="$$FORM:BUDGET$$" size=50 maxlength=50 > </td>
+  </tr>
+   <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+ 
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Why are you coming to paris</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332" id="$$FORM:2SURVEY$$"> <input type="radio" name="survey" value="tourism">
+      Tourism
+      <input type="radio" name="2SURVEY" value="professional" $$IF=:PROFESSIONAL:FORM:2SURVEY$$ checked $$END$$>
+      Professional
+      <input type="radio" name="2SURVEY" value="training_period" $$IF=:TRAINING_PERIOD:FORM:2SURVEY$$ checked $$END$$>
+      Training period <br>
+      <input type="radio" name="2SURVEY" value="studies" $$IF=:STUDIES:FORM:2SURVEY$$ checked $$END$$>
+      Studies
+      <input type="radio" name="2SURVEY" value="other_reason" $$IF=:OTHER_REASON:FORM:2SURVEY$$ checked $$END$$>
+      Other reason </td>
+  </tr>
+   <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+   <tr>
+  	 <td width="20">&nbsp;</td>
+    <td align="left" colspan="3"> <strong>$$LG:INFOTROUVEWEB$$, if not how did you find our web adress ?</strong></td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right" valign="bottom"></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"><input type="text" name="2TROUVER" value="$$FORM:2TROUVER$$" size=50 maxlength=50> </td>
+  </tr>
+   <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td colspan="3"><strong>If you found with the yellow pages (site or directory), thank you to check </strong> <input type="checkbox" name="PJ" value="PAGES JAUNES"></td>
+  </tr>
+  
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>
+      <input type="submit" name="input" value="send &gt;&gt;" >
+      </strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <textarea name="2AREA" rows=6 cols=30 value="$$FORM:2AREA$$"></textarea> </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+</table>
+$$END$$
+
+$$IF=:FR:LANGUE$$
+<table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr valign="top" align="left">
+    <td colspan=15 height =12 align="center"><strong><font color="#8a0000" face="arial">Utilisez le formulaire ci-dessous (ou téléphone ou fax) pour recevoir la liste des appartements meublés à Paris ou des chambres d’hôtes disponibles pour votre séjour :
+<br>
+        </font></strong></td>
+  </tr>
+</table>
+
+<table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="" align="left" colspan="3"> &nbsp; &nbsp; &nbsp;<strong><font color="#8a0000" face="arial">
+      <input type="radio" name="2ETYPEL" id="CheckAppart"value="appartements à Paris" checked $$IF=:APPARTEMENTS:FORM:2ETYPEL$$ checked $$END$$>
+      appartements meublés à Paris &nbsp;
+      <input type="radio" name="2ETYPEL" id="CheckChambre" value="Chambres d'hôtes à Paris"  $$IF=:BB:FORM:2ETYPEL$$ checked $$END$$>
+      chambres d'h&ocirc;tes ou chez l'habitant<br />
+      </font></strong> </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Prénom </strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2PRENOM" value="$$FORM:2PRENOM$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Nom de famille </strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2NOM" value="$$FORM:2NOM$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>E-mail</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2EMAIL" value="$$FORM:2EMAIL$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Numéro de fax</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2FAX" value="$$FORM:2FAX$$" size=50 maxlength=50 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Nombre de personnes</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2NBPER" value="$$FORM:2NBPER$$" size=15 maxlength=15 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right" valign="top"><strong>Nationalité</strong><br />
+</td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2PAYS" value="$$FORM:2PAYS$$" size=50 maxlength=50 ><br />(ce renseignement nous permet de mieux  vous servir en nous adaptant au maximum)
+</td>
+  </tr>
+<tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Date d'arrivée</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2DATEARR" value="$$FORM:2DATEARR$$" size=15 maxlength=15 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Date du départ</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="2DATEDEP" value="$$FORM:2DATEDEP$$" size=15 maxlength=15 > </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Budget maximum</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <input type="text" name="BUDGET" value="$$FORM:BUDGET$$" size=50 maxlength=50 > </td>
+  </tr>
+   <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>Quelle est la raison de votre séjour à Paris</strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332" id="$$FORM:2SURVEY$$"> <input type="radio" name="2SURVEY" value="tourism" $$IF=:TOURISM:FORM:2SURVEY$$ checked $$END$$>
+      Tourisme
+      <input type="radio" name="2SURVEY" value="professional" $$IF=:PROFESSIONAL:FORM:2SURVEY$$ checked $$END$$>
+      Professionel <br>
+      <input type="radio" name="2SURVEY" value="studies" $$IF=:STUDIES:FORM:2SURVEY$$ checked $$END$$>
+      Etudes
+      <input type="radio" name="2SURVEY" value="other_reason" $$IF=:OTHER_REASON:FORM:2SURVEY$$ checked $$END$$>
+      Autre raison</td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+  	 <td width="20">&nbsp;</td>
+    <td align="left" colspan="3"> <strong>$$LG:INFOTROUVEWEB$$, sinon comment avez-vous trouvé notre adresse ?</strong></td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right" valign="bottom"></td>
+    <td width="20">&nbsp;</td>
+    <td width="332" ><input type="text" name="2TROUVER" value="$$FORM:2TROUVER$$" size=50 maxlength=50><br />(ce renseignement nous permet de mieux cibler nos campagnes d'information)
+		</td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td colspan="3"><strong>Si vous avez trouvé via les pages jaunes (site ou annuaire), merci de cocher</strong> <input type="checkbox" name="PJ" value="PAGES JAUNES"></td>
+  </tr>
+  
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20">&nbsp;</td>
+    <td width="129" align="right"><strong>
+      <input type="submit" name="input" value="envoyer &gt;&gt;" >
+      </strong></td>
+    <td width="20">&nbsp;</td>
+    <td width="332"> <textarea name="2AREA" rows=6 cols=30 value="$$FORM:2AREA$$"></textarea> </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+</table>
+$$END$$
+</form>
+$$END:EMAIL$$

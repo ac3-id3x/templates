@@ -1,0 +1,34 @@
+<p class="typeBien"> 
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ 
+		$$IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase$$ 
+		$$IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase$$ 
+		$$IF!:recherche,panorama.htm:REP:0$$ 
+			$$IMMOBW:ANN:QRY:VILLE$$ 
+		$$END:REP:0$$ 
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$ 
+
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$ 
+		$$IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien pcase$$ 
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$ 
+
+	$$IF!:recherche,panorama.htm$recherche,linea.htm:REP:0$$ 
+		<span class="nbPieces">
+		$$IF:IMMOBW:ANN:QRY:NB_PIECES$$
+			$$IMMOBW:ANN:QRY:NB_PIECES$$ 
+			$$IF=:1:IMMOBW:ANN:QRY:NB_PIECES$$
+				$$LG:PIECE$$, 
+			$$END$$
+			$$IF!:0$1:IMMOBW:ANN:QRY:NB_PIECES$$
+				$$LG:PIECES2$$, 
+			$$END$$			
+		$$END:QRY:NB_PIECES$$
+			
+			<!-- Nombre personnes - affichage uniquement dans le cas des appartements -->
+			$$IF=:3:FORM:IDTT$$	
+						$$IMMOBW:ANN:QRY:NB_COUCHAGES$$
+						$$IF=:FR:LANGUE$$personnes$$END$$
+						$$IF!:FR:LANGUE$$persons$$END$$
+			$$END$$
+		</span> 
+	$$END:REP:0$$ 
+</p>

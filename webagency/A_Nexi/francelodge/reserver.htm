@@ -1,0 +1,273 @@
+<!--#include virtual="incl_doctype_strict.htm"-->
+<head>
+<!--#include virtual="incl_ref.htm" -->
+<!--#include virtual="incl_titre.htm" -->
+<!--#include virtual="scripts/incl_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18383262-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body id="bodyPopup">
+<div id="wrapperPopup" class="popupreserver">
+	<div class="ttl"><img src="images/titres/form.gif" alt="" /><br /></div>
+
+
+$$SET:PAGE:IDT=CTC$$
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$
+$$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$
+$$END$$
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+$$IF:AGENCE:EMAIL$$
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+<td>
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="1" />
+<input type="hidden" name="page_ok" value="validation_reserver.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_reserver.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+<input type="hidden" name="idPublication" value="$$REP:1$$" />
+
+<input type="hidden" name="prenom" value="prenom" />
+<input type="hidden" name="telephone" value="0123456789" />
+
+
+	<strong class="erreur">$$ERRE$$</strong>
+
+	<p>
+	$$IF=:FR:LANGUE$$
+		Utilisez le formulaire ci-dessous (ou téléphone ou fax) pour recevoir la liste des appartements meublés à Paris ou des chambres disponibles :<br /><br />
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		Use the form below (or telephone or fax) to receive the list of available furnished apartments or bedrooms in Paris :            <br /> <br />
+	$$END$$
+
+		<strong class="inputradio">
+			<input name="typehebergement" value="Appartements meubles à Paris" type="radio" />
+			$$IF=:FR:LANGUE$$
+				Appartements meublés à Paris
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				Furnished  apartments in Paris
+			$$END$$
+
+			<input name="typehebergement" value="Chambres d'hotes" type="radio" />
+			$$IF=:FR:LANGUE$$
+				Chambres d’hôtes
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				Bed & Breakfast
+			$$END$$
+
+			<input name="typehebergement" value="Chambres chez l'habitant" type="radio" />
+			$$IF=:FR:LANGUE$$
+				Chambres chez l’habitant
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				Homestay
+			$$END$$
+		</strong>
+
+	</p>
+
+
+	<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td width="15%"  class="libelle">$$IF=:FR:LANGUE$$Nom de famille$$END$$$$IF!:FR:LANGUE$$Name$$END$$ * :</td>
+		<td width="70%" align="left"><input class="imputForm" type="text" name="nomFamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td  class="libelle">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td  class="libelle">$$LG:NBPERSONNES pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="NBPERSONNE" size="25" value="$$FORM:NBPERSONNE$$" /></td>
+	</tr>
+	<tr>
+		<td class="libelle">$$IF=:FR:LANGUE$$Nationalité$$END$$$$IF!:FR:LANGUE$$Nationality$$END$$  :</td>
+		<td align="left"><input class="imputForm" type="text" name="NATIONALITE" size="25" value="$$FORM:NATIONALITE$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">	<em>
+				$$IF=:FR:LANGUE$$(ce renseignement nous permet de mieux vous servir en nous adaptant au maximum)$$END$$
+				$$IF!:FR:LANGUE$$(this information enables us to be more useful to you by adapting to the maximum)$$END$$
+			</em></td>
+	</tr>
+	<tr>
+		<td class="libelle">$$IF=:FR:LANGUE$$Date d'arrivée$$END$$$$IF!:FR:LANGUE$$Date of arrival$$END$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="DATEARRIVE" size="15" value="$$FORM:DATEARRIVE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td class="libelle">$$IF=:FR:LANGUE$$Date du départ$$END$$$$IF!:FR:LANGUE$$Date of departure$$END$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="DATEDEPART" size="15" value="$$FORM:DATEDEPART$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td colspan="2"><strong>$$IF=:FR:LANGUE$$Comment avez vous connu France Lodge ?$$END$$$$IF!:FR:LANGUE$$How did you know France Lodge ?$$END$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="radio" name="referer2" value="Google" />Google <br />
+			<input type="radio" name="referer2" value="Yahoo ou Bing" />Yahoo $$LG:OU$$ Bing <br />
+			<input type="radio" name="referer2" value="Autre moteur de recherche" />$$IF=:FR:LANGUE$$Autre moteur de recherche$$END$$$$IF!:FR:LANGUE$$Other search engine$$END$$ <br />
+			<input type="radio" name="referer2" value="Pages jaunes" />$$IF=:FR:LANGUE$$Pages jaunes$$END$$$$IF!:FR:LANGUE$$yellow Pages$$END$$  <br />
+			<input type="radio" name="referer2" value="Office de Tourisme de Paris" />$$IF=:FR:LANGUE$$Office de Tourisme de Paris$$END$$$$IF!:FR:LANGUE$$Tourist Office of Paris$$END$$<br />
+			<input type="radio" name="referer2" value="Ami" />$$IF=:FR:LANGUE$$Ami$$END$$$$IF!:FR:LANGUE$$A friend$$END$$  <br />
+			<input type="radio" name="referer2" value="Guide" />$$IF=:FR:LANGUE$$Guide (merci de préciser)$$END$$$$IF!:FR:LANGUE$$A guide (please precise)$$END$$  <input class="imputForm" type="text" name="REFERERA" size="30" value="$$FORM:REFERERA$$" maxlength="200" /> <br />
+			<input type="radio" name="referer2" value="Other" />$$IF=:FR:LANGUE$$Autres (merci de préciser)$$END$$$$IF!:FR:LANGUE$$Other (please precise)$$END$$ <input class="imputForm" type="text" name="REFERERB" size="80" value="$$FORM:REFERERB$$" maxlength="200" /> <br />
+
+
+			<em>
+				$$IF=:FR:LANGUE$$(ce renseignement nous permet de mieux cibler nos campagnes d'information)$$END$$
+				$$IF!:FR:LANGUE$$(this information enables us to better target our information campaigns)$$END$$</em>
+		</td>
+	</tr>
+
+
+
+	</table>
+	<br />
+		<table cellspacing="0" cellpadding="5" class="tabFond1">
+	<tr>
+		<td colspan="2">
+			<strong>$$LG:COMMENTAIRES pcase$$ :</strong><br />
+			<em>
+				$$IF=:FR:LANGUE$$
+					Aidez nous à répondre à votre besoin en nous indiquant le type d'hébergement que vous souhaitez : simple, confortable, haut de gamme et votre budget.<br />
+					Pour les chambres, indiquez également le sexe de l’occupant.
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					Help us to meet your need by indicating the type of accomodation you wish : simple, comfortable, top-of-the-range and your budget.<br />
+					For rooms, also indicate the sex of the occupant.
+				$$END$$
+			</em>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><textarea class="imputForm" name="message" cols="100" rows="8">$$IF:FORM:REF$$$$LG:REFERENCE pcase$$ : $$FORM:REF$$
+			$$END$$$$FORM:MESSAGE$$</textarea></td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td align="right">
+
+			<input type="image" src="img/envoyer_$$LANGUE$$.gif" onclick="_gaq.push(['_trackEvent',
+'locataire', 'click', 'envoyer']);" name="image" class="BoutonFormContact" />
+
+		<!-- fin ancien code -->
+
+		$$REM$$
+		<!--
+		18.12.2009 par Lisbonne
+		remplacement des input type = image par des input type submit
+		car généralisation des buggs IE6 et consors où les boutons sautent voire disparaissent
+		la solution sauvage mais de survie est de mutualiser ce code avant la mort par noyade du SAV
+		donc le style CSS est aussi mutualiser avec une grande marge de sécurité de 200x40px
+			-->
+		<input type="submit" value=""
+		style="background: url($$_$$img/envoyer_$$LANGUE$$.gif) 50% 50% no-repeat; border: none; cursor: pointer; margin: 20px 0; width: 200px; height: 40px;"
+		name="image"
+		class="BoutonFormContact" />
+		$$END$$
+
+
+
+			</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+* $$LG:CHAMPSOBLIGATOIRES pcase$$
+
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+
+
+
+<div id="widget_reserver">
+
+$$IF=:FR:LANGUE$$
+			<img src="images/fleche.png" id="flech_widget" alt="" />&nbsp;&nbsp;
+				<p class="encart-paiement">
+							<span class="gros"><strong>Nouveau uniquement pour les chambres</strong></span><br />
+						<strong style="font-weight: normal;font-size: 13px;"> Réservation en ligne possible pour un séjour maximum de 7 nuits , <br>
+					sinon remplissez la demande de disponibilité ci contre.<br>					
+						ou contactez nous de 10h à 18h au 01 56 33 85 80
+					</strong>
+					<script src="http://gadget.open-system.fr/jquery.min.js" type="text/JavaScript" ></script>
+					<script src="http://gadget.open-system.fr/osform.min.js" type="text/JavaScript" ></script>
+					<script type="text/javascript" xml:space="preserve">
+						$(function () {
+							document.oswidget = new OsFG("OSRecherche","37635-2652","fr","$$_$$styles/widget.css");
+							document.oswidget.Affiche();							
+						});
+					</script>
+					<div id="OSRecherche"></div>
+				</p>
+$$END$$
+$$IF!:FR:LANGUE$$
+				<p class="encart-paiement">
+					<span class="gros">Nouveau uniquement pour les chambres</span><br />
+					<strong>Réservation en ligne possible pour un séjour maximum de 7 nuits , <br>
+						<= sinon remplissez la demande de disponibilité ci contre.<br>
+					</strong>
+					<strong class="gros">
+						ou contactez nous de 10h à 18h au 01 56 33 85 80
+					</strong>
+					<script src="http://gadget.open-system.fr/jquery.min.js" type="text/JavaScript" ></script>
+					<script src="http://gadget.open-system.fr/osform.min.js" type="text/JavaScript" ></script>
+					<script type="text/javascript" xml:space="preserve">
+						$(function () {
+							document.oswidget = new OsFG("OSRecherche","37635-2652","en","$$_$$styles/widget.css");
+							document.oswidget.Affiche();							
+						});
+					</script>
+					<div id="OSRecherche"></div>
+				</p>
+$$END$$
+
+
+
+
+
+</div><!-- div#wrapperPopup -->
+<!-- Google Code for formulaire de base Reserver Conversion Page --> <script type="text/javascript"> /* <![CDATA[ */ var google_conversion_id = 1049009654; var google_conversion_language = "fr"; var google_conversion_format = "1"; var google_conversion_color = "ffffff"; var google_conversion_label = "aCJSCPiE5wEQ9rua9AM"; var google_conversion_value = 0; if (1) { google_conversion_value = 1; } /* ]]> */ </script> <script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js"> </script> <noscript> <div style="display:inline;"> <img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1049009654/?value=1&amp;label=aCJSCPiE5wEQ9rua9AM&amp;guid=ON&amp;script=0"/> </div> </noscript>
+</div>
+</body>
+</html>
