@@ -1,0 +1,200 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+//// <update date="2010-02-24" author="muriel.garilhe">OPTION REF 13 expressions : mise en place des optis de ref pour mise en ligne du site</update>
+====================================================================
+$$END$$
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+
+
+
+
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=FIM Immobilier, DUBUC Immobilier - Immobilier et Commerce : rouen, dieppe, oisemont, aumale, neufchatel en bray, fecamp, bacqueville en caux, mers les bains$$
+$$A:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@ en Seine Maritime: vente maison, vente appartement, vente fonds de commerce$$
+$$A:PAGE:KEYWORDS=FIM Immobilier, DUBUC Immobilier, Agence immobili&egrave;re @@NOM_AGENCE@@ @@VILLE_AGENCE@@, immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=FIM Immobilier - DUBUC Immobilier : 9 agences d'immobilier et commerce en Seine Maritime$$
+$$A:PAGE:DESCREF=FIM Immobilier et Commerce : agences à rouen, dieppe, oisemont, aumale, neufchatel en bray, fecamp, bacqueville en caux, mers les bains$$
+$$A:PAGE:KEYWORDS=agence immobiliere rouen, agence immobiliere dieppe, agence immobiliere oisemont, agence immobiliere aumale, agence immobiliere neufchatel en bray, agence immobiliere fecamp, agence immobiliere bacqueville en caux, agence immobiliere mers les bains$$
+$$END$$
+
+
+
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+
+
+<!-- DUBUC IMMOBILIER Commerce -->
+$$IF=:386271:FORM:IDP$$
+		$$A:PAGE:TITR=@@CV:NOM@@ @@CV:CP cp2dep@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), Vente caf&eacute;s hotels restaurants @@CV:CP cp2dep@@ (76)$$
+		$$A:PAGE:DESCREF=Notre agence immobili&egrave;re @@CV:NOM@@ &agrave; @@CV:VILLE@@ vous propose : vente caf&eacute;s hotels restaurants @@CV:CP cp2dep@@ (76)$$
+		$$A:PAGE:KEYWORDS=DUBUC Immobilier, vente caf&eacute;s hotels restaurants, @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@, @@CV:NOM@@ @@CV:CP cp2dep@@$$
+$$END$$
+
+
+<!-- Autres agences FIM Immobilier -->
+$$IF!:386271:FORM:IDP$$
+		$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), vente maison @@CV:VILLE@@, vente appartement @@CV:VILLE@@, @@CV:NOM@@ @@CV:CP cp2dep@@$$
+		$$A:PAGE:DESCREF=Notre agence immobili&egrave;re @@CV:NOM@@ &agrave; @@CV:VILLE@@ vous propose : vente maison @@CV:VILLE@@, vente appartement @@CV:VILLE@@, vente fonds de commerce @@CV:VILLE@@$$
+		$$A:PAGE:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@, @@CV:NOM@@ @@CV:CP cp2dep@@$$
+$$END$$
+
+
+$$END$$
+
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=Vente maison, appartement Restaurants Seine Maritime (76) - Fim Immobilier$$
+$$A:PAGE:DESCREF=Consultez nos appartements, maison en vente sur Rouen, Dieppe, Oisemont, aumal, neufchatel en bray, fecamp, bacqueville en caux, mers les bains$$
+$$A:PAGE:KEYWORDS=vente appartement, maison Rouen, Dieppe, Seine Maritime (76)$$
+$$END$$
+$$END$$
+
+
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=Vente Cafes Hotels Restaurants Seine Maritime (76) - Fim Immobilier$$
+$$A:PAGE:DESCREF=Consultez nos annonces immobilieres de commerces : cafes hotels restaurants seine maritime 76$$
+$$A:PAGE:KEYWORDS=vente cafes hotels restaurant commerces seine maritime (76)$$
+$$END$$
+
+
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=Fim Dubuc Immobilier Seine Maritime (76) - Contact$$
+$$A:PAGE:DESCREF=Contacez l'une de nos agences immobilieres Fim Dubuc en Seine Maritime sur Dieppe, Rouen, Aumale, Fecamp, Bacqueville en Caux, Oisemont, Mers les bains, neufchatel en bray$$
+$$A:PAGE:KEYWORDS=Contact Fim Dubuc Immobilier seine maritime$$
+$$END$$
+
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:HISTORIQUE:PAGE:IDT$$
+$$A:PAGE:TITR=Groupe Fim Immobilier - Historique$$
+$$A:PAGE:DESCREF=Pr&eacute;sentation du Groupe Fim Immobilier en Normandie et Picardie specialis&eacute; dans la vente de maison, d'appartement, hotels, commerces et restaurant en Seine Maritime$$
+$$A:PAGE:KEYWORDS=Groupe Fim immobilier seine maritime$$
+$$END$$
+
+
+
+$$IF=:OUTILS:PAGE:IDT$$
+$$A:PAGE:TITR=Fim Dubuc Immobilier - Outils$$
+$$A:PAGE:DESCREF=outils du site fim-dubuc-immobilier.com$$
+$$A:PAGE:KEYWORDS=fim-dubuc-immobilier.com$$
+$$END$$
+
+$$IF!:FR:LANGUE$$
+$$A:PAGE:TITR=fim-dubuc-immobilier.com$$
+$$A:PAGE:DESCREF=FIM DUBUC$$
+$$A:PAGE:KEYWORDS=FIM$$
+$$END$$
+
+
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+
+
+
+$$REM$$
+
+
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
