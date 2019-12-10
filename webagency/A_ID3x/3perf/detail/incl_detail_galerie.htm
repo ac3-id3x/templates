@@ -1,0 +1,50 @@
+$$A:JS_GALERIE=1$$
+$$INIT:CSS_GALERIE=1$$
+$$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+$$BIF:GALERIE$$
+<div class="slider-wrapper relative theme-default">
+	<div class="$$PAGE_STYLE$$ absolute z50 hidden-phone">
+	</div>
+	<div id="slider" class="nivoSlider z100">
+	$$DO$$
+	$$PHOT0:URL$$
+		$$A:ALT_GALERIE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:VILLE pcase@@ @@ANNDETAIL:PRIX@@@@ANNDETAIL:PRIX_UNITE@@ - @@LG:PHOT pcase@@ @@GALERIE:I@@$$
+		$$IF:GALERIE:BIG_URL$$
+			<a href="$$GALERIE:BIG_URL$$" class="gallery"><img rel="gal" src="$$GALERIE:BIG_URL$$" alt="$$ALT_GALERIE$$" data-thumb="$$GALERIE:C175_URL$$" title="#slider-caption-$$GALERIE:I$$"></a>
+		$$END$$
+		$$IF0:GALERIE:BIG_URL$$
+			<a href="$$GALERIE:URL$$" class="gallery"><img rel="gal" src="$$GALERIE:URL$$" alt="$$ALT_GALERIE$$" data-thumb="$$GALERIE:C175_URL$$" title="#slider-caption-$$GALERIE:I$$" width="$$GALERIE:URL_WIDTH$$" height="$$GALERIE:URL_HEIGHT$$"></a>
+		$$END$$
+	$$LOOP$$
+	</div>
+	<div class="absolute top left margin-left-10 margin-top-10">
+        	<div class="hidden-phone bouton-zoom-detail btn btn-action">
+        		<div class="padding-left-25" style="background:url('$$~$$images/slider/zoom-in-2.png') 0% 50% no-repeat;">$$LG:AGRANDIRPHOTO pcase$$</div>
+        	</div>
+       </div>
+</div>
+$$BFIN$$
+$$BIF:GALERIE$$
+	$$DO$$
+		<div id="slider-caption-$$GALERIE:I$$" class="nivo-html-caption">
+			$$IF!:1:HIDE_TRANSACTION$$
+				$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+			$$END$$
+			$$IF!:1:HIDE_TYPEBIEN$$
+				$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$
+			$$END$$
+			$$IF!:1:HIDE_SOUSTYPEBIEN$$
+          $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+           		$$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+          $$END$$
+      $$END$$
+			$$ANNDETAIL:VILLE pcase$$ $$ANNDETAIL:PRIX$$$$ANNDETAIL:PRIX_UNITE replace cc ¤cc$$ - $$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$
+			</div>
+	$$LOOP$$
+<!--#include absolute="webagency/A_ID3X/3perf/detail/incl_detail_galerie_js.htm" -->
+$$BFIN$$
+$$BIF0:GALERIE$$
+<div class="sans-photo-detail $$PAGE_STYLE$$">
+	<!--#include absolute="webagency/A_ID3X/3perf/detail/incl_no_photo_detail.htm" -->
+</div>
+$$BFIN$$
