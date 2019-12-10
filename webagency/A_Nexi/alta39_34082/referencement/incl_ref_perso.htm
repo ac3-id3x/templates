@@ -1,0 +1,127 @@
+$$REM$$<!--Fichier SEO a demutualiser pour ajouter des optimisations sur pages de contenus-->$$END$$
+
+
+$$REM$$<!-- ================================ recherche,basic.htm / tous les résultats de recherche par requête en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:RESULTATS$RESULTATSCARTE$ANNONCIMMOS:IDT$$
+
+	$$IF0:ANNLISTE:PAGE$$ 
+	$$REM$$<!-- Si une seule page de résultats -->$$END:REM$$			
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+	$$IF+:1:ANNLISTE:PAGE$$ 
+	$$REM$$<!-- Si plusieurs pages de résultats -->$$END:REM$$			
+						$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@)$$
+						$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ (@@LG:PAG pcase@@ @@ANNLISTE:PAGE@@ @@LG:SUR lcase@@ @@ANNLISTE:NBRPAGES@@) - @@REP:RSRV@@$$
+						$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+
+$$END:RESULTATS:IDT$$
+$$END$$
+
+
+
+
+$$REM$$<!-- ================================ detail,sento.htm / pour tous les autres types de bien -- en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+	$$IF=:DETAILANNONCE:IDT$$
+			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ -  
+						@@ANNDETAIL:LIBELLE@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : 
+						@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:DE lcase@@ 
+						@@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+
+	
+$$END:DETAILANNONCE:IDT$$
+$$END$$
+
+
+$$REM$$<!-- ================================ agence,immobiliere.htm  -- en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:NOTREAGENCE:IDT$$
+		$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@ @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+		$$A:DESCRIPTION=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+		$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,gestion.htm  -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:GESTION:IDT$$
+		$$A:TITLE=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@$$
+		$$A:DESCRIPTION=@@AGENCE_NOM@@, @@LG:GESTIONIMMO pcase@@ : @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ contact,estimation.htm  -- en ANGLAIS   ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:ESTIMATION:IDT$$
+		$$A:TITLE=@@LG:ESTIMVOTREBIEN pcase@@ avec @@CONTACT_AGENCE:NOM pcase@@ @@LG:A lcase@@ @@CONTACT_AGENCE:VILLE pcase@@$$
+		$$A:DESCRIPTION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@CONTACT_AGENCE:VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+		$$A:KEYWORDS=@@LG:LIEN:ESTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ contact,agence.htm  -- en ANGLAIS   ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:CONTACTAGENCE:IDT$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:TITLE=@@LG:CONTACT pcase@@ @@CONTACT_AGENCE:NOM@@ @@CONTACT_AGENCE:CP pcase@@ @@CONTACT_AGENCE:VILLE pcase@@$$
+		$$A:DESCRIPTION=@@LG:CONTACTEZNOUS pcase@@ : @@CONTACT_AGENCE:NOM@@ : @@CONTACT_AGENCE:ADRESSE@@ - @@CONTACT_AGENCE:TEL formattel@@$$
+		$$A:KEYWORDS=@@LG:CONTACT pcase@@, @@LG:IMMOBILIER pcase@@, @@MOTCLE1@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ outils,calculettes.htm   -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:CALCULETTES:IDT$$
+		$$A:TITLE=@@LG:CALCULIMMO pcase@@ @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=@@LG:EFFECTUEZCOMPTES@@ : @@AGENCE_NOM pcase@@.$$
+		$$A:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@$$
+	$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ plan,site.htm  -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:PLAN:IDT$$
+		$$A:TITLE=@@LG:LIEN:PLAN pcase@@ | @@AGENCE_NOM@@ | @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:LIEN:PLAN pcase@@ @@AGENCE_NOM@@$$
+		$$A:KEYWORDS=@@LG:LIEN:PLAN pcase@@, @@LG:IMMOBILIER pcase@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ legal,mentions.htm   -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:MENTIONS:IDT$$
+		$$A:TITLE=Legal mentions - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=Legal mentions for website @@REP:RSRV@@$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ flux,rss.htm ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:RSS:IDT$$
+		$$A:TITLE=Rss newsfeed @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=Subscribes to our Rss newsfeed @@REP:RSRV@@ $$
+		
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ index.htm ======ANGLAIS=========================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:INDEX:IDT$$
+	$$A:TITLE=Real Estate, Sale, Rental, villa, apartments, Luxury properties @@NOM_AGENCE ucase@@ - Real Estate Agency @@REP:RSRV@@$$
+	$$A:DESCRIPTION=@@REP:RSRV@@ sales all type of property  apartement, house, villa, luxury properties - @@REP:RSRV@@$$
+	$$A:KEYWORDS=Real Estate, real estate agency, luxury properties, apartement, house, Farmhouse$$
+$$END$$
+$$END$$
