@@ -1,0 +1,685 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto géoloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affiché sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOSAGENCES$$
+$$INIT:JS_BING=1$$
+$$INIT:CSS_AGENCE=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région$$
+	$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région.$$
+	$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$REM$$<!-- ====================== TEST INCLUDE ====================== -->$$END:REM$$
+$$REM$$<!--#include virtual="agences/incl_txt_perso.htm" -->$$END$$
+
+<div id="AgImmo_Ctn">
+	<h3> Agences / Bureaux à votre service</h3>
+	
+	$$IF:OPTION_GEOLOC$$
+	<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+	$$END:OPTION_GEOLOC$$
+
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesHaut">
+		
+		$$IF+:5:COMPTE_AGENCES:NBR$$
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+			<script type="text/javascript">
+				<!--	
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+				//-->	
+			</script>
+		
+			<a name="tri"></a>
+			
+			<form id="Tri" action="/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">
+					$$LG:TRIERPAR pcase$$ :		
+					<select name="triAnn" id="TriAnn" class="miniForm" onchange="Trier(this.id);">
+						<option $$IF=:nom:FORM:TRI$$selected="selected"$$END$$ $$IF0:FORM:TRI$$selected="selected"$$END$$ value="nom"> $$LG:NOM pcase$$</option>
+						<option $$IF=:cp:FORM:TRI$$selected="selected"$$END$$ value="cp"> $$LG:CODEP pcase$$</option>
+						<option $$IF=:ville:FORM:TRI$$selected="selected"$$END$$ value="ville"> $$LG:VILLE pcase$$</option>
+						$$IF+:10:COMPTE_AGENCES:NBR$$
+						<option $$IF=:dep:FORM:TRI$$selected="selected"$$END$$ value="dep"> $$LG:DEPART pcase$$</option>
+						$$END:COMPTE_AGENCES:NBR$$				
+					</select>
+				</div>
+			</form><!-- #Tri -->
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+		
+		
+		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesHaut -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+$$END:COMPTE_AGENCES:NBR$$
+		
+	$$DO:1:10$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$LOOP$$
+	$$BFIN$$
+	
+  
+  
+  
+  
+  <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">
+						<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_cannes.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; ">
+						</div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				14 bis rue du Maréchal Joffre
+			</p>
+			<p id="infosAg_ville">06400 CANNES</p>
+			<p id="infosAg_telfax">
+				Tél : 04 93 38 00 33
+				<br />
+				Fax : 04 93 38 05 20
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=lodelcannes@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>			
+		</div>		
+	<div class="clear"></div>	
+</div>
+
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_frejus.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; ">
+						</div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				368 rue Roland Garros
+			</p>
+			<p id="infosAg_ville">83600 Fréjus</p>
+			<p id="infosAg_telfax">
+				Tél : 04 94 95 37 55
+				<br />
+				Fax : 04 94 95 37 84
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=lodelvar@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>			
+		</div>		
+	<div class="clear"></div>	
+</div>
+
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">
+		
+		<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_antibes.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; ">
+						</div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				10 av du Grand Cavalier 
+			</p>
+			<p id="infosAg_ville">06600 ANTIBES</p>		
+			<p id="infosAg_telfax">
+				Tél : 04 92 38 32 24
+				<br />
+				Fax : 04 93 61 92 01
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.antibes@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>			
+		</div>		
+	<div class="clear"></div>	
+</div>
+
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_beausoleil.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				Le Forum 2ème étage<br />33 bd Du Général Leclerc
+			</p>
+			<p id="infosAg_ville">06240 BEAUSOLEIL</p>		
+			<p id="infosAg_telfax">
+				Tél : 09 52 31 39 05
+				<br />
+				Fax : 09 57 31 39 05
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.menton@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>			
+		</div>		
+	<div class="clear"></div>	
+</div>
+
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_toulon.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				9A bd de Strasbourg 
+			</p>
+			<p id="infosAg_ville">83000 TOULON</p>		
+			<p id="infosAg_telfax">
+				Tél : 04 22 14 09 08
+				<br />
+				Fax : 08 97 50 59 89
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=lodelvar@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>			
+		</div>		
+	<div class="clear"></div>	
+</div>  
+
+
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_lyon.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				18, Rue des Remparts d'Ainay
+			</p>
+			<p id="infosAg_ville">69002 LYON</p>		
+			<p id="infosAg_telfax">
+				Tél : 04 82 53 52 42 
+				<br />
+				Fax : 08 97 50 16 69
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.lyon@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>	
+				
+		</div>		
+	
+				
+      	<div class="clear"></div>	
+      	</div>
+  
+  
+    <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_marseille.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				10, rue de la République
+			</p>
+			<p id="infosAg_ville">13001 MARSEILLE</p>		
+			<p id="infosAg_telfax">
+				Tél : 04 84 25 54 11  
+				<br />
+				Fax : 09 72 46 51 90
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.marseille@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>	
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+      	
+      	
+      	 <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/agc_toulouse.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL</h2>
+			<p id="infosAg_adresse">
+				1 esplanade Compans Caffarelli 
+			</p>
+			<p id="infosAg_ville">31000 TOULOUSE</p>		
+			<p id="infosAg_telfax">
+				Tél : 05 82 95 48 89   
+				<br />
+				Fax : 08 26 99 31 81 
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.toulouse@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.viagerlodel.com" title="Immobilier Nice" onclick="this.target='_blank'">http://www.viagerlodel.com</a>
+			</p>	
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+        
+  
+  	  <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/le-monde-du-viager.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">LE MONDE DU VIAGER </h2>
+			<p id="infosAg_adresse">
+				34 Av des Champs Elysées 
+			</p>
+			<p id="infosAg_ville">75008 PARIS </p>		
+			<p id="infosAg_telfax">
+				Tél : 01 85 08 94 79    
+				<br />
+				Fax : 08 97 50 27 59 
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=viager.lodel@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.lemondeduviager.com" title="Le monde du viager" onclick="this.target='_blank'">http://www.lemondeduviager.com</a>
+			</p>	
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+        
+  
+   <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/etude_parisienne.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE PARISIENNE DU VIAGER  </h2>
+			<p id="infosAg_adresse">
+				14 rue de la Bruyère  
+			</p>
+			<p id="infosAg_ville">75009 PARIS </p>		
+			<p id="infosAg_telfax">
+				Tél : 06 68 29 64 09    
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=contact@etude-viager.fr$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+			<p id="infosAg_url">
+				Site : <a href="http://www.etude-viager.fr" title="Etude Parisienne du Viager" onclick="this.target='_blank'">http://www.etude-viager.fr</a>
+			</p>	
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+  
+     <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/valence.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">AGENCE DE VALENCE </h2>
+			<p id="infosAg_adresse">
+				33 rue Frédéric Chopin  
+			</p>
+			<p id="infosAg_ville">26 000 VALENCE </p>		
+			<p id="infosAg_telfax">
+				Tél : 04 81 16 03 38<br/>
+				Fax : 09 72 25 04 26
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.valence@gmail.com$$ $$MAIL1 encodemail javascript full$$
+			</p>
+			 
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+  
+  
+   
+     <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/aix.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">AGENCE D'AIX EN PROVENCE </h2>
+			<p id="infosAg_adresse">
+				20 bd du roy René 
+ 
+			</p>
+			<p id="infosAg_ville">13100 AIX en PROVENCE </p>		
+			<p id="infosAg_telfax">
+				Tél : 04 84 49 07 00 <br/>
+				Fax : 09 72 25 08 34 
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.aixenprovence@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+			</p>
+			 
+				
+		</div>		
+				
+	      	<div class="clear"></div>
+  
+  	</div>
+     <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/nimes.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">AGENCE DE NIMES / SERV'IMMO </h2>
+
+			<p id="infosAg_adresse">
+				390 rue de Legrin 
+  			</p>
+			<p id="infosAg_ville">30 132 CAISSARGUES </p>		
+			<p id="infosAg_telfax">
+				Tél : 04 48 06 02 90 
+<br/>
+				Fax : 09 72 25 08 35
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.nimes@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+
+			</p>
+			 
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+      <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/lemans.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">AGENCE DU MANS / SGSI  </h2>
+
+
+			<p id="infosAg_adresse">
+				43 av Cordelet 
+  			</p>
+			<p id="infosAg_ville">72 000 LE MANS  </p>	
+	
+			<p id="infosAg_telfax">
+				Tél : 02 52 36 02 20 
+
+<br/>
+				Fax : 09 72 25 10 22
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.lemans@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+
+
+			</p>
+			 
+				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+    
+      <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/facade_lille.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL LILLE </h2>
+
+			<p id="infosAg_adresse">
+				229 rue Solférino
+  			</p>
+			<p id="infosAg_ville">59 000 LILLE </p>	
+
+	
+			<p id="infosAg_telfax">
+				Tél : 03 66 72 58 16
+
+<br/>
+				Fax : 09 72 25 16 71
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.lille@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+			</p>
+			 				
+		</div>		
+					      	<div class="clear"></div>	
+      	</div>
+  
+  
+  	<div class="clear"></div>	
+      	</div>
+  
+    
+      <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/Montpellier.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL MONTPELLIER </h2>
+
+
+			<p id="infosAg_adresse">
+				494 rue Léon Blum
+  			</p>
+			<p id="infosAg_ville">34 000 MONTPELLIER </p>	
+	
+			<p id="infosAg_telfax">
+				Tél : 04 11 93 26 77 
+<br/>
+				Fax : 09 72 25 20 33 
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.montpellier@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+			</p>
+			 				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+    <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/Clermont-ferrand.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL AUVERGNE  </h2>
+
+			<p id="infosAg_adresse">
+				15-17 rue du Pré la Reine
+
+  			</p>
+			<p id="infosAg_ville">63 100 CLERMONT FERRAND  </p>	
+
+				<p id="infosAg_telfax">
+				Tél : 04 44 05 25 79
+<br/>
+				Fax : 09 72 25 21 63
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.auvergne@gmail.com$$ $$MAIL1 encodemail javascript full$$
+
+			</p>
+			 				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+    <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/Bordeaux_lodel.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL BORDEAUX   </h2>
+
+			<p id="infosAg_adresse">
+				335 rue Georges BONNAC
+
+  			</p>
+			<p id="infosAg_ville">33 000 BORDEAUX   </p>
+	
+
+				<p id="infosAg_telfax">
+				Tél : 05 35 54 56 86
+<br/>
+				Fax : 08 97 10 76 41
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.gironde@gmail.com $$ $$MAIL1 encodemail javascript full$$
+
+
+			</p>
+			 				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+  
+    <div class="cadreAgence">
+		<div class="photoAg" style="position:relative;">		
+			<div style="background:url('/z/webagency/A_Nexi/lodel_32596/images/agences/Rennes_lodel.jpg') 50% 50% no-repeat;position:absolute;top:0;left:0;width:100%;height:100%; "></div>
+		</div>
+		<div class="infosAg">
+			<h2 id="infosAg_nom">ETUDE LODEL BRETAGNE </h2>
+
+			<p id="infosAg_adresse">
+				90 bis rue de Fougères 
+
+  			</p>
+			<p id="infosAg_ville">35 700 RENNES    </p>
+	
+
+				<p id="infosAg_telfax">
+				Tél : 02 30 96 40 80 
+<br/>
+				Fax : 08 90 20 98 98 
+
+				<br />
+				
+			</p>
+			<p id="infosAg_mail">
+				Email : $$A:MAIL1=etudelodel.bretagne@gmail.com  $$ $$MAIL1 encodemail javascript full$$
+
+
+			</p>
+			 				
+		</div>		
+				
+	      	<div class="clear"></div>	
+      	</div>
+  
+  
+  
+  
+  
+	$$IF:LISTEAG:NBRPAGES$$
+	
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
+
