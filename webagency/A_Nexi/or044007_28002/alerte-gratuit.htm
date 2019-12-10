@@ -1,0 +1,82 @@
+<!--#include virtual="incl_doctype_strict.htm"-->
+<head> 
+<!--#include virtual="incl_ref.htm" -->
+<!--#include virtual="incl_titre.htm" -->
+<!--#include virtual="scripts/incl_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+</head>
+<body class="popup">
+	<div><h2>$$LG:ALERTEGRATUITE pcase$$</h2></div>
+		<div id="AlerteEmailCtn">
+			<h3>$$IF=:FR:LANGUE$$Recevez les annonces correspondant à vos critères$$END$$$$IF!:FR:LANGUE$$$$LG:RECEVEZ pcase$$$$END$$ : <span>$$IMMOBW:ANN:QRY:PHRASESTRI lcase$$</span></h3>
+			<form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email$$" method="post" id="creerAlerte">
+				<input type="hidden" name="qry" value="$$REP:QRY$$" />
+				<input type="hidden" name="phrase" value="$$IMMOBW:ANN:QRY:PHRASE$$" />
+				<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+				<input type="hidden" name="page_base" value="http://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry alierr$$" />	
+				<input type="hidden" name="page_err" value="alerte,redirect.htm" />	
+				<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+				<input type="hidden" name="srv" value="$$SRV$$" />
+				<input type="hidden" name="lang" value="$$LANGUE$$" />
+				$$IF0:ERRE$$
+					<!-- envoi du mail de confirmation -->		
+					<input type="hidden" name="email_info" value="/alerte,inscription.htm" />					
+				$$END$$
+								
+				<div id="AlerteForm">
+					$$IF:FORM:ALIERR$$<h2 class="erre">$$FORM:ALIERR$$</h2>$$END$$				
+					<p id="Format">						
+						<strong>$$LG:FORMATRECEPTION pcase$$ :</strong> <br /> 
+						<label class="formatHTML"><input type="radio" name="si_txt" value="0" checked="checked" /> $$LG:AI9$$ $$IF=:FR:LANGUE$$(couleurs et photos, recommandé)$$END:LANGUE$$$$IF!:FR:LANGUE$$(colors and pictures, recommended)$$END:LANGUE$$</label>
+						<br /> 
+						<label class="formatTXT"><input type="radio" name="si_txt" value="1" /> $$LG:AI10$$</label>	
+					</p>
+					<p id="Frequence">		
+						<strong>$$IF=:FR:LANGUE$$Envoi des annonces :$$END$$
+					$$IF!:FR:LANGUE$$Reception Frequency:$$END$$ </strong><br />
+						<label><input type="radio" name="idFrequenceAlerte" value="1" checked="checked" /> $$LG:AI19 lcase$$</label>
+						<br /> 
+						<label><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI18 lcase$$</label>					
+					</p>
+					$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<p style="font-weight:bold;">
+						<label>$$IF=:FR:LANGUE$$J'accepte de recevoir des informations de la part de $$REP:RSRV$$$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>	
+					</p>
+					$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+						$$BIF:MENTIONS$$	
+							$$DO$$
+									<p>
+										Les informations communiquées sont destinées à 
+										$$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ 
+										Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression 
+										de vos données personnelles (Loi du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés). 
+										Pour les exercer, adressez-vous à : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ - 
+										$$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$
+									</p>
+							$$LOOP$$
+						$$BFIN:MENTION$$				
+					$$END:OPTIN_CONTRAT$$
+					<p>
+						$$REM$$<!-- 01.12.2009 [Lisbonne]
+												> chgt mention "Votre prénom" à la place de "Nom" 
+												> un client s'est plaint du message de l'alerte mail qui commence par "Bonjour XYZ"
+												> et ce n'est pas très poli quand on met son nom (alala)
+						-->$$END:REM$$
+						<hr style="border:1px solid #ccc; margin-bottom:5px; "/> 
+						<h3>$$IF=:FR:LANGUE$$Saisissez vos coordonnées$$END$$$$IF!:FR:LANGUE$$$$LG:COORD3 pcase$$$$END$$</h3>
+						<strong>$$LG:VOTREPRENOM pcase$$</strong> <input type="text" class="alerte" name="nom" maxlength="50" value="$$IF:FORM:NOM$$$$FORM:NOM$$$$END$$" />
+				  	<strong>$$LG:AI6 pcase$$</strong> <input type="text" class="alerte" name="email" maxlength="50" value="$$IF:FORM:EMAIL$$$$FORM:EMAIL$$$$END$$" />
+				 	 <br /> <br /> 
+				 	 <input type="submit" class="alerteBt" value="$$LG:CREERALERTEMAIL pcase$$" onsubmit="location.href='/alerte,validation_ok.htm'" />
+					</p>
+				</div>
+			</form>
+			<p class="note">
+				$$LG:AI12$$
+			</p>
+		</div>
+		<!-- fin #AlerteEmailCtn -->
+		<div id="AlerteEmailEnd"><!-- --></div>
+	
+</body>
+</html>

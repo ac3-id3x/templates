@@ -1,0 +1,143 @@
+<div id="TitreContact">
+	<h5>
+	$$IF=:FR:LANGUE$$
+		$$LG:CONTACTERAGENCE pcase$$
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		Contact
+	$$END$$
+	</h5>
+</div>		
+
+<table class="coords_agence">				
+	<tr>
+		<td class="agence">
+			$$IF=:FR:LANGUE$$
+				$$LG:AGENCE pcase$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				Office
+			$$END$$
+		</td>
+	</tr>
+	<tr>
+		<td class="coords_agence_col1">						
+			$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+			<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->
+		
+			<!--#include virtual="detail/incl_agence_tel.htm" -->
+			<!--#include virtual="detail/incl_agence_fax.htm" -->							
+			<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+			<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+			<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+			
+			<!--#include virtual="detail/incl_agence_url.htm" -->
+		</td><!-- fin .coords_agence_col1 -->
+	</tr>
+	
+	$$IF:IMMOBW:ANNONCE:IDTYPECTC1$$
+	<!--// contact 1 programme neuf (en general promoteur) //-->
+	<tr>
+		<td class="ctc_neuf" colspan="2">
+			<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+		</td>
+	</tr>
+	$$END:IDTYPECTC1$$
+	
+	$$IF:IMMOBW:ANNONCE:IDTYPECTC2$$
+	<!--// contact 2 programme neuf (en general commercialisateur) //-->
+	<tr>
+		<td class="ctc_neuf" colspan="2">
+			<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+		</td>
+	</tr>
+	$$END:IDTYPECTC1$$
+	
+	$$IF:IMMOBW:ANNONCE:ADRBUREAU$$
+	<!--// bureau de vente programme neuf //-->
+	<tr>
+		<td class="ctc_neuf" colspan="2">
+			<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+		</td>
+	</tr>
+	$$END:ADRBUREAU$$
+	
+	<!--#include virtual="detail/incl_texte_agence.htm" -->
+	
+</table>	
+
+
+
+<a name="form_contact"></a>
+$$IF=:1:FORM:OK$$
+<script>
+	close();
+</script>
+$$END$$
+<form method="post" action="">
+	<div id="Form_Ctn">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+		
+		<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+		<input type="hidden" name="page_ok" value="/$$REP:URI$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur(s) renvoyee(s) sur page courante //-->$$END$$
+		<input type="hidden" name="PathTemplateMail" value="/mailing,detail_formulaire_envoye.htm" />$$REM$$<!--// [INPUT FACULTATIVE] chemin template mail reçu par client > demutualisable //-->$$END$$
+		<input type="hidden" name="IDPUBLICATION" value="$$REP:2$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+		<input type="hidden" name="idannonce" value="$$REP:1$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+	
+		<table id="FormContact" >
+			$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+			<tr>							
+				<td id="Erre" colspan="2">					
+					$$REM$$<!--// message d'erreur  //-->$$END$$
+					$$IMMOBW:AGENCEMAIL:ERRE$$
+				</td>							
+			</tr>
+			$$END$$
+			<tr>
+				<td id="ChampsNom">
+					<p>$$LG:AI5 pcase$$ &sup2; zzz</p>
+					<input type="text" name="cnom" value="$$FORM:CNOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>
+				<td id="ChampsPrenom">
+					<p>$$LG:VOTREPRENOM pcase$$</p>
+					<input type="text" name="cprenom" value="$$FORM:CPRENOM$$" />$$REM$$<!--// [input facultative]  //-->$$END$$
+				</td>		
+			</tr>
+			<tr>						
+				<td id="ChampsTelephone">
+					<p>$$LG:VOTRETEL pcase$$</p>
+					<input type="text" name="ctel" value="$$FORM:CTEL$$" />$$REM$$<!--// [input facultative] //-->$$END$$
+				</td>
+				<td id="ChampsEmail">
+					<p>$$LG:AI6 pcase$$ &sup2;</p>
+					<input type="text" name="from" value="$$FORM:FROM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>
+			</tr>
+			<tr>						
+				<td id="ChampsMessage" colspan="2">
+					<p>$$LG:MESSAGE pcase$$ &sup2;</p>
+					<textarea name="message" cols="40" rows="5">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>						
+			</tr>
+			<tr>						
+				<td id="ChampsBouton" colspan="2">
+					<!--#include virtual="detail/incl_formulaire_bouton.htm" -->
+				</td>						
+			</tr>					
+		</table>				
+	</div><!-- fin #Form_Ctn -->
+</form>
+
+<!-- // conditions generales d'utilisation  // -->
+<!--#include virtual="/incl_cgu_formulaire.htm" --><br /><br />
+
+<div class="agenceMentions">
+	<a href="#" title="">
+		<em>						
+			<span>
+				<!--#include virtual="detail/incl_mentions_legales.htm" -->
+			</span>
+		</em>					
+		$$LG:LIEN:MENTION pcase$$
+	</a>
+</div>

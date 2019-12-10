@@ -1,0 +1,94 @@
+$$REM$$
+====================================================================
+
+//// <summary>incl_bas des pages de resultats</summary>
+//// <remarks>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_haut_annonces.htm</para>
+//// <para>Si le site a un contrat de réf en cours, include liste de villes ayant au moins une annonce</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+
+====================================================================
+$$END$$
+
+	
+		$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+		$$BIF:CHECKBASKET$$
+		<script type="text/javascript">
+			<!--			
+			// actualise le nb annonce du panier
+			nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+					
+			//  actualise le nb annonce page selection
+			nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		
+			$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// cache annonce du panier
+			$$LOOP$$
+			//-->
+		</script>
+		$$BFIN$$
+		
+		<div class="clear"><!-- --></div>
+
+	</div>
+	<!-- fin RechResultat -->
+	
+<!--// =========================== //bas recherche // =========================== //-->
+	
+	$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<div id="RechPagesBas">
+		<!--#include virtual="/recherche/incl_nb_pages.htm" -->
+	</div>
+	<!-- fin #RechPagesBas -->	
+	$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+
+$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+	<a name="creerAlerteEmail"></a>	
+	<div id="AlerteEmail">
+	
+		<h4>$$LG:ALERTEGRATUITE pcase$$</h4>
+		<h3>$$IF=:FR:LANGUE$$Recevez les annonces correspondant à vos critères$$END$$$$IF!:FR:LANGUE$$$$LG:RECEVEZ pcase$$$$END$$ : <span>$$IMMOBW:ANN:QRY:PHRASESTRI lcase$$</span></h3>
+		
+		
+		<div class="bt-alerte">
+			<a href="javascript:pop('alerte-gratuit.htm?$$REP:QRY$$',500,400);">$$LG:ALERTEGRATUITE ucase$$</a>
+		</div>
+		
+		
+		<p class="note">
+			$$LG:AI12$$
+		</p>
+	</div><!-- #AlerteEmail -->
+$$END:IMMOBW:ANN:QRY:SIPANIER$$
+
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+<!--#include virtual="referencement/incl_liste_villes_recherche.gen.htm" -->	
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+	<div class="dicoImmo">
+		$$IF:IMMOBW:ANN:QRY:NBR$$
+		$$IF=:2$6$8$10:FORM:IDTT$$<p>FAI : $$LG:FAI lcase$$$$IF=:FR:LANGUE$$, prix net, hors frais notariés, d'enregistrement et de publicité foncière$$END:FR:LANGUE$$</p>$$END$$
+		$$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$
+		$$END:IMMOBW:ANN:QRY:NBR$$
+		<p>$$LG:LOI78AGENCE$$ <a href="$$URLBASE$$/legal,mentions.htm?lang=$$LANGUE$$" title="">$$LG:ADR2EDITEUR$$</a>.</p>
+	</div>	
+$$END:IMMOBW:ANN:QRY:SIPANIER$$
+
+	$$IF:IMMOBW:ANN:QRY:NBR$$
+	<div class="RetourHaut">
+		<a href="#" title="">$$LG:TOP pcase$$</a>
+	</div>
+	$$END$$
+	
+</div>
+<!-- fin #RechercheContainer -->
+
+</div>
+<!-- fin #RechercheWrap -->
+
+$$INCL:BAS.HTM$$

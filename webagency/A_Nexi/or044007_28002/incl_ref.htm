@@ -1,0 +1,225 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+//// <update date="2010-11-12" author="muriel.garilhe">MISE EN PLACE DES OPTIS DE REF DEMANDEES PAR LE CLIENT PAR MAIL == PAS D'OPTION DE REF SELOGER</update>
+====================================================================
+$$END$$
+
+
+$$REM$$<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+$$REM$$<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  $$END:REM$$
+$$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+$$REM$$<!-- Définition du NOM de l'agence à afficher sur le site -->$$END:REM$$
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+$$REM$$<!-- Définition de l'adresse à afficher sur le site  -->$$END:REM$$
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+$$REM$$<!-- Définition de la ville à afficher sur le site  -->$$END:REM$$
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+$$REM$$<!-- Définition du CP à afficher sur le site  -->$$END:REM$$
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+$$REM$$<!-- Définition du DEPARTEMENT à afficher sur le site  -->$$END:REM$$
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:CP cp2dep@@$$
+$$REM$$<!-- Définition du tel à afficher sur le site  -->$$END:REM$$
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+$$REM$$<!-- Définition du fax à afficher sur le site  -->$$END:REM$$
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+
+
+
+$$REM$$<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> $$END:REM$$
+
+$$REM$$<!--  OPTIS onglet Accueil -->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier &agrave; Capbreton, Hossegor, Labenne &amp; Tarnos | Agences Orpi Mon&eacute;$$
+$$A:PAGE:DESCREF=Orpi Mon&eacute; c'est 3 agences immobilières spécialistes de l'immobilier dans le Sud des Landes. Contactez nous pour acheter / vendre une maison, un appartement ou un terrain sur Capbreton, Hossegor, Seignosse, Labenne & Tarnos.$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=L’immobilier sur Capbreton, Hossegor, Labenne et Tarnos$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet Nos agences -->$$END:REM$$
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobili&egrave;re &agrave; Capbreton, Labenne & Tarnos (Côte Sud Landes)$$
+$$A:PAGE:DESCREF=Orpi Moné vous accueille dans ses trois agences immobilières sur la côte Sud des Landes: à Capbreton, Labenne & Tarnos. Découvrez vos futurs interlocuteurs!$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=3 agences immobilières à Capbreton, Labenne & Tarnos$$
+$$END$$
+
+
+$$REM$$<!--  OPTIS agence CAPBRETON -->$$END:REM$$
+	$$IF=:198310:FORM:IDP$$
+	$$A:PAGE:TITR=Agence immo à Capbreton (proche Hossegor, Seignosse) | Orpi Moné$$
+	$$A:PAGE:DESCREF=L'agence Orpi Moné à Capbreton est spécialiste de la transaction immobilière dans la zone de Seignosse à Angresse en passant par Hossegor. Contactez-nous pour acheter ou vendre votre maison / appartement / terrain !$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Agence immobilière à Capbreton$$
+	$$END$$
+$$REM$$<!--  OPTIS agence LABENNE -->$$END:REM$$
+	$$IF=:411511:FORM:IDP$$
+	$$A:PAGE:TITR=Agence immo &agrave; Labenne (proche Orx, Bénesse-Maremne) | Orpi Mon&eacute;$$
+	$$A:PAGE:DESCREF=L'agence Orpi Mon&eacute; &agrave; Labenne est sp&eacute;cialiste de la transaction immobili&egrave;re dans la zone de Labenne &agrave; B&eacute;nesse Maremne en passant par Orx. Contactez-nous pour acheter ou vendre votre maison / appartement / terrain !$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Agence immobilière à Labenne$$
+	$$END$$
+$$REM$$<!--  OPTIS agence TARNOS -->$$END:REM$$
+	$$IF=:411517:FORM:IDP$$
+	$$A:PAGE:TITR=Agence immo à Tarnos (proche Ondres Boucau) | Orpi Moné$$
+	$$A:PAGE:DESCREF=L'agence Orpi Moné à Tarnos est spécialiste de la transaction immobilière dans la zone extrême sud des Landes proche de Boucau et Ondres. Contactez-nous pour acheter ou vendre votre maison / appartement / terrain ! $$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Agence immobili&egrave;re &agrave; Tarnos$$
+	$$END$$
+
+
+$$REM$$<!--  OPTIS onglet Recherche détaillée -->$$END:REM$$
+$$IF=:MOTEUR,CLASSIC.HTM:REP:0$$
+	$$IF=:2:FORM:IDTT$$
+	$$A:PAGE:TITR=Recherche d'un bien immobilier sur Capbreton, Hossegor, Labenne & Tarnos$$
+	$$A:PAGE:DESCREF=Utilisez ce formulaire d&eacute;taill&eacute; pour trouver le bien immobilier r&eacute;pondant &agrave; tous vos besoin sur Capbreton, Hossegor, Labenne ou Tarnos!$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Recherche d'un bien immobilier$$
+	$$END$$
+	$$IF=:8:FORM:IDTT$$
+	$$A:PAGE:TITR=Maison de charme / prestige à Capbreton, Hossegor, Labenne & Tarnos$$
+	$$A:PAGE:DESCREF=Découvrez nos maisons de charme sur Capbreton, Hossegor, Labenne & Tarnos. Les agences Orpi Moné vous font découvrir l'immobilier de prestige en Sud Landes$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Maisons de charme / prestige à Capbreton, Hossegor, Labenne & Tarnos$$
+	$$END$$
+$$END$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$IF:IMMOBW:ANN:QRY:NBR$$
+	$$A:PAGE:TITR=
+		@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@
+		@@1_IMMOBW:ANN:QRY:NB_PIECES@@ @@LG:PIECES2@@
+		à @@1_IMMOBW:ANN:QRY:VILLE@@
+	$$
+	$$A:PAGE:DESCREF=@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ à @@1_IMMOBW:ANN:QRY:VILLE@@ disponible à la vente. Toutes les affaires du Sud des Landes sont chez Orpi Moné. Contactez nous pour une visite!$$
+	$$A:UPLINE=
+	  @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@
+		@@1_IMMOBW:ANN:QRY:NB_PIECES@@ @@LG:PIECES2@@
+		à @@1_IMMOBW:ANN:QRY:VILLE@@
+	$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet Commerces et entreprises -->$$END:REM$$
+$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+	$$IF=:10:FORM:IDTT$$
+	$$A:PAGE:TITR=Local commercial et bureaux à Hossegor, Capbreton, Labenne | Orpi Moné$$
+	$$A:PAGE:DESCREF=Découvrez nos offres de vente et location pour un local commercial ou des bureaux sur les villes d'Hossegor, Capbreton, Labenne et Tarnos. Tout l'immobilier d'entreprise c'est avec Orpi Moné$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Local commercial / Bureaux$$
+	$$END$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet Vendre / Mettre en vente -->$$END:REM$$
+$$IF=:VENDEUR.HTM:REP:0$$
+	$$A:PAGE:TITR=Vendre sa maison, appartement ou terrain à Capbreton, Hossegor, Labenne & Tarnos$$
+	$$A:PAGE:DESCREF=Orpi Moné vous propose la diffusion la plus large de votre annonce immobilière pour vendre votre maison, appartement ou terrain à Capbreton, Hossegor, Labenne & Tarnos (Côte Sud des Landes)$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Vendre sa maison, appartement ou terrain$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet Louer / Louer à l'année -->$$END:REM$$
+$$IF=:LOCATION-MAISON-APPARTEMENT.HTM:REP:0$$
+	$$A:PAGE:TITR=Location maison & appartement à Capbreton, Hossegor, Labenne & Tarnos$$
+	$$A:PAGE:DESCREF=Découvrez les offres des agences Orpi Moné pour la location d'une maison ou d'un appartement à Capbreton, Hossegor, Labenne & Tarnos$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Location de maison ou appartement$$
+$$END$$
+
+
+
+
+
+$$REM$$<!--  OPTIS onglet Nos atouts / La côte sud des landes -->$$END:REM$$
+$$IF=:IMMOBILIER-SUD-LANDES.HTM:REP:0$$
+	$$A:PAGE:TITR=Immobilier C&ocirc;te Sud Landes - achat / vente de maison, appartement, terrain$$
+	$$A:PAGE:DESCREF=Les agences Orpi Mon&eacute; sont situ&eacute;s sur la c&ocirc;te Sud des Landes$$
+	$$A:PAGE:KEYWORDS=$$
+	$$A:UPLINE=Immobilier C&ocirc;te Sud Landes - achat / vente de maison, appartement, terrain$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet DIAGNOSTIC -->$$END:REM$$
+$$IF=:VACANCES:PAGE:IDT$$
+$$A:PAGE:TITR=Location de maison &amp; appartement de vacances &agrave; Capbreton et Seignosse$$
+$$A:PAGE:DESCREF=Les Agences Orpi Moné vous proposent 2 maisons et un appartement pour vos vacances sur Capbreton et Seignosse (côte sud des Landes) disponible à la location.$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Location de vacances sur Capbreton$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet AGENCE VS PARTICULIER -->$$END:REM$$
+$$IF=:AGENCE-PARTICULIER:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier particulier vs en agence sur Capbreton, Labenne et Tarnos$$
+$$A:PAGE:DESCREF=D&eacute;couvrez pourquoi il est plus judicieux de passer avec une agence, plut&ocirc;t que directement avec un particulier pour vendre votre bien immobilier sur Capbreton, Labenne &amp; Tarnos$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Immobilier particulier vs en agence sur Capbreton, Labenne et Tarnos$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet DIAGNOSTIC -->$$END:REM$$
+$$IF=:DIAGNOSTIC:PAGE:IDT$$
+$$A:PAGE:TITR=Diagnostic Immobilier sur Capbreton, Hossegor, Labenne & Tarnos$$
+$$A:PAGE:DESCREF=Orpi Mon&eacute; vous pr&eacute;sente les entreprises proposant du diagnostic immobilier sur Capbreton, Hossegor, Labenne et Tarnos.$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Diagnostic Immobilier sur Capbreton, Hossegor, Labenne & Tarnos$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet AUTRE SERVICES -->$$END:REM$$
+$$IF=:AUTRES-SERVICES:PAGE:IDT$$
+$$A:PAGE:TITR=Plombier, &eacute;lectricien, d&eacute;m&eacute;nageur… sur Capbreton, Hossegor, Labenne, Tarnos$$
+$$A:PAGE:DESCREF=D&eacute;couvrez nos partenaires pour entretenir votre bien immobilier. Vous cherchez un plombier, un &eacute;lectricien, un d&eacute;m&eacute;nageur sur Capbreton, Hossegor, Labenne et Tarnos? Trouvez sur Orpi Mon&eacute;!$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Autres services pour votre bien immobilier$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet PRET IMMOBILIER -->$$END:REM$$
+$$IF=:PRET-IMMOBILIER:PAGE:IDT$$
+$$A:PAGE:TITR=Cr&eacute;dit / emprunt / pr&ecirc;t Immobilier sur Capbreton, Hossegor, Labenne & Tarnos$$
+$$A:PAGE:DESCREF=Orpi Mon&eacute; vous pr&eacute;sente les entreprises proposant du pr&ecirc;t immobilier sur Capbreton, Hossegor, Labenne et Tarnos.$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Pr&ecirc;t Immobilier sur Capbreton, Hossegor, Labenne & Tarnos$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet MANDAT -->$$END:REM$$
+$$IF=:MANDAT:PAGE:IDT$$
+$$A:PAGE:TITR=Mandats immobiliers Orpi - pourquoi choisir le mandat r&eacute;ussit?$$
+$$A:PAGE:DESCREF=Lors de la vente de votre bien immobilier, vous avez trois options de mandats. Le mandat r&eacute;ussite Orpi vous assure la diffusion maximale de votre bien!$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Mandats immobiliers Orpi$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet FNAIM -->$$END:REM$$
+$$IF=:FNAIM:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobili&egrave;re FNAIM sur Capbreton, Hossegor, Labenne et Tarnos$$
+$$A:PAGE:DESCREF=Les agences immobili&egrave;res Orpi Mon&eacute; adh&egrave;rent &agrave; la FNAIM pour vous apporter toutes les garanties &agrave; votre achat / vente sur Capbreton, Hossegor, Labenne et Tarnos$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Agences immobili&egrave;re FNAIM sur Capbreton, Labenne et Tarnos$$
+$$END$$
+
+$$REM$$<!--  OPTIS onglet AMEPI -->$$END:REM$$
+$$IF=:AMEPI:PAGE:IDT$$
+$$A:PAGE:TITR=Agences immobili&egrave;re AMEPI des Landes (40)$$
+$$A:PAGE:DESCREF=Les agences immobili&egrave;res Orpi Mon&eacute; adh&egrave;rent &agrave; l'AMEPI pour garantir la diffusion maximale de votre bien immobilier dans les Landes (40)$$
+$$A:PAGE:KEYWORDS=$$
+$$A:UPLINE=Agences immobili&egrave;res AMEPI des Landes (40)$$
+$$END$$
+
+
+$$IF=:DETAIL,CORNER.HTM:REP:0$$
+$$A:PAGE:TITR=@@IMMOBW:ANNONCE:LIBELLE@@ @@IMMOBW:ANNONCE:NB_PIECES@@ pièces à vendre à @@IMMOBW:ANNONCE:VILLE@@$$
+$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:LIBELLE@@ @@IMMOBW:ANNONCE:NB_PIECES@@ pièces à vendre à @@IMMOBW:ANNONCE:VILLE@@ à vendre avec Orpi Moné. Contactez nous pour une visite!$$
+$$END$$
