@@ -1,0 +1,3824 @@
+$$INIT:IDT=INDEX$$
+	$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+
+	$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+	$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+
+	$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+
+	$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+
+	$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:1:~langue:QRY:LANG:ALIAS:MINIIDVPA1$$
+	$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:2:~langue:QRY:LANG:ALIAS:MINIIDVPA2$$
+	$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:3:~langue:QRY:LANG:ALIAS:MINIIDVPA3$$
+
+$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESHOME:VAL:IDTTMODULE:VAL:LANG:::VAL:QUERYMODULE:~nostat:1:~limit:VAL:NBMODULEANNONCES$$$$E:IMMOBW:CARTO-ANNONCES-INIT:ALIAS:CARTO$$$$DYN:ID3:NODEBUGPOPUP$$
+$$DYN:ID3:NOCYBERMONITOR$$
+
+$$A:LANGUE=@@PAGE:CFG_LANGUAGE@@$$
+
+$$IF:PAGE:URL_SITE_FR$$
+	$$A:SITEFR=@@PAGE:URL_SITE_FR@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_EN$$
+	$$A:SITEEN=@@PAGE:URL_SITE_EN@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_DE$$
+	$$A:SITEDE=@@PAGE:URL_SITE_DE@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_ES$$
+	$$A:SITEES=@@PAGE:URL_SITE_ES@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_NL$$
+	$$A:SITENL=@@PAGE:URL_SITE_NL@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_IT$$
+	$$A:SITEIT=@@PAGE:URL_SITE_IT@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_PT$$
+	$$A:SITEPT=@@PAGE:URL_SITE_PT@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_CN$$
+	$$A:SITECN=@@PAGE:URL_SITE_CN@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_RU$$
+	$$A:SITERU=@@PAGE:URL_SITE_RU@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_AUTRE$$
+	$$A:SITEAUTRE=@@PAGE:URL_SITE_AUTRE@@$$
+$$END$$
+
+
+$$A:SITEINDEXATION=@@PAGE:NOINDEX_META@@$$$$INIT:ORDERAGENCY=$$$$A:MULTIAGENCES=0$$$$B:IMMOBW:AGENCES:ALIAS:COMPTE_AGENCES:VAL:ORDERAGENCY:::::ALL$$$$BIF:COMPTE_AGENCES$$$$DO$$$$IF+:2:COMPTE_AGENCES:NBR$$$$A:MULTIAGENCES=1$$$$END$$$$LOOP$$$$BFIN$$
+
+$$SET:URLBASE=http://@@REP:RSRV@@$$
+$$A:LIENACCUEIL=http://@@REP:RSRV@@/?lang=@@LANGUE@@$$
+
+
+$$IF0:SELECTIONFRAICHEUR$$
+	$$A:SELECTIONFRAICHEUR=-15$$
+$$END$$
+
+
+
+$$BIF:COMPTE_AGENCES$$
+
+
+	$$DO:1:1$$
+		$$A:AGENCE_IDTYPEPUBLICATION=@@COMPTE_AGENCES:IDTYPEPUBLICATION@@$$
+		$$A:AGENCE_NOM=@@COMPTE_AGENCES:NOM@@$$
+		$$A:AGENCE_ADRESSE=@@COMPTE_AGENCES:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 trim@@$$
+		$$A:AGENCE_CP=@@COMPTE_AGENCES:CP@@$$
+		$$A:AGENCE_VILLE=@@COMPTE_AGENCES:VILLE@@$$$$IF=:FR:LANGUE$$
+$$A:AGENCE_TEL=@@COMPTE_AGENCES:TEL formattel@@$$
+$$END$$
+$$IF!:FR:LANGUE$$
+$$A:AGENCE_TEL=+33 (0) @@COMPTE_AGENCES:TEL formattelus right 12@@$$
+$$END$$
+$$A:AGENCE_FAX=@@COMPTE_AGENCES:FAX formattel@@$$$$A:AGENCE_EMAIL=@@COMPTE_AGENCES:EMAIL@@$$
+		$$A:AGENCE_IDPUBLICATION=@@COMPTE_AGENCES:IDPUBLICATION@@$$
+		$$A:AGENCE_ID=@@COMPTE_AGENCES:IDAGENCE@@$$
+		$$A:AGENCE_URL=@@COMPTE_AGENCES:URL@@$$
+		$$A:AGENCE_URLVIRT=@@COMPTE_AGENCES:URLVIRTUELLE@@$$
+		$$A:AGENCE_LAT=@@COMPTE_AGENCES:LATITUDE@@$$
+		$$A:AGENCE_LONG=@@COMPTE_AGENCES:LONGITUDE@@$$
+		$$IF:COMPTE_AGENCES:SIPHOTOAGENCE$$
+			$$A:AGENCE_PHOTO=@@COMPTE_AGENCES:URL_PHOTOAGENCE@@$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+
+$$IF:PAGE:WAG_TYPE_OFFRE$$
+    $$A:TYPE_OFFRE=@@PAGE:WAG_TYPE_OFFRE@@$$
+$$END$$
+
+
+$$A:SOCIAL=0$$
+$$IF:PAGE:URL_FACEBOOK$$
+	$$A:URL_FACEBOOK=@@PAGE:URL_FACEBOOK@@$$
+	$$A:SOCIAL=1$$
+$$END$$
+$$IF:PAGE:URL_TWITTER$$
+	$$A:URL_TWITTER=@@PAGE:URL_TWITTER@@$$
+	$$A:SOCIAL=1$$
+$$END$$
+$$IF:PAGE:URL_GOOGLE_PLUS$$
+	$$A:URL_GOOGLE_PLUS=@@PAGE:URL_GOOGLE_PLUS@@$$
+	$$A:SOCIAL=1$$
+$$END$$
+$$IF:PAGE:URL_PINTEREST$$
+	$$A:URL_PINTEREST=@@PAGE:URL_PINTEREST@@$$
+$$END$$
+$$IF:PAGE:URL_TUMBLR$$
+	$$A:URL_TUMBLR=@@PAGE:URL_TUMBLR@@$$
+$$END$$
+$$IF:PAGE:URL_YOUTUBE$$
+	$$A:URL_YOUTUBE=@@PAGE:URL_YOUTUBE@@$$
+$$END$$
+$$IF:PAGE:URL_DAILYMOTION$$
+	$$A:URL_DAILYMOTION=@@PAGE:URL_DAILYMOTION@@$$
+$$END$$
+$$IF:PAGE:URL_INSTAGRAM$$
+	$$A:URL_INSTAGRAM=@@PAGE:URL_INSTAGRAM@@$$
+$$END$$
+
+$$A:BLOC_PUB=0$$
+
+$$IF:PAGE:URL_BLOG$$
+	$$A:URL_BLOG=@@PAGE:URL_BLOG@@$$
+$$END$$
+
+
+$$IF:PAGE:URL_OPINIONSYSTEM$$
+	$$A:URL_OPINION=http://www.tooteclair.com/company_rating.php?company_id=@@PAGE:COMPANY_ID@@&rating_key=@@PAGE:RATING_KEY@@$$
+$$END$$
+
+
+$$IF:PAGE:WAG_APPANDROIDMOB$$
+	$$A:APP_ANDROID_MOBILE=@@PAGE:WAG_APPANDROIDMOB@@$$
+$$END$$
+$$IF:PAGE:WAG_APPANDROIDTABLETTE$$
+	$$A:APP_ANDROID_TAB=@@PAGE:WAG_APPANDROIDTABLETTE@@$$
+$$END$$
+$$IF:PAGE:WAG_APPIOSMOB$$
+	$$A:APP_IOS_MOBILE=@@PAGE:WAG_APPIOSMOB@@$$
+$$END$$
+$$IF:PAGE:WAG_APPIOSTABLETTE$$
+	$$A:APP_IOS_TAB=@@PAGE:WAG_APPIOSTABLETTE@@$$
+$$END$$
+
+
+$$E:OBSERVATOIRE:SIMELACTIF$$
+$$IF=:1:OBSERVATOIRE:SIMELACTIF:ACTIF$$
+	$$A:ESTIMATIONLEAD=1$$
+$$END$$
+$$IF=:0:OBSERVATOIRE:SIMELACTIF:ACTIF$$
+	$$A:ESTIMATIONLEAD=0$$
+$$END$$
+$$A:SITEFLUIDE=container$$
+
+
+$$A:TYPECONTAINER=bg-container-100$$
+
+
+$$A:NAV_FIXE=1$$
+
+
+$$A:TYPESITE=2$$
+
+
+$$A:TITREEMPLACEMENTVERTICAL=2$$
+
+
+$$A:TITREEMPLACEMENTHORIZONTAL=2$$
+
+
+$$A:SCROLLINGNUM=1$$
+
+
+$$A:SCROLLING1PHOTO=1$$
+$$A:SCROLLING2PHOTO=1$$
+$$A:SCROLLING3PHOTO=1$$
+
+
+$$A:MENU_RESPONSIVE=1$$
+
+
+$$A:PICTO_COULEUR=white$$
+$$A:BLOC_LANGUE_AFFICHAGE=1$$
+
+$$A:MENU_LANGUE_DRAPEAU=2$$
+
+$$A:MENU_TYPE=2$$
+$$A:TAILLE_NAV=7$$
+$$A:TAILLE_LOGO=5$$
+
+$$A:MENU_UNDER_LOGO=2$$
+
+$$A:LOGO_ABSOLUTE=1$$
+
+$$A:MENU_ACCUEIL_AFFICHAGE=0$$
+$$A:MENU_VENTE_AFFICHAGE=0$$
+$$A:MENU_VENTE_PRESTIGE_AFFICHAGE=0$$
+$$A:MENU_LOCATION_AFFICHAGE=0$$
+$$A:MENU_LOCATION_TEMP_AFFICHAGE=0$$
+$$A:MENU_LOCATION_VACANCES_AFFICHAGE=0$$
+$$A:MENU_LOCATION_PRESTIGE_AFFICHAGE=0$$
+$$A:MENU_VIAGER_AFFICHAGE=0$$
+$$A:MENU_NEUF_AFFICHAGE=0$$
+$$A:MENU_PRG_NEUF_AFFICHAGE=0$$
+$$A:MENU_COMMERCE_AFFICHAGE=0$$
+$$A:MENU_BAIL_AFFICHAGE=0$$
+$$A:MENU_AGENCE_AFFICHAGE=0$$
+$$A:MENU_CONTACTER_AFFICHAGE=0$$
+$$A:MENU_OUTILS_AFFICHAGE=0$$
+$$A:MENU_ESTIMER_AFFICHAGE=0$$
+$$A:MENU_ACQUERIR_AFFICHAGE=0$$
+$$A:MENU_SUIVI_AFFICHAGE=0$$
+$$A:MENU_GESTION_AFFICHAGE=0$$
+$$A:MENU_SYNDIC_AFFICHAGE=0$$
+$$A:MENU_BLOG=0$$
+
+
+$$A:INTITULE_COMMERCE_PERSO=@@LG:COMM pcase@@$$
+$$A:INTITULE_SYNDIC_PERSO=@@LG:SYNDICCOPRO pcase@@$$
+$$A:INTITULE_VENTE_PRESTIGE_PERSO=@@LG:LIEN:VENPST pcase@@$$
+$$A:INTITULE_ESTIMATION_PERSO=@@LG:VENDRE pcase@@$$
+$$A:INTITULE_SUIVI_PERSO=@@LG:EXTRANETCLIENT pcase@@$$
+
+
+$$A:MENU_VENTE_LIEN=1$$
+$$A:MENU_VENTE_PRESTIGE_LIEN=1$$
+$$A:MENU_LOCATION_LIEN=1$$
+$$A:MENU_LOCATION_TEMP_LIEN=1$$
+$$A:MENU_LOCATION_VACANCES_LIEN=1$$
+$$A:MENU_LOCATION_PRESTIGE_LIEN=1$$
+$$A:MENU_VIAGER_LIEN=1$$
+$$A:MENU_NEUF_LIEN=1$$
+$$A:MENU_PRG_NEUF_LIEN=1$$
+$$A:MENU_COMMERCE_LIEN=1$$
+$$A:MENU_BAIL_LIEN=1$$
+
+
+$$A:TRI_MENU=d_px$$
+
+
+$$A:MODULE-EXTRA-5=1$$
+$$INIT:IDTTEXTRA=1$$
+$$INIT:QUERYEXTRA=si_coupdecoeur=1$$
+$$INIT:NBEXTRAANNONCES=1$$
+
+$$A:ROTATION_MODULE_EXTRA=500$$
+$$A:SPEED_MODULE_EXTRA=0$$
+$$A:EFFECT_MODULE_EXTRA=fade$$
+
+
+$$A:TYPEBOUTON=btn$$
+
+
+$$A:TYPEBOUTONACTION=btn-action-no-gradient$$
+
+
+$$A:TYPEBOUTONSECONDAIRE=btn-secondaire$$
+
+
+$$A:TYPEMOTEUR=inline$$
+$$A:TAILLEMOTEUR=span2$$
+$$A:TAILLESUGGEST=span4$$
+
+
+
+
+$$A:TAILLEMOTEURRESULTATS=span3$$
+$$A:TAILLERESULTATS=span9$$
+
+
+$$A:EMPLACEMENTMOTEURLEFT=1$$
+$$A:EMPLACEMENTMOTEURRIGHT=0$$
+
+
+$$A:BOUTONGODETAILL=0$$
+
+
+
+$$A:MINI_IDTTUNIQUE=0$$
+$$A:MINI_IDTTDEFAUT=2$$
+
+$$A:MINI_IDTTCACHE=$$
+
+
+$$A:MINIVILLES_AFFICHAGE=1$$
+
+$$A:MINIVILLES_SELECT=1$$
+$$A:MINIVILLES_LIBRE=0$$
+$$A:MINIVILLES_SUGGEST=0$$
+
+
+$$A:MINIBIENS_AFFICHAGE=1$$
+
+$$A:MINIBIENS_MULTIPLES=0$$
+
+
+
+$$A:MINI_BUDGET_AFFICHAGE=0$$
+$$A:MINI_BUDGET_TRANCHE=0$$
+$$A:MINI_BUDGET_SLIDER=0$$
+$$A:MINI_BUDGET_LIBRE=0$$
+<!--#include absolute="webagency/A_ID3X/10perf/header/params_budget.htm" -->
+
+
+$$A:MINI_SURFACE_AFFICHAGE=0$$
+$$A:MINI_SURFACE_TRANCHE=0$$
+$$A:MINI_SURFACE_LIBRE=0$$
+$$A:MINI_SURFACE_SLIDER=0$$
+<!--#include absolute="webagency/A_ID3X/10perf/header/params_surface.htm" -->
+
+
+$$A:MINILISTE_AFFICHAGE=0$$
+
+
+$$A:MINICHAMBRES_AFFICHAGE=0$$
+
+
+$$A:MINIPIECES_AFFICHAGE=0$$
+
+$$A:MINIREF_AFFICHAGE=1$$
+
+
+$$A:TYPOADOBE=0$$
+$$A:CODEJS=xwr2anu$$
+
+
+$$A:BLOC_PUB=1$$
+$$A:ENCART_PUB_SIZE=span4$$
+$$A:ENCART_PUB_TEXTE=0$$
+$$A:ENCART_PUB_BLOG_WORDPRESS=0$$
+
+$$INIT:CATWORDPRESS=24664$$
+$$INIT:IDCATRECRUTEMENT=27454$$
+$$A:ENCART_PUB_ESTIMATION=0$$
+$$A:ENCART_PUB_OUTILS=0$$
+$$A:ENCART_PUB_SOCIAL=0$$
+$$A:ENCART_PUB_MOBILE=0$$
+$$A:ENCART_PUB_ALERTE=0$$
+$$A:ENCART_PUB_BLOG=0$$
+
+
+$$A:DESIGNENCART=big-picto$$
+
+
+$$A:TYPEENCART=carre$$
+
+
+$$A:SOCIAL_BARRE_FIXE=1$$
+
+
+$$A:EMPLACEMENTPUBINDEX=1$$
+
+
+$$A:ENCART_PUB_100_INDEX=1$$
+
+$$A:ENCART_PUB_ESTIMATION_FULL=0$$
+$$A:ENCART_PUB_OUTILS_FULL=0$$
+$$A:ENCART_PUB_SOCIAL_FULL=0$$
+$$A:ENCART_PUB_MOBILE_FULL=0$$
+$$A:ENCART_PUB_ALERTE_FULL=0$$
+$$A:ENCART_PUB_BLOG_FULL=0$$
+$$A:ENCART_PUB_BLOG_WORDPRESS_FULL=1$$
+$$INIT:CATWORDPRESS=29111$$
+
+
+$$A:MODULE-ANNONCES=5$$
+
+
+$$A:ROTATION_MODULE=$$
+$$A:SPEED_MODULE=$$
+$$A:EFFECT_MODULE=none$$
+
+
+$$INIT:NBMODULEANNONCES=9$$
+$$A:SIZEMODULE=3$$
+
+
+$$INIT:IDTTMODULE=2$$
+$$INIT:QUERYMODULE=si_coupdecoeur=1&photo=10$$
+$$A:BOUTON_MODULE=@@LG:TITRECOEUR pcase@@ @@LG:VENTE lcase@@$$
+
+
+
+$$INIT:SIMILAIRESLIMITES=4$$
+
+
+$$A:BOUTONGOSIMILAIRE=0$$
+
+
+
+$$A:GALERIEAUTO=0$$
+
+$$A:THUMBAUTO=1$$
+
+$$A:DPEMINI=1$$
+
+$$A:PICTOANNONCE=0$$
+
+$$A:TELEPHONEMASQUE=1$$
+
+
+
+$$A:AFFICHAGE_AGENCES_LISTE=2$$
+
+$$A:PINCARTO=gris$$
+
+
+$$A:PHOTO_AG_PUD=1$$
+
+
+
+$$A:PICTO_ANNONCE_RECHERCHE_COULEUR=noir$$
+
+
+$$INIT:FRAICHEUR=-30$$
+
+
+
+$$A:PRIXMASQUE=0$$
+
+
+$$A:COLOR_LAYER=#0fbe7b$$
+
+
+
+$$A:MOTEURREFERENCE=1$$
+
+
+
+$$A:MOTEURAFFICHAGECARTE=1$$
+
+
+
+$$A:MOTEURAFFICHAGELISTE=1$$
+
+
+
+$$A:CRITERESAVANCES=1$$
+
+
+
+$$A:BIENSPERSO=1$$
+
+
+$$A:CRITERESPLUS=0$$
+
+
+$$A:ENCART_PUB_PERSO=1$$
+
+$$A:TAILLE_NAV=9$$
+$$A:TAILLE_LOGO=3$$
+
+
+$$A:PHOTODETAILNORESIZE=1$$
+$$A:PHOTODETAILNORESIZEPANO=1$$
+
+$$A:DESCRIPTIFCLIENT=1$$ 
+
+$$A:SANS_PHOTO_PERSO=1$$
+
+
+
+$$A:INTITULE_LOC_VAC_PERSO=@@LG:LIEN:LOCSAI@@$$
+$$A:LG:ANN:LOCVACS=@@LG:LIEN:LOCSAI@@$$
+
+
+$$A:HIDEQUARTIER=1$$
+
+
+
+$$A:HIDEPROX=1$$
+
+
+$$A:MINIVILLES_MULTIPLES=1$$
+$$INIT:PARAMSREFINE=idtypebien,idsoustypebien,nb_pieces,nb_chambres,si_mandatexclusif,visuels,idq$$
+$$INIT:ADVANCEDREFINE=si_sud,si_est,si_visavis,si_sejour,si_boxes,si_cave,si_parkings,si_ascenseur,si_gardien,si_piscine,si_meuble,si_coupdecoeur,si_exclusif,si_libre$$
+$$SET:SHOWREFINE=IDTYPEBIEN$NB_PIECES$$	
+
+
+$$A:COLOR_PICTO_COMMERCE=black$$ 
+
+
+$$A:MOTEUR_COMMERCE_1=1$$ 	 
+$$A:MOTEUR_COMMERCE_2=1$$ 	 
+$$A:MOTEUR_COMMERCE_3=1$$ 	 
+$$A:MOTEUR_COMMERCE_4=1$$		 
+$$A:MOTEUR_COMMERCE_5=1$$		 
+$$A:MOTEUR_COMMERCE_6=1$$		 
+$$A:MOTEUR_COMMERCE_7=1$$ 	 
+$$A:MOTEUR_COMMERCE_8=1$$		 
+$$A:MOTEUR_COMMERCE_9=1$$		 
+$$A:MOTEUR_COMMERCE_40=1$$	 
+$$A:MOTEUR_COMMERCE_41=1$$	 
+$$A:MOTEUR_COMMERCE_42=1$$	 
+$$A:MOTEUR_COMMERCE_43=1$$	 
+$$A:MOTEUR_COMMERCE_39=1$$	 
+
+$$A:MOTEUR_COMMERCE_CACHE=0$$									 
+$$A:MOTEUR_ENTREPRISE_CACHE=0$$								 
+$$A:MOTEUR_ONGLET_DEFAUT=fdc$$					 
+$$A:MOTEUR_ENTREPRISE_IDTTDEFAUT=2$$  	 
+$$A:INTITULE_FDC=$$											 
+$$A:INTITULE_IMMO_ENTREPRISE=$$					 
+
+$$A:MOTEUR_VILLE_SELECT=0$$
+$$A:MOTEUR_VILLE_SUGGEST=1$$
+
+
+
+
+
+$$A:INDEXATION_LANGUE=0$$
+
+
+
+
+
+$$A:NOM_SITE_REF=$$
+
+
+
+
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_INDEX=$$
+$$END$$
+
+
+
+$$IF=:FR:LANGUE$$
+	$$A:DESCRIPTION_INDEX=$$
+$$END$$
+
+
+$$IF=:FR:LANGUE$$
+	$$A:SLOGAN_INDEX=	
+			<marquee class="hidden-phone typo-marron big bold font-title text-shadow-1">
+				<!--<img src="images/bike.png" class="margin-right-10"> 
+				Roulez avec IMMOVAL en exclusivité un vélo pour toute transaction voir conditions en agence - -->
+	</marquee> 
+		$$
+	
+$$END$$
+
+
+
+$$IF=:FR:LANGUE$$
+	$$A:H1_INDEX=
+	<div class="titre-accueil typo-white bold text-shadow-1 relative z25 pagination-right">Depuis 1972 ... l'immobilier , nous en avons fait toute une histoire</div>
+	<div class="sous-titre-accueil big typo-action bold text-shadow-1 relative z25 pagination-right padding-bottom-25">Pourquoi ne pas continuer à l'écrire ensemble ? </div>
+	$$
+$$END$$
+
+
+$$A:H2_INDEX_MODULE=@@LG:TITRECOEUR pcase@@ @@LG: lcase@@$$
+
+
+
+
+$$IF=:0:MULTIAGENCES$$
+	$$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+
+$$IF=:1:MULTIAGENCES$$
+	$$IF=:FR:LANGUE$$
+		$$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+	$$END$$
+$$END$$
+
+
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+	$$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+
+
+$$A:ENCART_TXT_HOME=0$$
+
+$$A:POSITION_ENCART_TXT_HOME=1$$
+
+$$IF=:FR:LANGUE$$
+	$$A:ENCART_TXT_HOME_CONTENU=<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.</p>$$
+$$END$$
+
+
+
+$$A:MOTEUR_VILLES_REF=0$$
+
+$$A:MOTEUR_VILLE_1=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_2=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_3=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_4=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+
+
+
+$$A:MICRO_DONNES_PRIX=1$$
+
+
+
+$$A:INDEXATION_ESTIMATION=0$$
+
+
+
+$$A:INDEXATION_OUTILS=0$$
+
+
+
+$$A:INDEXATION_REALISATION=0$$
+
+
+
+$$A:INDEXATION_RESPONSIVE=0$$
+
+
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_GESTION=$$
+	$$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+	$$A:H1_GESTION=@@LG:LIEN:GESTLOC pcase@@$$
+$$END$$
+
+
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_SYNDIC=$$
+	$$A:DESCRIPTION_SYNDIC=$$
+	$$A:H1_SYNDIC=$$
+$$END$$
+
+
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_EXPERTISE=$$
+	$$A:DESCRIPTION_EXPERTISE=$$
+	$$A:H1_EXPERTISE=$$
+$$END$$
+
+
+
+$$IF=:471084:FORM:IDP$$
+	
+	$$A:TITLE_AGENCE=$$
+	
+	$$A:DESCRIPTION_AGENCE=$$
+	
+	$$A:H1_AGENCE=$$
+	
+	$$A:H2_AGENCE=$$
+	
+	$$A:SLOGAN_AGENCE=
+		<p class="pagination-justify"><span class="typo-touch">IMMOVAL</span> poursuit un développement continu fondé sur des valeurs fortes : confiance, clarté, rigueur, professionnalisme</p>		
+		<p class="pagination-justify"><span class="typo-touch">IMMOVAL</span> est présent dans les principaux domaines de l’immobilier, avec une même volonté : être proche de ses clients et allier transparence, compétence, innovation et qualité de service</p>		
+		<p class="pagination-justify">Les consultants d’IMMOVAL, cultivent une relation privilégiée avec leurs interlocuteurs,  veillent à apporter un conseil, une expertise ainsi qu’une parfaite connaissance du marché ciblé.</p>		
+		<p class="pagination-justify">Véritable partenaire de votre projet d’achat, de location ou de vente, nous construisons votre accompagnement de façon durable.</p>		
+		<p class="pagination-justify">Nos clients font appel à notre savoir- faire pour prendre en charge la réalisation de leur projet d’achat ou de vente, en toute confiance.</p>		
+		<p class="pagination-justify">Certains de nos clients, dont le temps ne permet pas une implication totale dans leurs démarches (distance, emploi du temps..), nous faisons tout le nécessaire pour conquérir, garder leurs confiances et leurs exigences avec un travail soigné et appliqué.</p>
+		<p class="pagination-justify">Nos consultants étudieront vos propositions et vos envies pour vous garantir l’excellence de la transaction.</p>	
+	$$
+$$END$$
+
+
+
+
+$$IF=:354575:FORM:IDP$$
+			$$A:SOCIAL_AGENCE_DETAIL=1$$
+				$$A:SOCIAL_AGENCE_GOOGLE_LOCAL=$$
+				$$A:SOCIAL_AGENCE_GOOGLE_PLUS=https://plus.google.com/111374745912715689710/about$$
+				$$A:SOCIAL_AGENCE_FACEBOOK=http://www.facebook.com/pages/Immoval-Strasbourg/244812729028248$$
+				$$A:SOCIAL_AGENCE_TWITTER=http://twitter.com/Immoval_immo$$
+				$$A:SOCIAL_AGENCE_YOUTUBE=https://www.youtube.com/user/agenceimmoval$$
+				$$A:SOCIAL_AGENCE_DAILYMOTION=http://www.dailymotion.com/Imoval#video=x19oz39$$
+				
+				$$A:BADGE_GOOGLE_AGENCE=1$$
+					$$A:SOCIAL_BADGE_GOOGLE_AGENCE=111374745912715689710$$
+					
+		 		$$A:TXT_PUBLIC_PERSO=0$$
+		  	  $$A:TXT_PUBLIC_PERSO_CONTENU=IMMOVAL, votre agence immobilière spécialiste du marché immobilier de Strasbourg et sa région, vous souhaite la bienvenue.
+						<br />	<br />
+						Issue d’un Groupe fondé en 1972 par Hubert Fischer, Immoval, agence immobilière indépendante et familiale, adhérente FNAIM, poursuit un développement continu fondé sur des valeurs fortes : la confiance, la clarté, la rigueur et le professionnalisme.	<br />
+						30 collaborateurs sont à votre service, chacun spécialiste de son domaine de compétence, en transaction immobilière et commerciale, vente de neuf, gestion/ location et syndic de copropriétés.
+							<br />	<br />
+						Notre agence immobilière, située rue de l’Eglise à Strasbourg, développe ses compétences dans les principaux domaines de l’immobilier, avec la même volonté de rester proche de ses clients et d’allier transparence, compétence, innovation et qualité de service.	<br />
+						Les consultants D’IMMOVAL, cultivent une relation privilégiée avec leurs interlocuteurs, veillent à apporter un conseil, une expertise ainsi qu’une parfaite connaissance du marché immobilier de Strasbourg et de sa région pour une information ciblée sur votre projet.	<br />
+						Véritables partenaires de votre projet d’achat, d’investissement, de location, de vente ou gestion de votre patrimoine immobilier, nous vous accompagnons tout au long de la transaction pour un suivi, technique, juridique et au-delà pour la finalisation de votre projet.	<br />
+						Nos clients font appel à notre savoir- faire pour prendre en charge la réalisation de leur projet d’achat ou de vente, de gestion et d’investissement, en toute confiance.
+						Pour certains de nos clients, dont le temps ne permet pas une implication totale dans leurs démarches (distance, emploi du temps..), nous faisons tout le nécessaire pour conquérir, garder leurs confiances et leurs exigences avec un travail soigné et appliqué dans la passion du métier.	<br />
+						Nos consultants étudieront vos propositions et vos souhaits pour vous garantir l’excellence de la transaction.$$
+						
+	$$A:SEO_PORTEFEUILLE=0$$
+				
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="#">test</a>$$
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="#">tes</a>$$
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="#">tes</a>$$
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="#"></a>$$
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="#"></a>$$
+				$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="#"></a>$$
+$$END$$
+
+
+
+$$A:H1_AGENCESLISTE=$$
+
+
+$$A:AGENCES_LISTE_TXT=0$$
+$$A:AGENCES_LISTE_CONTENU=jhl.$$
+
+
+
+
+$$A:SLOGAN_FOOTER=$$
+
+
+
+$$A:TITLE_1_FOOTER=$$
+
+$$A:LINK_PERSO_1_FOOTER_1=$$
+$$A:LINK_PERSO_2_FOOTER_1=$$
+$$A:LINK_PERSO_3_FOOTER_1=$$
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+
+$$INIT:CATWORDPRESS=29111$$
+
+$$A:TXT_PUBLIC_PERSO=1$$
+
+
+$$IF=:TOPVILLES-RACINE.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-RACINE=0$$
+	$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TYPETRANSACTION.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-TYPETRANSACTION=1$$
+	$$IF=:2:FORM:IDTYPETRANSACTION$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+	$$END$$
+	$$IF=:1:FORM:IDTYPETRANSACTION$$
+		$$A:TEXTE-TOPVILLES=<a href="/immo,gestion.htm" title="Notre service de gestion locative">Notre service de gestion locative</a> fonctionne avec une équipe de spécialistes.  <strong>Plus de 1000 lots</strong> sont actuellement gérés par notre équipe. Avec un véritable rôle d’intermédiaire entre le propriétaire et le locataire, nos conseillers prennent en charge l’ensemble des tâches administratives liées à la gestion de votre bien, mise en place du locataire, états des lieux, aide à la constitution du dossier de location et validation, encaissement des loyers et interventions en cas de travaux ou réparation dans le logement. 
+		<br />En cas de problème technique notre service contactera les entreprises partenaires IMMOVAL et soumettra au propriétaire des devis pour un accord final avant intervention. Notre service dispose de la  <strong>G.L.I (Garantie des Loyers Impayés)</strong>, qui comprend également la dégradation immobilière et vous proposera la garantie de vacance locative qui permet de garder la rentabilité de votre investissement immobilier durant 3 mois (après le préavis), si le bien n’est pas reloué suite au départ du locataire.$$
+	$$END$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TTTB.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-TTTB=0$$
+	$$IF=:2:FORM:IDTYPETRANSACTION$$
+		$$IF=:2:FORM:IDTYPEBIEN$$
+			$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+		$$END$$
+		$$IF=:1:FORM:IDTYPEBIEN$$
+			$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+		$$END$$
+	$$END$$
+	$$IF=:1:FORM:IDTYPETRANSACTION$$
+		$$IF=:2:FORM:IDTYPEBIEN$$
+			$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+		$$END$$
+		$$IF=:1:FORM:IDTYPEBIEN$$
+			$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+		$$END$$
+	$$END$$
+$$END$$
+
+
+
+$$IF=:TOPVILLES-VILLE.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-VILLE=1$$
+	$$IF=:670482:FORM:CODEINSEE$$
+		$$A:TEXTE-TOPVILLES=Découvrez sur ce site notre offre de biens sur Strasbourg et son agglomération. <a href="/agence-immobiliere/strasbourg-67000/immoval/354575.htm" title="Notre agence immobilière à Strasbourg">Notre agence immobilière</a> est située rue de l’Eglise à Strasbourg, elle vous accueille dans une ambiance chaleureuse pour vous aider à réaliser votre projet immobilier, achat, vente d’une maison d’un appartement sur Strasbourg, selon vos exigences, vos contraintes personnelles et professionnelles et en fonction de vos critères de choix, espace, budget, équipement, environnement, prestations, etc. <br />Notre savoir-faire immobilier et nos compétences nous permettent de mieux vous conseiller sur le choix d’une résidence principale, ou d’un investissement locatif.$$	
+	$$END$$
+	$$IF=:750113:FORM:CODEINSEE$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+	$$IF=:750114:FORM:CODEINSEE$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+	$$IF=:780358:FORM:CODEINSEE$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$
+	$$END$$
+$$END$$
+
+
+
+$$IF=:TOPVILLES-QUARTIER.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-QUARTIER=0$$
+	$$IF=:131656:FORM:IDQUARTIER$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+$$END$$
+
+
+
+$$IF=:TOPVILLES-DEPARTEMENT.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-DEPARTEMENT=0$$
+	$$IF=:92:FORM:CODEDEPARTEMENT$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+$$END$$
+
+
+$$IF=:TOPVILLES-DEPARTEMENTS.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-DEPARTEMENTS=0$$
+	$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+$$END$$
+
+
+
+$$IF=:TOPVILLES-REGION.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-REGION=0$$
+	$$IF=:2238:FORM:IDDIVISION$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+$$END$$
+
+
+$$IF=:TOPVILLES-REGIONS.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-REGIONS=0$$
+	$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+$$END$$
+
+
+
+$$IF=:TOPVILLES-ARRONDISSEMENT.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-ARRONDISSEMENT=0$$
+	$$IF=:2238:FORM:IDDIVISION$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+$$END$$
+
+
+
+$$IF=:TOPVILLES-COUNTRY.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-COUNTRY=0$$
+	$$IF=:250:FORM:IDPAYS$$
+		$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+	$$END$$
+$$END$$
+
+
+$$IF=:TOPVILLES-COUNTRIES.HTM:REP:URI$$
+	
+	$$A:ACTIVATION-TOPVILLES-COUNTRIES=0$$
+	$$A:TEXTE-TOPVILLES=<!-- Ajout du contenu -->$$	
+$$END$$
+
+
+
+
+$$A:SEO_RESULTS_CONTENT=$$
+$$IF=:FR:LANGUE$$
+	$$IF=:2:FORM:IDTT$$
+	    $$IF=:1:FORM:IDTYPEBIEN$$
+	        $$IF=:670482:FORM:CI$$
+	            $$A:SEO_RESULTS_CONTENT=Découvrez notre sélection d’annonces immobilières sur <strong>Strasbourg</strong> et sa région, parmi un choix d’appartement à la vente, dans l’ancien, le récent, le contemporain ou en programmes immobiliers neufs, du studio au 3 pièces et plus, lofts, duplex, appartements avec terrasse, rez-de-jardin et dernier étage... 
+	            <br /><a href="/agence-immobiliere/strasbourg-67000/immoval/354575.htm" title="Notre agence immobilière à Strasbourg">Notre équipe</a> est à votre disposition pour une étude personnalisée et attentive à votre projet immobilier afin que vous puissiez trouver efficacement l’appartement correspondant à vos attentes, pour un projet de résidence principale, ou pour un projet dédié à un investissement locatif, défiscalisée ou non. <br /><strong>Confiez nous votre projet !</strong>$$
+	        $$END$$
+	    $$END$$
+	$$END$$
+		$$IF=:2:FORM:IDTT$$
+	    $$IF=:6:FORM:IDTYPEBIEN$$
+	        $$IF=:670482:FORM:CI$$
+	          $$A:SEO_RESULTS_CONTENT=<a href="/agence-immobiliere/strasbourg-67000/immoval/354575.htm" title="Notre agence immobilière à Strasbourg">Nos conseillers</a> spécialistes de la <a href="/immobilier/vente-fonds-de-commerce/ville/" title="Nos ventes de fonds de commerce">vente de fonds de commerce</a>, sont à votre disposition pour vous aider à orienter votre choix vers la reprise d’une affaire, d’un commerce ou pour l’achat d’un local, de murs commerciaux dans le cadre de votre activité professionnelle, selon la clientèle recherchée, ou les fournisseurs locaux, selon les besoins en logistique et autres. Rompus à la lecture des bilans et autres pièces comptables, ils sauront vous conseiller pour une opération commerciale réussie. 
+	          <br /><strong>N’hésitez pas à nous consulter pour une recherche personnalisée d’un local commercial à Strasbourg</strong>$$
+	        $$END$$
+	    $$END$$
+	$$END$$
+$$END$$<!DOCTYPE html>
+<!--[if lt IE 7 ]><html  class="ie ie6" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="$$LANGUE$$"> <![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="$$LANGUE$$"> <![endif]-->
+<!--[if !IE]><!--><html lang="$$LANGUE$$" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml"><!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">$$IF=:0:MULTIAGENCES$$
+
+
+$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@ @@AGENCE_VILLE@@$$
+$$A:DESCRIPTION=@@LG:IMMOBILIER pcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ @@LG:AVEC lcase@@ l'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@.$$
+$$A:KEYWORDS=$$
+
+
+														$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@ @@AGENCE_NOM@@$$
+
+									$$A:TITLE_MENU_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@AGENCE_NOM@@$$
+									$$A:TITLE_RESULTATS_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@AGENCE_NOM@@$$
+							$$A:TITLE_MENU_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@AGENCE_NOM@@$$
+								$$A:TITLE_RESULTATS_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_RESULTATS_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_MENU_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@AGENCE_NOM@@$$
+								    $$A:TITLE_RESULTATS_NEUF=@@LG:IMMONEUF pcase@@ @@AGENCE_NOM@@$$
+								  $$A:TITLE_MENU_NEUF=@@LG:IMMONEUF pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCTEMP=@@LG:LOCTEMP pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCTEMP=@@LG:LOCTEMP pcase@@ @@AGENCE_NOM@@$$
+	$$A:TITLE_MENU_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@AGENCE_NOM@@$$
+		$$A:TITLE_RESULTATS_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_RESULTATS_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@AGENCE_NOM@@$$
+			$$A:TITLE_MENU_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_MENU_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@AGENCE_NOM@@$$
+				$$A:TITLE_RESULTATS_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@AGENCE_NOM@@$$
+
+												$$A:TITLE_MENU_AGENCE=@@LG:AGENCEIMMOBILIERE pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@$$
+														$$A:TITLE_MENU_GESTION=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_SYNDIC=@@LG:LIEN:SYNDIC pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_PERSO=$$
+													$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMVOTREBIEN pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+														$$A:TITLE_MENU_CONTACT=@@LG:CONTACTERAGENCE pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+															$$A:TITLE_MENU_OUTILS=@@LG:LIEN:OUT pcase@@ @@AGENCE_NOM@@$$
+								$$A:TITLE_MENU_VENDRE=@@LG:VENDREBIEN pcase@@ @@AGENCE_NOM@@$$
+													$$A:TITLE_MENU_EXPERTISE=@@LG:EXPERTIM pcase@@ @@AGENCE_NOM@@$$
+
+
+
+
+$$IF=:INDEX:IDT$$
+	
+	$$IF:TITLE_INDEX$$
+		$$A:TITLE=@@TITLE_INDEX@@$$
+	$$END$$
+	
+	$$IF0:TITLE_INDEX$$
+		$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$IF:DESCRIPTION_INDEX$$
+		$$A:DESCRIPTION=@@DESCRIPTION_INDEX@@$$
+	$$END$$
+	$$IF0:DESCRIPTION_INDEX$$
+		$$A:DESCRIPTION=@@LG:CONSULTERANNONCESIMMO pcase@@ @@LG:SUR lcase@@ @@AGENCE_VILLE@@ @@ETSAREGION lcase@@.  @@LG:ACHETEZVENDEZ pcase@@ @@AGENCE_VILLE@@$$
+	$$END$$
+	$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@,@@LG:AGENCEIMMOREF lcase@@,@@AGENCE_NOM@@,@@AGENCE_VILLE@@ @@LG:IMMOBILIER pcase@@$$
+$$END$$
+
+
+$$IF=:ACQUERIR:IDT$$
+	$$A:TITLE=@@LG:TITLEACQUEREUR pcase@@ @@LG:AVEC lcase@@ @@CVESTIMATION:NOM pcase@@ @@LG:A lcase@@ @@CVESTIMATION:VILLE pcase@@$$
+	$$A:DESCRIPTION=@@LG:TITLEACQUEREUR pcase@@ @@LG:A lcase@@ @@CVESTIMATION:VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:RECRUTEMENT:IDT$$
+	$$A:TITLE=@@LG:AGENCERECRUTE pcase@@ - @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:AGENCERECRUTE pcase@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:RECRUTEMENT_DETAIL:IDT$$
+	$$A:TITLE=@@BT:TITRE@@ - @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@BT:TITRE@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:GESTION:IDT$$
+	$$IF:TITLE_GESTION$$
+		$$A:TITLE=@@TITLE_GESTION@@$$
+	$$END$$
+	$$IF0:TITLE_GESTION$$
+		$$A:TITLE=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@$$
+	$$END$$
+	$$IF:DESCRIPTION_GESTION$$
+		$$A:DESCRIPTION=@@DESCRIPTION_GESTION@@$$
+	$$END$$
+	$$IF0:DESCRIPTION_GESTION$$
+		$$A:DESCRIPTION=@@AGENCE_NOM@@, @@LG:GESTIONIMMO pcase@@ : @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@.$$
+	$$END$$
+	$$A:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+
+$$IF=:SYNDIC:IDT$$
+	$$IF:TITLE_SYNDIC$$
+		$$A:TITLE=@@TITLE_SYNDIC@@$$
+	$$END$$
+	$$IF0:TITLE_SYNDIC$$
+		$$A:TITLE=@@LG:SYNDICCOPRO pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$IF:DESCRIPTION_SYNDIC$$
+		$$A:DESCRIPTION=@@DESCRIPTION_SYNDIC@@$$
+	$$END$$
+	$$IF0:DESCRIPTION_SYNDIC$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@AGENCE_NOM@@ : @@LG:SYNDICCOPRO pcase@@$$
+	$$END$$
+	$$A:KEYWORDS=@@LG:SYNDICCOPRO pcase@@, @@LG:IMMOBILIER lcase@@,@@AGENCE_CP cp2dep@@$$
+$$END$$
+
+
+$$IF=:EXPERTISE:IDT$$
+	$$IF:TITLE_EXPERTISE$$
+		$$A:TITLE=@@TITLE_EXPERTISE@@$$
+	$$END$$
+	$$IF0:TITLE_EXPERTISE$$
+		$$A:TITLE=@@LG:EXPERTIM pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$IF:DESCRIPTION_EXPERTISE$$
+		$$A:DESCRIPTION=@@DESCRIPTION_EXPERTISE@@$$
+	$$END$$
+	$$IF0:DESCRIPTION_EXPERTISE$$
+		$$A:DESCRIPTION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$A:KEYWORDS=@@LG:EXPERTIM pcase@@, @@LG:IMMOBILIER lcase@@, @@AGENCE_VILLE@@$$
+$$END$$
+
+
+$$IF=:PLAN:IDT$$
+	$$A:TITLE=@@LG:LIEN:PLAN pcase@@ | @@AGENCE_NOM@@ | @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:LIEN:PLAN pcase@@ @@AGENCE_NOM@@$$
+	$$A:KEYWORDS=@@LG:LIEN:PLAN pcase@@, @@LG:IMMOBILIER pcase@@$$
+$$END$$
+
+
+$$IF=:CALCULETTES:IDT$$
+	$$A:TITLE=@@LG:CALCULIMMO pcase@@ @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:EFFECTUEZCOMPTES@@ : @@AGENCE_NOM pcase@@.$$
+	$$A:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@$$
+$$END$$
+
+
+$$IF=:RSS:IDT$$
+		$$A:TITLE=Les flux RSS de @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=D&eacute;couvrez les flux RSS de nos dernières annonces$$
+		$$A:KEYWORDS=abonnement,flux,rss$$
+$$END$$
+
+
+$$IF=:MOTEURVENTE:IDT$$
+	$$IF=:2:FORM:IDTT$$
+		$$A:TITLE=@@LG:NOSANNONCESVEN pcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE lcase@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS lcase@@ @@LG:DE lcase@@ @@LG:VENTES lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:VENTE lcase@@, @@LG:ACHAT lcase@@, @@AGENCE_VILLE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	$$IF=:8:FORM:IDTT$$
+		$$A:TITLE=@@LG:PRESTIGE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:PRESTIGE lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:PRESTIGE pcase@@, @@LG:ACHAT lcase@@, @@AGENCE_VILLE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURLOCATION:IDT$$
+	
+	$$IF=:1:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCATION pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:LOC lcase@@ d'@@LG:APPARTEMENTS lcase@@ et @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:LOCATION lcase@@, @@AGENCE_VILLE@@.$$
+	$$END$$
+	
+	$$IF=:3:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCTEMP pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCTEMP lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:LOCTEMP lcase@@, @@AGENCE_VILLE@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:4:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCATIONVACANCES pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCVACS lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:LOCVACS lcase@@, @@AGENCE_VILLE@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:7:FORM:IDTT$$
+		$$A:TITLE=@@LG:ANN:LOCPRESTIGE pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:ANN:LOCPRESTIGE lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:ANN:LOCPRESTIGE lcase@@, @@AGENCE_VILLE@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURVIAGER:IDT$$
+	$$IF=:5:FORM:IDTT$$
+		$$A:TITLE=@@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (@@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@), @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (maisons et d'appartements) sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:VIAGERLIBRE2 pcase@@, @@LG:VIAGEROCCUPE2 lcase@@, @@AGENCE_VILLE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURNEUF:IDT$$
+	$$IF=:6:FORM:IDTT$$
+		$$A:TITLE=@@LG:PRODUITINVEST pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ ses @@LG:PRODINVES lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:PRODINVES pcase@@, @@AGENCE_VILLE pcase@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	$$IF=:9:FORM:IDTT$$
+		$$A:TITLE=@@LG:NOSPROGSNEUFS pcase@@, @@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ ses @@LG:LIEN:PGRNEUF lcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:LIEN:PGRNEUF pcase@@, @@AGENCE_VILLE pcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURCOMMERCE:IDT$$
+	
+	$$IF=:10:FORM:IDTT$$
+		$$A:TITLE=@@LG:LIEN:FCOMMERCE pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:FCOMMERCE pcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:LIEN:FCOMMERCE lcase@@, @@LG:ACHAT lcase@@, @@AGENCE_VILLE pcase@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:11:FORM:IDTT$$
+		$$A:TITLE=@@LG:CESSIONDEBAIL pcase@@ sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_NOM@@ @@LG:VOUSPROPOSE@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:CESSIONDEBAIL lcase@@  sur @@AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:CESSIONDEBAIL lcase@@, @@LG:ACHAT lcase@@, @@AGENCE_VILLE pcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:RESULTATS$RESULTATSCARTE:IDT$$
+	$$IF0:ANNLISTE:PAGE$$ 
+		$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=@@AGENCE_NOM@@ : @@LG:TOUTESANNONC lcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@$$
+	$$END$$
+	$$IF+:1:ANNLISTE:PAGE$$ 
+		$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@$$
+		$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+$$END$$
+
+
+$$IF=:BIENSVENDUS:IDT$$
+	$$A:TITLE=@@LG:BIENVENDUS pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+$$END:BIENSVENDUS$$
+
+
+$$IF=:PUDAGENCE:IDT$$
+	$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:DECOUVREZNOS pcase left 9@@ @@LG:LIEN:AGEN lcase@@ @@LG:IMMOBILIERE lcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$A:KEYWORDS=agence @@FORM:CI codeinsee2ville field 1@@, agence immo @@FORM:CI codeinsee2ville field 1@@,agence immobilière @@FORM:CI codeinsee2ville field 1@@,agent immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDAGENCE$$
+
+
+$$IF=:PUDANNONCES:IDT$$
+	$$A:TITLE=@@LG:ANNONCIMMOS pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$$A:KEYWORDS=annonces @@FORM:CI codeinsee2ville field 1@@,annonces immo @@FORM:CI codeinsee2ville field 1@@, annonces immobilières @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDANNONCES$$
+
+
+$$IF=:PUDESTIMATION:IDT$$
+	$$A:TITLE=@@LG:ESTIMATION pcase@@ @@LG:IMMOBILIERE lcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$$A:KEYWORDS=estimation @@FORM:CI codeinsee2ville field 1@@, évaluation immobilière @@FORM:CI codeinsee2ville field 1@@, estimation gratuite @@FORM:CI codeinsee2ville field 1@@, Vendre son bien @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDESTIMATION$$
+
+
+$$IF=:PUDIMMOBILIER:IDT$$
+	$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$$A:KEYWORDS=immo @@FORM:CI codeinsee2ville field 1@@,immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDIMMOBILIER$$
+
+
+$$IF=:PUDTYPBIEN:IDT$$
+	$$A:TITLE=@@FORM:IDTT gettypetransaction pcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@$$
+	$$A:DESCRIPTION=Notre agence vous propose une sélection d'annonces immobilières de @@FORM:IDTT gettypetransaction lcase@@  @@FORM:IDTYPEBIEN gettypebien lcase@@ sur @@FORM:CI codeinsee2ville@@ et sa région.$$
+	 $$$A:KEYWORDS=@@FORM:IDTT gettypetransaction pcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDTYPBIEN$$
+
+
+$$IF=:PUDGESTLOC:IDT$$
+	$$A:TITLE=Gestion Locative @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=confiez la gestion locative de votre bien immobilier @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ $$
+	$$$A:KEYWORDS=gestion locative @@FORM:CI codeinsee2ville field 1@@, gestion immobilière @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDGESTLOC$$
+
+
+$$IF=:PUDLOCAVAC:IDT$$
+	$$A:TITLE=Locations Vacances @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de location vacances @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ $$
+	$$$A:KEYWORDS=location vacances @@FORM:CI codeinsee2ville field 1@@, vacances @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDLOCAVAC$$
+
+
+$$IF=:PUDNEUF:IDT$$
+	$$A:TITLE=Immobilier Neuf @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de programmes neufs @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=programme neuf  @@FORM:CI codeinsee2ville field 1@@, immobilier neuf @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDNEUF$$
+
+
+$$IF=:PUDPRESTIGE:IDT$$
+	$$A:TITLE=Immobilier de Prestige @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos produits immobilieres de prestige @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=maison prestige  @@FORM:CI codeinsee2ville field 1@@, appartement prestige @@FORM:CI codeinsee2ville field 1@@, immobilier prestige  @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDPRESTIGE$$
+
+
+$$IF=:PUDVIAGER:IDT$$
+	$$A:TITLE=Viager @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de viager @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=viager @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDVIAGER$$
+
+
+$$IF=:TOPVILLES-RACINE.HTM:REP:URI$$
+	$$A:TITLE=Plan des annonces immobilières - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Retrouvez toutes les annonces immobilières proposées par @@AGENCE_NOM@@ triées par pays, villes, régions ou encore transactions.$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$
+	$$A:H1_IMMOBILIER=@@TITLE@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TYPETRANSACTION.HTM:REP:URI$$
+    $$IF=:9:FORM:IDTYPETRANSACTION$$
+        $$A:TRANSAC=@@LG:PRGNEUF lcase@@$$
+    $$END$$
+    $$IF!:9:FORM:IDTYPETRANSACTION$$
+        $$A:TRANSAC=@@FORM:IDTYPETRANSACTION gettypetransaction lcase@@$$
+    $$END$$
+	$$A:TITLE=Nos annonces de @@TRANSAC@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Retrouvez nos annonces immobilières de @@TRANSAC@@. Trouvez votre bien immobilier parmi nos offres de @@TRANSAC@@.$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières de @@TRANSAC@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TTTB.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Retrouvez nos annonces immobilières de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@. Trouvez votre @@FORM:IDTYPEBIEN gettypebien lcase@@ parmi nos offres de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-QUARTIER.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@, Quartier : @@ID3:URW-GETVALUES:QUARTIER@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Découvrez nos annonces immobilières dans le quartier @@ID3:URW-GETVALUES:QUARTIER@@, @@ID3:URW-GETVALUES:VILLE@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@ID3:URW-GETVALUES:QUARTIER@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLE.HTM:REP:URI$$
+	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:VILLE@@ – Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre bien immobilier parmi nos offres immobilières à @@ID3:URW-GETVALUES:VILLE@@. Consultez nos annonces immobilières à @@ID3:URW-GETVALUES:VILLE@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-COUNTRIES.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces immobilières triées par pays - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par pays  - @@AGENCE_NOM@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Nos annonces immobilières triées par pays$$
+$$END$$
+
+
+$$IF=:TOPVILLES-COUNTRY.HTM:REP:URI$$
+	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:PAYS@@ – Annonces immobilières @@ID3:URW-GETVALUES:PAYS@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Consultez nos offres immobilières @@ID3:URW-GETVALUES:PAYS@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:PAYS@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-REGIONS.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces immobilières triées par régions  - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par région.$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par régions$$
+$$END$$
+
+
+$$IF=:TOPVILLES-REGION.HTM:REP:URI$$
+	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:REGION@@ – Annonces immobilières @@ID3:URW-GETVALUES:REGION@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières en @@ID3:URW-GETVALUES:REGION@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:REGION@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-DEPARTEMENTS.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces immobilières triées par département - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par département.$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par départements$$
+$$END$$
+
+
+$$IF=:TOPVILLES-DEPARTEMENT.HTM:REP:URI$$
+	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:DEPARTEMENT@@ – Annonces immobilières @@ID3:URW-GETVALUES:DEPARTEMENT@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières en @@ID3:URW-GETVALUES:DEPARTEMENT@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:DEPARTEMENT@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-ARRONDISSEMENT.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@ @@ID3:URW-GETVALUES:ARRONDISSEMENT@@ - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Découvrez nos annonces immobilières dans l'arrondissement @@ID3:URW-GETVALUES:ARRONDISSEMENT@@ @@ID3:URW-GETVALUES:VILLE@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@ID3:URW-GETVALUES:ARRONDISSEMENT@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLES.HTM:REP:URI$$
+	$$A:TITLE=Nos annonces immobilières triées par ville - @@AGENCE_NOM@@$$ 
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par ville.$$ 
+	$$A:KEYWORDS=@@$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par villes$$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLES-AUTRES.HTM$TOPVILLES-VILLES-PAGES.HTM:REP:URI$$
+	$$IF=:750056:FORM:CODEINSEE$$
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:VILLE@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$IF!:750056:FORM:CODEINSEE$$
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+	$$END$$
+	$$A:DESCRIPTION=Retrouvez toutes nos annonces immobilières à @@AGENCE_VILLE@@ et sa région @@FORM:CI codeinsee2ville field 1@@ avec @@AGENCE_NOM@@$$
+	$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+$$END$$
+
+$$IF=:MENTIONS:IDT$$
+	$$A:TITLE=@@LG:MENTIONSLEG pcase@@ @@ML:RAISONSOCIALE ncase@@ - @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:MENTIONSLEG pcase@@ @@AGENCE_NOM@@ @@ML:VILLESIEGE@@ @@1_MENTIONS:VILLESIEGE@@$$
+	$$A:KEYWORDS=@@LG:MENTIONSLEG pcase@@ @@AGENCE_NOM@@, @@LG:IMMOBILIER lcase@@ @@ML:VILLESIEGE@@ @@1_MENTIONS:VILLESIEGE@@$$
+$$END$$
+
+$$END$$$$IF=:1:MULTIAGENCES$$
+
+
+$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@$$
+$$A:DESCRIPTION=@@LG:IMMOBILIER pcase@@ @@AGENCE_CP cp2dep@@ @@LG:ET lcase@@ @@LG:ANNALENTOURS lcase@@ @@LG:AVEC lcase@@ @@REP:RSRV@@.$$
+$$A:KEYWORDS=$$
+
+
+	$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@ @@REP:RSRV@@$$
+
+									$$A:TITLE_MENU_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@REP:RSRV@@$$
+									$$A:TITLE_RESULTATS_VENTES=@@LG:BIENSIMMOAVENTE pcase@@  @@REP:RSRV@@$$
+							$$A:TITLE_MENU_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@REP:RSRV@@$$
+								$$A:TITLE_RESULTATS_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@  @@REP:RSRV@@$$
+				$$A:TITLE_RESULTATS_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_MENU_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@REP:RSRV@@$$
+								$$A:TITLE_RESULTATS_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@REP:RSRV@@$$
+								$$A:TITLE_MENU_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@REP:RSRV@@$$
+								    $$A:TITLE_RESULTATS_NEUF=@@LG:IMMONEUF pcase@@ @@REP:RSRV@@$$
+								  $$A:TITLE_MENU_NEUF=@@LG:IMMONEUF pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_MENU_LOCTEMP=@@LG:LOCTEMP pcase@@ @@REP:RSRV@@$$
+				$$A:TITLE_RESULTATS_LOCTEMP=@@LG:LOCTEMP pcase@@ @@REP:RSRV@@$$
+	$$A:TITLE_MENU_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@REP:RSRV@@$$
+		$$A:TITLE_RESULTATS_PRODUITINVEST=@@LG:PRODUITINVEST pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_MENU_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@REP:RSRV@@$$
+				$$A:TITLE_RESULTATS_LOCPRESTIGE=@@LG:ANN:LOCPRESTIGE pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_RESULTATS_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_MENU_BIENSPST=@@LG:LIEN:BIENSPST pcase@@ @@REP:RSRV@@$$
+				$$A:TITLE_RESULTATS_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@REP:RSRV@@$$
+			$$A:TITLE_MENU_FCOMMERCE=@@LG:LIEN:FCOMMERCE pcase@@ @@REP:RSRV@@$$
+				$$A:TITLE_MENU_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@REP:RSRV@@$$
+				$$A:TITLE_RESULTATS_CESSIONDEBAIL=@@LG:CESSIONDEBAIL pcase@@ @@REP:RSRV@@$$
+
+												$$A:TITLE_MENU_AGENCE=@@LG:AGENCEIMMOBILIERE pcase@@ @@REP:RSRV@@$$
+												$$A:TITLE_MENU_NOSAGENCES=@@LG:NOSAGENCESIMMO pcase@@$$
+														$$A:TITLE_MENU_GESTION=@@LG:GESTIONIMMO pcase@@ @@REP:RSRV@@$$
+															$$A:TITLE_MENU_SYNDIC=@@LG:LIEN:SYNDIC pcase@@ @@REP:RSRV@@$$
+															$$A:TITLE_MENU_PERSO=$$
+													$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMVOTREBIEN pcase@@ @@REP:RSRV@@$$
+														$$A:TITLE_MENU_CONTACT=@@LG:CONTACTERAGENCE pcase@@ @@REP:RSRV@@$$
+															$$A:TITLE_MENU_OUTILS=@@LG:LIEN:OUT pcase@@ @@REP:RSRV@@$$
+								$$A:TITLE_MENU_VENDRE=@@LG:VENDREBIEN pcase@@ @@REP:RSRV@@$$
+													$$A:TITLE_MENU_EXPERTISE=@@LG:EXPERTIM pcase@@ @@REP:RSRV@@$$
+
+
+$$IF=:INDEX:IDT$$
+	
+	$$IF:TITLE_INDEX$$
+		$$A:TITLE=@@TITLE_INDEX@@$$
+	$$END$$
+	
+	$$IF0:TITLE_INDEX$$
+		$$IF:NOM_SITE_REF$$
+			$$IF+:2:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@ @@LG:ET lcase@@ @@2_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+			$$END$$
+			$$IF+:3:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@ @@LG:ET lcase@@ @@3_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+			$$END$$
+			$$IF+:4:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@, @@3_AGENCE_VILLE@@ @@LG:ET lcase@@ @@4_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+			$$END$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$IF+:2:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@ @@LG:ET lcase@@ @@2_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+			$$END$$
+			$$IF+:3:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@ @@LG:ET lcase@@ @@3_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+			$$END$$
+			$$IF+:4:COMPTE_AGENCES:NBR$$
+				$$A:TITLE=@@LG:TOUTIMMO pcase@@ @@LG:A lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@, @@3_AGENCE_VILLE@@ @@LG:ET lcase@@ @@4_AGENCE_VILLE@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+			$$END$$
+		$$END$$
+	$$END$$
+	$$IF:DESCRIPTION_INDEX$$
+		$$A:DESCRIPTION=@@DESCRIPTION_INDEX@@$$
+	$$END$$
+	$$IF0:DESCRIPTION_INDEX$$
+		$$IF:NOM_SITE_REF$$
+			$$A:DESCRIPTION=@@LG:CONSULTERANNONCESIMMO pcase@@ @@LG:SUR lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@, @@3_AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@. @@LG:REFDESCINDEX pcase@@ @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$A:DESCRIPTION=@@LG:CONSULTERANNONCESIMMO pcase@@ @@LG:SUR lcase@@ @@1_AGENCE_VILLE@@, @@2_AGENCE_VILLE@@, @@3_AGENCE_VILLE@@ @@LG:ETSAREGION lcase@@. @@LG:REFDESCINDEX pcase@@$$
+		$$END$$
+	$$END$$
+	$$A:KEYWORDS=@@URLBASE@@,@@LG:IMMOBILIER pcase@@,@@1_AGENCE_VILLE@@,@@2_AGENCE_VILLE@@,@@3_AGENCE_VILLE@@,@@4_AGENCE_VILLE@@$$
+$$END$$
+
+
+$$IF=:NOSAGENCES:IDT$$
+	$$IF=:FR:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@TITLE_AGENCES_LISTE@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@NOM_SITE_REF@@$$
+		  $$END$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@TITLE_AGENCES_LISTE@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@REP:SRV@@$$
+		  $$END$$
+		$$END$$
+		$$IF:DESCRIPTION_AGENCES_LISTE$$
+		  $$A:DESCRIPTION=@@DESCRIPTION_AGENCES_LISTE@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_AGENCES_LISTE$$
+		  $$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:SUR lcase@@ @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@.$$
+		$$END$$
+		$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+	$$END$$
+	$$IF0:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@TITLE_AGENCES_LISTE@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@NOM_SITE_REF@@$$
+		  $$END$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@TITLE_AGENCES_LISTE@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE$$
+		    $$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@REP:SRV@@$$
+		  $$END$$
+		$$END$$
+		$$IF:DESCRIPTION_AGENCES_LISTE$$
+		  $$A:DESCRIPTION=@@DESCRIPTION_AGENCES_LISTE@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_AGENCES_LISTE$$
+		  $$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:SUR lcase@@ @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@.$$
+		$$END$$
+		$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+			$$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$A:TITLE=@@LG:TOUTESNOSAGENCESIMMO pcase@@ - @@REP:SRV@@$$
+		$$END$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:SUR lcase@@ @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+	$$END$$
+$$END$$
+
+
+$$IF=:ESTIMATION:IDT$$
+	$$IF=:FR:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@TITLE_AGENCES_LISTE_ESTIMATION@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		  $$END$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@TITLE_AGENCES_LISTE_ESTIMATION@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ - @@REP:SRV@@$$
+		  $$END$$
+		$$END$$
+		$$IF:DESCRIPTION_AGENCES_LISTE_ESTIMATION$$
+		  $$A:DESCRIPTION_ESTIMATION=@@DESCRIPTION_AGENCES_LISTE_ESTIMATION@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_AGENCES_LISTE_ESTIMATION$$
+		  $$A:DESCRIPTION_ESTIMATION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+		$$END$$
+		$$A:KEYWORDS=$$
+	$$END$$
+	$$IF0:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@TITLE_AGENCES_LISTE_ESTIMATION@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		  $$END$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+		  $$IF:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@TITLE_AGENCES_LISTE_ESTIMATION@@$$
+		  $$END$$
+		  $$IF0:TITLE_AGENCES_LISTE_ESTIMATION$$
+		    $$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ - @@REP:SRV@@$$
+		  $$END$$
+		$$END$$
+		$$IF:DESCRIPTION_AGENCES_LISTE_ESTIMATION$$
+		  $$A:DESCRIPTION_ESTIMATION=@@DESCRIPTION_AGENCES_LISTE_ESTIMATION@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_AGENCES_LISTE_ESTIMATION$$
+		  $$A:DESCRIPTION_ESTIMATION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+		$$END$$
+		$$A:KEYWORDS=$$
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		$$IF:NOM_SITE_REF$$
+			$$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$A:TITLE_ESTIMATION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ - @@REP:SRV@@$$
+		$$END$$
+		$$A:DESCRIPTION_ESTIMATION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+		$$A:KEYWORDS=$$
+	$$END$$
+$$END$$
+
+
+$$IF=:ACQUERIR:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:TITLEACQUEREUR pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		$$A:DESCRIPTION=@@LG:TITLEACQUEREUR pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:TITLEACQUEREUR pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+		$$A:DESCRIPTION=@@LG:TITLEACQUEREUR pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+	$$END$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:RECRUTEMENT:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:AGENCERECRUTE pcase@@ - @@NOM_SITE_REF@@$$
+		$$A:DESCRIPTION=@@LG:AGENCERECRUTE pcase@@$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:AGENCERECRUTE pcase@@ - @@URLBASE@@$$
+		$$A:DESCRIPTION=@@LG:AGENCERECRUTE pcase@@$$
+	$$END$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:RECRUTEMENT_DETAIL:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$A:TITLE=@@BT:TITRE@@ - @@NOM_SITE_REF@@$$
+		$$A:DESCRIPTION=@@BT:TITRE@@$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$A:TITLE=@@BT:TITRE@@ - @@URLBASE@@$$
+		$$A:DESCRIPTION=@@BT:TITRE@@$$
+	$$END$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+
+$$IF=:GESTION:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$IF:TITLE_GESTION$$
+			$$A:TITLE=@@TITLE_GESTION@@ - @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:TITLE_GESTION$$
+			$$A:TITLE=@@LG:GESTIONIMMO pcase@@ - @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF:DESCRIPTION_GESTION$$
+			$$A:DESCRIPTION=@@DESCRIPTION_GESTION@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_GESTION$$
+			$$A:DESCRIPTION=@@LG:GESTIONIMMO pcase@@$$
+		$$END$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$IF:TITLE_GESTION$$
+			$$A:TITLE=@@TITLE_GESTION@@ - @@REP:SRV@@$$
+		$$END$$
+		$$IF0:TITLE_GESTION$$
+			$$A:TITLE=@@LG:GESTIONIMMO pcase@@ - @@REP:SRV@@$$
+		$$END$$
+		$$IF:DESCRIPTION_GESTION$$
+			$$A:DESCRIPTION=@@DESCRIPTION_GESTION@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_GESTION$$
+			$$A:DESCRIPTION=@@LG:GESTIONIMMO pcase@@$$
+		$$END$$
+	$$END$$	
+	$$A:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+
+$$IF=:SYNDIC:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$IF:TITLE_SYNDIC$$
+			$$A:TITLE=@@TITLE_SYNDIC@@ - @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:TITLE_SYNDIC$$
+			$$A:TITLE=@@LG:SYNDICCOPRO pcase@@ @@LG:A lcase@@ @@AGENCE_CP cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@$$
+		$$END$$
+		$$IF:DESCRIPTION_SYNDIC$$
+			$$A:DESCRIPTION=@@DESCRIPTION_SYNDIC@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_SYNDIC$$
+			$$A:DESCRIPTION=@@DESCRIPTION_SYNDIC@@$$
+		$$END$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$IF:TITLE_SYNDIC$$
+			$$A:TITLE=@@TITLE_SYNDIC@@ - @@REP:SRV@@$$
+		$$END$$
+		$$IF0:TITLE_SYNDIC$$
+			$$A:TITLE=@@LG:SYNDICCOPRO pcase@@ - @@REP:SRV@@$$
+		$$END$$
+		$$IF:DESCRIPTION_SYNDIC$$
+			$$A:DESCRIPTION=@@DESCRIPTION_SYNDIC@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_SYNDIC$$
+			$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@LG:SYNDICCOPRO pcase@@$$
+		$$END$$
+	$$END$$	
+	$$A:KEYWORDS=@@LG:SYNDICCOPRO pcase@@, @@LG:IMMOBILIER lcase@@,@@AGENCE_CP cp2dep@@$$
+$$END$$
+
+
+$$IF=:EXPERTISE:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$IF:TITLE_EXPERTISE$$
+			$$A:TITLE=@@TITLE_EXPERTISE@@$$
+		$$END$$
+		$$IF0:TITLE_EXPERTISE$$
+			$$A:TITLE=@@LG:EXPERTIM pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF:DESCRIPTION_EXPERTISE$$
+			$$A:DESCRIPTION=@@DESCRIPTION_EXPERTISE@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_EXPERTISE$$
+			$$A:DESCRIPTION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@NOM_SITE_REF@@$$
+		$$END$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$IF:TITLE_EXPERTISE$$
+			$$A:TITLE=@@TITLE_EXPERTISE@@$$
+		$$END$$
+		$$IF0:TITLE_EXPERTISE$$
+			$$A:TITLE=@@LG:EXPERTIM pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+		$$END$$
+		$$IF:DESCRIPTION_EXPERTISE$$
+			$$A:DESCRIPTION=@@DESCRIPTION_EXPERTISE@@$$
+		$$END$$
+		$$IF0:DESCRIPTION_EXPERTISE$$
+			$$A:DESCRIPTION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+		$$END$$
+	$$END$$	
+	$$A:KEYWORDS=@@LG:EXPERTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+
+$$IF=:PLAN:IDT$$
+	$$A:TITLE=@@LG:LIEN:PLAN pcase@@ @@REP:RSRV@@$$
+	$$A:DESCRIPTION=@@LG:LIEN:PLAN pcase@@$$
+	$$A:KEYWORDS=@@LG:LIEN:PLAN pcase@@$$
+$$END$$
+
+
+$$IF=:CALCULETTES:IDT$$
+	$$A:TITLE=@@LG:CALCULIMMO pcase@@ @@REP:RSRV@@$$
+	$$A:DESCRIPTION=@@LG:EFFECTUEZCOMPTES@@ : @@REP:RSRV@@$$
+	$$A:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@$$
+$$END$$
+
+
+$$IF=:RSS:IDT$$
+		$$A:TITLE=Les flux RSS de @@URLBASE@@$$
+		$$A:DESCRIPTION=D&eacute;couvrez les flux RSS de nos dernières annonces$$
+		$$A:KEYWORDS=abonnement,flux,rss$$
+$$END$$
+
+
+$$IF=:MOTEURVENTE:IDT$$
+	
+	$$IF=:2:FORM:IDTT$$
+			$$IF:NOM_SITE_REF$$
+				$$A:TITLE=@@LG:NOSANNONCESVEN pcase@@ - @@NOM_SITE_REF@@$$
+			$$END$$
+			$$IF0:NOM_SITE_REF$$
+				$$A:TITLE=@@LG:NOSANNONCESVEN pcase@@ - @@REP:SRV@@$$
+			$$END$$
+			$$A:DESCRIPTION=@@LG:DESCMOTEURVENTE pcase@@$$
+			$$A:KEYWORDS=@@LG:VENTE lcase@@, @@LG:ACHAT lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:8:FORM:IDTT$$
+		$$A:TITLE=@@LG:PRESTIGE pcase@@ @@LG:MAISON lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENT lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:PRESTIGE lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ @@LG:ET lcase@@ @@LG:APPARTEMENTS lcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:PRESTIGE pcase@@, @@LG:ACHAT lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURLOCATION:IDT$$
+	
+	$$IF=:1:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCATION pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LIEN:LOC lcase@@ d'@@LG:APPARTEMENTS lcase@@ et @@LG:DE lcase@@ @@LG:MAISONS lcase@@(@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:LOCATION lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END$$
+	
+	$$IF=:3:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCTEMP pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCTEMP lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:LOCTEMP lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:4:FORM:IDTT$$
+		$$A:TITLE=@@LG:LOCATIONVACANCES pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:LOCVACS lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:LOCVACS lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:7:FORM:IDTT$$
+		$$A:TITLE=@@LG:ANN:LOCPRESTIGE pcase@@ @@LG:APPARTEMENT lcase@@ @@LG:ET lcase@@ @@LG:MAISON lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:ANN:LOCPRESTIGE lcase@@ d'@@LG:APPARTEMENTS lcase@@ @@LG:ET lcase@@ @@LG:DE lcase@@ @@LG:MAISONS lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:ANN:LOCPRESTIGE lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURVIAGER:IDT$$
+	$$IF=:5:FORM:IDTT$$
+		$$A:TITLE=@@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@, @@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:VIAGERLIBRE2 pcase@@ @@LG:ET lcase@@ @@LG:VIAGEROCCUPE2 lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:VIAGERLIBRE2 pcase@@, @@LG:VIAGEROCCUPE2 lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURNEUF:IDT$$
+	
+	$$IF=:6:FORM:IDTT$$
+		$$A:TITLE=@@LG:PRODUITINVEST pcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:PRODINVES lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:PRODINVES pcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:9:FORM:IDTT$$
+		$$A:TITLE=@@LG:NOSPROGSNEUFS pcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:LIEN:PGRNEUF lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:LIEN:PGRNEUF pcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:MOTEURNEUF:IDT$$
+	
+	$$IF=:10:FORM:IDTT$$
+		$$A:TITLE=@@LG:LIEN:FCOMMERCE pcase@@, @@LG:ACHAT lcase@@ @@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ ses @@LG:LIEN:FCOMMERCE lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:LIEN:FCOMMERCE lcase@@, @@LG:ACHAT lcase@@, @@AGENCE_CP cp2dep@@.$$
+	$$END:FORM:IDTT$$
+	
+	$$IF=:11:FORM:IDTT$$
+		$$A:TITLE=@@LG:CESSIONDEBAIL pcase@@ @@AGENCE_CP cp2dep@@ - @@REP:RSRV@@$$
+		$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ @@LG:VOUSPROPOSENT@@ @@LG:DE lcase@@ nombreuses @@LG:ANNONCIMMOS@@ @@LG:DE lcase@@ @@LG:CESSIONDEBAIL lcase@@ (@@AGENCE_CP cp2dep@@ et ses alentours).$$
+		$$A:KEYWORDS=@@LG:CESSIONDEBAIL lcase@@, @@AGENCE_CP cp2dep@@, @@LG:APPARTEMENT lcase@@, @@LG:MAISON lcase@@.$$
+	$$END:FORM:IDTT$$
+$$END$$
+
+
+$$IF=:RESULTATS$RESULTATSCARTE:IDT$$
+	$$IF0:ANNLISTE:PAGE$$
+		$$IF:NOM_SITE_REF$$
+			$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@NOM_SITE_REF@@$$
+			$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE replace . ¤-@@ @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@REP:RSRV@@$$
+			$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE replace . ¤-@@ @@REP:SRV@@$$
+		$$END$$
+	$$END$$
+	$$IF+:1:ANNLISTE:PAGE$$ 
+				
+		$$IF:NOM_SITE_REF$$
+			$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@NOM_SITE_REF@@$$
+			$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@NOM_SITE_REF@@$$
+		$$END$$
+		$$IF0:NOM_SITE_REF$$
+			$$A:TITLE=@@ANNLISTE:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@ANNLISTE:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@REP:RSRV@@$$
+			$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@ANNLISTE:PHRASE@@ - @@REP:RSRV@@$$
+		$$END$$
+		$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANNLISTE:PAGE$$
+$$END$$
+
+
+$$IF=:BIENSVENDUS:IDT$$
+	$$A:TITLE=@@LG:BIENVENDUS pcase@@ @@LG:AVEC lcase@@ @@REP:RSRV@@$$
+$$END:BIENSVENDUS$$
+
+
+$$IF=:PUDAGENCE:IDT$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@URLBASE@@$$
+	$$A:DESCRIPTION=@@LG:DECOUVREZNOS pcase left 9@@ @@LG:LIEN:AGEN lcase@@ @@LG:IMMOBILIERE lcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$A:KEYWORDS=agence @@FORM:CI codeinsee2ville field 1@@, agence immo @@FORM:CI codeinsee2ville field 1@@,agence immobilière @@FORM:CI codeinsee2ville field 1@@,agent immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDAGENCE$$
+
+
+$$IF=:PUDANNONCES:IDT$$
+	$$A:TITLE=@@LG:ANNONCIMMOS pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@URLBASE@@$$
+	$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$$A:KEYWORDS=annonces @@FORM:CI codeinsee2ville field 1@@,annonces immo @@FORM:CI codeinsee2ville field 1@@, annonces immobilières @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDANNONCES$$
+
+
+$$IF=:PUDESTIMATION:IDT$$
+	$$A:TITLE=@@LG:ESTIMATION pcase@@ @@LG:IMMOBILIERE lcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@URLBASE@@$$
+	$$A:DESCRIPTION=@@LG:FAITESESTIMBIEN pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$$A:KEYWORDS=estimation @@FORM:CI codeinsee2ville field 1@@, évaluation immobilière @@FORM:CI codeinsee2ville field 1@@, estimation gratuite @@FORM:CI codeinsee2ville field 1@@, Vendre son bien @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDESTIMATION$$
+
+
+$$IF=:PUDIMMOBILIER:IDT$$
+	$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@FORM:CI codeinsee2ville field 1@@ : @@URLBASE@@$$
+	$$A:DESCRIPTION=@@LG:TOUTESANNONC pcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$$A:KEYWORDS=immo @@FORM:CI codeinsee2ville field 1@@,immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDIMMOBILIER$$
+
+
+$$IF=:PUDTYPBIEN:IDT$$
+	$$A:TITLE=@@FORM:IDTT gettypetransaction pcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@$$
+	$$A:DESCRIPTION=Notre agence vous propose une sélection d'annonces immobilières de @@FORM:IDTT gettypetransaction lcase@@  @@FORM:IDTYPEBIEN gettypebien lcase@@ sur @@FORM:CI codeinsee2ville@@ et sa région.$$
+	 $$$A:KEYWORDS=@@FORM:IDTT gettypetransaction pcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDTYPBIEN$$
+
+
+$$IF=:PUDGESTLOC:IDT$$
+	$$A:TITLE=Gestion Locative @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=confiez la gestion locative de votre bien immobilier @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ $$
+	$$$A:KEYWORDS=gestion locative @@FORM:CI codeinsee2ville field 1@@, gestion immobilière @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDGESTLOC$$
+
+
+$$IF=:PUDLOCAVAC:IDT$$
+	$$A:TITLE=Locations Vacances @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de location vacances @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@ $$
+	$$$A:KEYWORDS=location vacances @@FORM:CI codeinsee2ville field 1@@, vacances @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDLOCAVAC$$
+
+
+$$IF=:PUDNEUF:IDT$$
+	$$A:TITLE=Immobilier Neuf @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de programmes neufs @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=programme neuf  @@FORM:CI codeinsee2ville field 1@@, immobilier neuf @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDNEUF$$
+
+
+$$IF=:PUDPRESTIGE:IDT$$
+	$$A:TITLE=Immobilier de Prestige @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos produits immobilieres de prestige @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=maison prestige  @@FORM:CI codeinsee2ville field 1@@, appartement prestige @@FORM:CI codeinsee2ville field 1@@, immobilier prestige  @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDPRESTIGE$$
+
+
+$$IF=:PUDVIAGER:IDT$$
+	$$A:TITLE=Viager @@FORM:CI codeinsee2ville field 1@@$$
+	$$A:DESCRIPTION=consultez nos offres de viager @@LG:SUR lcase@@ @@FORM:CI codeinsee2ville field 1@@$$
+	$$$A:KEYWORDS=viager @@FORM:CI codeinsee2ville field 1@@$$
+$$END:PUDVIAGER$$
+
+
+$$IF=:TOPVILLES-RACINE.HTM:REP:URI$$
+     $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Plan des annonces immobilières - @@NOM_SITE_REF@@$$ 
+	    $$A:DESCRIPTION=Retrouvez toutes les annonces immobilières proposées par @@NOM_SITE_REF@@ triées par pays, villes, régions ou encore transactions.$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Plan des annonces immobilières - @@URLBASE@@$$ 
+	    $$A:DESCRIPTION=Retrouvez toutes les annonces immobilières proposées par @@URLBASE@@ triées par pays, villes, régions ou encore transactions.$$ 
+    $$END$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$
+	$$A:H1_IMMOBILIER=@@TITLE@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TYPETRANSACTION.HTM:REP:URI$$
+    $$IF=:9:FORM:IDTYPETRANSACTION$$
+        $$A:TRANSAC=@@LG:PRGNEUF lcase@@$$
+    $$END$$
+    $$IF!:9:FORM:IDTYPETRANSACTION$$
+        $$A:TRANSAC=@@FORM:IDTYPETRANSACTION gettypetransaction lcase@@$$
+    $$END$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Retrouvez nos annonces immobilières de @@TRANSAC@@. Trouvez votre bien immobilier parmi nos offres de @@TRANSAC@@.$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières de @@TRANSAC@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-TTTB.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Retrouvez nos annonces immobilières de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@. Trouvez votre @@FORM:IDTYPEBIEN gettypebien lcase@@ parmi nos offres de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces de @@FORM:IDTYPETRANSACTION gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-QUARTIER.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@, Quartier : @@ID3:URW-GETVALUES:QUARTIER@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@, Quartier : @@ID3:URW-GETVALUES:QUARTIER@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Découvrez nos annonces immobilières dans le quartier @@ID3:URW-GETVALUES:QUARTIER@@, @@ID3:URW-GETVALUES:VILLE@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@ID3:URW-GETVALUES:QUARTIER@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLE.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:VILLE@@ – Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:VILLE@@ – Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Trouvez votre bien immobilier parmi nos offres à @@ID3:URW-GETVALUES:VILLE@@. Consultez nos annonces immobilières à @@ID3:URW-GETVALUES:VILLE@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-COUNTRIES.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par pays - @@NOM_SITE_REF@@$$ 
+    	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par pays  - @@NOM_SITE_REF@@$$
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par pays - @@URLBASE@@$$ 
+    	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par pays  - @@URLBASE@@$$
+    $$END$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Nos annonces immobilières triées par pays$$
+$$END$$
+
+
+$$IF=:TOPVILLES-COUNTRY.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:PAYS@@ – Annonces immobilières @@ID3:URW-GETVALUES:PAYS@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:PAYS@@ – Annonces immobilières @@ID3:URW-GETVALUES:PAYS@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Consultez nos offres immobilières @@ID3:URW-GETVALUES:PAYS@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:PAYS@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-REGIONS.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par régions  - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par régions  - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par région.$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par régions$$
+$$END$$
+
+
+$$IF=:TOPVILLES-REGION.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:REGION@@ – Annonces immobilières @@ID3:URW-GETVALUES:REGION@@ - @@NOM_SITE_REF@@$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:REGION@@ – Annonces immobilières @@ID3:URW-GETVALUES:REGION@@ - @@NOM_SITE_REF@@$$
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:REGION@@ – Annonces immobilières @@ID3:URW-GETVALUES:REGION@@ - @@URLBASE@@$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:REGION@@ – Annonces immobilières @@ID3:URW-GETVALUES:REGION@@ - @@URLBASE@@$$
+    $$END$$
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières en @@ID3:URW-GETVALUES:REGION@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:REGION@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-DEPARTEMENTS.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par département - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces immobilières triées par département - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par département.$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par départements$$
+$$END$$
+
+
+$$IF=:TOPVILLES-DEPARTEMENT.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:DEPARTEMENT@@ – Annonces immobilières @@ID3:URW-GETVALUES:DEPARTEMENT@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Immobilier @@ID3:URW-GETVALUES:DEPARTEMENT@@ – Annonces immobilières @@ID3:URW-GETVALUES:DEPARTEMENT@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières en @@ID3:URW-GETVALUES:DEPARTEMENT@@$$
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Immobilier @@ID3:URW-GETVALUES:DEPARTEMENT@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-ARRONDISSEMENT.HTM:REP:URI$$
+    $$IF:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@ @@ID3:URW-GETVALUES:ARRONDISSEMENT@@ - @@NOM_SITE_REF@@$$ 
+    $$END$$
+    $$IF0:NOM_SITE_REF$$
+    	$$A:TITLE=Nos annonces de @@ID3:URW-GETVALUES:VILLE@@ @@ID3:URW-GETVALUES:ARRONDISSEMENT@@ - @@URLBASE@@$$ 
+    $$END$$
+	$$A:DESCRIPTION=Découvrez nos annonces immobilières dans l'arrondissement @@ID3:URW-GETVALUES:ARRONDISSEMENT@@ @@ID3:URW-GETVALUES:VILLE@@$$ 
+	$$A:KEYWORDS=annonces immo, annonces immobilières, @@LG:IMMOBILIER pcase@@$$ 
+	$$A:H1_IMMOBILIER=Annonces immobilières @@ID3:URW-GETVALUES:VILLE@@ - @@ID3:URW-GETVALUES:ARRONDISSEMENT@@$$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLES.HTM:REP:URI$$
+  $$IF:NOM_SITE_REF$$
+    $$A:TITLE=Nos annonces immobilières triées par ville - @@NOM_SITE_REF@@$$ 
+  $$END$$
+  $$IF0:NOM_SITE_REF$$
+    $$A:TITLE=Nos annonces immobilières triées par ville - @@URLBASE@@$$ 
+  $$END$$
+	$$A:DESCRIPTION=Trouvez votre logement facilement grâce aux annonces immobilières triées par ville. $$ 
+	$$A:KEYWORDS=$$ 
+	$$A:H1_IMMOBILIER=L'immobilier par villes $$
+$$END$$
+
+
+$$IF=:TOPVILLES-VILLES-AUTRES.HTM$TOPVILLES-VILLES-PAGES.HTM:REP:URI$$
+	$$IF=:750056:FORM:CODEINSEE$$
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:VILLE@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$END$$
+	$$IF!:750056:FORM:CODEINSEE$$
+		$$A:TITLE=Annonces immobilières @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:PAYS@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@ @@LG:AVEC lcase@@ @@URLBASE@@$$
+	$$END$$
+	$$A:DESCRIPTION=Retrouvez toutes nos annonces immobilières à @@AGENCE_VILLE@@ et sa région @@FORM:CI codeinsee2ville field 1@@ avec @@URLBASE@@$$
+	$$A:KEYWORDS=annonces immo @@ID3:URW-GETVALUES:TYPETRANSACTION ncase@@ @@ID3:URW-GETVALUES:TYPEBIEN lcase@@ @@ID3:URW-GETVALUES:REGION@@ @@ID3:URW-GETVALUES:DEPARTEMENT@@ @@ID3:URW-GETVALUES:VILLE@@, annonces immobilières @@ID3:URW-GETVALUES:VILLE@@, immobilier @@ID3:URW-GETVALUES:VILLE@@$$
+$$END$$
+
+$$IF=:MENTIONS:IDT$$
+	$$IF:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:MENTIONSLEG pcase@@ - @@NOM_SITE_REF@@$$
+		$$A:DESCRIPTION=@@LG:MENTIONSLEG pcase@@  @@NOM_SITE_REF@@$$
+		$$A:KEYWORDS=@@LG:MENTIONSLEG pcase@@ @@NOM_SITE_REF@@, @@LG:IMMOBILIER lcase@@$$
+	$$END$$
+	$$IF0:NOM_SITE_REF$$
+		$$A:TITLE=@@LG:MENTIONSLEG pcase@@ - @@REP:SRV@@$$
+		$$A:DESCRIPTION=@@LG:MENTIONSLEG pcase@@ @@REP:SRV@@$$
+		$$A:KEYWORDS=@@LG:MENTIONSLEG pcase@@ @@REP:SRV@@, @@LG:IMMOBILIER lcase@@$$
+	$$END$$
+$$END$$
+
+$$END$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$E:ID3:URW-GETINFOS$$
+$$A:URL=@@REP:SRV splitpart url 2@@$$
+
+
+$$IF!:PROVISOIRE.COM:URL$$
+    $$IF!:1:SITEINDEXATION$$
+        $$IF=:0:INDEXATION_LANGUE$$ 
+            $$IF:FORM:LANG$$
+                $$IF!:FR:FORM:LANG$$
+                    <meta name="robots" content="noindex,follow"/>
+                $$END$$
+                $$IF=:FR:FORM:LANG$$
+                    <meta name="robots" content="noindex,follow"/>
+                $$END$$
+            $$END$$
+        $$END$$
+    $$END$$
+    $$IF!:1:SITEINDEXATION$$
+    	$$IF=:INDEX:IDT$$
+    	<meta name="robots" content="index,follow,all">
+    		$$IF:FORM:LANG$$
+    			$$IF=:FR:FORM:LANG$$
+    				<link rel="canonical" href="$$URLBASE$$"/>
+    			$$END$$
+    		$$END$$
+    		$$IF0:FORM:LANG$$
+    			<link rel="canonical" href="$$URLBASE$$"/>
+    		$$END$$
+    	$$END$$
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	$$IF!:INDEX$DETAILANNONCE$NOTREAGENCE$RESULTATS$TOPVILLE$MOTEURVENTE$MOTEURLOCATION$MOTEURVIAGER$MOTEURNEUF$MOTEURCOMMERCE:IDT$$
+        <link rel="canonical" href="$$URLBASE$$/$$REP:URI$$" />
+    	$$END$$
+    	
+    	
+
+$$END$$
+    $$IF=:1:SITEINDEXATION$$
+    	<meta name="robots" content="noindex,follow"/>
+    $$END$$
+    
+$$END$$
+$$IF=:PROVISOIRE.COM:URL$$
+    <meta name="robots" content="noindex,follow"/>
+$$END$$
+
+
+
+
+<meta property="og:title" content="$$TITLE$$" />
+<meta property="og:type" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$website$$END$$" />
+<meta property="og:url" content="$$IF!:DETAILANNONCE$NOTREAGENCE$TOPVILLE:IDT$$$$IF!:INDEX:IDT$$$$URLBASE$$/$$REP:PAGE$$$$END$$$$IF=:INDEX:IDT$$$$URLBASE$$$$END$$$$END$$" />
+<meta property="og:image" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$_$$images/logo.png$$END$$" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="800" />
+<meta property="og:image:height" content="500" />
+<meta property="og:site_name" content="$$URLBASE$$" />
+<meta property="og:description" content="$$DESCRIPTION$$" />
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="$$TITLE$$">
+<meta name="twitter:description" content="$$DESCRIPTION$$">
+<meta name="twitter:image" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$_$$images/logo.png$$END$$">
+<meta name="twitter:domain" content="$$URLBASE$$">
+
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+
+
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/bootstrap.css"/>
+
+	$$IF=:1:CSS_PARENTE$$
+		<link rel="stylesheet" href="$$-$$css/style.css"/>
+	$$END$$
+	$$IF0:CSS_PARENTE$$
+		<link rel="stylesheet" href="$$_$$css/style.css"/>
+	$$END$$
+
+
+
+$$IF=:1:CSS_GALERIE$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/default-slider.css"/>
+$$END$$
+
+$$IF=:1:CSS_TOASTER$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/toaster.css"/>
+$$END$$
+$$IF=:1:CSS_MODALE$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/bootstrap.modal.min.css"/>
+$$END$$
+
+$$IF=:1:CSS_POI$$
+<script type="text/javascript">
+	if(winW >= tailleW) {
+		var sNew = document.createElement("link");
+		sNew.rel = 'stylesheet';
+		sNew.href = "/z/webagency/slagence_X_V5/sources/css/structure_poi.css";
+		var s0 = document.getElementsByTagName('link')[0];
+		s0.parentNode.insertBefore(sNew, s0);
+	
+	}
+</script>
+$$END$$
+
+$$IF=:1:CSS_DEMOGRAPHIQUE$$
+<script type="text/javascript">
+	if(winW >= tailleW) {
+		var sNew = document.createElement("link");
+		sNew.rel = 'stylesheet';
+		sNew.href = "/z/webagency/slagence_X_V5/sources/css/structure_demographique.css";
+		var s0 = document.getElementsByTagName('link')[0];
+		s0.parentNode.insertBefore(sNew, s0);
+	
+	}
+</script>
+$$END$$
+
+$$IF=:1:CSS_COLORBOX$$
+<script type="text/javascript">
+	if(winW >= tailleW) {
+		var sNew = document.createElement("link");
+		sNew.rel = 'stylesheet';
+		sNew.href = "/z/webagency/slagence_X_V5/sources/css/colorbox.css";
+		var s0 = document.getElementsByTagName('link')[0];
+		s0.parentNode.insertBefore(sNew, s0);
+	
+	}
+</script>
+$$END$$
+$$IF=:1:CSS_FACEBOOK$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/facebook.css"/>
+$$END$$
+$$IF=:1:CSS_AGENCE$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/magnific_popup.css"/>
+$$END$$
+$$IF=:1:CSS_MINI_MOTEUR$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/multiple-select.css"/>
+$$END$$
+
+$$IF!:FICHEVISITE:IDT$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/bootstrap-responsive.css"/>
+$$END$$$$IF!:FICHEVISITE:IDT$$
+    
+    $$IF=:0:TYPOADOBE$$
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>$$END$$
+$$END$$$$IF=:INDEX:IDT$$
+    <!--#include virtual="css/carousel/incl_owl_carousel.htm" -->
+$$END$$
+
+    <link rel="stylesheet" href="/z/webagency/slagence_X_V5/sources/css/master.css"/>$$IF!:1:FAVICONPERSO$$
+    <link rel="shortcut icon" type="image/x-icon" href="$$~$$images/favicon.ico">
+$$END$$
+$$IF=:1:FAVICONPERSO$$
+    <link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico">
+$$END$$
+$$IF=:1:ICONTOUCH$$
+    <link rel="apple-touch-icon" sizes="57x57" href="$$_$$images/touch-icon-iphone-114.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="$$_$$images/touch-icon-iphone-114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="$$_$$images/touch-icon-ipad-144.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="$$_$$images/touch-icon-ipad-144.png">
+    <link rel="icon" type="image/png" href="$$_$$images/favicon.png"> 
+$$END$$
+
+$$IF0:PAGE:GOOGLEKEY_ANALYTICS_REGION$$
+	
+	$$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script',
+		ga('create', '$$PAGE:GOOGLEKEY_ANALYTICS$$', 'auto');
+	
+		ga('set', 'IDTypePublication', '$$PAGE:CFG_IMMOBW_IDTYPEPUBLICATION$$');
+		ga('send', 'pageview');
+		var keyRegion = "";
+	</script>
+	$$END:GOOGLEKEY_ANALYTICS$$
+$$END:GOOGLEKEY_ANALYTICS_REGION$$
+
+$$IF:PAGE:GOOGLEKEY_ANALYTICS_REGION$$
+	<script> 		
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script',
+		ga('create', '$$PAGE:GOOGLEKEY_ANALYTICS$$','auto');
+		ga('create', {
+			trackingId:'$$PAGE:GOOGLEKEY_ANALYTICS_REGION$$',
+			cookieDomain:'$$REP:SRV$$',
+			name:'general2'
+		});
+		ga('create', {
+			trackingId:'UA-77145125-1',
+			cookieDomain:'$$REP:SRV$$',
+			name:'general'
+		});
+		ga('send', 'pageview');
+		ga('general.send', 'pageview');
+		ga('general2.send', 'pageview');
+		var keyRegion = "1";
+	</script>
+$$END:GOOGLEKEY_ANALYTICS_REGION$$
+</head>
+<body>
+<header class="$$TYPECONTAINER$$ navigation$$IF=:1:NAV_FIXE$$ fixe z150 top box-shadow-bottom$$END$$ border-solid-bottom-primary-1">
+    $$IF=:1:HELSINKIAFFICHAGETOPHEADER$$
+  		<aside class="$$TYPECONTAINER$$ bg-secondary ligne-social-langue hidden-phone hidden-tablet-landscape">
+  			<div class="$$SITEFLUIDE$$">
+  				<!--#include absolute="webagency/A_ID3X/10perf/header/incl_haut_social_langue.htm" -->
+  			</div>
+  		</aside>
+  $$END$$
+	<div class="$$SITEFLUIDE$$">
+	  
+	  
+	  $$IF=:2:MENU_UNDER_LOGO$$
+	  	$$IF!:1:LOGO_ABSOLUTE$$
+    		<div class="row-fluid">
+    			<div class="span$$IF:TAILLE_LOGO$$$$TAILLE_LOGO$$$$END$$ logo padding-left-10 padding-right-10">
+    				<div itemscope itemtype="http://schema.org/Organization">
+   <a itemprop="url" href="$$URLBASE$$"><span itemprop="title"><!--#include absolute="webagency/A_ID3X/10perf/header/incl_logo_image.htm" --></span></a>
+</div>
+$$IF=:1:MENU_RESPONSIVE$$
+   <button type="button" class="btn-navbar hidden-tablet-landscape">
+      $$IF0:PICTOMENURESPONSIVE$$
+        $$LG:MENURESPONSIVE pcase$$
+      $$END$$
+      $$IF=:1:PICTOMENURESPONSIVE$$
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      $$END$$
+   </button>
+$$END$$
+$$IF=:1:ESPACEPERSORECHERCHE$$
+   $$IF=:1:EPSA_BARRE_FIXE$$
+      <!--#include absolute="webagency/A_ID3X/10perf/header/incl_epsa_fixe_mobile.htm" -->
+   $$END$$
+$$END$$
+</div>
+    			<nav class="$$IF!:1:LOGO_ABSOLUTE$$$$IF=:2:MENU_UNDER_LOGO$$span$$IF:TAILLE_NAV$$$$TAILLE_NAV$$$$END$$$$IF0:TAILLE_NAV$$10$$END$$$$END$$$$IF=:1:MENU_UNDER_LOGO$$span12 margin-top-10$$END$$$$END$$ hidden-phone hidden-tablet-portrait">
+	<ul class="nav nav-pills menu-principal$$IF=:1:MENU_UNDER_LOGO$$ pagination-centered$$END$$$$IF=:2:MENU_UNDER_LOGO$$ pagination-right$$END$$" id="menuNavigation">
+	<!--#include absolute="webagency/A_ID3X/10perf/menu/incl_menu.htm"-->
+	$$IF!:1:HELSINKIAFFICHAGETOPHEADER$$<!--#include absolute="webagency/A_ID3X/10perf/header/incl_menu_social_langue.htm"-->$$END$$
+	$$IF=:2$12$21$23$32:POSITIONHEADERTEL$$
+		<li>
+			<a href="#">
+				<div class="" id="bouton-telephonez-nous-header1">
+    				<span id="texte-telephonez-nous-header1" class="small"><i class="icon-v5-phone opacity-4"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+    				<span id="numero-telephonez-nous-header1" class="display-none small"><i class="icon-v5-phone small"></i> $$AGENCE_TEL$$</span>
+				</div>
+			</a>
+		</li>
+    $$END$$
+	</ul>
+	$$IF!:0:SOCIAL$$
+	$$IF=:1:SOCIAL_BARRE_FIXE$$
+	<!--#include absolute="webagency/A_ID3X/10perf/header/incl_social_fixe.htm" -->
+	$$END$$
+	$$END$$
+</nav><div class="nav-collapse menu-responsive collapse hidden-desktop hidden-tablet-landscape">
+	<ul class="margin-top-10 margin-bottom-10 overflow-visible">
+		<!--#include absolute="webagency/A_ID3X/10perf/menu/incl_menu.htm" -->
+	</ul>
+</div></div>
+    	$$END$$
+    	$$IF=:1:LOGO_ABSOLUTE$$
+    		<div class="row-fluid relative">
+    			<div class="logo absolute">
+    				<div itemscope itemtype="http://schema.org/Organization">
+   <a itemprop="url" href="$$URLBASE$$"><span itemprop="title"><!--#include absolute="webagency/A_ID3X/10perf/header/incl_logo_image.htm" --></span></a>
+</div>
+$$IF=:1:MENU_RESPONSIVE$$
+   <button type="button" class="btn-navbar hidden-tablet-landscape">
+      $$IF0:PICTOMENURESPONSIVE$$
+        $$LG:MENURESPONSIVE pcase$$
+      $$END$$
+      $$IF=:1:PICTOMENURESPONSIVE$$
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      $$END$$
+   </button>
+$$END$$
+$$IF=:1:ESPACEPERSORECHERCHE$$
+   $$IF=:1:EPSA_BARRE_FIXE$$
+      <!--#include absolute="webagency/A_ID3X/10perf/header/incl_epsa_fixe_mobile.htm" -->
+   $$END$$
+$$END$$
+</div>
+    			<nav class="$$IF!:1:LOGO_ABSOLUTE$$$$IF=:2:MENU_UNDER_LOGO$$span$$IF:TAILLE_NAV$$$$TAILLE_NAV$$$$END$$$$IF0:TAILLE_NAV$$10$$END$$$$END$$$$IF=:1:MENU_UNDER_LOGO$$span12 margin-top-10$$END$$$$END$$ hidden-phone hidden-tablet-portrait">
+	<ul class="nav nav-pills menu-principal$$IF=:1:MENU_UNDER_LOGO$$ pagination-centered$$END$$$$IF=:2:MENU_UNDER_LOGO$$ pagination-right$$END$$" id="menuNavigation">
+	<!--#include absolute="webagency/A_ID3X/10perf/menu/incl_menu.htm"-->
+	$$IF!:1:HELSINKIAFFICHAGETOPHEADER$$<!--#include absolute="webagency/A_ID3X/10perf/header/incl_menu_social_langue.htm"-->$$END$$
+	$$IF=:2$12$21$23$32:POSITIONHEADERTEL$$
+		<li>
+			<a href="#">
+				<div class="" id="bouton-telephonez-nous-header1">
+    				<span id="texte-telephonez-nous-header1" class="small"><i class="icon-v5-phone opacity-4"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+    				<span id="numero-telephonez-nous-header1" class="display-none small"><i class="icon-v5-phone small"></i> $$AGENCE_TEL$$</span>
+				</div>
+			</a>
+		</li>
+    $$END$$
+	</ul>
+	$$IF!:0:SOCIAL$$
+	$$IF=:1:SOCIAL_BARRE_FIXE$$
+	<!--#include absolute="webagency/A_ID3X/10perf/header/incl_social_fixe.htm" -->
+	$$END$$
+	$$END$$
+</nav><div class="nav-collapse menu-responsive collapse hidden-desktop hidden-tablet-landscape">
+	<ul class="margin-top-10 margin-bottom-10 overflow-visible">
+		<!--#include absolute="webagency/A_ID3X/10perf/menu/incl_menu.htm" -->
+	</ul>
+</div></div>
+    	$$END$$
+	 $$END$$
+		
+	</div>
+	$$IF=:1:NAV_FIXE$$<div class="absolute bg-primary bg-navigation top left right bottom z-25"></div>$$END$$
+</header>
+$$IF=:INDEX:IDT$$
+	$$SET:JS_MINI_MOTEUR=1$$
+$$SET:CSS_MINI_MOTEUR=1$$
+$$INIT:IDTTEXTRA=1$$
+$$INIT:QUERYEXTRA=si_coupdecoeur=1$$
+$$INIT:NBEXTRAANNONCES=1$$
+$$INIT:CATWORDPRESS=24664$$
+$$INIT:IDCATRECRUTEMENT=27454$$
+$$INIT:CATWORDPRESS=29111$$
+$$INIT:NBMODULEANNONCES=9$$
+$$INIT:IDTTMODULE=2$$
+$$INIT:QUERYMODULE=si_coupdecoeur=1&photo=10$$
+$$INIT:SIMILAIRESLIMITES=4$$
+$$INIT:FRAICHEUR=-30$$
+
+$$END$$
+$$IF!:INDEX:IDT$$
+<section class="$$TYPECONTAINER$$$$IF=:1:NAV_FIXE$$ margin-navigation margin-top-under-nav-fixe$$END$$">
+	<div class="$$SITEFLUIDE$$">
+		<div class="row-fluid">
+			<div class="span12 margin-top-20 margin-bottom-20">
+$$END$$
+<section class="$$TYPECONTAINER$$$$IF!:1:TYPESITE$$$$IF=:1:NAV_FIXE$$ margin-navigation$$END$$$$END$$">
+	<aside class="$$TYPECONTAINER$$ relative z25$$IF!:1:MAP_INDEX_ANNONCES$$ height-scrolling$$END$$ aside-home-1">
+		<div class="$$SITEFLUIDE$$ relative">
+			<div class="relative $$IF=:2:TITREEMPLACEMENTHORIZONTAL$$pagination-centered$$END$$ $$IF=:2:TITREEMPLACEMENTVERTICAL$$$$IF=:2:MENU_UNDER_LOGO$$titre-milieu$$END$$$$END$$">
+	$$IF!:3:TYPESITE$$
+	<h1>$$IF=:FR:LANGUE$$
+	$$IF=:1:MULTIAGENCES$$
+		$$IF:H1_INDEX$$
+			$$H1_INDEX$$
+		$$END$$
+		$$IF0:H1_INDEX$$
+			$$NOM_SITE_REF$$
+		$$END$$
+	$$END$$
+	$$IF!:1:MULTIAGENCES$$
+		$$IF:H1_INDEX$$
+			$$H1_INDEX$$
+		$$END$$
+		$$IF0:H1_INDEX$$
+			$$AGENCE_NOM$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF!:FR:LANGUE$$
+	$$IF:H1_INDEXNOTFR$$
+		$$H1_INDEXNOTFR$$
+	$$END$$
+	$$IF0:H1_INDEXNOTFR$$
+		$$IF=:1:MULTIAGENCES$$
+			$$NOM_SITE_REF$$
+		$$END$$
+		$$IF!:1:MULTIAGENCES$$
+			$$AGENCE_NOM$$
+		$$END$$
+	$$END$$
+$$END$$</h1>
+	<div class="hidden-phone">$$IF=:FR:LANGUE$$
+   $$IF:SLOGAN_INDEX$$
+    $$SLOGAN_INDEX$$
+   $$END$$
+$$END$$
+$$IF!:FR:LANGUE$$
+   $$IF:SLOGAN_INDEXNOTFR$$
+		$$SLOGAN_INDEXNOTFR$$
+	$$END$$
+$$END$$</div>
+	$$IF=:3$13$23$31$32:POSITIONHEADERTEL$$$$IF=:1:TELEPHONEMASQUE$$
+<div class="$$TYPEBOUTON$$ btn-action btn-large h3-like" id="bouton-telephonez-nous-header">
+	<span id="texte-telephonez-nous-header"><i class="icon-v5-phone opacity-4"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+	<span id="numero-telephonez-nous-header" class="display-none"><i class="icon-v5-phone"></i> 
+$$IF=:NOTREAGENCE:IDT$$
+	$$CV:TEL formattel replace / <br>$$
+$$END$$
+
+$$IF=:AJAXAGENCE:IDT$$
+	$$AGENCE:TEL formattel$$
+$$END$$
+$$IF=:NOSAGENCES$ESTIMATION:IDT$$
+	$$IF=:FR:LANGUE$$
+	$$LISTEAG:TEL formattel$$
+	$$END$$
+	$$IF!:FR:LANGUE$$
+	$$LISTEAG:TEL tel2inter$$
+	$$END$$
+$$END$$
+
+$$IF=:FICHEVISITE:IDT$$
+	$$CV:TEL formattel$$
+$$END$$
+
+$$IF=:DETAILANNONCE:IDT$$
+	$$IF:ANNDETAIL:TELEPHONE$$
+		<!-- tél entré dans l'annonce -->
+		$$IF=:FR:LANGUE$$
+		$$ANNDETAIL:TELEPHONE formattel$$
+		$$END$$
+		$$IF!:FR:LANGUE$$
+		$$ANNDETAIL:TELEPHONE tel2inter$$
+		$$END$$		
+	$$END:ANNDETAIL:TELEPHONE$$
+
+	$$IF0:ANNDETAIL:TELEPHONE$$
+
+		$$IF=:9$10$11:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél standard agence (neuf + fond de commerce + cession bail) -->
+			$$IF:AG:TEL$$
+				$$AG:TEL formattel$$
+			$$END:TEL$$
+		$$END:9$10$11:IDTYPETRANSACTION$$
+
+		$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél spécial vente -->
+			$$IF:AG:TELVEN$$
+				$$AG:TELVEN formattel$$
+			$$END:AG:TELVEN$$
+
+			$$IF0:AG:TELVEN$$
+				$$AG:TEL formattel$$
+			$$END:0:AG:TELVEN$$
+
+		$$END:2$5$6$8:IDTYPETRANSACTION$$
+
+		$$IF=:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél spécial loc -->
+			$$IF:AG:TELLOC$$
+				$$AG:TELLOC formattel$$
+			$$END:AG:TELLOC$$
+
+			$$IF0:AG:TELLOC$$
+				$$AG:TEL formattel$$
+			$$END:0:AG:TELLOC$$
+
+		$$END:2$5$6$8:IDTYPETRANSACTION$$
+
+	$$END:0:ANNDETAIL:TELEPHONE$$
+$$END$$
+
+$$IF=:FACEBOOK:IDT$$
+	$$CV:TEL formattel$$
+$$END$$
+
+$$IF=:MENTIONS:IDT$$
+	$$ML:TEL formattel$$
+$$END$$
+
+$$IF!:NOTREAGENCE:IDT$$
+	$$IF!:AJAXAGENCE:IDT$$
+		$$IF!:NOSAGENCES:IDT$$
+			$$IF!:FICHEVISITE:IDT$$
+				$$IF!:DETAILANNONCE:IDT$$
+					$$IF!:FACEBOOK:IDT$$
+						$$IF!:MENTIONS:IDT$$
+							$$IF!:ESTIMATION:IDT$$
+								$$AGENCE_TEL$$
+							$$END$$
+						$$END$$
+					$$END$$
+				$$END$$
+			$$END$$
+		$$END$$
+	$$END$$
+$$END$$				</span>
+</div>
+$$END$$
+$$END$$
+$$IF=:1:POSITION_ENCART_TXT_HOME$$
+	$$IF=:1:ENCART_TXT_HOME$$
+		<div class="row-fluid margin-bottom-10 hidden-phone">
+			<div class="span12">
+				<!--#include absolute="webagency/A_ID3X/10perf/pub/incl_seo_index.htm" -->
+			</div>
+		</div>
+	$$END$$
+$$END$$$$END$$
+	$$IF=:2:TYPESITE$$
+	<div class="relative z150 margin-top-10">
+		$$IF!:1:MOTEURMOBILE$$
+			<div class="btn-moteur h2-title-moteur btn-search h2-like margin-bottom-10 margin-top-20 hidden-desktop">$$LG:TROUVEZVOTREBIEN pcase$$ <span class="hidden-desktop smaller">$$LG:DEFINIR$$</span></div>
+		$$END$$$$SET:JS_MINI_MOTEUR=1$$
+$$SET:CSS_MINI_MOTEUR=1$$
+$$IF=:1:MOTEURMOBILE$$
+<form class="form-$$TYPEMOTEUR$$ hidden-tablet hidden-desktop moteur-avantage-mobile margin-top-20 mini-moteur" action="/moteur,prevalidation.htm" method="get">
+	<input type="hidden" name="idqfix" value="1">
+	<input type="hidden" name="idtt" value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$" id="idtt-mobile">
+	<!--#include absolute="webagency/A_ID3X/10perf/moteur/incl_input_langue.htm" -->
+	<div>
+		<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_mobile.htm" -->
+	</div>
+</form>
+$$END$$
+<form class="form-$$TYPEMOTEUR$$ $$IF=:1:MOTEURMOBILE$$hidden-phone$$END$$ mini-moteur" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+	<input type="hidden" name="idqfix" value="1">
+	<!--#include absolute="webagency/A_ID3X/10perf/moteur/incl_input_langue.htm" -->
+	<div class="moteur-avantage$$IF=:INLINE:TYPEMOTEUR$$ padding-10$$END$$">
+		
+			<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_avantage_moteur_form.htm" -->
+
+			$$IF=:1:MINI_BUDGET_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Budget" class="Mini_Budget$$IF=:INLINE:TYPEMOTEUR$$$$IF0:TAILLEMINIBUDGET$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIBUDGET$$ $$TAILLEMINIBUDGET$$$$END$$$$END$$">
+						<script type="text/javascript">
+						$(document).ready(function() {
+							ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+						});
+						</script>
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+
+			$$IF=:1:MINI_SURFACE_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Surface"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Surface $$TAILLEMOTEUR$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_surface.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINI_SURFACE_TERRAIN_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Surface_Terrain" class="Mini_Surface_Terrain display-none $$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_surface_terrain.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINIPIECES_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Pieces"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Pieces $$IF0:TAILLEMINIPIECES$$$$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIPIECES$$ $$TAILLEMINIPIECES$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_pieces.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINICHAMBRES_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Chambres"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Chambres $$IF0:TAILLEMINICHAMBRES$$$$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINICHAMBRES$$ $$TAILLEMINICHAMBRES$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_chambres.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			
+			$$IF=:1:MINIRAYON_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Rayon"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Rayon $$TAILLEMOTEUR$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_rayon.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$IF=:1:MINIREF_AFFICHAGE$$
+			$$IF!:RESULTATS:IDT$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Ref"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Ref $$IF0:TAILLEMINIREF$$$$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIREF$$$$TAILLEMINIREF$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_reference.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+			$$END$$
+			$$IF=:1:MINIRENTE_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Rente"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Rent $$IF0:TAILLEMINIREF$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIREF$$ $$TAILLEMINIREF$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_rente.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+
+			$$IF=:1:MININBPERS_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_NbPers"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_NbPers $$IF0:TAILLEMINIREF$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIREF$$ $$TAILLEMINIREF$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_nb_personnes.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+
+			$$IF=:1:MINIFILTREPERSO_AFFICHAGE$$
+				$$IF!:INLINE:TYPEMOTEUR$$
+				<div class="row-fluid">
+				$$END$$
+					<div id="Mini_Idvpa"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Idvpa $$IF0:TAILLEMINIREF$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIREF$$ $$TAILLEMINIREF$$$$END$$"$$END$$>
+						<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_idvpa.htm" -->
+					</div>
+				$$IF!:INLINE:TYPEMOTEUR$$
+				</div>
+				$$END$$
+			$$END$$
+
+			$$IF!:INLINE:TYPEMOTEUR$$
+			<div class="row-fluid">
+			$$END$$
+				<div id="Mini_Bouton"$$IF=:INLINE:TYPEMOTEUR$$ $$IF!:RESULTATS:IDT$$class="Mini_Bouton $$IF0:TAILLEBOUTONMOTEUR$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEBOUTONMOTEUR$$ $$TAILLEBOUTONMOTEUR$$$$END$$ margin-left-0"$$END$$$$END$$>
+					<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_moteur_bouton.htm" -->
+				</div>
+			$$IF!:INLINE:TYPEMOTEUR$$
+			</div>
+			$$END$$
+
+			$$IF=:1:MINI_IDTTUNIQUE$$
+				<input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+			$$END$$
+			<!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_input_hidden.htm" -->
+		$$IF=:INLINE:TYPEMOTEUR$$
+			</div>
+		$$END$$
+	$$IF=:INLINE:TYPEMOTEUR$$
+	  $$IF=:INDEX:IDT$$
+		  $$IF=:1:MOTEUR_VILLES_REF$$
+			  <!--#include absolute="webagency/A_ID3X/10perf/moteur/mini/incl_villes_referencement.htm" -->
+		  $$END$$
+	  $$END$$
+  $$END$$
+	</div>
+</form><div class="absolute z-25 top left right bottom bg-primary bg-moteur opacity-9"></div>
+	</div>
+	$$END$$
+	$$SET:JS_MINI_MOTEUR=1$$
+$$SET:CSS_MINI_MOTEUR=1$$
+$$INIT:IDTTEXTRA=1$$
+$$INIT:QUERYEXTRA=si_coupdecoeur=1$$
+$$INIT:NBEXTRAANNONCES=1$$
+$$INIT:CATWORDPRESS=24664$$
+$$INIT:IDCATRECRUTEMENT=27454$$
+$$INIT:CATWORDPRESS=29111$$
+$$INIT:NBMODULEANNONCES=9$$
+$$INIT:IDTTMODULE=2$$
+$$INIT:QUERYMODULE=si_coupdecoeur=1&photo=10$$
+$$INIT:SIMILAIRESLIMITES=4$$
+$$INIT:FRAICHEUR=-30$$
+
+</div></div>
+		$$IF0:MAP_INDEX_ANNONCES$$
+		  $$IF=:1:ROTATION_HOME$$
+		<div class="hidden-phone absolute z-25 top left right bottom size-picture-container width-100-pourcent height-100-pourcent">
+        		<!--#include absolute="webagency/A_ID3X/10perf/header/incl_rotation_fullscreen.htm" -->
+        </div>
+    	$$END$$
+		  $$IF0:ROTATION_HOME$$
+		    <div$$IF=:1:SCROLLING1PHOTO$$ style="background-image:url('$$_$$images/homepage/homepage_scrolling_1.jpg');"$$END$$ class="absolute top left z-25 background-center background-no-repeat width-100-pourcent height-100-pourcent"></div>
+		  $$END$$
+		$$END$$
+		<div class="carto-home">
+			
+			
+			    <!--#include absolute="webagency/A_ID3X/10perf/header/incl_carto.htm" -->
+			
+		</div>
+	</aside>
+	
+	$$IF!:0:BLOC_ANNONCES$$
+	$$IF=:1:EMPLACEMENTPUBINDEX$$
+	<aside class="$$TYPECONTAINER$$ relative box-shadow-bottom aside-home-2">
+		<div class="$$SITEFLUIDE$$ relative">
+			<div class="row-fluid">
+	<div class="span12 margin-top-20 margin-bottom-20">
+		<!--#include absolute="webagency/A_ID3X/10perf/modules/incl_modules.htm" -->
+	</div>
+</div>
+</div>
+		<div$$IF=:1:SCROLLING3PHOTO$$ style="background-image:url('$$_$$images/homepage/homepage_scrolling_3.jpg');"$$END$$ class="absolute top left z-25 background-center background-no-repeat width-100-pourcent height-100-pourcent"></div>
+	</aside>
+	$$END$$
+	$$END$$
+	<div class="">
+	$$IF=:1:BLOC_PUB$$
+<aside class="$$TYPECONTAINER$$ box-shadow-inset aside-pub">
+	<div class="$$SITEFLUIDE$$ relative">
+		<div class="margin-top-50 margin-bottom-50">
+			<div class="$$IF!:1:ENCART_PUB_PERSO_MOBILE$$ hidden-phone$$END$$">
+  				<div class="row-fluid pagination-centered">
+					<div class="span4 bg-black effet-bloc-pub margin-bottom-50 padding-bottom-10 relative">
+								<div class="absolute absolute-center top-neg-30 rounded-60 bg-circle"><div class="icon-v5-megaphone xbiggest typo-black margin-top-10"></div></div>
+								<p class="h3-like typo-white margin-top-40">Alerte email</p>
+								<p class="margin-bottom-20 typo-action">Créez gratuitement votre alerte email et soyez le premier à recevoir nos offres</p>
+								<p class="margin-bottom-20">
+									<a href="/alerte,immo.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-alerte" title="$$LG:CREERALERTEPUB pcase$$">$$LG:CREERALERTEPUB pcase$$</a>
+								</p>
+					</div>
+					<div class="span4 bg-black effet-bloc-pub margin-bottom-50 padding-bottom-10 relative">
+						<div class="absolute absolute-center top-neg-30 rounded-60 bg-circle-esti"><div class="icon-v5-search xbiggest typo-black margin-top-10"></div></div>
+									<p class="h3-like typo-white margin-top-40">Estimation en ligne </p>
+									<p class="margin-bottom-20 typo-action">Demandez une estimation gratuite de votre bien immobilier</p>
+									<p class="margin-bottom-20 pub-esti">
+									<a href="/estimation,immobiliere.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-alerte" title="$$LG:CREERALERTEPUB pcase$$">Estimer votre bien</a>
+									</p>
+
+					</div>
+					<div class="span4 bg-black effet-bloc-pub margin-bottom-10 padding-bottom-10 relative">
+						<div class="absolute absolute-center top-neg-30 rounded-60 bg-circle"><div class="icon-v5-mobile-2 xbiggest typo-black margin-top-10"></div></div>
+									<p class="h3-like typo-white margin-top-40">Versions mobile</p>
+									<p class="margin-bottom-20 typo-action">Consultez notre site quand vous voulez sur votre mobile et tablette</p>
+									<p class="margin-bottom-20">
+									<a href="/immo,responsive.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-alerte" title="$$LG:CREERALERTEPUB pcase$$">En savoir plus</a>
+									</p>
+
+					</div>
+				</div>
+
+
+
+
+		<div class="row-fluid">
+			<div class="span12">
+					<div class="row-fluid">
+						<div class="span3 pagination-centered"><img src="images/agence-immoval.jpg" alt="">
+									<div class="social-ico pagination-centered">
+									<p class="italic typo-action">Suivez-nous sur </p>
+									<a href="$$URL_FACEBOOK$$" title="$$URL_FACEBOOK$$"><span class="icon-v5-facebook-2 xxbiggest"></span></a> <a href="$$URL_TWITTER$$" title="$$URL_TWITTER$$"><span class="icon-v5-twitter-2 xxbiggest"></span></a> <a href="$$URL_GOOGLEPLUS$$" title="$$URL_GOOGLEPLUS$$"><span class="icon-v5-googleplus-2 xxbiggest"></span></a>
+									</div>
+						</div>
+						<div class="span9 margin-top-10">
+							<p class="h3-like typo-white border-solid-bottom-primary-1 padding-bottom-10">Bienvenue sur <span class="typo-touch">immoval.com</span> : votre agence immobilière en Alsace</p>
+							<p class="italic typo-touch big pagination-justify">40 ans d'expérience immobilière à votre service</p>
+							<p>Acteur incontournable sur le marché <a href="/immobilier/tout/immo-strasbourg-67/">immobilier de Strasbourg</a>, Immoval bénéficie d’une notoriété incontestable et de nombreux partenaires lui font confiance, dans divers domaines, promotion immobilière, financement immobilier, Home Staging, etc.</p>
+							<p>Notre <a href="$$AGENCE_URLVIRT$$">agence immobilière à Strasbourg</a> dispose de 3 adresses sur la ville et vous proposent tous les services immobiliers sur Strasbourg  : location, vente, <a href="/immobilier/achat/immo-strasbourg-67/">achat d'appartements</a>, de <a href="/immobilier/achat/immo-strasbourg-67/bien-maison/">maisons</a>, de locaux professionnels et programmes immobiliers neufs, ainsi qu’un service de gestion locative et syndic de copropriétés.</p>
+							<p><a href="$$AGENCE_URLVIRT$$" class="italic typo-action">En savoir plus</a></p>
+						</div>
+					</div>
+			</div>
+		</div>
+
+	<!--$$IF=:INDEX.HTM:REP:0$$
+	<script src='/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js'></script>
+	<script>
+		$(document).ready(function() {
+			$.colorbox(
+				{
+					href: '/z/webagency/A_Nexi/west67_35427/images/popup.png',
+					closeButton: true,
+					close: "fermer"
+				}
+			);
+		});
+	</script>-->
+$$END$$
+</div>
+
+<div class="row-fluid">
+
+</div></div>
+	</div>
+</aside>
+$$END$$
+</div>
+	$$IF!:0:BLOC_EXTRA$$
+	<aside class="$$TYPECONTAINER$$ height-500 aside-extra relative box-shadow-bottom z25 hidden-phone">
+		<div class="$$SITEFLUIDE$$ relative">
+			<div class="row-fluid">
+	<div class="span12 margin-top-20">
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:BIENSEXTRA5::QRY:LANG$$
+<h2 class="h1-like titre-extra biggest pagination-centered">
+	<span class="bigger">$$LG:NOTREPORTEFEUILLEIMMO pcase$$</span>
+</h2>
+<div class="row-fluid margin-bottom-10 module-annonces-homepage-extra">
+$$BIF:BIENSEXTRA5$$
+$$DO:1:3$$
+$$IF=:1:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LOCATION@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LOCATIONS@@$$
+  $$END$$
+$$END$$
+$$IF=:2:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:VENTE@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:ANN:VENTES@@$$
+  $$END$$
+$$END$$
+$$IF=:3:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LOCTEMPORAIRE@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:LOCTMP@@$$
+  $$END$$
+$$END$$
+$$IF=:4:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LOCATIONVACANCES@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:LOCVAC@@$$
+  $$END$$
+$$END$$
+$$IF=:5:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:VIAGER@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:ANN:VIAGERS@@$$
+  $$END$$
+$$END$$
+$$IF=:6:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:PRODUITINVEST@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:INVESTISSEMENT@@$$
+  $$END$$
+$$END$$
+$$IF=:7:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:LOCPRESTIGE@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:LOCPST@@$$
+  $$END$$
+$$END$$
+$$IF=:8:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:VENTESDEPRESTIGE@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:VENPRES@@$$
+  $$END$$
+$$END$$
+$$IF=:9:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:PRGNEUF@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:PGRNEUF@@$$
+  $$END$$
+$$END$$
+$$IF=:10:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:FONDDECOMMERCE@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:LIEN:FCOMMERCE@@$$
+  $$END$$
+$$END$$
+$$IF=:10:BIENSEXTRA5:IDTYPETRANSACTION$$
+  $$IF=:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:CESSIONDEBAIL@@$$
+  $$END$$
+  $$IF!:0$1:BIENSEXTRA5:NBANN$$
+      $$A:NOM_TRANSACTION=@@LG:ANN:CESSIONBAILS@@$$
+  $$END$$
+$$END$$
+<div class="span4 biggest margin-top-10 margin-bottom-10 pagination-centered uppercase relative z100 padding-bottom-20 padding-top-20">
+	<a href="/recherche,basic.htm?idtt=$$BIENSEXTRA5:IDTYPETRANSACTION$$">
+		<div class="h1-like xxbiggest">$$BIENSEXTRA5:NBANN$$</div>
+		<span class="xsmallest typo-black type-transaction-extra">$$NOM_TRANSACTION$$</span>
+	</a>
+	<div class="absolute bg-module-annonces-homepage-extra top left right bottom z-25"></div>
+</div>
+$$LOOP$$
+$$BFIN$$
+</div></div>
+</div></div>
+		<div$$IF=:1:SCROLLING2PHOTO$$ style="background-image:url('$$_$$images/homepage/homepage_scrolling_2.jpg');"$$END$$ class="absolute top left z-25 background-center background-no-repeat width-100-pourcent height-100-pourcent"></div>
+	</aside>
+	$$END$$$$IF=:1:ENCART_PUB_100_INDEX$$$$IF=:FR:LANGUE$$
+   <div class="wp-blog-full">
+      
+   </div>
+$$END$$
+$$END$$$$IF!:0:BLOC_ANNONCES$$
+	
+	  $$END$$
+</section>
+
+$$IF!:INDEX:IDT$$
+			</div>
+		</div>
+	</div>
+</section>
+$$END$$
+<!-- END BG CONTAINER MAIN -->
+<aside class="$$TYPECONTAINER$$ bg-secondary bg-secondary-footer">
+	<div class="$$SITEFLUIDE$$">
+		<div class="row-fluid">
+			<div class="span12 pagination-centered padding-top-15 padding-bottom-15">
+				<p class="normal texte-info-agences">
+					$$IF=:FR:LANGUE$$
+	$$IF!:1:MULTIAGENCES$$
+		$$IF:SLOGAN_FOOTER$$
+			$$SLOGAN_FOOTER$$
+		$$END$$
+		$$IF0:SLOGAN_FOOTER$$
+			<span class="bold">$$AGENCE_NOM$$</span> - $$AGENCE_ADRESSE$$ - $$AGENCE_CP$$ $$AGENCE_VILLE$$ $$IF=:0:TELEPHONEMASQUE$$- $$LG:MINITEL pcase$$ : <a href="tel:$$AGENCE_TEL replace (0) ¤$$" class="hidden-desktop hidden-tablet">$$AGENCE_TEL$$</a><span class="hidden-phone">$$AGENCE_TEL$$</span>$$IF:AGENCE_FAX$$ $$LG:FAX pcase$$ : $$AGENCE_FAX$$$$END$$$$END$$ $$IF=:1:EMAIL_AGENCE$$- $$LG:EMAIL pcase$$ : $$AGENCE_EMAIL encodemail javascript$$$$END$$ 
+		$$IF!:0:TELEPHONEMASQUE$$
+			- <span id="bouton-telephonez-nous-footer" class="cursor-pointer texte-info-agences">
+				<span id="texte-telephonez-nous-footer"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-footer" class="display-none"><i class="icon-v5-phone"></i> <a href="tel:$$AGENCE_TEL replace (0) ¤$$">$$AGENCE_TEL$$</a></span>
+			</span>
+		$$END$$
+			
+		$$END$$
+	$$END$$
+	$$IF=:1:MULTIAGENCES$$
+		$$IF:SLOGAN_FOOTER$$
+			$$SLOGAN_FOOTER$$
+		$$END$$
+		$$IF0:SLOGAN_FOOTER$$
+			$$IF:NOM_SITE_REF$$
+				$$NOM_SITE_REF$$ - <a href="/agences,liste.htm" class="texte-info-agences" title="$$IF:INTITULE_AGENCES_PERSO$$$$INTITULE_AGENCES_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCES_PERSO$$$$LG:NOSAGENCES pcase$$$$END$$">$$LG:DECOUVNOSAGENCES pcase$$</a>
+			$$END$$
+			$$IF0:NOM_SITE_REF$$
+				$$REP:SRV$$ - <a href="/agences,liste.htm" class="texte-info-agences" title="$$IF:INTITULE_AGENCE_PERSO$$$$INTITULE_AGENCE_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCE_PERSO$$$$LG:LIEN:AGEN pcase$$$$END$$">$$LG:DECOUVNOSAGENCES pcase$$</a>
+			$$END$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF!:FR:LANGUE$$
+   $$IF=:1:MULTIAGENCES$$
+      $$URLBASE$$
+   $$END$$
+	$$IF!:1:MULTIAGENCES$$
+			<span class="bold">$$AGENCE_NOM$$</span> - $$AGENCE_ADRESSE$$ - $$AGENCE_CP$$ $$AGENCE_VILLE$$  $$IF=:1:EMAIL_AGENCE$$- $$LG:EMAIL pcase$$ : $$AGENCE_EMAIL encodemail javascript$$$$END$$ 
+		$$IF!:0:TELEPHONEMASQUE$$
+			- <span id="bouton-telephonez-nous-footer" class="cursor-pointer texte-info-agences">
+				<span id="texte-telephonez-nous-footer"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+				<span id="numero-telephonez-nous-footer" class="display-none"><i class="icon-v5-phone"></i>
+				<a href="tel:$$AGENCE_TEL replace (0) ¤$$">$$AGENCE_TEL$$</a></span>
+			</span>
+		$$END$$
+	$$END$$
+$$END$$
+$$IF=:1:MEMBRESGROUPESSLOGAN$$
+	<div class="h2-like titre-membres margin-top-20">$$LG:MEMBRESDESGROUPES pcase$$</div>
+	<div class="logo-membres">
+		<!--#include absolute="webagency/A_ID3X/10perf/footer/incl_membres.htm" -->
+	</div>
+$$END$$</p>
+			</div>
+		</div>
+	</div>
+</aside>
+<footer class="$$TYPECONTAINER$$ bg-primary padding-top-20 padding-bottom-20">
+	<div class="$$SITEFLUIDE$$">
+		<div class="row-fluid hidden-desktop">
+	<div class="h3-like nav-footer-titre">
+		$$LG:LANGUESITE pcase$$
+	</div>
+	<ul class="nav-footer nav nav-pills nav-stacked">
+	  <li><a href="http://$$SITEFR$$" title="$$LG:FRANCAIS2 pcase$$"><img src="$$~$$images/flags/fr.png" alt="$$LG:FRANCAIS2 pcase$$"> $$LG:FRANCAIS2 pcase$$</a></li>
+	 
+	$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+	  $$IF:SITEDE$$
+	    <li><a href="http://$$SITEDE$$" title="$$LG:ALLEMAND pcase$$"><img src="$$~$$images/flags/de.png" alt="$$LG:ALLEMAND pcase$$"> $$LG:ALLEMAND pcase$$</a></li>
+	  $$END$$
+	  $$IF:SITEES$$
+	    <li><a href="http://$$SITEES$$" title="$$LG:ESPAGNOL pcase$$"><img src="$$~$$images/flags/es.png" alt="$$LG:ESPAGNOL pcase$$"> $$LG:ESPAGNOL pcase$$</a></li>
+	  $$END$$
+	  $$IF:SITENL$$
+	    <li><a href="http://$$SITENL$$" title="$$LG:HOLLANDAIS pcase$$"><img src="$$~$$images/flags/nl.png" alt="$$LG:HOLLANDAIS pcase$$"> $$LG:HOLLANDAIS pcase$$</a></li>
+	  $$END$$
+	  $$IF:SITEIT$$
+	    <li><a href="http://$$SITEIT$$" title="$$LG:ITALIEN pcase$$"><img src="$$~$$images/flags/it.png" alt="$$LG:ITALIEN pcase$$"> $$LG:ITALIEN pcase$$</a></li>
+	  $$END$$
+	  $$IF:SITEPT$$
+	    <li><a href="http://$$SITEPT$$" title="$$LG:PORTUGAIS pcase$$"><img src="$$~$$images/flags/pt.png" alt="$$LG:PORTUGAIS pcase$$"> $$LG:PORTUGAIS pcase$$</a></li>
+	  $$END$$
+	$$END$$
+	$$IF=:PACK3:TYPE_OFFRE$$
+	  $$IF:SITERU$$
+	    <li><a href="http://$$SITERU$$" title="$$LG:RUSSE pcase$$"><img src="$$~$$images/flags/ru.png" alt="$$LG:RUSSE pcase$$"> $$LG:RUSSE pcase$$</a></li>
+	  $$END$$
+	  $$IF:SITECN$$
+	  <li><a href="http://$$SITECN$$" title="$$LG:CHINOIS pcase$$"><img src="$$~$$images/flags/cn.png" alt="$$LG:CHINOIS pcase$$"> $$LG:CHINOIS pcase$$</a></li>
+	  $$END$$
+	$$END$$
+	</ul>
+</div>
+
+
+<div class="row-fluid">
+	<div class="span3">
+		
+
+
+<div class="h3-like nav-footer-titre">
+	<span class="icon-v5-plus-3 opacity-5"></span>
+	
+	$$IF0:TITLE_1_FOOTER$$
+		$$LG:LIEN:PLUSDINFOS pcase$$
+	$$END$$
+</div>
+<ul class="nav-footer nav nav-pills nav-stacked">
+	<li>
+		
+		$$IF0:LINK_PERSO_1_FOOTER_1$$
+				<a href="/alerte,immo.htm" title="$$LG:ALERTEIMMO pcase$$">$$LG:ALERTEIMMO pcase$$</a>
+		$$END$$
+	</li>
+	<li>
+		
+		$$IF0:LINK_PERSO_2_FOOTER_1$$
+			$$IF=:1:MULTIAGENCES$$<a href="/agences,liste.htm" title="$$LG:NOSAGENCES pcase$$">$$LG:NOSAGENCES pcase$$</a>$$END$$
+			$$IF=:0:MULTIAGENCES$$<a href="$$AGENCE_URLVIRT$$" title="$$LG:LIEN:AGEN pcase$$">$$LG:LIEN:AGEN pcase$$</a>$$END$$
+		$$END$$
+	</li>
+	
+	<li>
+	
+	$$IF0:LINK_PERSO_3_FOOTER_1$$
+		$$IF=:1:ESTIMATIONLEAD$$
+			<a href="/estimation,immobiliere.htm" title="$$LG:ESTIMBIEN pcase$$">$$LG:ESTIMBIEN pcase$$</a>
+		$$END$$
+		$$IF=:0:ESTIMATIONLEAD$$
+			<a href="$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$/estimation,immobiliere.htm$$END$$$$IF=:1:MULTIAGENCES$$/agences,estimation.htm$$END$$" title="$$LG:ESTIMBIEN pcase$$">$$LG:ESTIMBIEN pcase$$</a>
+		$$END$$
+	$$END$$
+	</li>
+	<li>
+		
+		$$IF0:LINK_PERSO_4_FOOTER_1$$
+		<a href="/outils,calculettes.htm" title="$$LG:NOSOUTILS pcase$$">$$LG:NOSOUTILS pcase$$</a>
+		$$END$$
+	</li>
+</ul>
+$$IF=:1:MEMBRESGROUPESFOOTER$$
+<hr class="opacity-4 margin-top-5 margin-bottom-5">
+	<div class="row-fluid">
+		<div class="span7 margin-top-30 padding-top-10 padding-bottom-10">$$LG:MEMBREDUGROUPE pcase$$</div>	
+		<div class="span5 margin-top-5 margin-bottom-5">
+			<!--#include absolute="webagency/A_ID3X/10perf/footer/incl_membres.htm" -->
+		</div>
+	</div>
+$$END$$</div>
+	<div class="span4">
+		<div class="h3-like nav-footer-titre"> 	<span class="icon-v5-info opacity-5"></span> 
+$$IF=:0:MULTIAGENCES$$
+	$$AGENCE_NOM pcase$$
+$$END$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF:NOMSITEREF$$
+		$$NOMSITEREF pcase$$
+	$$END$$
+	$$IF0:NOMSITEREF$$
+		$$REP:SRV$$
+	$$END$$
+$$END$$</div>
+<ul class="nav-footer nav nav-pills nav-stacked">
+	<li><a href="$$IF0:URLPLANSITEPERSO$$/immobilier/$$END$$" title="$$IF0:TITREPALNSITEPERSO$$$$LG:NOSANNIMMO pcase$$$$END$$">$$IF0:TITREPALNSITEPERSO$$$$LG:NOSANNIMMO pcase$$$$END$$</a></li>
+	<li><a href="/legal,mentions.htm$$IF=:0:MULTIAGENCES$$?idp=$$AGENCE_IDPUBLICATION$$$$END$$" title="$$LG:MENTIONSLEG pcase$$">$$LG:MENTIONSLEG pcase$$</a></li>
+	
+	$$IF!:1:POLIRISMASQUE$$
+		<li><a href="/plan,realisations-poliris-seloger.htm" title="$$LG:REALISATION pcase$$ Poliris">$$LG:REALISATION pcase$$ Poliris</a></li>
+	$$END:POLIRISMASQUE$$
+	
+	<!--  Mantis 0000811 -->
+    $$IF!:1:SELOGERMASQUE$$
+	<li><a href="http://www.seloger.com" title="SeLoger.com" target="_blank">SeLoger.com</a></li>
+    $$END:SELOGERMASQUE$$
+	
+</ul>
+$$IF=:1:SOCIAL$$
+$$IF!:0:SOCIALFOOTER$$
+<hr class="opacity-4 margin-top-5 margin-bottom-5">
+<div class="row-fluid social-footer">
+	<div class="span5 h3-like padding-top-10 padding-bottom-10"> $$LG:SUIVEZNOUS pcase$$</div>
+	<div class="span7 margin-top-5 margin-bottom-5 social-ico-footer display-inline $$IF:URL_DAILYMOTION$$big$$END$$">
+		$$IF:URL_FACEBOOK$$
+			<a href="$$URL_FACEBOOK$$" title="$$URL_FACEBOOK$$" target="_blank" class="facebook-footer"><i class="icon-v5-facebook-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-facebook$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_TWITTER$$
+			<a href="$$URL_TWITTER$$" title="$$URL_TWITTER$$" target="_blank" class="twitter-footer"><i class="icon-v5-twitter-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-twitter$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_GOOGLE_PLUS$$
+			<a href="$$URL_GOOGLE_PLUS$$" title="$$URL_GOOGLE_PLUS$$" class="googleplus-footer" target="_blank"><i class="icon-v5-googleplus-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-googleplus$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_PINTEREST$$
+		<a href="$$URL_PINTEREST$$" title="$$URL_PINTEREST$$" target="_blank"><i class="icon-v5-pinterest bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-pinterest$$END$$"></i></a>
+	   $$END$$
+    	$$IF:URL_TUMBLR$$
+    		<a href="$$URL_TUMBLR$$" title="$$URL_TUMBLR$$" target="_blank"><i class="icon-v5-tumblr-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-tumblr$$END$$"></i></a>
+    	$$END$$
+		$$IF:URL_YOUTUBE$$
+			<a href="$$URL_YOUTUBE$$" title="$$URL_YOUTUBE$$" class="youtube-footer" target="_blank"><i class="icon-v5-youtube bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-youtube$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_DAILYMOTION$$
+			<a href="$$URL_DAILYMOTION$$" title="$$URL_DAILYMOTION$$" class="dailymotion-footer" target="_blank"><i class="icon-v5-dailymotion bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-dailymotion$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_INSTAGRAM$$
+			<a href="$$URL_INSTAGRAM$$" title="$$URL_INSTAGRAM$$" class="instagram-footer" target="_blank"><i class="icon-v5-instagram bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-instagram$$END$$"></i></a>
+		$$END$$
+	</div>
+</div>
+$$END$$
+$$END$$</div>
+	<div class="span5">
+		<div class="hidden-phone">
+			$$IF!:1:PUBFOOTERPERSO$$
+<div class="h3-like nav-footer-titre">
+    <span class="icon-v5-responsive_blanc opacity-5"></span> $$LG:SITEMULTISUPPORTS pcase$$</div>
+<p class="margin-0 padding-0 texte-footer">
+    <span class="bold">$$LG:UNSITEMOBILE pcase$$</span>
+</p>
+<hr class="opacity-4 margin-top-5 margin-bottom-5">
+<p class="texte-footer">$$LG:TEXTEMOBILE pcase$$</p>
+<span class="icon-v5-arrow-right-6 opacity-7"></span>
+<a class="btn-responsive" href="/immo,responsive.htm" title="$$LG:SAVOIR pcase$$">
+    $$LG:SAVOIR pcase$$
+</a>
+$$END$$
+$$IF=:1:PUBFOOTERPERSO$$
+	<!--#include absolute="webagency/A_ID3X/10perf/pub/incl_pub_footer_perso.htm" -->
+$$END$$</div>
+				
+		$$IF=:INDEX:IDT$$
+	$$IF!:1:NOMODULEPAINDEX$$
+	<p class="texte-footer smaller italic">$$IF!:1:HONORAIRESINCLUS$$$$END$$$$IF=:1:HONORAIRESINCLUS$$&sup1; <!--#include absolute="webagency/A_ID3X/10perf/recherche/incl_honoraires.htm" --> : $$LG:HONORAIRESINCLUS lcase$$ - $$LG:PRIXNETHORSFRAIS pcase$$$$END$$</p>
+	$$END$$
+$$END$$
+
+</div>
+</div></div>
+</footer>
+
+
+<script type="text/javascript">
+    createScript = function(url,async){
+        var sNew = document.createElement("script");
+        sNew.type = "text/javascript";
+        sNew.async = async;
+        sNew.src = url;
+        var s0 = document.getElementsByTagName('script')[0];
+        s0.parentNode.insertBefore(sNew, s0);
+        
+    }
+</script>
+
+
+<script src="/z/webagency/slagence_X_V5/sources/js/bootstrap.min.js"></script>
+
+
+
+<script src="/z/webagency/slagence_X_V5/scripts/js/utils.min.js" async></script>
+$$IF=:1:ESPACEPERSORECHERCHE$$
+    <script src="/z/webagency/slagence_X_V5/scripts/espace/jquery.cookie.js"></script>
+    <script src="/z/webagency/slagence_X_V5/scripts/js/save_search_epsa.js"></script>
+$$END$$
+
+$$IF0:PAGE:GOOGLEKEY_ANALYTICS_REGION$$
+    
+    $$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+    $$IF0:PAGE:NO_TRACKING$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/tracking.min.js"></script>
+    $$END$$
+    $$END:GOOGLEKEY_ANALYTICS$$
+$$END:GOOGLEKEY_ANALYTICS_REGION$$
+
+$$IF:PAGE:GOOGLEKEY_ANALYTICS_REGION$$
+    $$IF0:PAGE:NO_TRACKING$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/tracking.min.js"></script>
+    $$END$$
+$$END:GOOGLEKEY_ANALYTICS_REGION$$
+
+$$IF=:1:JS_CHOSEN$$
+    <script src="/z/webagency/slagence_X_V5/scripts/libs/chosen.min.js"></script>
+$$END$$
+
+$$IF=:1:ROTATION_HOME$$
+<script type="text/javascript">
+    if(winW >  767) {
+        createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js",false);
+       
+        $$IF=:INDEX:IDT$$
+            $(window).load(function(){
+                createScript("/z/webagency/slagence_X_V5/scripts/js/home.js",true);
+            });
+           
+        $$END$$ 
+    }
+</script>
+$$END$$
+
+$$IF=:INDEX:IDT$$
+    
+$$END$$
+
+    $$IF=:INDEX:IDT$$
+        
+        $$IF=:1$HELSINKI:ENCART_PUB_BLOG_WORDPRESS_FULL$$
+            <script type="text/javascript">
+                if(winW >  767) {
+                    $$IF0:ROTATION_JS$$
+                        createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js",false);
+                       
+                    $$END$$
+                    $(window).load(function(){
+                        createScript("/z/webagency/slagence_X_V5/scripts/js/rotation-blog.js",true);
+                    });
+                   
+                }
+            </script>
+        $$END$$
+        $$IF=:1:ENCART_PUB_COLONNE_BLOG_WORDPRESS$$
+            <script type="text/javascript">
+                if(winW >  767) {
+                    $$IF0:ROTATION_JS$$
+                        createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js",false);
+                    $$END$$
+                    $(window).load(function(){
+                        createScript("/z/webagency/slagence_X_V5/scripts/js/rotation-blog.js",true);
+                    });
+                }
+            </script>
+        $$END$$
+        
+    $$END$$
+
+$$IF=:1:JS_JQUERY_CYCLE$$
+<script type="text/javascript">
+    $$IF0:ROTATION_JS$$
+        if(winW >  767) {
+            createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js",false);
+        }
+    $$END$$
+</script>
+$$END$$
+
+$$IF=:1:JS_MINI_MOTEUR$$
+    $$IF=:1:MINIVILLES_MULTIPLES$$
+        <script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.multiple.select.min.js"></script>
+    $$END$$
+    $$IF!:1:MINIVILLES_MULTIPLES$$
+        $$IF=:1:MINISOUSTYPEBIENS_MULTIPLES$$
+            <script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.multiple.select.min.js"></script>
+        $$END$$
+        $$IF!:1:MINISOUSTYPEBIENS_MULTIPLES$$
+            
+        $$END$$
+    $$END$$
+    <script src="/z/webagency/slagence_X_V5/scripts/js/mini_moteur.min.js"></script>
+$$END$$
+
+$$IF=:1:JS_DETAIL$$
+    
+    <script type="text/javascript">
+    if(winW > tailleW) {
+        createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js",true);
+    }
+    </script><script src="/z/webagency/slagence_X_V5/scripts/js/detail_annonce.min.js"></script>
+$$END$$
+$$IF=:1:JS_GALERIE$$
+    <script src="/z/webagency/slagence_X_V5/scripts/libs/nivo.slider.min.js"></script>
+$$END$$
+
+$$IF=:1:JS_POI$$
+    $$IF!:1:MAP_ANNONCE_HIDE$$
+        <script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&amp;mkt=fr-fr"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/poi/poi_bing.js"></script>
+    $$END$$
+$$END$$
+
+
+$$IF=:1:JS_LISTINGAGENCES$$
+    <script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&amp;mkt=fr-fr"></script>
+    <script src="/z/webagency/slagence_X_V5/scripts/js/listing_agences.min.js"></script>
+
+    $$IF:FORM:DEPT$$
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var zoomdept= "$$FORM:DEPT$$";
+                    $('#searchGeolocUser').val(zoomdept);
+                    getGeoloc();
+            });
+        </script>
+    $$END$$
+
+$$END$$
+
+$$IF=:1:JS_AGENCE$$
+    <script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&amp;mkt=fr-fr"></script>
+    <script src="/z/webagency/slagence_X_V5/scripts/libs/light_responsive.js"></script>
+    <script src="/z/webagency/slagence_X_V5/scripts/js/detail_agence.min.js"></script>
+$$END$$
+
+$$IF=:1:JS_ESTIMATION$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/estimation.js"></script>
+$$END$$
+
+$$IF=:1:JS_METRO$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/metro.js"></script>
+$$END$$
+
+$$IF=:1:JS_OUTILS$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/outils.js" async></script>
+$$END$$
+
+$$IF=:1:JS_SUIVICLIENT$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/suivi.js"></script>
+$$END$$
+
+$$IF=:1:JS_PREVALIDATION$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/prevalidation.js"></script>
+$$END$$
+
+$$IF=:1:JS_TOPVILLE$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/topville.js"></script>
+$$END$$
+
+$$IF=:1:JS_RECHERCHE_BASIC$$
+    <script src="/z/webagency/slagence_X_V5/scripts/js/recherche.min.js"></script>
+    <script type="text/javascript">
+    if(winW > tailleW) {
+        createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js",true);
+       
+       
+       
+       
+       
+    }
+    </script>
+$$END$$
+
+<!--#include virtual="moteur/incl_moteur_js.htm" -->
+
+$$IF=:1:JS_SUGGEST$$
+    <!--#include virtual="moteur/suggest/incl_json.htm" -->
+    <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_suggest.min.js" async></script>
+$$END$$
+
+
+$$IF=:1:JS_ANNONCES-1$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces1.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-2$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces2.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-3$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces3.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-4$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces4.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-5$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces5.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-6$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces6.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-7$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces7.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-8$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces8.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-9$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces9.js",true);
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-14$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces14.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_ANNONCES-15$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/modules/annonces15.js",true);
+           
+        }
+    </script>
+$$END$$
+
+
+$$IF=:1:JS_EXTRA-2$$
+  $$IF0:EXTRA2_MASQUE$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/jquery.orbit-1.3.0.js",true);
+           
+        }
+    </script>
+    $$END$$
+    $$IF=:1:EXTRA2_MASQUE$$
+        <script src="/z/webagency/slagence_X_V5/scripts/extra/jquery.orbit-1.3.0.js"></script>
+    $$END$$
+$$END$$
+
+$$IF=:1:JS_EXTRA-3$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/jquery.eislideshow.js",true);
+           
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/jquery.easing.1.3.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_EXTRA-4$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js",true);
+               
+                createScript("/z/webagency/slagence_X_V5/scripts/extra/extra4.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_EXTRA-12$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/extra12.js",true);
+           
+        }
+    </script>
+$$END$$
+
+$$IF=:1:JS_EXTRA-13$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/extra13.js",true);
+           
+        }
+    </script>
+$$END$$
+
+
+$$IF=:1:JS_EXTRA-17$$
+    <script type="text/javascript">
+        if(winW >= tailleW) {
+            createScript("/z/webagency/slagence_X_V5/scripts/extra/extra17.js",true);
+           
+        }
+    </script>
+$$END$$
+
+<script type="text/javascript">
+    if(winW >  767) {
+        createScript("/z/webagency/slagence_X_V5/scripts/js/scrolltotop.js",true);
+       
+       
+       
+       
+       
+    }
+</script>
+
+$$IF=:1:JS_REFINE$$
+    $$IF=:1:MOTEURARTHUR2016$$
+        <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_refine_arthurimmo_2016.js"></script>
+    $$END$$
+    $$IF!:1:MOTEURARTHUR2016$$
+        $$IF=:1:MOTEURARTHUR$$
+            $$IF=:2:STYLEMOTEURREFINE$$
+                <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_refine.min.js"></script>
+            $$END$$
+            $$IF!:2:STYLEMOTEURREFINE$$
+                <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_refine_bloc.js"></script>
+            $$END$$
+        $$END$$
+        $$IF!:1:MOTEURARTHUR$$
+            $$IF=:2:STYLEMOTEURREFINE$$
+                <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_refine.min.js"></script>
+            $$END$$
+            $$IF!:2:STYLEMOTEURREFINE$$
+                <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_refine_bloc.js"></script>
+            $$END$$
+        $$END$$
+    $$END$$
+$$END$$
+
+$$IF=:1:JS_MOTEUR_PORTEFEUILLE$$
+    <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_portefeuille.js"></script>
+$$END$$
+
+    
+    $$IF=:1:ESPACEPERSO$$
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-cookies.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-route.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-animate.min.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/toaster.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/app.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/controllers.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/services.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/filters.js"></script>
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+
+        <script src="/z/webagency/slagence_X_V5/scripts/espace/espace.js"></script>
+    $$END$$
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+$$IF=:1:JS_BANDEAU_LAFORET$$
+    <script src="/z/webagency/slagence_X_V5/scripts/js/controls.js"></script>
+$$END$$
+
+$$IF=:1:JS_MOTEUR_COMMERCE$$
+    <script src="/z/webagency/slagence_X_V5/scripts/js/moteur_commerce.js"></script>
+$$END$$
+
+$$IF=:1:JS_CAROU_INDEX$$
+    <script type="text/javascript">
+        if(winW <  767) {
+            $(window).load(function(){
+                createScript("/z/webagency/slagence_X_V5/scripts/js/carrousel_index_mobile.js",true);
+            });
+            $$IF0:OWL_CAROUSEL_JS_LOADED$$
+            createScript("/z/webagency/slagence_X_V5/scripts/js/carousel/owl.carousel.min.js",true);$$A:OWL_CAROUSEL_JS_LOADED=1$$$$END$$
+        }
+    </script>
+$$END$$</body>
+</html>
