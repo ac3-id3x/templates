@@ -1,0 +1,202 @@
+<div class="conteneur-annonce margin-bottom-20 relative" id="annonce$$ANNLISTE:IDANNONCE$$">
+	<div class="transition-bg recherche-annonces">
+
+
+		<div class="row-fluid">
+			<div class="span4 typo-body">
+				<div class="hidden-desktop">
+					<div class="row-fluid">
+						$$IF+:FRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+							<div class="span4 typo-white pagination-centered padding-10 bg-primary ">
+								$$LG:NEWCOURT pcase$$
+							</div>
+						$$END$$
+						$$IF:ANNLISTE:XML xml PRIX_EXPERTISE$$
+							<div class="span4 typo-white pagination-centered padding-10 bg-primary ">
+								$$LG:BIENSEXPERTISES$$
+							</div>
+						$$END$$
+					</div>
+				</div>
+				<div class="relative">
+					<div class="absolute bottom right pagination-centered z25">
+						$$IF:ANNLISTE:SI_COUPDECOEUR$$
+							<div class="display-inline btn-tooltip bg-secondary btn-cdc width-30 height-30 line-height-30 margin-bottom-5" data-placement="top" data-title="$$LG:COUPDECOEUR pcase$$ $$ANNLISTE:COOR-NOM$$">
+								<span class="icon-v5-heart typo-white"></span>
+							</div>
+						$$END$$
+						<div class="display-inline bg-primary typo-white xsmallest height-30 line-height-30 padding-left-10 padding-right-10 margin-right-5 margin-bottom-5">
+							<!--#include virtual="recherche/incl_nb_photos.htm" -->
+						</div>
+					</div>
+
+					<!--#include virtual="recherche/incl_photos.htm" -->
+				</div>
+			</div>
+			<div class="span8">
+				<!--#include virtual="recherche/incl_type_viager.htm" -->
+
+				<div class="row-fluid">
+					<div class="span8">
+						<h2 class="display-inline typo-black bigger nocase">
+							$$IF=:10:ANNLISTE:IDTYPETRANSACTION$$
+								$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$
+							$$END$$
+							$$IF!:10:ANNLISTE:IDTYPETRANSACTION$$
+								$$IF=:1:NOVILLA$$
+									$$ANNLISTE:IDTYPEBIEN gettypebien replace pcase Maison¤/¤villa Maison$$
+								$$END$$
+								$$IF!:1:NOVILLA$$
+							<span class="typo-action">$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$ : </span>
+								$$END$$
+							$$END$$
+							$$IF=:1:SHOW_LIBELLE$$
+								$$ANNLISTE:LIBELLE$$
+							$$END$$
+							$$IF!:1:HIDE_SOUSTYPEBIEN$$
+								$$IF!:9:FORM:IDTT$$$$IF!:1:HIDE_TYPEBIEN$$$$END$$$$ANNLISTE:IDSOUSTYPEBIEN getsoustypesbien$$$$END$$
+							$$END$$
+							<span class="ville-annonce">$$IF:ANNLISTE:VILLE$$$$ANNLISTE:VILLE gettypebien ncase$$$$END$$ $$IF:ANNLISTE:CP$$($$ANNLISTE:CP$$)$$END$$</span>
+						</h2>
+					</div>
+					<div class="span4 bigger typo-action pagination-right">
+						$$IF=:0:PRIXMASQUE$$
+							$$IF:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								<span><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+							$$END$$
+							$$IF0:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								$$IF:ANNLISTE:PRIX$$
+									<div class="prix-annonce" id="prix$$ANNLISTE:IDANNONCE$$">$$ANNLISTE:PRIX$$ $$ANNLISTE:PRIX_UNITE  replace HT ¤HT$$<!--#include virtual="recherche/incl_prix_condition.htm" --></div>
+									<!--#include virtual="recherche/incl_prix_baisse.htm" -->
+								$$END$$
+								$$IF0:ANNLISTE:PRIX$$
+									<div class="prix-annonce" id="prix$$ANNLISTE:IDANNONCE$$"></div>
+									<!--#include virtual="recherche/incl_prix_baisse.htm" -->
+								$$END$$
+							$$END$$
+						$$END$$
+						$$IF=:1:PRIXMASQUE$$
+							<span class=" h2-like"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+						$$END$$
+					</div>
+				</div>
+
+				<div class="typo-light">
+					<!--#include virtual="recherche/incl_libelle.htm" -->
+					$$IF:ANNLISTE:IDQUARTIER$$
+						<span><!--#include virtual="recherche/incl_quartier.htm" --></span>
+					$$END$$
+				</div>
+
+				<div class="row-fluid margin-top-20 typo-black pagination-centered infos-annonces-arthur">
+					$$IF:ANNLISTE:SURFACE$$
+						<div class="span2 padding-8 border-solid-block-1">
+							$$IF!:EN:LANGUE$$$$ANNLISTE:SURFACE$$ m² $$END$$
+							$$IF=:EN:LANGUE$$ $$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+						</div>
+					$$END$$
+					$$IF:ANNLISTE:NB_PIECES$$
+						<div class="span2 padding-8 border-solid-block-1">
+							$$ANNLISTE:NB_PIECES$$
+							$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+							$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+						</div>
+					$$END$$
+					$$IF:ANNLISTE:NB_CHAMBRES$$
+						<div class="span2 padding-8 border-solid-block-1">
+							$$ANNLISTE:NB_CHAMBRES$$
+							$$IF=:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$$$END$$
+							$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$$$END$$
+						</div>
+					$$END$$
+					$$IF:ANNLISTE:SI_EXCLUSIF$$
+						<div class="span2">
+							<div class="bg-important padding-9 typo-white">$$LG:EXCLUSIVITE pcase$$</div>
+						</div>
+					$$END$$
+					$$IF+:FRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+						<div class="span2">
+							<div class="bg-action padding-9 typo-white">$$LG:NEWCOURT pcase$$</div>
+						</div>
+					$$END$$
+
+					$$IF:ANNLISTE:XML xml BIEN_EXPERTISE$$
+						<div class="span2">
+							<img src="images/recherche/picto_bienexpertise.png" alt="" class="margin-top-neg-10" />
+						</div>
+					$$END$$
+
+					$$IF:ANNLISTE:XML xml PRIX_EXPERTISE$$
+						<div class="span2">
+							$$IF=:FR:LANGUE$$<img src="$$~$$images/recherche/picto-expertise-fr.png" width="76" height="67" alt="Expertis&eacute;" />$$END$$
+							$$IF!:FR:LANGUE$$<img src="$$~$$images/recherche/picto-expertise-en.png" width="76" height="67" alt="Appraised" />$$END$$
+						</div>
+					$$END$$
+
+					$$IF=:2:ANNLISTE:IDTYPETRANSACTION$$
+						$$IF(:AGENCESGARANTIE:ANNLISTE:IDPUBLICATION$$
+							$$IF!:4:ANNLISTE:IDTYPEBIEN$$
+								$$IF0:ANNLISTE:XML xml NGR$$
+									<div class="span2">
+										<div class="btn-tooltip margin-top-neg-10" onclick="window.open('/immo,garantie-revente.htm');return false;"  data-placement="top" data-title="Garantie revente"><img src="$$_$$images/recherche/picto-gallian.png" alt="Garantie revente"></div>
+									</div>
+								$$END$$
+							$$END$$
+						$$END$$
+					$$END$$
+
+
+				</div>
+
+				<div class="row-fluid margin-top-10 typo-black">
+					<div class="span12">
+						<!--#include virtual="recherche/incl_descriptif.htm" -->
+					</div>
+				</div>
+
+				<div class="row-fluid margin-top-10">
+					<div class="typo-light smaller span4">
+						$$LG:MAJV5$$ : $$ANNLISTE:DT_MAJ date 2$$
+						$$IF0:ANNLISTE:SIPANIER$$
+							<div class="row-fluid">
+								<div class="bouton-ajouter-selection-detail btn-tooltip span12 cursor-pointer" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$">
+									<div class="row-fluid">
+										<div class="span11">
+											$$LG:AJOUTERSEL pcase$$
+											<div class="plus">
+											</div>
+											<div class="checkmark display-inline display-none line-height-5">
+												<i class="general-enclosed typoicon-checkmark height-20"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						$$END$$
+						$$IF:ANNLISTE:SIPANIER$$
+							$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+								<!--#include virtual="recherche/incl_comparer_bouton.htm" -->
+							$$END$$
+							<!--#include virtual="recherche/incl_supprimer_bouton.htm" -->
+						$$END$$
+					</div>
+					<div class="span8 pagination-right btn-linkannonce">
+						<a href="$$LIENDETAIL$$" class="btn btn-action">Découvrir ce bien</a>
+					</div>
+				</div>
+
+
+
+
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+
+
+</div>
+<hr>

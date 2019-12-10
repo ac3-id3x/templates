@@ -1,0 +1,65 @@
+<form name="regions" action="/agences,liste.htm" method="get" onsubmit="VerifMoteurAg();">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="tri" value="cp" />
+	
+	
+  <div id="mini_dep_agence">
+  		$$B:IMMOBW:AGENCES:ALIAS:DEPREG:dep:QRY:CPREG::WITHDEP$$
+			$$BIF:DEPREG$$
+					<div class="AgenceTexte">$$LG:DEPART pcase$$ : </div>
+					<select name="cp" id="MiniDepAg">
+						<option value="">$$LG:SELECDEP pcase$$</option>					
+						$$DO$$
+						$$IFPREV:DEPREG:DEPARTEMENTAFF$$
+							<option value="$$DEPREG:DEP$$" $$IF=:FORM_CP:DEPREG:DEP$$selected$$END$$ $$IF=:FORM_CPDEP:DEPREG:DEP$$selected$$END$$>$$DEPREG:DEPARTEMENTAFF$$</option>		
+						$$END$$			
+						$$LOOP$$					
+					</select>
+			$$BFIN$$
+  </div>
+  <div id="mini_ville_agence">
+		$$IF:FORM:CP$$  	
+			$$IF0:FORM:CPDEP$$
+			  	$$B:IMMOBW:AGENCES:ALIAS:VILLE:ville:QRY:CP::WITHDEP$$
+						$$BIF:VILLE$$
+								<div class="AgenceTexte">$$LG:VILLE pcase$$ : </div>
+								<select name="cp" id="MiniVilleAg">
+									<option value="">$$LG:SELECVILLE pcase$$</option>
+									$$DO$$
+									$$IFPREV:VILLE:VILLE$$
+										<option value="$$VILLE:CP$$" $$IF=:FORM_CP:VILLE:CP$$selected$$END$$>$$VILLE:VILLE ncase$$</option>		
+									$$END$$			
+									$$LOOP$$					
+								</select>
+						$$BFIN$$
+						$$BIF0:VILLE$$
+						<p>Pas d'agence dans cette région</p>
+						$$BFIN$$
+				$$END$$
+				$$IF:FORM:CPDEP$$
+			  	$$B:IMMOBW:AGENCES:ALIAS:VILLE2:ville:QRY:CPDEP::WITHDEP$$
+						$$BIF:VILLE2$$
+								<div class="AgenceTexte">$$LG:VILLE pcase$$ : </div>
+								<select name="cp" id="MiniVilleAg">
+									<option value="">$$LG:SELECVILLE pcase$$</option>
+									$$DO$$
+									$$IFPREV:VILLE2:VILLE$$
+										<option value="$$VILLE2:CP$$" $$IF=:FORM_CP:VILLE2:CP$$selected$$END$$>$$VILLE2:VILLE ncase$$</option>		
+									$$END$$			
+									$$LOOP$$					
+								</select>
+						$$BFIN$$
+						$$BIF0:VILLE$$
+						<p>Pas d'agence dans cette région</p>
+						$$BFIN$$
+				$$END$$
+				
+		$$END$$			
+  </div>
+
+<p class="bouton">
+	<input type="submit" value="$$LG:RECHERCHER pcase$$" name="submit" class="submit" />
+</p>
+</form>
+
+

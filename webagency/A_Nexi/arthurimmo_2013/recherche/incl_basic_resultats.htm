@@ -1,0 +1,143 @@
+$$IF!:2:STYLEMOTEURREFINE$$
+	<!--#include virtual="recherche/incl_fil_rouge_refine.htm" -->
+$$END$$
+$$IF=:1:REFINERECHERCHE$$
+	$$A:JS_REFINE=1$$
+	<script type="text/javascript">
+		var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+		var maxpage = '$$ANNLISTE:NBRPAGES$$';
+		var btnaction = 'choix-selection-refine';
+		var btnneutre = 'choix-neutre-refine';
+		var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+		var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:PX_LOYERBTW$$$$FORM:PX_LOYERBTW$$$$END$$';
+	</script>
+	
+	$$IF=:10$11:FORM:IDTT$$
+		$$A:PASDEREFINE=1$$
+	$$END$$
+	$$IF0:TAILLEMOTEURRESULTATS$$
+		$$A:PASDEREFINE=1$$
+	$$END$$
+	$$IF0:EMPLACEMENTMOTEURLEFT$$
+		$$IF0:EMPLACEMENTMOTEURRIGHT$$
+			$$A:PASDEREFINE=1$$	
+		$$END$$
+	$$END$$	
+	$$IF=:1:PASDEREFINE$$
+		<form method="GET" action="/$$REP:URI$$" id="Mini_Moteur" class="relative">
+			<input type="hidden" name="idqfix" value="1">
+			<input type="hidden" name="idtt" value="$$IF:FORM:IDTT$$$$FORM:IDTT$$$$END$$$$IF0:FORM:IDTT$$$$MINI_IDTTDEFAUT$$$$END$$" class="hidden-idtt" />
+			$$IF:FORM:CI$$
+				<input type="hidden" name="ci"  value="$$IF:FORM:CI$$$$FORM:CI$$$$END$$" class="hidden-ci auto-create-hidden"/>
+			$$END$$
+			$$IF:FORM:IDQ$$
+				<input type="hidden" name="idq" value="$$IF:FORM:IDQ$$$$FORM:IDQ$$$$END$$" class="hidden-idq auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:IDPUBLICATION$$
+				<input type="hidden" name="idpublication" value="$$FORM:IDPUBLICATION$$" class="hidden-idpublication auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:SI_EXCLUSIF$$
+				<input type="hidden" name="si_exclusif" value="$$FORM:SI_EXCLUSIF$$" class="hidden-si_exclusif auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:SI_COUPDECOEUR$$
+				<input type="hidden" name="si_coupdecoeur" value="$$FORM:SI_COUPDECOEUR$$" class="hidden-si_coupdecoeur auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:SAISIE$$
+				<input type="hidden" name="saisie" value="$$FORM:SAISIE$$" class="hidden-saisie auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:IDP$$
+				<input type="hidden" name="idp" value="$$FORM:IDP$$" class="hidden-idp auto-create-hidden"  />
+			$$END$$
+			<input type="hidden" name="pres" value="$$PRESENTATION$$" class="hidden-pres"  />
+			<input type="hidden" name="polygon" value="$$FORM:POLYGON$$" class="hidden-polygon auto-create-hidden"  />
+			<!--<input type="hidden" name="tri" value="$$FORM:TRI$$" class="hidden-tri auto-create-hidden"  />-->
+			$$IF:FORM:IDTYPEBIEN$$
+				<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" class="hidden-idtypebien auto-create-hidden"  />
+			$$END$$
+			$$IF:FORM:IDVPA$$
+				<input type="hidden" name="idvpa" value="$$FORM:IDVPA$$" class="hidden-idvpa auto-create-hidden"  />
+			$$END$$
+		</form>
+	$$END$$
+$$END$$
+
+<div class="row-fluid">
+	<div class="span3">
+		<!--#include virtual="recherche/incl_tri.htm" -->
+	</div>
+	<div class="span3">				
+		<!--#include virtual="recherche/incl_recherche_reference.htm" -->
+	</div>				
+	<div class="span2 big hidden-phone">
+		<a href="/recherche,vendu.htm" class="btn btn-important xsmallest" title="$$LG:BIENVENDUS pcase$$">$$LG:BIENVENDUS pcase$$</a>
+	</div>
+	<div class="span3 margin-top-5">
+		<!--#include virtual="recherche/incl_bouton_selection.htm" -->
+	</div>
+	<div class="pull-right">
+		$$IF0:ANNLISTE:SIPANIER$$
+			$$IF=:1:PHRASELIGHT$$
+			<div class="hidden-phone margin-top-2 bloc-btn-change-affichage pull-right">
+				$$IF!:PRESTIGE:PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$
+					<div  data-placement="top" data-title="$$LG:AFFICHERLISTE pcase$$" class="$$IF!:BASIC$LIGHT:PRESENTATION$$btn-tooltip bouton-change-affichage$$END$$ btn-small $$TYPEBOUTON$$ $$IF=:BASIC$LIGHT:PRESENTATION$$ $$TYPEBOUTONACTION$$$$END$$$$IF!:BASIC$LIGHT:PRESENTATION$$ btn-neutre$$END$$ height-30" data-pres="$$IF!:LIGHT:PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$basic$$END$$$$IF=:LIGHT:PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$LIGHT$$END$$">
+						<img src="$$~$$images/recherche/reorder_black.png">
+					</div>
+				$$END$$
+				<div data-placement="top" data-title="$$LG:AFFICHERVIGNETTE pcase$$" class="$$IF!:LISTING:PRESENTATION$$btn-tooltip bouton-change-affichage$$END$$ btn-small $$TYPEBOUTON$$ $$IF=:LISTING:PRESENTATION$$ $$TYPEBOUTONACTION$$$$END$$$$IF!:LISTING:PRESENTATION$$ btn-neutre$$END$$ height-30" data-pres="listing">
+					<img src="$$~$$images/recherche/th_black.png">
+				</div>
+				$$IF!:BASIC$LISTING$LIGHT:PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$
+					<div data-placement="top" data-title="$$LG:AFFICHERLISTE pcase$$" class="$$IF!:PRESTIGE:PRESENTATION$$btn-tooltip bouton-change-affichage$$END$$ btn-small $$TYPEBOUTON$$ $$IF=:PRESTIGE:PRESENTATION$$ $$TYPEBOUTONACTION$$$$END$$$$IF!:PRESTIGE:PRESENTATION$$ btn-neutre$$END$$ height-30" data-pres="prestige">
+						<img src="$$~$$images/recherche/list_black.png">
+					</div>
+				$$END$$
+			</div>
+		$$END$$
+	$$END$$	
+	</div>
+</div>
+<hr class="margin-top-30">		
+
+<!--#include virtual="recherche/incl_basic_calcul_moteur.htm" -->
+<div class="row-fluid">
+	<div class="span12">
+		$$REM$$<!-- PAGINATION -->$$END$$
+		<div class="row-fluid margin-bottom-10 recherche-ligne-tri-pages $$IF!:1:REFINERECHERCHE$$$$IF=:inline:TYPEMOTEUR$$margin-top-20$$END$$$$END$$">				
+			$$IF:ANNLISTE:SIPANIER$$
+			<div class="span9">
+				<!--#include virtual="recherche/incl_retour_liste.htm" -->
+				<!--#include virtual="recherche/incl_comparer.htm" -->
+				<!--#include virtual="recherche/incl_vider_selection.htm" -->
+				<!--#include virtual="recherche/incl_imprimer_selection.htm" -->
+			</div>					
+			$$END$$
+		</div>
+		<div id="recherche-resultats-listing">
+			$$DO:config:config$$
+			    <!--#include virtual="recherche/incl_titre_annonces.htm" -->
+				$$IF=:BASIC:PRESENTATION$$
+				<!--#include virtual="recherche/incl_basic_annonce.htm" -->
+				$$END$$
+				$$IF=:LISTING:PRESENTATION$$
+				<!--#include virtual="recherche/incl_listing_annonce.htm" -->
+				$$END$$
+				$$IF=:PRESTIGE:PRESENTATION$$
+				<!--#include virtual="recherche/incl_prestige_annonce.htm" -->
+				$$END$$
+				$$IF=:LIGHT:PRESENTATION$$
+				<!--#include virtual="recherche/incl_light_annonce.htm" -->
+				$$END$$
+			$$LOOP$$
+		</div>
+		$$REM$$<!-- PAGINATION -->$$END$$
+		$$IF+:1:ANNLISTE:NBRPAGES$$
+			<div class="pagination pagination-right margin-top-10">
+				<!--#include virtual="recherche/incl_nb_pages.htm" -->
+			</div>
+		$$END$$
+	</div>
+</div>
+$$IF=:1:REFINERECHERCHE$$
+	<!--#include virtual="recherche/incl_refine_layer.htm" -->
+$$END$$
+	
