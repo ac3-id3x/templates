@@ -1,0 +1,135 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto géoloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affiché sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$SET:PAGE:IDT=NOSAGENCES$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région$$
+	$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région.$$
+	$$A:PAGE:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+	$$A:PAGE:DESCREF=@@PAGE:TITR@@$$
+	$$A:PAGE:KEYWORDS=@@PAGE:TITR@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- NE PAS METTRE &amp; dans l'appel des css -->$$END:REM$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agences_liste.css?wagstyle=@@PAGE:WAG_STYLE_RECHERCHE@@&lang=@@LANGUE@@" );
+</style>$$
+<!--#include virtual="geoloc/incl_BingMap_param.htm" -->
+<!--#include virtual="incl_haut.htm" -->
+
+<div id="AgImmo_Ctn">
+$$REM$$
+	
+	$$IF+:2:COMPTE_AGENCES:NBR$$
+	<h3>$$COMPTE_AGENCES:NBR$$ $$LG:AGENCESAVOTRSERVICE lcase$$</h3>
+	$$END:COMPTE_AGENCES:NBR$$
+	<!--#include virtual="geoloc/incl_BingMap_agences.htm" -->	
+
+
+$$END$$
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+
+	
+
+		
+	$$DO:1:10$$
+	$$IF=:278559:LISTEAG:IDPUBLICATION$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+
+$$REM$$  
+  <table class="cadreAgence">
+		<tr>
+			<td class="agImmoVitrine_Td1">
+				
+					<span class="agImmoVitrine_Ctn2" >
+						<span class="agImmoVitrine" style="background: url('/z/webagency/A_Nexi/abi29510_29249/images/agences/sans_photo.jpg') 50% 50% no-repeat;">
+						</span><!-- #AgImmoVitrine -->
+					</span><!-- #AgImmoVitrine_Ctn2 -->
+				
+				<p class="rcs"></p>
+			</td>
+			<td class="agImmoVitrine_Td2">
+				<h2>COMMARET GESTION</h2>
+				<p class="listag_adresse">
+					66A rue du Général de Gaulle 
+<br />
+					<span>29510 BRIEC</span>
+				</p>
+				<p class="listag_coords">
+					<!-- tel standard--><label class="listag_tel"><span>Tél :</span> 02 98 57 90 98</label>
+					
+				</p>
+				<p class="listag_infos_plus">
+					<label class="listag_email"><span>Email :</span>
+          $$A:MAIL1=commaretgestion@orange.fr$$ $$MAIL1 encodemail javascript full$$
+          </label>
+				</p>
+
+			</td>
+		</tr>
+	</table><!-- .cadreAgence -->
+  
+   <table class="cadreAgence">
+		<tr>
+			<td class="agImmoVitrine_Td1">
+				
+					<span class="agImmoVitrine_Ctn2" >
+						<span class="agImmoVitrine" style="background: url('/z/webagency/A_Nexi/abi29510_29249/images/agences/sans_photo.jpg') 50% 50% no-repeat;">
+						</span><!-- #AgImmoVitrine -->
+					</span><!-- #AgImmoVitrine_Ctn2 -->
+				
+				<p class="rcs"></p>
+			</td>
+			<td class="agImmoVitrine_Td2">
+				<h2>FINISTERE SERVICE</h2>
+				<p class="listag_adresse">
+					66A rue du Général de Gaulle 
+<br />
+					<span>29510 BRIEC</span>
+				</p>
+				<p class="listag_coords">
+					<!-- tel standard--><label class="listag_tel"><span>Tél :</span> 02 98 57 90 98</label>
+					
+				</p>
+				<p class="listag_infos_plus">
+				</p>
+
+			</td>
+		</tr>
+	</table><!-- .cadreAgence -->
+$$END$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="incl_bas.htm" -->
+
