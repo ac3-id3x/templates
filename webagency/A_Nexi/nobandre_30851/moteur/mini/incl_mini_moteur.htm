@@ -1,0 +1,136 @@
+$$REM$$================================================================================================
+//// <summary>Moteur recherche rapide</summary>
+//// <remarks>
+//// <para>Généralement placé en accueil, parfois visible sur tout la navigation</para>
+//// <para>On est obligé d'adapter le nom des macros et des incl_ par rapport aux erreurs pouvant être généré par le cfg_custom_rep</para>
+//// <para>Pour l'instant on ne met pas en place l'option des onglets carte ou liste, car on est pressés de sortir le pack avantage</para>
+//// <para>INIT:MINIMOTEUR=1 sert à conditionner le css correspondant dans styles,incl_styles.htm</para>
+//// <para>Modifier les macros du mini moteur dans votre incl_param.htm</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Recopiage de version x_v2 vers x_v3</update>
+================================================================================================$$END$$
+$$INIT:MINIMOTEUR=1$$
+
+<!--#include virtual="header/all_global_param.htm" -->
+<!--#include virtual="header/incl_param.htm" -->
+
+$$REM$$<!-- === js principal === -->$$END:REM$$ <script type="text/javascript" src="scripts,mini_moteur.js?lang=$$LANGUE$$$$IF:MINIMOTEUR_IDTBCACHE$$&amp;miniidtbcache=$$MINIMOTEUR_IDTBCACHE$$$$END$$$$IF:MINIMOTEUR_SOUSTBCACHE$$&amp;minisoustbcache=$$MINIMOTEUR_SOUSTBCACHE$$$$END$$&amp;nbannvisible=$$MINIMOTEUR_NBANNVISIBLE$$&amp;wagstyle=$$PAGE:WAG_STYLE_RECHERCHE$$"></script>
+
+<form method="get" action="/moteur,mini,prevalidation.htm" id="MiniMoteur_Form" onsubmit="Envoi();$$IF0:MINIMOTEUR_IDTTUNIQUE$$return Verif();$$END$$">	
+	<div id="MiniMoteur_Ctn">
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="idtt" id="idtt" value="2" />
+		
+<!--#include virtual="moteur/incl_moteur_param.htm" -->			
+		<table>
+			<tr>
+				<td width="370">
+					<div class="miniDiv" id="MiniTypeBien"$$IF0:MINIMOTEUR_IDTTDEFAUT$$$$IF0:MINIMOTEUR_IDTTUNIQUE$$ style="display:none;"$$END$$$$END$$></div>
+					<!--#include virtual="/moteur/mini/incl_nb_pieces.htm" -->
+					<!--#include virtual="/moteur/mini/incl_surface.htm" -->
+					<!--#include virtual="/moteur/mini/incl_budget.htm" -->
+					
+				</td>
+				<td width="10">&nbsp;</td>
+				<td width="210">
+					<div style="*width: 210px; *overflow: hidden;">
+						<div class="miniDiv" id="MiniRegion" style="display:none;"></div>
+						<div class="miniDiv" id="MiniDep" style="display:none;"></div>
+						<div class="miniDiv" id="MiniVilles" style="display:none;"></div>				
+					</div>				
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<!--#include virtual="/moteur/mini/incl_rayon.htm" -->	
+				</td>
+			</td>
+			<tr>
+			<td colspan="3">
+				<p>
+				$$LG:CRITERESSUP pcase$$
+				</p>
+				<p class="critsup">
+				<input type="checkbox" name="photo" value="10" /> $$LG:PHOTO pcase$$
+				&nbsp;&nbsp;
+				<input type="checkbox" name="360" value="1" /> $$LG:VISITEVIRT pcase$$
+				&nbsp;&nbsp;
+				<input type="checkbox" name="fraicheur" value="15" /> 
+				$$IF=:FR:LANGUE$$les nouveautés de moins de 2 semaines$$END$$
+				$$IF=:EN:LANGUE$$Only offers from the last 8 days$$END$$
+				
+				</p>
+			</td>
+		</tr>
+	</table>
+	
+	<div id="BoutonSubmit">
+		<a href="javascript:ChoixListe();" id="SubmitListe" class="$$LANGUE$$"></a>
+		<a href="javascript:ChoixCarte();" id="SubmitCarte" class="$$LANGUE$$"></a>
+	</div>
+		
+		
+		
+$$REM$$<!-- ////////////////////// affiche type bien si le type de transaction est deja selectionné au chargement du site ////////////////////// -->$$END:REM$$
+	<script type="text/javascript">
+		<!--
+		var divminitypecommerce = document.getElementById("MiniTypeCommerce");
+		var divminitypeactivite = document.getElementById("MiniTypeActivite");
+		var divminitypebien = document.getElementById("MiniTypeBien");
+		var divminisoustypebien = document.getElementById("MiniSousTypeBien");
+		var divminipays = document.getElementById("MiniPays");
+		var divminiregion = document.getElementById("MiniRegion");
+		var divminiregionetr = document.getElementById("MiniRegionEtr");
+		var divminidep = document.getElementById("MiniDep");
+		var divminivilles = document.getElementById("MiniVilles");
+		var divminiquartiers = document.getElementById("MiniQuartiers");
+		var divminirayon = document.getElementById("MiniRayon");
+		
+		$$IF:MINIMOTEUR_IDTTUNIQUE$$
+		ListeTypeBien($$MINIMOTEUR_IDTTUNIQUE$$);
+		$$IF=:1:MINIMOTEUR_PAYS$$ListePays($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:1:MINIMOTEUR_REGION$$ListeRegion('250', $$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_REGION$$$$IF=:1:MINIMOTEUR_DEP$$ListeDep($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_REGION$$$$IF=:0:MINIMOTEUR_DEP$$$$IF=:1:MINIMOTEUR_VILLES$$ListeVilles($$MINIMOTEUR_IDTTUNIQUE$$, '');$$END$$$$END$$$$END$$$$END$$
+		$$IF=:1:MINIMOTEUR_BUDGET$$$$IF=:1:MINIMOTEUR_BUDGETTRANCHE$$ BudgetTranche($$MINIMOTEUR_IDTTUNIQUE$$);$$END$$$$END$$
+		$$END:MINIMOTEUR_IDTTUNIQUE$$
+		$$IF:MINIMOTEUR_IDTTDEFAUT$$
+		ListeTypeBien($$MINIMOTEUR_IDTTDEFAUT$$);
+		$$IF=:1:MINIMOTEUR_PAYS$$ListePays($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:1:MINIMOTEUR_REGION$$ListeRegion('250', $$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_REGION$$$$IF=:1:MINIMOTEUR_DEP$$ListeDep($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$$$END$$
+		$$IF=:0:MINIMOTEUR_PAYS$$$$IF=:0:MINIMOTEUR_REGION$$$$IF=:0:MINIMOTEUR_DEP$$$$IF=:1:MINIMOTEUR_VILLES$$ListeVilles($$MINIMOTEUR_IDTTDEFAUT$$, '');$$END$$$$END$$$$END$$$$END$$
+		$$IF=:1:MINIMOTEUR_BUDGET$$$$IF=:1:MINIMOTEUR_BUDGETTRANCHE$$ BudgetTranche($$MINIMOTEUR_IDTTDEFAUT$$);$$END$$$$END$$
+		$$END:MINIMOTEUR_IDTTDEFAUT$$
+		
+		
+			function ChoixListe(){
+				ChoixTypeRech('liste');
+				if(document.getElementById("MiniSelectDep").value){
+					document.getElementById("MiniSelectRegion").value="";
+				}
+				if(document.getElementById("MiniSelectVilles").value){
+					document.getElementById("MiniSelectRegion").value="";
+					document.getElementById("MiniSelectDep").value="";
+				}
+				
+				
+				document.getElementById('MiniMoteur_Form').submit();
+			}
+			function ChoixCarte(){
+				ChoixTypeRech('carte');
+				if(document.getElementById("MiniSelectDep").value){
+					document.getElementById("MiniSelectRegion").value="";
+				}
+				if(document.getElementById("MiniSelectVilles").value){
+					document.getElementById("MiniSelectRegion").value="";
+					document.getElementById("MiniSelectDep").value="";
+				}
+				
+				document.getElementById('MiniMoteur_Form').submit();
+			}
+		//-->
+	</script>		
+		
+	</div><!-- #MiniMoteur_Ctn -->
+</form><!-- #MiniMoteur_Form -->
