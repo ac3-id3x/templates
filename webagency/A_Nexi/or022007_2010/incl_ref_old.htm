@@ -1,0 +1,198 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+$$REM$$<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+$$REM$$<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  $$END:REM$$
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+$$REM$$<!-- Définition du NOM de l'agence à afficher sur le site -->$$END:REM$$
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+$$REM$$<!-- Définition de l'adresse à afficher sur le site  -->$$END:REM$$
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+$$REM$$<!-- Définition de la ville à afficher sur le site  -->$$END:REM$$
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+$$REM$$<!-- Définition du CP à afficher sur le site  -->$$END:REM$$
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+$$REM$$<!-- Définition du DEPARTEMENT à afficher sur le site  -->$$END:REM$$
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+$$REM$$<!-- Définition du tel à afficher sur le site  -->$$END:REM$$
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+$$REM$$<!-- Définition du fax à afficher sur le site  -->$$END:REM$$
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+
+
+
+
+
+$$REM$$<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> $$END:REM$$
+
+
+
+
+
+$$IF=:ACCUEIL.HTM:REP:0$$
+$$A:PAGE:TITR=Agence immobili&egrave;re @@NOM_AGENCE@@ - Immobilier @@VILLE_AGENCE@@ $$
+$$A:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@  &agrave; @@VILLE_AGENCE@@ : annonces immobili&egrave;res sur @@VILLE_AGENCE@@ et ses environs$$
+$$A:PAGE:KEYWORDS=Agence immobili&egrave;re @@NOM_AGENCE@@ @@VILLE_AGENCE@@, immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:LAGENCE.HTM:REP:0$$
+$$A:PAGE:TITR=Agence immobili&egrave;re @@VILLE_AGENCE@@, Agences immobili&egrave;res location @@VILLE_AGENCE@@, cabinet immobilier @@VILLE_AGENCE@@, agences immobilieres @@VILLE_AGENCE@@ 17 - @@NOM_AGENCE@@ @@VILLE_AGENCE@@$$
+$$A:PAGE:DESCREF=L'agence immobili&egrave;re &agrave; @@VILLE_AGENCE@@, sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous propose des annonces de vente de maisons, appartements et terrains sur @@VILLE_AGENCE@@ et ses environs.$$
+$$A:PAGE:KEYWORDS=agence immobili&egrave;re @@VILLE_AGENCE@@, cabinet immobilier @@VILLE_AGENCE@@ ; agence immo @@VILLE_AGENCE@@$$
+$$END$$
+
+
+$$IF=:ANNONCES-IMMOBILIERES.HTM:REP:0$$
+$$A:PAGE:TITR=Annonces immobilieres @@VILLE_AGENCE@@, march&eacute; immobilier @@VILLE_AGENCE@@, annonces immo @@VILLE_AGENCE@@ - @@NOM_AGENCE@@ @@VILLE_AGENCE@@$$
+$$A:PAGE:DESCREF=D&eacute;couvrez des annonces immobilieres de vente de maisons, appartements et terrains sur @@VILLE_AGENCE@@ avec l’agence immobiliere @@NOM_AGENCE@@ sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@.$$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@VILLE_AGENCE@@, march&eacute; immobilier @@VILLE_AGENCE@@, annonces immo @@VILLE_AGENCE@@$$
+$$END$$
+
+
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@.. : Agence immobiliere Desvallois @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:DESCREF=D&eacute;couvrez les maisons &agrave; vendre sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ avec l'agence immobiliere Desvallois &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 150 htmlencode@@$$
+$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@,  @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@  @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+$$END$$
+
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@.. vente appartement La Rochelle 17, appartement La Rochelle 17, achat appartement La Rochelle, acheter un appartement La Rochelle : Agence immobiliere Desvallois @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:DESCREF=D&eacute;couvrez les appartements &agrave; vendre sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ avec l'agence immobiliere Desvallois &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 150 htmlencode@@$$
+$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@,  @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@  @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+$$END$$
+
+
+
+$$IF=:PUDIMMOBILIER:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier @@FORM:CI codeinsee2ville field 1@@, immo @@FORM:CI codeinsee2ville field 1@@, marché immobilier @@FORM:CI codeinsee2ville field 1@@ - Agence immobiliere Desvallois$$
+$$A:PAGE:DESCREF=Immobilier @@FORM:CI codeinsee2ville field 1@@ : D&eacute;couvrez nos services et toutes nos derni&egrave;res annonces immobili&egrave;res &agrave; @@FORM:CI codeinsee2ville field 1@@$$
+$$A:PAGE:KEYWORDS=achat immobilier @@FORM:CI codeinsee2ville field 1@@, immobilier @@FORM:CI codeinsee2ville field 1@@, immo @@FORM:CI codeinsee2ville field 1@@$$
+$$END$$
+
+
+$$IF=:VENDRE-ACHETER.HTM:REP:0$$
+$$A:PAGE:TITR=Vendre ou acheter un bien immobilier sur @@VILLE_AGENCE@@ avec l'agence immobiliere @@NOM_AGENCE@@ @@VILLE_AGENCE@@$$
+$$A:PAGE:DESCREF=Vous souhaitez vendre ou acheter un bien immobilier maisons, appartements ou terrains sur @@VILLE_AGENCE@@, l’agence immobiliere @@NOM_AGENCE@@ sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous accompagnera tout au long de votre projet immobilier sur @@VILLE_AGENCE@@ et ses environs.$$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@VILLE_AGENCE@@, march&eacute; immobilier @@VILLE_AGENCE@@, projet immobilier @@VILLE_AGENCE@@, achat immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+$$IF=:EQUIPE.HTM:REP:0$$
+$$A:PAGE:TITR=@@NOM_AGENCE@@ c'est une équipe de professionnels &agrave; votre service tout au long de votre projet mmobilier sur @@VILLE_AGENCE@@ et ses environs.$$
+$$A:PAGE:DESCREF=Immobilier Desvallois est composé de collaborateurs compétents et soucieux des besoins de ses clients. Vous souhaitez vendre ou acheter un bien immobilier maisons, appartements ou terrains sur @@VILLE_AGENCE@@, l'&eacute;quipe de l’agence immobiliere @@NOM_AGENCE@@ sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous accompagnera tout au long de votre projet immobilier sur @@VILLE_AGENCE@@ et ses environs.$$
+$$A:PAGE:KEYWORDS=annonces immobilieres @@VILLE_AGENCE@@, march&eacute; immobilier @@VILLE_AGENCE@@, projet immobilier @@VILLE_AGENCE@@, achat immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+$$IF=:EN:LANGUE$$
+$$A:PAGE:TITR=Real Estate @@VILLE_AGENCE@@, Sale, Rental, villa, apartments, Luxury properties @@VILLE_AGENCE@@ - Real Estate Agency @@NOM_AGENCE@@ @@VILLE_AGENCE@@$$
+$$A:PAGE:DESCREF=@@NOM_AGENCE@@ @@VILLE_AGENCE@@  40 rue Chaudrier Place de Verdun 17000 La Rochelle (Phone : 05 46 41 05 57) sales all type of property in  @@VILLE_AGENCE@@ : apartement, house, villa, luxury properties in @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Real Estate @@VILLE_AGENCE@@, real estate agency @@VILLE_AGENCE@@, luxury properties, apartement, house, Farmhouse, @@VILLE_AGENCE@@, @@NOM_AGENCE@@$$
+$$END$$
+
+
+
+$$REM$$<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> $$END:REM$$
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$

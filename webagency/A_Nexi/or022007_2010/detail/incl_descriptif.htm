@@ -1,0 +1,86 @@
+$$REM$$====================================================================
+//// <summary>Descriptif annonce des pages DETAIL</summary>
+//// <remarks>
+//// <para>Eviter au maximum de le démutualiser car il est souvent remanié (réf, trad etc.)</para>
+//// </remarks>
+//// <update date="2010-10-11" author="lisbonne.siriphol">Updates sur textes terrain en !FR</update>
+====================================================================$$END$$
+
+<div id="Descriptif">
+	<p class="titreDescriptif">$$LG:DESCRIPTIONANN pcase$$ de $$IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase$$ $$IMMOBW:ANNONCE:IDTYPEBIEN gettypebien pcase$$ $$IMMOBW:ANNONCE:VILLE$$</p>
+	<p class="txtDescriptif">
+	$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+		$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+	$$END$$
+		
+	$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$														
+		$$IF:IMMOBW:ANNONCE:DESCRIPTIF_FR$$
+			$$IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode$$
+		$$END$$									
+		$$IF0:IMMOBW:ANNONCE:DESCRIPTIF_FR$$
+			$$LG:ANNSANSDESCR pcase$$.
+		$$END$$	
+	$$END$$
+	<br />
+	$$IMMOBW:ANNONCE:DESCRIPTIF_GEN htmlencode$$
+	
+	</p>
+	
+
+	$$IF!:FR:LANGUE$$
+	<p class="txtDescriptif txtDescriptifTerrain">
+$$REM$$ <!-- ==============================
+		> 11.10.2010 c/o Lisbonne + SAV
+		> pour les terrains, divers et annonces peu décrites, on ne peut pas générer de description
+			car trop peu de critères à extraire. Ex : terrain, la plupart du temps on a que la surface, le cp et constructible ou pas.
+		> donc au lieu de demander un dév à l'info métier, on force une phrase
+=============================== --> $$END$$
+		$$IF=:4:IMMOBW:ANNONCE:IDTYPEBIEN$$			
+		
+			$$IF:IMMOBW:ANNONCE:SI_VIABILISE$$Developed land site$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_AGRICOLE$$Farmland$$END$$
+			
+			$$IF0:IMMOBW:ANNONCE:SI_VIABILISE$$
+				$$IF0:IMMOBW:ANNONCE:SI_AGRICOLE$$
+					Land
+				$$END$$
+			$$END$$
+			
+			$$IF:IMMOBW:ANNONCE:SI_CONSTRUCTIBLE$$ready for building,$$END$$
+			
+			$$IF:IMMOBW:ANNONCE:SURF$$
+				width an area of $$IMMOBW:ANNONCE:SURF$$ $$IMMOBW:ANNONCE:SURF_UNITE htmlencode$$ ($$IMMOBW:ANNONCE:SURF exec XX*10.763910 formatnumber 0$$ Sq Ft),
+			$$END$$
+			
+			$$IF0:IMMOBW:ANNONCE:SURF$$
+				$$IF:IMMOBW:ANNONCE:SURFACE$$
+					width an area of $$IMMOBW:ANNONCE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft,
+				$$END$$
+			$$END$$
+			
+			$$IF:IMMOBW:ANNONCE:SI_PLAN_DEAU$$
+				including a water source,
+			$$END$$
+			
+			$$IF:IMMOBW:ANNONCE:SI_LAC$$
+				including a lake,
+			$$END$$
+			
+						
+			located in $$IMMOBW:ANNONCE:VILLE$$ ($$IMMOBW:ANNONCE:CP$$), in the French department of $$IMMOBW:ANNONCE:CP cp2dep$$.
+			
+			$$IF:IMMOBW:ANNONCE:SI_CALME$$
+			The environment is quiet.
+			$$END:IMMOBW:ANNONCE:SI_CALME$$
+			
+			$$IF:IMMOBW:ANNONCE:SI_PENTE$$
+			This land is located on a slope.
+			$$END:IMMOBW:ANNONCE:SI_CALME$$
+			
+		$$END:4:IMMOBW:ANNONCE:IDTYPEBIEN$$
+	</p>
+	$$END:FR:LANGUE$$
+
+
+	
+</div><!-- fin #Descriptif -->
