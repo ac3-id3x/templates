@@ -1,0 +1,227 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+$$IF=:10$11:FORM:IDTT$$
+    $$A:TAILLEMOTEURRESULTATS=0$$
+    $$A:TAILLERESULTATS=12$$
+$$END$$
+    $$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+        $$BIF:FIL$$
+            $$IF+:2:FIL:NBR$$
+            <div class="row-fluid">
+                <div class="span12 margin-bottom-10">
+                <!--#include virtual="recherche/incl_fil_ariane.htm" -->
+                </div>
+            </div>
+            $$END$$
+        $$BFIN$$
+    $$END$$
+    <!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 class="phrase-recherche margin-bottom-10">
+                $$ANNLISTE:PHRASE pcase replace france France$$ $$IF!:1:HIDE_SOUSTYPEBIEN$$$$IF!:9:FORM:IDTT$$$$IF:FORM:IDSOUSTYPEBIEN$$
+                  $$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+                    $$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+                  $$END:!FORM:IDSOUSTYPEBIEN$$
+                $$END:FORM:IDSOUSTYPEBIEN$$	$$END$$$$END$$
+            </h1>
+        </div>
+    </div>
+    <div class="row-fluid bloc-top-alerte-email $$IF=:1:BIGLISTINGMOBI$$hidden-phone$$END$$">
+        <div class="$$TAILLEMOTEURRESULTATS$$">
+            <p>$$LG:V5NOUVELLESANNONCES pcase$$</p>
+            <div class="row-fluid">
+                <div class="span12">
+                    <!--#include virtual="recherche/incl_bouton_alerte.htm" -->
+                </div>
+            </div>
+        </div>
+        <div class="$$TAILLERESULTATS$$ padding-left-20 border-solid-left-block-2 padding-bottom-15 bloc-nb-annonces hidden-phone">
+            <p>$$LG:V5ACTUELLEMENT pcase$$</p>
+
+            $$IF=:1:FORM:IDTT$$
+				<div class="pull-right">
+					<a href="$$_$$pdf/documents-a-fournir.pdf" target="_blank" class="btn btn-action small">Liste des documents à fournir</a>
+				</div>
+			$$END$$
+            <div class="bloc-prase-nb">
+                <!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->
+                $$IF=:1:REFERENCETOP$$
+                <div class="pull-right hidden-tablet hidden-phone">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <!--#include virtual="recherche/incl_recherche_reference.htm" -->
+                        </div>
+                        <div class="span6">
+                            <!--#include virtual="recherche/incl_bouton_selection.htm" -->
+                        </div>
+                    </div>
+                </div>
+                $$END$$
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12 margin-top-10">
+            <!--#include virtual="recherche/incl_alerte.htm" -->
+        </div>
+    </div>
+
+    
+     
+        <a href="javascript:void(0);" title="$$LG:AFFINEZRECH pcase$$" class="btn btn-block btn-action sidebar-display-minimot hidden-tablet hidden-desktop">
+            <span>$$LG:AFFINEZRECH pcase$$</span>       
+        </a>
+
+
+    <hr class="margin-bottom-15" />
+    $$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+    $$IF=:1:CANONICAL$$
+        $$IF:SEO_RESULTS_CONTENT$$
+      <div class="row-fluid margin-bottom-20 hidden-phone">
+          <p class="span12">$$SEO_RESULTS_CONTENT$$</p>
+      </div>
+      $$END$$
+    $$END$$
+    $$REM$$<!--AFFICHAGE DE LA PHRASE POUR LA GARANTI REVENTE ARTHURIMMO-->$$END$$
+    $$IF=:2:FORM:IDTT$$
+        $$IF=:1:GARANTIEREVENTE$$
+            <div class="row-fluid margin-top-20 hidden-phone">
+                <div class="span3 pagination-centered">
+                    <a href="/immo,revente.htm" target="_blank" class="active margin-top-15" title="Garantie revente"><img src="$$~$$images/garantierevente/gallian-listing.png" alt="Pour les surprises de la vie, il y a la garantie revente offerte !"></a>
+                </div>
+                <div class="span9 small">
+                    $$IF0:CUSTOMGARANTIESENTENCE$$
+                        Cette icône indique que ce bien bénéficie de la garantie revente
+                    $$END$$
+                    $$IF:CUSTOMGARANTIESENTENCE$$
+                        $$CUSTOMGARANTIESENTENCE$$
+                    $$END$$
+                    <a href="/immo,revente.htm" target="_blank" class="padding-left-15" title="Garantie revente"><img src="$$~$$images/garantierevente/gallian-picto2.png" alt="Garantie revente"></a>
+                </div>
+            </div>
+        $$END$$
+    $$END$$
+
+    <!--#include virtual="recherche/incl_recherche_onglets.htm" -->
+    <div class="row-fluid">
+        
+        $$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+        $$IF:TAILLEMOTEURRESULTATS$$
+            <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+        $$END$$
+        $$BIF:ANNLISTE$$
+
+        $$REM$$<!--AFFICHAGE DU LISTING-->$$END$$
+        <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_basic_resultats.htm" -->
+        </div>
+$$REM$$
+        $$REM$$<!--AFFICHAGE DE CARTO-->$$END$$
+        <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ relative margin-top-10">
+            <div id="recherche-carto" class="display-none">
+                <!--#include virtual="recherche/incl_basic_resultats_carto.htm" -->
+            </div>
+        </div>
+$$END:REM$$
+            $$IF0:ANNLISTE:SIPANIER$$
+                $$B:IMMOBW:ANN-ES:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+                <!--#include virtual="recherche/incl_calcul_selection.htm" -->
+            $$END$$
+        $$BFIN$$
+        $$BIF0:ANNLISTE$$
+        <div class="$$TAILLERESULTATS$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+            <!--LOADER-->
+            <div class="layer display-none fixe height-100-pourcent top right left bottom row-fluid">
+                <div class="z25 span12 margin-top-200">
+                    <div class="row-fluid">
+                        <div class="span4"></div>
+                        <div class=" span4 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+                            <img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+                            <p class="typo-black pagination-centered">
+                                $$LG:VEUILLEZPATIENTER$$
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bg-picture opacity-7 top right left bottom z-25" ></div>
+            </div>
+            <!-- FINLOADER-->
+            <script type="text/javascript">
+                var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+                var maxpage = '$$ANNLISTE:NBRPAGES$$';
+                var btnaction = 'choix-selection-refine';
+                var btnneutre = 'choix-neutre-refine';
+                var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+                var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:LOYERBTW$$$$FORM:LOYERBTW$$$$END$$';
+            </script>
+        </div>
+        $$BFIN$$
+        $$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES RIGHT -->$$END$$
+
+    </div>
+    <div class="row-fluid bloc-bottom-alerte-email">
+        <div class="$$TAILLEMOTEURRESULTATS$$"></div>
+        <div class="$$TAILLERESULTATS$$">
+            <!--#include virtual="recherche/incl_recherche_alerte.htm" -->
+        </div>
+    </div>
+    $$IF0:ANNLISTE:SIPANIER$$
+    <div class="row-fluid">
+        <div class="span12">
+            $$IF:ANNLISTE:NBR$$
+                <hr />
+                <div class="margin-top-20 small mentions">
+                    $$IF:ANNLISTE:NBR$$
+                        <!-- $$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$ -->
+                    $$END:ANNLISTE:NBR$$
+                    <p>$$LG:LOI78AGENCE$$<a href="$$URLBASE$$/legal,mentions.htm$$IF=:0:MULTIAGENCES$$?idp=$$AGENCE_IDPUBLICATION$$$$END$$" title="$$LG:ADR2EDITEUR$$">$$LG:ADR2EDITEUR$$</a>.</p>
+                </div>
+                <div class="margin-top-20"></div>
+            $$END$$
+        </div>
+    </div>
+    $$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+    $$BIF:ANNLISTE$$
+    <div class="row-fluid">
+        <div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+            <h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <!--#include virtual="recherche/incl_basic_resultats.htm" -->
+    </div>
+    $$BFIN$$
+    $$BIF0:ANNLISTE$$
+        $$IF0:ANNLISTE:SIPANIER$$
+        <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+        $$END$$
+        $$IF:ANNLISTE:SIPANIER$$
+        <div class="row-fluid">
+            <div class="span12">
+                <h1>$$LG:DANSVOTRESELEC pcase$$ : <span class="typo-action">0 $$LG:ANNONCE$$</span></h1>
+                <hr />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 margin-top-10">
+                <p>$$LG:CREERSELECTION pcase$$</p>
+            </div>
+        </div>
+        $$END$$
+    $$BFIN$$
+$$END$$
