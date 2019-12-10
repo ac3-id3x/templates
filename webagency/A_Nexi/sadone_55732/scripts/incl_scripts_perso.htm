@@ -1,0 +1,528 @@
+<!-- Google Tag Manager (noscript) -->
+<!--<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TWM9KT5"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>-->
+<!-- End Google Tag Manager (noscript) -->
+
+
+<script type="text/javascript" src="$$_$$scripts/js/slick.min.js"></script>
+
+$$IF=:INDEX:IDT$$
+    <script type="text/javascript" src="$$_$$scripts/modules/annonces18.js"></script>
+$$END$$
+
+<script>
+    $(".bouton-envoyer-ami").on("click", function(){
+        $(".popup-envoyer-ami").toggleClass("open");
+        return false;
+    });
+
+    $("#link-newsletter").on("click", function(){
+        $(".newsletter").toggleClass("is-hidden");
+        return false;
+    });
+
+    /* BTN NOUVEL ENVOI AMI */
+    function sendNewFriend(btn,btnval){
+        $('.nouvel-envoi-ami').on('click',function(e) {
+            $("#toemail").val('');
+            $("#tonom").val('');
+            btn.button('reset');
+            btn.html(btnval);
+            btn.show('slow');
+            $('.message-erreur-ami').hide('slow');
+            $('.nouvel-envoi-ami').hide('slow');
+            btn.button('reset');
+        });
+    }
+
+    /* ENVOI AMI */
+    $('.bouton-form-envoyer-ami').on('click',function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var boutonNotOk = btn.html();
+        btn.button('loading');
+        $.ajax({
+            type: "POST",
+            data : $('#form-envoi-ami').serialize(),
+            dataType:'json',
+            url: '/contact,ami_envoi.htm',
+            beforeSend: function() {
+                $('.message-erreur-ami').html('');
+            },
+            success: function(data) {
+                if(data.envoi == 1) {
+                    $('.message-erreur-ami').html(messageAmiOK);
+                    btn.html(boutonOK);
+                    //btn.unbind('click');
+                    btn.hide('slow');
+                    $('.nouvel-envoi-ami').show('slow');
+                } else {
+                    if(data.email_from.length <= 0) {
+                        $("#email_from").parent().addClass('error');
+                    } else {
+                        $("#email_from").parent().removeClass('error');
+                    }
+                    if(data.nom_from.length <= 0) {
+                        $("#nom_from").parent().addClass('error');
+                    } else {
+                        $("#nom_from").parent().removeClass('error');
+                    }
+                    if(data.email_to.length <= 0) {
+                        $("#toemail").parent().addClass('error');
+                    } else {
+                        $("#toemail").parent().removeClass('error');
+                    }
+                    if(data.nom_to.length <= 0) {
+                        $("#tonom").parent().addClass('error');
+                    } else {
+                        $("#tonom").parent().removeClass('error');
+                    }
+                    $('.message-erreur-ami').html(data.erreur);
+                    btn.button('reset');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                //console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                //btn.button('reset');
+                $('.message-erreur-ami').show('slow');
+                sendNewFriend(btn,boutonNotOk);
+            }
+        });
+    });
+
+
+    $(document).ready(function(){
+
+        /* -------------------------------------------*/
+        /* -- PARTENAIRES FOOTER */
+        /* -------------------------------------------*/
+
+        $('.carousel-part').slick({
+            autoplay: true,
+            autoplaySpeed: 0,
+            arrows: false,
+            slidesToShow: 7,
+            slidesToScroll: 1,
+            cssEase: 'linear',
+            speed: 5000,
+            accessibility: false,
+            draggable: false,
+            lazyLoad: 'progressive',
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            swipe: false,
+            touchMove: false,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 6
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                },
+                {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }
+            ]
+        });
+
+    });
+    $(document).ready(function(){
+        $('#PopTelRight').hide(0).show(200);
+        $('#TelIcoRight').click(function(){
+            $('#TelShowRight').toggle('slow');                                      
+            $('#TelShowDown').toggle('slow');               
+        });
+        //$('#CloseTel').click(function(){
+        //    $('#TelShowRight').hide('slow');           
+        //});
+    });
+</script>
+<div id="PopTelRight"><span class="tel-txt hidden-phone hidden-tablet margin-right-5" style="display: none;" id="TelShowRight">$$AGENCE_TEL$$</span><i class="icon-v5 icon-v5-mobile" id="TelIcoRight"></i><span class="smaller hidden-desktop" style="display: none !important;" id="TelShowDown">$$AGENCE_TEL$$</span></div>
+
+$$IF=:DETAILANNONCE:IDT$$
+    <script>
+        $(document).ready(function(){
+
+            /* -- CAROUSEL GALERIE PHOTO */
+            /* --------------------------------------------------*/
+
+            $('.detail-galerie2-module').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                infinite: false,
+                arrows: true,
+                prevArrow: "<i class='mf-icon-arrow-left slick-arrow-prev'></i>",
+                nextArrow: "<i class='mf-icon-arrow-right slick-arrow-next'></i>",
+                fade: true,
+                asNavFor: '.detail-thumbs-module'
+            });
+            $('.detail-thumbs-module').slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                infinite: false,
+                asNavFor: '.detail-galerie2-module',
+                dots: false,
+                arrows: false,
+                centerMode: false,
+                focusOnSelect: true,
+                responsive: [
+                    {
+                      breakpoint: 580,
+                      settings: {
+                        slidesToShow: 3
+                      }
+                    },
+                    {
+                      breakpoint: 340,
+                      settings: {
+                        slidesToShow: 2
+                      }
+                    }
+                ]
+            });
+
+        });
+    </script>
+$$END$$
+
+<script>
+    $('.counter-nbr').each(function () {
+        $(this).prop('Counter',0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 3000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
+
+
+        /* -------------------------------------------*/
+        /* -- MAGAZINE CAROUSEL */
+        /* -------------------------------------------*/
+
+        $('.carousel-magazine').slick({
+            prevArrow: '<i data-role="none" aria-label="previous" class="slick-prev mf-icon-arrow-left typo-white text-shadow-1"></i>',
+            nextArrow: '<i data-role="none" aria-label="next" class="slick-next mf-icon-arrow-right typo-white text-shadow-1"></i>',
+            infinite: true,
+            speed: 300,
+            slidesToShow: 3,
+            slidesToScroll: 2,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+        /* -------------------------------------------*/
+        /* -- MAGAZINE BLOG */
+        /* -------------------------------------------*/
+
+        $('.carousel-blog').slick({
+            prevArrow: '<i data-role="none" aria-label="previous" class="slick-prev mf-icon-arrow-left typo-white text-shadow-1"></i>',
+            nextArrow: '<i data-role="none" aria-label="next" class="slick-next mf-icon-arrow-right typo-white text-shadow-1"></i>',
+            infinite: true,
+            speed: 300,
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+        
+
+</script>
+
+$$IF=:PRIXM2:IDT$$
+    <script type="text/javascript" src="$$_$$scripts/js/chart.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            var ctx = document.getElementById('pxgraph-annee').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+                    datasets: [{
+                        label: "Prix moyen au m² par an ",
+                        borderColor: 'rgb(199, 181, 140)',
+                        backgroundColor: 'rgba(199,181,140,.5)',
+                        data: [6341, 7201, 7832, 7450, 7490, 9520, 9202, 9273, 9215, 9129, 9142, 9969, 10373],
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("fr-FR",{style:"currency", currency:"EUR"});
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+            var ctx = document.getElementById('pxgraph-trim').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["1 trim 2014", "2 trim 2014", "3 trim 2014", "4 trim 2014", "1 trim 2015", "2 trim 2015", "3 trim 2015", "4 trim 2015", "1 trim 2016", "2 trim 2016", "3 trim 2016", "4 trim 2016", "1 trim 2017", "2 trim 2017","3 trim 2017","4 trim 2017","1 trim 2018", "2 trim 2018", "3 trim 2018", "4 trim 2018", "1 trim 2019","2 trim 2019"],
+                    datasets: [{
+                        label: "Prix moyen au m² par trimestre ",
+                        borderColor: 'rgb(199, 181, 140)',
+                        backgroundColor: 'rgba(199,181,140,.5)',
+                        data: [9313, 9491, 9406, 8511, 8773, 9153, 9317, 9272, 8800, 9495, 9565, 8699, 9598, 9747,10698,10162, 10222, 10548, 10457, 10266, 10475, 12155],
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("fr-FR",{style:"currency", currency:"EUR"});
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+            var ctx = document.getElementById('pxgraph-mois').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["Novembre 2017", "Décembre 2017","Janvier 2018","Février 2018","Mars 2018","Avril 2018","Mai 2018","Juin 2018","Juillet 2018","Août 2018","Septembre 2018","Octobre 2018","Novembre 2018","Décembre 2018","Janvier 2019","Février 2019","Mars 2019","Avril 2019","Mai 2019","Juin 2019","Juillet 2019","Aoüt 2019"],
+                    datasets: [{
+                        label: "Prix moyen au m² par mois ",
+                        borderColor: 'rgb(199, 181, 140)',
+                        backgroundColor: 'rgba(199,181,140,.5)',
+                        data: [9720, 9965, 10622, 9983, 10623, 10061, 10206, 11378, 10507, 9969, 10895, 10473, 10594, 9732, 10247, 10728, 10450, 10930, 11035, 14500, 10770, 12350],
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("fr-FR",{style:"currency", currency:"EUR"});
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+$$END$$
+
+$$IF=:QSN:IDT$$
+    <script>
+            $('.timeline-nav-item').click(function(){
+                var tab_id = $(this).attr('data-tab');
+                $('.timeline-nav-item').removeClass('current');
+                $('.timeline-content-item').removeClass('current');
+                $(this).addClass('current');
+                $("#"+tab_id).addClass('current');
+            })
+    </script>
+$$END$$
+
+$$IF=:INDEX:IDT$$
+    <script>
+        $(document).ready(function() {
+            $('.module-annonces').on('click','.bouton-ajouter-selection-module',function() {
+                var $this = $(this);
+                var thisIcone = $this.find('i');
+                var idAnnonce = $this.attr('data-idannonce');
+                var idPublication = $this.attr('data-idpublication');
+                if(thisIcone.hasClass('mf-icon-star-full')){
+                    $.ajax({
+                        type: "GET",
+                        data: 'idannonce='+idAnnonce+'&idp='+idPublication,
+                        url: '/scripts,panier,selection_supprimer.htm',
+                        dataType: "json",
+                        cache:false,
+                        success: function(data) {
+                            $this.find('i').attr('class','mf-icon-star');
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        type: "GET",
+                        data : "idannonce="+idAnnonce+"&idpublication="+idPublication,
+                        url: '/scripts,panier,selection_ajouter.htm',
+                        dataType: "json",
+                        cache:false,
+                        success: function(data) {
+                            $this.find('i').attr('class','mf-icon-star-full');
+                        }
+                    });
+                };
+            });
+        });
+    </script>
+    $$B:IMMOBW:ANN-ES:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+    $$BIF:CHECKBASKET$$
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $$DO$$
+                    $(".bouton-ajouter-selection-module[data-idannonce=$$CHECKBASKET:IDANNONCE$$]").find("i").attr('class','mf-icon-star-full');
+                $$LOOP$$
+            });
+
+
+        </script>
+    $$BFIN$$
+
+$$END$$
+
+$$REM$$
+$$IF=:RESULTATS:IDT$$
+<script>
+    $(".annonce").each(function(n) {
+          $(this).addClass("annonce" + n);
+    });    
+</script>
+<script>
+    $(document).ready(function() {
+        $('.annonce3').append("<p>&nbsp;</p>");
+        $('.annonce4').append("<p>test 1</p>");
+        $('.annonce5').append("<p>&nbsp;</p>");
+    });    
+</script>
+$$END$$
+$$END:REM$$
+
+
+<script>
+    // ===============================================
+    // == NEWSLETTER ==
+    // ===============================================
+
+
+    $('.form-newsletter').on('click','.btn-envoi-newsletter', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('Inscription réussie');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message').val("");
+                    $('#email-message').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
+
+    $('body').on('click','.btn-envoi-newsletter-mob', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message-mob').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message-mob').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message-mob').val("");
+                    alert(messageOK);
+                    $('#email-message-mob').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
+
+    
+</script>

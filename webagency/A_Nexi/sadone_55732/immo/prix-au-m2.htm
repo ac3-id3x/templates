@@ -1,0 +1,110 @@
+$$A:WRAP=0$$
+$$A:IDT=PRIXM2$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="header/incl_ariane.htm" -->
+
+<div class="content content-prixm2">
+
+    <div class="content-ttl">
+        <div class="container">
+            <h1>Sadone Immobilier Neuilly sur Seine vous présente les prix au m2 </h1>
+        </div>
+    </div>
+
+    <div class="content-inner">
+        <div class="container">
+
+            <div class="row-fluid">
+                <div class="span8">
+
+                    <div class="pxgraph">
+                        <div>
+                            <h2 class="margin-bottom-15">Prix au m² par an</h2><hr>
+                            <canvas id="pxgraph-annee"></canvas>
+                        </div>
+                        <div class="margin-top-50">
+                            <h2 class="margin-bottom-15">Prix au m² par trimestre</h2><hr>
+                            <canvas id="pxgraph-trim"></canvas>
+                        </div>
+                        <div class="margin-top-50">
+                            <h2 class="margin-bottom-15">Prix au m² par mois</h2><hr>
+                            <canvas id="pxgraph-mois"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="span4">
+                    <form method="post" action="/$$REP:0$$/" enctype="multipart/form-data" class="content-form formm2">
+
+                        <!--#include virtual="contact/incl_honeypot.htm" -->
+                        <input type="hidden" name="u" value="ID3:FORMMAIL">
+                        <input type="hidden" name="page_ok" value="/immo,prix-au-m2_envoi.htm">
+                        <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$">
+                        <input type="hidden" name="page_html" value="/immo,prix-au-m2_email.htm">
+                        <input type="hidden" name="cfg_form" value="prix-au-m2">
+                        <input type="hidden" name="cfg_emails" value="prix-au-m2">
+                        <input type="hidden" name="subject" value="Demande d'information sur les prix au m²">
+                        <input type="hidden" name="email_to" value="info@sadone.com">
+                        $$IF:ERRE$$
+                            <span class="h3-like bold uppercase">$$LG:ERREUR$$</span>
+                            <p class="small">$$ERRE$$</p>
+                        $$END$$
+
+                        <div class="h2-like typo-action margin-bottom-10">Vos coordonnées</div>
+                        <div class="control-group">
+                            <select class="center" name="formm2-civil" id="formm2-civil">
+                                <option value="" disabled $$IF0:FORM:FORMM2-CIVIL$$selected$$END$$>Civilité</option>
+                                <option value="Association" $$IF=:Association:FORM:FORMM2-CIVIL$$selected$$END$$>Association</option>
+                                <option value="Consorts" $$IF=:Consorts:FORM:FORMM2-CIVIL$$selected$$END$$>Consorts</option>
+                                <option value="Indivision" $$IF=:Indivision:FORM:FORMM2-CIVIL$$selected$$END$$>Indivision</option>
+                                <option value="Madame" $$IF=:Madame:FORM:FORMM2-CIVIL$$selected$$END$$>Madame</option>
+                                <option value="Madame,Monsieur" $$IF=:Madame,Monsieur:FORM:FORMM2-CIVIL$$selected$$END$$>Madame, Monsieur</option>
+                                <option value="Mademoiselle" $$IF=:Mademoiselle:FORM:FORMM2-CIVIL$$selected$$END$$>Mademoiselle</option>
+                                <option value="Mademoiselle,Monsieur" $$IF=:Mademoiselle,Monsieur:FORM:FORMM2-CIVIL$$selected$$END$$>Mademoiselle, Monsieur</option>
+                                <option value="Maître" $$IF=:Maître:FORM:FORMM2-CIVIL$$selected$$END$$>Maître</option>
+                                <option value="Mesdames" $$IF=:Mesdames:FORM:FORMM2-CIVIL$$selected$$END$$>Mesdames</option>
+                                <option value="Messieurs" $$IF=:Messieurs:FORM:FORMM2-CIVIL$$selected$$END$$>Messieurs</option>
+                                <option value="Monsieur" $$IF=:Monsieur:FORM:FORMM2-CIVIL$$selected$$END$$>Monsieur</option>
+                                <option value="Société" $$IF=:Société:FORM:FORMM2-CIVIL$$selected$$END$$>Société</option>
+                                <option value="Succession" $$IF=:Succession:FORM:FORMM2-CIVIL$$selected$$END$$>Succession</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <input class="center" type="text" name="formm2-prenom" id="formm2-prenom" placeholder="Prénom*" value="$$FORM:FORMM2-PRENOM$$" required>
+                        </div>
+                        <div class="control-group">
+                            <input class="center" type="text" name="formm2-nom" id="formm2-nom" placeholder="Nom*" value="$$FORM:FORMM2-NOM$$" required>
+                        </div>
+                        <div class="control-group">
+                            <input class="center" type="email" name="email_from" id="email_from" placeholder="Email*" value="$$FORM:EMAIL_FROM$$" required>
+                        </div>
+
+                        <div class="h2-like typo-action margin-top-20 margin-bottom-10">Pour vous contacter</div>
+                        <div class="control-group">
+                            <input class="center" type="text" name="formm2-tel" id="formm2-tel" placeholder="Téléphone*" value="$$FORM:FORMM2-TEL$$" required>
+                        </div>
+                        <div class="control-group">
+                            <input class="center" type="text" name="formm2-mobile" id="formm2-mobile" placeholder="Mobile" value="$$FORM:FORMM2-MOBILE$$">
+                        </div>
+
+                        <div class="h2-like typo-action margin-top-20 margin-bottom-10">Votre demande</div>
+                        <div class="control-group">
+                            <textarea class="center" name="formm2-msg" id="formm2-msg" rows="5">$$FORM:FORMM2-MSG$$</textarea>
+                        </div>
+                        <p class="smaller italic">* Champs obligatoires</p>
+                        <div class="control-group">
+                            <button type="submit" class="btn btn-large btn-block btn-action">Continuer</button>
+                        </div>
+                        <!--#include virtual="legal/incl_rgpd.htm" -->
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!--#include virtual="footer/incl_bas.htm" -->

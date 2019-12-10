@@ -1,0 +1,93 @@
+$$SET:JS_MINI_MOTEUR=1$$
+
+<form class="mini-moteur minimoteur-home" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+
+    <div id="Mini_Transaction" class="Mini_Transaction minimoteur-field has-select">
+        <!--#include virtual="moteur/mini/incl_type_transaction_mobilefirst.htm" -->
+    </div>
+
+    <div id="Mini_Biens" class="Mini_Biens minimoteur-field has-select hidden-phone">
+        <script type="text/javascript">
+            $(document).ready(function() {
+                ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','libre'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+                $("#idtt").change(function(){
+                    ajaxGet("idtt",'$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$');
+                });
+            });
+        </script>
+    </div>
+
+    <div id="Mini_Budget" class="Mini_Budget minimoteur-field">
+        <script type="text/javascript">
+            $(document).ready(function() {
+                ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget_mobilefirst','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$');
+                $("#idtt").change(function(){
+                    ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget_mobilefirst','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$');
+                });
+            });
+        </script>
+    </div>
+
+    <div id="Mini_Surface" class="Mini_Surface  minimoteur-field">
+        <!--#include virtual="moteur/mini/incl_surface_mobilefirst.htm" -->
+    </div>
+
+    <div class="minimoteur-field">
+        <button type="submit" class="btn btn-large btn-block btn-action moteurmf-submit bouton-rechercher-moteur" data-loading-text="<i class='arcloc-icon-load'></i> $$LG:LOADING pcase$$">
+            $$LG:RECHERCHER pcase$$
+        </button>
+    </div>
+
+    <input type="hidden" name="idqfix" value="1">
+    <!--#include virtual="moteur/incl_input_langue.htm" -->
+    <!--#include virtual="moteur/mini/incl_input_hidden.htm" -->
+    <input type="hidden" id="noResults" value="$$LG:PASDERESULTATS pcase$$">
+    <input type="hidden" id="noEnoughChar" value="$$LG:SAISIR2CARACTERES pcase$$">
+    <input type="hidden" name="idq" id="idqInput" value="$$IF:FORM:IDQ$$$$FORM:IDQ$$$$END$$">
+    <input type="hidden" name="div" id="divInput" value="$$IF:FORM:DIV$$$$FORM:DIV$$$$END$$">
+    <input type="hidden" name="idpays" id="idpaysInput" value="$$IF:FORM:IDPAYS$$$$FORM:IDPAYS$$$$END$$">
+    <input type="hidden" name="cp" id="cpInput" value="$$IF:FORM:CP$$$$FORM:CP$$$$END$$">
+    <input type="hidden" name="ci" id="ciInput" value="$$IF:FORM:CI$$$$FORM:CI$$$$END$$">
+    <input type="hidden" id="moteurUnique" value="1">
+    <input type="hidden" id="showCp" value="0">
+    <input type="hidden" id="moteurCarte" value="0">
+
+</form>
+
+
+$$REM$$<!-- SEO -->$$END$$
+$$IF=:1:MOTEUR_VILLES_REF$$
+    $$IF=:FR:LANGUE$$
+        $$IF=:INDEX:IDT$$
+            $$IF:MOTEUR_VILLE_1$$
+
+                <div class="minimoteur-home-suggestions hidden-phone">
+                    <span class="minimoteur-home-suggestions-ttl">$$LG:SUGGESTIONLIBELLE pcase$$ :</span>
+                    $$MOTEUR_VILLE_1$$
+                    $$IF:MOTEUR_VILLE_2$$
+                        - $$MOTEUR_VILLE_2$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_3$$
+                        - $$MOTEUR_VILLE_3$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_4$$
+                        - $$MOTEUR_VILLE_4$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_5$$
+                        - $$MOTEUR_VILLE_5$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_6$$
+                        - $$MOTEUR_VILLE_6$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_7$$
+                        - $$MOTEUR_VILLE_7$$
+                    $$END$$
+                    $$IF:MOTEUR_VILLE_8$$
+                        - $$MOTEUR_VILLE_8$$
+                    $$END$$
+                </div>
+
+            $$END$$
+        $$END$$
+    $$END$$
+$$END$$

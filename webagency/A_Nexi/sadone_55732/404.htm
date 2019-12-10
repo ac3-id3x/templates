@@ -1,0 +1,244 @@
+$$INIT:IDT=404$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$REM$$<!-- BOUCLE ANNONCES -->$$END$$
+$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG:QRY:IDP:::REP:1:QRY:TRI:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VAL:ADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+$$REM$$<!-- BOUCLE FIL ARIANE -->$$END$$
+$$B:IMMOBW:FIL-ARIANE-ANNONCE:ALIAS:FIL$$
+
+$$REM$$<!--FILTRES PERSO MOTEUR RECHERCHE-->$$END$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:1:~langue:QRY:LANG:ALIAS:FILTREPERSO1$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:2:~langue:QRY:LANG:ALIAS:FILTREPERSO2$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:3:~langue:QRY:LANG:ALIAS:FILTREPERSO3$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR incl_VILLES-->$$END$$
+$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCLUDE_INPUT.HTM-->$$END$$
+$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCL_JSON.HTM-->$$END$$
+$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR INCL_TYPE_TRANSACTION-->$$END$$
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+
+$$REM$$<!-- Variables se déclarant dans params_global.htm du site -->$$END$$
+$$REM$$<!-- IDTTMODULE = idtt pour le module -->$$END$$
+$$REM$$<!-- QUERYMODULE = query pour le module -->$$END$$
+$$REM$$<!-- NBMODULEANNONCES =  Nombre d'annonces pour le module -->$$END$$
+$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESHOME:VAL:IDTTMODULE:VAL:LANG:::VAL:QUERYMODULE:~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+
+<script type="text/javascript">
+	var melRedirection = '$$PAGE:MEL_404_REDIRECTION$$';
+	if (melRedirection) window.location.href = melRedirection;
+</script>
+
+
+<h1 class="pagination-centered">$$LG:DESOLE pcase$$ $$LG:404TEXTE$$</h1>
+<hr />
+<div class="row-fluid">
+	<div class="span8">
+		<div class="row-fluid hidden-phone margin-bottom-20">
+			<h2 class="h1-like margin-bottom-10 pagination-centered margin-top-10">$$LG:TROUVEZVOTREBIEN pcase$$</h2>
+			<!--#include virtual="moteur/mini/incl_avantage_moteur.htm" -->
+		</div>
+
+		$$A:MODULE_ACTIF=1$$
+
+		<!--#include virtual="modules/incl_calcul_column.htm" -->
+		<div class="hidden-phone box-module-home">
+			$$BIF:ANNONCESHOME$$
+
+			$$IF:H2_INDEX_MODULE$$
+				<div class="row-fluid">
+					<div class="span10">
+						<h2 class="section-ttl">
+							$$H2_INDEX_MODULE$$
+						</h2>
+					</div>
+					<div class="span2">
+						$$IF:BOUTON_MODULE_LINK$$
+							<a href="$$BOUTON_MODULE_LINK$$" title="$$BOUTON_MODULE_LABEL$$" class="btn btn-block btn-large btn-action module-annonces-btn">$$BOUTON_MODULE_LABEL$$</a>
+						$$END$$
+						$$IF0:BOUTON_MODULE_LINK$$
+							<a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$IDTTMODULE$$&$$QUERYMODULE removeqry photo htmlencode$$" class="btn btn-block btn-action module-annonces-btn" title="$$LG:BOUTON_MODULE_LABEL pcase$$">$$BOUTON_MODULE_LABEL$$</a>
+						$$END$$
+					</div>
+				</div>
+			$$END$$
+
+
+					$$DO$$
+						$$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+						$$IF:ANNONCESHOME:PHOTOURL0$$
+							$$A:MODULEIMG=@@ANNONCESHOME:PHOTOURL0@@$$
+						$$END$$
+						$$IF0:ANNONCESHOME:PHOTOURL0$$
+							$$IF!:1:SANS_PHOTO_PERSO$$
+								$$A:MODULEIMG=@@~@@images/recherche/sans_photo.jpg$$
+							$$END$$
+							$$IF=:1:SANS_PHOTO_PERSO$$
+								$$A:MODULEIMG=@@_@@images/recherche/sans_photo.jpg$$
+							$$END$$
+						$$END$$
+
+
+							$$IF=:1:ANNONCESHOME:I exec XX%3$$
+								<div class="row-fluid">
+							$$END$$
+
+							<div class="module-annonces-item span4">
+								<a href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+
+									<div class="module-annonces-img" style="background-image: url($$MODULEIMG$$);">
+										$$IF!:0:PICTOANNONCE$$
+											<div class="module-tags">
+												$$IF:ANNONCESHOME:SI_EXCLUSIF$$
+													<div class="module-tag module-tag-exclu">
+														$$LG:EXCLUSIVITE pcase$$
+													</div>
+												$$END$$
+												$$IF:ANNONCESHOME:SI_COUPDECOEUR$$
+													<div class="module-tag module-tag-cdc">
+														$$LG:COUPDECOEUR pcase$$
+													</div>
+												$$END$$
+												$$IF+:FRAICHEUR:ANNONCESHOME:DT_CREA datediff now timespan days$$
+													<div class="module-tag module-tag-new">
+														$$LG:NEWCOURT pcase$$
+													</div>
+												$$END$$
+											</div>
+										$$END$$
+										$$IF:ANNONCESHOME:ID360$$
+											<div class="module-tag module-tag-360">
+												$$LG:VISITEVIRTUELLE pcase$$
+											</div>
+										$$END$$
+										$$IF:ANNONCESHOME:360_URL$$
+											<div class="module-tag module-tag-360">
+												$$LG:VISITEVIRTUELLE pcase$$
+											</div>
+										$$END$$
+									</div>
+
+									<div class="module-annonces-content">
+										<div class="module-annonces-content-left">
+											<div class="module-annonces-type">
+												<span class="module-annonces-typetransaction">$$ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase$$</span>
+												$$ANNONCESHOME:IDTYPEBIEN gettypebien$$
+											</div>
+										<div class="module-annonces-specs">
+												$$IF:ANNONCESHOME:SURFACE$$
+													<span class="module-annonces-surface">
+														$$IF!:EN:LANGUE$$$$ANNONCESHOME:SURFACE$$ m² $$END$$
+														$$IF=:EN:LANGUE$$ $$ANNONCESHOME:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+													</span>
+												$$END$$
+												$$IF:ANNONCESHOME:NB_PIECES$$
+													<span class="module-annonces-pieces">
+														$$IF:ANNONCESHOME:SURFACE$$ - $$END$$
+														$$IF:ANNONCESHOME:NB_PIECES$$
+															$$ANNONCESHOME:NB_PIECES$$
+														$$END$$
+														$$IF0:ANNONCESHOME:NB_PIECES$$
+															N/A
+														$$END$$
+														$$IF=:1:ANNONCESHOME:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNONCESHOME:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+													</span>
+												$$END$$
+											</div>
+											<div class="module-annonces-ville">
+												$$IF:ANNONCESHOME:VILLE$$
+													<i class="mf-icon-localisation typo-action"></i>&nbsp;
+													$$ANNONCESHOME:VILLE$$
+												$$END$$
+												$$IF!:1:CPHIDDEN$$
+													$$IF:ANNONCESHOME:CP$$($$ANNONCESHOME:CP$$)$$END$$
+												$$END$$
+											</div>
+										</div>
+										<div class="module-annonces-content-right">
+
+											$$IF=:0:PRIXMASQUE$$
+												$$IF:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+													<div class="module-annonces-prix module-annonces-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+												$$END$$
+												$$IF0:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+													$$IF:ANNONCESHOME:PRIX$$
+														<div class="module-annonces-prix">
+															$$ANNONCESHOME:PRIX formatnumber 0$$ $$ANNONCESHOME:PRIX_UNITE$$
+															$$IF=:1:HONORAIRESINCLUS$$
+																<abbr class="small" title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>
+															$$END$$
+															$$IF:ANNONCESHOME:PX_RENTE$$
+																<br><span class="small">$$LG:RENTE pcase$$ : </span>$$ANNONCESHOME:PX_RENTE formatnumber 0$$ $$LG:EUROMOIS$$
+															$$END$$
+														</div>
+													$$END$$
+												$$END$$
+											$$END$$
+											$$IF=:1:PRIXMASQUE$$
+												<div class="module-annonces-prix annonce-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+											$$END$$
+
+											<div class="module-annonces-ref">
+												$$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$
+													<span class="module-annonces-ref-lgd">$$LG:REFER pcase$$ </span>
+												$$END$$
+												$$ANNONCESHOME:REFANNONCE$$
+											</div>
+										</div>
+									</div>
+
+								</a>
+							</div>
+
+							$$IF=:0:ANNONCESHOME:I exec XX%3$$
+								</div>
+							$$END$$
+					$$LOOP$$
+
+			$$BFIN$$
+
+			</div>
+		</div>
+
+
+
+	</div>
+	<div class="span4">
+		<div class="row-fluid">
+			<h2 class="h1-like margin-bottom-20 pagination-centered margin-top-10">$$LG:CONTACTEZNOUS pcase$$</h2>
+		</div>
+		$$IF=:0:MULTIAGENCES$$
+		<div class="row-fluid">
+			<div>
+				<!--#include virtual="immo/incl_immo_telephonez_nous.htm" -->
+			</div>
+			<div class="border-solid-primary-1 detail-bloc-contact padding-10 margin-top-70">
+				<!--#include virtual="agence/incl_formulaire_agence.htm" -->
+			</div>
+		</div>
+		$$END$$
+		$$IF=:1:MULTIAGENCES$$
+		<div class="row-fluid">
+			<div class="span12 detail-bloc-contact padding-10 border-solid-primary-1">
+				<div class="h3-like">$$LG:NOUSCTC pcase$$</div>
+				<div class="margin-bottom-10">
+						<p>$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LG:NOTRE lcase$$ $$LG:SERVGEST lcase$$</p>
+				</div>
+				<div class="control-group margin-0 pagination-centered">
+						<!--#include virtual="immo/incl_immo_liste_bouton.htm" -->
+				</div>
+			</div>
+		</div>
+		$$END$$
+	</div>
+</div>
+
+
+<!--#include virtual="footer/incl_bas.htm" -->

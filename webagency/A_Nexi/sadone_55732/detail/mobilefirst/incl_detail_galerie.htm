@@ -1,0 +1,60 @@
+$$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+<!--#include virtual="detail/incl_detail_selection_js.htm" -->
+
+<div class="detail-galerie">
+    <div class="detail-panier" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$">
+        <i class="mf-icon-star"></i>
+    </div>
+    $$IF!:0:PICTOANNONCE$$
+        <div class="detail-tags">
+            $$IF:ANNDETAIL:SI_EXCLUSIF$$
+                <div class="detail-tag detail-tag-exclu">
+                    $$LG:EXCLUSIVITE pcase$$
+                </div>
+            $$END$$
+            $$IF:ANNDETAIL:SI_COUPDECOEUR$$
+                <div class="detail-tag detail-tag-cdc">
+                    $$LG:COUPDECOEUR pcase$$
+                </div>
+            $$END$$
+            $$IF+:FRAICHEUR:ANNDETAIL:DT_CREA datediff now timespan days$$
+                <div class="detail-tag detail-tag-new">
+                    $$LG:NEWCOURT pcase$$
+                </div>
+            $$END$$
+        </div>
+    $$END$$
+
+    $$BIF:GALERIE$$
+        <div class="detail-galerie2-module">
+            $$DO$$
+                $$IF:GALERIE:BIG_URL$$
+                    <div class="detail-galerie-item" style="background-image:url($$GALERIE:BIG_URL$$);"></div>
+                $$END$$
+                $$IF0:GALERIE:BIG_URL$$
+                    $$IF:GALERIE:B600_URL$$
+                        <div class="detail-galerie-item" style="background-image:url($$GALERIE:B600_URL$$);"></div>
+                    $$END$$
+                    $$IF0:GALERIE:B600_URL$$
+                        <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);"></div>
+                    $$END$$
+                $$END$$
+            $$LOOP$$
+        </div>
+    $$BFIN$$
+    $$BIF0:GALERIE$$
+        <div class="detail-galerie2-module">
+            <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);"></div>
+        </div>
+    $$BFIN$$
+</div>
+
+$$BIF:GALERIE$$
+    <div class="detail-thumbs">
+        <div class="detail-thumbs-module">
+            $$DO$$
+                <div class="detail-thumbs-item" style="background-image:url($$GALERIE:C175_URL$$);"></div>
+            $$LOOP$$
+        </div>
+    </div>
+$$BFIN$$
