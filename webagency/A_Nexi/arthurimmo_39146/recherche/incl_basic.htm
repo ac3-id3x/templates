@@ -1,0 +1,137 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+
+$$IF=:10$11:FORM:IDTT$$
+	$$A:TAILLEMOTEURRESULTATS=0$$
+	$$A:TAILLERESULTATS=12$$
+$$END$$
+
+<!--#include virtual="recherche/incl_recherche_haut.htm" -->
+
+
+<div class="row-fluid margin-top-30">
+	<div class="span9">
+		<h1 class="bigger margin-bottom-10">
+			<span class="phrase-recherche big">$$ANNLISTE:PHRASE pcase$$ $$IF!:1:HIDE_SOUSTYPEBIEN$$$$IF!:9:FORM:IDTT$$<!--#include virtual="recherche/incl_libelle_recherche.htm" -->$$END$$$$END$$</span>
+			<!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->
+		</h1>
+	</div>
+	<div class="span3 margin-top-20">
+		<!--#include virtual="recherche/incl_bouton_alerte.htm" -->
+	</div>
+</div>
+<hr class="margin-bottom-15 sep-bordered">
+
+<div class="row-fluid margin-top-10">
+	<div class="span12">
+		<!--#include virtual="recherche/incl_alerte.htm" -->
+	</div>
+</div>
+
+<!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+$$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+$$IF=:1:CANONICAL$$
+	$$IF:SEO_RESULTS_CONTENT$$
+  <div class="row-fluid margin-bottom-20 hidden-phone">
+	  <p class="span12">$$SEO_RESULTS_CONTENT smalltextv2 1000$$</p>
+  </div>
+  $$END$$
+$$END$$
+
+<div class="row-fluid">
+
+	$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+	$$IF:TAILLEMOTEURRESULTATS$$
+		<!--#include virtual="recherche/incl_basic_moteur.htm" -->
+	$$END$$
+
+	<div class="row-fluid margin-top-20 hidden-phone">
+		$$IF=:2:FORM:IDTT$$
+			$$IF=:1:GARANTIEREVENTE$$
+			<div class="span3 pagination-centered">
+				<a href="/immo,services-acquereurs.htm?idp=481545" class="active margin-top-15" title="Garantie revente"><img src="$$-$$images/gallian-listing.png" alt="Pour les surprises de la vie, il y a la garantie revente offerte !"></a>
+			</div>
+			<div class="span6 small">
+				Cette icône indique que ce bien bénéficie de la garantie revente
+				<a href="/immo,services-acquereurs.htm?idp=481545" class="padding-left-15" title="Garantie revente"><img src="$$-$$images/gallian-picto2.png" alt="Garantie revente"></a>
+			</div>
+			$$END$$
+		$$END$$
+
+		$$IF=:1:AVISCLIENT$$
+			<div class="span3 margin-top-20">
+				$$IF=:1:AVISCLIENT-GRP$$
+				<iframe class="margin-top-5" src="https://www.opinionsystem.fr/company_rating.php?group_id=$$AVISCLIENT-ID$$&rating_key=$$AVISCLIENT-KEY$$&language=fre&text_color=000000" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 160px; height: 22px;" allowTransparency="true"></iframe>
+				$$END$$
+				$$IF!:1:AVISCLIENT-GRP$$
+				<iframe class="margin-top-5" src="https://www.opinionsystem.fr/company_rating.php?company_id=$$AVISCLIENT-ID$$&rating_key=$$AVISCLIENT-KEY$$&language=fre&text_color=000000" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 160px; height: 22px;" allowTransparency="true"></iframe>
+				$$END$$
+			</div>
+		$$END$$
+
+	</div>
+
+
+
+	<hr class="margin-bottom-15">
+
+	$$BIF:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative margin-top-10" id="recherche-listing" style="margin-left:0px;">
+			<!--#include virtual="recherche/incl_basic_resultats.htm" -->
+		</div>
+		$$IF0:ANNLISTE:SIPANIER$$
+			$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+			<!--#include virtual="recherche/incl_calcul_selection.htm" -->
+		$$END$$
+	$$BFIN$$
+	$$BIF0:ANNLISTE$$
+		<div class="$$TAILLERESULTATS$$ relative margin-top-10" id="recherche-listing" style="margin-left:0px;">
+			<!--#include virtual="recherche/incl_no_resultats.htm" -->
+		</div>
+	$$BFIN$$
+	$$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES RIGHT -->$$END$$
+</div>
+
+
+<div class="row-fluid">
+	<div class="$$TAILLERESULTATS$$">
+		<!--#include virtual="recherche/incl_recherche_alerte.htm" -->
+	</div>
+</div>
+
+
+	$$IF0:ANNLISTE:SIPANIER$$
+	<div class="row-fluid">
+		<div class="span12">
+			<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+		</div>
+	</div>
+	$$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+	$$BIF:ANNLISTE$$
+	<div class="row-fluid">
+		<div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+			<h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+			<hr>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<!--#include virtual="recherche/incl_basic_resultats.htm" -->
+	</div>
+	$$BFIN$$
+	$$BIF0:ANNLISTE$$
+		<!--#include virtual="recherche/incl_recherche_aucun_resultats.htm" -->
+	$$BFIN$$
+$$END$$

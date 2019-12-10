@@ -1,0 +1,187 @@
+$$REM$$<!--SCRIPTS PARALLAX-->$$END$$
+<script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js"></script>
+$$IF=:INDEX:IDT$$
+	<script type="text/javascript">
+		if(winW >  1024) {
+			$('a[href*="#"]').click(function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				var the_id = 	$(this).attr("href");
+				the_id = the_id.split("#",2);
+				the_id = the_id[1];
+				var element = $("#"+the_id);
+				if(element.length){
+					$('html, body').animate({ scrollTop:	$(element).offset().top}, 800);
+				return false;
+			} else {}
+		});
+		$("#parallax li:first-child a").addClass('bg-secondary');
+			$(window).scroll(function (event) {
+				var position = $(window).scrollTop() + 181;
+
+				if( $("#slide_agence").length ){
+					if ($("#slide_agence").offset().top <= position) {
+						$("#parallax a").removeClass('bg-secondary');
+						$(".sidenav-agence").addClass('bg-secondary');
+					}
+				}
+				if( $("#slide_annonce").length ){
+					if ($("#slide_annonce").offset().top <= position) {
+						$("#parallax a").removeClass('bg-secondary');
+						$(".sidenav-annonce").addClass('bg-secondary');
+					}
+				}
+				if( $("#slide_services").length ){
+					if ($("#slide_services").offset().top <= position) {
+						$("#parallax a").removeClass('bg-secondary');
+						$(".sidenav-services").addClass('bg-secondary');
+					}
+				}
+				if( $("#slide_estimation").length ){
+				 if ($("#slide_estimation").offset().top <= position) {
+					$("#parallax a").removeClass('bg-secondary');
+					$(".sidenav-estim").addClass('bg-secondary');
+				 }
+				}
+				if( $("#slide_avis").length ){
+					 if ($("#slide_avis").offset().top <= position) {
+						$("#parallax a").removeClass('bg-secondary');
+						$(".sidenav-avis").addClass('bg-secondary');
+					 }
+				 }
+				 if( $("#slide_blog").length ){
+				  if ($("#slide_blog").offset().top <= position) {
+					$("#parallax a").removeClass('bg-secondary');
+					$(".sidenav-blog").addClass('bg-secondary');
+				 }
+				}
+			});
+		}
+		//SCRIPT CHANGEMENT DEPT OU REGION HOME
+		function btnclick(deptreg){
+			$('.bloc-btn-agence').on('click','.btn',function(e){
+				e.preventDefault();
+				var newUrl = "agences,liste.htm?dept="+deptreg;
+				document.location.href = newUrl;
+			});
+		}
+		$(document).ready(function(){
+			$('.select-regions').on('change',function(){
+				var deptreg = $(this).val();
+				var xhr = $.ajax({
+					type: 'GET',
+					data:"region="+deptreg,
+					dataType: 'html',
+					url: '/scripts,ajax_dept.htm',
+					beforeSend: function() {
+						$('.select-dept').html("<option>chargement</option>");
+						$('.select-dept').addClass('opacity-2');
+						$('.select-dept').prop('disabled', 'disabled');
+					},
+					success: function(data) {
+						$('.select-dept').removeClass('opacity-2');
+						$('.select-dept').prop('disabled', false);
+						$('.select-dept').html(data);
+					},error:function() {
+					},complete:function() {
+					}
+				});
+				btnclick(deptreg);
+			});
+			$('.select-dept').on('change',function(){
+				var deptreg=$(this).val();
+				btnclick(deptreg);
+			});
+		});
+	</script>
+$$END$$
+<script type="text/javascript">
+	document.write('<script src="$$-$$scripts/scripts_all.js"><\/script>');
+</script>
+$$REM$$<!--SCRIPT MINI CARTE PAGE AGENCES-->$$END$$
+$$IF=:NOSAGENCES:IDT$$
+	<script type="text/javascript">
+		document.write('<script src="$$-$$scripts/scripts_agence.js"><\/script>');
+	</script>
+	$$REM$$<!--LANCE RECHERCHE SI DEPT DANS URL-->$$END$$
+	$$IF:FORM:DEPT$$
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var zoomdept= "$$FORM:DEPT$$";
+					$('#searchGeolocUser').val(zoomdept);
+					getGeoloc();
+			});
+		</script>
+	$$END$$
+$$END$$
+$$REM$$<!--LEXIQUE SHOW-HIDE-->$$END$$
+	$$IF=:LEXIQUE:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$-$$scripts/scripts_lexique.js"><\/script>');
+		</script>
+	$$END$$
+$$REM$$<!--BOUTON ENVOYER MESSAGE VENTE-->$$END$$
+	$$IF=:CONTACTVENTE$NOUS_REJOINDRE:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$-$$scripts/scripts_form.js"><\/script>');
+		</script>
+	$$END$$
+$$REM$$<!--FAQ SHOW/HIDE-->$$END$$
+	$$IF=:QUESTION:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$-$$scripts/scripts_questions.js"><\/script>');
+		</script>
+	$$END$$
+	$$IF=:1:COSTA-POPUP$$
+		<script src="$$~$$scripts/libs/jquery.colorbox.js"></script>
+		<script>
+			$(".costapop").colorbox({inline:true, opacity:0.3});
+		</script>
+		$$IF=:INDEX.HTM:REP:0$$
+		<script>
+			jQuery(document).ready(function() {
+				$(".costapop").trigger('click');
+				setTimeout(parent.$.colorbox.close, 8000);
+			});
+		</script>
+		$$END$$
+	$$END$$
+<script src="$$-$$scripts/jquery-scrolltofixed-min.js"></script>
+<script>
+	$(document).ready(function(){
+		  $("#slide_agence").find('.sticky-moteur').scrollToFixed( {
+				bottom: 0,
+				limit: $("#slide_agence").find('.sticky-moteur').offset().top
+		  });
+	 });
+</script>
+<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/jquery.parallax-1.1.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#slide_agence').parallax("center", 800, 0.1, true);
+		$('#slide_estimation').parallax("center", 3000, 0.3, true);
+	 });
+</script>
+
+
+$$IF=:GESTION:IDT$$
+<!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+<script>
+	 $(document).ready(function() {
+		  $("#diapo-gestion").owlCarousel({
+				margin:0,
+				items:1,
+				loop: false,
+				autoplay:true,
+				nav:false,
+				dots:true
+		  });
+	 });
+	 var noscroll;
+</script>
+$$END$$
+
+<script type="text/javascript" src="//tracker.geolid.com/init.min.js"></script>
+<script>GeolidTracker.Launcher.init("a00abaae7241bd0810568916663b4ac5");</script>
+
+
