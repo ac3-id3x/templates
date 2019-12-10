@@ -1,0 +1,142 @@
+$$INIT:IDT=FACEBOOK$$
+$$A:JS_MINI_MOTEUR=1$$
+$$IF:FORM:IDP$$
+	$$A:JS_AGENCE=1$$
+$$END$$
+$$IF0:FORM:IDP$$
+	$$A:JS_LISTINGAGENCES=1$$
+$$END$$
+$$A:CSS_FACEBOOK=1$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+$$REM$$<!-- ======================== FICHIER A NE PAS DEMUTUALISER ======================== -->$$END:REM$$
+$$REM$$<!-- ======================== VARIABLES ET PARAMS AGENCE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_var_params.htm" -->	
+$$REM$$<!-- ======================== DOCTYPE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+$$REM$$<!-- ========================== JS ========================== -->$$END:REM$$
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+$$REM$$<!-- ========================== CSS ========================== -->$$END:REM$$
+<!--#include virtual="header/incl_styles.htm" -->
+$$REM$$<!-- ========================== ICON NAVIGATEUR ================= -->$$END:REM$$
+<link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico" />
+</head>
+<body class="typo-black">
+	<div class="fcb-global">
+		<div class="row-fluid">
+			<div class="span12 bg-facebook padding-10 pagination-centered">
+				<h1>
+					$$IF:FORM:IDP$$
+						$$CV:NOM$$, $$LG:IMMOBILIER ucase$$ $$LG:SUR ucase$$ Le Soler
+					$$END$$
+					$$IF0:FORM:IDP$$
+						$$IF:NOM_SITE_REF$$
+							$$NOM_SITE_REF$$
+						$$END$$
+						$$IF0:NOM_SITE_REF$$
+							$$AGENCE_NOM$$, $$LG:IMMOBILIER ucase$$ $$LG:SUR ucase$$ Le Soler
+						$$END$$
+					$$END$$
+				</h1>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12 bg-facebook padding-10 pagination-centered">
+			<h2>Nos dernières annonces immobilières de vente</h2>
+			$$INIT:IDTTCC=2$$
+			</div>
+		</div>
+		<!--#include virtual="facebook/incl_selection_facebook.htm" -->
+		<div class="row-fluid">
+			<div class="span12 padding-10">
+				<div class="row-fluid">
+					$$IF0:FORM:IDP$$
+						$$IF=:1:MULTIAGENCES$$
+						<div class="span4 pagination-centered">
+							<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="http://$$REP:RSRV replace fb. www.$$/agences,liste.htm" title="$$LG:NOSAGS ucase$$" target="_blank">$$LG:NOSAGS ucase$$</a>
+						</div>
+						<div class="span4 pagination-centered">
+							<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="http://$$REP:RSRV replace fb. www.$$$$IF=:0:MULTI$$/$$AGENCE_IDPUBLICATION$$$$END$$/agences,liste.htm" title="$$LG:LIEN:ESTIM ucase$$" target="_blank">$$LG:LIEN:ESTIM ucase$$</a>
+						</div>
+						<div class="span4 pagination-centered">
+							<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="http://$$REP:RSRV replace fb. www.$$$$IF=:0:MULTI$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm" title="$$LG:NOUSCTC ucase$$" target="_blank">$$LG:NOUSCTC ucase$$</a>
+						</div>
+						$$END$$
+					$$END$$
+					$$IF:FORM:IDP$$
+					<div class="span4 pagination-centered">
+						<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="$$CV:URLVIRTUELLE$$" title="$$LG:LIEN:AGEN ucase$$" target="_blank">$$LG:LIEN:AGEN ucase$$</a>
+					</div>
+					<div class="span4 pagination-centered">
+						<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="http://$$REP:RSRV replace fb. www.$$/$$FORM:IDP$$/estimation,immobiliere.htm" title="$$LG:LIEN:ESTIM ucase$$" target="_blank">$$LG:LIEN:ESTIM ucase$$</a>
+					</div>
+					<div class="span4 pagination-centered">
+						<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" href="$$CV:URLVIRTUELLE$$" title="$$LG:NOUSCTC ucase$$" target="_blank">$$LG:NOUSCTC ucase$$</a>
+					</div>
+					$$END$$
+				</div>
+			</div>
+		</div>
+		$$IF:FORM:IDP$$
+		<div class="row-fluid">
+			<div class="span12">
+				<h2 class="pagination-centered bg-facebook padding-10">Présentation de l'agence</h2>
+				$$IF:CV:TXT_PUBLIC$$
+					<p class="typo-black padding-10">$$CV:TXT_PUBLIC crlf2br left 200$$...</p>
+				$$END$$
+				$$IF0:CV:TXT_PUBLIC$$
+					<!--#include virtual="immo/incl_accueil_texte.htm" -->
+				$$END:CV:TXT_PUBLIC$$
+				<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small margin-top-10 margin-left-10" href="$$CV:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$" target="_blank">$$LG:SAVOIR pcase$$</a>
+			</div>
+		</div>
+		<div class="row-fluid margin-top-20">
+			<div class="span6">
+				<h2 class="bg-facebook padding-10">Notre agence</h2>
+				<p class="padding-10">
+					$$CV:ADRESSE$$<br />
+					$$CV:CP$$ $$CV:VILLE$$<br />
+					$$LG:TELABREGE pcase$$ : <strong>$$CV:TEL formattel$$</strong><br />
+					$$LG:FAX pcase$$ : $$CV:FAX formattel$$<br />
+					<a href="mailto:$$CV:EMAIL$$" title="Email" target="_blank">$$CV:EMAIL$$</a>
+				</p>
+				$$IF:CV:SI_LOGO$$
+				<div style="background:white url('$CV:URLLOGO$') no-repeat;background-position:50% 50%;" class="pagination-centered width-100-pourcent height-150 agence-idagence"></div>
+				$$END$$
+			</div>
+			<div class="span6">
+				<h2 class="bg-facebook padding-10">Horaires</h2>
+				<div class="padding-10">
+					<!--#include virtual="agence/incl_horaires_agence.htm" -->
+				</div>
+			</div>
+		</div>
+		$$END$$
+		<div class="row-fluid margin-top-20">
+			<div class="span6">
+				<form method="get" action="/moteur,prevalidation.htm" id="Mini_Moteur" target="_blank">
+					<h2 class="bg-facebook padding-10">$$LG:LIEN:RECH ucase$$</h2>
+					<div class="padding-10">
+					  $$A:TYPEMOTEUR=horizontal$$
+						$$A:MINI_BUDGET_AFFICHAGE=1$$
+						$$A:MINI_SURFACE_AFFICHAGE=1$$
+						$$A:MINI_BUDGET_LIBRE=1$$
+						$$A:MINI_SURFACE_LIBRE=1$$
+						$$A:MINICHAMBRES_AFFICHAGE=0$$
+						$$A:MINIPIECES_AFFICHAGE=0$$
+						<!--#include virtual="moteur/mini/incl_avantage_moteur.htm" -->
+					</div>
+				</form>
+			</div>
+			<div class="span6">
+				<h2 class="bg-facebook padding-10">$$LG:PORTEFEUILLE ucase$$</h2>
+				<div class="margin-top-10">
+					<!--#include virtual="facebook/portefeuille_idtt_idtypebien.htm" -->
+				</div>
+			</div>
+		</div>
+	</div>
+<!--#include virtual="scripts/incl_scripts.htm" -->
+</body>
+</html>
