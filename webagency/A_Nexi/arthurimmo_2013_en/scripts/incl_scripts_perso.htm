@@ -1,0 +1,104 @@
+$$REM$$<!--SCRIPTS PARALLAX-->$$END$$
+$$IF=:INDEX:IDT$$
+	<script type="text/javascript">
+		if(winW >  1024) {
+			if($('html').hasClass('no-touch')){
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/jquery.scrollTo-1.4.3.1.min.js"><\/script>');
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/jquery.parallax-1.1.js"><\/script>');
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/jquery.easing.1.3.js"><\/script>');
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/jquery.scrollorama.js"><\/script>');
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/jquery.scrolldeck.js"><\/script>');
+				document.write('<script src="/z/webagency/slagence_X_V5/scripts/extra/parallax/parallax-launch.js"><\/script>');
+			}
+		}
+		//SCRIPT CHANGEMENT DEPT OU REGION HOME
+		function btnclick(deptreg){
+			$('.bloc-btn-agence').on('click','.btn',function(e){
+				e.preventDefault();
+				var newUrl = "/agences,liste.htm?dept="+deptreg;
+				document.location.href = newUrl;
+			});
+		}
+		$(document).ready(function(){
+			$('.select-regions').on('change',function(){
+				var deptreg = $(this).val();
+				console.log(deptreg);
+				var xhr = $.ajax({
+					type: 'GET',
+					data:"region="+deptreg,
+					dataType: 'html',
+					url: '/scripts,ajax_dept.htm',
+					beforeSend: function() {
+						$('.select-dept').html("<option>chargement</option>");
+						$('.select-dept').addClass('opacity-2');
+						$('.select-dept').prop('disabled', 'disabled');
+					},
+					success: function(data) {
+						$('.select-dept').removeClass('opacity-2');
+						$('.select-dept').prop('disabled', false);
+						$('.select-dept').html(data);
+					},error:function() {
+					},complete:function() {
+					}
+				});
+				btnclick(deptreg);
+			});
+			$('.select-dept').on('change',function(){
+				var deptreg=$(this).val();
+				btnclick(deptreg);
+			});
+		});
+	</script>
+$$END$$
+<script type="text/javascript">
+	document.write('<script src="$$_$$scripts/scripts_all.js"><\/script>');
+</script>
+$$REM$$<!--SCRIPT MINI CARTE PAGE AGENCES-->$$END$$
+$$IF=:NOSAGENCES:IDT$$
+	<script type="text/javascript">
+		document.write('<script src="$$_$$scripts/scripts_agence.js"><\/script>');
+	</script>	
+	$$REM$$<!--LANCE RECHERCHE SI DEPT DANS URL-->$$END$$
+	$$IF:FORM:DEPT$$
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var zoomdept= "$$FORM:DEPT$$";
+					$('#searchGeolocUser').val(zoomdept);
+					getGeoloc();
+			});
+		</script>
+	$$END$$
+$$END$$
+$$REM$$<!--LEXIQUE SHOW-HIDE-->$$END$$
+	$$IF=:LEXIQUE:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$_$$scripts/scripts_lexique.js"><\/script>');
+		</script>
+	$$END$$
+$$REM$$<!--BOUTON ENVOYER MESSAGE VENTE-->$$END$$
+	$$IF=:CONTACTVENTE$NOUS_REJOINDRE:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$_$$scripts/scripts_form.js"><\/script>');
+		</script>
+	$$END$$
+$$REM$$<!--FAQ SHOW/HIDE-->$$END$$
+	$$IF=:QUESTION:IDT$$
+		<script type="text/javascript">
+			document.write('<script src="$$_$$scripts/scripts_questions.js"><\/script>');
+		</script>
+	$$END$$
+	
+	
+<script src="$$_$$scripts/jquery-scrolltofixed-min.js"></script>
+<script>
+	
+			$(document).ready(function(){
+				
+				if( $('.sticky-moteur').length ){
+	        $('.sticky-moteur').scrollToFixed( {
+	            bottom: 0,
+	            limit: $('.sticky-moteur').offset().top
+	        });
+	      }
+      });
+</script>	
