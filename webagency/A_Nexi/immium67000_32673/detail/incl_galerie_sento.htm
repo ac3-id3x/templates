@@ -1,0 +1,109 @@
+$$REM$$====================================================================
+//// <summary>Script galerie photo</summary>
+//// <remarks>
+//// <para>Source : http://www.coffeescripter.com/code/ad-gallery/</para>
+//// <para>CSS intégré dans styles/detail_sento.css </para>
+//// <para>2 fichiers js appelés dans incl_scripts.htm</para>
+//// <para>2010-03-23 : Intégration script FANCY BOX</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2010-03-23" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+====================================================================$$END$$
+
+<div class="photo_ctn">
+	$$IF0:ANNDETAIL:IDPHOTO$$
+	<div id="SansPhoto">
+		<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->	
+		$$IF0:ANNDETAIL:C175URL0$$
+			$$IF:ANNDETAIL:SI_LOGO$$
+					<!--#include virtual="detail/incl_no_photo_logo.htm" -->
+			$$END$$
+		$$END$$
+	</div>
+	$$END:SANSPHOTO$$
+	$$IF:ANNDETAIL:IDPHOTO$$
+	<div id="photoMore">
+		<div class="photoNbr">
+			$$GALERIE:NBR$$
+			$$IF=:0$1:GALERIE:NBR$$$$LG:PHOT lcase$$$$END$$
+			$$IF+:2:GALERIE:NBR$$$$LG:PHOTS lcase$$$$END$$
+		</div>
+		$$B:IMMOBW:PHOTOS:ALIAS:ZOOM:REP:1$$
+		$$BIF:ZOOM$$
+		<div class="photoZoom">
+			$$DO$$
+				$$IF:ZOOM:BIG_URL$$
+					<a href="$$IF:ZOOM:BIG_URL$$$$ZOOM:BIG_URL$$$$END$$" class="$$IF:ZOOM:BIG_URL$$zoomDiaporama$$END$$">
+						$$IF=:1:ZOOM:I$$<div class="zoomPicto"></div><div class="textePicto">$$IF=:FR:LANGUE$$Afficher les photos en grand format$$END$$$$IF!:FR:LANGUE$$$$LG:AGRANDIR pcase$$$$END$$</div>$$END$$
+					</a>
+				$$END$$
+			$$LOOP$$
+		</div>
+		$$BFIN$$
+		<div class="clear"></div>
+	</div>
+	$$END$$
+	$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+	$$BIF:GALERIE$$
+	<div class="ad-gallery">
+		<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->
+  	<div class="ad-image-wrapper"></div>
+  	<div class="ad-controls"></div>
+  	<div class="ad-nav">
+    	<div class="ad-thumbs">
+      <ul class="ad-thumb-list">
+      	<!-- BOUCLE IMAGES -->
+      	$$DO$$	
+        	<li><a href="$$IF:GALERIE:BIG_URL$$$$GALERIE:BIG_URL$$$$END$$$$IF0:GALERIE:BIG_URL$$$$GALERIE:URL$$$$END$$">
+        		$$IF=:1:RESIZEGALERIE$$
+        			<img src="$$GALERIE:CARRE_URL$$" width="65" height="65" />
+        		$$END$$
+        		$$IF!:1:RESIZEGALERIE$$
+        			<img src="$$GALERIE:CARRE_URL$$" />
+        		$$END$$
+        	</a></li>
+        $$LOOP$$
+      </ul>
+    	</div>
+  	</div>
+	</div>
+  $$BFIN$$
+</div>
+<script language="javascript" type="text/javascript">
+	$(document).ready(function() {
+		// GALLERY
+		var galleries = $('.ad-gallery').adGallery({
+			display_next_and_prev: true,
+			$$IF=:1:MOUSECHANGEPHOTO$$
+				mouse_over:true,
+			$$END$$
+			$$REM$$
+				move_pictos:false,
+			$$END$$
+			callbacks: {
+				afterImageVisible: function() {
+					var numLi = $('.ad-thumb-list').find('li').length;
+					$$IF=:1:RESIZEGALERIE$$
+					if(numLi <= 5) {
+					$$END$$
+					$$IF!:1:RESIZEGALERIE$$
+					if(numLi <= 3) {
+					$$END$$
+						$('.ad-back').hide();
+						$('.ad-forward').hide();
+					}
+					$('.zoomGallery').lightBox();
+				}
+			}
+		});
+		// LIGHTBOX DIAPO
+		$('.zoomDiaporama').lightBox();
+	});
+</script>

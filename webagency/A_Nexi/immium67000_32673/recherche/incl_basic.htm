@@ -1,0 +1,179 @@
+$$REM$$====================================================================
+//// <summary>Resultat recherche BASIC</summary>
+//// <remarks>
+//// <para>Fichier appelé par recherche BASIC</para>
+//// <para>Appelle des feuilles de styles dans autres fichiers includes</para>
+//// <para>TAGS conditionnés dans incl_expressions_ref.htm avec macro REF_TAGS=1 (par défaut)</para>
+//// </remarks>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-02-27" author="lisbonne.siriphol">Séparation du fichier en include</update>
+//// <update date="2010-06-18" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANNLISTE$$
+$$IF:ANNLISTE:SIPANIER$$
+	<!--#include virtual="recherche/incl_comparer.htm" -->
+$$END$$ 
+
+$$BIF:ANNLISTE$$
+<div id="RechResultat">
+$$DO:config:config$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,immium.htm?lang=@@LANGUE@@$$
+$$END$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:LIBELLE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+		
+		<div class="blocAnnonce $$IF=:1:ANNLISTE:I exec XX%2$$color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$color2$$END$$" id="Annonce$$ANNLISTE:IDANNONCE$$">	
+			<a class="fancybox" href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+		$$IF:SURREF$$
+		<div class="typeBien_Ctn">		
+			<!--#include virtual="/recherche/incl_typebien.htm" -->
+		</div>
+		$$END$$
+		<div class="blocPhotoAnnonce2">
+			
+			$$IF:ANNLISTE:SI_COUPDECOEUR$$
+				<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+			$$END:COUPDECOEUR$$
+			$$IF:ANNLISTE:SI_EXCLUSIF$$
+				<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+			$$END:SI_EXCLUSIF$$
+			$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+				<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+			$$END$$
+			$$IF:ANNLISTE:SI_PROMO$$
+				<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+			$$END:SI_PROMO$$
+			$$IF:ANNLISTE:IDPHOTO$$	
+				<div class="blocBigPhoto"><img src="$$ANNLISTE:PHOTOURL0$$" /></div>
+			$$END$$
+			<div class="blocPhoto$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$">
+				
+				$$IF:ANNLISTE:C175URL0$$
+					<img src="$$ANNLISTE:C175URL0$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				$$END:ANNLISTE:C175URL0$$
+				$$IF0:ANNLISTE:C175URL0$$
+					$$IF:ANNLISTE:SI_LOGO$$
+						<!--#include virtual="recherche/incl_no_photo_logo.htm" -->
+					$$END$$
+				$$END$$
+				
+			</div>
+			$$IF:ANNLISTE:IDPHOTO$$
+			<div class="blocNumPhotoBg"></div>
+			<div class="blocNumPhoto">
+				<span class="picto">
+					<img src="$$~$$images/selection/rech_picto_photo.png" />
+				</span>
+				<span class="libelle"><strong>$$ANNLISTE:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+				<div class="clear"></div>
+			</div>
+			$$END$$
+				
+		</div>				
+				
+		<div class="detailsAnnonce">
+			<div class="blocVilleDetails">$$ANNLISTE:AVILLE$$($$ANNLISTE:ACP$$)<br />
+				$$IF:ANNLISTE:QUARTIER$$$$ANNLISTE:QUARTIER$$$$END:ANNLISTE:QUARTIER$$
+			</div>
+			<div class="blocLibelleDetails">
+			$$IF:ANNLISTE:LIBELLE$$
+				$$ANNLISTE:LIBELLE$$
+			$$END$$
+			$$IF0:ANNLISTE:LIBELLE$$
+				$$ANNLISTE:LIBELLE_FR$$
+			$$END$$
+			
+			$$IF:ANNLISTE:NB_PIECES$$$$IF:ANNLISTE:SURFACE$$$$END:ANNLISTE:SURFACE$$  $$REM$$<!-- alors que personne ne s'inquiète qu'il y ai 2 conditions qui entourent une virgule, tout va bien c'est normal !-->$$END$$
+			$$ANNLISTE:NB_PIECES$$						
+				$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$						
+			$$END:ANNLISTE:NB_PIECES$$
+			
+			$$IF:ANNLISTE:SURFACE$$
+				, $$ANNLISTE:SURFACE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$ 
+			$$END:ANNLISTE:SURFACE$$
+			
+			</div>
+			<!--#include virtual="recherche/incl_prix.htm" -->
+			
+			$$IF:BIGCONTACT$$
+				<div id="detail$$ANNLISTE:IDANNONCE$$" class="clear zoneDetailAnnonce">	
+						<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">		
+						<div class="pictoDetail"></div>
+						<div class="textePicto">$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:PLUSDINFOS pcase$$ $$ANNLISTE:AVILLE$$$$END$$
+						$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:DETAILANNONCE pcase$$$$END$$</div>
+					</a>
+				</div>
+			$$END$$
+			<div id="zoneMetro$$ANNLISTE:I$$"></div>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					dispMetro('$$ANNLISTE:IDANNONCE getlieux escape$$','zoneMetro$$ANNLISTE:I$$');
+				});
+			</script>
+		</div>
+		<div class="contactAnnonces">
+			<div class="blocDescAnnDetails">
+				$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$			
+					$$IF:ANNLISTE:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$
+					$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+					$$IF:ANNLISTE:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+					$$IF:ANNLISTE:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+					$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+					$$IF:ANNLISTE:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+					$$IF:ANNLISTE:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+				$$END:IDTYPETRANSACTION$$
+			<p>
+				<!--#include virtual="recherche/incl_descriptif.htm" -->
+			</p>			
+			
+			</div><!-- .descrAnn -->
+			<div class="clear"></div>
+		</div>
+		$$IF:ANNLISTE:SIPANIER$$
+			<div class="linkComparer"><input type="checkbox" class="choixComparer" value="$$ANNLISTE:IDANNONCE$$">&nbsp;<label>$$LG:COMPARERANNONCE pcase$$</label></div>
+		$$END$$	
+		<div class="clear"></div>
+		</a>	
+</div><!-- .blocAnnonce -->
+$$LOOP$$
+<div class="clear"></div>
+</div><!-- #RechResultat -->
+$$BFIN$$
+<div class="clear pushleft"></div>
+<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+$$IF:ANNLISTE:SIPANIER$$
+	<!--#include virtual="recherche/incl_comparer.htm" -->
+$$END$$ 
+$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+</script>
+$$BFIN$$
