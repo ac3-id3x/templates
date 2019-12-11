@@ -1,0 +1,132 @@
+$$REM$$<!-- =================================================================================================
+//// <summary>Page qui définie les expressions REF par défaut des balises TITLE et META</summary>
+//// <remarks>
+//// <para>apparaît seulement si le site a un contrat de réf en cours</para>
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>Plus aucun conditionnement réf ne vient de la conf</para>
+//// </remarks>
+//// <update date="2010-08-10" author="lisbonne.siriphol">Ré-optimisation par défaut car tout buggé</update>
+//// <update date="2010-07-23" author="francois.badier">Vérification syntaxe commentaires HTML (test)</update>
+//// <update date="2010-07-13" author="sophie.nataf">Optimisation par défaut</update>
+//// <update date="2010-02-17" author="lisbonne.siriphol">Création</update>
+=================================================================================================== -->$$END$$
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// TITLE des liens du menu ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- accueil -->$$END:REM$$														$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@ @@REP:RSRV@@$$
+
+$$REM$$<!-- ===================== transactions ===================== -->$$END:REM$$
+$$REM$$<!-- vente (formulaire) -->$$END:REM$$									$$A:TITLE_MENU_VENTES=@@LG:BIENSIMMOAVENTE pcase@@$$
+$$REM$$<!-- vente (résultats) -->$$END:REM$$									$$A:TITLE_RESULTATS_VENTES=@@LG:BIENSIMMOAVENTE pcase@@$$
+$$REM$$<!-- location (formulaire) -->$$END:REM$$							$$A:TITLE_MENU_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@ @@LG:EN lcase@@ @@AGENCE_CP cp2dep@@$$
+$$REM$$<!-- location (résultats) -->$$END:REM$$								$$A:TITLE_RESULTATS_LOCATIONS=@@LG:BIENSIMMOLOC pcase@@ @@LG:EN lcase@@ @@AGENCE_CP cp2dep@@$$
+$$REM$$<!-- loc. saisonnière (résultats) -->$$END:REM$$				$$A:TITLE_RESULTATS_LOCSAISONNIERES=@@LG:LIEN:LOCSAI pcase@@ @@AGENCE_VILLE@@$$
+$$REM$$<!-- viagers (résultats) -->$$END:REM$$								$$A:TITLE_RESULTATS_VIAGERS=@@LG:ANN:VIAGERS pcase@@ @@AGENCE_VILLE@@$$
+$$REM$$<!-- neuf (résultats) -->$$END:REM$$								    $$A:TITLE_RESULTATS_NEUF=@@LG:IMMONEUF pcase@@ @@LG:EN lcase@@ @@AGENCE_CP cp2dep@@$$
+
+$$REM$$<!-- ===================== services ===================== -->$$END:REM$$
+$$REM$$<!-- notre agence -->$$END:REM$$												$$A:TITLE_MENU_AGENCE=@@LG:AGENCEIMMOBILIERE pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE@@$$
+$$REM$$<!-- gestion -->$$END:REM$$														$$A:TITLE_MENU_GESTION=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+$$REM$$<!-- syndic -->$$END:REM$$															$$A:TITLE_MENU_SYNDIC=@@LG:LIEN:SYNDIC pcase@@ @@AGENCE_NOM@@$$
+$$REM$$<!-- perso -->$$END:REM$$															$$A:TITLE_MENU_PERSO=$$
+$$REM$$<!-- estimation -->$$END:REM$$													$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMVOTREBIEN pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM@@$$
+$$REM$$<!-- contact -->$$END:REM$$														$$A:TITLE_MENU_CONTACT=@@LG:CONTACTERAGENCE pcase@@ @@AGENCE_NOM@@$$
+$$REM$$<!-- outils -->$$END:REM$$															$$A:TITLE_MENU_OUTILS=@@LG:LIEN:OUT pcase@@$$
+
+
+$$REM$$<!-- ======================================================================================
+////////////////////////////// DICTIONNAIRE EXPRESSIONS RECURRANTES //////////////////////////////
+////////////////////// Exemples sans les dollars sinon ça fait tout sauter ///////////////////////
+==================================================================================================
+	
+	IF:MULTIAGENCES > signifie que le site est multiagences
+	IF0:MULTIAGENCES > signifie que le site a une seule agence
+	
+	==> attention les macros suivantes bouclent sur les détails de la première agence
+		AGENCE_NOM
+		AGENCE_ADRESSE
+		AGENCE_CP
+		AGENCE_VILLE
+		AGENCE_TEL
+		AGENCE_FAX
+		AGENCE_EMAIL
+		AGENCE_IDPUBLICATION
+		
+	==> identifiants de pages réf diverses
+		IF=:ANNONCIMMOS:IDT 										==> immobilier,annonces.htm (ancien liste-annonces-immobilieres.htm)
+		IF=:RESULTATS-dollar-RESULTATSCARTE:IDT ==> resultat recherche liste et carte
+		IF=:DETAILANNONCE:IDT										==> détail annonce
+		IF=:SUIVICLIENT:IDT											==> suivi client pericles
+		IF=:FICHEVISITE:IDT											==> détail, imprimer fiche de visite
+		IF=:AMI:IDT															==> détail, envoyer cette annonce à un ami
+		IF=:NOSAGENCES:IDT											==> liste des agences
+		IF=:NOTREAGENCE:IDT											==> page agence
+		IF=:GESTION:IDT													==> immo,gestion.htm
+		IF=:ESTIMATION:IDT											==> formulaire contact,estimation.htm
+		IF=:CONTACTAGENCE:IDT										==> formulaire contact,agence.htm
+		IF=:PLAN:IDT														==> plan du site plan,site.htm
+		
+====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// liens vers page optimisée réf immobilier,annonces.htm  /////////////////////
+/////////////////////////////// anciennement annonces-immobilieres.htm  ///////////////////////////
+////////////////// possibilité d'ajouter idtt=x en qry pour forcer certains idtt   ////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- lien "Notre portefeuille immobilier vous permet de consulter des annonces immobilières à" -->$$END:REM$$															
+$$A:LIEN_PORTEFEUILLE_REF=@@URLBASE@@/immobilier,annonces.htm?lang=@@LANGUE@@$$
+
+
+$$REM$$<!-- ======================================================================================
+//////////////////////// optis par défaut souhaité sur toutes les pages  ////////////////////////
+=====================================================================================-->$$END:REM$$
+$$IF:MULTIAGENCES$$
+	$$REM$$<!-- multi -->$$END:REM$$
+	$$IF0:TITLE$$
+		$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@AGENCE_CP cp2dep@@ : @@LG:AGENCESIMMO pcase@@ @@AGENCE_VILLE@@$$
+	$$END$$
+	$$IF0:DESCRIPTION$$
+		$$A:DESCRIPTION=L'@@LG:IMMOBILIER lcase@@ sur @@AGENCE_CP cp2dep@@ et sa région avec les @@LG:AGENCESIMMO lcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE@@.$$
+	$$END$$	
+	$$IF0:KEYWORDS$$
+		$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@, @@LG:AGENCESIMMO lcase@@ @@AGENCE_CP cp2dep@@, @@AGENCE_NOM@@$$
+	$$END$$	
+$$END$$
+
+$$IF0:MULTIAGENCES$$
+	$$REM$$<!-- mono -->$$END:REM$$
+	$$IF0:TITLE$$
+		$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@AGENCE_VILLE@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@$$
+	$$END$$		
+	$$IF0:DESCRIPTION$$
+		$$A:DESCRIPTION=L'@@LG:IMMOBILIER pcase@@ sur @@AGENCE_VILLE@@ et sa région avec l'@@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE@@.$$
+	$$END$$	
+	$$IF0:KEYWORDS$$
+		$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@, @@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_VILLE@@, @@AGENCE_NOM@@$$
+	$$END$$	
+$$END$$
+
+
+
+$$REM$$<!-- ===============================================================================
+========================================== INDEX ==========================================
+============================================================================ -->$$END:REM$$
+$$IF=:INDEX:IDT$$
+
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@AGENCE_CP cp2dep@@ : @@LG:AGENCESIMMO pcase@@ @@AGENCE_VILLE@@$$
+		$$A:DESCRIPTION=L'@@LG:IMMOBILIER lcase@@ sur @@AGENCE_CP cp2dep@@ et sa région avec les @@LG:AGENCESIMMO lcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE@@.$$
+		$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@AGENCE_CP cp2dep@@, @@LG:AGENCESIMMO lcase@@ @@AGENCE_CP cp2dep@@, @@AGENCE_NOM@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@AGENCE_VILLE@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@$$
+		$$A:DESCRIPTION=L'@@LG:IMMOBILIER pcase@@ sur @@AGENCE_VILLE@@ et sa région avec l'@@LG:AGENCEIMMOBILIERE pcase@@ @@AGENCE_NOM@@ @@LG:A lcase@@ @@AGENCE_VILLE@@.$$
+		$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@AGENCE_VILLE@@, @@LG:AGENCEIMMOBILIERE lcase@@ @@AGENCE_VILLE@@, @@AGENCE_NOM@@$$
+	$$END$$
+	
+$$END$$
