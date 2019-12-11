@@ -1,0 +1,72 @@
+$$REM$$====================================================================
+//// <summary>Mentions légales agence donnée</summary>
+//// <remarks>
+//// <para>Mentions qui apparaissent sur plusieurs pages (agences, détail)</para>
+//// <para>Macros avec ALIAS commun 'ML'</para>
+//// <para>Page agence : l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Page détail : l'IDPUBLICATION de l'agence via la querystring REP:2</para>
+//// <para>Attention aux balises P et H6</para>
+//// </remarks>
+//// <update date="2010-07-06" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<div class="accordion-group">
+    <div class="accordion-heading">
+        <a class="accordion-toggle relative" data-toggle="collapse" data-parent="#accordion-mentions" href="#collapseLegal">$$LG:LIEN:MENTION pcase$$<div class="minus absolute top right margin-top-10 margin-right-10"><i class="right opacity-3 smallest general typoicon-minus"></i></div></a>
+    </div>
+    <div id="collapseLegal" class="accordion-body collapse">
+        <div class="accordion-inner">
+
+            $$A:LEGAL_VENTE=
+                <p class="bold">Service Transaction</p>
+                <p>
+                    Immobilière du Parc Transactions <br>
+                    55 Avenue Emile Thiebaut <br> 78110 LE VESINET <br>
+                    Tél : 01 30 53 17 39 <br>
+                    Mail : immoduparc@orange.fr
+                </p>
+                <p>SARL au capital de 1000 EUR - RCS Versailles 821 633 815 – Non perception de fonds</p>
+                <p> Carte professionnelle « transaction »  n° CPI 7801 2016 000 011 423 délivrée par la CCI de Paris Ile de France  </p>
+            $$
+
+            $$A:LEGAL_LOCATION=
+                <p class="bold"> Service Location - Gestion </p>
+                <p>
+                    Immobilière du Parc - Idy gestion <br>
+                    55 Avenue Emile Thiebaut <br>
+                    78110 LE VESINET <br>
+                    Tél : 01 30 15 53 90 <br>
+                    Mail : immoduparc.gestion@orange.fr
+                </p>
+                <p>SARL au capital de 2500 EUR - RCS Versailles 499 127 843 – Garantie Financière CEGC 128 Rue la Boétie – 75008 PARIS</p>
+                <p> Carte professionnelle « transaction et gestion »  n° 2806 délivrée par la Préfecture de Versailles  </p>
+            $$
+
+            $$IF=:630671:ANNDETAIL:IDPUBLICATION$$
+                $$LEGAL_VENTE$$
+            $$END$$
+            $$IF=:565345:ANNDETAIL:IDPUBLICATION$$
+                $$LEGAL_LOCATION$$
+            $$END$$
+
+            $$IF!:565345$630671:ANNDETAIL:IDPUBLICATION$$
+
+                $$IF=:630671:CV:IDPUBLICATION$$
+                    $$LEGAL_VENTE$$
+                $$END$$
+                $$IF=:565345:CV:IDPUBLICATION$$
+                    $$LEGAL_LOCATION$$
+                $$END$$
+
+                $$IF!:565345$630671:CV:IDPUBLICATION$$
+                    $$LEGAL_VENTE$$
+                    <br>
+                    $$LEGAL_LOCATION$$
+                $$END$$
+
+            $$END$$
+
+
+        </div>
+    </div>
+</div>
