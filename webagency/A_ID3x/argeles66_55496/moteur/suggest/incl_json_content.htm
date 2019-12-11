@@ -1,0 +1,31 @@
+{"suggest":[
+	$$BIF:INITLISTING$$
+	$$A:MAXLISTING=@@INITLISTING:NBR@@$$
+	$$DO$$
+		$$IF!:40:INITLISTING:TYPEHEADER$$
+			$$IFPREV:INITLISTING:TYPEHEADER$$
+				{"typeheader":"$$INITLISTING:TYPEHEADER$$",$$IF=:32:INITLISTING:TYPEHEADER$$"header":"$$LG:NVILLES pcase$$",$$END$$$$IF=:10:INITLISTING:TYPEHEADER$$"header":"$$LG:NOSREGIONS pcase$$",$$END$$$$IF=:20:INITLISTING:TYPEHEADER$$"header":"$$LG:NOSDEPARTEMENTS pcase$$",$$END$$$$IF=:40:INITLISTING:TYPEHEADER$$"header":"$$LG:NOSQUARTIERS pcase$$",$$END$$$$IF=:33:INITLISTING:TYPEHEADER$$"header":"$$LG:SUGGESTIONLIBELLE pcase$$",$$END$$$$IF=:31:INITLISTING:TYPEHEADER$$"header":"$$LG:VILLESPOPULAIRES pcase$$",$$END$$
+					"line":[
+			$$END$$
+
+				{"libelle":"$$INITLISTING:LIBELLE$$$$IF=:IDQ:INITLISTING:NAME$$ - $$INITLISTING:CODE$$$$END$$","datasearch":"$$INITLISTING:LIBELLE lcase vireaccents$$ $$IF=:32:INITLISTING:TYPEHEADER$$$$INITLISTING:ALLCODES$$$$END$$$$IF!:32:INITLISTING:TYPEHEADER$$$$INITLISTING:CODE lcase vireaccents$$$$END$$ $$INITLISTING:LIBELLE lcase vireaccents replace saint st replace ¤ - $$ $$INITLISTING:LIBELLE lcase vireaccents replace ¤ - $$ $$INITLISTING:LIBELLE lcase vireaccents replace - ¤ $$ $$INITLISTING:LIBELLE lcase vireaccents replace saint st replace - ¤$$","actif":"$$INITLISTING:ACTIF lcase$$","checked":"$$INITLISTING:CHECKED lcase$$","code":"$$INITLISTING:CODE lcase vireaccents$$","name":"$$INITLISTING:NAME$$","value":"$$INITLISTING:VALUE$$","namesup":"$$IF:INITLISTING:NAMESUP$$$$INITLISTING:NAMESUP$$$$END$$$$IF0:INITLISTING:NAMESUP$$0$$END$$","valuesup":"$$INITLISTING:VALUESUP$$$$IF0:INITLISTING:VALUESUP$$0$$END$$"}
+
+			$$IF0NEXT:INITLISTING:TYPEHEADER$$,$$END$$$$IFNEXT:INITLISTING:TYPEHEADER$$
+				]}$$IF=:INITLISTING_I:MAXLISTING$$$$IF+:2:INITPAYS:NBR$$,$$END$$$$END$$$$IF!:INITLISTING_I:MAXLISTING$$,$$END$$
+			$$END$$
+		$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	$$IF+:2:INITPAYS:NBR$$
+	$$BIF:INITPAYS$$
+	$$A:MAXLISTING=@@INITPAYS:NBR@@$$
+	{"typeheader":"60","header":"$$LG:NPAYS$$",
+		"line":[
+		$$DO$$
+		{"libelle":"$$INITPAYS:PAYS$$","datasearch":"$$INITPAYS:PAYS lcase$$","actif":"1","checked":"0","code":"$$INITPAYS:IDPAYS$$","name":"idpays","value":"$$INITPAYS:IDPAYS$$","namesup":"0","valuesup":"0"}
+		
+		$$IF!:INITPAYS_I:MAXLISTING$$,$$END$$
+	$$LOOP$$]}
+	$$BFIN$$
+	$$END$$
+]}
