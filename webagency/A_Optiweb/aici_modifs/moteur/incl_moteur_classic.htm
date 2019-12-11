@@ -1,0 +1,117 @@
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,moteur_classic.css?a=1@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@@@IF:FORM:LANG@@&lang=@@FORM:LANG@@@@END@@" );
+	@import url( "/styles,moteur.css?a=1@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@@@IF:FORM:LANG@@&lang=@@FORM:LANG@@@@END@@" );
+</style>$$
+<div class="TitreBoiteMoteurClassic">
+			$$LG:RUBRIQUE$$
+</div>
+<div class="BoiteMoteurClassic">
+$$REM$$	
+	$$IF=:1:FORM:IDTT$$
+	<div class="MoteurTypeDeBien" id="MoteurTypeDeBien">
+		<span class="TitreTypeDeBien">$$IF=:FR:LANGUE$$Type de location$$END$$ $$IF!:FR:LANGUE$$Type of Rental$$END$$</span>
+	<div class="FormulaireTypeDeBien" id="biens">
+		<input type="radio" name="idtt" id="idtt" value="4" />$$IF=:FR:LANGUE$$Saisonnière$$END$$ $$IF!:FR:LANGUE$$Seasonal$$END$$
+		<input type="radio" name="idtt" id="idtt" value="1" />$$IF=:FR:LANGUE$$Annuelle$$END$$ $$IF!:FR:LANGUE$$Annual$$END$$
+	<br style="clear:both;"/>
+	</div>
+</div> 
+	$$END$$
+$$END:REM$$
+$$IF:PAGE:VIAGER$$
+			<!--#include virtual="/moteur/incl_moteur_viager.htm" -->
+$$END:PAGE:VIAGER$$
+			<!--#include virtual="/moteur/incl_moteur_typedebien.htm" -->
+$$IF:PAGE:SOUSTYPEDEBIEN$$
+			<!--#include virtual="/moteur/incl_moteur_soustypedebien.htm" -->
+$$END:PAGE:SOUSTYPEDEBIEN$$
+$$IF:PAGE:INVESTIR$$
+			<!--#include virtual="/moteur/incl_moteur_investir.gen.htm" -->
+$$END:PAGE:INVESTIR$$
+$$IF:PAGE:PIECES$$
+			<!--#include virtual="/moteur/incl_moteur_pieces.htm" -->
+$$END:PAGE:PIECES$$
+$$IF:PAGE:CHAMBRES$$
+			<!--#include virtual="/moteur/incl_moteur_chambres.htm" -->
+$$END:PAGE:CHAMBRES$$
+$$IF:PAGE:SITUATION$$
+			<!--#include virtual="/moteur/incl_moteur_situation.gen.htm" -->
+$$END:PAGE:SITUATION$$
+$$IF:PAGE:SURFACE$$	
+			<!--#include virtual="/moteur/incl_moteur_surface.htm" -->
+$$END:PAGE:SURFACE$$
+$$IF:PAGE:SURFACETERRAIN$$
+			<!--#include virtual="/moteur/incl_moteur_surfaceterrain.htm" -->
+$$END:PAGE:SURFACETERRAIN$$
+$$IF:PAGE:REF$$
+			<!--#include virtual="/moteur/incl_moteur_ref.htm" -->
+$$END:PAGE:REF$$
+$$IF:PAGE:NBPERSONNE$$
+			<!--#include virtual="/moteur/incl_moteur_nbpersonne.htm" -->
+$$END:PAGE:NBPERSONNE$$
+$$IF:PAGE:BUDGET$$	
+			<!--#include virtual="/moteur/incl_moteur_budget.htm" -->
+$$END:PAGE:BUDGET$$
+$$IF:PAGE:BUDGETVAC$$
+			<!--#include virtual="/moteur/incl_moteur_budgetvac.htm" -->
+$$END:PAGE:BUDGETVAC$$
+$$IF:PAGE:EQUIPEMENT$$
+			<!--#include virtual="/moteur/incl_moteur_equipement.htm" -->
+$$END:PAGE:EQUIPEMENT$$
+$$IF:PAGE:CRITERES$$
+			<!--#include virtual="/moteur/incl_moteur_criteresup.htm" -->
+$$END:PAGE:CRITERES$$			      
+$$IF:PAGE:CARTE$$
+			<!--#include virtual="/moteur/incl_moteur_carte.htm" -->
+$$END:PAGE:CARTE$$
+$$IF:PAGE:AFFICHEPAYS$$
+								<!--#include virtual="/moteur/incl_moteur_pays.htm" -->
+$$END$$
+$$IF0:PAGE:AFFICHEPAYS$$
+			<input type="hidden" name="idpays" value="$$FORM:IDPAYS$$" />
+$$END$$
+$$IF:PAGE:LISTEVILLES$$
+			$$IF0:FORM:IDPAYS$$
+			<div class="MoteurListeVilles" id="MoteurListeVilles">
+				<span class="TitreMoteurListeVille">$$LG:CHOIXVILLES pcase$$</span>
+				$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCES:REP:1::QRY:IDTT$$
+				$$BIF:VILLESANNONCES$$
+				$$IF=:1:PAGE:LISTEDEROULANT$$
+				<select name="ci">
+					<option value="">$$LG:SELECVILLE pcase$$</option>
+					$$DO:1:999$$
+						$$IF:VILLESANNONCES:CODEINSEE$$
+							<option value="$$VILLESANNONCES:CODEINSEE$$">$$VILLESANNONCES:VILLEAFF$$ $$IF0:PAGE:LISTEVILLE:SANSCP$$($$VILLESANNONCES:CODEINSEE codeinsee2cps$$)$$END:PAGE:LISTEVILLE:SANSCP$$</option>
+						$$END:VILLESANNONCES:CODEINSEE$$
+					$$LOOP$$
+				</select>
+				$$END:PAGE:LISTEDEROULANT$$
+					
+				$$IF!:1:PAGE:LISTEDEROULANT$$
+					$$DO:1:999$$
+						$$IF:VILLESANNONCES:CODEINSEE$$
+						<label  style="float: left; width: 45%;" class="LabelMoteurListeVille">
+							<input type="checkbox" name="ci" value="$$VILLESANNONCES:CODEINSEE$$" /> <strong>$$VILLESANNONCES:VILLEAFF$$</strong>
+							$$IF0:PAGE:LISTEVILLE:SANSCP$$<span class="CPMoteurListeVille">($$VILLESANNONCES:CODEINSEE codeinsee2cps$$)</span>$$END:PAGE:LISTEVILLE:SANSCP$$<br />
+							$$IF0:PAGE:LISTEVILLE:SANSNBANN$$<span class="NbAnnMoteurListeVille">($$VILLESANNONCES:NBANN$$ annonce$$VILLESANNONCES:NBANN pluriel$$)</span>$$END:PAGE:LISTEVILLE:SANSNBANN$$
+						</label>
+						$$END:VILLESANNONCES:CODEINSEE$$
+					$$LOOP$$
+				$$END:PAGE:LISTEDEROULANT$$
+				
+				$$BFIN$$
+					
+				$$BIF0:VILLESANNONCES$$
+				<!-- Pas de resultat pour villesannonces -->
+				$$BFIN$$
+			</div>	
+			$$END$$
+$$END:PAGE:LISTEVILLES$$
+$$IF:PAGE:PROXIMITE$$
+			<!--#include virtual="/moteur/incl_moteur_proximite.htm" -->
+$$END:PAGE:PROXIMITE$$
+$$IF:PAGE:RAYON$$
+			<!--#include virtual="/moteur/incl_moteur_rayon.htm" -->
+$$END:PAGE:RAYON$$
+			<!--#include virtual="/moteur/incl_moteur_bouton.htm" -->
+</div>

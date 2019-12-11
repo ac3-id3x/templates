@@ -1,0 +1,123 @@
+$$REM$$
+====================================================================
+
+//// <summary>Carte de visite agence contenant les coordonnées, le texte public et le portefeuille d'annonces</summary>
+//// <remarks>
+//// <para>slagence_X_V2/liste-agences-immobilieres.htm : affiche des liens vers le présent fichier</para>
+//// <para>Fichier qui n'existait pas dans slagence_X, cette page était fabriquée pour chaque site</para>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/agence-immobiliere.css</para>
+//// <para>Lien NOUS SITUER masqué tant qu'il est en panne</para>
+//// <para>Le portefeuille d'annonces (incl_portefeuille_01.htm) n'apparaît que si le site a souscrit à un contrat de référencement</para>
+//// </remarks>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-30" author="sophie.nataf">Validation oK</update>
+//// <update date="2008-01-14" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCEIMMOBILIERE$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agence-immobiliere.css?@@IF:FORM:IDP@@idp=@@FORM:IDP@@@@END@@" );
+	@import url( "/styles,portefeuille01.css" );
+</style>$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!--#include virtual="incl_multi.htm" -->
+<div class="tab-liste">	
+	<div id="CV">
+		$$IF=:1:MULTI$$
+		<div class="linkOut"><a href="$$URLBASE$$/liste-agences-immobilieres.htm?lang=$$LANGUE$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:LISTEAG pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:LIEN:LISTEAG pcase$$</a></div>
+		$$END:MULTI$$
+		<h1>$$CV:NOM ucase$$ ($$CV:VILLE ncase$$ - $$CV:CP$$)</h1>	
+		<div id="Agence">
+			<div id="Agence2">
+				<div id="Img_Ctn">			
+					<p id="Vitrine"></p>
+				</div>
+				<div id="Coordonnees">
+					<div class="tab-Coordonnees">
+						<h2>$$CV:NOM ucase$$</h2>
+						<p>
+							$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+							$$IF-:99000:CV:CP$$
+								$$CV:CP$$ 
+							$$END$$
+							$$CV:VILLE$$
+						</p>
+					</div>
+					<div class="tab-Coordonnees">
+						<p>
+							$$IF=:189671:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ : +33 (0) 1 47 27 26 23</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +33 (0) 1 47 27 25 10<br />$$END:FAX$$
+							$$END$$
+							$$IF=:189670:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ : +33 (0) 4 93 39 20 60</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +33 (0) 4 93 39 20 04<br />$$END:FAX$$
+							$$END$$
+							$$IF=:189696:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ :  +225 20 22 11 11</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +225 20 21 91 21<br />$$END:FAX$$
+							$$END$$
+							$$IF=:189746:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ : +241 72 00 80</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +241 72 00 81<br />$$END:FAX$$
+							$$END$$
+							$$IF=:279046:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ : +226 50 30 62 65</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +226 50 30 62 67<br />$$END:FAX$$
+							$$END$$
+							
+							$$IF=:190748:FORM:IDP$$
+							
+												$$IF:CV:TEL$$<span>$$LG:MINITEL pcase$$ : +33 (0) 1 47 55 63 00</span><br />$$END:TEL$$
+												$$IF:CV:FAX$$$$LG:FAX pcase$$ : +33 (0) 1 47 55 49 14<br />$$END:FAX$$
+							$$END$$			
+						
+				
+						</p>
+						
+						
+						
+						<p>
+							$$IF:CV:RESPAG$$<label class="cv_respag"><span>Responsable</span> $$CV:RESPAG$$</label>$$END:RESPAG$$
+						</p>
+						<p>
+							$$IF:CV:EMAIL$$	<span>$$LG:EMAIL pcase$$ :</span> $$CV:EMAIL encodemail javascript full$$$$END:EMAIL$$
+							$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$IF:CV:URL$$<br /><span>$$LG:SITE pcase$$ :</span> <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'">$$CV:URL$$</a>$$END:URL$$
+							$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+						</p>
+					</div>
+					<div id="CvFoot">
+						<p id="Links">
+							<a class="message" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+							<a class="estimation" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/estimation.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:ESTIMATION pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:ESTIMATION pcase$$</span></a>
+							$$REM$$$$A:CARTE:CP=@@CV:CP alphanum +@@$$$$A:CARTE:VILLE=@@CV:VILLE alphanum +@@$$$$A:CARTE:ADRESSE=@@CV:ADRESSE alphanum +@@$$$$INCL:LOCALISATION_AGENCE.HTM$$$$END:REM$$
+						</p>
+						<p class="clear"><!-- --></p>		
+					</div>
+					<p class="clear"><!-- --></p>
+				</div>
+				<p class="clear"><!-- --></p>
+				<!--#include virtual="/agence-immobiliere-texte.htm" -->
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				<!--#include virtual="/incl_portefeuille_01.htm" -->
+				$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+				
+				$$IF:XDEV$$
+				<!--#include virtual="/incl_portefeuille_01.htm" -->
+				$$END:XDEV$$
+			</div>	
+		</div>
+		<div class="linkOut clear"><a href="javascript:history.go(-1)" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:RETOURNER pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:RETOURNER pcase$$</a></div>
+	</div>
+</div>
+$$INCL:BAS.HTM$$
