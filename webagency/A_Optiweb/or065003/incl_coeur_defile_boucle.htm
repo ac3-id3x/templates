@@ -1,0 +1,83 @@
+$$SET:PAGE:DISPLAYINFOSC2C=1$$
+$$SET:PAGE:NBC2C=1$$
+$$SET:PAGE:GDTAILLE=0$$
+$$SET:PAGE:MODE=normal$$ 
+$$SET:PAGE:NBTOTAL=50$$ 
+$$SET:PAGE:ROLLOVER=1$$
+<style type="text/css" >
+.divc2c {
+	border: 0;
+	display: none;
+	text-align: left;
+	}
+</style>
+
+$$BIF:COUPDECOEUR$$ 
+$$DO:1:50$$
+$$INCL:COEUR_DEFILE_INCLUDE.HTM$$
+$$LOOP$$
+<script language="JavaScript" type="text/javascript">
+<!--
+var celki = 0;
+var celki2 = 0;
+var timeout = 0;
+
+$$REM$$
+/* ========================================================= 
+  afficheC2c : affichage des coups de coeur 
+	raz : 0, 1 utile pour le random 
+	mode : normal, random pour un défilement aléatoire 
+	nb : 2 coups de coeur maximum
+	[PH]
+============================================================ */
+$$END$$
+function afficheC2c(raz,mode,nb){
+var nbc2c = "$$COUPDECOEUR:NBR$$";
+
+if(mode=="random"){
+	celki = Math.floor(Math.random() * nbc2c) + 1;
+	}
+else{
+	if(celki==nbc2c){celki = 0;}
+	celki++;
+}
+
+if(nb==2){
+	if(mode=="random"){
+		for(var i = 0;i!=1;i){
+		 celki2 = Math.floor(Math.random() * nbc2c) + 1;
+		 if(celki2!=celki){i = 1;}
+		}
+	}
+	else {
+		celki2=celki;
+		if(celki==nbc2c){celki = 0;}
+    celki++;
+	}
+}
+
+if(raz==1){
+for(var j=1;j<=nbc2c;j++){
+	document.getElementById('tabc2c'+j).style.display = "none"; 
+	}
+}
+document.getElementById('tabc2c'+celki).style.display = "inline"; 
+if(nb==2){document.getElementById('tabc2c'+celki2).style.display = "inline";} 
+}
+
+function imageContinu() {
+	var vitesse = 5000;
+  afficheC2c(1,"$$PAGE:MODE$$",$$PAGE:NBC2C$$); // raz tjs à 1
+  timeout = setTimeout("imageContinu()", vitesse);
+}
+
+function arret() {clearTimeout(timeout);}
+
+imageContinu();
+
+//-->
+</script>
+$$BFIN$$
+$$BIF0:COUPDECOEUR$$
+	££LG:NOCOUPDECOEUR££
+$$BFIN$$
