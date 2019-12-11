@@ -1,0 +1,127 @@
+$$REM$$
+==================================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>Enlever le commentaire lors du remplissage des metas</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-16-07" author="christophe.ledoux">Creation v2</update>
+==================================================================================
+$$END$$
+
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+
+
+
+
+<!-- EXPRESSIONS ALT + TITLE --> 
+
+
+$$SET:EXPRESSION1=agence immobilière Quimper@@$$
+$$SET:EXPRESSION2=immobilier Quimper@@$$
+$$SET:EXPRESSION3=vente maison Quimper@@$$
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$REM$$
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE QUIMPER - IMMOBILIER QUIMPER : achat maison Quimper$$
+$$A:PAGE:DESCREF=AGENCE IMMOBILIERE Arthur de Locmaria Immobilier Quimper - tout l'immobilier &agrave; Quimper : vente, achat, location de maisons et d'appartements dans le 29, Finist&egrave;re.$$
+$$A:PAGE:KEYWORDS=agence immobilière @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@, immobilier @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:EXP1=agence immobiliere quimper$$
+$$END$$	
+
+	
+	
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE QUIMPER - immobilier Quimper - agence-de-locmaria.com$$
+$$A:PAGE:DESCREF=l'agence immobili&egrave;re de Locmaria &agrave; Quimper, sp&eacute;cialiste de l'immobilier &agrave; Quimper$$
+$$A:PAGE:KEYWORDS=agence immobili&egrave;re @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@, immobilier @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:EXP1=agence immobiliere quimper$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE QUIMPER -plan site agence-de-locmaria.com$$
+$$A:PAGE:DESCREF=Plan du site de l'agence immobili&egrave;re de Locmaria agence-de-locmaria.com &agrave; Quimper - immobilier de Locmaria$$
+$$A:PAGE:KEYWORDS=Immobilier Quimper$$
+$$A:EXP1=agence immobiliere quimper$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:1:FORM:IDTYPEBIEN$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ (@@1_IMMOBW:ANN:QRY:CP left 2@@) - Agence immobiliere Locmaria @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:DESCREF=Tout l'immobilier à @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : annonces d'achat et vente de maison &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:KEYWORDS=immobilier @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@, vente maison, villa, maison de ville, pavillon @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE QUIMPER - Tout l'immobilier avec Agence immobiliere Locmaria $$
+$$A:PAGE:DESCREF=Tout l'immobilier à @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : annonces d'achat et vente de maison &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:KEYWORDS=immobilier @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@, vente maison, villa, maison de ville, pavillon @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+
+$$IF=:DETAIL:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$IF=:1,2,4:FORM:IDTT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ (@@1_IMMOBW:ANN:QRY:CP left 2@@) - Agence immobiliere Locmaria @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:DESCREF=Tout l'immobilier à @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ : annonces d'achat et vente de maison &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$A:PAGE:KEYWORDS=immobilier @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@, vente maison, villa, maison de ville, pavillon @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+$$END$$
+$$END$$
+$$END$$
+
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE QUIMPER - IMMOBILIER QUIMPER - Agence immobiliere Locmaria Quimper$$
+$$A:PAGE:DESCREF=TOUT L'IMMOBILIER A QUIMPER : annonces d'achat et vente de maison &agrave; QUIMPER$$
+$$A:PAGE:KEYWORDS=immobilier quimper, agence immobiliere quimper, vente maison, villa, maison de ville, pavillon quimper$$
+$$END$$
+$$END$$
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=IMMOBILIER QUIMPER - AGENCE IMMOBILIERE QUIMPER$$
+$$A:PAGE:DESCREF=TOUT L'IMMOBILIER A QUIMPER : Location d'appartement et maison à QUIMPER$$
+$$A:PAGE:KEYWORDS=immobilier quimper, agence immobiliere quimper, location maison, villa, maison de ville, pavillon quimper$$
+$$END$$
+$$END$$
+
+
+
+$$END$$
