@@ -1,0 +1,38 @@
+$$INIT:JS_SLIDER=1$$
+$$INIT:CSS_JQUERY_UI=1$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(function() {
+			$( "#slider-range" ).slider({
+				range: true,
+				min: reelminbugloc,
+				step: steploc,
+				max: reelmaxbugloc,
+				values: [ reelminbugloc, reelmaxbugloc ],
+				slide: function( event, ui ) {
+						var varmin=lisibilite_nombre(ui.values[0])+" €";
+						var varmax=lisibilite_nombre(ui.values[1])+" €";
+						if(ui.values[1]>=BudgetLimite){
+							var idtt = $("#idtt option:selected").val();
+							if(idtt==1){
+								varmax="3 000€";
+							}else{
+								varmax="Max";
+							}
+							
+							$("#MiniInputBudgetMax").val("");
+						}else{
+							$("#MiniInputBudgetMax").val(ui.values[1]);
+						}
+						$("#amount").val("$$LG:DE lcase$$ "+varmin+" $$LG:A lcase$$ "+varmax);
+						$("#MiniInputBudgetMin").val(ui.values[0]);
+				}
+			});
+			SliderInitiate(steploc,afficheminbugloc,affichemaxbugloc,reelmaxbugloc);
+		});
+	});
+</script>
+<div class="miniTitre" for="amount">$$LG:BUDGET pcase$$ <input type="text" id="amount" class="fourchette" /></div>
+<div class="slider_wrap"><div id="slider-range"></div></div>
+<input type="hidden" id="MiniInputBudgetMin" name="pxmin" value="$$LG:MINI$$" />
+<input type="hidden" id="MiniInputBudgetMax" name="pxmax" value="$$LG:MAXI$$" />
