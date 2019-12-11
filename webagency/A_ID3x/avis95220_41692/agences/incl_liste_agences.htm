@@ -1,0 +1,87 @@
+$$REM$$<!-- SI DEMUT PENSEZ A FAIRE CARTO/INCl_SEARCH_AGENCE -->$$END$$
+$$REM$$<!-- SI DEMUT AUCUNE AIDE FOURNIE -->$$END$$
+<div class="row-fluid" itemscope itemtype="http://schema.org/RealEstateAgent">
+    <div class="span4 padding-10 pagination-centered hidden-phone">
+        <!--#include virtual="agences/incl_microdonnes_agences.htm" -->
+        <!-- LOGO OR NOT -->
+        <!--#include virtual="agences/incl_liste_agences_logo.htm" -->
+    </div>
+    <div class="span8 margin-top-10">
+        $$IF=:250:LISTEAG:IDPAYS$$
+        <a href="$$LISTEAG:URLVIRTUELLE$$"></a>
+        $$END$$
+        <h2 class="h1-like" itemprop="name"><a class="typo-body" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LISTEAG:NOM pcase$$">$$LISTEAG:NOM$$</a></h2>
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetaddress" class="big">$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span>
+            $$IF=:590168:LISTEAG:IDPUBLICATION$$
+            <span class="typo-action big" itemprop="addressLocality">$$LG:SPEDE$$ Parmain $$LG:ETENVIRONS$$</span>
+            $$END$$
+            $$IF=:620504:LISTEAG:IDPUBLICATION$$
+            <span class="typo-action big" itemprop="addressLocality">$$LG:SPEDE$$ Taverny $$LG:ETENVIRONS$$</span>
+            $$END$$
+            $$IF!:590168$620504:LISTEAG:IDPUBLICATION$$
+            <span class="typo-action big" itemprop="addressLocality">$$LG:SPEDE$$ $$LISTEAG:VILLE pcase$$ $$LG:ETENVIRONS$$</span>
+            $$END$$
+        </div>
+        $$IF:LISTEAG:TEL$$
+        <div class="row-fluid margin-top-10 listing-agences-tel" id="bouton-telephonez-nous-$$LISTEAG:I$$">
+            <div class="span12"><span class="bold">$$LG:MINITEL pcase$$ : </span>
+                <!--#include virtual="header/incl_formatel.htm" --></div>
+        </div>
+        $$END$$
+        $$IF:LISTEAG:FAX$$
+        <div class="row-fluid listing-agences-fax">
+            <div class="span12"><span class="bold">$$LG:FAX pcase$$ : </span>
+            <!--#include virtual="header/incl_formafax.htm" --></div>
+        </div>
+        $$END$$
+        $$IF:LISTEAG:EMAIL$$
+        <div class="row-fluid listing-agences-email">
+            <div class="span12"><span class="bold">$$LG:EMAIL pcase$$ : </span>
+            	<span id="email-spam$$LISTEAG:IDPUBLICATION$$"></span><script type="text/javascript">$(document).ready(function() {emailSpam('$$LISTEAG:EMAIL$$','email-spam$$LISTEAG:IDPUBLICATION$$');});</script></div>
+        </div>
+        $$END$$
+        $$IF!:1:HIDENOMRESPONSABLE$$
+        <div class="row-fluid listing-agences-responsable">
+            <div class="span5 bold">$$LG:RESPAGENCE pcase$$</div>
+            <div class="span7">$$LISTEAG:RESPAG$$</div>
+        </div>
+        $$END$$
+    </div>
+</div>
+<!-- BOUTON DE NAVIGATION AGENCE -->
+<div class="row-fluid border-dotted-top-primary-1 margin-top-10 padding-10$$IF=:1:AFFICHAGE_AGENCES_LISTE$$ zone-agence-ajax$$END$$">
+    $$IF=:250:LISTEAG:IDPAYS$$
+    <div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$"><a class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block" href="$$LISTEAG:URLVIRTUELLE$$" title="$$LG:SAVOIR pcase$$">$$LG:SAVOIR pcase$$</a></div>
+    $$END$$
+    <div class="span$$IF=:0:AFFICHAGE_AGENCES_LISTE$$2$$END$$$$IF!:0:AFFICHAGE_AGENCES_LISTE$$3$$END$$ hidden-phone">
+        $$IF0:BIENPERSOAGENCE$$
+        <div title="$$LG:LIEN:NOSBIENS pcase$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$" data-rel="$$LISTEAG:IDPUBLICATION$$" data-langue="$$LANGUE$$">$$LG:MESBIENS pcase$$</div>
+        $$END$$
+        $$IF:BIENPERSOAGENCE$$
+        <a href="$$BIENPERSOAGENCE$$" class="$$TYPEBOUTON$$ typo-action btn-neutre btn-block bouton-biens-agence-$$LISTEAG:IDPUBLICATION$$">$$LG:MESBIENS pcase$$</a>
+        $$END$$
+    </div>
+
+    <div class="span3">
+        $$IF=:ACQUERIR:IDT$$
+        <a href="/$$LISTEAG:IDPUBLICATION$$/acquereur,demande.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-estimation-agence">
+            $$LG:ACHETER pcase$$
+        </a>
+        $$END$$
+        $$IF!:ACQUERIR:IDT$$
+        <!--#include virtual="agences/incl_btn_estimation_liste_agences.htm" -->
+        $$END$$
+    </div>
+    <div class="span3 hidden-phone">
+        <div class="$$TYPEBOUTON$$ $$IF!:ACQUERIR$ESTIMATION:IDT$$$$TYPEBOUTONACTION$$$$END$$$$IF=:ACQUERIR$ESTIMATION:IDT$$btn-neutre$$END$$ btn-block bouton-message-agence">$$LG:NOUSCTC pcase$$</div>
+    </div>
+</div>
+<div class="row-fluid display-none zone-message-agence">
+    <!--#include virtual="agences/incl_formulaire_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-biens-agence">
+    <!--#include virtual="agences/incl_biens_agences.htm" -->
+</div>
+<div class="row-fluid display-none zone-carte-agence">
+    <!--#include virtual="agences/incl_geo_agences.htm" -->
+</div>
