@@ -1,0 +1,261 @@
+$$REM$$====================================================================
+//// <summary>Affiche toutes les infos concernant l'agence</summary>
+//// <remarks>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V3/styles/agence-immobiliere.css</para>
+//// <para>Portefeuille d'annonces + vignettes des 4 dernières annonces apparaîssent si l'agence a souscrit à un contrat de référencement</para>
+//// <para>MENTIONS LEGALES : SI MODIFS > MODIFIER AUSSI LE FICHIER "LEGAL,MENTIONS.HTM"</para>
+//// </remarks>
+//// <update date="2010-06-10" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOTREAGENCE$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ - @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE lcase@@ à @@CV:VILLE@@ est spécialiste de l'immobilier à @@CV:VILLE@@ (@@CV:CP@@).$$
+	$$A:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ à @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@TITLE@@.$$
+	$$A:KEYWORDS=@@CV:NOM@@, @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- NE PAS METTRE &amp; dans l'appel des css -->$$END:REM$$
+$$A:STYLE=@import url( "/styles,agence_immobiliere.css?idp=@@FORM:IDP@@" );$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+
+<div id="AgImmo_Ctn" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/RealEstateAgent"$$END$$>
+	<!--#include virtual="agence/incl_titre_h3.htm" -->
+
+	<table id="AgImmo">
+		<tr>
+$$REM$$<!-- ============================== gauche ============================== -->$$END:REM$$
+			<td id="AgImmoGauche">
+				
+				<div id="AgImmoVitrine_Ctn">
+					<div id="AgImmoVitrine">
+						$$REM$$
+						<!-- ===========================
+								17.01.2011 c/o Lisbonne
+								> demande intégration photo uploadée sur selogerpro
+								> sauf que l'option n'est pas encore en place sur selogerpro ni sur pericles
+								> bien que l'interface le fasse croire, l'option n'existe pas dixit la hotline et les dév
+						===========================-->
+						$$IF:CV:URLPHOTOAGENCE$$<img src="$$URLPHOTOAGENCE$$" alt="" title="" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ />$$END:URLPHOTOAGENCE$$
+						
+						<!-- ========= fin du REM ici ! ========= -->	
+						$$END:REM$$
+						$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$<img src="$$_$$images/agences/$$FORM:IDP$$.jpg" alt="" title="" itemprop="image"  style="display:none;" />$$END$$
+						
+						$$REM$$<!-- photo agence appelée dans le CSS -->$$END:REM$$
+					</div><!-- #AgImmoVitrine -->
+				</div><!-- #AgImmoVitrine_Ctn -->
+				
+				
+$$REM$$<!-- ==================== carte geoloc sur option (par défaut depuis 12.01.2011) ==================== -->$$END:REM$$	
+				
+
+				
+				<div id="AgImmoMentions">
+					$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+					<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+				</div><!-- #AgImmoMentions -->
+				
+			</td><!-- #AgImmoGauche -->
+			
+$$REM$$<!-- ============================== droite ============================== -->$$END:REM$$
+			<td id="AgImmoDroite" >
+				<h2 $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="name"$$END$$ >Immobilier de la Marne.fr</h2>
+				<!--microdonnées agences-->
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$<div itemprop="description" style="display:none">
+				$$CV:TXT_PUBLIC left 200$$</div>
+				
+				<div itemprop="url" style="display:none">$$AGENCE_URLVIRT$$</div>
+				$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Mo $$HEURE:LUNDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:LUNDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:LUNDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:LUNDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+				$$IF:HEURE:MARDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Tu $$HEURE:MARDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MARDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:MARDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MARDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+				$$IF:HEURE:MERCREDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="We $$HEURE:MERCREDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MERCREDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:MERCREDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+				$$IF:HEURE:JEUDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Th $$HEURE:JEUDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:JEUDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:JEUDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:JEUDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+				$$IF:HEURE:VENDREDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Fr $$HEURE:VENDREDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:VENDREDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:VENDREDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+				$$IF:HEURE:SAMEDIMATINHEUREOUVERTURE$$<meta itemprop="openingHours" content="Sa $$HEURE:SAMEDIMATINHEUREOUVERTURE   rxreplace h : $$-$$HEURE:SAMEDIMATINHEUREFERMETURE   rxreplace h : $$ $$HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE   rxreplace h : $$-$$HEURE:SAMEDIAPRESMIDIHEUREFERMETURE   rxreplace h : $$">$$END$$
+			    $$IF:HEURE:FERMETURE-EX$$<meta itemprop="exceptionalClosing" content="Ec du $$HEURE:FERMETURE-EX-DEBUT date dddd_dd_MMMM lcase$$ au $$HEURE:FERMETURE-EX-FIN date dddd_dd_MMMM_yyyy lcase$$">$$END$$
+				$$END$$
+				
+				<p class="cv_adresse">
+					$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">$$END$$
+					$$REM$$<!--<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="streetAddress"$$END$$>$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br /></span>
+					<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="postalCode"$$END$$>$$CV:CP$$</span><span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="addressLocality" $$END$$> $$CV:VILLE ucase$$</span>-->$$END$$
+				</p>
+				<p>
+					$$REM$$<!-- tous les téls -->$$END$$
+					$$IF:CV:TEL$$<!-- tel standard--><label><span >$$LG:MINITEL$$ :</span> <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="telephone" $$END$$>$$CV:TEL formattel$$</span></label>$$END:TEL$$
+					$$IF:CV:TELVEN$$<label><span>$$LG:MINITEL$$ $$LG:VENTES lcase$$ :</span> $$CV:TELVEN formattel$$</label>$$END:TELVEN$$
+					$$IF:CV:TELLOC$$<label><span>$$LG:MINITEL$$ $$LG:LOCATION lcase$$ :</span> $$CV:TELLOC formattel$$</label>$$END:TELLOC$$
+					$$IF:CV:TELVAC$$<label><span>$$LG:MINITEL$$ $$LG:LOCVAC lcase$$ :</span> $$CV:TELVAC formattel$$</label>$$END:TELVAC$$
+					$$IF:CV:TELCOM$$<label><span>$$LG:MINITEL$$ $$LG:COMEETENT lcase$$ :</span> $$CV:TELCOM formattel$$</label>$$END:TELCOM$$
+					
+					$$REM$$<!-- tous les faxs -->$$END$$
+					$$IF:CV:FAX$$<!-- fax standard --><label><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label>$$END:FAX$$
+					$$IF:CV:FAXVEN$$<label><span>$$LG:FAX$$ $$LG:VENTES lcase$$ :</span> $$CV:FAXVEN formattel$$</label>$$END:FAXVEN$$
+					$$IF:CV:FAXLOC$$<label><span>$$LG:FAX$$ $$LG:LOCATION lcase$$ :</span> $$CV:FAXLOC formattel$$</label>$$END:FAXLOC$$
+					$$IF:CV:FAXVAC$$<label><span>$$LG:FAX$$ $$LG:LOCVAC lcase$$ :</span> $$CV:FAXVAC formattel$$</label>$$END:FAXVAC$$
+					$$IF:CV:FAXCOM$$<label><span>$$LG:FAX$$ $$LG:COMEETENT lcase$$ :</span> $$CV:FAXCOM formattel$$</label>$$END:FAXCOM$$
+				</p>
+				
+				<p>
+					$$REM$$<!-- tous les responsables -->$$END$$
+					$$IF:CV:RESPAG$$<label class="respAgence"><span>$$LG:RESPAGENCE pcase$$ :</span> Ilanith Aouizerat</label>$$END:RESPAG$$
+					$$IF:CV:RESPVEN$$<label class="cntvente"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label>$$END$$
+					$$IF:CV:RESPLOC$$<label class="cntloc"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label>$$END$$
+					$$IF:CV:RESPVAC$$<label class="cntvac"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label>$$END$$
+					$$IF:CV:RESPCOM$$<label class="cntrespcom"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label>$$END$$
+					$$IF:CV:EMAIL$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ :</span> <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></label>$$END:EMAIL$$
+					$$IF:CV:URL$$<label class="cnturl"><span>$$LG:SITE pcase$$ :</span> <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="url"$$END$$>$$CV:URL$$</a></label>$$END:URL$$
+				</p>
+				
+				<p class="AgImmoContact">
+					<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$"
+						title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$">
+					$$LG:NOUSECRIRE pcase$$</a>
+				</p>
+				<p class="AgImmoEstimation">
+					<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,estimation.htm?lang=$$LANGUE$$" 
+						title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:DEMANDERESTIM pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$">
+					$$LG:DEMANDERESTIM pcase$$</a>
+				</p>
+				
+				<div class="clear"><!-- --></div>
+				<div>
+				<!--#include virtual="agence/incl_txt_public.htm" -->
+			</div>
+				$$B:IMMOBW:ACTIVITE_AGENCE:~idagence:VAL:CV_IDAGENCE:ALIAS:TA$$
+				$$BIF:TA$$
+				<div id="AgImmoServices">			
+$$REM$$<!-- ============================== type activités from selogerpro ============================== -->$$END:REM$$
+				<h4>$$LG:NOSSERVICES pcase$$ </h4>				
+				<ul>
+					$$DO$$
+					<li>$$TA:DESCRIPTION pcase$$</li>
+					$$LOOP$$
+				</ul>
+			  </div>				
+				$$BFIN$$
+				
+				$$E:IMMOBW:HORAIRE_OUVERTURE_AGENCE:~IDAGENCE:VAL:CV_IDAGENCE:ALIAS:HEURE$$
+$$REM$$<!-- ============================== horaires from selogerpro ============================== -->$$END:REM$$
+$$REM$$<!-- =========== si le lundi est rempli alors on affiche le reste =========== -->$$END:REM$$
+				
+				<div id="Horaires">
+
+				<h4>$$LG:HORAIRESOUVERT pcase$$</h4>
+							
+				<table>
+					
+					<tr>			
+						<td class="lundi jour">$$LG:LUNDI pcase$$</td>			
+						<td class="lundi heuresAM">
+							$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:LUNDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:LUNDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="lundi heuresPM">
+							$$IF:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:LUNDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:LUNDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+					
+					<tr>			
+						<td class="jour">$$LG:MARDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:MARDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MARDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MARDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">
+							$$IF:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MARDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MARDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+					
+					<tr>			
+						<td class="jour">$$LG:MERCREDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:MERCREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MERCREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MERCREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MERCREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+				
+					
+					<tr>			
+						<td class="jour">$$LG:JEUDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:JEUDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:JEUDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:JEUDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:JEUDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:JEUDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+					
+					<tr>			
+						<td class="jour">$$LG:VENDREDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:VENDREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:VENDREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:VENDREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:VENDREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+					
+					<tr>			
+						<td class="jour">$$LG:SAMEDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:SAMEDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:SAMEDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:SAMEDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:SAMEDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>
+					
+				</table>
+				
+				$$IF:HEURE:COMMENTAIRES$$<p class="comments">$$HEURE:COMMENTAIRES$$</p>$$END$$
+				
+				</div>
+				
+				
+				$$IF:CV:LANGUESPARLEES$$
+				<h4>$$LG:LANGUESPARLEES pcase$$</h4>
+$$REM$$<!-- ============================== langues parlées from selogerpro ============================== -->$$END:REM$$
+				<p>
+					$$IF=:FR:LANGUE$$
+					$$CV:LANGUESPARLEESFR ncase$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+					$$CV:LANGUESPARLEESEN ncase$$
+					$$END$$
+				</p>
+				$$END:LANGUESPARLEES$$
+
+
+
+			</td><!-- #AgImmoDroite -->
+		</tr>
+	</table>		
+	
+</div><!-- #AgImmo -->
+<!--#include virtual="footer/incl_bas.htm" -->
