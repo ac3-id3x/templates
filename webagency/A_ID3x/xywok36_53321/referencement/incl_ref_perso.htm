@@ -1,0 +1,46 @@
+$$REM$$<!--Fichier SEO a demutualiser pour ajouter des optimisations sur pages de contenus-->$$END$$
+$$REM$$<!-- EXEMPLE OPTIS POUR PAGE VILLE, ATTENTION IDT PEUT CHANGER EN FONCTION DE VOTRE PAGE, VOIR AVEC CHEF DE PROJET -->$$END$$
+$$IF=:MEDOC:IDT$$
+	$$A:TITLE=Titre de votre page$$
+	$$A:DESCRIPTION=Description de votre page$$
+	$$A:KEYWORDS=Keywords de votre page$$
+$$END$$
+
+
+
+$$REM$$<!-- =======================================================================================
+////////////////////// 404 /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser la page 404.htm =========== -->$$END:REM$$
+$$IF=:404:IDT$$
+	$$A:TITLE=404$$
+	$$A:DESCRIPTION=$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ detail annonce / pour les appartements, maisons, loft et chateaux ===============================-->$$END:REM$$
+$$IF=:DETAILANNONCE:IDT$$
+  $$IF:ANNDETAIL:IDPUBLICATION$$
+    	$$IF=:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@@@IF:ANNDETAIL:NB_PIECES@@ @@ANNDETAIL:NB_PIECES lcase@@ @@LG:PIECES lcase@@@@END@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+    	$$REM$$<!-- ================================  detail annonce / pour tous les autres types de bien  ===============================-->$$END:REM$$
+    	$$IF!:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$IF:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$
+    		$$END$$
+    		$$IF0:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$	
+    		$$END$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+	$$END$$
+	$$IF0:ANNDETAIL:IDPUBLICATION$$
+	    $$A:TITLE=@@LG:ANNPLUSDISPO pcase@@$$
+	    $$A:DESCRIPTION=$$
+	    $$A:KEYWORDS=$$
+	$$END$$
+$$END:DETAILANNONCE:IDT$$
