@@ -1,0 +1,151 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+
+
+
+<!-- EXPRESSIONS ALT + TITLE --> 
+
+
+<!-- OBLIGATOIRE definition des expressions pour les alt et title (même si pas d'option de ref !) A modifier selon cahier des charges ou laisser en auto si pas de réf -->
+<!-- Si mutli agence les metas par defaut doivent être modifiées -->
+
+$$SET:EXPRESSION1=agence immobili&egrave;re @@VILLE_AGENCE@@$$
+$$SET:EXPRESSION2=immobilier @@VILLE_AGENCE@@$$
+$$SET:EXPRESSION3=annonce immobili&egrave;re @@VILLE_AGENCE@@$$
+
+
+<!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> 
+
+$$SET:PAGE:TITR=Agence immobili&egrave;re @@NOM_AGENCE@@ - Immobilier @@VILLE_AGENCE@@ $$
+$$SET:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@ &agrave; @@VILLE_AGENCE@@$$
+$$SET:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@, agence immobili&egrave;re  @@VILLE_AGENCE@@ @@NOM_AGENCE@@$$
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Le Beausset, agence immobiliere Le Beausset, appartement maison villa terrain Le Beausset$$
+$$A:PAGE:DESCREF=L'immobilier sur Le Beausset et sa region avec l'agence immobiliere Cap Immo Var au Beausset. Annonces immobilieres d'appartement, maison, villa et terrain sur Le Beausset.$$
+$$A:PAGE:KEYWORDS=immobilier Le Beausset, agence immobiliere Le Beausset, appartement Le Beausset, maison Le Beausset, villa Le Beausset, terrain Le Beausset$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere Le Beausset, immobilier Le Beausset$$
+$$A:PAGE:DESCREF=L'agence immobiliere Cap Immo Var au Beausset est specialiste de l'immobilier sur Le Beausset et ses alentours.$$
+$$A:PAGE:KEYWORDS=agence immobiliere Le Beausset, immobilier Le Beausset$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere Cap Immo Var$$
+$$A:PAGE:DESCREF=Plan du site de l'agence immobiliere Cap Immo Var.$$
+$$A:PAGE:KEYWORDS=immobilier Le Beausset, agence immobiliere Le Beausset, appartement Le Beausset, maison Le Beausset, villa Le Beausset, terrain Le Beausset$$
+$$END$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Le Beausset : Estimation de votre bien immobilier$$
+$$A:PAGE:DESCREF=Immobilier Le Beausset : Estimation de votre bien immobilier$$
+$$A:PAGE:KEYWORDS=Immobilier Le Beausset, Estimation Le Beausset$$
+$$END$$
+
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere CAP IMMO VAR$$
+$$A:PAGE:DESCREF=Agence immobiliere CAP IMMO VAR : immobilier Le Beausset$$
+$$A:PAGE:KEYWORDS=Agence immobiliere CAP IMMO VAR, immobilier Le Beausset$$
+$$END$$
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=Immobilier Le Beausset et sa r&eacute;gion : Vente appartement, villa, maison, terrain$$
+$$A:PAGE:DESCREF=L'immobilier sur Le Beausset et sa r&eacute;gion avec l'agence immobiliere Cap Immo Var au Beausset. Annonces immobilieres d'appartement, maison, villa et terrain sur Le Beausset.$$
+$$A:PAGE:KEYWORDS=immobilier Le Beausset, vente appartement Le Beausset, vente maison Le Beausset, vente villa Le Beausset, vente terrain Le Beausset$$
+$$END$$
+$$END$$
+
+$$IF=:MOTEUR:PAGE:IDT$$
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=Immobilier Le Beausset et sa r&eacute;gion : Location appartement, villa, maison, terrain$$
+$$A:PAGE:DESCREF=L'immobilier sur Le Beausset et sa r&eacute;gion avec l'agence immobiliere Cap Immo Var au Beausset. Annonces immobilieres d'appartement, maison, villa et terrain sur Le Beausset.$$
+$$A:PAGE:KEYWORDS=immobilier Le Beausset, Location appartement Le Beausset, Location maison Le Beausset, Location villa Le Beausset, Location terrain Le Beausset$$
+$$END$$
+$$END$$
+
+$$IF!:FR:LANGUE$$
+$$A:PAGE:TITR=Real Estate cap Immo Var $$
+$$A:PAGE:DESCREF=Cap Immo Var, Real estate Le Beausset$$
+$$A:PAGE:KEYWORDS=Cap Immo var$$
+$$END$$
+
+
+
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
