@@ -1,0 +1,80 @@
+$$REM$$<!-- ///////////////////////////////// galerie photo version simple ///////////////////////////////// -->$$END:REM$$
+
+			<script type="text/javascript">
+				<!--
+				function switchImage(srcImg, srcBigImg, nbImg, nbTotalImg, descrPhoto) {
+					
+					var grandePhoto = document.getElementById('big');
+					var nbPhoto = document.getElementById('GrandePhotoNb');										
+					if(grandePhoto){
+						grandePhoto.src = srcImg;
+						} else {
+							alert('image non chargée');
+					}					
+					if(nbPhoto){
+						nbPhoto.innerHTML = descrPhoto + '<br />$$LG:PHOT pcase$$ '+ nbImg + '/'+  nbTotalImg;
+					}								
+				}
+				//-->
+			</script>
+			
+			<div id="Photo_Ctn">
+				<table id="Photo">					
+					<tr>
+						<td>
+							<!--#include virtual="/detail/incl_fancybox.htm" -->
+						</td>
+						$$B:IMMOBW:PHOTOS:ALIAS:PHOTO:REP:1$$
+						$$BIF:PHOTO$$
+						$$DO$$$$LOOP$$
+						$$IF>:2:PHOTO:NBR$$
+						
+						$$END:PHOTO:NBR$$						
+						$$BFIN$$
+					</tr>										
+					<tr>						
+						<td id="GrandePhoto">
+							$$BIF:PHOTO$$							
+							<!--#include virtual="/detail/incl_coupdecoeur.htm" -->	
+							<!--#include virtual="/detail/incl_sipromo.htm" -->
+							<!--#include virtual="/detail/incl_exclusif.htm" -->
+							$$DO:1:1$$$$LOOP$$<img src="$$1_PHOTO:URL$$" id="big" alt="$$REF_ALT_TITLE$$" title="$$REF_ALT_TITLE$$" />
+							
+							<div id="GrandePhotoNb">												
+$$REM$$<!-- ============ 28.12.2009 ajout du descriptif de la photo [Lisbonne] ============ -->$$END$$
+								$$IF:1_PHOTO:DESCRIPTIF_FR$$$$1_PHOTO:DESCRIPTIF_FR$$$$END:1_PHOTO:DESCRIPTIF_FR$$
+								$$IF0:1_PHOTO:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$$$END:1_PHOTO:DESCRIPTIF_FR$$
+								<!-- n photo / nb photo -->
+								<br />$$LG:PHOT pcase$$ 1/$$PHOTO:NBR$$	
+							</div><!-- fin #GrandePhotoNb -->
+							$$BFIN$$
+						</td><!-- fin #GrandePhoto -->
+						</tr>
+						<tr>
+						$$IF>:2:PHOTO:NBR$$
+						<td id="Vignettes">							
+							$$BIF:PHOTO$$
+							<!-- vignettes -->
+							$$DO$$
+							$$IFNOTNULL:PHOTO:N$$
+$$REM$$<!-- =========== 01.03.2010 ajout macro GALERIE_VIGNETTE_CLICK [Lisbonne] ================================
+												si GALERIE_VIGNETTE_CLICK = 1 > la grande photo change quand on clique sur la vignette
+												si GALERIE_VIGNETTE_CLICK = 0 > la grande photo change quand on survole la vignette
+												le paramétrage par défaut est = 0 dans incl_variables.htm (fichier mutualisé)
+												mettre la macro dans votre HEADER pour paramétrage de votre site
+======================================================================================================= -->$$END$$				
+							<a 
+								href="javascript:switchImage('$$PHOTO:URL$$','$$PHOTO:BIG_URL$$','$$PHOTO:N$$', '$$PHOTO:NBR$$', '$$IF:PHOTO:DESCRIPTIF_FR$$$$PHOTO:DESCRIPTIF_FR escape$$$$END$$$$IF0:PHOTO:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$$$END$$');" 
+								$$IF=:1:GALERIE_VIGNETTE_CLICK$$onclick="switchImage('$$PHOTO:URL$$','$$PHOTO:BIG_URL$$','$$PHOTO:N$$', '$$PHOTO:NBR$$', '$$IF:PHOTO:DESCRIPTIF_FR$$$$PHOTO:DESCRIPTIF_FR escape$$$$END$$$$IF0:PHOTO:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$$$END$$');" $$END:GALERIE_VIGNETTE_CLICK$$
+								$$IF!:1:GALERIE_VIGNETTE_CLICK$$onmouseover="switchImage('$$PHOTO:URL$$','$$PHOTO:BIG_URL$$','$$PHOTO:N$$', '$$PHOTO:NBR$$', '$$IF:PHOTO:DESCRIPTIF_FR$$$$PHOTO:DESCRIPTIF_FR escape$$$$END$$$$IF0:PHOTO:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$$$END$$');" $$END:GALERIE_VIGNETTE_CLICK$$
+								id="Thumb$$PHOTO:N$$" 
+								title="$$LG:PHOT pcase$$ $$PHOTO:N$$/$$PHOTO:NBR$$"><!-- --></a>
+							$$END$$
+							$$LOOP$$
+							$$BFIN$$
+							<div class="clear"><!-- --></div>											
+						</td>
+						$$END:PHOTO:NBR$$
+					</tr>
+				</table><!-- fin #Photo -->
+			</div><!-- fin #Photo_Ctn -->
