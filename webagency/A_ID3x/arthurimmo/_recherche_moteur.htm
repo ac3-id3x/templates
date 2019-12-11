@@ -1,0 +1,300 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=MOTEUR$$
+<script language="javascript" type="text/javascript" src="$$_$$scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$', 'cdp', ',height=330, width=360, scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+
+function displayRadio(elt) {
+	
+	elt_radio=document.getElementsByName('rayon');
+		if( elt_radio ) {
+				for(var i=0; i<=4; i++){
+					if( elt.value != "" ) {
+							elt_radio[i].disabled = false;
+					}else{
+						elt_radio[i].checked = false;
+						elt_radio[i].disabled = true;
+						}
+				}
+		}
+}
+
+function displayChampVille(elt){
+		if (elt.value != ""){
+			document.getElementById("cp1").value="";
+			document.getElementById("ChampsVilles").style.display="none";	
+		}else{
+			document.getElementById("ChampsVilles").style.display="inline";	
+		}
+		
+	}
+
+function displayChampDep(elt){
+		if (elt.value != ""){
+			document.getElementById("cp1").value="";
+			document.getElementById("ChampsVilles").style.display="none";	
+		}else{
+			document.getElementById("ChampsVilles").style.display="inline";	
+		}
+		
+	}
+
+function affiche_listeregions( monurl, mesparametres, elt ) {
+	mesparametres = "lang=$$LANGUE$$&idtt=" + elt.value;
+		if(elt.value == ""){
+			document.getElementById("listeregions").style.display = "none";
+			document.getElementById("ChampsVilles").style.display = "inline";
+		}else{document.getElementById("listeregions").style.display = "inline";}
+		var divvilles = document.getElementById("listevilles");
+		divvilles.style.display = "none";
+		
+	//new Insertion.Top('liste', '<tr><td class="patientez"><br/>Patientez, chargement en cours...<br/></td></tr>');
+
+	new Insertion.Top('listeregions', '<span class="patientez">Patientez, chargement en cours...<br/></span>');
+	 
+	var myAjax = new Ajax.Updater(
+	'listeregions', 
+	monurl, 
+			{
+				method: 'get', 
+				parameters: mesparametres
+			});
+}
+
+function affiche_dep( monurl, mesparametres, elt ) {
+	var idtt = document.getElementById("ListeTypeTrans").value;
+	mesparametres = "lang=$$LANGUE$$&idtt=" + idtt +"&deps=" + elt.value;
+	document.getElementById("listevilles").style.display = "none";
+	var divdep = document.getElementById("listedep");
+	if(elt.value != ""){
+		divdep.style.display = "inline";
+	}else{
+		divdep.style.display = "none";
+	}
+	//new Insertion.Top('liste', '<tr><td class="patientez"><br/>Patientez, chargement en cours...<br/></td></tr>');
+	
+	new Insertion.Top('listedep', '<span class="patientez">Patientez, chargement en cours...<br/></span>');
+	
+	var myAjax = new Ajax.Updater(
+	'listedep', 
+	monurl, 
+			{
+				method: 'get', 
+				parameters: mesparametres
+			});	
+
+}
+
+function affiche_listevilles( monurl, mesparametres, elt ) {
+	var idtt = document.getElementById("ListeTypeTrans").value;
+	mesparametres = "lang=$$LANGUE$$&idtt=" + idtt +"&villes=" + elt.value;
+	var divvilles = document.getElementById("listevilles");
+	if(elt.value != ""){
+		divvilles.style.display = "inline";
+	}else{
+		divvilles.style.display = "none";
+	}
+	//new Insertion.Top('liste', '<tr><td class="patientez"><br/>Patientez, chargement en cours...<br/></td></tr>');
+	
+	new Insertion.Top('listevilles', '<span class="patientez">Patientez, chargement en cours...<br/></span>');
+	
+	var myAjax = new Ajax.Updater(
+	'listevilles', 
+	monurl, 
+			{
+				method: 'get', 
+				parameters: mesparametres
+			});	
+
+}
+function Verif(){ //* Verifie qu'un type de transaction a bien été selectionné
+	var typetrans = document.getElementById("ListeTypeTrans");
+	var cp = 	document.getElementById("cpreg");
+	var dep = document.getElementById("cpdep");
+	var cp1 = document.getElementById("cp1");
+	var ci = document.getElementById("cpville");
+	
+	
+	if (ci.value!=null){
+		if(ci.value!=""){
+			cp.value="";
+			dep.value="";
+		}
+	}
+			if(typetrans){
+				if(typetrans.value != ""){
+					if(dep){
+						if(dep.value != ""){
+							cp.value = "";
+
+						}
+					}
+					if(cp1.value != ""){
+						cp.value = "";
+						cp.removeAttribute("name");
+						
+						if(cp1.value.indexOf(",") != "-1"){
+							var tabtest = new Array();
+							tabtest = cp1.value.split(',');
+							cp1.value = tabtest[0];
+						}
+					
+					}
+					if(cp.value == "" && cp1.value == ""){cp.removeAttribute("name");}
+					if(cp.value != ""){cp1.removeAttribute("name");}
+						return true;
+				}else{
+					alert("Vous devez choisir un type de transaction");
+					return false;
+					}
+			}else{alert("Error Verif");}
+			
+} 
+-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+	<!--#include virtual="/incl_choix_wag_style.htm" -->
+	<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm" id="annonces" name="annonces" onsubmit="return Verif();">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm" />
+	<input type="hidden" name="idtt" id="ListeTypeTrans" value="$$FORM:IDTT$$" />	
+	<div id="Reference">		
+		<div class="LibMot2">Pour retrouver un bien dont vous avez d&eacute;j&agrave; la r&eacute;f&eacute;rence <input class="imputForm" type="text" name="refannonce" size="30" id="ref_ann" value="$$FORM:REF$$" /> <input type="image" src="img/rechercher_ref.gif" style="width:90px; border:0; position:absolute; top:0px; padding:0; margin:0 0 0 3px;" /></div>
+	</div>
+	<div id="MoteurBloc1">
+
+	
+	
+		<p class="TitreMot">$$LG:TYPEDEBIEN pcase$$</p>
+		$$IF=:2$5$1:FORM:IDTT$$
+		<p class="LibMot">Immobilier particulier</p>
+		<label class="lab-mot-gm" for="idtypebien_1" title="$$LG:APPARTEMENT$$" onclick="Fil(this);"><input type="checkbox" name="idtypebien" id="idtypebien_1" value="1" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:APPARTEMENT sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_9" title="$$LG:LOFT$$"><input type="checkbox" name="idtypebien" id="idtypebien_9" value="9"  />&nbsp;Loft / Atelier /Surface</label>
+		<label class="lab-mot-gm" for="idtypebien_2" title="$$LG:MAISON$$"><input type="checkbox" name="idtypebien" id="idtypebien_2" value="2" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:MAISON sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_3" title="$$LG:PARKING$$"><input type="checkbox" name="idtypebien" id="idtypebien_3" value="3" />&nbsp;$$LG:PARKING sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_4" title="$$LG:TERRAIN$$"><input type="checkbox" name="idtypebien" id="idtypebien_4" value="4" />&nbsp;$$LG:TERRAIN sp2nbsp$$</label>
+		<div class="clear1"></div>
+		<p class="LibMot">Immobilier d'entreprise</p>
+		<label class="lab-mot-gm" for="idtypebien_6" title="$$LG:BOUTIQUE$$"><input type="checkbox" name="idtypebien" id="idtypebien_6" value="6" $$IF(:6:QRY:IDTYPEBIEN$$checked="checked"$$END$$ />&nbsp;$$LG:BOUTIQUE sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_8" title="$$LG:BUREAUX$$"><input type="checkbox" name="idtypebien" id="idtypebien_8" value="8" />&nbsp;$$LG:BUREAUX sp2nbsp$$</label>	
+		<label class="lab-mot-gm" for="idtypebien_7" title="$$LG:LOCAL$$"><input type="checkbox" name="idtypebien" id="idtypebien_7" value="7" />&nbsp;$$LG:LOCAL sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_11" title="$$LG:IMMEUBLE$$"><input type="checkbox" name="idtypebien" id="idtypebien_11" value="11" />&nbsp;$$LG:IMMEUBLE sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_12" title="$$LG:BATIMENT$$"><input type="checkbox" name="idtypebien" id="idtypebien_12" value="12"/>&nbsp;$$LG:BATIMENT sp2nbsp$$</label>
+		<div class="clear1"></div>
+		<p class="LibMot">Autres</p>
+		<label class="lab-mot-gm" for="idtypebien_13" title="$$LG:CHATEAU$$"><input type="checkbox" name="idtypebien" id="idtypebien_13" value="13" />&nbsp;$$LG:CHATEAU sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_14" title="$$LG:HOTEL$$"><input type="checkbox" name="idtypebien" id="idtypebien_14" value="14" />&nbsp;$$LG:HOTEL sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_10" title="$$LG:DIVERS$$"><input type="checkbox" name="idtypebien" id="idtypebien_10" value="10" />&nbsp;$$LG:DIVERS sp2nbsp$$</label>
+	$$END$$
+	
+	$$IF=:4:FORM:IDTT$$
+		<p class="LibMot">Immobilier particulier</p>
+		<label class="lab-mot-gm" for="idtypebien_1" title="$$LG:APPARTEMENT$$" onclick="Fil(this);"><input type="checkbox" name="idtypebien" id="idtypebien_1" value="1" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:APPARTEMENT sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_9" title="$$LG:LOFT$$"><input type="checkbox" name="idtypebien" id="idtypebien_9" value="9"  />&nbsp;Loft / Atelier /Surface</label>
+		<label class="lab-mot-gm" for="idtypebien_2" title="$$LG:MAISON$$"><input type="checkbox" name="idtypebien" id="idtypebien_2" value="2" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:MAISON sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_3" title="$$LG:PARKING$$"><input type="checkbox" name="idtypebien" id="idtypebien_3" value="3" />&nbsp;$$LG:PARKING sp2nbsp$$</label>
+<label class="lab-mot-gm" for="idtypebien_10" title="$$LG:DIVERS$$"><input type="checkbox" name="idtypebien" id="idtypebien_10" value="10" />&nbsp;$$LG:DIVERS sp2nbsp$$</label>
+		<div class="clear1"></div>
+	
+	$$END$$
+	
+	$$IF=:9:FORM:IDTT$$
+		<br />
+		<label class="lab-mot-gm" for="idtypebien_1" title="$$LG:APPARTEMENT$$" onclick="Fil(this);"><input type="checkbox" name="idtypebien" id="idtypebien_1" value="1" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:APPARTEMENT sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_9" title="$$LG:LOFT$$"><input type="checkbox" name="idtypebien" id="idtypebien_9" value="9"  />&nbsp;Loft / Atelier /Surface</label>
+		<label class="lab-mot-gm" for="idtypebien_2" title="$$LG:MAISON$$"><input type="checkbox" name="idtypebien" id="idtypebien_2" value="2" $$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />&nbsp;$$LG:MAISON sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_11" title="$$LG:IMMEUBLE$$"><input type="checkbox" name="idtypebien" id="idtypebien_11" value="11" />&nbsp;$$LG:IMMEUBLE sp2nbsp$$</label>
+		<label class="lab-mot-gm" for="idtypebien_10" title="$$LG:DIVERS$$"><input type="checkbox" name="idtypebien" id="idtypebien_10" value="10" />&nbsp;$$LG:DIVERS sp2nbsp$$</label>
+	$$END$$
+	
+
+	</div>
+
+	<!-- div#MoteurBloc1 -->
+	
+	
+	<div id="MoteurBloc2">
+		<p class="TitreMot">$$LG:LOCALIS pcase$$</p>		
+		<p class="LibMot">G&eacute;olocalisation</p>			
+		
+		<div id="listeregions"></div>
+		<div id="listedep"></div>
+		<div id="listevilles"></div>	
+
+		<div id="ChampsVilles">
+			<p class="LibMot">Recherche g&eacute;ographique libre (CP, d&eacute;partement ou ville)</p>
+			<input class="imputForm" type="text" name="cp" size="30" id="cp1" value="$$FORM:CP field 1$$"  /><br />
+		</div>
+
+		<p class="LibMot">Elargir la recherche dans un rayon de :</p>			
+			<label title="10"><input type="radio" id="rayon1" name="rayon" value="10"  disabled="disabled" />10km</label>
+			<label title="15"><input type="radio" id="rayon2" name="rayon" value="15"  disabled="disabled" />15km</label>
+			<label title="20"><input type="radio" id="rayon3" name="rayon" value="20"  disabled="disabled" />20km</label>
+			<label title="30"><input type="radio" id="rayon4" name="rayon" value="30"  disabled="disabled" />30km</label>
+			<label title="50"><input type="radio" id="rayon5" name="rayon" value="50"  disabled="disabled" />50km</label>	
+		
+		<p class="LibMot">Situation de pr&eacute;f&eacute;rence</p>
+		$$B:IMMOBW:SITUATIONS$$$$BIF:IMMOBW:SITUATIONS$$
+			<select name="idsituation" class="ListeSituation">
+			<option value="" selected="selected">-- --</option>
+		$$DO$$ 
+			<option value="$$IMMOBW:SITUATIONS:IDSITUATION$$" $$if(:form_idsituation:$$immobw:situations:idsituation$$$$selected="selected"$$end$$>$$IMMOBW:SITUATIONS:DICNAME mid 4 n pcase$$</option>
+		$$LOOP$$
+			</select>
+		$$BFIN$$
+		
+	</div>
+
+
+	<div id="MoteurBloc3">
+		<p class="TitreMot">Caract&eacute;ristiques</p>		
+		<p class="LibMot">$$LG:NOMBREDEPIECES pcase$$</p>
+    <input type="radio" name="nb_pieces" value="0"$$if(:form_nb*pieces:1$$ checked="checked"$$end$$ />0&nbsp;&nbsp;
+		<input type="radio" name="nb_pieces" value="1" />1&nbsp;&nbsp;
+		<input type="radio" name="nb_pieces" value="2" />2&nbsp;&nbsp;
+		<input type="radio" name="nb_pieces" value="3" />3&nbsp;&nbsp;
+		<input type="radio" name="nb_pieces" value="4" />4&nbsp;&nbsp;
+		<input type="radio" name="nb_pieces" value="+4" />5 et +
+		$$REM$$<!-- Nombres de chambres -->$$END$$
+		<p class="LibMot">Nombres de chambres</p>
+        <input type="radio" name="nb_chambres" value="0"$$if(:form_nb*pieces:0$$ checked="checked"$$end$$ />0&nbsp;&nbsp;
+		<input type="radio" name="nb_chambres" value="1" />1&nbsp;&nbsp;
+		<input type="radio" name="nb_chambres" value="2" />2&nbsp;&nbsp;
+		<input type="radio" name="nb_chambres" value="3" />3&nbsp;&nbsp;
+		<input type="radio" name="nb_chambres" value="4" />4&nbsp;&nbsp;
+		<input type="radio" name="nb_chambres" value="+4" />5 et +
+		$$REM$$<!-- Budget -->$$END$$
+		<p class="LibMot">Budget compris entre</p>
+		<input class="imputForm2" type="text" name="pxmin" size="10" value="" /> et 
+		<input class="imputForm2" type="text" name="pxmax" size="10" value="" />
+		&euro;
+		$$REM$$<!-- Surface -->$$END$$
+		<p class="LibMot">Surface comprise entre</p>
+		<input class="imputForm2" type="text" name="surfacemin" size="10" value="" />
+		 et <input class="imputForm2" type="text" name="surfacemax" size="10" value="" /> m&sup2;
+		<br /><br />
+		
+			<p class="TitreMot">Autres crit&egrave;res</p><br />
+				<input type="checkbox" name="photo" value="1" /> Avec photo uniquement<br />
+				<input type="checkbox" name="360" value="1" /> $$LG:VISITEVIRT pcase$$<br />
+				<input type="checkbox" name="si_handicape" value="1" /> $$LG:SIHANDICAPE pcase$$<br />
+				<input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" /> Les nouveaut&eacute;s de - de 2 semaines<br />
+				<input type="checkbox" name="si_coupdecoeur" value="1" /> Coups de coeur uniquement<br />
+		
+	</div>
+	
+	<br style="clear: both;" />
+	<div id="BtRecherche">
+		<input type="image" src="img/rechercher_$$LANGUE$$.gif" />
+	</div>
+
+	</form>
+	
+<script>
+	 affiche_listeregions('/includes,incl_listeregions.htm', '', 'ListeTypeTrans');
+</script>
+
+$$INCL:BAS.HTM$$

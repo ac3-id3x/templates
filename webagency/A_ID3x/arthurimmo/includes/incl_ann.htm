@@ -1,0 +1,84 @@
+$$B:IMMOBW:REGIONS:ALIAS:LISTEREGIONS$$
+	$$BIF:LISTEREGIONS$$
+	<a id="aregion"></a>
+	<select name="region" id="region" onchange="javascript:ListeReg(this);" style="width:240px;">	
+	<option value="">-- Choisissez une région --</option>
+	$$DO$$
+		<option value="$$LISTEREGIONS:CODEREG$$">$$LISTEREGIONS:REGION ncase$$ </option>
+	$$LOOP$$
+	</select>
+<br /><img id="ajaxregion" style="display:none" src="images/ajax-loader.gif" />
+$$BFIN$$
+							
+							
+		$$IF:FORM:REGION$$
+			$$B:IMMOBW:REGDEP:QRY:REGION:ALIAS:LISTEAGDEP$$
+			$$BIF:LISTEAGDEP$$
+								<a id="adpt"></a>
+								<select name="DEPARTEMENT" id="dep" onchange="javascript:ListeDep(this);" style="width:240px;">	
+									<option value="">-- Choisissez un d&eacute;partement --</option>
+											$$DO$$
+												$$IFNEXT:LISTEAGDEP:DEP$$   
+									<option value="$$LISTEAGDEP:DEP$$">$$LISTEAGDEP:DEPARTEMENT ncase$$ ($$LISTEAGDEP:DEP$$)</option>
+												$$END$$
+											$$LOOP$$
+								</select><br /><img id="ajaxdpt" style="display:none" src="images/ajax-loader.gif" />
+
+					$$BFIN$$
+				$$END$$
+							
+							$$IF:FORM:CP$$
+
+			$$B:IMMOBW:AGENCES:ALIAS:LISTEAGVIL:VILLECP:QRY:CP::WITHDEP::ALL$$
+			$$BIF:LISTEAGVIL$$
+								<a id="aville"></a>
+								<select name="VILLES" id="ville" onchange="javascript:ListeVilles(this);" style="width:240px;">	
+									<option value="">-- Choisissez une ville --</option>
+											$$DO$$
+												$$IFNEXT:LISTEAGVIL:VILLE$$   
+									<option value="$$LISTEAGVIL:CP$$">$$LISTEAGVIL:VILLE ncase$$ ($$LISTEAGVIL:CP$$) </option>
+												$$END$$
+											$$LOOP$$
+								</select>
+							$$BFIN$$
+                          
+			$$END$$
+						
+						
+						<script language="javascript">
+	function getVar(nomVariable){
+		var infos = location.href.substring(location.href.indexOf("?")+1, location.href.length)+"&"
+		if (infos.indexOf("#")!=-1)
+			infos = infos.substring(0,infos.indexOf("#"))+"&"
+		var variable=0
+		{
+			nomVariable = nomVariable + "="
+			var taille = nomVariable.length
+			if (infos.indexOf(nomVariable)!=-1)
+				variable = infos.substring(infos.indexOf(nomVariable)+taille,infos.length).substring(0,infos.substring(infos.indexOf(nomVariable)+taille,infos.length).indexOf("&"))
+		}
+		return variable
+	}
+
+	function ListeReg(elt){		
+		document.getElementById("ajaxregion").style.display = "";
+		document.location.href = "/pro-immo.htm?lang=$$LANGUE$$&region=" + elt.value + "&posreg=" + elt.selectedIndex + "#adpt";
+		}
+	function ListeDep(elt){	
+		document.getElementById("ajaxdpt").style.display = "";	
+		document.location.href = "/pro-immo.htm?lang=$$LANGUE$$&cp=" + elt.value + "&region=" + document.getElementById("region").value + "&posdep=" + elt.selectedIndex + "&posreg=" + document.getElementById("region").selectedIndex + "#aville";
+		}
+	function ListeVilles(elt){
+		document.location.href = "/liste-agences-immobilieres-pro.htm?lang=$$LANGUE$$&cp=" + elt.value;
+		
+		}	
+	if(getVar('posreg')){
+		document.getElementById("region").selectedIndex = getVar('posreg');
+	}
+	if(getVar('posdep')){
+		document.getElementById("dep").selectedIndex = getVar('posdep');
+	}
+	if(getVar('posville')){
+		document.getElementById("ville").selectedIndex = getVar('posville');
+	}
+</script>

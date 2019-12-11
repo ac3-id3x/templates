@@ -1,0 +1,387 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=COMMERCE$$
+<script language="javascript" type="text/javascript" src="$$_$$scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="$$_$$scripts/dyngeo_com.js"></script>
+<div id="left">
+	
+<script language="javascript" type="text/javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+
+function checkPrices() {
+	for (i = 0; i < document.forms["annonces"].idtt.length; i++) {
+		o = document.forms["annonces"].idtt[i];
+		if (o.checked) {
+			idt = o.value;
+			if (idt == "10") {
+				if (document.getElementById("typecommerce") && document.getElementById("typebien")) {
+					document.getElementById("typecommerce").style.display = "inline";
+					document.getElementById("typebien").style.display = "none";
+				}
+				idt="2";
+			} else {
+				if (document.getElementById("typecommerce") && document.getElementById("typebien") ) {
+					document.getElementById("typecommerce").style.display = "none";
+					document.getElementById("typebien").style.display = "inline";
+				}
+			}
+		}
+	}
+}
+
+function dispacti( id ) {
+	var o = document.getElementById( id );
+	acti( o );
+}
+
+function reacti () {
+	for( i=0; i<document.forms["annonces"].idtypecommerce.length; i++ ) {
+		o = document.forms["annonces"].idtypecommerce[i];
+		if (o.checked) {
+			acti(o);
+		}
+	}
+}
+
+function acti (o) {
+	var elt;
+	if( o ) {
+		elt = document.getElementById("idta"+o.value)
+		if( elt ) {
+			if( o.checked ) {
+				elt.style.display="inline";
+			} else {
+				elt.style.display="none";
+			}
+		}
+	}
+}
+setTimeout('reacti()',10);
+
+
+
+
+//-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td><p class="selection" align="center"><b>$$LG:SELECTIONNEZ$$<a href="/liste_transactions.htm" class="selection"></a></b></p>
+			<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annonces" id="annonces" onsubmit="return Verif();">
+			
+					$$IF:FORM:ERR$$
+						<table class="Err">
+							<tr>
+								<td width="35" align="right"><img src="/img/ah.gif" border="0" /></td>
+								<td align="center">$$FORM:ERR$$</td>
+							</tr>
+						</table><br />
+					$$END:FORM:ERR$$
+					
+				<input type="hidden" name="URLONERROR" value="commerce.htm" />
+				
+				$$IF=:BUR:FORM:TYPE$$<input type="hidden" name="type" value="bur" />$$END$$
+				$$IF=:COM:FORM:TYPE$$<input type="hidden" name="type" value="com" />$$END$$
+				$$IF=:LOC:FORM:TYPE$$<input type="hidden" name="type" value="loc" />$$END$$
+				$$IF=:BAT:FORM:TYPE$$<input type="hidden" name="type" value="bat" />$$END$$
+						
+			$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+					<input type="hidden" name="lang" value="$$LANGUE$$" />
+				<input type="hidden" name="idtypebien" id="idtypebien99" value="" />
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					$$IF=:BUR:FORM:TYPE$$<input type="hidden" name="idtypebien" id="idtypebien" value="8" />$$END$$
+					$$IF=:LOC:FORM:TYPE$$<input type="hidden" name="idtypebien" id="idtypebien" value="7" />$$END$$
+					$$IF=:BAT:FORM:TYPE$$<input type="hidden" name="idtypebien" id="idtypebien" value="12" />$$END$$
+					<!-- TYPE DE COMMERCE -->
+					$$IF!:0:PAGE:TYPEDECOM$$
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td class="tabTitre">
+						$$IF=:BUR$LOC$BAT:FORM:TYPE$$
+							<b>$$LG:TYPEDETRANSACTION$$</b>
+						$$END$$
+						$$IF=:COM:FORM:TYPE$$
+							<b>$$LG:TYPEDETRANSACTION$$ & $$LG:TYPEDEBIEN$$</b>
+						$$END$$
+							
+						</td>
+					</tr>
+					<tr>
+						<td class="tabcontenu"><br /><b>$$LG:TYPEDETRANSACTION$$ :</b><br />
+							
+							$$IF=:COM:FORM:TYPE$$
+							<select name="idtt" id="ListeTypeTrans" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();">
+								<option value="10" $$IF=:10:FORM:IDTT$$SELECTED$$END$$>$$LG:MINIFONDSCOM$$</option>
+								<option value="11" $$IF=:11:FORM:IDTT$$SELECTED$$END$$>$$LG:MINIBAIL$$</option>									
+							</select>
+			
+							$$END$$
+							
+							$$IF=:BUR$LOC$BAT:FORM:TYPE$$
+								<select name="idtt" id="ListeTypeTrans" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();">
+									<option value="1" $$IF=:1:FORM:IDTT$$SELECTED$$END$$>$$LG:LOCATION$$</option>
+									<option value="2" $$IF=:2:FORM:IDTT$$SELECTED$$END$$>$$LG:VENTE$$</option>									
+								</select>
+							
+							
+							$$END$$
+							</td>
+					</tr>
+					<tr>
+						<td class="tabcontenu"><br />
+						$$IF!:BUR$LOC$BAT:FORM:TYPE$$
+						<div id="typebien" style="display:none;"> 
+								$$B:IMMOBW:TYPESBIENS:ALL:QRY:LANG:TTRET$$
+								$$BIF:IMMOBW:TYPESBIENS:ALL$$ <b>$$LG:TYPEDEBIEN$$ :</b><br />
+								$$DO$$
+								$$IF=:11:IMMOBW:TYPESBIENS:ALL:IDTYPETRANSACTION$$
+								$$A:CHECK:AFFICHAGE=1$$
+								<input type="checkbox" name="idtypebien" value="$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$" id="idtypebien$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$"$$IF(:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$ checked="checked"$$END$$ />
+								&nbsp;
+								<label for="idtypebien$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$">$$IMMOBW:TYPESBIENS:ALL:DEF_LIBELLE sp2nbsp$$</label>
+								$$END$$
+								$$LOOP$$
+								$$IF0:CHECK:AFFICHAGE$$
+								<p>$$LG:NOBIENDISPO$$</p>
+								$$END$$
+								$$BFIN$$ 
+							</div>
+							$$END$$
+								
+							<div id="typecommerce" $$IF!:COM:FORM:TYPE$$style="display:none;"$$END$$> $$B:IMMOBW:SOUSTYPESCOMMERCES$$
+								$$BIF:IMMOBW:SOUSTYPESCOMMERCES$$ <div class="TitreCommerce">$$LG:TYPEDECOM$$ :</div><br /><br />
+								$$DO:1:999$$
+								$$IFPREV:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$
+								<div class="BlocTypeCommerce">
+								<input type="checkbox" $$IF0:COM:DETAILTYPECOM$$onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');"$$END$$ id="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" name="idtypecommerce" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" $$IF(:FORM_IDTYPECOMMERCE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$ checked="checked"$$END$$ />
+								&nbsp;
+								<label for="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" $$IF0:COM:DETAILTYPECOM$$onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');"$$END$$ >$$IMMOBW:SOUSTYPESCOMMERCES:TYPECOMMERCE sp2nbsp$$</label>
+								</div>
+								<br />
+								$$IF0:COM:DETAILTYPECOM$$
+								<div id="idta$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" style="display:none;" class="coactiv">$$END$$
+									$$END$$
+									
+									$$IF0:COM:DETAILTYPECOM$$
+									<input type="checkbox" id="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" name="idtypeactivite" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" $$IF(:FORM_IDTYPEACTIVITE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$checked="checked"$$END$$ />
+									&nbsp;
+									<label for="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$">$$IMMOBW:SOUSTYPESCOMMERCES:LIBELLE pcase sp2nbsp$$</label>
+									$$END$$
+									
+									$$IFNEXT:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$$$IF0:COM:DETAILTYPECOM$$<br />
+								</div>
+								$$END$$$$END$$
+								
+								$$LOOP$$
+								$$BFIN$$ </div></td>
+					</tr>
+					$$END$$
+					<!-- Budget -->
+					$$IF=:1:PAGE:BUDGET$$
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td class="tabTitre"><b>$$LG:BUDGET$$</b></td>
+					</tr>
+					<tr>
+						<td valign="top" class="tabcontenu"><b>$$LG:MINI$$&nbsp;:</b>&nbsp;
+							<input class="imputForm" type="text" name="pxmin" size="10" value="" />
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>$$LG:MAXI$$&nbsp;:</b>&nbsp;
+							<input class="imputForm" type="text" name="pxmax" size="10" value="" />
+							<font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+							<select name="euro">
+								<option value="1">&euro;</option>
+								<option value="0">FF</option>
+							</select>
+							</font> </td>
+					</tr>
+					$$END$$
+					<!-- Surface -->
+					$$IF=:1:PAGE:SURFACE$$
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td class="tabTitre"><b>$$LG:SURFACE$$</b></td>
+					</tr>
+					<tr>
+						<td valign="top" class="tabcontenu">
+							
+							<br style="clear: both;" />
+							<b>$$LG:MINI$$&nbsp;:</b>&nbsp;
+							<input class="imputForm" type="text" name="surfacemin" size="10" />
+							m&sup2;&nbsp;&nbsp;<b>$$LG:MAXI$$&nbsp;:</b>&nbsp;
+							<input class="imputForm" type="text" name="surfacemax" size="10" />
+							m&sup2;</td>
+					</tr>
+					$$END$$
+					<!-- Proximité -->
+					$$IF=:1:PAGE:PROXIMITE$$
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td class="tabTitre"><b>$$LG:VILLES$$</b></td>
+					</tr>
+					<tr>
+						<td class="tabcontenu"><i>($$LG:ZONEDESAISIE$$)</i><br />
+							<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 1$$" />
+							<br />
+							<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 2$$" />
+							<br />
+							<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 3$$" />
+							<br />
+							<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 4$$" />
+							<br />
+							<i><a href="javascript:openCodes_Postaux();">($$LG:RETROUVER$$)</a></i> </td>
+					</tr>
+					$$END$$
+					<!-- Liste des villes ayant des annonces -->
+					$$REM$$
+					$$IF=:1:PAGE:LISTEVILLES$$
+					<!--#include virtual="incl_cache_villesannonces_commerce.gen.htm" -->
+					$$END:PAGE:LISTEVILLES$$
+					$$END$$
+					<!-- Pays -->
+					$$IF=:1:PAGE:AFFICHEPAYS$$
+					<tr>
+						<td class="tabTitre"><b>$$LG:VILLES$$</b></td>
+					</tr>
+					<tr>
+						<td>$$INCL:PAYS.HTM$$</td>
+					</tr>
+					$$END$$
+					$$IF0:PAGE:AFFICHEPAYS$$
+					<input type="hidden" name="idpays" value="250" />
+					$$END$$
+					<!-- Annonces fraicheur -->
+					$$IF!:0:PAGE:FRAICHEUR$$
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td valign="top" class="tabcontenu"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />
+							&nbsp;$$LG:NOUV$$</td>
+					</tr>
+					$$END$$
+					<!-- Préliste -->
+					$$IF=:1:PAGE:PRELISTE$$
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td height="6"></td>
+					</tr>
+					<tr>
+						<td valign="top" class="tabcontenu"><font size="1">$$LG:DETAILANN$$</font>&nbsp;
+							<input type="radio" name="preliste" value="/recherche.htm" checked onclick="javascript:document.forms['annonces'].action = '/prerecherche.htm';" />
+							<br />
+							<font size="1">$$LG:PRELISTE$$</font>&nbsp;
+							<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = '/prerecherche_liste.htm';" />
+						</td>
+					</tr>
+					$$END$$
+					<!-- Validation Form -->
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="tabTitre"><b>$$LG:VILLES$$</b></td>
+					</tr>
+					<tr>
+						<td>
+							<br />
+							<div id="MoteurBloc2">
+							<div id="listeregions">
+			$$B:IMMOBW:REGIONSANNONCES:ALIAS:LISTEREGIONS::QRY:IDTT$$
+
+$$BIF:LISTEREGIONS$$
+
+<select name="cp" id="cpreg" onchange="affiche_dep('/includes,incl_dep.htm', '', this);displayChampDep(this);displayChampVille(this);" style="color:#737373; border:1px solid #737373;">
+<option value="">$$LG:SELECREG$$</option>
+$$DO$$
+<option value="$$LISTEREGIONS:DEPS$$">$$LISTEREGIONS:REGION$$</option>
+$$LOOP$$
+</select>
+
+$$BFIN$$
+
+			</div>
+		
+		<div id="listedep">
+		$$B:IMMOBW:DEPARTEMENTS:QRY:DEPT:ALIAS:LISTEAGDEP$$
+		$$BIF:LISTEAGDEP$$
+		<select name="cp" id="cpdep" onchange="javascript:affiche_listevilles('/includes,incl_ann_listevilles.htm', '', this);" disabled="disabled" >
+		<option value="">$$LG:SELECDEP$$</option>
+		$$DO$$
+			<option value="$$LISTEAGDEP:DEPT$$">$$LISTEAGDEP:DEPARTEMENT$$</option>
+		$$LOOP$$
+		</select>
+		$$BFIN$$			
+		</div>
+		
+		<div id="listevilles">
+			$$B:IMMOBW:VILLESANNONCES:ALIAS:LISTEVILLE::QRY:VILLES:QRY:IDTT$$
+$$BIF:LISTEVILLE$$
+<select name="ci" id="cpville" onchange="javascript:displayRadio(this);displayChampVille(this);" disabled="disabled">
+<option value="">$$LG:SELECVILLE$$</option>
+$$DO$$
+<option value="$$LISTEVILLE:CODEINSEE$$">$$LISTEVILLE:VILLEAFF$$</option>
+$$LOOP$$
+</select>
+$$BFIN$$
+		</div>
+		
+		
+		<p class="LibMot">Elargir la recherche dans un rayon de :</p>			
+			<label title="10"><input type="radio" id="rayon1" name="rayon" value="10"  disabled="disabled" />10km</label>
+			<label title="15"><input type="radio" id="rayon2" name="rayon" value="15"  disabled="disabled" />15km</label>
+			<label title="20"><input type="radio" id="rayon3" name="rayon" value="20"  disabled="disabled" />20km</label>
+			<label title="30"><input type="radio" id="rayon4" name="rayon" value="30"  disabled="disabled" />30km</label>
+			<label title="50"><input type="radio" id="rayon5" name="rayon" value="50"  disabled="disabled" />50km</label>	
+		
+<div id="ChampsVilles">
+			<p class="LibMot">Recherche g&eacute;ographique libre</p>
+			<input class="imputForm" type="text" name="cp" size="30" id="cp1" value="$$IF:FORM:CP$$$$FORM:CP field 1$$$$END$$ CP, d&eacute;partement ou ville..." style="color:#737373; border:1px solid #737373;"  /><br />
+		</div>
+	</div>
+						</td>
+					</tr>
+					<tr>
+						<td align="right"><br /><input type="image" src="img/rechercher_$$LANGUE$$.gif" /></td>
+					</tr>
+				</table>
+			</form></td>
+	</tr>
+</table>
+<script language="javascript" type="text/javascript">
+	 
+	checkPrices();
+	function majTrans(valeur){
+		document.getElementById("ListeTypeTrans").value=valeur;
+		
+	}	 
+</script>
+</div>
+<div id="right">
+	<!--#include virtual="/incl_content_right.htm" -->
+</div>	
+<div class="clear2"></div>
+$$INCL:BAS.HTM$$

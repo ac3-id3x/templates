@@ -1,0 +1,107 @@
+$$B:IMMOBW:REGIONS:ALIAS:LISTEREGIONS$$
+	$$BIF:LISTEREGIONS$$
+	<table>
+				<tr>
+					<td width="190">
+						Choisissez une région : 
+					</td>
+					<td>
+						<select name="region" id="region" onchange="javascript:ListeReg(this);" style="width:240px;">	
+						<option value="">-- Liste des régions --</option>
+						$$DO$$
+							<option value="$$LISTEREGIONS:CODEREG$$">$$LISTEREGIONS:REGION ncase$$ </option>
+						$$LOOP$$
+						</select>
+					</td>
+				</tr>
+			</table>
+
+$$BFIN$$
+							
+							
+		$$IF:FORM:REGION$$
+			$$B:IMMOBW:REGDEP:QRY:REGION:ALIAS:LISTEAGDEP$$
+			$$BIF:LISTEAGDEP$$
+			<table>
+				<tr>
+					<td width="190">
+						Choisissez un département :
+					</td>
+					<td>
+								<select name="DEPARTEMENT" id="dep" onchange="javascript:ListeDep(this);" style="width:240px;">	
+									<option value="">-- Liste des d&eacute;partements --</option>
+											$$DO$$
+												$$IFNEXT:LISTEAGDEP:DEP$$   
+									<option value="$$LISTEAGDEP:DEP$$">$$LISTEAGDEP:DEPARTEMENT ncase$$ ($$LISTEAGDEP:DEP$$) </option>
+												$$END$$
+											$$LOOP$$
+								</select>
+					</td>
+				</tr>
+			</table>
+
+
+					$$BFIN$$
+				$$END$$
+							
+							$$IF:FORM:CP$$
+
+			$$B:IMMOBW:AGENCES:ALIAS:LISTEAGVIL:VILLECP:QRY:CP::WITHDEP::ALL$$
+			$$BIF:LISTEAGVIL$$
+			<table>
+				<tr>
+					<td width="190">
+						ou Choisissez une ville :
+					</td>
+					<td>
+								<select name="VILLES" id="ville" onchange="javascript:ListeVilles(this);" style="width:240px;">	
+									<option value="">-- Liste des villes --</option>
+											$$DO$$
+												$$IFNEXT:LISTEAGVIL:VILLE$$   
+									<option value="$$LISTEAGVIL:CP$$">$$LISTEAGVIL:VILLE ncase$$ ($$LISTEAGVIL:CP$$) </option>
+												$$END$$
+											$$LOOP$$
+								</select>
+							</td>
+						</tr>
+					</table>
+							$$BFIN$$
+                          
+			$$END$$
+						
+						
+				<script language="javascript">
+	
+	function getVar(nomVariable){
+		var infos = location.href.substring(location.href.indexOf("?")+1, location.href.length)+"&"
+		if (infos.indexOf("#")!=-1)
+			infos = infos.substring(0,infos.indexOf("#"))+"&"
+		var variable=0
+		{
+			nomVariable = nomVariable + "="
+			var taille = nomVariable.length
+			if (infos.indexOf(nomVariable)!=-1)
+				variable = infos.substring(infos.indexOf(nomVariable)+taille,infos.length).substring(0,infos.substring(infos.indexOf(nomVariable)+taille,infos.length).indexOf("&"))
+		}
+		return variable
+	}
+	
+	function ListeReg(elt){
+		document.location.href = "/annuaire-adherents-pro.htm?lang=$$LANGUE$$&region=" + elt.value + "&posreg=" + elt.selectedIndex;
+		}
+	function ListeDep(elt){		
+		document.location.href = "/annuaire-adherents-pro.htm?lang=$$LANGUE$$&cp=" + elt.value + "&region=" + document.getElementById("region").value + "&posdep=" + elt.selectedIndex + "&posreg=" + document.getElementById("region").selectedIndex;
+		}
+	function ListeVilles(elt){
+		document.location.href = "/liste-agences-immobilieres-pro.htm?lang=$$LANGUE$$&cp=" + elt.value;
+		}	
+	if(getVar('posreg')){
+		document.getElementById("region").selectedIndex = getVar('posreg');
+	}
+	if(getVar('posdep')){
+		document.getElementById("dep").selectedIndex = getVar('posdep');
+	}
+	if(getVar('posville')){
+		document.getElementById("ville").selectedIndex = getVar('posville');
+	}
+</script>

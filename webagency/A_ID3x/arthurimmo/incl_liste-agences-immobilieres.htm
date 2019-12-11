@@ -1,0 +1,77 @@
+$$REM$$
+=========================================================
+//// <summary>Liste des agences du site</summary>
+//// <remarks>
+//// <para>trier des agences par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste-agences-immobilieres.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// </remarks>
+//// <update date="2008-01-30" author="lisbonne.siriphol">Création</update>
+=========================================================
+$$END$$
+
+<h1>Liste de nos agences</h1>
+<br />
+<form name="regions" action="/liste-agences-immobilieres.htm" method="get" class="region">
+			<strong class="bleu">Filtrer par $$LG:REGION pcase$$ : </strong>
+			
+				$$B:IMMOBW:REGIONS:ALIAS:REGION$$ $$BIF:REGION$$
+				<select name="cp" id="cp">
+					$$DO$$							
+					$$A:SELCP=@@FORM:CP@@$$
+					$$A:SELDEPS=@@REGION:DEPS@@$$
+					<option value="$$SELDEPS$$"$$IF=:SELCP:SELDEPS$$ SELECTED$$END$$>$$REGION:REGION$$</option>					
+					$$LOOP$$						
+				</select>
+				$$BFIN$$
+				&nbsp;&nbsp;&nbsp;
+				<input type="image" src="/img/rechercher_$$LANGUE$$.gif" name="submit" class="boutonEnvoi" />
+			</form>
+			<br style="clear: both;" />
+
+$$REM$$ ####### CODE CEDRIC QUI MARCHE PAS MAIS JE SAIS PAS POURQUOI ####### $$END$$
+$$IF0:FORM:CP$$
+	$$A:CONDITION=67,68$$
+$$END$$
+$$IF:FORM:CP$$
+	$$A:CONDITION=@@FORM:CP@@$$
+$$END$$
+$$REM$$ ########### FIN DU CODE CEDRIC ########### $$END$$
+
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:CP:QRY:CP$$
+$$BIF:LISTEAG$$
+
+$$DO$$
+
+<div class="cadreAgence">			
+	<div class="img_Ctn">
+		<a id="Img$$LISTEAG:IDPUBLICATION$$" class="imgCadreAgence" href="$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$&amp;lang=$$LANGUE lcase$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:AGEN pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:VILLE scase$$$$END$$"></a>
+	</div>
+	<div class="coordsAgence">
+		<h2>$$LISTEAG:NOM$$</h2>
+		<p class="cv_adresse">
+			$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+			<strong>$$LISTEAG:CP$$ $$LISTEAG:VILLE ucase$$</strong>
+		</p>
+		<p>
+			$$IF:LISTEAG:TEL$$<span class="cv_tel">$$LG:MINITEL pcase$$ : $$LISTEAG:TEL formattel$$</span>$$END:LISTEAG:TEL$$
+			$$IF:LISTEAG:FAX$$<br /><span class="cv_fax">$$LG:FAX pcase$$ : $$LISTEAG:FAX formattel$$</span>$$END:LISTEAG:FAX$$
+			$$IF:LISTEAG:RESPAG$$<br /><span class="cv_respag responsable">$$LG:NOMRESP pcase$$ $$LISTEAG:RESPAG ncase$$</span>$$END:LISTEAG:RESPAG$$
+		</p>
+		<p>
+			$$IF:LISTEAG:EMAIL$$<label class="cv_email"><span>$$LG:EMAIL pcase$$ : </span> <a href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:EMAIL encodemail javascript$$</a></label>$$END$$	
+			$$IF:LISTEAG:URL$$<br /><label class="cv_url"><span>$$LG:SITE pcase$$ :</span> <a href="$$LISTEAG:URL$$" onclick="window.open(this.href); return false;" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:SITE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:URL$$</a></label>$$END:URL$$
+		</p>
+	</div><p class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></p>
+	<div class="links">
+	<p class="links_Ctn">
+		<a class="plus" href="$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&amp;tri=$$FORM:TRI$$$$END$$&amp;lang=$$LANGUE lcase$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:PLUSDINFOS pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:LIEN:TOUTES pcase$$</span></a>
+		<a class="message" href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+	</p>
+	<p class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></p>
+
+</div>	
+	<div class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></div>
+</div>
+
+
+$$LOOP$$
+$$BFIN$$
