@@ -1,0 +1,207 @@
+
+<div class="row-fluid">
+	<div class="bg-white typo-black padding-10">
+		$$ENCART_TXT_HOME_CONTENU$$
+	</div>
+</div>
+
+$$REM$$ <!-- LOCATION PRESTIGE --> $$END$$
+<div class="row-fluid margin-top-20">
+	$$REM$$<!-- Variables se déclarant dans params_global.htm du site -->$$END$$
+	$$REM$$<!-- IDTTMODULE = idtt pour le module -->$$END$$
+	$$REM$$<!-- QUERYMODULE = query pour le module -->$$END$$
+	$$REM$$<!-- NBMODULEANNONCES =  Nombre d'annonces pour le module -->$$END$$
+	$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESHOMEPREST:1:VAL:LANG:::tri=d_px&idtypebien=1,2:~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+
+	$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+	$$BIF:ANNONCESHOMEPREST$$
+	$$A:JS_ANNONCES-3=1$$
+	$$INIT:CSS_COLORBOX=1$$
+	$$A:JS_COLORBOX=1$$
+	<!--#include virtual="modules/annonces-3/incl_tailles_photos.htm" -->
+	<div class="module-homepage">	
+		<ul class="row-fluid relative margin-top-10 ul-homepage-biens$$IF=:1:ROTATION_MODULE$$ rotation-module$$END$$" $$IF=:1:ROTATION_MODULE$$$$IF:SPEED_MODULE$$data-rotation="$$SPEED_MODULE$$"$$END$$$$IF:EFFECT_MODULE$$data-fx="$$EFFECT_MODULE$$"$$END$$$$END$$>
+		$$IF=:1:ROTATION_MODULE$$
+			$$IF!:1:HIDEARROW_MODULE$$
+			<li class="prev-module left absolute pagination-centered hidden-phone">
+				$$CALARROW$$
+				<img src="$$~$$images/modules/angle-left.png" alt="$$LG:ANNONCESPRECEDENTES pcase$$" />
+				<div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+			</li>
+			$$END$$
+		$$END$$
+		$$IF=:1:ROTATION_MODULE$$
+			$$IF!:1:HIDEARROW_MODULE$$
+				<li class="next-module right absolute pagination-centered hidden-phone">
+					<img src="$$~$$images/modules/angle-right.png" alt="$$LG:ANNONCESSUIVANTES pcase$$" />
+					<div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+				</li>
+			$$END$$
+		$$END$$
+		$$DO$$
+			$$IF=:1:ANNONCESHOMEPREST:I exec XX%@@SIZEMODULE@@$$
+			<div class="ligne-cycle height-100-pourcent width-100-pourcent relative$$IF!:1:ROTATION_MODULE$$ margin-bottom-10$$END$$">
+			$$END$$
+				$$A:TITLE_ANNONCE=@@ANNONCESHOMEPREST:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOMEPREST:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOMEPREST:AVILLE ncase@@$$
+				$$A:ALT_ANNONCE1=@@ANNONCESHOMEPREST:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMEPREST:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+				$$A:ALT_ANNONCE2=@@ANNONCESHOMEPREST:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMEPREST:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+				<li class="$$TAILLESPANMODULE$$ pagination-centered transition-bg relative module-annonces-homepage padding-10$$IF+:3:ANNONCESHOMEPREST:I$$ hidden-phone$$END$$">
+					<a  href="$$ANNONCESHOMEPREST:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+					<div class="img-homepage $$HEIGHTPICTURE3$$ overflow">
+					  $$IF!:1:PICTOANNONCELISTHOME$$
+					  <div class="row-fluid absolute module-top-40 z25 hidden-phone">
+						$$IF:ANNONCESHOMEPREST:SI_EXCLUSIF$$
+						<div class="span$$IF=:FR:LANGUE$$3$$END$$$$IF!:FR:LANGUE$$4$$END$$ padding-left-5 padding-top-5">
+							<!--#include virtual="modules/incl_picto_exclusif.htm" -->
+						</div>
+						$$END$$
+							$$IF:ANNONCESHOMEPREST:SI_COUPDECOEUR$$
+						<div class="span$$IF=:FR:LANGUE$$2$$END$$$$IF!:FR:LANGUE$$2$$END$$$$IF0:ANNONCESHOMEPREST:SI_EXCLUSIF$$ padding-left-5$$END$$ padding-top-5">
+							<!--#include virtual="modules/incl_picto_cdc.htm" -->
+						</div>
+						$$END$$
+						$$IF=:1:PICTO_NOUVEAUTE_HOME$$
+						$$IF+:FRAICHEUR:ANNONCESHOMEPREST:DT_CREA datediff now timespan days$$
+						<div class="span$$IF=:FR:LANGUE$$3$$END$$$$IF!:FR:LANGUE$$3$$END$$ padding-top-5">
+							<!--#include virtual="modules/incl_picto_nouveau.htm" -->
+						</div>
+						$$END$$
+						$$END$$
+						
+
+					  </div>
+					  $$END$$
+						$$IF:ANNONCESHOMEPREST:PHOTOURL0$$
+							<div style="background-image:url('$$ANNONCESHOMEPREST:PHOTOURL0$$');" class="picture-responsive"></div>
+						$$END$$
+						$$IF0:ANNONCESHOMEPREST:PHOTOURL0$$
+							<!--#include virtual="modules/incl_no_photo_modules.htm" -->
+						$$END$$
+						$$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+							$$IF:ANNONCESHOMEPREST:PHOTOURL1$$
+								<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOMEPREST:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+							$$END$$
+						$$END$$
+					</div>
+					
+					<div class="h4-like relative margin-top-5 typo-action pagination-left homepage-bien-bloc">
+						$$IF=:5:ANNONCESHOMEPREST:IDTYPETRANSACTION$$
+							$$IF:ANNONCESHOMEPREST:SI_LIBRE$$
+								$$LG:VIAGERLIBRE2 pcase$$
+							$$END$$
+							$$IF0:ANNONCESHOMEPREST:SI_LIBRE$$
+								$$LG:VIAGEROCCUPE2 pcase$$
+							$$END$$
+						$$END$$
+
+						$$IF!:5:ANNONCESHOMEPREST:IDTYPETRANSACTION$$
+							$$ANNONCESHOMEPREST:IDTYPETRANSACTION gettypetransaction pcase$$
+						$$END$$				
+					</div>
+					<div class="h4-like relative margin-top-5 typo-body pagination-left homepage-bien-bloc ellipsis">$$IF=:1:NOVILLA$$$$ANNONCESHOMEPREST:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOMEPREST:IDTYPEBIEN gettypebien pcase$$$$END$$ <span class="ville">$$ANNONCESHOMEPREST:VILLE$$ $$REM$$<span class="hidden-phone">($$ANNONCESHOMEPREST:CP$$)</span>$$END$$</span></div>
+
+					<div class="padding-top-5 homepage-info-bien">	
+						<div class="row-fluid">
+							<ul class="span12 pagination-left normal">
+								<li class="typo-body height-30">$$IF:ANNONCESHOMEPREST:SURFACE$$$$ANNONCESHOMEPREST:SURFACE$$ m²$$END$$							
+									$$IF:ANNONCESHOMEPREST:NB_PIECES$$
+										$$IF:ANNONCESHOMEPREST:SURFACE$$, $$END$$$$ANNONCESHOMEPREST:NB_PIECES$$ 
+										$$IF=:1:ANNONCESHOMEPREST:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+										$$IF!:0$1:ANNONCESHOMEPREST:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+									$$END$$
+									$$IF:ANNONCESHOMEPREST:NB_CHAMBRES$$
+										$$IF:ANNONCESHOMEPREST:NB_PIECES$$,$$END$$ 
+											$$ANNONCESHOMEPREST:NB_CHAMBRES$$ $$IF=:1:ANNONCESHOMEPREST:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$
+										$$END$$
+										$$IF!:0$1:ANNONCESHOMEPREST:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$
+									$$END$$							
+								</li>
+								<li class="typo-body">
+									$$IF:ANNONCESHOMEPREST:PX_RENTE$$
+									<div class="row-fluid">
+										<div class="font-body typo-action small" id="px_rente$$ANNONCESHOMEPREST:IDANNONCE$$">
+										$$LG:RENTE pcase$$ : $$ANNONCESHOMEPREST:PX_RENTE$$ $$LG:EUROMOIS$$
+										</div>
+									</div>
+									$$END$$
+								</li>
+								<li>
+								<div class="row-fluid">
+								<div class="font-body typo-action small" id="age_f$$ANNONCESHOMEPREST:IDANNONCE$$">
+									$$IF:ANNONCESHOMEPREST:AGE_F$$
+										$$LG:FEMME pcase$$ : $$ANNONCESHOMEPREST:AGE_F$$ ans
+									$$END$$
+									$$IF:ANNONCESHOMEPREST:AGE_H$$
+										$$IF!:0:ANNONCESHOMEPREST:AGE_F$$&nbsp;$$END$$
+										$$LG:HOMME pcase$$ : $$ANNONCESHOMEPREST:AGE_H$$ ans
+									$$END$$
+								</div>
+								</div>
+								</li>
+							</ul>
+						</div>
+						$$REM$$
+						$$IF=:12$6$4:COLUMUNMODULE$$
+						<div class="row-fluid pagination-left margin-top-10">
+							<div class="typo-body"><!--#include virtual="modules/annonces-3/incl_bouton_annonce.htm" --></div>
+						</div>
+						$$END$$
+						$$IF!:12$6$4:COLUMUNMODULE$$
+						<div class="row-fluid margin-top-10">
+							<div class="span12 typo-body"><!--#include virtual="modules/annonces-3/incl_bouton_annonce.htm" --></div>
+						</div>
+						$$END$$
+						$$END$$
+					</div>				
+					
+					$$IF=:0:PRIXMASQUE$$
+						$$IF:ANNONCESHOMEPREST:XML xml PRIX_NOUS_CONSULTER$$
+							<div class="row-fluid absolute top homepage-bloc-prix-bien z25">
+								<div class="span7 h4-like padding-5 relative bg-action" id="prix$$ANNONCESHOMEPREST:IDANNONCE$$">
+									<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+								</div>
+							</div>
+						$$END$$
+						$$IF0:ANNONCESHOMEPREST:XML xml PRIX_NOUS_CONSULTER$$
+						 $$IF=:5:ANNONCESHOMEPREST:IDTYPETRANSACTION$$
+						 <div class="row-fluid absolute top homepage-bloc-prix-bien z25">
+								<div class="span7 h4-like padding-5 relative bg-action" id="prix$$ANNONCESHOMEPREST:IDANNONCE$$">$$LG:BOUQUET pcase$$ : $$ANNONCESHOMEPREST:PRIX$$ $$ANNONCESHOMEPREST:PRIX_UNITE$$
+								</div>
+							</div>
+						 $$END$$
+						 $$IF!:5:ANNONCESHOMEPREST:IDTYPETRANSACTION$$
+						 <div class="row-fluid absolute top homepage-bloc-prix-bien z25">
+								<div class="span7 h4-like padding-5 relative bg-action" id="prix$$ANNONCESHOMEPREST:IDANNONCE$$">$$ANNONCESHOMEPREST:PRIX$$ $$ANNONCESHOMEPREST:PRIX_UNITE$$</div>
+							</div>
+						 $$END$$
+						$$END$$
+					$$END$$
+					$$IF=:1:PRIXMASQUE$$
+						<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+					$$END$$
+					</a>
+					$$IF=:1:RECHERCHE_VIDEO$$
+					<div class="row-fluid margin-top-10">
+						<div class="span12 hidden-phone">
+							$$IF:ANNONCESHOMEPREST:360_URL$$
+							<a href="$$ANNONCESHOMEPREST:360_URL replace youtu.be www.youtube.com/embed/$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-important btn-block bouton-video-360 margin-right-5 hidden-phone"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/picto360.png" class="margin-right-10" alt="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$">$$LG:VIDEO pcase$$</a>
+						 $$END$$
+						</div>
+					</div>
+					$$END$$
+				</li>
+			$$IF=:0:ANNONCESHOMEPREST:I exec XX%@@SIZEMODULE@@$$
+				<div class="clear"></div>
+			</div>
+			$$END$$
+		$$LOOP$$
+		</ul>
+	</div>
+	$$REM$$<div class="pull-right margin-top-10 nav-rotation"></div>$$END$$
+	<div class="clear"></div>
+	$$BFIN$$
+</div>
+
+<div class="row-fluid margin-top-20 bg-white" id="contact">
+	<!--#include virtual="extra/extra19/extra.htm" -->
+</div>
