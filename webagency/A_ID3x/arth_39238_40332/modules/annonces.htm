@@ -1,0 +1,179 @@
+$$REM$$<!-- EXCLU -->$$END$$
+$$B:IMMOBW:ANN:ALIAS:ANNONCESHOMEEXCLU:2:VAL:LANG:::si_exclusif=1:~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+$$BIF:ANNONCESHOMEEXCLU$$
+$$A:JS_ANNONCES-5=1$$
+<!--#include virtual="modules/annonces-5/incl_tailles_photos.htm" -->
+<div class="module-homepage">
+	<div class="row-fluid margin-bottom-10">
+		<div class="span12">
+			<div class="row-fluid ligne-titre">
+				<h2 class="span8">$$LG:NOSEXCLUSIVITES pcase$$</h2>
+				<div class="span4 hidden-phone">
+					<a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;si_exclusif=1" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ pull-right" title="$$LG:TOUTESNOSANNONCES2 pcase$$">$$LG:TOUEXCLUS pcase$$</a>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<ul class="row-fluid relative ul-homepage-biens$$IF=:1:ROTATION_MODULE$$ rotation-module$$END$$" $$IF:SPEED_MODULE$$data-rotation="$$SPEED_MODULE$$"$$END$$ $$IF:EFFECT_MODULE$$ data-fx="$$EFFECT_MODULE$$"$$END$$>
+	<!--#include virtual="modules/incl_prev_module.htm" -->
+	$$DO$$
+	$$IF=:1:ANNONCESHOMEEXCLU:I exec XX%@@SIZEMODULE@@$$
+		<li class="ligne-cycle height-100-pourcent width-100-pourcent relative$$IF!:1:ROTATION_MODULE$$ margin-bottom-10$$END$$">
+	$$END$$
+	$$A:TITLE_ANNONCE=@@ANNONCESHOMEEXCLU:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOMEEXCLU:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOMEEXCLU:AVILLE ncase@@$$
+	$$A:ALT_ANNONCE1=@@ANNONCESHOMEEXCLU:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMEEXCLU:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+	$$A:ALT_ANNONCE2=@@ANNONCESHOMEEXCLU:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMEEXCLU:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+	<div class="$$TAILLESPANMODULE$$ pagination-centered transition-bg relative module-annonces-homepage$$IF+:3:ANNONCESHOMEEXCLU:I$$ hidden-phone$$END$$">
+		<a href="$$ANNONCESHOMEEXCLU:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+		<div class="img-homepage relative $$HEIGHTPICTURE5$$ overflow margin-bottom-10">
+		  $$IF!:1:PICTOANNONCELISTHOME$$
+		  <div class="row-fluid absolute z25 hidden-phone">
+		  <!--#include virtual="modules/incl_pictos_modules.htm" -->
+		  </div>
+		  $$END$$
+			$$IF:ANNONCESHOMEEXCLU:PHOTOURL0$$
+				<div style="background-image:url('$$ANNONCESHOMEEXCLU:PHOTOURL0$$');" class="picture-responsive"></div>
+			$$END$$
+			$$IF0:ANNONCESHOMEEXCLU:PHOTOURL0$$
+				<!--#include virtual="modules/incl_no_photo_modules.htm" -->
+			$$END$$
+			$$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+				$$IF:ANNONCESHOMEEXCLU:PHOTOURL1$$
+					<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOMEEXCLU:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+				$$END$$
+			$$END$$
+		</div>
+		<div class="$$HEIGHTPICTURE5$$ width-100-pourcent absolute top left bottom $$LINEHEIGHT$$ hover-infos-bien typo-white display-none">
+			<div class="module-typebien-annonces">$$ANNONCESHOMEEXCLU:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESHOMEEXCLU:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOMEEXCLU:IDTYPEBIEN gettypebien pcase$$$$END$$</div>
+			<div class="hidden-phone module-caracteristiques-annonces">$$ANNONCESHOMEEXCLU:SURFACE$$ m²$$IF:ANNONCESHOMEEXCLU:SURFACE$$,$$END$$ $$IF:ANNONCESHOMEEXCLU:NB_PIECES$$
+				$$ANNONCESHOMEEXCLU:NB_PIECES$$ 
+				$$IF=:1:ANNONCESHOMEEXCLU:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:0$1:ANNONCESHOMEEXCLU:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+			$$END$$
+			$$IF:ANNONCESHOMEEXCLU:NB_CHAMBRES$$
+				$$IF:ANNONCESHOMEEXCLU:NB_PIECES$$,$$END$$ 
+					$$ANNONCESHOMEEXCLU:NB_CHAMBRES$$ $$IF=:1:ANNONCESHOMEEXCLU:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$
+				$$END$$
+				$$IF!:0$1:ANNONCESHOMEEXCLU:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$
+			$$END$$</div>
+			<div class="h3-like module-villes-annonces ville">$$ANNONCESHOMEEXCLU:VILLE$$ $$REM$$<span class="hidden-phone">($$ANNONCESHOMEEXCLU:CP$$)</span>$$END$$</div>
+			<div class="module-prix-annonces hidden-phone">
+				$$IF=:0:PRIXMASQUE$$
+					$$IF:ANNONCESHOMEEXCLU:XML xml PRIX_NOUS_CONSULTER$$
+						<span id="prix$$ANNONCESHOMEEXCLU:IDANNONCE$$"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+					$$END$$
+					$$IF0:ANNONCESHOMEEXCLU:XML xml PRIX_NOUS_CONSULTER$$
+						<span id="prix$$ANNONCESHOMEEXCLU:IDANNONCE$$">$$ANNONCESHOMEEXCLU:PRIX$$ $$ANNONCESHOMEEXCLU:PRIX_UNITE$$</span>$$IF!:1$3$4$7:ANNONCESHOMEEXCLU:IDTYPETRANSACTION$$ <span class="small">$$IF!:1:HONORAIRESINCLUS$$$$IF!:1:HIDEFAI$$<abbr title="$$LG:FAI pcase$$">FAI <sup>1</sup></abbr>$$END$$$$END$$$$IF=:1:HONORAIRESINCLUS$$<abbr title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>$$END$$</span>$$END$$
+					$$END$$
+				$$END$$
+				$$IF=:1:PRIXMASQUE$$
+					<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+				$$END$$			
+			</div>
+			<div class="bg-black opacity-8 absolute top right left bottom z-25"></div>
+		</div>
+		</a>
+	</div>
+	$$IF=:0:ANNONCESHOMEEXCLU:I exec XX%@@SIZEMODULE@@$$
+		<div class="clear"></div>
+	</li>
+	$$END$$
+	$$LOOP$$
+	<!--#include virtual="modules/incl_next_module.htm" -->
+	</ul>
+</div>
+$$REM$$<div class="pull-right margin-top-10 nav-rotation"></div>$$END$$
+<div class="clear"></div>
+$$BFIN$$
+
+<hr />
+
+$$REM$$<!-- LOC VAC -->$$END$$
+$$B:IMMOBW:ANN:ALIAS:ANNONCESHOMELOCVAC:4:VAL:LANG::::~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+$$BIF:ANNONCESHOMELOCVAC$$
+$$A:JS_ANNONCES-5=1$$
+<!--#include virtual="modules/annonces-5/incl_tailles_photos.htm" -->
+<div class="module-homepage">
+	<div class="row-fluid margin-bottom-10">
+		<div class="span12">
+			<div class="row-fluid ligne-titre">
+				<h2 class="span8">$$LG:NOSLOCATIONSSAIS pcase$$</h2>
+				<div class="span4 hidden-phone">
+					<a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;si_exclusif=1" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ pull-right" title="$$LG:TOUTESNOSANNONCES2 pcase$$">$$IF=:FR:LANGUE$$Toutes$$END$$ $$LG:NOSLOCATIONSSAIS lcase$$</a>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<ul class="row-fluid relative ul-homepage-biens$$IF=:1:ROTATION_MODULE$$ rotation-module$$END$$" $$IF:SPEED_MODULE$$data-rotation="$$SPEED_MODULE$$"$$END$$ $$IF:EFFECT_MODULE$$ data-fx="$$EFFECT_MODULE$$"$$END$$>
+	<!--#include virtual="modules/incl_prev_module.htm" -->
+	$$DO$$
+	$$IF=:1:ANNONCESHOMELOCVAC:I exec XX%@@SIZEMODULE@@$$
+		<li class="ligne-cycle height-100-pourcent width-100-pourcent relative$$IF!:1:ROTATION_MODULE$$ margin-bottom-10$$END$$">
+	$$END$$
+	$$A:TITLE_ANNONCE=@@ANNONCESHOMELOCVAC:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOMELOCVAC:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOMELOCVAC:AVILLE ncase@@$$
+	$$A:ALT_ANNONCE1=@@ANNONCESHOMELOCVAC:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMELOCVAC:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+	$$A:ALT_ANNONCE2=@@ANNONCESHOMELOCVAC:IDTYPEBIEN gettypebien@@ @@ANNONCESHOMELOCVAC:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+	<div class="$$TAILLESPANMODULE$$ pagination-centered transition-bg relative module-annonces-homepage$$IF+:3:ANNONCESHOMELOCVAC:I$$ hidden-phone$$END$$">
+		<a href="$$ANNONCESHOMELOCVAC:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+		<div class="img-homepage relative $$HEIGHTPICTURE5$$ overflow margin-bottom-10">
+		  $$IF!:1:PICTOANNONCELISTHOME$$
+		  <div class="row-fluid absolute z25 hidden-phone">
+		  <!--#include virtual="modules/incl_pictos_modules.htm" -->
+		  </div>
+		  $$END$$
+			$$IF:ANNONCESHOMELOCVAC:PHOTOURL0$$
+				<div style="background-image:url('$$ANNONCESHOMELOCVAC:PHOTOURL0$$');" class="picture-responsive"></div>
+			$$END$$
+			$$IF0:ANNONCESHOMELOCVAC:PHOTOURL0$$
+				<!--#include virtual="modules/incl_no_photo_modules.htm" -->
+			$$END$$
+			$$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+				$$IF:ANNONCESHOMELOCVAC:PHOTOURL1$$
+					<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOMELOCVAC:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+				$$END$$
+			$$END$$
+		</div>
+		<div class="$$HEIGHTPICTURE5$$ width-100-pourcent absolute top left bottom $$LINEHEIGHT$$ hover-infos-bien typo-white display-none">
+			<div class="module-typebien-annonces">$$ANNONCESHOMELOCVAC:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESHOMELOCVAC:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOMELOCVAC:IDTYPEBIEN gettypebien pcase$$$$END$$</div>
+			<div class="hidden-phone module-caracteristiques-annonces">$$ANNONCESHOMELOCVAC:SURFACE$$ m²$$IF:ANNONCESHOMELOCVAC:SURFACE$$,$$END$$ $$IF:ANNONCESHOMELOCVAC:NB_PIECES$$
+				$$ANNONCESHOMELOCVAC:NB_PIECES$$ 
+				$$IF=:1:ANNONCESHOMELOCVAC:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:0$1:ANNONCESHOMELOCVAC:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+			$$END$$
+			$$IF:ANNONCESHOMELOCVAC:NB_CHAMBRES$$
+				$$IF:ANNONCESHOMELOCVAC:NB_PIECES$$,$$END$$ 
+					$$ANNONCESHOMELOCVAC:NB_CHAMBRES$$ $$IF=:1:ANNONCESHOMELOCVAC:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$
+				$$END$$
+				$$IF!:0$1:ANNONCESHOMELOCVAC:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$
+			$$END$$</div>
+			<div class="h3-like module-villes-annonces ville">$$ANNONCESHOMELOCVAC:VILLE$$ $$REM$$<span class="hidden-phone">($$ANNONCESHOMELOCVAC:CP$$)</span>$$END$$</div>
+			<div class="module-prix-annonces hidden-phone">
+				$$IF=:0:PRIXMASQUE$$
+					$$IF:ANNONCESHOMELOCVAC:XML xml PRIX_NOUS_CONSULTER$$
+						<span id="prix$$ANNONCESHOMELOCVAC:IDANNONCE$$"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+					$$END$$
+					$$IF0:ANNONCESHOMELOCVAC:XML xml PRIX_NOUS_CONSULTER$$
+						<span id="prix$$ANNONCESHOMELOCVAC:IDANNONCE$$">$$ANNONCESHOMELOCVAC:PRIX$$ $$ANNONCESHOMELOCVAC:PRIX_UNITE$$</span>$$IF!:1$3$4$7:ANNONCESHOMELOCVAC:IDTYPETRANSACTION$$ <span class="small">$$IF!:1:HONORAIRESINCLUS$$$$IF!:1:HIDEFAI$$<abbr title="$$LG:FAI pcase$$">FAI <sup>1</sup></abbr>$$END$$$$END$$$$IF=:1:HONORAIRESINCLUS$$<abbr title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>$$END$$</span>$$END$$
+					$$END$$
+				$$END$$
+				$$IF=:1:PRIXMASQUE$$
+					<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+				$$END$$			
+			</div>
+			<div class="bg-black opacity-8 absolute top right left bottom z-25"></div>
+		</div>
+		</a>
+	</div>
+	$$IF=:0:ANNONCESHOMELOCVAC:I exec XX%@@SIZEMODULE@@$$
+		<div class="clear"></div>
+	</li>
+	$$END$$
+	$$LOOP$$
+	<!--#include virtual="modules/incl_next_module.htm" -->
+	</ul>
+</div>
+$$REM$$<div class="pull-right margin-top-10 nav-rotation"></div>$$END$$
+<div class="clear"></div>
+$$BFIN$$
