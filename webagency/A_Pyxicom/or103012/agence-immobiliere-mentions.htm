@@ -1,0 +1,62 @@
+$$REM$$
+====================================================================
+
+//// <summary>Mentions légales affichées sur la carte de visite de chaque agence</summary>
+//// <remarks>
+//// <para>Fichier appelé par agence-immobiliere.htm</para>
+//// <para>CSS par défaut : slagence_x_v2/styles/agence-immobiliere-mention.css</para>
+//// <para>Ces informations légales sont modifiables par le client dans SeLogerPro</para>
+//// </remarks>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-08-06" author="erick.barbant">Validation Id3x en attente</update>
+
+====================================================================
+$$END$$
+
+
+
+<div id="MentionCV">
+	<p>Affichage des informations légales, en accord avec les textes de la DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes) :
+	
+		$$LG:RAISONSOC pcase$$ : $$IF0:CV:RAISONSOCIALE$$*$$END:CV:RAISONSOCIALE$$$$IF:CV:RAISONSOCIALE$$$$CV:RAISONSOCIALE$$$$END:CV:RAISONSOCIALE$$ | 
+	
+		$$LG:SIEGESOCIAL pcase$$ :
+		$$IF0:CV:ADRESSESIEGE$$*$$END:CV:ADRESSESIEGE$$
+		$$IF:CV:ADRESSESIEGE$$
+			$$IF:CV:CPSIEGE$$
+				$$IF:CV:VILLESIEGE$$
+					$$CV:ADRESSESIEGE$$ $$CV:ADRESSESIEGE2$$ $$CV:CPSIEGE$$ $$CV:VILLESIEGE$$ $$CV:PAYSSIEGE$$
+				$$END:CV:VILLESIEGE$$
+			$$END:CV:CPSIEGE$$
+		$$END:CV:ADRESSESIEGE$$ |
+	
+		$$IF:CV:RCS_SIREN$$
+			$$IF:CV:RCS_NIC$$
+				$$LG:RCS$$ : $$CV:RCS_SIREN$$$$CV:RCS_NIC$$
+			$$END:CV:RCS_NIC$$
+			$$IF0:CV:RCS_NIC$$
+				N&deg; Siren : $$CV:RCS_SIREN$$
+			$$END:CV:RCS_NIC$$
+			|
+		$$END:CV:RCS_SIREN$$
+		
+		$$IF0:CV:RCS_SIREN$$$$LG:RCS$$ : * |$$END:CV:RCS_SIREN$$
+		
+		Commune d'enregistrement : $$IF0:CV:RCS_COMMUNE$$*$$END:CV:RCS_COMMUNE$$$$IF:CV:RCS_COMMUNE$$$$CV:RCS_COMMUNE$$$$END:CV:RCS_COMMUNE$$ |
+		
+		Forme juridique : $$IF0:CV:FORMEJURIDIQUE$$*$$END:CV:FORMEJURIDIQUE$$$$IF:CV:FORMEJURIDIQUE$$$$CV:FORMEJURIDIQUE$$$$END:CV:FORMEJURIDIQUE$$ |
+		
+		Capital social : $$IF0:CV:CAPITALSOCIAL$$*$$END:CV:CAPITALSOCIAL$$$$IF:CV:CAPITALSOCIAL$$$$CV:CAPITALSOCIAL formatnumber 0$$ &euro;$$END:CV:CAPITALSOCIAL$$ |
+		
+		Carte professionnelle n&deg; : $$IF0:CV:NUMEROCARTEPRO$$*$$END:CV:NUMEROCARTEPRO$$$$IF:CV:NUMEROCARTEPRO$$$$CV:NUMEROCARTEPRO$$$$END:CV:NUMEROCARTEPRO$$ |
+		
+		Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle : $$IF0:CV:PREFECTURECARTEPRO$$*$$END:CV:PREFECTURECARTEPRO$$$$IF:CV:PREFECTURECARTEPRO$$$$CV:PREFECTURECARTEPRO$$$$END:CV:PREFECTURECARTEPRO$$ |
+			
+		Caisse garantie financi&egrave;re : $$CV:GARANTIEFINANCIERECAISSE$$ |
+		
+		Montant garantie financi&egrave;re : $$IF0:CV:GARANTIEFINANCIEREMONTANT$$*$$END:CV:GARANTIEFINANCIEREMONTANT$$$$IF:CV:GARANTIEFINANCIEREMONTANT$$$$CV:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END:CV:GARANTIEFINANCIEREMONTANT$$
+	
+	</p>
+	
+	<p class="nb">* : informations non renseignées</p>
+</div>
