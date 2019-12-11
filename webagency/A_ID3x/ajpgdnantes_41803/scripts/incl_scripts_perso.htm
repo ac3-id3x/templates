@@ -1,0 +1,183 @@
+<!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+<script src='$$_$$scripts/jquery.viewportchecker.min.js'></script>
+<script src='$$_$$scripts/featherlight.js'></script>
+$$IF=:RESULTATS:IDT$$
+<script type="text/javascript">
+    calculMensualite = function(taux,prix,nmensualite,dureeemprunt,idAnnonce){
+        prix = prix.replace(/\s/g,"");
+        prix = parseFloat(prix);
+        montantpret =  Math.floor(prix/1.2 * 100) / 100;
+        mensualite = montantpret*(taux/100)/(1-Math.pow((1+taux/100/12),(-nmensualite)))/12;
+        mensualite = Math.floor(mensualite * 100) / 100;
+        $('.mensualite-'+idAnnonce).html(mensualite);
+    };
+</script>
+$$END$$
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+
+      $$IF=:INDEX.HTM:REP:0$$
+        /*
+        $.featherlight({
+            iframe: 'https://www.youtube.com/embed/gaD8qGuYOIc?autoplay=1&rel=0',
+            iframeWidth: '854',
+            iframeHeight: '480'
+        });
+        */
+      $$END$$
+
+
+
+        jQuery(".animate-top").addClass("anim-hide").viewportChecker({
+            classToAdd: "anim-show animated fadeInUp",
+            offset: 150
+        });
+
+        jQuery(".animate-left").addClass("anim-hide").viewportChecker({
+            classToAdd: "anim-show animated fadeInLeft",
+            offset: 150
+        });
+
+        jQuery(".animate-right").addClass("anim-hide").viewportChecker({
+            classToAdd: "anim-show animated fadeInRight",
+            offset: 150
+        });
+
+        jQuery(".animate-bounce").addClass("anim-hide").viewportChecker({
+            classToAdd: "anim-show animated bounceIn",
+            offset: 150
+        });
+
+
+        // SCROLL AUTO ANCRES
+        $('.anchor-link').click(function(){
+            var the_id = $(this).attr("href");
+            $('html, body').animate({
+                scrollTop:$(the_id).offset().top
+            }, 'slow');
+            return false;
+        });
+
+        // SOUS MENU
+        /*
+        $('.toggle-sub').click(function() {
+            var sub_id = $(this).attr('data-sub');
+            var tmp = $(this).hasClass('active');
+            $('.toggle-sub').removeClass('active');
+            $('.menu-sub').removeClass('active');
+            if(tmp){
+                $(this).removeClass('active');
+                $("#"+sub_id).removeClass('active');
+            }else{
+                $(this).addClass('active');
+                $("#"+sub_id).addClass('active');
+            }
+        })
+        */
+
+        // CAROUSEL BLOG
+        $(".carousel-blog").owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            autoplayTimeout: 10000,
+            autoplayHoverPause: true
+        });
+
+        // CAROUSEL MODULE
+        $(".carousel-module").owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            autoplayTimeout: 10000,
+            autoplayHoverPause: true
+        });
+
+        // CAROUSEL ANNONCES
+        $(".carousel-annonces").owlCarousel({
+            responsive:{
+                0:{
+                    items:1
+                },
+                361:{
+                    items:2
+                },
+                768:{
+                    items:3
+                },
+                1024:{
+                    items:4
+                }
+            },
+            margin: 30,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 8000,
+            autoplayHoverPause: true
+        });
+        // SWITCH TABS ANNONCES
+        $('.annonces-tabs a').click(function() {
+            var tab_id = $(this).attr('data-tab');
+            $('.annonces-tabs a').removeClass('active');
+            $('.carousel-annonces').removeClass('active');
+            $(this).addClass('active');
+            $("#"+tab_id).addClass('active');
+        });
+
+        // CAROUSEL AVIS EKOMI
+        $(".carousel-ekomi").owlCarousel({
+            items: 1,
+            loop: false,
+            autoplay: true,
+            autoplayTimeout: 8000,
+            nav: true,
+            navText: ["<img src='images/ekomi-arrow-left.png'>", "<img src='images/ekomi-arrow-right.png'>"],
+            dots: false
+        });
+
+        // TOGGLE REFINE SUR RECHERCHE
+        $$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+        $('.btn-toggle-refine').click(function(){
+            $(this).toggleClass("open");
+            $('.rech-refine').slideToggle();
+            return false;
+        });
+        $$END$$
+
+        // Slider homepage
+        $(document).ready(function(){
+            $(".carousel-home").owlCarousel({
+                items: 1,
+                loop: false,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                nav: false,
+                dots: true
+            });
+        });
+
+
+    });
+</script>
+
+<!-- eKomiLoader START, only needed once per page -->
+<script type="text/javascript">
+
+</script>
+<!-- eKomiLoader END, only needed once per page -->
+
+
+
+$$IF=:NOTREAGENCE:IDT$$
+<script type="text/javascript" src="//widget.opinionsystem.fr/company_rating/widget.js"></script>
+<script type="text/javascript" src="//widget.opinionsystem.fr/company_rating_detail/widget.js"></script>
+$$END$$
+
+$$IF=:RECRUTEMENT:IDT$$
+<script src='/z/webagency/slagence_X_V5/scripts/libs/jquery.cycle.js'></script>
+<script>
+$(".diaporama-recrutement").cycle();
+</script>
+$$END$$

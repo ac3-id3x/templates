@@ -1,0 +1,78 @@
+$$INIT:IDT=PUDESTIMATION$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$IF=:0:MULTIAGENCES$$
+	$$IF=:0:ESTIMATIONLEAD$$
+		$$A:LIENESTIMATION=/@@AGENCE_IDPUBLICATION@@/estimation,immobiliere.htm$$
+	$$END$$
+	$$IF=:1:ESTIMATIONLEAD$$
+		$$A:LIENESTIMATION=/estimation,immobiliere.htm$$
+	$$END$$
+$$END$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF=:0:ESTIMATIONLEAD$$
+		$$A:LIENESTIMATION=/agences,estimation.htm$$
+	$$END$$
+	$$IF=:1:ESTIMATIONLEAD$$
+		$$A:LIENESTIMATION=/estimation,immobiliere.htm$$
+	$$END$$
+$$END$$
+<div class="row-fluid margin-top-20 margin-bottom-10 pud pud-estimation">
+	<div class="span12">
+		<div class="row-fluid margin-bottom-10">
+			<div class="span12">
+				<h1>$$LG:ESTIMATION pcase$$ $$LG:IMMOBILIERE lcase$$ sur $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>
+				<hr>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span8">
+				<div class="row-fluid">
+					<div class="span12">		
+					<p>Nos agences sont spécialisées pour l'estimation de votre bien sur <strong>$$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</strong>.</p>
+					<p>Nous pouvons établir <a href="/immo,estimation.htm" title="estimation gratuite">une estimation de votre bien gratuitement</a>.</p>
+					<p>Nous vous remercions et nous vous recontacterons très bientôt.</p>
+					<p>Cordialement,</p>			
+				</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+					$$B:IMMOBW:ANN-ES:2:QRY:LANG:::ADD:photo=10&ci=+FORM_CI+&tri=d_dt_crea:ALIAS:ANNMAISON$$
+					$$BIF:ANNMAISON$$
+						<h2>$$LG:ANNONCES pcase$$ $$LG:MAISON lcase$$ $$LG:ET lcase$$ $$LG:APPARTEMENT lcase$$ $$LG:SUR lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h2>
+						<div class="row-fluid">
+							$$DO:1:3$$
+							$$A:TITLEANNONCES=@@ANNMAISON:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNMAISON:IDTYPEBIEN gettypebien lcase@@ @@ANNMAISON:AVILLE ncase@@$$
+							<div class="$$IF!:1:ANNMAISON:I$$hidden-phone $$END$$span4 pagination-centered bg-white typo-black">
+								<a href="$$ANNMAISON:URLVIRTUELLE$$" title="$$TITLEANNONCES$$">
+								$$IF:ANNMAISON:IDPHOTO$$										
+								<img src="$$ANNMAISON:C175_URL$$" alt="$$TITLEANNONCES$$" title="$$TITLEANNONCES$$" class="margin-top-10"/>
+								$$END:ANNMAISON:IDPHOTO$$
+								<h3 class="normal margin-top-5 typo-black typo-black">$$ANNMAISON:TITRE$$<br /><span class="ville">$$ANNMAISON:AVILLE$$</span> ($$ANNMAISON:ACP$$)</h3>
+								<h3 class="normal typo-black">$$ANNMAISON:IDTYPEBIEN gettypebien$$</h3>
+								<p>$$LG:DETAILANNONCE pcase$$</p>
+								</a>
+							</div>
+						$$LOOP$$
+						</div>
+						<div class="clear pagination-right margin-top-20"><a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&ci=$$FORM:CI$$&lang=fr&tri=d_dt_crea">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:DE lcase$$ $$LG:MAISON lcase$$ $$LG:A lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</a></div>
+					$$BFIN$$
+					</div>
+				</div>
+			</div>
+			<div class="span4">
+				<div class="row-fluid">
+					<div class="span12">
+					$$IF=:0:MULTIAGENCES$$
+						<!--#include virtual="pud/incl_agence_mono.htm" -->
+					$$END$$
+					$$IF=:1:MULTIAGENCES$$
+						<div class="h2-like margin-bottom-20">$$LG:DECOUVNOSAGENCES pcase$$</div>
+						<!--#include virtual="pud/incl_agence_multi.htm" -->
+					$$END$$
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
