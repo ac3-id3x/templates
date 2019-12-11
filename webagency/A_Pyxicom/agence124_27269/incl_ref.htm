@@ -1,0 +1,174 @@
+$$REM$$
+====================================================================
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <remarks>
+//// <para>et les expressions a utiliser dans les alt et title </para> 
+//// <para>et pour declarer les variables d'affichage des infos agences</para> 
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// </remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+====================================================================
+$$END$$
+
+
+$$REM$$<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+$$REM$$<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  $$END:REM$$
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+$$REM$$<!-- Définition du NOM de l'agence à afficher sur le site -->$$END:REM$$
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+$$REM$$<!-- Définition de l'adresse à afficher sur le site  -->$$END:REM$$
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+$$REM$$<!-- Définition de la ville à afficher sur le site  -->$$END:REM$$
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+$$REM$$<!-- Définition du CP à afficher sur le site  -->$$END:REM$$
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+$$REM$$<!-- Définition du DEPARTEMENT à afficher sur le site  -->$$END:REM$$
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+$$REM$$<!-- Définition du tel à afficher sur le site  -->$$END:REM$$
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+$$REM$$<!-- Définition du fax à afficher sur le site  -->$$END:REM$$
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+$$SET:MAIL_AGENCE=@@1_TEXTEDYNAMIQUE:EMAIL@@$$
+
+
+$$REM$$<!-- EXPRESSIONS ALT + TITLE --> $$END:REM$$
+
+$$REM$$
+<!-- OBLIGATOIRE definition des expressions pour les alt et title (même si pas d'option de ref !) A modifier selon cahier des charges ou laisser en auto si pas de réf -->
+<!-- Si mutli agence les metas par defaut doivent être modifiées -->
+$$END:REM$$
+
+$$SET:EXPRESSION1=agence immobili&egrave;re @@VILLE_AGENCE@@$$
+$$SET:EXPRESSION2=immobilier @@VILLE_AGENCE@@$$
+$$SET:EXPRESSION3=annonce immobili&egrave;re @@VILLE_AGENCE@@$$
+
+
+$$REM$$<!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> $$END:REM$$
+
+$$SET:PAGE:TITR=Agence immobili&egrave;re @@NOM_AGENCE@@ - Immobilier @@VILLE_AGENCE@@ $$
+$$SET:PAGE:DESCREF=L'immobilier &agrave; @@VILLE_AGENCE@@ avec l'agence immobili&egrave;re @@NOM_AGENCE@@ &agrave; @@VILLE_AGENCE@@$$
+$$SET:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@, agence immobili&egrave;re  @@VILLE_AGENCE@@ @@NOM_AGENCE@@$$
+
+
+$$REM$$<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> $$END:REM$$
+
+$$IF=:INDEX:PAGE:IDT$$
+	$$A:PAGE:TITR=Immobilier L'Isle en Jourdain, agence immobiliere L'Isle en Jourdain, vente de maisons &agrave; L'Isle en Jourdain.$$ 
+	$$A:PAGE:DESCREF=Immobilier L'Isle en Jourdain :L'agence immobiliere AGENCE124, situee &agrave; L'Isle en Jourdain, vous presente un ensemble d'annonces immobilieres de vente ainsi que de location de maisons &agrave; L'Isle en Jourdain et sa region.$$
+	$$A:PAGE:KEYWORDS=immobilier L'Isle en Jourdain, agences immobilieres L'Isle en Jourdain, agence immobiliere L'Isle en Jourdain, annonces immobilieres L'Isle en Jourdain, L'Isle en Jourdain, vente maisons L'Isle en Jourdain, achat maison gers$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+	$$A:UPLINE=@@LG:IMMOBILIER pcase@@ L'Isle en Jourdain - @@LG:AGENCEIMMOBILIERE pcase@@ L'Isle en Jourdain - Agence124 immobilier$$
+	$$A:PAGE:TITR=Agence immobili&egrave;re @@VILLE_AGENCE@@ : Agence124 @@VILLE_AGENCE@@ (@@CV:CP@@)$$
+	$$A:PAGE:DESCREF=Agence immobili&egrave;re @@VILLE_AGENCE@@ : L' agence immobili&egrave;re @@CV:VILLE_AGENCE@@ &agrave; @@CV:VILLE_AGENCE@@, sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous propose de nombreuses annonces immobili&egrave;res sur @@VILLE_AGENCE@@$$
+	$$A:PAGE:KEYWORDS=Agence immobili&egrave;re @@VILLE_AGENCE@@, immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:2:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+			$$A:UPLINE=Vente maison L'Isle en Jourdain - Vente appartement L'Isle en Jourdain - Achat maison Gers$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Agence124 $$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res de maisons &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de vente de maisons sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans la @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=="@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+	$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+		$$IF=:1:1_IMMOBW:ANN:QRY:IDTYPEBIEN$$
+			$$A:UPLINE=Location appartement L'Isle en Jourdain - Location maison L'Isle en Jourdain - Location local commercial$$
+			$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@ - Cabinet de la Riviere $$
+			$$A:PAGE:DESCREF=Annonces immobili&egrave;res d'appartements &agrave; @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ :  D&eacute;couvrez nos annonces de location d'appartements sur @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@. Notre agence est sp&eacute;cialis&eacute;e dans ="@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@ @@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@.$$
+			$$A:PAGE:KEYWORDS=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@
+			@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+	$$A:UPLINE=Estimation @@LG:IMMOBILIER pcase@@ L'Isle en Jourdain$$
+	$$A:PAGE:TITR=Agence immobili&egrave;re @@VILLE_AGENCE@@ : Agence124 @@VILLE_AGENCE@@ (@@CV:CP@@)$$
+	$$A:PAGE:DESCREF=Agence immobili&egrave;re @@VILLE_AGENCE@@ : L' agence immobili&egrave;re @@CV:VILLE_AGENCE@@ &agrave; @@CV:VILLE_AGENCE@@, sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous propose de nombreuses annonces immobili&egrave;res sur @@VILLE_AGENCE@@$$
+	$$A:PAGE:KEYWORDS=Agence immobili&egrave;re @@VILLE_AGENCE@@, immobilier @@VILLE_AGENCE@@, Imogroup @@VILLE_AGENCE@@$$
+$$END$$
+
+$$REM$$<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> $$END:REM$$
+
+
+
+$$REM$$
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
