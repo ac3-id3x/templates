@@ -1,0 +1,61 @@
+$$REM$$====================================================================
+//// <summary>Mentions légales agence donnée</summary>
+//// <remarks>
+//// <para>Mentions qui apparaissent sur plusieurs pages (agences, détail)</para>
+//// <para>Macros avec ALIAS commun 'ML'</para>
+//// <para>Page agence : l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Page détail : l'IDPUBLICATION de l'agence via la querystring REP:2</para>
+//// <para>Attention aux balises P et H6</para>
+//// </remarks>
+//// <update date="2010-07-06" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<a class="accordion-toggle relative" data-toggle="collapse" data-parent="#accordion-mentions" href="#collapseLegal">$$LG:LIEN:MENTION pcase$$<div class="minus absolute top right margin-top-10 margin-right-10"><i class="right opacity-3 smallest general typoicon-minus"></i></div></a>
+	</div>
+	<div id="collapseLegal" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<p>
+			$$LG:RAISONSOC pcase$$ : $$IF0:ML:RAISONSOCIALE$$*$$END$$$$IF:ML:RAISONSOCIALE$$$$ML:RAISONSOCIALE$$$$END$$ |
+			$$LG:SIEGESOCIAL pcase$$ : $$IF0:ML:ADRESSESIEGE$$*$$END$$$$ML:ADRESSESIEGE$$ $$ML:ADRESSESIEGE2$$ $$ML:CPSIEGE$$ $$ML:VILLESIEGE$$ $$ML:PAYSSIEGE$$ |
+			$$LG:RCS$$ : $$ML:RCS_FULL$$$$IF0:ML:RCS_FULL$$*$$END$$ |
+			RCS juridique : $$IF0:ML:RCS_JURIDIQUE$$*$$END$$$$IF:ML:RCS_JURIDIQUE$$$$ML:RCS_JURIDIQUE$$$$END$$ |
+			$$LG:FORMESOC pcase$$ : $$IF0:ML:FORMEJURIDIQUE$$*$$END:ML:FORMEJURIDIQUE$$$$IF:ML:FORMEJURIDIQUE$$$$ML:FORMEJURIDIQUE$$$$END:ML:FORMEJURIDIQUE$$ |
+			$$IF=:FR:LANGUE$$Numero TVA Intracommunautaire$$END$$$$IF!:FR:LANGUE$$EU VAT number$$END$$ : $$ML:NOTVA$$$$IF0:ML:NOTVA$$*$$END$$ |
+			$$REM$$
+			$$LG:NTEL pcase$$ : 02 30 91 50 57 |
+			$$LG:DIRPUBLICATION pcase$$ : $$IF0:ML:RESPAG$$*$$END$$$$IF:ML:RESPAG$$$$ML:RESPAG$$$$END$$
+			$$END$$
+		</p>
+
+
+		$$IF:CARTEPROT:NUMEROCARTEPRO$$
+		<div class="h3-like margin-top-10">$$LG:CARTEPRO pcase$$ $$CARTEPROT:TYPECARTEPRO lcase$$ n&deg; $$CARTEPROT:NUMEROCARTEPRO$$</div>
+			<p>
+			$$IF=:FR:LANGUE$$
+			$$IF!:1:CARTEPROCCI$$Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle$$END$$
+			$$IF=:1:CARTEPROCCI$$Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle$$END$$
+			$$END$$$$IF!:FR:LANGUE$$Prefecture of issue of the professional card$$END$$ : $$CARTEPROT:PREFECTURECARTEPRO$$$$IF0:CARTEPROT:PREFECTURECARTEPRO$$*$$END$$ |
+			$$LG:CAPITAL pcase$$ : $$IF:CARTEPROT:CAPITALSOCIAL$$$$CARTEPROT:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROT:CAPITALSOCIAL$$*$$END$$ |
+			$$IF=:FR:LANGUE$$Caisse garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Fund financial guarantee$$END$$ : $$CARTEPROT:GARANTIEFINANCIERECAISSE$$$$IF0:CARTEPROT:GARANTIEFINANCIERECAISSE$$*$$END$$ |
+			$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Amount of financial assurance$$END$$ : $$IF:CARTEPROT:GARANTIEFINANCIEREMONTANT$$$$CARTEPROT:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROT:GARANTIEFINANCIEREMONTANT$$*$$END$$
+		</p>
+		$$END:1:IDTYPECARTEPRO$$
+
+		$$IF:CARTEPROG:NUMEROCARTEPRO$$
+		<div class="h3-like margin-top-10">$$LG:CARTEPRO pcase$$ $$CARTEPROG:TYPECARTEPRO lcase$$ n&deg; $$CARTEPROG:NUMEROCARTEPRO$$</div>
+		<p>
+			$$IF=:FR:LANGUE$$
+			$$IF!:1:CARTEPROCCI$$Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle$$END$$
+			$$IF=:1:CARTEPROCCI$$Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle$$END$$
+			$$END$$$$IF!:FR:LANGUE$$Prefecture of issue of the professional card$$END$$ : $$CARTEPROG:PREFECTURECARTEPRO$$$$IF0:CARTEPROG:PREFECTURECARTEPRO$$*$$END$$ |
+			$$LG:CAPITAL pcase$$ : $$IF:CARTEPROG:CAPITALSOCIAL$$$$CARTEPROG:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROG:CAPITALSOCIAL$$*$$END$$ |
+			$$IF=:FR:LANGUE$$Caisse garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Fund financial guarantee$$END$$ : $$CARTEPROG:GARANTIEFINANCIERECAISSE$$$$IF0:CARTEPROG:GARANTIEFINANCIERECAISSE$$*$$END$$ |
+			$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Amount of financial assurance$$END$$ : $$IF:CARTEPROG:GARANTIEFINANCIEREMONTANT$$$$CARTEPROG:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROG:GARANTIEFINANCIEREMONTANT$$*$$END$$
+		</p>
+		$$END:2:IDTYPECARTEPRO$$
+		<p>* : $$LG:INFONONRENS lcase$$</p>
+		</div>
+	</div>
+</div>
