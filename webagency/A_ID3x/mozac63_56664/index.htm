@@ -1,0 +1,244 @@
+$$INIT:IDT=INDEX$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="header/incl_boucle_index.htm" -->
+<section class="$$TYPECONTAINER$$ $$IF=:BG-CONTAINER-100:TYPECONTAINER$$bg-picture$$END$$$$IF=:BG-CONTAINER:TYPECONTAINER$$bg-content$$END$$ $$IF=:INDEX:IDT$$bg-index$$END$$">
+	<div class="$$SITEFLUIDE$$">
+
+		
+		<div class="row-fluid margin-top-100 margin-bottom-10">
+			$$REM$$<!-- CONNEXION OK -->$$END$$
+			$$BIF:PERICLES$$$$DO$$$$LOOP$$
+			<div class="span3">
+				$$IF=:1:LOGOSUIVI$$
+				<div class="pagination-centered">
+					<img src="$$_$$images/logo.png" alt="$$REP:SRV$$" class="pagination-center">
+				</div>
+				$$END$$
+					$$BIF:PERICLES$$
+					$$DO$$	
+						$$IFPREV:PERICLES:IDCLIENT$$
+						<div class="row-fluid"><div class="span12"></div></div>
+						<div class="h2-like margin-bottom-10">$$LG:VOSCOORDONNEES  pcase$$</div>
+						<ul class="nav nav-pills nav-stacked">
+							<li>$$PERICLES:CIVILITE$$ $$PERICLES:NOM$$ $$PERICLES:PRENOM$$</li>
+						$$IF:PERICLES:ADRESSE1$$
+							<li>$$PERICLES:ADRESSE1$$<br />$$PERICLES:CP$$ $$PERICLES:VILLE$$</li>					
+						$$END:PERICLES:ADRESSE1$$
+						$$IF:PERICLES:TELEPHONE$$
+							<li>$$PERICLES:TELEPHONE$$</li>					
+						$$END:PERICLES:TELEPHONE$$
+						$$IF:PERICLES:FAX$$
+							<li>$$PERICLES:FAX$$</li>							
+						$$END:PERICLES:FAX$$
+						</ul>
+						<div class="h2-like margin-bottom-10 margin-top-20">$$LG:VOTRENEGO pcase$$</div>
+							<img id="NegoPhoto" src="" alt="" title="" onerror="this.src='/z/webagency/slagence_X_V5/images/suivi/sans_photo.png'" />
+							<script type="text/javascript">document.getElementById('NegoPhoto').src = 'data:image/jpg;base64,$$PERICLES:DATAPHOTO$$';</script>
+						<ul class="nav nav-pills nav-stacked">
+								<li>$$PERICLES:LIBNEGO$$</li>
+							$$IF:PERICLES:TELNEGO$$
+								<li>$$PERICLES:TELNEGO$$</li>					
+							$$END:PERICLES:TELNEGO$$
+							$$IF:PERICLES:MAILNEGO$$
+								<li>$$PERICLES:MAILNEGO$$</li>					
+							$$END:PERICLES:MAILNEGO$$
+						</ul>
+						$$END:IFPREV:PERICLES:IDCLIENT$$		
+					$$LOOP$$
+					$$BFIN$$
+			</div>
+			<div class="span9">
+					$$BIF:PERICLES$$
+					<div class="row-fluid">
+						<div class="span12">
+							$$DO$$
+								$$IF0:PERICLES:BIEN_IDBIEN$$
+								<div class="h3-like  margin-bottom-10">Mandat(s) que vous nous avez confié(s) &agrave; ce jour</div>
+								<p>Vous n'avez pas de mandat en cours dans notre agence.</p>
+								$$END$$
+							$$LOOP$$
+						</div>
+					</div>
+					$$BFIN$$
+					$$BIF:PERICLES$$
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="h3-like  margin-bottom-10">Mandat(s) que vous nous avez confié(s) &agrave; ce jour</div>
+							$$DO$$
+							$$IFPREV:PERICLES:BIEN_IDANNONCESELOGER$$
+								<table class="table margin-top-10 table-striped">
+									<tr>
+										<th>Numéro de dossier</th>
+										<th>Mandat</th>
+										<th>Négociateur</th>
+										<th></th>
+									</tr>
+									<tr>
+										<td>$$PERICLES:BIEN_NUMDOSS$$</td>
+										<td>$$PERICLES:BIEN_TYPE$$</td>
+										<td>$$PERICLES:LIBNEGO$$</td>
+										<td class="span1 pagination-centered">
+											<div class="bold xxbiggest pagination-centered typo-action bouton_suivi" data-rel="dossier_$$PERICLES:BIEN_IDANNONCESELOGER$$">$$IF=:1:SUIVI1OUVERT$$$$IF=:1:PERICLES:I$$-$$END$$$$IF!:1:PERICLES:I$$+$$END$$$$END$$$$IF!:1:SUIVI1OUVERT$$+$$END$$</div>	
+										</td>
+									</tr>
+								</table>
+								<div id="dossier_$$PERICLES:BIEN_IDANNONCESELOGER$$"$$IF=:1:SUIVI1OUVERT$$$$IF!:1:PERICLES:I$$ class="display-none"$$END$$$$IF=:1:PERICLES:I$$ class="open"$$END$$$$END$$$$IF!:1:SUIVI1OUVERT$$ class="display-none"$$END$$ >
+								<table class="table">
+									$$IF:PERICLES:BIEN_IDANNONCESELOGER$$			
+										<td class="span2">								
+											<img src="$$PERICLES:BIEN_URLPHOTO$$" alt="photo bien" title="photo bien" />
+										</td>						
+									$$END:BIEN_IDANNONCESELOGER$$
+										<td>
+											<table class="table table-striped">
+												<tr>
+													<td class="span2">Prix / Loyer :</td>
+													<td>$$PERICLES:BIEN_PRIX formatnumber 0$$ &euro;</td>
+												</tr>
+												<tr>
+													<td class="span2">Date de dossier</td>
+													<td>$$PERICLES:BIEN_DATE$$</td>
+												</tr>						
+												<tr>
+													<td class="span2">Adresse :</td>
+													<td>
+														$$PERICLES:BIEN_ADRESSE1 htmlencode$$<br />
+														$$PERICLES:BIEN_CP$$ $$PERICLES:BIEN_VILLE htmlencode$$
+													</td>
+												</tr>
+												<tr>
+													<td class="span2">Texte vitrine :</td>
+													<td>$$PERICLES:BIEN_VITRINE htmlencode$$</td>
+												</tr>
+											</table>
+										</td>
+								</table>
+							$$END$$
+							$$IFPREV:PERICLES:ACTION_ID$$
+								$$IFNOTNULL:PERICLES:ACTION_ID$$
+									$$A:ACTION_OPEN=true$$
+									<div class="h3-like  margin-bottom-10">Bilan Actions</div>
+									<table class="table table-striped">
+										<tr>
+											<th>Date</td>
+											<th>Action</td>
+											<th>Objet</td>
+											<th>Négociateur</td>
+										</tr>
+								$$END$$
+							$$END$$
+							$$IF:PERICLES:ACTION_COMPT$$
+							<tr>
+								<td>$$PERICLES:ACTION_DATEACTION$$</td>
+								<td>$$IF=:0:PERICLES:ACTION_TYPEACTION$$Action$$END$$$$IF!:0:PERICLES:ACTION_TYPEACTION$$$$PERICLES:ACTION_TYPEACTION pcase$$$$END$$</td>
+								<td>$$PERICLES:ACTION_NOMJOURNALOBJET pcase$$</td>
+								<td>$$PERICLES:ACTION_NEGOCIATEUR$$</td>
+							</tr>
+							$$END$$
+							$$IFNEXT:PERICLES:ACTION_ID$$
+								$$IF=:true:ACTION_OPEN$$
+									$$A:ACTION_OPEN=false$$
+								</table>
+								$$END$$
+							$$END$$
+							$$IFPREV:PERICLES:VITRINE_ID$$
+								$$IFNOTNULL:PERICLES:VITRINE_ID$$
+									$$A:VITRINE_OPEN=true$$
+									<div class="h3-like  margin-bottom-10">Vitrines</div>
+									<table class="table table-striped">
+									<tr>
+										<th>Date d'enregistrement</th>				
+										<th>Date action</th>
+										<th>Pose vitrine</th>
+									</tr>
+								$$END$$
+							$$END$$
+							$$IF:PERICLES:VITRINE_COMPT$$
+							<tr>
+								<td>$$PERICLES:VITRINE_DATEENREGISTREMENT$$</td>
+								<td>$$PERICLES:VITRINE_DATEACTION$$</td>
+								<td>$$IF=:true:PERICLES:VITRINE_POSEVITRINE$$Oui$$END$$$$IF=:false:PERICLES:VITRINE_POSEVITRINE$$Non$$END$$</td>		
+							</tr>
+							$$END$$
+							$$IFNEXT:PERICLES:VITRINE_ID$$
+								$$IF=:true:VITRINE_OPEN$$
+									$$A:VITRINE_OPEN=false$$
+									</table>
+								$$END$$
+							$$END$$
+							$$IFPREV:PERICLES:VISITE_ID$$
+								$$IFNOTNULL:PERICLES:VISITE_ID$$
+									$$A:VISITE_OPEN=true$$
+									<div class="h3-like  margin-bottom-10">Bilan Visites</div>
+									<table class="table table-striped">
+									<tr>
+										<th>Date</th>
+										<th>N&eacute;gociateur</th>
+										<th>Visiteur</th>
+										<th>Commentaires</th>
+									</tr>
+								$$END$$
+							$$END$$
+							$$IF:PERICLES:VISITE_COMPT$$
+							<tr>
+								<td>$$PERICLES:VISITE_DATEVISITE$$</td>
+								<td>$$PERICLES:VISITE_NEGOCIATEUR$$</td>
+								<td>$$PERICLES:VISITE_NOMCLIENT$$</td>							
+								<td >
+									$$PERICLES:VISITE_COMMENTAIRE$$
+									$$IF0:PERICLES:VISITE_COMMENTAIRE$$-$$END$$
+								</td>							
+							</tr>
+							$$END$$
+							$$IFNEXT:PERICLES:VISITE_ID$$
+								$$IF=:true:VISITE_OPEN$$
+									$$A:VISITE_OPEN=false$$
+									</table>
+								$$END$$
+							$$END$$
+							$$IFPREV:PERICLES:PROP_ID$$
+								$$IFNOTNULL:PERICLES:PROP_ID$$
+									$$A:PROP_OPEN=true$$
+									<div class="h3-like  margin-bottom-10">Bilan Propositions</div>
+									<table class="table table-striped">
+										<tr>
+											<th>Date</th>
+											<th>N&eacute;gociateur</th>
+											<th>Type</th>
+											<th>Nom du visiteur</th>
+											<th>Prix</th>
+										</tr>	
+								$$END$$
+							$$END$$
+							$$IF:PERICLES:PROP_COMPT$$
+							<tr>
+								<td>$$PERICLES:PROP_DATEPROPOSITION$$</td>
+								<td>$$PERICLES:PROP_NEGOCIATEUR$$</th>
+								<td>$$PERICLES:PROP_TYPEPROPOSITION pcase$$</td>							
+								<td>$$PERICLES:PROP_NOMCLIENT$$</td>							
+								<td>$$PERICLES:PROP_PRIXPROPOSE$$</td>
+							</tr>	
+							$$END$$
+							$$IFNEXT:PERICLES:PROP_ID$$
+								$$IF=:true:PROP_OPEN$$
+									$$A:PROP_OPEN=false$$
+								</table>
+								$$END$$
+							$$END$$
+							$$IFNEXT:PERICLES:BIEN_IDANNONCESELOGER$$
+								</div>
+							$$END$$
+							$$LOOP$$
+							</div>
+						</div>
+						$$BFIN$$
+			</div>
+			$$BFIN$$
+			$$REM$$<!-- CONNEXION LOGIN -->$$END$$
+			<!--#include virtual="suivi/login.htm" -->
+			<!--#include virtual="suivi/incl_perso.htm" -->
+		</div>
+
+	 </div>
+</section>
+<!--#include virtual="footer/incl_bas.htm" -->
