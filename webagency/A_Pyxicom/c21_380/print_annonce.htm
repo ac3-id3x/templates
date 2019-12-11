@@ -1,0 +1,113 @@
+<html>
+<head>
+<style type="text/css">
+<!--
+#PrintAnnonce{width: 560px;	background: black; margin: 0 0 15px 0;}
+#BandeauPrint{ margin: 0; padding: 0;}
+#PhotoPrint img{	border: 8px solid #383838;}
+#InfosAnnonce{
+	position: relative;
+	float: left;
+	width: 300px;
+	text-align: left;
+	padding: 15px;
+	font-size: 13px;
+	font-weight: bold;
+}
+#RefAnnonce{
+	position: relative;
+	float: left;
+	width: 250px;
+	text-align: right;
+	padding: 15px;
+}
+#DescriptifAnnonce{
+	clear: both;
+	text-align: left;
+	padding: 15px;
+	font-size: 13px;
+}
+#CoordonneesAgence{
+	color: #FFC800;
+	font-weight: bold;
+	text-align: left;
+	padding: 15px;
+}
+#CoordonneesAgence h2{
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+}
+#BoutonPrint{
+	padding: 0 0 15px 0;
+}
+-->
+</style>
+$$INCL:DICO-FORM.HTM$$
+$$INCL:TITRE.HTM$$
+$$INCL:INFOSSPECIALES.HTM$$
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="$$_$$CSS/style1.css">
+</head>
+<body>
+<!-- Stats annonces listing -->
+$$INCL:STATD.HTM$$
+<br /><br />
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:QRY:LANG$$
+<div align="center">
+<div id="PrintAnnonce" class="tabFond2">
+	<div id="BandeauPrint">
+		<a href="/index.htm?lang=$$LANGUE$$" target="_top" title="immobilier Arcachon"><img src="images/Logo-Cassegrain-noir.gif" width="265" height="114" border="0" class="espaceBas" alt="immobilier Arcachon" /></a>
+	</div>
+	<br />
+	$$B:IMMOBW:PHOTOS:VAL:IMMOBW_ANNONCE_IDANNONCE$$
+		$$BIF:IMMOBW:PHOTOS:VAL$$$$DO:1:1$$
+		<div id="PhotoPrint">
+			<img src=$$IMMOBW:PHOTOS:VAL:URL$$ border="0"> 
+		</div>
+		$$LOOP$$
+	$$BFIN$$
+	<div id="InfosAnnonce">
+		$$IF=:FR:LANGUE$$
+			$$FORM:DESC$$ 
+		$$END$$
+		$$IF:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE htmlencode$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$
+		$$END$$
+		$$IF:IMMOBW:ANNONCE:SURFACE$$
+			($$IMMOBW:ANNONCE:SURFACE$$ m²)
+		$$END$$
+		<br />			
+		$$IF!:0:PAGE:FILTRE_PRESTIGE$$
+			$$LG:SITUEA$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$ ($$IMMOBW:ANNONCE:CP$$)
+		$$END$$
+	</div>
+	<div id="RefAnnonce">
+		$$LG:REFERENCE pcase$$ : $$IMMOBW:ANNONCE:REFANNONCE$$<br />
+		$$IF!:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+			$$LG:MAJ$$ : $$IMMOBW:ANNONCE:DT_FRAICHEUR date 2$$<br />
+		$$END$$		
+	</div>
+	<div id="DescriptifAnnonce">
+		$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+		$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+			$$LG:COMMENTFRANCAIS$$ : $$IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode$$
+		$$END$$
+	</div>
+	<div id="CoordonneesAgence">
+		$$E:IMMOBW:AGENCE$$
+		<h2>$$IMMOBW:AGENCE:NOM$$</h2>
+		<span class="infosAgence"><strong>$$LG:TEL pcase$$ $$IF=:FR:LANGUE$$$$AGENCE1$$$$END$$$$IF!:FR:LANGUE$$$$AGENCE1ENGLISH$$$$END$$ : $$IMMOBW:AGENCE:TEL formattel$$</strong></span><br />
+		<span class="infosAgence"><strong>$$LG:TEL pcase$$ $$IF=:FR:LANGUE$$$$AGENCE2$$$$END$$$$IF!:FR:LANGUE$$$$AGENCE2ENGLISH$$$$END$$ : $$IF=:FR:LANGUE$$$$FRANCETELEPHONEPYLASURMER$$$$END$$$$IF!:FR:LANGUE$$$$INTERNATIONALTELEPHONEPYLASURMER$$$$END$$</strong></span><br />
+		<span class="infosAgence">$$LG:EMAIL pcase$$ :</span> $$IMMOBW:AGENCE:EMAIL encodemail javascript full$$
+	</div>
+	<div id="BoutonPrint">
+		<input type="button" name="imprimer" value="$$LG:IMPRIMER$$" onClick="javascript:print();" />
+	</div>
+</div>
+</div>
+</body>
+</html>
