@@ -1,0 +1,113 @@
+$$SET:RUB=02$$
+<!--#include virtual="/incl_haut.htm" -->	
+
+<h1 class="titre">Master Vignette  $$E:BOWEBAGENCY:SOUSTYPETEMPLATE:~idsoustype:QRY:IDSOUSTYPE:ALIAS:NOMPACK$$ $$NOMPACK:LIBELLE$$</h1>
+<!-- resume page -->
+
+
+
+$$B:BOWEBAGENCY:LISTETEMPLATES:~idTemplateType:3:~idSousType:QRY:idSousType:~idFranchise:QRY:idfranchise:ALIAS:LISTEMASTERVIGN$$
+
+<div id="HautTemp">
+	<h3>
+		$$IF:LISTEMASTERVIGN:NBR$$$$LISTEMASTERVIGN:NBR$$$$END$$
+		$$IF0:LISTEMASTERVIGN:NBR$$0 master vignette disponible$$END$$ 
+		$$IF+:2:LISTEMASTERVIGN:NBR$$master vignettes disponibles$$END$$
+		$$IF-:2:LISTEMASTERVIGN:NBR$$master vignette disponible$$END$$
+	</h3>
+	<form id="RechTemp" action="" method="get" name="liste">
+		<input type="hidden" name="idtemplatetype" value="$$FORM:IDTEMPLATETYPE$$">
+		<input type="hidden" name="tri" value="dtCreation desc"> 	
+		<input type="hidden" name="idSousType" value="$$FORM:IDSOUSTYPE$$"> 	
+		
+		
+		
+		
+		$$IF=:3:FORM:IDSOUSTYPE$$
+		
+		$$B:BOWEBAGENCY:FRANCHISES:~idTemplateType:3:ALIAS:BOWAFR$$
+		
+		$$BIF:BOWAFR$$
+		<p>			
+				<select name=idFranchise onchange="document.liste.submit();" >
+					<option value=0    $$IF=:0:FORM:IDFRANCHISE$$ selected=selected $$END$$ >
+							Tous
+					</option>
+				$$DO$$
+						<option value=$$BOWAFR:IDFRANCHISE$$    $$IF=:FORM_IDFRANCHISE:BOWAFR:IDFRANCHISE$$ selected=selected $$END$$ >
+							$$BOWAFR:LIBELLE$$
+						</option>
+				$$LOOP$$		
+				</select>
+		</p>
+		$$BFIN$$		
+		$$END$$
+		
+		$$IF!:3:FORM:IDSOUSTYPE$$
+		<p><input class="rech" type="text" value="Nom ou référence vignette" name="rech" onclick="this.value=''" /></p>
+		$$END$$
+		
+		
+		
+		<!--<p><input class="rech" type="text" value="Nom ou référence vignette" name="rech" onclick="this.value=''" /></p>-->
+		
+		
+		
+	</form>
+</div><!-- fin #HautTemp-->
+$$BIF:LISTEMASTERVIGN$$
+<!-- resultats master vignettes -->
+<div id="TpVign_Ctn">
+	
+	$$DO:1:3$$
+	<div class="tpMVign">
+		<img class="thumbMasterVignette" src="$$LISTEMASTERVIGN:STDURL$$" alt="" title="" />
+		<p>
+			<strong class="libelle">$$LISTEMASTERVIGN:LIBELLE$$</strong>
+			<strong class="ref">Réf : $$LISTEMASTERVIGN:REFTEMPLATE$$</strong>
+			<span>Format : 400x60 pixels </span>			
+		</p>		
+	</div>
+	$$LOOP$$
+	
+</div><!-- fin #TpVign_Ctn -->
+
+$$IF+:1:LISTEMASTERVIGN:NBRPAGES$$
+<div id="BasTemp">
+	<div id="BasTemp_Fd"><!-- --></div>	
+	$$IF+:1:LISTEMASTERVIGN:NBRPAGES$$<h4 id="NbPages">Page $$LISTEMASTERVIGN:PAGE$$ sur $$LISTEMASTERVIGN:NBRPAGES$$</h4>$$END$$
+	<div id="Pages">
+		
+	$$IF!:1$2:LISTEMASTERVIGN:PAGE$$
+	$$IF+:1:LISTEMASTERVIGN:NBRPAGES$$
+	<a class="first" href="/$$REP:0$$?$$REP:QRY removeqry alierr removeqry listemastervignpg$$&amp;LISTEMASTERVIGNpg=1" title="$$LG:PREMIEREPAGE pcase$$"><!-- --></a>
+	$$END$$
+	$$END$$
+	
+	$$IF:LISTEMASTERVIGN:LIENARRIERE$$
+	<a class="prev" href="$$LISTEMASTERVIGN:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$"><!-- --></a>
+	$$END$$
+	
+	$$LISTEMASTERVIGN:MULTIPAGE removeqry alierr$$
+	
+	$$IF:LISTEMASTERVIGN:LIENAVANT$$
+	<a class="next" href="$$LISTEMASTERVIGN:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$"><!-- --></a>
+	$$END$$
+	
+	$$IF+:3:LISTEMASTERVIGN:NBRPAGES$$
+	$$IF!:LISTEMASTERVIGN_NBRPAGES$LISTEMASTERVIGN_NBRPAGES exec (XX-1):LISTEMASTERVIGN:PAGE$$
+	<a class="last" href="/$$REP:0$$?$$REP:QRY removeqry alierr removeqry listemastervignpg$$&amp;LISTEMASTERVIGNpg=$$LISTEMASTERVIGN:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><!-- --></a>
+	$$END$$
+	$$END$$
+		<div class="clear"><!-- --></div>
+	</div>
+</div>
+$$END:1:LISTEMASTERVIGN:NBRPAGES$$
+
+$$BFIN$$
+
+$$BIF0:LISTEMASTERVIGN$$	
+<!--#include virtual="/incl_erreur.htm" -->
+$$BFIN$$
+
+<!--#include virtual="/incl_bas.htm" -->	

@@ -1,0 +1,105 @@
+$$SET:RUB=02$$
+<!--#include virtual="/incl_haut.htm" -->	
+
+<h1 class="titre">Vignette  $$E:BOWEBAGENCY:SOUSTYPETEMPLATE:~idsoustype:QRY:IDSOUSTYPE:ALIAS:NOMPACK$$ $$NOMPACK:LIBELLE$$</h1>
+	<!-- resume page -->
+
+$$B:BOWEBAGENCY:LISTETEMPLATES:~idTemplateType:2:~idSousType:QRY:idSousType:~idFranchise:QRY:idfranchise:ALIAS:LISTEVIGNETTES$$
+
+<div id="HautTemp">
+	<h3>
+		$$IF:LISTEVIGNETTES:NBR$$$$LISTEVIGNETTES:NBR$$$$END$$
+		$$IF0:LISTEVIGNETTES:NBR$$0 vignette disponible$$END$$ 
+		$$IF+:2:LISTEVIGNETTES:NBR$$vignettes disponibles$$END$$
+		$$IF-:2:LISTEVIGNETTES:NBR$$vignette disponible$$END$$
+	
+	</h3>	
+	<form id="RechTemp" action="" method="get" name="liste">
+		<input type="hidden" name="idtemplatetype" value="$$FORM:IDTEMPLATETYPE$$">
+		<input type="hidden" name="tri" value="dtCreation desc"> 	
+		<input type="hidden" name="idSousType" value="$$FORM:IDSOUSTYPE$$"> 	
+		
+		
+		$$IF=:3:FORM:IDSOUSTYPE$$
+		
+		$$B:BOWEBAGENCY:FRANCHISES:~idTemplateType:2::ALIAS:BOWAFR$$
+		
+		$$BIF:BOWAFR$$
+		<p>			
+				<select name=idFranchise onchange="document.liste.submit();" >
+					<option value=0    $$IF=:0:FORM:IDFRANCHISE$$ selected=selected $$END$$ >
+							Tous
+					</option>
+				$$DO$$
+						<option value=$$BOWAFR:IDFRANCHISE$$    $$IF=:FORM_IDFRANCHISE:BOWAFR:IDFRANCHISE$$ selected=selected $$END$$ >
+							$$BOWAFR:LIBELLE$$
+						</option>
+				$$LOOP$$		
+				</select>
+		</p>
+		$$BFIN$$		
+		$$END$$
+		
+		$$IF!:3:FORM:IDSOUSTYPE$$
+		<p><input class="rech" type="text" value="Nom ou référence vignette" name="rech" onclick="this.value=''" /></p>
+		$$END$$
+	</form>
+</div>
+
+	
+
+$$BIF:LISTEVIGNETTES$$
+<!-- resultats templates -->
+<div id="TpVign_Ctn">
+	$$DO:1:6$$
+	<div class="tpVign">
+		<a class="tpCtn"><img class="thumb" src="$$LISTEVIGNETTES:STDURL$$" alt="" title="" /></a>
+		<p>$$LISTEVIGNETTES:LIBELLE$$</p>
+		<p class="ref">Réf : $$LISTEVIGNETTES:REFTEMPLATE$$</p>
+		<span>Format : 160x80 pixels </span>
+	</div>
+	$$LOOP$$	
+	<div class="clear"><!-- --></div>
+</div>
+
+
+<!-- fin #TpSite_Ctn -->
+
+$$IF+:1:LISTEVIGNETTES:NBRPAGES$$
+<div id="BasTemp">
+	<div id="BasTemp_Fd"><!-- --></div>	
+	$$IF+:1:LISTEVIGNETTES:NBRPAGES$$<h4 id="NbPages">Page $$LISTEVIGNETTES:PAGE$$ sur $$LISTEVIGNETTES:NBRPAGES$$</h4>$$END$$
+	<div id="Pages">		
+		$$IF!:1$2:LISTEVIGNETTES:PAGE$$
+		$$IF+:1:LISTEVIGNETTES:NBRPAGES$$
+		<a class="first" href="/$$REP:0$$?$$REP:QRY removeqry alierr removeqry listevignettespg$$&amp;LISTEVIGNETTESpg=1" title="$$LG:PREMIEREPAGE pcase$$"><!-- --></a>
+		$$END$$
+		$$END$$
+		
+		$$IF:LISTEVIGNETTES:LIENARRIERE$$
+		<a class="prev" href="$$LISTEVIGNETTES:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$"><!-- --></a>
+		$$END$$
+		
+		$$LISTEVIGNETTES:MULTIPAGE removeqry alierr$$
+		
+		$$IF:LISTEVIGNETTES:LIENAVANT$$
+		<a class="next" href="$$LISTEVIGNETTES:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$"><!-- --></a>
+		$$END$$
+		
+		$$IF+:3:LISTEVIGNETTES:NBRPAGES$$
+		$$IF!:LISTEVIGNETTES_NBRPAGES$LISTEVIGNETTES_NBRPAGES exec (XX-1):LISTEVIGNETTES:PAGE$$
+		<a class="last" href="/$$REP:0$$?$$REP:QRY removeqry alierr removeqry listevignettespg$$&amp;LISTEVIGNETTESpg=$$LISTEVIGNETTES:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><!-- --></a>
+		$$END$$
+		$$END$$
+		<div class="clear"><!-- --></div>
+	</div>
+</div>
+$$END:1:LISTEVIGNETTES:NBRPAGES$$
+$$BFIN$$
+
+$$BIF0:LISTEVIGNETTES$$	
+<!--#include virtual="/incl_erreur.htm" -->
+$$BFIN$$
+
+
+<!--#include virtual="/incl_bas.htm" -->	
