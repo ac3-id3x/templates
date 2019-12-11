@@ -1,0 +1,159 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+<!--#include virtual="/incl_choix_idtb_forms.htm" -->
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:ESTIMATION.HTM$$
+$$END$$
+$$END$$
+
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="8" />
+<input type="hidden" name="page_ok" value="validation_estimation.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_estimation.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. ""  pcase$$" />
+<input type="hidden" name="idPublication" value="$$REP:1$$" />
+<strong>$$ERRE$$</strong><br />
+	<strong class="estimationNomAgence">$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$</strong>
+	<p align="center" id="$$FORM:ESTIMATION$$"><strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</strong></p>
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:location:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$IF=:vente:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">	
+	<tr>
+	<td class="TextForms"><!--#include virtual="/incl_text_forms.htm" --></td>
+	</tr>
+	
+	</table>
+	<br />
+	$$END$$
+	$$END$$
+	<!--Vous possédez un bien-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	
+	</table>
+	<br />
+	<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$IF=:FR:LANGUE$$Contactez-nous au 01 64 14 90 50 ou laissez vos coordonnées$$END$$ $$IF!:FR:LANGUE$$Contact us at 01 64 14 90 50 or leave your contact information$$END$$ </strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:AI5$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="nomfamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:ADRESSE$$ :</td>
+		<td align="left">$$IF=:FR:LANGUE$$<input class="imputForm" type="text" name="adresse" size="25" value="$$FORM:ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="adresse" cols="20" Rows="3">$$FORM:ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:VILLE$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="ville" size="25" value="$$FORM:VILLE$$" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:CODEP$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+	</tr>
+	$$IF!:FR:LANGUE$$
+	<tr>
+		<td align="left">$$LG:PAYS$$ :</td>
+		<td align="left"><input type="text" name="pays" size="25" value="$$FORM:PAYS$$" /></td>
+	</tr>
+	$$END$$
+	<tr>
+		<td align="left">$$LG:TEL pcase$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	
+	<tr>
+		<td align="right"><br />
+					
+		
+			<input class="boutonEnvoi" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" class="BoutonFormContact" />
+	
+		
+		
+			$$REM$$
+	<!-- 
+		18.12.2009 par Lisbonne
+		remplacement des input type = image par des input type submit
+		car généralisation des buggs IE6 et consors où les boutons sautent voire disparaissent
+		la solution sauvage mais de survie est de mutualiser ce code avant la mort par noyade du SAV
+		donc le style CSS est aussi mutualiser avec une grande marge de sécurité de 200x40px
+			-->
+		<input class="boutonEnvoi" type="submit" value=""
+		style="background: url($$_$$img/envoyer_$$LANGUE$$.gif) 50% 50% no-repeat; border: none; cursor: pointer; margin: 20px 0; width: 200px; height: 40px;"
+		name="image" 
+		class="BoutonFormContact" />
+	$$END$$
+			</td>
+	</tr>
+	
+	
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$
