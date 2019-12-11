@@ -1,0 +1,436 @@
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_COLORBOX=1$$
+<div itemscope itemtype="http://schema.org/Product" class="row-fluid margin-bottom-20 conteneur-annonce hidden-phone">
+	<div class="span12 padding-10 transition-bg recherche-annonces box-shadow" id="annonce$$ANNLISTE:IDANNONCE$$">
+		<div class="row-fluid hidden-phone">
+			<div class="span4">
+				<div class="row-fluid">
+					<div class="span12 photo-agence-annonces relative">
+						<a itemprop="url" href="$$LIENDETAIL$$" title="$$TITLE_ANN$$" class="recherche-annonces-lien">
+							<span itemprop="title">
+								$$IF:ANNLISTE:B600URL0$$
+									<img itemprop="image" src="$$ANNLISTE:B600URL0$$" alt="$$ANNLISTE:LIBELLE$$" class="recherche-annonces-photo $$IF!:1:PHOTODETAILNORESIZEPANO$$$$HEIGHTANNLISTE$$ $$END$$width-100-pourcent">
+									$$REM$$
+										$$IF:ANNLISTE:B600URL1$$
+											<img itemprop="image" src="$$ANNLISTE:B600URL1$$" alt="$$ANNLISTE:LIBELLE$$" class="display-none $$IF!:1:PHOTODETAILNORESIZEPANO$$$$HEIGHTANNLISTE$$ $$END$$width-100-pourcent">
+										$$END$$
+									$$END$$
+								$$END$$
+								$$IF0:ANNLISTE:B600URL0$$
+									$$IF:ANNLISTE:PHOTOURL0$$
+										<img itemprop="image" src="$$ANNLISTE:PHOTOURL0$$" alt="$$ANNLISTE:LIBELLE$$" class="recherche-annonces-photo $$IF!:1:PHOTODETAILNORESIZEPANO$$$$HEIGHTANNLISTE$$ $$END$$width-100-pourcent">
+									$$END$$
+										$$IF0:ANNLISTE:PHOTOURL0$$
+											<!--#include virtual="recherche/incl_no_photo_recherche.htm" -->
+										$$END$$
+								$$END$$
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="row-fluid margin-top-10">
+					<div class="span12 hidden-phone">
+						<!--#include virtual="recherche/incl_nb_photos.htm" -->
+					</div>
+				</div>
+			</div>
+			
+			<div class="span4 padding-right-25 border-solid-right-white-1">
+				<!-- transaction - ville -->
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$" class="recherche-annonces-lien">
+					<h2 class="biggest typo-important ville-annonce">$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF:ANNLISTE:VILLE$$$$ANNLISTE:VILLE gettypebien ncase$$$$END$$ $$IF:ANNLISTE:CP$$($$ANNLISTE:CP$$)$$END$$</h2>
+				</a>
+				$$IF:ANNLISTE:IDQUARTIER$$
+					$$LG:QUARTIER pcase$$ : $$ANNLISTE:IDQUARTIER getquartier$$
+				$$END$$
+				
+				
+				<!-- type bien -->
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$" class="recherche-annonces-lien typo-body texte-descriptif">
+					<h3 class="h2-like typo-action">
+					$$IF!:1:HIDE_TYPEBIEN$$
+						$$IF=:10:ANNLISTE:IDTYPETRANSACTION$$$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$$$END$$$$IF!:10:ANNLISTE:IDTYPETRANSACTION$$			
+							$$IF=:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$
+							$$IF!:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$$$END$$
+						$$END$$$$IF=:9:FORM:IDTT$$ : $$ANNLISTE:LIBELLE$$$$END$$
+					$$END$$
+					$$IF=:1:SHOW_LIBELLE$$
+						- $$ANNLISTE:LIBELLE$$
+					$$END$$
+					</h3>
+					$$IF!:1:HIDE_SOUSTYPEBIEN$$
+						<br />
+					  $$IF!:9:FORM:IDTT$$$$ANNLISTE:IDSOUSTYPEBIEN getsoustypesbien$$$$END$$
+					$$END$$	
+				</a>				
+				
+				<!-- descriptif -->
+				<hr class="margin-top-10 margin-bottom-10" />
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$" class="recherche-annonces-lien typo-body texte-descriptif">
+					<span itemprop="description">
+						$$IF=:1:LONGDESCRECHERCHE$$
+							$$IF!:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 1024 pcase$$$$END$$
+							$$IF=:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 1024 $$$$END$$...
+						$$END$$
+						$$IF!:1:LONGDESCRECHERCHE$$
+							$$IF!:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 320 pcase$$$$END$$
+							$$IF=:1:DESCRIPTIFCLIENT$$$$ANNLISTE:DESCRIPTIF left 320 $$$$END$$...
+						$$END$$
+					</span>
+				</a>
+				
+				<!-- picto -->		
+				<hr class="margin-top-15 margin-bottom-15" />	
+				<div class="row-fluid">
+					$$IF:ANNLISTE:SI_EXCLUSIF$$
+					<div class="span5">
+						<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$"><!--#include virtual="recherche/incl_picto_exclusif.htm" --></a>
+					</div>
+					$$END$$
+					$$IF:ANNLISTE:SI_COUPDECOEUR$$
+					<div class="span$$IF=:FR:LANGUE$$2$$END$$$$IF!:FR:LANGUE$$3$$END$$">
+						<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$"><div class="$$TYPEBOUTON$$ btn-neutre btn-tooltip btn-block btn-cdc" data-placement="top" data-title="$$LG:COUPDECOEUR pcase$$ $$ANNLISTE:COOR-NOM$$"><div class="icon-v5-heart height-15 opacity-4 big margin-top-2"></div></div></a>
+					</div>
+					$$END$$
+					$$IF+:FRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+					<div class="span$$IF=:FR:LANGUE$$5$$END$$$$IF!:FR:LANGUE$$4$$END$$">
+						<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$"><div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-tooltip btn-block smaller btn-nouveau" data-placement="top" data-title="$$LG:NEW pcase$$ $$ANNLISTE:COOR-NOM$$ $$ANNLISTE:DT_FRAICHEUR date 2$$">$$LG:NEWCOURT pcase$$</div></a>
+					</div>
+					$$END$$
+				</div>							
+			</div>
+			
+			<div class="span4">
+				<div class="row-fluid">
+					<div class="span6 pagination-centered">
+					<!-- prix -->
+						$$IF=:0:PRIXMASQUE$$
+							$$IF:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								<span class="h2-like"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+							$$END$$
+							$$IF0:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								$$IF:ANNLISTE:PRIX$$
+									<div class="row-fluid">
+										<div class="typo-action h2-like biggest prix-annonce pagination-centered" id="prix$$ANNLISTE:IDANNONCE$$">
+											$$IF=:5:ANNLISTE:IDTYPETRANSACTION$$<span class="smallest">$$LG:BOUQUET pcase$$ : </span>$$END$$
+											$$IF=:4:FORM:IDTT$$$$LG:APARTIRDE$$ $$END$$$$ANNLISTE:PRIX$$ $$ANNLISTE:PRIX_UNITE replace ht ¤ht replace cc ¤cc$$
+											<!--#include virtual="recherche/incl_prix_condition.htm" -->
+										</div>
+										$$IF:ANNLISTE:PX_RENTE$$
+											<div class="typo-action h3-like prix-annonce" id="px_rente$$ANNLISTE:IDANNONCE$$">
+											$$LG:RENTE pcase$$ : $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$
+											</div>
+										$$END$$
+										
+										$$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+											<span class="small">
+												$$IF:ANNLISTE:AGE_F$$
+													$$LG:FEMME pcase$$ : $$ANNLISTE:AGE_F$$ ans
+												$$END$$
+												$$IF:ANNLISTE:AGE_H$$
+													$$IF!:0:ANNLISTE:AGE_F$$&nbsp;$$END$$
+													$$LG:HOMME pcase$$ : $$ANNLISTE:AGE_H$$ ans
+												$$END$$
+											</span>
+										$$END$$
+										
+										$$IF:ANNLISTE:SIBAISSEPRIX$$
+										<div class="small pagination-centered">
+											<!--#include virtual="recherche/incl_prix_baisse.htm" -->
+										</div>
+										$$END$$
+									</div>
+								$$END$$
+								$$IF0:ANNLISTE:PRIX$$
+									<div class="typo-action bold prix-annonce" id="prix$$ANNLISTE:IDANNONCE$$">
+									</div>
+								$$END$$
+							$$END$$	
+						$$END$$
+						$$IF=:1:PRIXMASQUE$$
+							<span class="h2-like"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+						$$END$$					
+					</div>
+					<div class="span6 pagination-centered margin-top-10 margin-bottom-20">
+					<!--ref annonce-->
+						<span class="big typo-important refannonce">$$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$<span class="refannonce-legende">$$LG:REFER pcase$$ : </span>$$END$$$$ANNLISTE:REFANNONCE$$</span>
+					</div>
+				</div>
+				<hr />
+				<div class="row-fluid">
+					<!-- info bien -->
+					<div class="span4 pair pagination-centered line-height-30">
+						$$IF!:EN:LANGUE$$$$LG:SURFACE pcase$$$$END$$<br /><span class="bold">
+							$$IF!:EN:LANGUE$$$$ANNLISTE:SURFACE$$ m² $$END$$
+							$$IF=:EN:LANGUE$$ $$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+						</span>
+					</div>
+					$$IF!:10:ANNLISTE:IDTYPETRANSACTION$$
+						$$IF!:4:ANNLISTE:IDTYPEBIEN$$
+							<div class="span4 pair pagination-centered line-height-30">
+								$$LG:PIECES pcase$$<br /><span class="bold">
+									$$IF:ANNLISTE:NB_PIECES$$
+										$$ANNLISTE:NB_PIECES$$
+										$$REM$$
+											$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+											$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+										$$END$$
+									$$END$$
+									$$IF0:ANNLISTE:NB_PIECES$$
+										N/A
+									$$END$$								
+								</span>
+							</div>
+							<div class="span4 pair pagination-centered line-height-30">
+								$$LG:CHAMBRESYO pcase$$<br />
+								<span class="bold">
+									$$IF:ANNLISTE:NB_CHAMBRES$$
+									$$ANNLISTE:NB_CHAMBRES$$ 
+									$$REM$$$$IF=:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$$$END$$$$END$$
+									$$END$$
+									$$IF0:ANNLISTE:NB_CHAMBRES$$
+										N/A
+									$$END$$
+								</span>
+							</div>
+						$$END$$
+					$$END$$
+					$$IF=:10:ANNLISTE:IDTYPETRANSACTION$$
+						<div class="span8 pair height-30 line-height-30">
+							<span class="pull-left margin-left-10">$$LG:TYPE pcase$$ $$LG:DE lcase$$ $$LG:COMMERCE lcase$$</span><span class="pull-right bold margin-right-10">$$ANNLISTE:LIBELLE$$</span>
+						</div>
+					$$END$$
+					$$IF=:1:SHOWSURFTER$$
+						<div class="row-fluid">
+							<div class="span4 impair height-30 line-height-30">
+								<span class="pull-left margin-left-10">$$LG:SURFTER pcase$$</span><span class="pull-right bold margin-right-10">$$IF!:EN:LANGUE$$ $$ANNLISTE:SURF$$ m²$$END$$$$IF=:EN:LANGUE$$ $$ANNLISTE:SURF exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$</span>
+							</div>
+							<div class="span8"></div>		
+						</div>
+					$$END$$								
+				</div>
+				<hr class="margin-top-30" />		
+				<div class="row-fluid">
+					<div class="span6 pagination-centered">
+						<div class="row-fluid">
+							<a itemprop="url" href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+							<div class="$$TYPEBOUTON$$ btn-neutre small bouton-savoir-plus btn-tooltip span12">
+								<div class="row-fluid">
+									<div class="span3">
+										<div class="plus">
+											<i class="general-enclosed icon-v5-info height-20"></i>
+										</div>										
+									</div>
+									<div class="span9 pagination-left"><span itemprop="title">Découvrez ce bien </span></div>
+								</div>
+							</div>
+							</a>
+						</div>
+					</div>
+					<div class="span6 pagination-centered">
+						<div id="bouton-telephonez-nous-txt" class="$$TYPEBOUTON$$ btn-important hidden-phone cursor-pointer span12">
+							<span id="texte-telephonez-nous-txt"><i class="icon-v5-phone"></i> $$LG:V5APPELEZNOUS pcase$$</span>
+							<span id="numero-telephonez-nous-txt" class="display-none"><i class="icon-v5-phone"></i> $$ANNLISTE:TELEPHONE formattel$$</span>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid margin-top-20">
+					<div class="span6 pagination-centered">
+						$$IF0:ANNLISTE:SIPANIER$$
+							<div class="row-fluid">
+								<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ small bouton-ajouter-selection-detail btn-tooltip span12" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$">
+									<div class="row-fluid">
+										<div class="span3">
+											<div class="plus">
+												<i class="general-enclosed typoicon-plus height-20"></i>
+											</div>
+											<div class="checkmark display-none">
+												<i class="general-enclosed typoicon-checkmark height-20"></i>
+											</div>
+										</div>
+										<div class="span9 pagination-left">$$LG:AJOUTERSEL pcase$$</div>
+									</div>
+								</div>
+							</div>
+						$$END$$
+						$$IF:ANNLISTE:SIPANIER$$
+						<div class="row-fluid">
+							$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+								<div class="span6">
+									<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-comparer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"> <img src="$$~$$images/widget/$$PICTO_COULEUR$$/star.png" alt="$$LG:AJOUTCOMPARAISON pcase$$"> $$LG:AJOUTCOMPARAISON pcase$$</div>
+								</div>
+							$$END$$
+							<div class="span6">
+								<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-supprimer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/minus.png" alt="$$LG:SUPPRIMERSELEC pcase$$"> $$LG:SUPPRIMERSELEC pcase$$</div>
+							</div>
+						</div>
+						$$END$$
+					</div>					
+					<div class="span6 pagination-centered">
+						<div class="row-fluid">
+							<a itemprop="url" href="$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$/estimation,immobiliere.htm$$END$$$$IF=:1:MULTIAGENCES$$/agences,estimation.htm$$END$$" title="$$TITLE_ANN$$">
+							<div class="$$TYPEBOUTON$$ btn-neutre small bouton-vendre-bien-similaire btn-tooltip span12">
+								<div class="row-fluid">
+									<div class="span3">
+										<div class="plus">
+											<i class="general-enclosed icon-v5-bars height-20"></i>
+										</div>										
+									</div>
+									<div class="span9 pagination-left"><span itemprop="title">Vendre un bien similaire </span></div>
+								</div>
+							</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		<a class="row-fluid hidden-desktop hidden-tablet" style="height: 125px;"
+		   itemprop="url" href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+			<div class="pull-left" style="width:35%; height:100%;">
+				<span style="display: inline-block;height: 100%;vertical-align: middle;"></span><img itemprop="image" src="$$ANNLISTE:PHOTOURL0$$" alt="$$ANNLISTE:LIBELLE$$" style="max-height:100px;">
+			</div>
+
+			<div class="pull-left" style="width:65%; height:100%; display: table;">
+				<div class="row-fluid" style="display: table-cell; vertical-align: middle;">
+					<div itemprop="name">
+						<h2 class="typo-important ville-annonce">
+						<!-- transaction - ville -->
+						$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF:ANNLISTE:VILLE$$$$ANNLISTE:VILLE gettypebien ncase$$$$END$$ $$IF:ANNLISTE:CP$$($$ANNLISTE:CP$$)$$END$$
+						$$IF:ANNLISTE:IDQUARTIER$$
+							$$LG:QUARTIER pcase$$ : $$ANNLISTE:IDQUARTIER getquartier$$
+						$$END$$</h2>
+						<h3 class="h2-like typo-action">
+						$$IF!:1:HIDE_TYPEBIEN$$
+							$$IF=:10:ANNLISTE:IDTYPETRANSACTION$$$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$$$END$$$$IF!:10:ANNLISTE:IDTYPETRANSACTION$$			
+								$$IF=:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$
+								$$IF!:1:NOVILLA$$$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$$$END$$
+							$$END$$$$IF=:9:FORM:IDTT$$ : $$ANNLISTE:LIBELLE$$$$END$$
+						$$END$$						
+						</h3>						
+						<!--ref annonce-->
+						<span class="typo-important refannonce">$$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$<span class="refannonce-legende">$$LG:REFER pcase$$ : </span>$$END$$$$ANNLISTE:REFANNONCE$$</span>											
+						<div class="small margin-top-0 pagination-left">
+							$$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+							<div class="row-fluid typo-body hidden-phone margin-top-10">
+								<div class="span12">
+									<div class="row-fluid recherche-annonces-infos pagination-centered">
+										<div class="span4 pair height-30 line-height-30">
+											$$IF!:EN:LANGUE$$
+											<span class="pull-left margin-left-10">$$LG:SURFACE pcase$$</span>$$END$$<span class="$$IF!:EN:LANGUE$$pull-right $$END$$$$IF=:EN:LANGUE$$center $$END$$bold margin-right-10">
+												$$IF:ANNLISTE:NB_CHAMBRES$$
+												$$ANNLISTE:NB_CHAMBRES$$ 
+												$$REM$$$$IF=:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$$$END$$$$END$$
+												$$END$$
+												$$IF0:ANNLISTE:NB_CHAMBRES$$
+													N/A
+												$$END$$
+											</span>
+										</div>
+
+										$$IF!:10:ANNLISTE:IDTYPETRANSACTION$$
+											$$IF!:4:ANNLISTE:IDTYPEBIEN$$
+												<div class="span4 impair height-30 line-height-30">
+													<span class="pull-left margin-left-10">$$LG:PIECES pcase$$</span><span class="pull-right bold margin-right-10"><!--#include virtual="recherche/incl_pieces.htm" --></span>
+												</div>
+												<div class="span4 pair height-30 line-height-30">
+													<span class="pull-left margin-left-10">$$LG:CHAMBRESYO pcase$$</span><span class="pull-right bold margin-right-10"><!--#include virtual="recherche/incl_chambres.htm" --></span>
+												</div>
+											$$END$$
+										$$END$$
+
+										$$IF=:10:ANNLISTE:IDTYPETRANSACTION$$
+											<div class="span8 pair height-30 line-height-30">
+												<span class="pull-left margin-left-10">$$LG:TYPE pcase$$ $$LG:DE lcase$$ $$LG:COMMERCE lcase$$</span><span class="pull-right bold margin-right-10">$$ANNLISTE:LIBELLE$$</span>
+											</div>
+										$$END$$
+										$$IF=:1:SHOWSURFTER$$
+											<div class="row-fluid">
+												<div class="span4 impair height-30 line-height-30">
+													<span class="pull-left margin-left-10">$$LG:SURFTER pcase$$</span><span class="pull-right bold margin-right-10">$$IF!:EN:LANGUE$$ $$ANNLISTE:SURF$$ m²$$END$$$$IF=:EN:LANGUE$$ $$ANNLISTE:SURF exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$</span>
+												</div>
+												<div class="span8"></div>		
+											</div>
+										$$END$$
+									</div>
+								</div>
+							</div>
+							$$END$$
+							<div class="row-fluid hidden-phone">
+								<div class="span12">
+									<p class="margin-top-10 height-50"><!--#include virtual="recherche/incl_descriptif.htm" --></p>
+								</div>
+							</div>
+
+							$$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+							<div class="row-fluid margin-top-neg-10">
+								<div class="span6 hidden-phone">
+									<!--#include virtual="recherche/incl_prix_location.htm" -->
+								</div>
+								<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="span6 pagination-right recherche-annonces-prix">
+									<meta content="EUR" itemprop="priceCurrency">
+									<!--#include virtual="recherche/incl_prix.htm" -->
+								</div>
+							</div>
+							$$END$$
+						</div>
+						<!-- prix -->
+						$$IF=:0:PRIXMASQUE$$
+							$$IF:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								<span class="h2-like"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+							$$END$$
+							$$IF0:ANNLISTE:XML xml PRIX_NOUS_CONSULTER$$
+								$$IF:ANNLISTE:PRIX$$
+									<div class="row-fluid">
+										<div class="typo-action h2-like biggest prix-annonce pagination-centered" id="prix$$ANNLISTE:IDANNONCE$$">
+											$$IF=:5:ANNLISTE:IDTYPETRANSACTION$$<span class="smallest">$$LG:BOUQUET pcase$$ : </span>$$END$$
+											$$IF=:4:FORM:IDTT$$$$LG:APARTIRDE$$ $$END$$$$ANNLISTE:PRIX$$ $$ANNLISTE:PRIX_UNITE replace ht ¤ht replace cc ¤cc$$
+											<!--#include virtual="recherche/incl_prix_condition.htm" -->
+										</div>
+										$$IF:ANNLISTE:PX_RENTE$$
+											<div class="typo-action h3-like prix-annonce" id="px_rente$$ANNLISTE:IDANNONCE$$">
+											$$LG:RENTE pcase$$ : $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$
+											</div>
+										$$END$$
+										
+										$$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+											<span class="small">
+												$$IF:ANNLISTE:AGE_F$$
+													$$LG:FEMME pcase$$ : $$ANNLISTE:AGE_F$$ ans
+												$$END$$
+												$$IF:ANNLISTE:AGE_H$$
+													$$IF!:0:ANNLISTE:AGE_F$$&nbsp;$$END$$
+													$$LG:HOMME pcase$$ : $$ANNLISTE:AGE_H$$ ans
+												$$END$$
+											</span>
+										$$END$$
+										
+										$$IF:ANNLISTE:SIBAISSEPRIX$$
+										<div class="small pagination-centered">
+											<!--#include virtual="recherche/incl_prix_baisse.htm" -->
+										</div>
+										$$END$$
+									</div>
+								$$END$$
+								$$IF0:ANNLISTE:PRIX$$
+									<div class="typo-action bold prix-annonce" id="prix$$ANNLISTE:IDANNONCE$$">
+									</div>
+								$$END$$
+							$$END$$	
+						$$END$$
+						$$IF=:1:PRIXMASQUE$$
+							<span class="h2-like"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+						$$END$$	
+					</div>
+					
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+<div class="hidden-desktop hidden-tablet">
+<!--#include virtual="recherche/incl_mobile_annonce_v2.htm" -->
+</div>
