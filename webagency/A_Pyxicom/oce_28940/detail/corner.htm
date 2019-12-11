@@ -1,0 +1,434 @@
+$$REM$$====================================================================
+//// <summary>Page détail CORNER</summary>
+//// <remarks>
+//// <para>N'est pas le même fichier que celui de slagence_x/detail/corner.htm</para>
+//// <para>Voir /detail/incl_detail_haut.htm</para>
+//// <para>2009-02-18 : nouvelle macro infos légales : E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:ML</para>
+//// <para>2009-11-13 : débugg macro infos complémentaires</para>
+//// <para>2010-03-23 : Intégration script FANCYBOX</para>
+//// </remarks>
+//// <update date="2010-03-23" author="lisbonne.siriphol">Update</update>
+//// <update date="2009-12-10" author="lisbonne.siriphol">Update</update>
+//// <update date="2009-11-13" author="lisbonne.siriphol">Update</update>
+//// <update date="2009-02-18" author="lisbonne.siriphol">Update</update>
+====================================================================$$END$$
+<!--#include virtual="/detail/incl_detail_haut.htm" -->
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "styles,detail_corner.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+</style>$$
+
+<div id="DetailAnnonce" class="detailAnnonce$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$">
+
+	$$IF0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	<!--#include virtual="/detail/incl_no_annonce.htm" -->
+	$$END:0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+
+	$$IF:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	
+	$$REM$$<!-- // === // script galerie qui bugge si on le deplace // === // -->$$END$$
+	<script type="text/javascript" src="$$-$$scripts/detail_galerie.js"></script>	
+	
+	<!-- // liens haut // -->	
+	<div id="LiensRetour">
+		<!--#include virtual="/detail/incl_retour_page_precedente.htm" -->
+		<!--#include virtual="/detail/incl_retour_accueil.htm" -->
+		<div class="clear"><!-- --></div>
+	</div><!-- fin #Liens Retour -->	
+	
+	<table>		
+		<tr>
+			<!-- // ================= // onglets galerie + diaporama (colonne gauche) // ================= // -->
+			<td id="Onglets" colspan="2">				
+				$$IF:IMMOBW:ANNONCE:IDPHOTO$$
+				<!-- si photo -->
+				<a href="javascript:showGalerie();" title="" id="OngGal"><span>$$LG:GALERIEPHOTO pcase$$</span></a>
+				$$IF+:2:IMMOBW:ANNONCE:NB_PHOTOS$$
+				<a href="javascript:showDiapos();" title="" id="OngDiap"><span>$$LG:DIAPORAMA pcase$$</span></a>
+				$$END:NB_PHOTOS$$
+				$$END:IDPHOTO$$				
+								
+				<div class="clear"><!-- --></div>
+			</td><!-- fin #Onglets -->
+			
+			<!-- // ================= // onglet ref annonce (colonne droite) // ================= // -->		
+			<td id="OngletRef">
+				<div id="Ref">
+					<p><!--#include virtual="/detail/incl_refannonce.htm" --></p>
+				</div>
+				<div class="clear"><!-- --></div>
+			</td><!-- fin #OngletRef -->			
+		</tr>
+		
+		<tr>
+			<td id="ColonneGauche">
+				<div id="ColonneGauche_Ctn">
+				<!-- // =========================== // conteneur galerie photo + thumbs // =========================== // -->
+					<!--#include virtual="/detail/incl_fancybox.htm" -->
+					<!-- // galerie // -->
+					<div id="Galerie" style="display:block;">						
+						$$B:IMMOBW:PHOTOS:ALIAS:DIAPO:REP:1$$
+						$$BIF0:DIAPO$$
+						<!-- // sans photo / dans CSS // -->
+						<div id="SansPhoto"><!-- --></div>
+						$$BFIN$$
+	
+						<!--#include virtual="/detail/incl_sipromo.htm" -->	
+						<!--#include virtual="/detail/incl_exclusif.htm" -->						
+						<!--#include virtual="/detail/incl_coupdecoeur.htm" -->											
+						
+						$$BIF:DIAPO$$
+						<!-- conteneur grande photo -->
+						<div id="previewPane">
+							<div id="grandeimage">
+								$$DO$$
+								<img src="$$DIAPO:URL$$" id="GrandePhoto$$DIAPO:IDVISUEL$$" alt="$$REF_ALT_TITLE$$" title="$$REF_ALT_TITLE$$" />
+								$$LOOP$$							
+								<div id="waitMessage">$$LG:LOADING lcase$$...</div>
+							</div>
+							
+							<div id="largeImageCaption">
+								<!-- n photo / nb photo -->
+								$$LG:PHOT pcase$$ 1/$$DIAPO:NBR$$
+$$REM$$<!-- ============ 28.12.2009 ajout du descriptif de la photo [Lisbonne] ============ -->$$END$$									
+								$$IF:1_DIAPO:DESCRIPTIF_FR$$ :  $$1_DIAPO:DESCRIPTIF_FR$$ $$END$$
+							</div>			
+						</div><!-- fin #previewPane (conteneur grande photo) -->				
+						$$BFIN$$						
+						
+						
+						$$BIF:DIAPO$$						
+						$$IF+:2:DIAPO:NBR$$
+						<div id="galleryContainer">
+							<div id="arrow_left"><img src="" alt="" title="" /></div>
+							<div id="arrow_right"><img src="" alt="" title="" /></div>
+							<div id="theImages">
+								<!-- Thumbnails -->
+								$$DO$$
+								<a href="#" onclick="showPreview('$$DIAPO:URL$$','$$DIAPO:I$$');return false"><img src="$$DIAPO:THUMB_URL$$" alt="$$REF_ALT_TITLE$$" title="$$REF_ALT_TITLE$$" /></a>		
+								$$LOOP$$
+								<!-- End thumbnails -->
+								
+								<!-- #photo -->
+								$$DO$$
+								<div class="imageCaption">$$LG:PHOT pcase$$
+									$$IF0:DIAPO:I$$1$$END$$$$IF:DIAPO:I$$$$DIAPO:I exec XX+1$$$$END$$/$$DIAPO:NBR$$
+$$REM$$<!-- ============ 28.12.2009 ajout du descriptif de la photo [Lisbonne] ============ -->$$END$$	
+									$$IF0:DIAPO:I$$
+									$$IF:1_DIAPO:DESCRIPTIF_FR$$ :  $$1_DIAPO:DESCRIPTIF_FR$$ $$END:DIAPO:DESCRIPTIF_FR$$
+									$$END:DIAPO:I$$
+									
+									$$IF:DIAPO:I$$
+									$$IF:DIAPO:DESCRIPTIF_FR$$ :  $$DIAPO:DESCRIPTIF_FR$$ $$END:DIAPO:DESCRIPTIF_FR$$
+									$$END:DIAPO:I$$
+								</div>
+								$$LOOP$$
+								<!-- fin #photo -->
+								
+								<div id="slideEnd"></div>
+							</div><!-- fin #theImages (conteneur thumbs) -->
+						</div><!-- fin #galleryContainer -->
+						$$END:DIAPO:NBR$$
+						$$BFIN$$
+							
+					</div><!-- fin #Galerie -->
+				
+					$$BIF:DIAPO$$
+					<!-- // =========================== // diaporama js // =========================== // -->
+					<div id="Diapo" style="display: none;">
+						<div id="s1" class="pics">
+							$$DO$$
+								<img src="$$DIAPO:URL$$" alt="" title="" /> 
+							$$LOOP$$
+						</div><!-- fin #s1 -->
+					</div><!-- fin #Diapo -->
+					<div class="clear"><!-- --></div>
+					$$BFIN$$
+					
+					$$REM$$
+					<!-- // =========================== // autres visuels enregistrés // =========================== // -->
+					<!-- pdf : $$IMMOBW:ANNONCE:NBPDF$$ / video : $$IMMOBW:ANNONCE:VIDEO_URL$$ / id360 : $$IMMOBW:ANNONCE:ID360$$ / url360 : $$IMMOBW:ANNONCE:360_URL$$ -->
+					$$END:REM$$
+									
+					<div id="AutresVisuels"
+						$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$
+						
+						$$IF0:IMMOBW:ANNONCE:IDLIEN$$
+						$$IF0:IMMOBW:ANNONCE:VIDEO_URL$$
+						$$IF0:IMMOBW:ANNONCE:ID360$$						
+						$$IF0:IMMOBW:ANNONCE:360_URL$$
+						$$BIF0:PDF$$
+						style="display: none;"
+						$$BFIN$$
+						$$END:360_URL$$
+						$$END:ID360$$
+						$$END:VIDEO_URL$$
+						$$END:IDLIEN$$
+						
+						>
+						<div id="OngletAutresVisuels"><p>$$LG:AUTRESVISUELS pcase$$</p></div>					
+						
+						<div id="ListeVisuels">
+							<!--#include virtual="/detail/incl_visuel_pdf.htm" -->
+							<!--#include virtual="/detail/incl_visuel_360.htm" -->
+							<!--#include virtual="/detail/incl_visuel_video_externe.htm" -->			
+$$REM$$<!-- ============ lien externe ajouté le 03.11.2009 [Lisbonne]============ -->$$END$$				
+							<!--#include virtual="/detail/incl_visuel_lien_externe.htm" -->							
+						</div><!--// fin #ListeVisuels //-->					
+					
+					</div><!--// fin #AutresVisuels //-->				
+
+<!-- //////////////////////////////////////////////////////// -->
+
+				
+
+<!-- //////////////////////////////////////////////////////// -->
+
+					<div id="Outils">						
+						<div id="OngletOutils"><p>$$LG:LIEN:OUT pcase$$</p></div>						
+						<div id="ListeOutils">
+							<!--#include virtual="/detail/incl_outil_ajout_selection.htm" -->				
+							<!--#include virtual="/detail/incl_outil_voir_selection.htm" -->
+							<!--#include virtual="/detail/incl_outil_imprimer.htm" -->
+							<!--#include virtual="/detail/incl_outil_envoi_ami.htm" -->	
+							
+							
+							$$REM$$
+<!--// 13.11.2009 : caché par Lisbonne paskeu de toute façon ça marche pas, aucune solution trouvée pour les anciens outils 
+										si jamais ça doit être remis, vérifier les conf template_x_v2 etc.
+//-->
+							$$IF=:1:PAGE:WAG_DETAIL_FINANCER$$
+							<!--// condition conf id3x //-->
+								
+								$$IF!:1$3$4$7:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+								<div id="FinancerAchat" class="outils_bg">							
+									<div id="Picto_FinancerAchat"><!-- --></div>
+					<!--// 	option demandée le 23.01.2009 par Lolo Moyer 
+									pour le site de l'agence Boisson de Cognac (c'est pas une blague)
+									qui voulait faire pointer le lien "financer cet achat" vers le site de son choix
+									bon, j'en ai plus jamais entendu parler depuis... [Lisbonne]
+					//-->	
+									$$IF=:0:PAGE:WAG_DETAIL_FINANCER_LIEN$$
+									$$A:LIEN_FINANCER_ACHAT=javascript:pop('http://www.seloger.com/ext,agences,index.htm?cnt=206025',650,350,100,200);$$
+									$$END:WAG_DETAIL_FINANCER_LIEN$$
+									
+									$$IF!:0:PAGE:WAG_DETAIL_FINANCER_LIEN$$
+									$$A:LIEN_FINANCER_ACHAT=javascript:pop('@@PAGE:WAG_DETAIL_FINANCER_LIEN@@',1000,600,50,50);$$
+									$$END:WAG_DETAIL_FINANCER_LIEN$$
+							 										
+									<p><a href="$$LIEN_FINANCER_ACHAT$$" title="$$LG:FINANCERACHAT pcase$$">$$LG:FINANCERACHAT pcase$$</a></p>
+								</div>
+								$$END:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+								
+							$$END:WAG_DETAIL_FINANCER$$
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+							$$END:REM$$
+							
+							$$IF=:1:PAGE:WAG_DETAIL_BOOKMARK$$
+							<!--////////////////////////////////////////  liens sociaux  ////////////////////////////////////////-->
+							<!--#include virtual="/detail/incl_bookmarks.htm" -->
+							$$END:1:PAGE:WAG_DETAIL_BOOKMARK$$
+							
+							$$REM$$
+							<!--// à étudier car c'est encore bancal comme option //-->
+							<div id="AnnoncesSimilaires" class="outils_bg">							
+								<div id="Picto_AnnoncesSimilaires"><!-- --></div>
+								<p><a href="#" title="" />Annonces similaires</a></p>
+							</div>
+							$$END:REM$$
+										
+						</div><!-- fin #ListeOutils -->					
+					</div><!-- fin #Outils -->					
+					
+					
+					$$REM$$
+					<!-- // caché par Lisbonne le 14.04.2009 car les scripts de la carto font bugger les scripts des galeries et des coordonnées défilantes //-->
+					$$IF=:1:PAGE:DETAILCARTO$$<div id="Carto"><!--#include virtual="/carto/incl_carto_detail.htm" --></div>$$END$$
+					$$END$$
+					
+				</div><!-- fin #ColonneGauche_Ctn -->
+			</td><!-- fin #ColonneGauche -->
+		
+			<!-- // ====================== // espace entre colonnes // ====================== // -->	
+			<td id="Spacer"><!-- --></td>
+		
+			<!-- // =========================== // colonne droite // =========================== // -->	
+			<td id="ColonneDroite">				
+				<h5 id="TypeTransaction">
+					<span>
+						<!--#include virtual="/detail/incl_type_transaction.htm" -->
+					</span>
+				</h5>			
+				<table>
+					<tr>						
+						$$IF!:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+						$$IF:IMMOBW:ANNONCE:PRIX$$
+						<td class="col1">					
+							<div id="Prix">
+								<p>
+									<!--#include virtual="/detail/incl_prix.htm" -->					
+								</p>
+							</div>
+						</td>
+						$$END:PRIX$$	
+						$$END:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$					
+						<td class="col2">					
+							<h4 id="Libelle">
+								<!--#include virtual="/detail/incl_libelle.htm" -->
+								$$IF:IMMOBW:ANNONCE:IDTYPEINVESTISSEMENT$$<span><!--#include virtual="/detail/incl_type_investissement.htm" --></span>$$END$$
+							</h4>
+							<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+							<h3 id="Ville"><!--#include virtual="/detail/incl_ville.htm" --></h3>
+							$$IF:IMMOBW:ANNONCE:SURFACE$$
+							<h3 id="Surface"><!--#include virtual="/detail/incl_surface.htm" --></h3>
+							$$END:IMMOBW:ANNONCE:SURFACE$$
+							$$IF:IMMOBW:ANNONCE:SURF_TERRAIN$$
+							<h3 id="SurfaceTerrain"><!--#include virtual="/detail/incl_surface_terrain.htm" --></h3>
+							$$END:SURF_TERRAIN$$							
+							$$IF:IMMOBW:ANNONCE:NB_PIECES$$
+							<h3 id="Nb_Pieces"><!--#include virtual="/detail/incl_nb_pieces.htm" --></h3>
+							$$END:NB_PIECES$$							
+							$$IF:IMMOBW:ANNONCE:IDQUARTIER$$
+							<h3 id="Quartier"><!--#include virtual="/detail/incl_quartier.htm" --></h3>
+							$$END:IMMOBW:ANNONCE:IDQUARTIER$$
+							$$IF:IMMOBW:ANNONCE:PROX$$
+							<h3 id="Prox"><!--#include virtual="/detail/incl_prox.htm" --></h3>
+							$$END:IMMOBW:ANNONCE:PROX$$	
+						</td>
+					</tr>
+				</table>			
+				<!--#include virtual="/detail/incl_descriptif.htm" -->
+				<!--#include virtual="/detail/incl_neuf.htm" -->				
+				
+				
+				<div id="InfosComp_Ctn">
+					$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+					$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+					<h3><span>$$LG:FICHESIGNALETIQUE pcase$$</span></h3>					
+					<div id="InfosComp">
+						$$DO$$
+							<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$</p>
+						$$LOOP$$				
+						<div class="clear"><!-- --></div>
+					</div><!-- fin #InfosComp -->
+					$$BFIN$$
+					
+					<div id="InfosComp_Prix">
+						<!--#include virtual="/detail/incl_dispo.htm" -->
+						<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+						<!--#include virtual="/detail/incl_glossaire.htm" -->
+					</div><!-- fin #InfosComp_Prix -->				
+				
+				</div><!-- fin #InfosComp_Ctn -->
+				
+				
+				
+				<div id="TitreContact"><h5>$$LG:CONTACTERAGENCE pcase$$</h5></div>			
+				<table class="coords_agence">				
+					<tr>
+						<td class="agence">$$LG:AGENCE pcase$$</td>
+						<td class="agenceMentions">
+							<a href="#" title="">
+								<em>						
+									<span>
+										<!--#include virtual="detail/incl_mentions_legales.htm" -->
+									</span>
+								</em>					
+								$$LG:LIEN:MENTION pcase$$
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="coords_agence_col1">						
+							$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+							<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->
+							<!--#include virtual="detail/incl_agence_email.htm" -->
+							<!--#include virtual="detail/incl_agence_url.htm" -->
+						</td><!-- fin .coords_agence_col1 -->
+						<td class="coords_agence_col2">													
+							$$REM$$
+							<!-- // =========================== // ?????????????????????????????????? // =========================== // -->	
+							$$IF:AG:COOR-NOM$$<p class="ctcAgence"><strong>$$LG:CONTACT pcase$$ : $$AG:COOR-NOM$$</strong></p>$$END:COOR-NOM$$
+							$$END$$						
+							<!--#include virtual="detail/incl_agence_tel.htm" -->
+							<!--#include virtual="detail/incl_agence_fax.htm" -->
+							
+							<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+							<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+							<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+						</td><!--// fin .coords_agence_col2 //-->
+					</tr>
+					
+					$$IF:IMMOBW:ANNONCE:IDTYPECTC1$$
+					<!--// contact 1 programme neuf (en general promoteur) //-->
+					<tr>
+						<td class="ctc_neuf" colspan="2">
+							<!--#include virtual="detail/incl_neuf_type_ctc1.htm" -->
+						</td>
+					</tr>
+					$$END:IDTYPECTC1$$
+					
+					$$IF:IMMOBW:ANNONCE:IDTYPECTC2$$
+					<!--// contact 2 programme neuf (en general commercialisateur) //-->
+					<tr>
+						<td class="ctc_neuf" colspan="2">
+							<!--#include virtual="detail/incl_neuf_type_ctc2.htm" -->
+						</td>
+					</tr>
+					$$END:IDTYPECTC1$$
+					
+					$$IF:IMMOBW:ANNONCE:ADRBUREAU$$
+					<!--// bureau de vente programme neuf //-->
+					<tr>
+						<td class="ctc_neuf" colspan="2">
+							<!--#include virtual="detail/incl_neuf_bureau_vente.htm" -->
+						</td>
+					</tr>
+					$$END:ADRBUREAU$$
+					
+					<!--#include virtual="detail/incl_texte_agence.htm" -->
+					
+				</table><!--// fin .coords_agence //-->			
+			
+				$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				$$IF:CHECKMAIL$$						
+
+				<div id="TitreForm"><h5>$$LG:DEMANDINFOS pcase$$</h5></div>		
+
+				$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+				$$REM$$<!-- // si message envoye // -->$$END:REM$$
+				<script type="text/javascript">
+					<!--
+					document.location= '/$$REP:2$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+					//-->
+				</script>
+				$$END:AGENCEMAIL:OK$$
+				
+				$$IF=:1:FORM:CTC$$
+				<!-- // formulaire envoye // -->	
+				<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+				$$END:FORM:CTC$$
+				
+				$$IF!:1:FORM:CTC$$
+				<!-- // formulaire de contact // -->
+				<!--#include virtual="detail/incl_formulaire.htm" -->
+				$$END:FORM:CTC$$
+				
+				<!-- // conditions generales d'utilisation  // -->
+				<!--#include virtual="/incl_cgu_formulaire.htm" -->
+				
+				$$END:CHECKMAIL$$				
+			</td><!--// fin #ColonneDroite //-->
+		</tr>
+	</table>
+	<div class="majAnn"><!--#include virtual="detail/incl_maj.htm" --></div>
+	<div class="clear"><!-- --></div>	
+	<!--#include virtual="/detail/incl_dpe.htm" -->	
+	<!--#include virtual="detail/incl_retour_haut.htm" -->	
+	
+	<div class="clear"><!-- --></div>	
+	$$END:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+
+</div><!-- fin #DetailAnnonce -->
+$$INCL:BAS.HTM$$
