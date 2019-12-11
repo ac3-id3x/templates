@@ -1,0 +1,329 @@
+$$REM$$<!-- =========== FICHIER DE CONFIGURATION POUR LE REF =========== -->$$END:REM$$
+
+$$REM$$<!-- =========== INDEXATION DES LANGUES =========== -->$$END:REM$$
+$$REM$$<!-- =========== SI =1 toutes les langues seront indexées, SI =0 pas indexées =========== -->$$END:REM$$
+$$A:INDEXATION_LANGUE=0$$
+
+$$REM$$<!-- =========== NOM DU SITE (MULTI-AGENCES uniquement) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Cette variable est présente sur plusieurs pages du site (title de la page index, de la page agence liste...) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== Pour appeler cette variable ailleurs (dans du texte, une meta...) il faudra utiliser @@NOM_SITE_REF@@ =========== -->$$END:REM$$
+$$A:NOM_SITE_REF=$$
+
+$$REM$$<!-- =========== PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le TITLE de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est le title de l'incl_ref mutualisé qui sera affiché  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$IF=:0:MULTIAGENCES$$
+		$$A:TITLE_INDEX=Immobilier Lodève | Arthurimmo.com$$
+
+	$$END$$
+	$$IF=:1:MULTIAGENCES$$
+		$$A:TITLE_INDEX=Expert Immobilier Arthurimmo.com : @@AGENCE_NOM@@$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$A:TITLE_INDEX=@@TITLE_INDEX@@, @@COMPTE_AGENCES:VILLE@@$$
+			$$LOOP$$
+		$$BFIN$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser la meta DESCRIPTION de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est la meta description de l'incl_ref mutualisé qui sera affichée  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$IF=:0:MULTIAGENCES$$
+		$$A:DESCRIPTION_INDEX=L'agence Socatrimm du réseau national immobilier 100% Expert Arthurimmo.com vous accompagne pour votre projet d'achat ou de vente de votre maison, appartement, terrain sur Lodève et dans l'Hérault.@@$$
+	$$END$$
+	$$IF=:1:MULTIAGENCES$$
+		$$A:DESCRIPTION_INDEX=L'expertise immobilière avec @@AGENCE_NOM@@ sur $$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$A:DESCRIPTION_INDEX=@@DESCRIPTION_INDEX@@ @@COMPTE_AGENCES:VILLE@@, $$
+			$$LOOP$$
+		$$BFIN$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser le SLOGAN de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:SLOGAN_INDEX=$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser l'ARCHITECTURE (H1, H2...) de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H1 =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:H1_INDEX=$$
+$$END$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Par défaut le texte est "NOS DERNIÈRES ANNONCES IMMOBILIÈRES" =========== -->$$END:REM$$
+$$A:H2_INDEX_MODULE=@@LG:NOSDERANN pcase@@$$
+
+$$REM$$<!-- =========== Personnaliser le MODULE AGENCE de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== MONO =========== -->$$END:REM$$
+$$IF=:0:MULTIAGENCES$$
+	$$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+$$REM$$<!-- =========== MULTI =========== -->$$END:REM$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF=:FR:LANGUE$$
+		$$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+	$$END$$
+$$END$$
+$$REM$$<!-- =========== Ajout de TEXTE personnalisé pour le module BLOC AGENCE de la PAGE INDEX (MONO/MULTI) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera MASQUE (un texte par défaut sera affiché), SI =1 AFFICHAGE du texte personnalisé ci-dessous -->$$END$$
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+	$$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS REF SUR LE SLIDE AGENCE DE LA HOME =========== -->$$END:REM$$
+$$A:SLIDEAGENCE_LIENS_REF=$$
+
+
+
+$$REM$$<!-- =========== AJOUT DE CONTENU SUR LA PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera MASQUE, SI =1 AFFICHAGE du texte-->$$END$$
+$$A:ENCART_TXT_HOME=0$$
+$$REM$$<!-- SI =1 le texte sera affiché au DESSUS des modules (alerte mail, réseaux sociaux...), SI =2 en DESSOUS -->$$END$$
+$$A:POSITION_ENCART_TXT_HOME=1$$
+$$REM$$<!-- Ajout du TEXTE personnalisé -->$$END$$
+$$IF=:FR:LANGUE$$
+	$$A:ENCART_TXT_HOME_CONTENU=<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.</p>$$
+$$END$$
+
+$$REM$$<!-- =========== RAJOUT DE LIENS PERSONNALISES DANS LE MINI MOTEUR de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =1 les liens seront affichés, si =0 alors les liens seront masqués -->$$END$$
+$$A:MOTEUR_VILLES_REF=0$$
+$$REM$$<!-- Personnalisation des liens (ajout de 4 liens max) -->$$END$$
+$$A:MOTEUR_VILLE_1=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_2=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_3=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_4=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+
+$$REM$$<!-- =========== PAGE DETAIL =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS DE MICRO DONNES, SI =1 MICRODONNES AFFICHEES dans les SERPS-->$$END$$
+$$A:MICRO_DONNES_PRIX=1$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE ESTIMATION (estimation,immobiliere.htm) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_ESTIMATION=0$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:REP:1$$
+$$REM$$<!-- Personnalisation du title -->$$END$$
+$$A:TITLE_ESTIMATION=$$
+$$REM$$<!-- Personnalisation de la meta description -->$$END$$
+$$A:DESCRIPTION_ESTIMATION=$$
+$$REM$$<!-- Personnalisation du H1 -->$$END$$
+$$A:H1_ESTIMATION=
+<h2 class="typo-action">Estimation immobilière à Lodève</h2>
+<p>Besoin <strong>de faire évaluer un bien situé à Lodève, dans le cœur d’Hérault ou dans le sud du Larzac</strong> ? L’agence Socatrimm, affiliée au réseau national Arthurimmo.com, est la seule enseigne du secteur à proposer un <strong>service professionnel d’estimation immobilière</strong> prenant en compte à la fois <strong>la valeur de revente du bien et, au besoin, sa valeur vénale</strong>. </p>
+<p>Une prestation souvent précieuse pour aider à la <strong>résolution d’une succession ou à la clarification de votre patrimoine imposable !</strong> </p>
+<p>Vous bénéficierez, dans tous les cas, d’un <strong>service expert</strong> qui vous permettra d’évaluer <strong>une maison ou un appartement à Lodève au prix le plus juste</strong>.</p>
+$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$A:PHRASE_ESTIMATION=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,ESTIMATION (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE_ESTIMATION=$$ 
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h2 =========== -->$$END:REM$$
+$$A:H2_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,estimation (multi-agences) =========== -->$$END:REM$$
+$$A:AGENCES_LISTE_ESTIMATION_CONTENU=$$
+
+$$REM$$<!-- =========== PAGE OUTILS =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_OUTILS=0$$
+
+$$REM$$<!-- =========== PAGE REALISATION =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_REALISATION=0$$
+
+$$REM$$<!-- =========== PAGE RESPONSIVE =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_RESPONSIVE=0$$
+
+$$REM$$<!-- =========== PAGE GESTION, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_GESTION=$$
+	$$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+	$$A:H1_GESTION=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE SYNDIC, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_SYNDIC=$$
+	$$A:DESCRIPTION_SYNDIC=$$
+	$$A:H1_SYNDIC=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:FORM:IDP$$
+	$$REM$$<!-- =========== Personnalisation du TITLE de la page AGENCE =========== -->$$END:REM$$
+	$$A:TITLE_AGENCE=$$
+	$$REM$$<!-- =========== Personnalisation de la meta DESCRIPTION de la page AGENCE =========== -->$$END:REM$$
+	$$A:DESCRIPTION_AGENCE=$$
+	$$REM$$<!-- =========== Personnalisation du H1 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H1_AGENCE=$$
+	$$REM$$<!-- =========== Personnalisation du H2 de la page AGENCE =========== -->$$END:REM$$
+	$$A:H2_AGENCE=$$
+	$$REM$$<!-- =========== Personnalisation du SLOGAN de la page AGENCE =========== -->$$END:REM$$
+	$$A:SLOGAN_AGENCE=
+	L’agence Socatrimm vous souhaite la bienvenue à Lodève, au cœur de l’Hérault et aux portes du Larzac ! 
+<br/>Notre établissement, affilié au réseau national Arthurimmo.com, est composé d’une équipe motivée et disponible pour vous faire découvrir toutes nos offres en matière de transaction et de gestion locative. 
+<br/>Présent sur le secteur depuis 2002, Socatrimm accompagne acheteurs, vendeurs, bailleurs et locataires dans tous leurs projets immobiliers à Lodève et dans les environs. 
+<br/>Terrains, maisons, appartements, immeubles de rapport et fonds de commerce composent l’essentiel de notre vitrine très diversifiée. 
+<br/>Votre agence Socatrimm s’impose comme l’interlocuteur local de référence pour toute évaluation de la valeur vénale d’un bien immobilier, mais aussi pour tout projet d’investissement locatif. 
+<br/>Vous bénéficierez, au besoin, d’une assistance complète à l’installation et de notre réseau d’artisans et de courtiers partenaires.
+$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout de contenu sous le H2 (généralement intitulé "Présentation de l'agence immobilière" ou "Qui sommes-nous") =========== -->$$END:REM$$
+$$REM$$<!-- =========== 2 possibilités pour rajouter du texte : soit via SAISS soit via le code ci-dessous (cf. wiki) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'IDP de l'agence, Exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:FORM:IDP$$
+  $$REM$$<!-- =========== SI =1 le texte s'affiche, si =0 alors masqué =========== -->$$END:REM$$
+  $$A:TXT_PUBLIC_PERSO=1$$
+  $$REM$$<!-- =========== Ajout du contenu =========== -->$$END:REM$$
+  $$A:TXT_PUBLIC_PERSO_CONTENU=
+  Porte de la Méditerranée, sous-préfecture de l'Hérault, Lodève bénéficie d'une situation géographique privilégiée sur l'autoroute gratuite A75. 
+<br/>A 30 mn de Montpellier, Béziers, Sète et Millau. Causses et cirques, plaines verdoyantes, la grande diversité des paysages du Lodévois marque la transition naturelle entre le Larzac et le Languedoc.
+<br/>
+  Fondée en 2002, l’agence Socatrimm de Lodève se spécialise dans l’achat-vente, la location et l’estimation des biens immobiliers à leur valeur vénale dans tout le cœur d’Herault et le sud du Larzac.
+  <br/>L’établissement, affilié au réseau Arthurimmo.com, est le seul professionnel du secteur bénéficiant du soutien d’une franchise nationale.
+  <br/>
+  <br/><br/><h2>Un professionnel de l’immobilier en plein cœur de Lodève</h2>
+  <br/>Depuis près de quinze ans, l’agence Socatrimm propose un service d’accompagnement haut de gamme à l’ensemble des particuliers ou professionnels en quête d’un bien à vendre ou à louer dans la région de Lodève.
+  <br/>Les cinq membres de l’équipe affichent tous au minimum une expérience du terrain de plus de dix ans, et cultivent une connaissance très fine du marché immobilier local et de ses spécificités.
+  <br/>Des formations régulières et l’appui du réseau Arthurimmo.com permettent à toute l’équipe de Socatrimm de se maintenir à jour des dernières évolutions réglementaires, et de proposer notamment des prestations pointues dans le domaine de la gestion locative ou de l’évaluation des biens immobiliers à leur valeur vénale.
+<br/><br/><h2>Un vaste catalogue de biens à vendre ou à louer</h2>
+  <br/>La vitrine de Socatrimm, implantée rue Neuve des Marches en plein cœur de Lodève, reflète de façon remarquable la variété et le dynamisme du marché immobilier de cette sous-préfecture de l’Hérault.
+  <br/>Appartements récents ou anciens, studios, maisons de ville, villas et vieilles demeures familiales y côtoient régulièrement les terrains à bâtir, les immeubles de rapport pour investissement locatif ou encore les ventes en viager.
+  <br/>Les acquéreurs intéressés peuvent contacter notre agence du lundi matin au samedi midi afin de convenir des modalités d’une visite dans les meilleurs délais.
+<br/><br/><h2>Une gestion personnalisée et appuyée pour chaque dossier</h2>
+  <br/>Les vendeurs de biens immobiliers à Lodève, en faisant appel à Socatrimm, bénéficient d’une forte visibilité qui augmente les chances d’une transaction rapide et au meilleur prix.
+  <br/>Les acheteurs peuvent quant à eux compter sur le carnet d’adresses très rempli de notre établissement pour obtenir un contact privilégié auprès de divers professionnels, comme des artisans ou des courtiers en crédit immobilier.
+  <br/>Les nouveaux arrivants enfin, ont la possibilité de solliciter la prise en charge par nos soins de menus services, dont les relevés de compteur ou les abonnements de gaz ou d’électricité.
+
+<br/><br/><h2>AVIS DE PROJET DE FUSION</h2><br/>
+
+Aux termes d’un acte sous seing privé en date à CLERMONT L’HERAULT du 28 novembre 2016, les Sociétés GROUPE BOUSQUET IMMOBILIER et SOCATRIMM ont établi un projet de fusion par absorption de la société  SOCATRIMM  par la société GROUPE BOUSQUET IMMOBILIER à qui la société SOCATRIMM apporterait la totalité de son actif, évalué à 584.297,83 euros, à charge de la totalité de son passif, évalué à 562.220,92 euros, soit un apport net de 22.076,91 euros.<br/><br/>
+
+La société GROUPE BOUSQUET IMMOBILIER, société absorbante, détenant la totalité des parts sociales de SOCATRIMM  – société absorbée, il ne sera procédé à aucune augmentation de capital.
+Cette opération de fusion dégagera un mali de 143.273,09 euros qui sera comptabilisé à l’actif du bilan de la société absorbante dans un sous-compte « mali de fusion ».<br/><br/>
+
+Toutes les opérations effectuées par la société SOCATRIMM  depuis le 1er janvier 2016 jusqu’à la date de réalisation définitive de la fusion seront prises en charge par la société GROUPE BOUSQUET IMMOBILIER.<br/><br/>
+
+Ledit projet a été établi sous la condition suspensive de son approbation par l’associé unique de la société absorbante.<br/>
+
+La société SOCATRIMM sera dissoute de plein droit, sans liquidation, au jour de la réalisation définitive de la fusion.<br/>
+
+Le projet de fusion a été déposé au greffe du tribunal de commerce de MONTPELLIER le 24 Novembre 2016.
+
+  
+  $$
+$$END$$
+
+
+
+$$REM$$<!-- =========== AJOUT DE LIENS SUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:FORM:IDP$$
+	$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+	$$A:SEO_PORTEFEUILLE=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="http://www.lodeve-arthurimmo.com/immobilier/tout/immo-lodeve-34/">Nos annonces à Lodève</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="http://www.lodeve-arthurimmo.com/immobilier/achat/immo-lodeve-34/bien-maison/">Nos maisons à vendre à Lodève</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="http://www.lodeve-arthurimmo.com/immobilier/achat/immo-lodeve-34/bien-appartement/">Nos appartements à Lodève</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="http://www.lodeve-arthurimmo.com/immobilier/34/herault.htm">Toutes nos annonces dans l'Hérault</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DES LIENS RESEAUX SOCIAUX POUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+	$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+	$$A:SOCIAL_AGENCE_FACEBOOK=https://www.facebook.com/ArthurimmoLodeve/?ref=hl$$
+	$$A:SOCIAL_AGENCE_TWITTER=https://twitter.com/SocatrimmLodeve$$
+	$$A:SOCIAL_AGENCE_GOOGLE_PLUS=$$
+	$$A:SOCIAL_AGENCE_YOUTUBE=$$
+	$$A:SOCIAL_AGENCE_GOOGLE_LOCAL=https://plus.google.com/112971267641389089215/about$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout du badge google+ (dans la sidebar) pour la page agence =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:566737:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 le badge sera affiché, si =0 alors masqué =========== -->$$END:REM$$
+$$A:BADGE_GOOGLE_AGENCE=1$$
+	$$REM$$<!-- =========== Récupérer l'id de la page google+, exemple : 104269285648801442131 = https://plus.google.com/104269285648801442131/ =========== -->$$END:REM$$
+	$$A:SOCIAL_BADGE_GOOGLE_AGENCE=112971267641389089215$$
+$$END$$
+
+
+
+
+$$REM$$<!-- =========== RAJOUT DE TEXTE SUR LA PAGE AGENCES,LISTE (MULTI-AGENCES) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 AFFICHAGE du texte -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=1$$
+$$A:AGENCES_LISTE_CONTENU=
+	<div class="row-fluid">
+		<div class="span12 hidden-phone">
+			<div class="typo-action bigger margin-bottom-5">Votre bien immobilier</div>
+			<div class="row-fluid relative">
+				<div class="span12">
+					<div class="bg-secondary typo-white padding-11 margin-right-20 bigger height-110 pagination-left uppercase width-450">mérite notre expertise</div>
+					<div class="bg-white top left margin-top-neg-65 margin-left-20 padding-10 z25 parallax-box-shadow span11 bloc-white-agence">
+						<div class="bold">L'achat ou la vente d'un bien immobilier</div>
+						<div>représente un des actes les plus importants de la vie et il convient d'être accompagné dans votre projet par un <strong>Expert immobilier</strong> qui seul peut vous garantir une transaction au prix juste et dans des conditions d'équité parfaite entre les deux parties prenantes que sont les vendeurs et les acquéreurs.</div>
+						<div>Que vous désiriez acheter ou vendre un bien immobilier il y a forcément une agence Arthurimmo.com dans votre région qui pourra vous conseiller et répondre à toutes vos interrogations.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+$$
+
+
+$$REM$$<!-- =========== FOOTER 1 - Personnalisation de la section "RUBRIQUES" =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le titre de la "rubrique" =========== -->$$END:REM$$
+$$A:TITLE_1_FOOTER=$$
+$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+$$A:LINK_PERSO_1_FOOTER_1=$$
+$$A:LINK_PERSO_2_FOOTER_1=$$
+$$IF=:1:MENUFOOTER_EXPERTISE_NATIONAL_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_CLASSIQUE_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=<a href="@@IF=:0:MULTIAGENCES@@/@@AGENCE_IDPUBLICATION@@/estimation,immobiliere.htm@@END@@@@IF=:1:MULTIAGENCES@@/agences,estimation.htm@@END@@" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_PAYANTE_AFFICHAGE$$
+	$$A:LINK_PERSO_3_FOOTER_1=<a href="/estimation,immobiliere.htm" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$						
+$$END$$
+
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+$$REM$$<!-- =========== SLOGAN FOOTER =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MONO : si cette variable n'est pas renseignée c'est l'adresse de l'agence qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MULTI : si cette variable n'est pas renseignée c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$A:SLOGAN_FOOTER=$$
+
+$$REM$$<!-- =========== ID CATEGORIE BLOG AVEC WORDPRESS, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$INIT:IDCATBLOGWORDPRESS=27974$$
+
+	$$REM$$<!-- =========== Personnalisation du H de la page AGENCE LISTE =========== -->$$END:REM$$
+	$$A:H1_AGENCESLISTE=<span class="hidden-phone">NOS @@LG:AGENCESAVOTRSERVICE lcase@@</span>$$
+
