@@ -1,0 +1,108 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto géoloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affiché sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOSAGENCES$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région$$
+	$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région.$$
+	$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- NE PAS METTRE &amp; dans l'appel des css -->$$END:REM$$
+$$A:STYLE=@import url( "/styles,agences_liste.css?lang=@@LANGUE@@" );$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div id="AgImmo_Ctn">
+
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesHaut">
+		
+		$$IF+:5:COMPTE_AGENCES:NBR$$
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+			<script type="text/javascript">
+				<!--	
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+				//-->	
+			</script>
+		
+			<a name="tri"></a>
+			
+			<form id="Tri" action="/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">
+					$$LG:TRIERPAR pcase$$ :		
+					<select name="triAnn" id="TriAnn" class="inputSelect" onchange="Trier(this.id);">
+						<option $$IF=:nom:FORM:TRI$$selected="selected"$$END$$ $$IF0:FORM:TRI$$selected="selected"$$END$$ value="nom"> $$LG:NOM pcase$$</option>
+						<option $$IF=:cp:FORM:TRI$$selected="selected"$$END$$ value="cp"> $$LG:CODEP pcase$$</option>
+						<option $$IF=:ville:FORM:TRI$$selected="selected"$$END$$ value="ville"> $$LG:VILLE pcase$$</option>
+						$$IF+:10:COMPTE_AGENCES:NBR$$
+						<option $$IF=:dep:FORM:TRI$$selected="selected"$$END$$ value="dep"> $$LG:DEPART pcase$$</option>
+						$$END:COMPTE_AGENCES:NBR$$				
+					</select>
+				</div>
+			</form><!-- #Tri -->
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+		
+		
+		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesHaut -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+$$END:COMPTE_AGENCES:NBR$$
+		
+	$$DO:1:10$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<div class="liste">
+	<h4>Les quatres m&eacute;tiers de PARIS SEINE : </h4>
+		  <ul class="agence">
+				<li>La vente d&rsquo;appartements de charme et de prestige</li>
+				<li>La commercialisation de locaux commerciaux sur les principaux axes n&deg;1 de Paris </li>
+				<li>La gestion locative </li>
+				<li>La location</li>
+		  </ul>
+	</div>
+
+	$$IF:OPTION_GEOLOC$$
+	<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+	$$END:OPTION_GEOLOC$$
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
+
