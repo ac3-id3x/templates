@@ -1,0 +1,135 @@
+$$INCL:HAUT.HTM$$ 
+$$E:IMMOBW:AGENCE:REP:1$$ 
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$SET:PAGE:IDT=OFFREEMPLOI$$
+<div align="center"> <br />
+  <br />
+  <br />
+  <br />
+  D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+  L'adresse e-mail du destinataire n'est pas disponible. <br />
+  <br />
+  <br />
+  <br />
+</div>
+$$END$$
+$$END$$
+$$IF:AGENCE:EMAIL$$
+<table width="100%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+  <tr>
+    <td align="center"><form method="post" action="/$$REP:PAGE$$">
+        <input type="hidden" name="u" value="immobw:send-agence-mail" />
+        <input type="hidden" name="idTypeVisu" value="1" />
+        <input type="hidden" name="page_ok" value="validation_message.htm" />
+        <input type="hidden" name="page_err" value="/$$REP:URI$$" />
+        <input type="hidden" name="emailTemplate" value="mail_message.htm" />
+        <input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+        <input type="hidden" name="idPublication" value="$$REP:1$$" />
+        
+        <!--<strong>$$ERRE$$</strong> <strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong> <br />-->
+        <!--vos coordonnées-->
+        <table width="95%" border="0" cellspacing="0" cellpadding="2">
+         <tr> 
+		     <td colspan="2" align="left"> <img src="$$_$$images/logoC21.png" alt="" /></td>
+	     </tr>
+          <!--<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COORD$$</strong></td>
+	</tr>-->
+	<tr>
+          <td colspan="2" align="left">$$IF=:FR:LANGUE$$
+              Merci de nous laisser vos coordonnées.<br />
+              Nous prendrons contact avec vous dans les meilleurs délais.
+              $$END$$
+		</td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+		  <tr>
+            <td width="30%" align="left" class="label">$$LG:AI5$$	 * :</td>
+            <td width="70%" align="left"><input class="imputForm1" type="text" name="nomFamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="label">$$LG:PRENOM$$ * :</td>
+            <td align="left"><input class="imputForm1" type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="label">$$LG:ADRESSE$$ :</td>
+            <td align="left">$$IF=:FR:LANGUE$$
+              <input type="text" class="imputForm1" name="adresse" size="25" value="$$FORM:ADRESSE$$" />
+              $$END$$
+              $$IF!:FR:LANGUE$$
+              <textarea name="adresse" cols="20" Rows="3" class="imputForm11">$$FORM:ADRESSE$$</textarea>
+              $$END$$</td>
+          </tr>
+          <tr>
+            <td align="left" class="label">$$LG:VILLE$$ :</td>
+            <td align="left"><input class="imputForm1" type="text" name="ville" size="25" value="$$FORM:VILLE$$" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="label">$$LG:CODEP$$ :</td>
+            <td align="left"><input class="imputForm1" type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+          </tr>
+          $$IF!:FR:LANGUE$$
+          <tr>
+            <td align="left" class="label">$$LG:PAYS$$ * :</td>
+            <td align="left"><input class="imputForm1" type="text" name="pays" size="25" value="$$FORM:PAYS$$" /></td>
+          </tr>
+          $$END$$
+          <tr>
+            <td align="left" class="label">$$LG:TEL pcase$$ * :</td>
+            <td align="left"><input class="imputForm1" type="text" name="telephone" size="25" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="label">$$LG:AI6$$ * :</td>
+            <td align="left"><input class="imputForm1" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </table>
+        <!--Votre message-->
+        <table width="95%" cellpadding="5" cellspacing="0" class="tabFond1">
+          <tr>
+            <td class="TextForms"><!--#include virtual="/incl_text_forms.htm" --></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="label" align="left">$$LG:MESSAGE$$ :</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="left"><textarea class="imputForm1" name="message" cols="35" rows="3">$$FORM:MESSAGE$$</textarea></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="left">$$LG:OBLIGATOIRE$$</td>
+          </tr>
+        </table>
+        <!--validation-->
+        <table width="95%" border="0" cellspacing="0" cellpadding="2">
+          <!--<tr> 
+		<td align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>-->
+          <tr>
+            <td align="right"><br />
+              <input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" class="BoutonFormContact" /></td>
+          </tr>
+        </table>
+      </form></td>
+  </tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$ 
