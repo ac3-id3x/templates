@@ -1,0 +1,81 @@
+$$REM$$
+====================================================================
+
+//// <summary>Fichier conditionnant les balises indispensables au référencement et à la déontologie web</summary>
+//// <remarks>
+//// <para>Fichier appelé par " incl_ref.htm " et encore en travaux car bouchon de fichiers à nettoyer</para>
+//// <para>Code copié de la version slagence_X, puis surplus enlevé</para>
+//// <para>05.10.2010 : j'enlève car obsolète IF=:INDEX:PAGE:IDT A:TITLE:NOUVEAU= ID3:REF-TITRE:TITRE  END:PAGE:IDT</para>
+//// </remarks>
+//// <update date="2010-10-05" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-02-05" author="lisbonne.siriphol">Validation HTML/CSS ok</update>
+//// <update date="2008-02-05" author="erick.barbant">Validation ID3X en cours (mais c'est compromis il déteste ce fichier)</update>
+
+====================================================================
+$$END$$
+$$REM$$
+$$IF=:CALCULETTES:PAGE:IDT$$
+<meta name="robot" content="noindex">
+$$END:IDT$$
+
+$$IF=:CONTACTAGENCE:PAGE:IDT$$
+<meta name="robot" content="noindex">
+$$END:IDT$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+<meta name="robot" content="noindex">
+$$END:IDT$$
+
+$$IF=:AMI:IDT$$
+<meta name="robot" content="noindex">
+$$END:IDT$$
+
+$$IF=:CTC:PAGE:IDT$$
+<meta name="robot" content="noindex">
+$$END:IDT$$
+$$END$$
+$$E:ID3:URW-GETINFOS$$
+$$IF:ID3:URW-GETINFOS:CANONICAL$$
+<link rel="canonical" href="$$IMMOBW:ANNONCE:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$" />
+$$END$$
+
+
+$$REM:INFO$$
+	<!-- PAGE:TITR est positionné dans les pages du site -->
+	<!-- -->
+	<!-- Dans start.aspx -->
+	<!-- 	DicMacros["PAGE:TITRE"]			= DicConfig["cfg_titre"];	-->
+	<!--	DicMacros["PAGE:DESCRIPTION"]	= DicConfig["cfg_description"];		-->
+	<!--	DicMacros["PAGE:KEYWORDS"]		= DicConfig["cfg_keywords"];	-->
+$$END:INFO$$$$IF!:0:TITLE:REFERENCEMENT$$$$IF=:4$5$6$7$8$9$10$11$12$13$14$15$d$e$f$g$h$i$j$k$l$m$n$o$p$q$r$s:REFERENCEMENT:IDPAGE$$$$A:TITLE:REFERENCEMENT=1$$$$END:REFERENCEMENT:IDPAGE$$$$IF=:INDEX:PAGE:IDT$$$$A:TITLE:REFERENCEMENT=1$$$$END:PAGE:IDT$$$$END:TITLE:REFERENCEMENT$$$$A:TITLE:DEFAUT=@@PAGE:TITR@@$$$$IF0:TITLE:DEFAUT$$$$A:TITLE:DEFAUT=@@PAGE:TITRE@@$$$$END:DEFAULT$$$$REM:REFERENCEMENT$$
+	<!-- Tout ce qui ne concerne pas le référencement -->
+	<!-- ============================================ -->
+<title>immobilier Toulon | Grech</title>
+
+$$REM$$<!-- 25.03.2009 : reprise du fichier slagence_x/referencement/incl_head_ref.htm -->$$END$$
+$$REM$$<!--A:LISTEVILLE=@@IMMOBW:AGENCE:VILLE@@-->$$END:REM$$$$IF0:LISTEVILLE$$$$IF:IMMOBW:ANN:QRY:NBR$$$$A:LISTEVILLE=@@1_IMMOBW:ANN:QRY:AVILLE htmlencode@@ (@@1_IMMOBW:ANN:QRY:CP left 2@@) @@1_IMMOBW:ANN:QRY:CP cp2dep@@$$$$END$$$$END:LISTEVILLE$$<meta name="description" content="$$IF0:PAGE:DESCREF$$ $$IF:IMMOBW:AGENCE:NOM$$Notre$$IF!:agence:IMMOBW:AGENCE:NOM lcase left 6$$ agence$$END$$ $$IMMOBW:AGENCE:NOM pcase$$ vous propose ses offres de vente et de location sur $$IMMOBW:AGENCE:VILLE$$, ainsi que son expertise $$END:AGENCE:NOM$$$$IF0:IMMOBW:AGENCE:NOM$$ $$PAGE:DESCRIPTION$$ $$END:AGENCE:NOM$$$$IF:LISTEVILLE$$ &agrave; $$LISTEVILLE$$$$END:LISTEVILLE$$.$$END$$$$IF:PAGE:DESCREF$$$$PAGE:DESCREF$$$$END$$" />
+<!--#include virtual="/incl_meta.htm" -->
+$$REM$$<!-- 25.03.2009 : reprise du fichier slagence_x/referencement/incl_titre_rss.htm -->$$END$$
+$$IF:PAGE:RSS_ENABLED$$
+<link rel="alternate" title="$$REP:SRV$$ - $$LG:LIEN:CDC ncase$$" href="http://$$REP:SRV$$/rss.coupsdecoeur.xml" type="application/rss+xml" />
+<link rel="alternate" title="$$REP:SRV$$ - $$LG:LOCATIONS ncase$$" href="http://$$REP:SRV$$/rss.recherche.xml?idtt=1" type="application/rss+xml" />
+<link rel="alternate" title="$$REP:SRV$$ - $$LG:VENTES ncase$$" href="http://$$REP:SRV$$/rss.recherche.xml?idtt=2" type="application/rss+xml" />
+$$END:RSS_ENABLED$$
+
+$$IF:PAGE:STYLE$$$$PAGE:STYLE$$$$END:PAGE:STYLE$$
+
+$$IF=:DETAILANNONCE:PAGE:IDT$$
+	$$A:IDT=DETAILANNONCE$$
+$$END$$
+
+$$IF=:NOTREAGENCE:PAGE:IDT$$
+	$$A:IDT=NOTREAGENCE$$
+$$END$$
+
+$$REM$$ Meta OpenGraph (FaceBook) $$END$$
+<meta property="og:title" content="$$PAGE:TITR$$" />
+<meta property="og:type" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$website$$END$$$$IF=:DETAILANNONCE:IDT$$product$$END$$$$IF=:NOTREAGENCE:IDT$$company$$END$$" />
+<meta property="og:url" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$URLBASE$$/$$REP:PAGE$$$$END$$$$IF=:DETAILANNONCE:IDT$$$$IF:IMMOBW:ANNONCE:URLVIRTUELLE$$$$IMMOBW:ANNONCE:URLVIRTUELLE$$$$END$$$$IF0:IMMOBW:ANNONCE:URLVIRTUELLE$$$$URLBASE$$/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$$$END$$$$END$$$$IF=:NOTREAGENCE:IDT$$$$AGENCE_URLVIRT$$$$END$$" />
+<meta property="og:image" content="$$IF!:DETAILANNONCE$NOTREAGENCE:IDT$$$$URLBASE$$$$_$$images/logo.png$$END$$$$IF=:DETAILANNONCE:IDT$$$$IMMOBW:ANNONCE:PHOTOURL0$$$$END$$$$IF=:NOTREAGENCE:IDT$$$$URLBASE$$$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg$$END$$" />
+<meta property="og:site_name" content="$$REP:SRV$$" />
+<meta property="og:description" content="$$PAGE:DESCREF$$" />
