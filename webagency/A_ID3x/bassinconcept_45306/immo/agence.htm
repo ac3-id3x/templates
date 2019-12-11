@@ -1,0 +1,82 @@
+$$INIT:IDT=404$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$REM$$<!-- BOUCLE ANNONCES -->$$END$$
+$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG:QRY:IDP:::REP:1:QRY:TRI:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VAL:ADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+$$REM$$<!-- BOUCLE FIL ARIANE -->$$END$$
+$$B:IMMOBW:FIL-ARIANE-ANNONCE:ALIAS:FIL$$
+
+$$REM$$<!--FILTRES PERSO MOTEUR RECHERCHE-->$$END$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:1:~langue:QRY:LANG:ALIAS:FILTREPERSO1$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:2:~langue:QRY:LANG:ALIAS:FILTREPERSO2$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:3:~langue:QRY:LANG:ALIAS:FILTREPERSO3$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR incl_VILLES-->$$END$$
+$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCLUDE_INPUT.HTM-->$$END$$
+$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCL_JSON.HTM-->$$END$$
+$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR INCL_TYPE_TRANSACTION-->$$END$$
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+
+$$REM$$<!-- Variables se déclarant dans params_global.htm du site -->$$END$$
+$$REM$$<!-- IDTTMODULE = idtt pour le module -->$$END$$
+$$REM$$<!-- QUERYMODULE = query pour le module -->$$END$$
+$$REM$$<!-- NBMODULEANNONCES =  Nombre d'annonces pour le module -->$$END$$
+$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESHOME:VAL:IDTTMODULE:VAL:LANG:::VAL:QUERYMODULE:~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+
+
+<div class="row-fluid">
+	<div class="span8">
+		<div class="row-fluid hidden-phone margin-bottom-20">
+			<h2 class="h1-like margin-bottom-10 pagination-centered margin-top-10">$$LG:TROUVEZVOTREBIEN pcase$$</h2>
+			<!--#include virtual="moteur/mini/incl_avantage_moteur.htm" -->
+		</div>
+
+		$$A:MODULE_ACTIF=1$$
+		<!--#include virtual="modules/incl_calcul_column.htm" -->
+		<div class="hidden-phone box-module-home">
+			<!--#include virtual="modules/incl_modules.htm" -->
+		</div>
+
+
+
+	</div>
+	<div class="span4">
+		<div class="row-fluid">
+			<h2 class="h1-like margin-bottom-20 pagination-centered margin-top-10">$$LG:CONTACTEZNOUS pcase$$</h2>
+		</div>
+		$$IF=:0:MULTIAGENCES$$
+		<div class="row-fluid">
+			<div>
+				<!--#include virtual="immo/incl_immo_telephonez_nous.htm" -->
+			</div>
+			<div class="border-solid-primary-1 detail-bloc-contact padding-10 margin-top-70">
+				<!--#include virtual="agence/incl_formulaire_agence.htm" -->
+			</div>	
+		</div>
+		$$END$$
+		$$IF=:1:MULTIAGENCES$$
+		<div class="row-fluid">
+			<div class="span12 detail-bloc-contact padding-10 border-solid-primary-1">
+				<div class="h3-like">$$LG:NOUSCTC pcase$$</div>
+				<div class="margin-bottom-10">
+						<p>$$LG:SAVOIR pcase$$ $$LG:SUR lcase$$ $$LG:NOTRE lcase$$ $$LG:SERVGEST lcase$$</p>
+				</div>
+				<div class="control-group margin-0 pagination-centered">
+						<!--#include virtual="immo/incl_immo_liste_bouton.htm" -->
+				</div>
+			</div>
+		</div>
+		$$END$$
+	</div>
+</div>
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
