@@ -1,0 +1,80 @@
+<div id="infosAgenceBig">
+		<h2>CARPE DIEM</h2>
+		
+			<span>CARPEDIEM:une philosophie de vie au service de votre patrimoine immobilier</span>
+			<p style="width:100%;">- 9 avenue du Marechal Foch - 44760 La Bernerie en Retz - Tél : 02.51.74.64.51<br />
+			- Centre des affaires - 12 avenue Carnot - 44017 Nantes Cedex 01<br />
+			<img style="margin-top:10px;" src="$$_$$images/global/photo-carp.png" width="765" height="152" /></p>
+</div>
+<div id="infosAnnoncesBig">
+	<h2>$$LG:NOSNOUVEAUTES ucase$$</h2>
+</div>
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1::d_dt_maj:~limit:12:~NOSTAT:1:ALIAS:ANNLISTE$$
+$$BIF:ANNLISTE$$
+	<p class="results"><!--$$ANNLISTE:NBR$$ $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR lcase$$ $$LG:VOTRERECHERCHE lcase$$ $$ANNLISTE:PHRASE$$--></p>
+	<div id="zoneResultats">
+	$$DO$$
+			$$A:TITLE_SELECTION_INDEX=$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+				$$IF:FORM:LANG$$
+					$$IF!:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+					$$END$$
+					$$IF=:FR:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+					$$END$$
+				$$END$$
+				$$IF0:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				<div class="blocModule borderModule shadow" id="annonce$$ANNLISTE:IDANNONCE$$">
+						$$IF:ANNLISTE:SI_COUPDECOEUR$$
+							<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+						$$END:COUPDECOEUR$$
+						$$IF:ANNLISTE:SI_EXCLUSIF$$
+							<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+						$$END:SI_EXCLUSIF$$
+						$$IF:ANNLISTE:SI_PROMO$$
+							<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+						$$END:SI_PROMO$$
+						<div class="infoModule">
+							<ul>
+								<li><h1>$$ANNLISTE:IDTYPEBIEN gettypebien$$</h1></li>
+								<li>
+								$$IF:ANNLISTE:NB_PIECES$$
+								$$ANNLISTE:NB_PIECES$$
+									$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+									$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$			
+								$$END$$	
+								</li>
+								<li><h2>$$ANNLISTE:AVILLE$$</h2></li>
+								<li>$$ANNLISTE:PRIX$$ $$ANNLISTE:PRIX_UNITE$$ </li>
+							</ul>			
+						</div>
+						$$IF:ANNLISTE:C175_URL$$
+							<img src="$$ANNLISTE:C175_URL$$" width="175" height="175" />
+						$$END$$
+						$$IF0:ANNLISTE:C175_URL$$
+							<img src="$$_$$images/global/sans_photo.jpg" width="175" height="175" />
+						$$END$$
+				</div>
+			</a>
+	$$LOOP$$
+		<div class="clear"></div>
+	</div>
+
+	
+$$BFIN$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		gestionAnnonce('blocModule');
+	});
+</script>
