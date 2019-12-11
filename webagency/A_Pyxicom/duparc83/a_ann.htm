@@ -1,0 +1,221 @@
+$$INCL:HAUT.HTM$$
+<script type="text/javascript" language="javascript">
+<!--
+function go(url, n, w, h) {
+	window.open(url, n, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=' + w + ', height=' + h);
+}
+// -->
+</script>
+<script type="text/javascript" language="javascript" src="logvis.js?p=$$REP:NOM urlencode$$"></script>
+$$IF0:ERRE$$
+<table width="75%" border="0" cellspacing="0" cellpadding="10" align="center">
+<tr>
+	<td><p><strong>$$LG:PHRASEDETAIL$$</strong></p></td>
+</tr>
+</table>
+$$END$$
+<!-- DEBUT ANNONCE -->
+$$E:IMMOBW:ANNONCE:REP:1:REP:2$$
+$$E:ID3:NOCACHE$$
+$$IF:ERRE$$
+	<b><br />$$LG:AUCUNEANN$$.<br /><br />$$REM$$<a href="/chercher.htm">$$LG:CLIQUEZICIPOUR$$</a>$$END$$$$LG:MMTYPE pcase$$ <a href="/">SeLoger</a></b>
+$$END$$
+$$IF0:ERRE$$
+<table width="90%" border="0" cellspacing="0" cellpadding="5" align="center">
+<tr>
+	<td colspan="2" class="tabtitre">
+	<table width="100%" cellpadding="0" cellspacing="0" >
+	<tr>
+		<td width="70%" class="tabTitre" height="25">
+		<b>
+		$$IF:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE htmlencode$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$
+		$$END$$
+		$$IF:IMMOBW:ANNONCE:SURFACE$$
+			($$IMMOBW:ANNONCE:SURFACE$$ m²)
+		$$END$$<br /></b>
+		$$LG:SITUEA$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$ ($$IMMOBW:ANNONCE:CP$$)<br />
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			<b>$$LG:PROXIMITE$$</b> $$IMMOBW:ANNONCE:PROX htmlencode$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			<b>$$LG:PROXIMITE$$</b> $$IMMOBW:ANNONCE:PROX_FR htmlencode$$
+		$$END$$
+		</td>
+		<td width="30%" align="right" class="tabTitre" height="25">
+		<b>Bouquet : $$IMMOBW:ANNONCE:PRIX$$ $$IMMOBW:ANNONCE:PRIX_UNITE htmlencode$$</b><br />
+		$$IF:IMMOBW:ANNONCE:PRIX$$
+			<i>($$IMMOBW:ANNONCE:PRIX tofrancs 0$$ $$IMMOBW:ANNONCE:PRIX_UNITE euro2autre FF$$)</i><br />
+		$$END:PRIX$$
+		$$LG:RENTE$$:  $$IMMOBW:ANNONCE:PX_RENTE$$ Euros/mois$$END$$<br />
+		$$IF!:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+			<b>MAJ:</b> $$IMMOBW:ANNONCE:DT_FRAICHEUR date 2$$<br />
+		$$END$$
+		<b>REF:</b> $$IMMOBW:ANNONCE:REFANNONCE$$</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+	$$IF=:2:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$IF>:45598:IMMOBW:ANNONCE:PRIX$$
+	$$IF<:759963:IMMOBW:ANNONCE:PRIX$$
+		<br />
+		<a href="/cgi/s.aspx?l=sldisc&r=http://www.seloger.com/calcpanoranet.htm&u=http://www.panoranet.com/indexp.php3%3Fcode%3DSBSZ2Z" target="_blank">
+		$$LG:ACHETEZCEBIEN$$ $$IMMOBW:ANNONCE:PRIX exec XX*0.70*0.005/(1-(1/(1.005^240))) formatnumber 0$$&nbsp;$$LG:EUROMOIS$$</a>*<br /><br />
+	$$END:PRIX$$
+	$$END:PRIX$$
+	$$END:IDTYPETRANSACTION$$
+	$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+		$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+		<i>$$LG:COMMENTFRANCAIS$$</i> : $$IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode$$
+	$$END$$
+
+	$$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$
+		<br /><br />$$LG:TEL$$: <b><font color="#000040">$$IMMOBW:ANNONCE:TELEPHONE formattel$$</font></b>*
+		$$LG:CODECONTACT$$ : <b><font color="#000040">$$IMMOBW:ANNONCE:IDANNONCE$$</b> - <a href="javascript:go('/a_propos2.htm','plus',550,450)">$$LG:PLUSDINFOS$$</a><br /></font>
+		$$REM$$<br />$$LG:TEXTTEL$$ (<a href="javascript:go('/a_propos.htm?code=$$IMMOBW:ANNONCE:IDANNONCE$$','plus',550,450)">$$LG:PLUSDINFOS$$</a>)
+		$$END$$
+	$$END$$
+
+	$$IF:IMMOBW:ANNONCE:HONORAIRES$$
+		<b>$$LG:HONORAIRES$$:</b> $$IMMOBW:ANNONCE:HONORAIRES$$
+		$$IF:IMMOBW:ANNONCE:DT_DISPO$$
+			/$$LG:DISPOLE$$: $$IMMOBW:ANNONCE:DT_DISPO date 2$$<br />
+		$$END:IMMOBW:ANNONCE:DT_DISPO$$<br />
+	$$END$$<br />
+	$$IF:IMMOBW:ANNONCE:SI_VIDEO$$
+		[$$LG:TELEVISEUR$$]
+	$$END:SI_VIDEO$$
+	$$IF:IMMOBW:ANNONCE:SI_ANIMAUX$$
+		[$$LG:ANIMAUX$$]
+	$$END:SI_ANIMAUX$$
+	$$IF:IMMOBW:ANNONCE:SI_BEBE$$
+		[$$LG:BEBE$$]
+	$$END:SI_BEBE$$
+	$$IF:IMMOBW:ANNONCE:SI_TELEPHONE$$
+		[$$LG:TEL$$]
+	$$END:SI_TELEPHONE$$
+
+	</td>
+</tr>
+<tr>
+	<td valign="bottom">
+	
+	
+	$$IF:IMMOBW:ANNONCE:IDPHOTO$$
+		<a href="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/visuel_photos.htm','photos',450,450)">
+		<img src="$$IMMOBW:ANNONCE:THUMB_URL$$" border="0" /></a>
+	<br />
+	<font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+			<a href="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/detail,classic.htm?lang=$$LANGUE$$">
+			[$$IMMOBW:ANNONCE:NBPHOTOS$$ $$LG:PHOT$$$$IF=:FR:LANGUE$$$$IMMOBW:ANNONCE:NBPHOTOS pluriel$$$$END$$]</a></font>
+	$$END:IDPHOTO$$
+	
+	
+	
+	$$IF:IMMOBW:ANN:ID360$$
+		<a href="javascript:go('/$$IMMOBW:ANN:IDPUBLICATION$$/$$IMMOBW:ANN:IDANNONCE$$/visuel_$$IF=:3:IMMOBW:ANN:IDTYPEVISUEL360$$3dzoom.htm','360',590,600$$END$$$$IF=:4:IMMOBW:ANN:IDTYPEVISUEL360$$360previsite.htm','360',590,500$$END$$)">
+		<img src="images/visiteVirtuelle2.gIF" width="20" height="20" border="0" alt="visiter en 360 degrés" /></a>
+	$$END:ID360$$<br />
+	$$INCL:PLAN.HTM$$
+	</td>
+	<td align="right" valign="top">
+	$$IF0:IMMOBW:ANNONCE:SI_PARTICULIER$$
+		<b>$$LG:AGENCE$$ :</b>
+		$$IF0:IMMOBW:ANNONCE:SI_AUDIOTEL$$
+			<a href="/index.htm">
+		$$END$$
+		$$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$
+			<a href="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/listing_loc.htm?idtt=1&idtypebien=$$IMMOBW:ANNONCE:IDTYPEBIEN$$','listing',550,600)">
+		$$END$$
+		$$IMMOBW:ANNONCE:NOM$$</a><br />
+	$$END:SI_PARTICULIER$$
+	$$IF!:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+		$$IF:IMMOBW:ANNONCE:EMAIL$$
+			<b>$$LG:EMAIL$$: </b>$$IMMOBW:ANNONCE:EMAIL encodemail javascript full$$<br />
+		$$END:EMAIL$$
+	$$END:IDTT$$
+
+	$$IF:IMMOBW:ANNONCE:COOR-CONTACT$$
+		<br /><b>$$LG:CONTACT$$ :</b> $$IMMOBW:ANNONCE:COOR-CONTACT$$<br />
+	$$END$$
+
+	<b>$$LG:TEL$$:</b> $$IMMOBW:ANNONCE:TELEPHONE formattel$$
+	$$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$
+		*<br /><b>$$LG:CODECONTACT$$:</b> $$IMMOBW:ANNONCE:IDANNONCE$$
+	$$END:SI_AUDIOTEL$$<br />
+	$$IF=:SELOGERNEUF:IMMOBW:ANNONCE:REF$$
+		<a href="http://www.selogerneuf.com/neuf_doc.htm?ref=$$IMMOBW:ANNONCE:REFANNONCE left 8$$" target="_blank">$$LG:DEMANDEDEDOC$$</a><br />
+	$$END:NEUF$$
+	$$REM$$<a href="/proximite.htm?cps=$$IMMOBW:ANNONCE:CP$$&ville=$$IMMOBW:ANNONCE:VILLE urlencode$$&qry=idtt%3D$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$%26idtypebien%3D$$IMMOBW:ANNONCE:IDTYPEBIEN$$&p=$$IMMOBW:ANNONCE:PHRASE urlencode$$">$$LG:PROXIMITE$$</a>
+
+		<a href="javascript:go('ajoutpanier.htm?id=$$IMMOBW:ANNONCE:REFANNONCE$$@$$IMMOBW:ANNONCE:IDAGENCE$$','panier',200,170)">$$LG:SELEC$$</a>
+	$$END$$
+	</td>
+</tr>
+
+</table>
+
+<table width="90%" border="0" cellspacing="0" cellpadding="5" align="center">
+<tr>
+	<td>
+<p><b>
+&raquo; <a href="/ids/aut/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$&idtypebien=$$IMMOBW:ANNONCE:IDTYPEBIEN$$&prox=1&&cp=$$IMMOBW:ANNONCE:CP$$&nb_pieces=$$IMMOBW:ANNONCE:NB_PIECES$$&pxmin=$$IMMOBW:ANNONCE:PX exec XX*0.8$$&pxmax=$$IMMOBW:ANNONCE:PX exec XX*1.2$$">$$LG:MMTYPE$$</a><br /><br />
+&raquo; <a href="/ids/add/addalerte.htm?qry=recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$&prox=1&&idtypebien=$$IMMOBW:ANNONCE:IDTYPEBIEN$$&cp=$$IMMOBW:ANNONCE:CP$$&nb_pieces=$$IMMOBW:ANNONCE:NB_PIECES$$&pxmin=$$IMMOBW:ANNONCE:PX exec XX*0.8$$&pxmax=$$IMMOBW:ANNONCE:PX exec XX*1.2$$">$$LG:AITITRE$$</a><br /></b></p>
+<p>
+$$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$
+$$LG:TARIFTEL$$<br />
+$$END$$
+</p>
+</td>
+</tr>
+</table>
+<!-- FIN ANNONCE -->
+<!-- DEBUT FORMULAIRE -->
+
+<form method="get" action="/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm" name="annonces" style="display:inline">
+<table width="90%" border="0" cellspacing="0" cellpadding="1" class="tabFond2" align="center">
+<tr>
+	<td>
+	<table width="100%" border="0" cellspacing="0" cellpadding="1">
+	<tr>
+		<td colspan="4" height="17"><p><b>»$$LG:MODIFIER$$ $$LG:VOTRERECHERCHE$$</b></p></td>
+	</tr>
+	<tr>
+		<td width="18%" valign="top" height="25">$$LG:VILLES$$<br />&nbsp;<input type="text" name="CP" size="6" value="$$IMMOBW:ANNONCE:CP$$" /></td>
+		<td valign="top" width="34%" height="25">
+		Libre / Occupé<br />
+		<select name="si_libre">
+			<option value="1" selected="selected">Libre</option>
+			<option value="0" selected="selected">Occupé</option>
+		</select>
+		
+		</td>
+		<td valign="top" width="24%" height="25">$$LG:TYPEDEBIEN$$<br />
+		<select name="idtypebien">
+			<option value="2"$$IF=:2:IMMOBW:ANNONCE:IDTYPEBIEN$$ selected="selected"$$END$$>Maison</option>
+			<option value="1,9"$$IF=:1$9:IMMOBW:ANNONCE:IDTYPEBIEN$$ selected="selected"$$END$$>Appartement</option>
+		</select>
+		</td>
+		<td valign="top" width="24%" height="25" align="center"><input type="image" border="0" name="i" src="$$_$$img/rechercher_$$LANGUE$$.gif" /></td>
+	</tr>
+	<tr>
+		<td  valign="top" colspan="4" height="2">
+		<input type="radio" name="idtt" value="5"$$IF!:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ checked="checked"$$END$$ /><a href="/ventes.htm">$$LG:ANN:VIAGERS$$</a>		
+		<input type="checkbox" name="fraicheur" value="15" />$$LG:NOUV$$</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+</form>
+<!-- FIN FORMULAIRE -->
+$$SET:PAGE:IDT=ALERTIMMO$$
+$$INCL:BAS.HTM$$
