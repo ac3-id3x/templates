@@ -1,0 +1,196 @@
+<div class="container">
+$$REM$$<!-- Variables se déclarant dans params_global.htm du site -->$$END$$
+$$REM$$<!-- IDTTMODULE = idtt pour le module -->$$END$$
+$$REM$$<!-- QUERYMODULE = query pour le module -->$$END$$
+$$REM$$<!-- NBMODULEANNONCES =  Nombre d'annonces pour le module -->$$END$$
+$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESHOMELOC:1:VAL:LANG:::photo=10&px_loyermin=1200&tri=d_dt_maj:~nostat:1:~limit:VAL:NBMODULEANNONCES$$
+
+$$A:JS_OWL=1$$
+$$A:JS_ANNONCES-18=1$$
+
+$$BIF0:ANNONCESHOMELOC$$
+    <div class="row-fluid">
+        <div class="span12 pagination-centered">
+            <h2 class="section-ttl">
+                $$LG:NOBIENDISPO pcase$$
+            </h2>
+            <p><a href="/moteur,recherche.htm" title="$$LG:RECHERCHER pcase$$" class="btn btn-action module-annonces-btn">$$LG:RECHERCHER pcase$$</a></p>
+        </div>
+    </div>
+$$BFIN$$
+
+$$BIF:ANNONCESHOMELOC$$    
+    <div class="module-annonces">
+
+        <div class="module-annonces-items$$IF0:ROTATION_MODULE$$ module-annonces-fixe-$$SIZEMODULE$$$$END$$ owl-carousel">
+            $$DO$$
+                $$A:TITLE_ANNONCE=@@ANNONCESHOMELOC:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOMELOC:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOMELOC:AVILLE ncase@@$$
+                $$IF:ANNONCESHOMELOC:PHOTOURL0$$
+                    $$A:MODULEIMG=@@ANNONCESHOMELOC:PHOTOURL0@@$$
+                $$END$$
+                $$IF0:ANNONCESHOMELOC:PHOTOURL0$$
+                    $$IF!:1:SANS_PHOTO_PERSO$$
+                        $$A:MODULEIMG=@@~@@images/recherche/sans_photo.jpg$$
+                    $$END$$
+                    $$IF=:1:SANS_PHOTO_PERSO$$
+                        $$A:MODULEIMG=@@_@@images/recherche/sans_photo.jpg$$
+                    $$END$$
+                $$END$$
+
+                $$REM$$
+                $$IF0:ROTATION_MODULE$$
+                    $$IF=:1:ANNONCESHOMELOC:I exec XX%@@SIZEMODULE@@$$
+                        <div class="row-fluid">
+                    $$END$$
+                $$END$$
+                $$END$$
+
+                <div class="module-annonces-item">
+                    <a href="$$ANNONCESHOMELOC:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+
+                        <div class="module-annonces-img" style="background-image: url($$MODULEIMG$$);">
+                            $$IF!:0:PICTOANNONCE$$
+                                <div class="module-tags">
+                                    $$IF:ANNONCESHOMELOC:SI_EXCLUSIF$$
+                                        <div class="module-tag module-tag-exclu">
+                                            $$LG:EXCLUSIVITE pcase$$
+                                        </div>
+                                    $$END$$
+                                    $$IF:ANNONCESHOMELOC:SI_COUPDECOEUR$$
+                                        <div class="module-tag module-tag-cdc">
+                                            $$LG:COUPDECOEUR pcase$$
+                                        </div>
+                                    $$END$$
+                                    $$IF+:FRAICHEUR:ANNONCESHOMELOC:DT_CREA datediff now timespan days$$
+                                        <div class="module-tag module-tag-new">
+                                            $$LG:NEWCOURT pcase$$
+                                        </div>
+                                    $$END$$
+                                </div>
+                            $$END$$
+                            $$IF:ANNONCESHOMELOC:ID360$$
+                                <div class="module-tag module-tag-360">
+                                    $$LG:VISITEVIRTUELLE pcase$$
+                                </div>
+                            $$END$$
+                            $$IF:ANNONCESHOMELOC:360_URL$$
+                                <div class="module-tag module-tag-360">
+                                    $$LG:VISITEVIRTUELLE pcase$$
+                                </div>
+                            $$END$$
+                        </div>
+
+                        <div class="module-annonces-content">
+                            <div class="module-annonces-content-left">
+                                <div class="module-annonces-type">
+                                    <span class="module-annonces-typetransaction">$$ANNONCESHOMELOC:IDTYPETRANSACTION gettypetransaction pcase$$</span>
+                                    $$ANNONCESHOMELOC:IDTYPEBIEN gettypebien$$
+                                </div>
+                               <div class="module-annonces-specs">
+                                    $$IF:ANNONCESHOMELOC:SURFACE$$
+                                        <span class="module-annonces-surface">
+                                            $$IF!:EN:LANGUE$$$$ANNONCESHOMELOC:SURFACE$$ m² $$END$$
+                                            $$IF=:EN:LANGUE$$ $$ANNONCESHOMELOC:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+                                        </span>
+                                    $$END$$
+                                    $$IF:ANNONCESHOMELOC:NB_PIECES$$
+                                        <span class="module-annonces-pieces">
+                                            $$IF:ANNONCESHOMELOC:SURFACE$$ - $$END$$
+                                            $$IF:ANNONCESHOMELOC:NB_PIECES$$
+                                                $$ANNONCESHOMELOC:NB_PIECES$$
+                                            $$END$$
+                                            $$IF0:ANNONCESHOMELOC:NB_PIECES$$
+                                                N/A
+                                            $$END$$
+                                            $$IF=:1:ANNONCESHOMELOC:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNONCESHOMELOC:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                                        </span>
+                                    $$END$$
+                                </div>
+                                <div class="module-annonces-ville">
+                                    $$IF:ANNONCESHOMELOC:VILLE$$
+                                        <i class="mf-icon-localisation typo-action"></i>&nbsp;
+                                        $$ANNONCESHOMELOC:VILLE pcase$$
+                                    $$END$$
+                                    $$IF!:1:CPHIDDEN$$
+                                        $$IF:ANNONCESHOMELOC:CP$$($$ANNONCESHOMELOC:CP$$)$$END$$
+                                    $$END$$
+                                </div>
+                            </div>
+                            <div class="module-annonces-content-right">
+
+                                $$IF=:0:PRIXMASQUE$$
+                                    $$IF:ANNONCESHOMELOC:XML xml PRIX_NOUS_CONSULTER$$
+                                        <div class="module-annonces-prix module-annonces-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                                    $$END$$
+                                    $$IF0:ANNONCESHOMELOC:XML xml PRIX_NOUS_CONSULTER$$
+                                        $$IF:ANNONCESHOMELOC:PRIX$$
+                                            <div class="module-annonces-prix">
+                                                $$ANNONCESHOMELOC:PRIX formatnumber 0$$ $$ANNONCESHOMELOC:PRIX_UNITE$$
+                                                $$IF=:1:HONORAIRESINCLUS$$
+                                                    <abbr class="small" title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>
+                                                $$END$$
+                                                $$IF:ANNONCESHOMELOC:PX_RENTE$$
+                                                    <br><span class="small">$$LG:RENTE pcase$$ : </span>$$ANNONCESHOMELOC:PX_RENTE formatnumber 0$$ $$LG:EUROMOIS$$
+                                                $$END$$
+                                            </div>
+                                        $$END$$
+                                    $$END$$
+                                $$END$$
+                                $$IF=:1:PRIXMASQUE$$
+                                    <div class="module-annonces-prix annonce-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                                $$END$$
+
+                                <div class="module-annonces-ref">
+                                    $$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$
+                                        <span class="module-annonces-ref-lgd">$$LG:REFER pcase$$ </span>
+                                    $$END$$
+                                    $$ANNONCESHOMELOC:REFANNONCE$$
+                                </div>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+
+                $$REM$$
+                $$IF0:ROTATION_MODULE$$
+                    $$IF=:0:ANNONCESHOMELOC:I exec XX%@@SIZEMODULE@@$$
+                        </div>
+                    $$END$$
+                $$END$$
+                $$END$$
+
+            $$LOOP$$
+        </div>
+
+    </div>
+
+$$BFIN$$
+
+<script>
+    var $module_items = $$SIZEMODULE$$;
+    $$IF0:ROTATION_MODULE$$
+        var $module_state = 'fixed';
+    $$END$$
+    $$IF=:1:ROTATION_MODULE$$
+        var $module_state = 'rotate';
+    $$END$$
+    $$IF0:SPEED_MODULE$$
+        var $module_autoplay = false;
+        var $module_autoplay_delay = 0;
+        var $module_autoplay_stop = false;
+    $$END$$
+    $$IF:SPEED_MODULE$$
+        var $module_autoplay = true;
+        var $module_autoplay_delay = $$SPEED_MODULE$$;
+        var $module_autoplay_stop = true;
+    $$END$$
+</script>
+
+	<div class="row-fluid">
+		<div class="span12 pagination-centered">
+			<p class="big line-height-30">Notre agence immobilière Delaunay vous propose des maisons, appartements et de l'immobilier d'entreprise à louer à Paris et Ouest Parisien. Locataire ou propriétaire-bailleur, nos agents professionnels de l’immobilier vous conseillent et vous accompagnent depuis la construction jusqu’à la finalisation de votre projet immobilier.</p>
+			<p><a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&photo=10&px_loyermin=1200&tri=d_dt_maj" class="btn btn-action margin-bottom-40">Consultez nos annonces immobilières de biens à louer</a></p>
+		</div>
+	</div>
+</div>

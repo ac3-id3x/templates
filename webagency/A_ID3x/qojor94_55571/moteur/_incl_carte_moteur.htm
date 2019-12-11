@@ -1,0 +1,155 @@
+<div class="row-fluid margin-top-10">
+	<div class="span12 fond-moteur-gauche relative">
+		<div class="row-fluid">
+			<div class="span4 pagination-left bloc-recherche-formulaire">
+				<div class="h2-title-moteur-carte typo-action padding-10 bloc-titre-recherche">
+					<span class="icon-v5-search big"></span> <span class="h2-like">$$LG:LIEN:RECH pcase$$</span>
+						$$REM$$
+						$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+							<div class="hidden-phone clear arrow-right absolute"></div>
+						$$END$$
+						$$END$$
+				</div>
+				<div class="$$IF=:PACK2$PACK3:TYPE_OFFRE$$bloc-recherche-criteres$$END$$$$IF=:PACK1:TYPE_OFFRE$$bg-action padding-bottom-20$$END$$">
+					<div class="row-fluid bloc-recherche-type-biens">
+						<div class="span12 padding-10 margin-top-5 margin-bottom-5">
+							$$REM$$<div class="bold">$$LG:QUELTYPEDEBIEN pcase$$</div>$$END$$
+							<!--#include virtual="moteur/incl_biens_select.htm" -->
+						</div>
+					</div>
+					$$IF=:1:MINISOUSTYPEBIENS_AFFICHAGE$$
+						<div id="SousTypesBiens"></div>
+					$$END$$					
+					<div class="bloc-recherche-budget">
+						<div class="row-fluid">
+							<div class="span12 padding-10 margin-top-5 margin-bottom-5">
+								<div class="bold">$$LG:QUELBUDGET pcase$$</div>
+								<div class="row-fluid">
+									<div class="span12">
+										<!--#include virtual="moteur/incl_budget.htm" -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="bloc-recherche-surface">
+						<div class="row-fluid">
+							<div class="span12 padding-10 margin-top-5 margin-bottom-5">
+								<div class="bold">$$LG:QUELLESURFACE pcase$$</div>
+								<div class="row-fluid">
+									<div class="span12">
+										<!--#include virtual="moteur/incl_surface.htm" -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="$$IF=:PACK2$PACK3:TYPE_OFFRE$$ bloc-recherche-geoloc$$END$$">
+					<div class="h2-title-moteur-carte padding-10 typo-action bloc-titre-localisation">
+						<span class="icon-v5-location big"></span> <span class="h2-like">$$LG:LOCALIS pcase$$</span>	
+					</div>
+					<div class="row-fluid">
+						<div class="span12 padding-10">
+							<div class="row-fluid">
+								$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+								$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+								$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+								<!--#include virtual="moteur/suggest/incl_input.htm" -->
+								<div class="small margin-bottom-10">$$LG:V5RECHERCHEPOSSIBLE pcase$$</div>
+								$$IF=:1:MOTEUR_VILLES_REF$$
+								<!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->	
+								$$END$$
+								$$REM$$
+									$$IF!:1:MINIVILLES_SUGGEST$$
+									<div class="input-append margin-top-10">
+										<div class="h4-like margin-bottom-5">$$LG:RECHERCHEGEOGRAPHIQUE pcase$$</div>
+										<input type="text" class="span9" id="searchGeolocUser" placeholder="$$LG:VILLE pcase$$ $$LG:OU lcase$$ $$LG:CODEP lcase$$" autocomplete="off">
+										<div class="$$TYPEBOUTON$$ btn-important $$TYPEBOUTONACTION$$" id="bouton-search-user">$$LG:AFFICHER1 pcase$$</div>
+									</div>
+									$$END$$
+								$$END$$
+								<div class="display-none add-city-geo margin-top-5 bold">$$LG:AIDEAJOUTVILLE pcase$$</div>
+								<div class="display-none no-results-geo margin-top-5 bold">$$LG:ERREURLOCALITE pcase$$</div>
+								<div class="display-none erreur-saisie-geo margin-top-5 bold">$$LG:PLUSDE3 pcase$$</div>
+								<ul class="nav nav-pills margin-bottom-5" id="zone-villes"></ul>
+							</div>
+							<div class="row-fluid">
+								<div class="span7 line-height-15"><label for="rayon">$$LG:ETENDRERECH pcase$$</label></div>
+								<div class="span5"><select class="center" id="rayon" name="rayon">
+								<option value="">0 km</option>
+								<option value="5">5 km</option>
+								<option value="10">10 km</option>
+								<option value="15">15 km</option>
+								<option value="20">20 km</option>
+							</select></div>
+						</div>
+						</div>
+					</div>
+				</div>
+				$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+					<div class="bg-action bloc-recherche-dessin hidden-phone">
+						<div class="row-fluid">
+							<div class="span12 padding-10">
+								<span class="h2-like"><span class="icon-v5-map"></span> $$LG:OU pcase$$ $$LG:DESSINE pcase$$</span>
+								<p>$$LG:TEXTEDESSINE pcase$$</p>
+								<div class="row-fluid">
+									<div class="span6">
+										<div class="$$TYPEBOUTON$$ btn-block btn-important bouton-dessiner-start" data-text="$$LG:JERECOMMENCE pcase$$"><span class="icon-v5-brush"></span> $$LG:JEDESSINE pcase$$</div>
+									</div>
+									<div class="span6">
+										<div class="$$TYPEBOUTON$$ btn-block btn-neutre bouton-dessiner-end"><span class="icon-v5-trash"></span> $$LG:JANNULE pcase$$</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				$$END$$
+				<div class="row-fluid margin-top-10 margin-bottom-10 pagination-centered">
+							<div class="$$TYPEBOUTON$$ btn-important margin-top-10 bouton-moteur-recherche" data-loading-text="$$LG:LOADING pcase$$">$$LG:VOIRANN pcase$$</div>
+							$$REM$$
+								$$IF=:1:MOTEURAFFICHAGECARTE$$
+								<div class="span$$IF=:0:MOTEURAFFICHAGELISTE$$12$$END$$$$IF=:1:MOTEURAFFICHAGELISTE$$6$$END$$">
+									<input type="button" class="small bouton-moteur-recherche bouton-moteur-recherche-carte $$TYPEBOUTON$$ btn-action btn-block" data-loading-text="$$LG:LOADING pcase$$" value="$$LG:RECHERCHER pcase$$ $$LG:PARCARTE lcase$$">
+								</div>
+								$$END$$
+								$$IF=:1:MOTEURAFFICHAGELISTE$$
+								<div class="span$$IF=:0:MOTEURAFFICHAGECARTE$$12$$END$$$$IF=:1:MOTEURAFFICHAGECARTE$$6$$END$$">
+									<input type="button" class="small bouton-moteur-recherche bouton-moteur-recherche-liste $$TYPEBOUTON$$ btn-action btn-block" data-loading-text="$$LG:LOADING pcase$$" data-url="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm" value="$$LG:RECHERCHER pcase$$ $$LG:PARLISTE lcase$$">
+								</div>
+								$$END$$
+							$$END$$
+					</div>
+			</div>
+			$$IF=:PACK2$PACK3:TYPE_OFFRE$$
+				<div class="span8 zone-carte relative">
+					<div id="geo-map-6-demut" class="bloc-recherche-carte hidden-phone" data-color="$$IF:COLOR_LAYER$$$$COLOR_LAYER$$$$END$$$$IF0:COLOR_LAYER$$#ff0000$$END$$" $$IF:ZOOMCARTO$$data-zoom="$$ZOOMCARTO$$"$$END$$></div>
+					<script type="text/javascript">
+						id3xContent.addMap({
+							container: {id: 'geo-map-6-demut'},
+							mapData: [
+								{ mapDataType: 'REALESTATES', marker: { /*icon: {defaultIcon: {color: '$$PINCARTO$$'}},*/ popup: true },
+								  pinVille: '$$CARTOPINVILLE$$', transactionTypeSelectorId: 'moteur-recherche input,select' }
+							]
+						});
+					</script>
+					<div class="row-fluid">
+						<div class="absolute top left right bottom display-none pagination-centered big" id="map-layer">
+							<div class="span3 hidden-phone"></div>
+							<div class="span6 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+								<img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+								<p class="typo-black pagination-centered">
+									$$LG:VEUILLEZPATIENTER$$
+								</p>
+							</div>
+							<div class="z-25 absolute top left right bottom bg-black opacity-3"></div>
+						</div>
+					</div>
+				</div>
+			$$END$$
+			$$IF=:PACK1:TYPE_OFFRE$$
+				<!--#include virtual="moteur/incl_moteur_portefeuille.htm" -->
+			$$END$$
+		</div>
+	</div>
+</div>
