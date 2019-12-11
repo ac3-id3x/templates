@@ -1,0 +1,139 @@
+$$A:MODULE_ACTIF=1$$
+<!--#include virtual="modules/incl_calcul_column.htm" -->
+<div class="hidden-phone box-module-home">
+	$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+	$$BIF:ANNONCESHOME$$
+	$$A:JS_ANNONCES-5=1$$
+	<!--#include virtual="modules/annonces-5/incl_tailles_photos.htm" -->
+	<div class="module-homepage">
+		<div class="row-fluid margin-bottom-10">
+			<div class="span12">
+				<div class="row-fluid ligne-titre">
+					<div class="span4">
+						<hr class="margin-top-13 hr-ttl-module">
+					</div>
+					<div class="span4 pagination-centered">
+						<h2><!--#include virtual="modules/incl_titre_module.htm" --></h2>
+					</div>
+					<div class="span4 hidden-phone">
+						<hr class="margin-top-13 hr-ttl-module">
+					</div>	
+				</div>
+			</div>
+		</div>
+		<ul class="row-fluid relative ul-homepage-biens$$IF=:1:ROTATION_MODULE$$ rotation-module$$END$$" $$IF:SPEED_MODULE$$data-rotation="$$SPEED_MODULE$$"$$END$$ $$IF:EFFECT_MODULE$$ data-fx="$$EFFECT_MODULE$$"$$END$$>
+		$$IF=:1:ROTATION_MODULE$$
+			$$IF!:1:HIDEARROW_MODULE$$
+			<li class="prev-module left absolute pagination-centered hidden-phone">
+				$$CALARROW$$
+				<img src="$$~$$images/modules/angle-left.png" alt="$$LG:ANNONCESPRECEDENTES pcase$$" />
+				<div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+			</li>
+			$$END$$
+		$$END$$
+		$$DO$$
+		$$IF=:1:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+			<li class="ligne-cycle height-100-pourcent width-100-pourcent relative$$IF!:1:ROTATION_MODULE$$ margin-bottom-10$$END$$">
+		$$END$$
+		$$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+	$$A:ALT_ANNONCE1=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+	$$A:ALT_ANNONCE2=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+		<div class="$$TAILLESPANMODULE$$ pagination-centered transition-bg relative module-annonces-homepage$$IF+:3:ANNONCESHOME:I$$ hidden-phone$$END$$">
+			<a href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+			<div class="img-homepage relative $$HEIGHTPICTURE5$$ overflow margin-bottom-10">
+			  $$IF!:1:PICTOANNONCELISTHOME$$
+			  <div class="row-fluid absolute z25 hidden-phone">
+			  <!--#include virtual="modules/incl_pictos_modules.htm" -->
+			  </div>
+			  $$END$$
+				$$IF:ANNONCESHOME:PHOTOURL0$$
+					<div style="background-image:url('$$ANNONCESHOME:PHOTOURL0$$');" class="picture-responsive"></div>
+				$$END$$
+				$$IF0:ANNONCESHOME:PHOTOURL0$$
+					<!--#include virtual="modules/incl_no_photo_modules.htm" -->
+				$$END$$
+				$$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+					$$IF:ANNONCESHOME:PHOTOURL1$$
+						<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOME:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+					$$END$$
+				$$END$$
+			</div>
+			<div class="$$HEIGHTPICTURE5$$ width-100-pourcent absolute top left bottom$$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$ $$LINEHEIGHT$$$$END$$$$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$ line-height-40$$END$$ hover-infos-bien typo-white display-none">
+				<div class="module-typebien-annonces"><!--#include virtual="modules/annonces-5/incl_type_bien_bloc.htm" --></div>
+				<!--#include virtual="modules/annonces-5/incl_infos_bien.htm" -->
+				<div class="module-prix-annonces hidden-phone"><!--#include virtual="modules/annonces-5/incl_prix.htm" --></div>
+				<div class="hidden-phone"><span>$$IF:ANNONCESHOME:AGE_F$$ $$LG:FEMME pcase$$ : $$ANNONCESHOME:AGE_F$$ ans $$END$$
+				$$IF:ANNONCESHOME:AGE_H$$$$IF!:0:ANNONCESHOME:AGE_F$$&nbsp;$$END$$$$LG:HOMME pcase$$ : $$ANNONCESHOME:AGE_H$$ ans$$END$$</span></div>
+				<div class="bg-black opacity-8 absolute top right left bottom z-25"></div>
+			</div>
+			</a>
+		</div>
+		$$IF=:0:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+			<div class="clear"></div>
+		</li>
+		$$END$$
+		$$LOOP$$
+		$$IF=:1:ROTATION_MODULE$$
+			$$IF!:1:HIDEARROW_MODULE$$
+				<li class="next-module right absolute pagination-centered hidden-phone">
+					<img src="$$~$$images/modules/angle-right.png" alt="$$LG:ANNONCESSUIVANTES pcase$$" />
+					<div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+				</li>
+			$$END$$
+		$$END$$
+		</ul>
+	</div>
+	$$REM$$<div class="pull-right margin-top-10 nav-rotation"></div>$$END$$
+	<div class="row-fluid">
+		<div class="span4">
+			<hr class="margin-top-13 hr-ttl-module">
+		</div>
+		<div class="span4 pagination-centered">
+			<a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$IDTTMODULE$$&amp;$$QUERYMODULE removeqry photo htmlencode$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ " title="$$LG:TOUTESNOSANNONCES2 pcase$$">$$BOUTON_MODULE$$</a>
+		</div>
+		<div class="span4">
+			<hr class="margin-top-13 hr-ttl-module">
+		</div>
+		
+	</div>
+	<div class="clear"></div>
+	$$BFIN$$
+
+	
+
+
+
+</div>
+
+	
+
+
+<div class="hidden-tablet hidden-desktop">
+	$$IF=:1:TXTMOBILE$$
+		<h2 class="pagination-centered typo-action slogan-mobi">$$SLOGAN_INDEX$$</h2>			
+		$$IF!:1:IMGSCROLLHIDEN$$
+			<img src="images/homepage/homepage_scrolling_1.jpg" alt="$$AGENCE_NOM$$" class="margin-top-20" />
+		$$END$$
+		$$IF0:ENCART_TXT_HOME_MOBILE$$		
+			$$ENCART_TXT_HOME_CONTENU$$	
+		$$END$$
+		$$IF:ENCART_TXT_HOME_MOBILE$$
+			$$ENCART_TXT_HOME_MOBILE$$
+		$$END$$
+	$$END$$
+	$$IF!:1:CAROUSELHIDDEN$$
+		<!--#include virtual="modules/incl_carousel.htm" -->
+	$$END$$
+	$$IF=:2:TXTMOBILE$$
+		<h2 class="pagination-centered typo-action slogan-mobi">$$SLOGAN_INDEX$$</h2>			
+		$$IF!:1:IMGSCROLLHIDEN$$
+			<img src="images/homepage/homepage_scrolling_1.jpg" alt="$$AGENCE_NOM$$" class="margin-top-20" />
+		$$END$$
+		$$IF0:ENCART_TXT_HOME_MOBILE$$		
+			$$ENCART_TXT_HOME_CONTENU$$	
+		$$END$$
+		$$IF:ENCART_TXT_HOME_MOBILE$$
+			$$ENCART_TXT_HOME_MOBILE$$
+		$$END$$
+	$$END$$
+</div>
