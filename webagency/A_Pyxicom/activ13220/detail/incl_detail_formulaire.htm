@@ -1,0 +1,131 @@
+
+<script>
+function IsNumberString(NumStr){
+var regEx=/^[0-9]+$/;
+var ret=false;
+if (regEx.test(NumStr)) ret=true;
+return ret;
+}
+
+function checkNotEmpty( elt ) {
+	var resultat = false;
+	if( elt != null ) {
+		if( elt.value != "" ) {
+			resultat = true;
+		}
+	}
+	return resultat;
+}
+function validate(){
+
+	var elt_form = document.forms[ "agencemail" ];
+	var errmsg = "";
+	
+	if( elt_form ) {
+		var elt_nom = elt_form["nom"];
+		var elt_prenom = elt_form["prenom"];
+		var elt_telephone = elt_form["telephone"];
+		var elt_email = elt_form["email"];
+
+		if( ! checkNotEmpty( elt_nom ) ) {
+			errmsg += '$$LG:AI5$$ !\n';
+		}	
+		if( ! checkNotEmpty( elt_prenom ) ) {
+			errmsg += '$$LG:PRENOM$$ !\n';
+		}	
+		if(checkNotEmpty( elt_telephone ) && ! IsNumberString(elt_telephone.value)){
+					errmsg += 'Entrez un téléphone valide !\n';
+				}
+		if( ! checkNotEmpty( elt_email ) ) {
+			errmsg += '$$LG:ENTREZEMAIL$$ !\n';
+		}	else {
+			if( checkNotEmpty( elt_email ) ) {
+				if (!(elt_email.value.split('@')[1] && !elt_email.value.split('@')[2] && elt_email.value.split('@')[1].split('.')[1] && !elt_email.value.split('@')[1].split('.')[2])){
+					errmsg += '$$LG:ENTREZEMAILCORRECT$$ !\n';
+				}
+				
+			}
+		}
+		
+		if (errmsg != "") {
+			alert (errmsg);
+			return false;
+		} else {
+			return true; 
+		}
+	}
+}</script>
+
+<div class="DetailFormulaire" id="DetailFormulaire">
+$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+		<!-- debut du formulaire -->
+		<div class="DetailFormulaireLib">$$LG:SAVOIR$$</div>
+		<div class="DetailFormulaireForm">
+		$$LG:FORMSENDEMAIL$$
+		<form name="f" method="post" action="/$$REP:PAGE$$">
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="page_ok" value="plus_annonce_ok.htm" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="cfg_form" value="plus_annonce" />
+		<input type="hidden" name="cfg_emails" value="plus_annonce" />
+		<input type="hidden" name="refannonce" value="$$IMMOBW:ANNONCE:REFANNONCE$$" />
+		<input type="hidden" name="prix" value="$$IMMOBW:ANNONCE:PRIX$$" />
+		<input type="hidden" name="libelle" value="$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+		$$IF:IMMOBW:ANNONCE:EMAIL$$
+		<input type="hidden" name="email_agence" value="$$IMMOBW:ANNONCE:EMAIL$$" />
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:EMAIL$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="email_agence" value="$$IMMOBW:AGENCE:EMAIL$$" />
+		$$END$$
+		$$END$$
+		<input type="hidden" name="nom_agence" value="$$IMMOBW:ANNONCE:NOM$$" />
+		<input type="hidden" name="ville" value="$$IMMOBW:ANNONCE:VILLE$$" />
+		<input type="hidden" name="cp" value="$$IMMOBW:ANNONCE:CP$$" />
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<table class="DetailFormulaire" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+			<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td colspan="4" class="Coord">
+				$$LG:COORD3$$</td>
+			</tr>
+			<tr>
+				<td align="right">$$LG:AI5$$</td>
+				<td><input type="text" name="nom" value="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:NOM$$$$END$$" /></td>
+				<td align="right">$$LG:PRENOM$$</td>
+				<td><input type="text" name="prenom" value="$$FORM:PRENOM$$$$IF0:FORM:PRENOM$$$$SESSION:PRENOM$$$$END$$" /></td>
+			</tr>
+			<tr>
+				<td align="right">$$LG:TEL$$</td>
+				<td><input type="text" name="telephone" value="$$FORM:TELEPHONE$$$$IF0:FORM:TELEPHONE$$$$SESSION:TELEPHONE$$$$END$$" /></td>
+				<td align="right">$$LG:OU$$&nbsp;Email</td>
+				<td><input type="text" name="email" value="$$FORM:EMAIL$$$$IF0:FORM:EMAIL$$$$SESSION:EMAIL$$$$END$$" /></td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center" class="Precisions">$$LG:PRECIS$$</td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center" class="Msg"><textarea name="questions" cols="40" rows="5">$$FORM:QUESTIONS$$$$IF0:FORM:QUESTIONS$$$$SESSION:QUESTIONS$$$$END$$</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center">$$LG:VERIFINFOS$$</td>
+			</tr>
+			<tr>
+				<td align="right" colspan="4" class="btn"><input type="submit" value="$$LG:ENVOYER2$$" onclick="validate();" /> <input type="reset" name="Submit" value="$$LG:EFFACER$$" /></td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+		</form>
+		</div>
+		<!-- fin du formulaire -->
+$$END:CHECKMAIL$$
+</div>

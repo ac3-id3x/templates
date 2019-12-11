@@ -1,0 +1,92 @@
+$$INCL:HAUT.HTM$$
+<SCRIPT language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.bas.length)
+	{
+		if (document.bas.elements[i].name=='cp')
+		{
+			document.bas.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 20);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.bas.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 20);
+	}
+}
+function subm()
+{
+var url = '$$IF:FORM:IDTT$$/$$FORM:IDTT$$$$END$$/recherche$$IF:PAGE:WAG_STYLE_RECHERCHE$$,$$PAGE:WAG_STYLE_RECHERCHE$$$$END$$.htm?$$FORM:QRY escape$$';
+	for(i=0; i<document.bas.length; i++)
+	{
+		if (document.bas.elements[i].checked)
+		{
+			if (url.indexOf('&cp='+document.bas.elements[i].value) == -1) url += '&cp=' + document.bas.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+// -->
+</SCRIPT>
+<BR>
+$$SET:PAGE:RUBRIQUE=Proximit&eacute;$$ 
+<table width="95%" border="0" cellspacing="0" cellpadding="5" class="tabFond1">
+<tr>
+	<td>
+	<form method="get" action="/proxiloc.htm">
+	<input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$">
+	<input type="hidden" name="idtt" value="$$FORM:IDTT htmlencode$$">
+	<table width="80%" border="0" cellspacing="0" cellpadding="2" class="tabFond2">
+	<tr> 
+		<td colspan="2" class="tabTitre"><b>$$LG:RECHPROXI$$</b></td>
+	</tr>
+	<tr> 
+		<td width="50%">$$LG:CODEP$$ :</td>
+		<td width="50%"><input class="imputForm" type="text" name="cps" value="$$FORM:CPS$$"></td>
+	</tr>
+	<tr> 
+		<td width="50%">$$LG:VILLE$$ :</td>
+		<td width="50%"><input class="imputForm" type="text" name="ville" value="$$FORM:VILLE htmlencode$$"></td>
+	</tr>
+	<tr> 
+		<td width="50%"></td>
+		<td width="50%"><input type="submit" name="Submit" value="$$LG:CHERCHE$$"></td>
+	</tr>
+	</table>
+	</form>
+	$$B:IMMOBW:FINDVILLE$$$$BIF:IMMOBW:FINDVILLE$$ 
+	<form name="bas" method="get" action="/proximite.htm">
+	<input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$">
+	<input type="hidden" name="idtt" value="$$FORM:IDTT htmlencode$$">
+	<span class="selection"><b>Sélectionnez une ville:</b></span><br>
+	$$DO:2:20$$
+	<font size="1"><input type="RADIO" name="idville" value="$$IMMOBW:FINDVILLE:IDVILLE$$">$$IMMOBW:FINDVILLE:VILLEAFF$$ ($$IMMOBW:FINDVILLE:CP$$)</font><br>
+	$$LOOP$$<br>
+	<div align="center"><input type="SUBMIT" value="trouver les villes environnantes" name="SUBMIT"></div>
+	</form>
+	$$BFIN$$
+	$$B:IMMOBW:FINDPROXIMITE$$$$BIF:IMMOBW:FINDPROXIMITE$$ 
+	<form name="bas" method="get" action="/recherche$$IF:PAGE:WAG_STYLE_RECHERCHE$$,$$PAGE:WAG_STYLE_RECHERCHE$$$$END$$.htm?$$FORM:QRY$$">
+	<span class="selection"><b>$$LG:LISTVILLPRO$$:</b></span><br> 
+	<!-- $$FORM:IDVILLE$$ -->
+	$$DO:2:20$$
+	<font size="1"><input type="checkbox" name="cp" value="$$IMMOBW:FINDPROXIMITE:CP$$">
+	$$IF=:FORM_IDVILLE:IMMOBW:FINDPROXIMITE:IDVILLE$$<b>$$END$$ $$IMMOBW:FINDPROXIMITE:VILLEAFF$$ 
+	($$IMMOBW:FINDPROXIMITE:CP$$)$$IF=:FORM_IDVILLE:IMMOBW:FINDPROXIMITE:IDVILLE$$</b>$$END$$</font><br>
+	$$LOOP$$<br>	
+	<input type="button" value="$$LG:CHERCHE$$" onClick="subm();" name="button">
+	</form>
+	$$BFIN$$
+	</td>
+</tr>
+</table>
+<br>
+$$INCL:BAS.HTM$$ 
