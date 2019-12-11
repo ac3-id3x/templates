@@ -1,0 +1,36 @@
+$$SET:PAGE:IDT=LISTEAG$$
+$$SET:PAGE:TITR=@@PAGE:CFG_TITRE@@$$
+$$INCL:HAUT.HTM$$
+
+$$B:IMMOBW:AGENCES:CP:QRY:CP$$
+$$BIF:IMMOBW:AGENCES:CP$$
+$$DO$$
+<div class="blocAgence">
+	<h1>VAL IMMOBILIER $$IMMOBW:AGENCES:CP:VILLE ucase$$ ($$IMMOBW:AGENCES:CP:CP$$)</h1>		
+	<img src="images/agences/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$.jpg" alt="$$LG:IMMOBILIER pcase$$ $$IMMOBW:AGENCES:CP:VILLE ncase$$" title="$$LG:IMMOBILIER pcase$$ $$IMMOBW:AGENCES:CP:VILLE ncase$$" onerror="this.src='$$_$$images/agences/sans_photo.jpg';"/>
+	<div class="infosAgence">	
+		<h2>$$IMMOBW:AGENCES:CP:NOM ucase$$</h2>		
+		$$IMMOBW:AGENCES:CP:ADRESSE htmlencode crlf2br$$<br />
+		<strong>$$LG:MINITEL pcase$$ :</strong> $$IMMOBW:AGENCES:CP:TEL formattel$$<br />
+		<strong>$$LG:FAX pcase$$ :</strong> $$IMMOBW:AGENCES:CP:FAX formattel$$<br />
+		$$IF:IMMOBW:AGENCES:CP:EMAIL$$
+			<strong>$$LG:EMAIL pcase$$ : </strong> $$IMMOBW:AGENCES:CP:EMAIL encodemail javascript full$$<br />
+		$$END$$
+		<strong>$$LG:NOMRESP$$</strong> $$IMMOBW:AGENCES:CP:RESPAG$$<br />
+		$$IF:IMMOBW:AGENCES:CP:URL$$
+			<strong>$$LG:SITE pcase$$ :</strong> <a href="$$IMMOBW:AGENCES:CP:URL$$" target="_blank" title="$$PAGE:DESCRIPTION$$">$$IMMOBW:AGENCES:CP:URL$$</a>
+		$$END:URL$$
+	</div>
+	<div class="liensAgence">		
+		<a href="http://$$REP:RSRV$$/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/carte_visite.htm?lang=$$LANGUE$$" title="$$PAGE:DESCRIPTION$$">$$LG:LIEN:PLUSDINFOS pcase$$</a>
+		<a href="http://$$REP:RSRV$$/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$PAGE:DESCRIPTION$$">$$LG:NOUSCTC$$</a>
+		$$A:CARTE:CP=@@IMMOBW:AGENCES:CP:CP@@$$
+		$$A:CARTE:VILLE=@@IMMOBW:AGENCES:CP:VILLE replace ' \'@@$$
+		$$A:CARTE:ADRESSE=@@IMMOBW:AGENCES:CP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+		$$INCL:LOCALISATION_AGENCE.HTM$$
+	</div>
+	<div class="clear"><!--$$PAGE:KEYWORDS$$--></div>
+</div>
+$$LOOP$$
+$$BFIN$$
+$$INCL:BAS.HTM$$
