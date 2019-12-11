@@ -1,0 +1,189 @@
+$$REM$$
+====================================================================
+
+//// <summary>Liste d'annonces d'une agence classées par type de transaction, puis type de biens par transaction</summary>
+//// <remarks>
+//// <para>Fichier include appelé par : slagence_X_V2/agence-immobiliere.htm</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/portefeuille01.css, appelé par le fichier agence-immobiliere.htm</para>
+//// <para>Conditionné (généralement) pour n'apparaître que si le site a souscrit à un contrat de référencement</para>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence en REP:1</para>
+//// </remarks>
+//// <update date="2008-03-25" author="lisbonne.siriphol">Correction sur types de biens</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-14" author="sophie.nataf">Validation référencement</update>
+//// <update date="2008-01-23" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+$$E:IMMOBW:AGENCE:353200$359273$359274$359275:ALIAS:PORTEFEUILLE$$
+<div id="Portefeuille01">
+	<h3>$$LG:PORTEFEUILLE pcase$$</h3>
+	
+	$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCES:353200$359273$359274$359275$$
+	
+	$$BIF0:AGENCEANNONCES$$
+	$$LG:NOBIENDISPO pcase$$.
+	$$BFIN$$			
+	
+	$$BIF:AGENCEANNONCES$$	
+	$$DO$$	
+	$$IF=:2:AGENCEANNONCES:IDTYPETRANSACTION$$		
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:VEN lcase$$ $$PORTEFEUILLE:CP cp2dep pcase$$ ($$PORTEFEUILLE:CP left 2$$)">$$LG:LIEN:VEN pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VEN:2$$
+	$$BIF:TYPEBIEN_VEN$$
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VEN:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_VEN:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_VEN:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_VEN:NBANN$$ $$IF-:2:TYPEBIEN_VEN:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_VEN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+	$$BIF:AGENCEANNONCES$$	
+	$$DO$$
+	$$IF=:1:AGENCEANNONCES:IDTYPETRANSACTION$$	
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:LOC lcase$$ $$PORTEFEUILLE:CP cp2dep pcase$$ ($$PORTEFEUILLE:CP left 2$$)">$$LG:LIEN:LOC pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOC:1:$$
+	$$BIF:TYPEBIEN_LOC$$	
+	$$DO$$		
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ : $$TYPEBIEN_LOC:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_LOC:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_LOC:NBANN$$ $$IF-:2:TYPEBIEN_LOC:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_LOC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$	</span></a><br />		
+	$$LOOP$$
+	<br />
+	$$BFIN$$	
+	
+	$$BIF:AGENCEANNONCES$$	
+	$$DO$$
+	$$IF=:10:AGENCEANNONCES:IDTYPETRANSACTION$$	
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=10&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:FCOMMERCE lcase$$ $$PORTEFEUILLE:CP cp2dep pcase$$ ($$PORTEFEUILLE:CP left 2$$)">$$LG:LIEN:FCOMMERCE pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_FDC:10:$$
+	$$BIF:TYPEBIEN_FDC$$
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=10&amp;idtypebien=$$TYPEBIEN_FDC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:FCOMMERCE pcase$$ : $$TYPEBIEN_FDC:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_FDC:DEF_LIBELLE pcase$$<span class="nbAnn"> :	$$TYPEBIEN_FDC:NBANN$$ $$IF-:2:TYPEBIEN_FDC:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_FDC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$	
+	
+	$$BIF:AGENCEANNONCES$$	
+	$$DO$$
+	$$IF=:11:AGENCEANNONCES:IDTYPETRANSACTION$$	
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=11&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:ANN:CESSIONBAILS lcase$$ $$PORTEFEUILLE:CP cp2dep pcase$$ ($$PORTEFEUILLE:CP left 2$$)">$$LG:ANN:CESSIONBAILS pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_CDB:11:$$
+	$$BIF:TYPEBIEN_CDB$$
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=11&amp;idtypebien=$$TYPEBIEN_CDB:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:CESSIONBAILS pcase$$ : $$TYPEBIEN_CDB:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_CDB:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_CDB:NBANN$$ $$IF-:2:TYPEBIEN_CDB:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_CDB:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$	
+	
+	$$BIF:AGENCEANNONCES$$
+	$$DO$$
+	<!-- idtt loc temp -->
+	$$IF=:3:AGENCEANNONCES:IDTYPETRANSACTION$$
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=3&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:LOCTMP lcase$$ ">$$LG:LIEN:LOCTMP pcase$$</a><br />
+	$$END$$	
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCTEMP:3:$$
+	$$BIF:TYPEBIEN_LOCTEMP$$
+	<!-- type loc temp -->
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=3&amp;idtypebien=$$TYPEBIEN_LOCTEMP:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="">$$TYPEBIEN_LOCTEMP:DEF_LIBELLE pcase$$</a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+	
+	$$BIF:AGENCEANNONCES$$
+	$$DO$$
+	<!-- idtt loc vac -->
+	$$IF=:4:AGENCEANNONCES:IDTYPETRANSACTION$$
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=4&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:LOCVAC lcase$$ ">$$LG:LIEN:LOCVAC pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCVAC:4:$$
+	$$BIF:TYPEBIEN_LOCVAC$$
+	<!-- type loc vac -->
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=4&amp;idtypebien=$$TYPEBIEN_LOCVAC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_LOCVAC:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_LOCVAC:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_LOCVAC:NBANN$$ $$IF-:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+	
+	
+	$$BIF:AGENCEANNONCES$$
+	$$DO$$
+	<!-- idtt neuf -->
+	$$IF=:9:AGENCEANNONCES:IDTYPETRANSACTION$$
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=9&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:LIEN:PGRNEUF lcase$$ ">$$LG:LIEN:PGRNEUF pcase$$</a><br />
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_NEUF:9:$$
+	$$BIF:TYPEBIEN_NEUF$$
+	<!-- type bien neuf -->
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=9&amp;idtypebien=$$TYPEBIEN_NEUF:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_NEUF:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_NEUF:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_NEUF:NBANN$$ $$IF-:2:TYPEBIEN_NEUF:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_NEUF:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+	
+	$$BIF:AGENCEANNONCES$$
+	$$DO$$
+	<!-- idtt invest -->
+	$$IF=:6:AGENCEANNONCES:IDTYPETRANSACTION$$
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=6&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:INVESTISSEMENT lcase$$ ">$$LG:INVESTISSEMENT pcase$$</a><br />
+	$$END$$		
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_INVEST:6:$$
+	$$BIF:TYPEBIEN_INVEST$$
+	<!-- type bien invest -->
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=6&amp;idtypebien=$$TYPEBIEN_INVEST:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_INVEST:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$"> $$TYPEBIEN_INVEST:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_INVEST:NBANN$$ $$IF-:2:TYPEBIEN_INVEST:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_INVEST:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+	
+	
+	$$BIF:AGENCEANNONCES$$
+	$$DO$$
+	<!-- idtt viager -->
+	$$IF=:5:AGENCEANNONCES:IDTYPETRANSACTION$$
+	<a class="typeTransac" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=5&amp;lang=$$LANGUE$$" title="$$LG:ANNONCIMMOS pcase$$ $$LG:ANN:VIAGERS lcase$$ ">$$LG:ANN:VIAGERS pcase$$</a><br />
+	$$END$$	
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VIAGER:5:$$
+	$$BIF:TYPEBIEN_VIAGER$$
+	<!-- type bien viager -->
+	$$DO$$
+	<a class="typeBien" href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=5&amp;idtypebien=$$TYPEBIEN_VIAGER:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title=""> $$TYPEBIEN_VIAGER:DEF_LIBELLE pcase$$<span class="nbAnn"> : $$TYPEBIEN_VIAGER:NBANN$$ $$IF-:2:TYPEBIEN_VIAGER:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_VIAGER:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</span></a><br />
+	$$LOOP$$
+	<br />
+	$$BFIN$$
+	
+</div>
