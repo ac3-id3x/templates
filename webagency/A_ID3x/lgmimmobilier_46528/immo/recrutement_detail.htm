@@ -1,0 +1,111 @@
+$$E:EASA:TEXTE:~idCategorie:VAL:IDCATRECRUTEMENT:~idTexte:REP:1:ALIAS:BT$$
+$$INIT:IDT=RECRUTEMENT_DETAIL$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid">
+	<div class="span12">
+		<h1>$$LG:RECRUTEMENT pcase$$ : $$BT:TITRE$$</h1>
+		<hr>
+	</div>			
+</div>
+<div class="row-fluid margin-top-20 margin-bottom-20" itemscope itemtype="http://schema.org/JobPosting">
+	<div class="span8">
+    <img src="images/immo/recrutement.jpg" class="pull-left margin-right-10">   
+		<h2 class="margin-top-20">$$LG:OFFREDEMPLOI pcase$$</h2>
+
+		$$IF:BT:DESCRIPTION$$
+		    <div itemprop="description">$$BT:DESCRIPTION$$</div>
+		$$END$$
+
+	
+		    <div itemprop="text">
+<p class="margin-top-150">Vivez votre métier sans contrainte:</p>
+
+<ul class="margin-left-20">
+<li><span class="typo-important">&bull;</span> Aucune hiérarchie </li>
+<li><span class="typo-important">&bull;</span> Aucune permanence agence</li>
+<li><span class="typo-important">&bull;</span> Aucune pression</li>
+<li><span class="typo-important">&bull;</span> Aucun objectif </li>
+<li><span class="typo-important">&bull;</span> La diffusion de vos mandants avec votre numéro de téléphone portable</li>
+<li><span class="typo-important">&bull;</span> Une rémunération allant jusqu'a 98% de la commission </li>
+<li><span class="typo-important">&bull;</span> L'acces en illimité à l'agence pour travailler, accueillir vos clients...</li>
+<li><span class="typo-important">&bull;</span> Des réunions hebdomadaires pour vous dynamiser</li>
+<li><span class="typo-important">&bull;</span> Des collaborateurs à vos cotés pour échanger au quotidien</li>
+<li><span class="typo-important">&bull;</span> Une formation complète!</li>
+<li><span class="typo-important">&bull;</span> Etc..</li>
+</ul>
+
+<p>Terminé l'isolement des mandataires indépendants et voici enfin une rémunération à la hauteur de votre engagement!</p>
+
+<p>Soyez réactif, les places sont limitées!!!</p>
+            </div>
+		
+	</div>
+	<div class="span4">
+	    <div class="row-fluid">
+	        <div class="span12 detail-bloc-contact padding-10 border-solid-primary-1">
+	            $$IF:ERRE$$
+	                <span class="h2-like">$$LG:ERREUR$$</span>
+        	        <p class="small">$$ERRE$$</p>
+        	    $$END$$
+	            <span class="h2-like">$$LG:VOTRECANDIDATURE pcase$$</span>
+        		<form method="post" action="/$$REP:1$$/$$REP:0$$" enctype="multipart/form-data">
+					<!--#include virtual="contact/incl_honeypot.htm" -->
+        			<input type="hidden" name="u" value="ID3:FORMMAIL" />
+        			<input type="hidden" name="page_ok" value="/immo,recrutement_envoi.htm" />
+        			<input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+        			<input type="hidden" name="page_html" value="/immo,recrutement_email.htm" />
+        			<input type="hidden" name="cfg_form" value="recrutement" />
+        			<input type="hidden" name="cfg_emails" value="recrutement" />
+        			<input type="hidden" name="subject" value="$$BT:TITRE$$"/>
+        			$$IF:TO_RECRUTEMENT$$
+        			    <input type="hidden" name="email_to" value="$$TO_RECRUTEMENT$$"/>
+        			$$END$$
+        			$$IF0:TO_RECRUTEMENT$$
+        			    <input type="hidden" name="email_to" value="jobs@$$REP:SRV$$"/>
+        			$$END$$
+        			<div class="control-group">
+        				<label>$$LG:VOTRENOM pcase$$ / $$LG:VOTREPRENOM pcase$$</label>
+        				<input type="text" class="center" name="nom_from" autocomplete="off">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:VOTREMAIL pcase$$</label>
+        				<input type="text" class="center" name="email_from" autocomplete="off">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:VOTRECV$$</label>
+        				<input type="file" name="attachment">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:MESSAGE pcase$$</label>
+        				<textarea name="message" class="center" rows="5"></textarea>
+        			</div>
+        			<div class="row-fluid">
+        				<div class="span4" hidden-phone"></div>
+        				<div class="span4">
+        					<input type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block" value="$$LG:POSTULEZ pcase$$" />
+        				</div>
+        			</div>
+        		</form>
+	         </div>
+	     </div>
+	     $$B:EASA:TEXTES:~idCategorie:VAL:IDCATRECRUTEMENT:~inverse:1:ALIAS:EDITEURRECRUTEMENT$$
+	     $$BIF:EDITEURRECRUTEMENT$$
+	     <div class="row-fluid margin-top-20">
+	        <div class="span12 border-solid-primary-1 detail-bloc-contact padding-10">
+				<div class="h2-like margin-bottom-10">$$LG:LG:NOSAUTRESJOBS pcase$$</div>
+    			<ul>
+    				$$DO:1:5$$
+    					<li class="padding-5">
+    						<a href="/$$EDITEURRECRUTEMENT:IDTEXTE$$/immo,recrutement_detail.htm" title="$$EDITEURRECRUTEMENT:TITRE pcase$$">$$EDITEURRECRUTEMENT:TITRE smalltextv2 30$$</a>
+    					</li>
+    				$$LOOP$$
+    			</ul>
+				<div class="margin-top-20 pagination-centered">
+					<a href="/immo,recrutement.htm" title="$$LG:NOSAUTRESJOBS pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:NOSAUTRESJOBS pcase$$</a>
+				</div>
+	          </div>   
+	     </div>
+	     $$BFIN$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
