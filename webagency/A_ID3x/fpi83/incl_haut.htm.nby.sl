@@ -1,0 +1,218 @@
+ <HTML>
+<head>
+$$INCL:DICO-FORM.HTM$$
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Fréjus Plage Immobilier : agence immobilière à Fréjus dans le Var</TITLE>
+<meta name="Description" content=" Fréjus Plage Immobilier : Offres de vente de biens immobiliers (maisons, appartements, villas, terrains, parking …). Notre agence immobilière est située à Fréjus-Plage dans le Var.">
+<meta name="Keywords" content="immobilier, var, fréjus, immobilier varois, agence, immobilière, biens à vendre, annonces, offres, provence, FPI, 83, agent immobilier, saint-raphaël, FREJUS, port-fréjus, Fréjus-plage, villa, villas, maison, maisons, achats, ventes, côte d'azur, région paca, sud-est, puget-sur-argens, agay, les issambres, arrière pays varois, affaires à saisir, appartements, studio, F2, F3, F4, 2 pièces, 3 pièces, 4 pièces, 5 pièces, viager, viagers, pavillon, pavillons, roquebrune-sur-argens, prestige, luxe, bastides, domaines, mas, terrains, saint-tropez, saint-aygulf, terrain, fonds, murs, commerce, immo, french riviera, real estate agency, house, apartment, flat, sale, sainte-maxime">
+<meta name="Author" content="Mr MICHOT">
+<meta http-equiv="Content-Language" content="fr">
+<meta name="Reply-to" content="frejus-plage-immobilier@wanadoo.fr">
+<meta name="Identifier-URL" content="http://www.immobilier-83.com">
+<meta name="Copyright" content="FPI © 2002">
+<meta name="Revisit-after" content="14 days">
+<meta name="Robots" content="all">
+
+
+
+</HEAD>
+
+<BODY onLoad="preloadImages('/z/sla/slagence_fpi83/Images/voletsC.gif','/z/sla/slagence_fpi83/Images/voletsN.gif','/z/sla/slagence_fpi83/Images/bouleRJ1.gif')" TOPMARGIN="0" bgcolor="6934FF">
+
+
+
+<STYLE>
+<!--
+
+BODY, TD{font-size: 12px; color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif;}
+
+/*MISE EN VALEUR DE TEXTE*/
+.txtCouleur1{font-size: 12px; font-weight: bold; color: #FFFFFF;}
+.txtCouleur2{font-size: 12px; font-weight: bold; color: #6934FF;}
+.txtTitre1{font-size: 16px; font-weight: bold; color: #DE2486;}
+.txtTitre2{font-size: 14px; font-weight: bold; color: #DE2486; font-style:italic;}
+
+/*LIENS*/
+A {font-size: 12px; font-weight: bold; color: #3F1F9A;}
+A:hover {font-size: 12px; font-weight: bold; color: #FF69CD;}
+A.lien {font-size: 12px; font-weight: bold; color: #ffffff;}
+A.lien:hover {font-size: 12px; font-weight: bold; color: #000000;}
+
+/*TABLEAUX*/
+.tabFond1{background-color: #6934FF; border-color: #2F2F77; border-width:0; border-style:solid; padding:2;}
+.tabFond2{background-color: #BDA6FF; border-color: #6934FF; border-width:0; border-style:solid; padding:2;}
+.tabTitre{background-color: #FF69CD; color: #FFFFFF; font-size: 13px; font-weight: bold;}
+.tabCouleur{background-color: #d41f89; border-color: #000000; border-width:1; border-style:solid; padding:2; color="#ffffff"}
+-->
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+function OuvrirPopup(page,nom,option) {
+window.open('coupdecoeur.htm?idtt=2&amp;t=ven&amp;si_coupdecoeur=1','Coup2coeur','width=400 height=400 scrollbars=yes');
+}
+
+function go2(ref)
+{window.open(ref,'visu3d','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=500,height=520');}	
+
+function pop() {
+window.open("http://agence.ledemenageur.com/enhydra/VolumeEstimator.po","","height=600,width=780,left=0,top=0");
+}
+
+function preloadImages() { 
+  var d=document;
+  if(d.images){ if(!d.Stock) d.Stock=new Array();
+  var i,j=d.Stock.length,a=preloadImages.arguments;
+  for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.Stock[j]=new Image; d.Stock[j++].src=a[i];}}
+}
+
+function changeImages(){
+//les arguments sont des paires "name : nom du champ ancienne image" et "nom : nom de l'image nouvelle"
+var a = changeImages.arguments;
+for (i=0; i<a.length; i=i+2)
+	{
+	document[a[i]].src = a[i+1];
+	}
+}
+
+function changeVisibility(nomLayer){
+if (document.all)
+	{
+	if (document.all[nomLayer].style.visibility == "hidden")
+	document.all[nomLayer].style.visibility = "visible";
+	else
+	document.all[nomLayer].style.visibility = "hidden";
+	}
+if (document.layers)
+	{
+	if (document.layers[nomLayer].visibility == "hide")
+	document.layers[nomLayer].visibility = "show";
+	else
+	document.layers[nomLayer].visibility = "hide";
+	}
+}
+
+//-->
+</SCRIPT><CENTER>
+  <table width="760" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td width="268"> 
+	  <table width="268" border="0" cellspacing="0" cellpadding="0">
+		<tr> 
+		  <td><img src="images2/haut2.gif" width="268" height="159"></td>
+		</tr>
+		<tr> 
+		  <td> 
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  <tr> 
+				<td width="5"><img src="images2/gauche.gif" width="13" height="30"></td>
+				<td background="images2/fond_photo.gif" height="20"> 
+				  <center>
+					<font size="2"><b><a class=menu href="mailto:$$IMMOBW:AGENCE:EMAIL$$"><b>$$IMMOBW:AGENCE:EMAIL$$</b></a> 
+					</b></font> 
+				  </center>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		<tr> 
+		  <td><img src="images2/bas2.gif" width="268" height="14"></td>
+		</tr>
+	  </table>
+	</td>
+	<td bgcolor="FF69CD">
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr> 
+		  <td><img src="images2/haut.gif" width="492" height="14"></td>
+		</tr>
+		<tr> 
+		  <td>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td>
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					  <td height="145"> 
+						<center>
+						  <font size="2"><b><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="405" height="46">
+							<param name=movie value="$$_$$titre.swf">
+							<param name=quality value=high>
+							<embed src="$$_$$titre.swf" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="405" height="46">
+							</embed> 
+						  </object> <br>
+						  <img src="images2/specialiste3.gif" width="187" height="30"><font color="#FFFFFF">$$E:IMMOBW:AGENCE:REP:1$$<font size="3"><br>
+						  </font>$$IMMOBW:AGENCE:ADRESSE crlf2br$$ <br>
+						  T&eacute;l : &nbsp;$$IMMOBW:AGENCE:TEL formattel$$ $$IF:IMMOBW:AGENCE:TELVENTE$$(pour 
+						  les locations)<br>
+						  T&eacute;l : &nbsp;$$IMMOBW:AGENCE:TELVENTE formattel$$(pour 
+						  les ventes)$$END:IMMOBW:AGENCE:TELVENTE$$</font><br>
+						  <a class=menu href="mailto:$$IMMOBW:AGENCE:EMAIL$$"><b> 
+						  </b></a> </b></font> 
+						</center>
+					  </td>
+					  <td width="5" background="images2/bord_droit.gif">&nbsp;</td>
+					</tr>
+				  </table>
+				</td>
+			  </tr>
+			  <tr>
+				<td background="images2/titre.gif" height="30">
+				  <center>
+					<b><font color="#FFFFFF">$$IF=:loc:FORM:T$$ LOCATIONS $$END$$ 
+					$$IF=:ven:FORM:T$$ VENTES $$END$$ $$IF=:fin:FORM:T$$ FINANCER 
+					$$END$$ $$IF=:dem:FORM:T$$ DEMENAGER $$END$$ $$IF!:ven$loc$fin$dem:FORM:T$$ 
+					$$LG:RUBRIQUE$$ $$END$$ </font></b> 
+				  </center>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		<tr> 
+		  <td><img src="images2/bas.gif" width="492" height="14"></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+</table>
+  <TABLE WIDTH="760" BORDER="0" CELLSPACING="0" CELLPADDING="0" HEIGHT="491">
+    <TR> 
+      <TD WIDTH="170" VALIGN="top" HEIGHT="480"> 
+		<TABLE WIDTH="170" BORDER="0" CELLSPACING="0" CELLPADDING="0" height="480">
+	  <tr>
+		<td> 
+		  <center>
+			<b></b> 
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="170" height="480">
+			  <param name=movie value="$$_$$/images/menu.swf">
+			  <param name=quality value=high>
+			  <embed src="$$_$$/images/menu.swf" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="170" height="480">
+			  </embed> 
+			</object>
+		  </center>
+		</td>
+		  </tr>
+        </TABLE>
+				<CENTER>
+	  <table width="166" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+		  <td background="images2/fond_mention.gif" width="166" height="62"> 
+			<center>
+			  <b><font color="#000066">r&eacute;alisations et <br>
+			  mentions l&eacute;gales : <a href="/offres.htm">SELOGER</a></font></b> 
+			</center>
+		  </td>
+		</tr>
+	  </table>
+	  </CENTER>
+			</TD>
+       		<TD WIDTH="2" CLASS="bordure" ROWSPAN="3" HEIGHT="435"><IMG SRC="Images/vide.gif" WIDTH="2"></TD>
+     		<TD WIDTH="586" CLASS="corps" VALIGN="top" ALIGN="center" ROWSPAN="3" HEIGHT="435">
+		<table width="100%" border="0" cellspacing="10" cellpadding="0">
+		  <tr>
+			<td>
+			
