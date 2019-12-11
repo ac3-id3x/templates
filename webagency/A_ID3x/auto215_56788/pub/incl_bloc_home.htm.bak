@@ -1,0 +1,145 @@
+$$REM$$<!-- ================================================================================== -->$$END$$
+$$REM$$<!-- METTRE ENCART_PUB_MF A ZERO SI UTILISATION DE PUBS AUTRES QUE MOBILEFIRST          -->$$END$$
+$$REM$$<!-- ================================================================================== -->$$END$$
+
+$$REM$$
+<div class="services">
+    <div class="services-inner">
+        <!--#include virtual="pub/incl_pub_estimation_mobilefirst.htm" -->
+        <!--#include virtual="pub/incl_pub_alerte_mobilefirst.htm" -->
+        <!--#include virtual="pub/incl_pub_gestion_mobilefirst.htm" -->
+    </div>
+</div>
+$$END$$
+
+<div class="module-annonces module-services">
+    <div class="module-services-items$$IF0:ROTATION_MODULE$$ module-annonces-fixe-$$SIZEMODULE$$$$END$$ owl-carousel">
+        <div class="module-annonces-item">
+            <div class="module-annonces-content">
+            	<div class="row-fluid">
+            		<div class="span6 pub-estimation">
+            			
+            		</div>
+            		<a href="$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$/estimation,immobiliere.htm$$END$$$$IF=:1:MULTIAGENCES$$/agences,estimation.htm$$END$$" class="" >
+	            		<div class="span6 pagination-centered service-important padding-20 height-235">
+	            			<i class="service-picto mf-icon-estimation"></i>
+						    <div class="service-body">
+						        <h3 class="service-ttl"><!--#include virtual="pub/incl_pub_estimation_title.htm" --></h3>
+						        <!--#include virtual="pub/incl_pub_estimation_txt.htm" -->
+						    </div>
+	            		</div>
+	            	</a>
+            	</div>
+            </div>                    
+        </div>
+        <div class="module-annonces-item">
+            <div class="module-annonces-content">
+            	<div class="row-fluid">
+            		<div class="span6 pub-alerte">
+            			
+            		</div>
+            		<a href="/alerte,immo.htm" class="" >
+	            		<div class="span6 pagination-centered service-action padding-20 height-235">
+	            			<i class="service-picto mf-icon-alerte"></i>
+						    <div class="service-body">
+						        <h3 class="service-ttl">$$LG:ALERTEMAIL pcase$$</h3>
+						        <!--#include virtual="pub/incl_pub_alerte_txt.htm" -->
+						    </div>
+	            		</div>
+	            	</a>
+            	</div>
+            </div>                    
+        </div>
+        <div class="module-annonces-item">
+            <div class="module-annonces-content">
+            	<div class="row-fluid">
+            		<div class="span6 pub-gestion">
+            			
+            		</div>
+            		<a href="https://persamanosque.gercop-extranet.com/connexion/" target="_blank" class="" >
+	            		<div class="span6 pagination-centered service-neutre padding-20 height-235">
+	            			<i class="service-picto mf-icon-gestion"></i>
+						    <div class="service-body">
+						        <h3 class="service-ttl">$$LG:LIEN:GESTLOC pcase$$</h3>
+						          Accédez à votre espace gestion en cliquant ici
+						    </div>
+	            		</div>
+	            	</a>
+            	</div>
+            </div>                    
+        </div>     
+    </div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	    var containerCarousel = $('.module-services-items');
+	    var args = {
+	        margin : 30,
+	        navText : ["<i class='mf-icon-arrow-left'></i>", "<i class='mf-icon-arrow-right'></i>"],
+	        responsive:{
+	            0 : {
+	                items: 1,
+	                dots : true,
+	                nav  : false,
+	                navText : ""
+	            },
+	            670 : {
+	                items: 2
+	            },
+	            1024 : {
+	                items  : 3,
+	                dots   : false
+	            },
+	            1280 : {
+	                items: $module_items_services,
+	                autoplay : $module_autoplay,
+	                autoplayTimeout : $module_autoplay_delay,
+	                autoplayHoverPause : $module_autoplay_stop,
+	                nav: true,
+	                dots: false
+	            }
+	        }
+	    };
+	    var owlModuleAnnonces = containerCarousel.owlCarousel(args);
+
+	    if ($module_state == 'fixed') {
+	        $(window).resize(function() {
+	            if ( $(window).width() > 767 ) {
+	                stopCarousel();
+	            } else {
+	                startCarousel();
+	            }
+	        });
+	        if ( $(window).width() > 767 ) {
+	            stopCarousel();
+	        }
+
+	        function stopCarousel(){
+	            owlModuleAnnonces.trigger("destroy.owl.carousel");
+	            containerCarousel.removeClass("owl-carousel");
+	        }
+	        function startCarousel(){
+	            containerCarousel.addClass("owl-carousel");
+	            containerCarousel.owlCarousel(args);
+	        }
+	    }
+	});
+    var $module_items_services = 1;
+    $$IF0:ROTATION_MODULE$$
+        var $module_state = 'fixed';
+    $$END$$
+    $$IF=:1:ROTATION_MODULE$$
+        var $module_state = 'rotate';
+    $$END$$
+    $$IF0:SPEED_MODULE$$
+        var $module_autoplay = false;
+        var $module_autoplay_delay = 0;
+        var $module_autoplay_stop = false;
+    $$END$$
+    $$IF:SPEED_MODULE$$
+        var $module_autoplay = true;
+        var $module_autoplay_delay = $$SPEED_MODULE$$;
+        var $module_autoplay_stop = true;
+    $$END$$
+</script>
