@@ -1,0 +1,277 @@
+﻿$$INCL:HAUT.HTM$$
+<h1><strong>Demande et simulation de </strong>pr&ecirc;t</h1>
+$$SET:PAGE:IDT=SIMULATION$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ 
+	$$A:AGENCE:EMAIL=1$$  
+$$END$$
+$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ 
+	$$END$$ 
+$$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+	$$IF:IMMOBW:AGENCES:EMAIL$$ 
+		$$A:MULTI_AGENCE:EMAIL=1$$ 
+	$$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+	D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+	L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+
+<form name="frmSimulation" method="post" action="page_ok_simu.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="page_ok" value="page_ok_simu.htm" />
+	<input type="hidden" name="page_err" value="simulation_pret.htm" />
+	<input type="hidden" name="cfg_form" value="simulation_pret$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="simulation_pret" />
+
+	$$IF0:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+	$$END$$
+
+	$$IF:FORM:REMAIL$$
+		<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+	$$END$$
+	
+	$$IF0:FORM:REMAIL$$ 
+		$$IF:IMMOBW:AGENCE:EMAIL$$ 
+			<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+			<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" /> 
+		$$END$$
+	$$END$$
+	$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$
+	$$ERRE$$
+	<table class="tabsimulation">
+        <tr>
+            <td align="center" class="tabTitre" colspan="2">DEMANDE DE FINANCEMENT</td>
+        </tr>
+     </table>
+     <table class="tabsimulation">
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2"><br />Nom et pr&eacute;nom *</td>
+            <td width="175" align="left" valign="top" class="txe"><br />
+                <input type="text" name="nompre" value="$$FORM:NOMPRE$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Adresse *</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="adres" value="$$FORM:ADRES$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">N&deg; de t&eacute;l&eacute;phone domicile *</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="teldom" value="$$FORM:TELDOM$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">N&deg; de t&eacute;l&eacute;phone bureau</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="TelBur" value="$$FORM:TELBUR$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Portable *</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="Portable" value="$$FORM:PORTABLE$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">e-mail *</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mail" value="$$FORM:MAIL$$" /><br /><br />
+            </td>
+        </tr>
+        </table>
+        <table class="tabsimulation">
+        <tr>
+            <td colspan="2" class="tabTitre" align="center">POUR TRAITER VOTRE DEMANDE PLUS RAPIDEMENT:</td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2"><br />Revenu net moyen mensuel monsieur</td>
+            <td width="175" align="left" valign="top" class="txe"><br />
+                <input type="text" name="revenu" value="$$FORM:REVENU$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Revenu net moyen mensuel madame</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="revenu2" value="$$FORM:REVENU2$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Contrat &agrave; dur&eacute;e indetermin&eacute;</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="contrat" value="$$FORM:CONTRAT$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Revenus locatifs</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="revloc" value="$$FORM:REVLOC$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">En cas de cr&eacute;dit en cours:</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="credit" value="$$FORM:CREDIT$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">Mensualit&eacute; cr&eacute;dit immobilier</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mensualite" value="$$FORM:MENSUALITE$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Mensualit&eacute; cr&eacute;dit personnel1</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mensualite1" value="$$FORM:MENSUALITE1$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Mensualit&eacute; cr&eacute;dit personnel2</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mensualite2" value="$$FORM:MENSUALITE2$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Mensualit&eacute; cr&eacute;dit personnel3</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mensualite3" value="$$FORM:MENSUALITE3$$" />
+            </td>
+        </tr>
+        </table>
+        
+        <table class="tabsimulation">
+        <tr>
+            <td align="center" valign="top" class="tabTitre" colspan="2">INFORMATIONS COMPLEMENTAIRES:</td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2"><br />Capital restant d&ucirc; pour le cr&eacute;dit immobilier</td>
+            <td width="175" align="left" valign="top" class="txe"><br />
+                <input type="text" name="creditbis" value="$$FORM:CREDITBIS$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Capital restant d&ucirc; pour le cr&eacute;dit personnel 1</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="credit1" value="$$FORM:CREDIT1$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Capital restant d&ucirc; pour le cr&eacute;dit personnel 2</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="credit2" value="$$FORM:CREDIT2$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Capital restant d&ucirc; pour le cr&eacute;dit personnel 3</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="credit3" value="$$FORM:CREDIT3$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">Pension alimentaire vers&eacute;e</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="pension" value="$$FORM:PENSION$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">Pension alimentaire re&ccedil;ue</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="pension1" value="$$FORM:PENSION1$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">Apport personnel total<br/><br/></td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="apport" value="$$FORM:APPORT$$" />
+            <br/><br/></td>
+        </tr>
+        
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Etes vous locataires depuis plus de deux ans ou non-propri&eacute;taires ?</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="locataire" value="$$FORM:LOCATAIRE$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">propri&eacute;taire votre r&eacute;sidence principale</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="proprietaire" value="$$FORM:PROPRIETAIRE$$" />
+            </td>
+        </tr>
+         <tr>
+            <td width="280" align="left" valign="top" class="txe2">Revenu net imposable de l&acute;ann&eacute;e pr&eacute;c&eacute;dente</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="imposable" value="$$FORM:IMPOSABLE$$" />
+            </td>
+        </tr>
+        
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Banque actuelle 1</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="banque1" value="$$FORM:BANQUE1$$" />
+            </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Banque actuelle 2</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="banque2" value="$$FORM:BANQUE2$$" />
+           </td>
+        </tr>
+        <tr>
+        	  <td width="280" align="left" valign="top" class="txe2">Dur&eacute;e maximum de pr&ecirc;t souhait&eacute;e</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="saisieduree" value="$$FORM:SAISIEDUREE$$" />
+           </td>
+          </tr>
+            <tr>
+            <td width="280" align="left" valign="top" class="txe2">Mensualit&eacute; maximum souhait&eacute;e</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="mensu" value="$$FORM:MENSU$$" />
+          </td>
+          </tr>
+          <tr>
+            <td width="280" align="left" valign="top" class="txe2">Souhaitez-vous &ecirc;tre contact&eacute;(e) pour un placement financier ?</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="placeinvest" value="$$FORM:PLACEINVEST$$" />
+           </td>
+        </tr>
+        <tr>
+            <td width="280" align="left" valign="top" class="txe2">Nous vous contacterons sous 48h</td>
+            <td width="175" align="left" valign="top" class="txe">
+                <input type="text" name="contact" value="$$FORM:CONTACT$$" />
+            </td>
+        </tr>
+        <tr>
+			<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="saparateur">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right"><input class="boutonEnvoi" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+		</tr>
+    </table>
+    
+</form>
+
+$$INCL:CGU_FORMULAIRE.HTM$$
+
+$$INCL:BAS.HTM$$
