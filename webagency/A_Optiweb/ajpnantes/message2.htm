@@ -1,0 +1,137 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=APPEL$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE2.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" align="center">
+	<tr> 
+		<td align="center"> 
+			<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="1" />
+<input type="hidden" name="page_ok" value="page_message_ok2.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_message2.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+
+<input type="hidden" name="message" value="messagevide" />
+ 
+
+	<strong>$$ERRE$$</strong>
+			<div class="messageNomAgence">
+				$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$<br />
+				<!--<span>Forum D&acute;Orvault, 38 route de Rennes 44300 NANTES</span>-->
+			</div>
+			<table border="0" cellspacing="0" cellpadding="0" class="tabFond3">
+				<tr>
+					<td colspan="6" class="tabTitre">
+						<strong>B&eacute;n&eacute;ficiez gratuitement et sans engagement d'une &eacute;tude  compl&egrave;te et personnalis&eacute;e.</strong>
+					</td>
+				</tr>
+				<tr><td colspan="6" style="padding:0;">&nbsp;</td></tr>
+				<tr>
+					<td align="right">$$LG:AI5$$ * :</td>
+					<td><input type="text" name="nomfamille" size="18" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+					<td align="right">$$LG:PRENOM$$ * :</td>
+					<td><input type="text" name="prenom" size="18" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+					<td align="right">Age :</td>
+					<td><input type="text" name="age" id="2age" value="$$FORM:AGE$$" size="10" maxlength="20"></td>
+				</tr>
+				<tr>
+					<td align="right">$$LG:ADRESSE$$ :</td>
+					<td colspan="5"><textarea name="adresse" cols="43" Rows="3">$$FORM:ADRESSE$$</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">$$LG:CODEP$$ :</td>
+					<td><input type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+					<td align="right">$$LG:VILLE$$ :</td>
+					<td><input type="text" name="ville" size="18" value="$$FORM:VILLE$$" /></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right">$$LG:PAYS$$ :</td>
+					<td><input type="text" name="pays" size="18" value="$$FORM:PAYS$$" /></td>
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right">T&eacute;l. domicile * : </td>
+					<td><input type="text" name="telephone" size="18" value="$$FORM:TELEPHONE$$" maxlength="20">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right">T&eacute;l. bureau : </td>
+					<td><input type="text" name="bureauphone" size="18" value="$$FORM:BUREAUPHONE$$" maxlength="20">
+					</td>
+					<td align="right">T&eacute;l. portable : </td>
+					<td><input type="text" name="mobile" size="18" value="$$FORM:MOBILE$$" maxlength="20"></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right">$$LG:AI6$$ * :</td>
+					<td><input type="text" name="email" size="18" value="$$FORM:EMAIL$$" /></td>
+					<td align="right">$$LG:FAX pcase$$ :</td>
+					<td><input type="text" name="fax" size="18" value="$$FORM:FAX$$" /></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right">Profession :</td>
+					<td><input type="text" name="profession" size="18" value="$$FORM:PROFESSION$$" maxlength="30"></td>
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="6" style="text-align:center;">
+						<p>D&egrave;s r&eacute;ception de votre e-mail vous serez mis en relation avec un conseiller<br />
+						$$LG:OBLIGATOIRE$$</p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+				</tr>
+				<tr>
+					<td colspan="6" style="text-align:right;"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+<div class="lien-cadres-fiscaux">
+	<a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/message.htm?lang=$$LANGUE$$" title="$$EXPRESSION1$$" class="plus">$$LG:DEMANDINFOS pcase$$</a>
+	<br clear="right" />
+</div>
+$$INCL:BAS.HTM$$ 
