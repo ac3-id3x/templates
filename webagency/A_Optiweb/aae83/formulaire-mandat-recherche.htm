@@ -1,0 +1,156 @@
+$$INCL:HAUT.HTM$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:CONTACT.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+	D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+	L'adresse e-mail du destinataire n'est pas disponible.<br />
+	<br /><br /><br />
+	</div>
+$$END$$
+
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+	<form method="post" action="page_ok.htm?lang=$$LANGUE$$">
+		<input type="hidden" name="idtt" value="2" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="page_ok" value="page_ok.htm" />
+		<input type="hidden" name="page_err" value="formulaire-mandat-recherche.htm" />
+		<input type="hidden" name="cfg_form" value="formulaire-mandat-recherche$$LANGUE$$" />
+		<input type="hidden" name="cfg_emails" value="formulaire-mandat-recherche" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+		$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+		$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+		$$IF0:FORM:REMAIL$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+		$$END$$
+		$$END$$
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<font color="#CC0033"><strong>$$ERRE$$</strong></font><br />
+		<strong>$$REM$$ $$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$ $$END$$
+			<img src="images/logomandat.gif" alt="" title="" />
+			</strong>
+		<br /><br />
+		<table cellspacing="0" cellpadding="0" class="tabformulaire">
+			<tr>
+				<td colspan="2" class="grostitre-formulaire" style="text-align:center;">
+					Mandat  de Recherche N&deg; <input type="text" name="Numero" value="$$FORM:NUMERO$$" style="width:250px;" />
+					<!--Mandat  de Recherche <span style="margin-left:100px;">N&deg;</span>-->
+					
+					</td>
+			</tr>
+			<tr>
+				<td width="300">Nous  soussign&eacute; :</td>
+				<td width="500"><input type="text" name="Nom1" value="$$FORM:NOM1$$" style="width:250px;" /></td>
+			</tr>
+			<tr>
+				<td>Demeurant :</td>
+				<td><textarea name="Adresse1" rows="1" cols="40"></textarea><!--<input type="text" name="Adresse1" value="$$FORM:ADRESSE1$$" style="width:250px;" />--></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					Agissant  en qualit&eacute; d&rsquo;acqu&eacute;reurs &eacute;ventuels, vous mandatons par la pr&eacute;sente<br />
+					Afin de  nous rechercher en vue de l&rsquo;acqu&eacute;rir, un bien :<br />
+					<input type="radio" name="idtypebien" value="8" />&nbsp;Propri&eacute;t&eacute;  de Prestige 
+					<input type="radio" name="idtypebien" value="2" />&nbsp;Villa 
+					<input type="radio" name="idsoustypebien" value="3" />&nbsp;Maison de village 
+					<input type="radio" name="idtypebien" value="1" />&nbsp;Appartement 
+					<input type="radio" name="idtypebien" value="4" />&nbsp;Terrain
+				</td>
+			</tr>
+			<tr>
+				<td>R&eacute;pondant  aux conditions suivantes :</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;" class="titre-formulaire">Conditions</td>
+			</tr>
+			<tr>
+				<td><strong>Situation et D&eacute;signation approximatives :</strong></td>
+				<td><textarea name="message1" rows="4" cols="40"></textarea></td>
+			</tr>
+			<tr>
+				<td><span class="soustitre-formulaire">Prix  maximum souhait&eacute; :</span></td>
+				<td><input type="text" name="Prix1" value="$$FORM:PRIX1$$" />&nbsp;<strong>Euros.</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					Lorsque,  apr&egrave;s visite, nous arr&ecirc;terons notre choix sur l&rsquo;un des biens propos&eacute;s, notre  achat &eacute;ventuel ne pourra &ecirc;tre envisag&eacute; que conform&eacute;ment au d&eacute;cret du 20 juillet  1972 soit : <br /><br />
+					<span class="soustitre-formulaire">S&eacute;questre :</span> les fonds que nous  verserons pour arr&ecirc;ter notre achat, jusqu&rsquo;&agrave; concurrence  de : <input type="text" name="Prix2" value="$$FORM:PRIX2$$" /><br />
+				</td>
+			</tr>
+			<tr>	
+				<td>seront :</td>
+				<td><input type="text" name="Prix3" value="$$FORM:PRIX3$$" /></td>
+			</tr>
+			<tr>
+				<td>remis  directement entre les mains de Ma&icirc;tre :</td>
+				<td><input type="text" name="Nom2" value="$$FORM:NOM2$$" style="width:250px;" /><br /></td>
+			</tr>
+			<tr>
+				<td colspan="2">S&eacute;questre  d&eacute;sign&eacute; &agrave; cet effet.</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<span class="soustitre-formulaire">R&eacute;mun&eacute;ration :</span> Votre r&eacute;mun&eacute;ration sera de <input type="text" name="Taux" value="$$FORM:TAUX$$" style="width:60px;" /> % sur le prix de vente du bien retenu,  elle ne deviendra exigible qu&rsquo;apr&egrave;s achat effectivement conclu, lev&eacute;e &eacute;tant obligatoirement  faite de toutes conditions suspensives ou r&eacute;solutoires par le notaire conform&eacute;ment  aux usages, cette commission sera &agrave; la charge de l&rsquo;Acqu&eacute;reur.<br />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;" class="titre-formulaire">Visites</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					Nous  reconnaissons que les affaires propos&eacute;es sont strictement confidentielles et nous  engagent &agrave; n&rsquo;en traiter l&rsquo;achat &eacute;ventuel que par votre seule intervention, m&ecirc;me apr&egrave;s  expiration de ce mandat. A d&eacute;faut, nous serions personnellement et imm&eacute;diatement  redevable &agrave; titre d&rsquo;indemnit&eacute; forfaitaire et d&eacute;finitive de la r&eacute;mun&eacute;ration  soit : <input type="text" name="Prix4" value="$$FORM:PRIX4$$" /> Euros, en  r&eacute;paration du pr&eacute;judice caus&eacute; &agrave; notre<br />
+					Cabinet  par son &eacute;viction.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;" class="titre-formulaire">Dur&eacute;e</td>
+			</tr>
+			<tr>
+		
+				<td>Ce Mandat  vous est consenti jusqu&rsquo;au :</td>
+				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Date1" value="$$FORM:DATE1$$" /></td>
+			</tr>
+			<tr>
+				<td>Fait &agrave; <input type="text" name="Ville" value="$$FORM:VILLE$$" style="width:200px;" /></td>
+				<td>, le <input type="text" name="Date2" value="$$FORM:DATE2$$" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">en deux  exemplaires, dont un remis d&egrave;s &agrave; pr&eacute;sent au mandant qui le reconna&icirc;t.</td>
+			</tr>
+			<tr>
+				<td style="text-align:center;"><strong>Le Mandant</strong></td>
+				<td style="text-align:center;"><strong>Le Mandataire</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: right;">$$LG:OBLIGATOIRE$$</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: right;"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+			</tr>
+		</table>
+	</form>
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$

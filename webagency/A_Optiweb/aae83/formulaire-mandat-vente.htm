@@ -1,0 +1,429 @@
+$$INCL:HAUT.HTM$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:CONTACT.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+	D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+	L'adresse e-mail du destinataire n'est pas disponible.<br />
+	<br /><br /><br />
+	</div>
+$$END$$
+
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+	<form method="post" action="page_ok.htm?lang=$$LANGUE$$">
+		<input type="hidden" name="idtt" value="2" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="page_ok" value="page_ok.htm" />
+		<input type="hidden" name="page_err" value="formulaire-mandat-vente.htm" />
+		<input type="hidden" name="cfg_form" value="formulaire-mandat-vente$$LANGUE$$" />
+		<input type="hidden" name="cfg_emails" value="formulaire-mandat-vente" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+		$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+		$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+		$$IF0:FORM:REMAIL$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+		$$END$$
+		$$END$$
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<font color="#CC0033"><strong>$$ERRE$$</strong></font><br />
+		<strong>$$REM$$ $$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$ $$END$$
+			<img src="images/logomandat.gif" alt="" title="" />
+			</strong>
+		<br /><br />
+		<table cellspacing="0" cellpadding="0" class="tabformulaire">
+			<tr>
+				<td colspan="4" class="grostitre-formulaire" style="text-align:center;">Mandant de vente<br />
+					N&deg; <input type="text" name="Numero" value="$$FORM:NUMERO$$" style="width:250px;" /></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Mandant :</td>
+			</tr>
+			<tr>
+				<td width="25%">Nom de Monsieur :</td>
+				<td width="25%"><input type="text" name="NomMr1" value="$$FORM:NOMMR1$$" /></td>
+				<td width="25%">Pr&eacute;nom de Monsieur :</td>
+				<td width="25%"><input type="text" name="PrenomMr1" value="$$FORM:PRENOMMR1$$" /></td>
+			</tr>
+			<tr>
+				<td>N&eacute; le :</td>
+					<td><input type="text" name="NaisMr1" value="$$FORM:NAISMR1$$" /></td> 
+				<td>&agrave;</td>
+				<td><input type="text" name="LieuMr1" value="$$FORM:LIEUMR1$$" /></td>
+			</tr>
+			<tr>
+				<td>Nom de jeune fille de Madame :</td>
+				<td><input type="text" name="NomMrs1" value="$$FORM:NOMMRS1$$" /></td> 
+				<td>Epouse/Veuve :</td>
+				<td><input type="text" name="SituationMrs1" value="$$FORM:SITUATIONMRS1$$" /></td>
+			</tr>
+			<tr>
+				<td>Pr&eacute;nom de Madame :</td>
+				<td><input type="text" name="PrenomMrs1" value="$$FORM:PRENOMMRS1$$" /></td> 
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>N&eacute;e le :</td>
+				<td><input type="text" name="NaisMrs1" value="$$FORM:NAISMRS1$$" /></td>
+				<td>&agrave;</td>
+				<td><input type="text" name="LieuMrs1" value="$$FORM:LIEUMRS1$$" /></td>
+			</tr>
+			<tr>
+				<td>Adresse :</td>
+				<td><input type="text" name="Adresse2" value="$$FORM:ADRESSE2$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Nom de Monsieur :</td>
+				<td><input type="text" name="NomMr2" value="$$FORM:NOMMR2$$" /></td>
+				<td>Pr&eacute;nom de Monsieur :</td>
+				<td><input type="text" name="PrenomMr2" value="$$FORM:PRENOMMR2$$" /></td>
+			</tr>
+			<tr>
+				<td>Nom de jeune fille de Madame :</td>
+				<td><input type="text" name="NomMrs2" value="$$FORM:NOMMRS2$$" /></td>
+				<td>Epouse/Veuve :</td>
+				<td><input type="text" name="SituationMrs2" value="$$FORM:SITUATIONMRS2$$" /></td>
+			</tr>
+			<tr>
+				<td>Pr&eacute;nom de Madame :</td>
+				<td><input type="text" name="PrenomMrs2" value="$$FORM:PRENOMMRS2$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>N&eacute;e le :</td>
+				<td><input type="text" name="NaisMrs2" value="$$FORM:NAISMRS2$$" /></td>
+				<td>&agrave;</td>
+				<td><input type="text" name="LieuMrs2" value="$$FORM:LIEUMRS2$$" /></td>
+			</tr>
+			<tr>
+				<td>Adresse :</td>
+				<td><input type="text" name="Adresse3" value="$$FORM:ADRESSE3$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>T&eacute;l&eacute;phone :</td>
+				<td><input type="text" name="TelFIXE" value="$$FORM:TELFIXE$$" /></td>
+				<td>Portable :</td>
+				<td><input type="text" name="TelPor" value="$$FORM:TELPOR$$" /></td>
+			</tr>
+			<tr>
+				<td>Internet :</td>
+				<td><input type="text" name="Site" value="$$FORM:SITE$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Le Mandant et le Mandataire ont convenu et arr&ecirc;t&eacute; ce qui suit :<br /><br />
+					Par les pr&eacute;sentes, le mandant charge le mandataire de vendre les biens d&eacute;sign&eacute;s ci-apr&egrave;s dont il est propri&eacute;taire et le mandataire accepte cette mission.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Situation des Biens &agrave; Vendre :</td>
+			</tr>
+			<tr>
+				<td>Nature :</td>
+				<td colspan="3">
+					<input type="radio" name="idsoustypebien" value="0" />&nbsp;Maison individuelle 
+					<input type="radio" name="idsoustypebien" value="0" />&nbsp;Lotissement 
+					<input type="radio" name="idsoustypebien" value="3" />&nbsp;Maison de Village 
+					<input type="radio" name="typebien" value="1" />&nbsp;Appartement 
+					<input type="radio" name="typebien" value="4" />&nbsp;Terrain
+				</td>
+			</tr>
+			<tr>
+				<td>Adresse du Bien &agrave; Vendre :</td>
+				<td><input type="text" name="AdrBiens" value="$$FORM:ADRBIENS$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Ville :</td>
+				<td><input type="text" name="Ville" value="$$FORM:VILLE$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Code Postal :</td>
+				<td><input type="text" name="Cp" value="$$FORM:CP$$" /></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>D&eacute;signation succincte :</td>
+				<td>Surface Habitable : <input type="text" name="SurfaceHab" value="$$FORM:SURFACEHAB$$" />&nbsp;m&sup2;</td>
+				<td>Surface du Terrain : <input type="text" name="SurfaceTer" value="$$FORM:SURFTER$$" />&nbsp;m&sup2;</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Section N&deg;</td>
+				<td><input type="text" name="Sect" value="$$FORM:SECT$$" /></td>
+				<td>Lot N&deg;</td>
+				<td><input type="text" name="Lot" value="$$FORM:LOT$$" /></td>
+			</tr>
+			<tr>
+				<td>Taxe Fonci&egrave;re :</td>
+				<td><input type="text" name="TaxeFonc" value="$$FORM:TAXEFONC$$" />&nbsp;&euro;</td>
+				<td>Taxe Habitation :</td>
+				<td><input type="text" name="TaxeHab" value="$$FORM:TAXEHAB$$" />&nbsp;&euro;</td>
+			</tr>
+			<tr>
+				<td>Taxe Lotissement :</td>
+				<td><input type="text" name="TaxeLot" value="$$FORM:TAXLOT$$" />&nbsp;&euro;/mois</td>
+				<td>Syndic :</td>
+				<td><input type="text" name="Syndic" value="$$FORM:SYNDIC$$" /></td>
+			</tr>
+			<tr>
+				<td>Permis de Construire :</td>
+				<td><input type="text" name="PC" value="$$FORM:PC$$" /></td>
+				<td>Conformit&eacute; :</td>
+				<td><input type="text" name="Conform" value="$$FORM:CONFORM$$" /></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">D&eacute;signation :</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan="2"><textarea name="message2" id="message" rows="4" cols="40"></textarea></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Prix de Vente :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Les biens devront : r&eacute;mun&eacute;ration du mandataire en plus, &ecirc;tre pr&eacute;sent&eacute;s au <br />
+		prix  de : <input type="text" name="PrixBiens" value="$$FORM:PRIXBIENS$$" /> Euros + Commission, sauf accord ult&eacute;rieur &eacute;crit entre les parties
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">S&eacute;questre :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					En vue de garantir la bonne ex&eacute;cution des pr&eacute;sentes, l&rsquo;acqu&eacute;reur devra, a l&rsquo;appui de toute offre d&rsquo;acquisition, effectuer un versement d&rsquo;un montant maximum de 10% du prix total de la vente, &agrave; l&rsquo;ordre de Ma&icirc;tre			Notaire &agrave; s&eacute;questre garanti Financi&egrave;rement &agrave; cette effet.<br />
+					Ce versement s&rsquo;imputera sur le prix de la vente, si elle se r&eacute;alise.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">R&eacute;mun&eacute;ration du Mandataire :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					En cas de r&eacute;alisation : la r&eacute;mun&eacute;ration du mandataire sera de 		du prix de vente, &agrave; la charge de l&rsquo;acqu&eacute;reur.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Acte Authentique &ndash; Jouissance :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Le mandant d&eacute;clare que les biens seront, le jour de la signature de l&rsquo;acte de vente :<br />
+					Libres de toute location, occupation ou r&eacute;quisition.<br />
+					Le notaire du mandant est Ma&icirc;tre
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Clauses particuli&egrave;res :</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan="2"><textarea name="message3" id="message" rows="4" cols="40"></textarea></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">R&eacute;glementations relatives &agrave; l&rsquo;immeuble : ( Loi S.R.U )</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Pour se conformer au diff&eacute;rentes obligations en vigueur le mandant s&rsquo;engage &agrave; fournir tous les documents en sa possession.<br />
+					Si ces obligations n&rsquo;ont pas &eacute;t&eacute; remplies et notamment les suivants :<br />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi Carrez</span></td>
+				<td><input type="radio" name="LoiCarrez" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiCarrez" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative &agrave; l&rsquo;Amiante</span></td>
+				<td><input type="radio" name="LoiAmiante" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiAmiante" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative aux Termites</span></td>
+				<td><input type="radio" name="LoiTermites" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiTermites" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative au Saturnisme ( Plomb )</span></td>
+				<td><input type="radio" name="LoiPlomb" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiPlomb" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative au Piscine</span></td>
+				<td><input type="radio" name="LoiPiscine" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiPiscine" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative au PPR</span></td>
+				<td><input type="radio" name="LoiPpr" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiPpr" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi relative sur l&rsquo;Energie</span></td>
+				<td><input type="radio" name="LoiEnergie" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiEnergie" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi Conformit&eacute; GAZ</span></td>
+				<td><input type="radio" name="LoiGaz" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiGaz" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="loi-formulaire">Loi Conformit&eacute; Electricit&eacute;</span></td>
+				<td><input type="radio" name="LoiElec" value="Remis" />&nbsp;Remis</td>
+				<td><input type="radio" name="LoiElec" value="Pas remis" />&nbsp;Pas remis</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Le Mandant charge : l&rsquo;Agence AZUR EUROPEENNE de les faire effectuer.<br />
+					Dans tous les cas, la situation devra &ecirc;tre connue dans les 30 jours suivant la signature des pr&eacute;sentes.<br />
+					Les frais r&eacute;sultant de ces obligations sont &agrave; la charge du mandant et une copie restera dans convention contraire des partie.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Dur&eacute;e du Mandat :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<span class="soustitre-formulaire">Le pr&eacute;sent mandat est consenti et :</span><br />
+					<ul>
+						<li><span class="paragraphe-formulaire">Accept&eacute; sans exclusivit&eacute;,</span><br />
+						pour  une p&eacute;riode irr&eacute;vocable de trois mois &agrave; compter de ce jour.<br />
+						Sauf d&eacute;nonciation, &agrave; l&rsquo;expiration de cette p&eacute;riode initiale, il sera prorog&eacute; pour une dur&eacute;e maximale d&rsquo;une ann&eacute;e au Terme de laquelle il prendra automatiquement Fin.<br />
+						Chacune des parties pourra, moyennant un pr&eacute;avis de quinze jours, par lettre recommand&eacute;e avec avis de r&eacute;ception, y mettre fin au terme de la p&eacute;riode initiale ou &agrave; tout moment pendant sa prorogation.</li>
+						<li><span class="paragraphe-formulaire">Accept&eacute; avec exclusivit&eacute; : voir paragraphe mandat exclusif. Signature :</span><br />
+						<div class="cadre-formulaire"><strong>Mandat Exclusif Obligations pour le Mandant :</strong> <br />
+						Le Mandat exclusif est consenti &agrave; l&rsquo;Agence AZUR EUROPEENNE pour une p&eacute;riode<br />
+						Irr&eacute;vocable de six mois &agrave;  compter de ce jour.<br />
+						Le Mandant s&rsquo;engage &agrave; ne pas vendre directement son bien sans en informer le Mandataire.<br />
+						De lui informer des Noms et propositions qui pourraient lui &ecirc;tre faires la transaction de vente devant obligatoirement &ecirc;tre effectu&eacute;e par l&rsquo;Agence, si cette transaction &eacute;tait faite par le Mandant directement avec le futur acqu&eacute;reur la r&eacute;mun&eacute;ration pr&eacute;vu au paragraphe (R&eacute;mun&eacute;ration du Mandataire de l&rsquo;Agence serait imm&eacute;diatement acquise de plein droit en totalit&eacute;, elle deviendra exigible le jour o&ugrave; l&rsquo;op&eacute;ration sera effectivement conclue et constat&eacute;e dans un seul acte &eacute;crit, sign&eacute; par l&rsquo;acqu&eacute;reur et le vendeur, conform&eacute;ment &agrave; l&rsquo;article 74 du d&eacute;cret n&deg; 72-678 du 20 juillet 1972.<br />
+						En cas d&rsquo;exercice &eacute;ventuel d&rsquo;un droit de pr&eacute;emption, le pr&eacute;empteur sera subrog&eacute; dans tous les droits et obligations de l&rsquo;acqu&eacute;reur : en cons&eacute;quence, toute r&eacute;mun&eacute;ration incombant &eacute;ventuellement &agrave; l&rsquo;acqu&eacute;reur sera &agrave; la charge du pr&eacute;empteur.<br />
+						La pr&eacute;sente condition est imp&eacute;rative.<br />
+						Pour l&rsquo;application des pr&eacute;sentes et de leur suite, les parties font &eacute;lection de domicile &agrave; leur adresse respective stipul&eacute;e au recto.<br />
+						Elles attribuent comp&eacute;tence exclusive aux tribunaux du ressort de la situation des biens &agrave; vendre.</div></li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Stipulation Expresse :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					De convention expresse et &agrave; titre de condition essentielle sans laquelle le mandataire <br />
+		n&rsquo;aurait pas accept&eacute; la pr&eacute;sente mission, le mandant :
+					<ul>
+						<li>a &ndash; S&rsquo;engage &agrave; signer aux prix, charges et conditions convenues toute promesse de vente ou tout compromis de vente, &eacute;ventuellement assorti d&rsquo;une demande de pr&ecirc;t immobilier (Loi n&deg; 79-596 du 13.7.1979), avec tout acqu&eacute;reur pr&eacute;sent&eacute; par le mandataire.<br />
+		L&rsquo;Agence demande aussi l&rsquo;application de la loi (D.20 juillet 1972, art, 72, al 3)</li>
+						<li>b &ndash; S&rsquo;interdir, pendant la dur&eacute;e du mandat et pendant les douze mois suivant son expiration, de traiter directement avec un acqu&eacute;reur ayant &eacute;t&eacute; pr&eacute;sent&eacute; par le mandataire ou ayant visit&eacute; les locaux avec lui.</li>
+						<li>c &ndash; Le mandant garde toute libert&eacute; de proc&eacute;der lui-m&ecirc;me &agrave; la recherche d&rsquo;un acqu&eacute;reur.<br />
+						Cependant, en cas de vente r&eacute;alis&eacute;e par lui-m&ecirc;me ou par un autre cabinet pendant la Dur&eacute;e du mandat, il s&rsquo;engage &agrave; en informer imm&eacute;diatement le mandataire en lui notifiant par lettre recommand&eacute;e avec A.R, les noms et adresses de l&rsquo;acqu&eacute;reur, du notaire charg&eacute; de l&rsquo;acte authentique et du cabinet &eacute;ventuellement intervenu.</li>
+					</ul>
+					Cette notification mettra fin au mandat.<br />
+					Elle &eacute;vitera au mandataire d&rsquo;engager la vente avec un autre acqu&eacute;reur et &eacute;pargnera au mandat les poursuites pouvant &ecirc;tre &eacute;ventuellement exerc&eacute;es par cette acqu&eacute;reur.<br />
+					En cas de vente r&eacute;alis&eacute;e par lui-m&ecirc;me ou par un autre cabinet dans les douze mois suivant l&rsquo;expiration du mandat, le mandant s&rsquo;engage &agrave; en informer imm&eacute;diatement le mandataire en lui notifiant par lettre recommand&eacute;e les noms et adresse de l&rsquo;acqu&eacute;reur et du notaire r&eacute;dacteur de l&rsquo;acte authentique.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="titre-formulaire" style="text-align:center;">Conditions générales du Mandat :</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					Le pr&eacute;sent mandat est consenti et accept&eacute; aux conditions figurant au recto ainsi qu&rsquo;aux Conditions g&eacute;n&eacute;rales suivantes :
+					<ul>
+						<li><span class="soustitre-formulaire">A &ndash; Obligations &ndash; Le mandataire devra :</span>
+							<ol>
+								<li>Entreprendre, d&rsquo;une fa&ccedil;on g&eacute;n&eacute;rale, toutes les d&eacute;marches n&eacute;cessaires pour mener &agrave; bien la mission qui lui est confi&eacute;e ce jour.</li>
+								<li>Informer le mandant de tous les &eacute;l&eacute;ments nouveaux pouvant modifier les conditions de vente, notamment en mati&egrave;re de prix ou l&eacute;gislation.</li>
+								<li>N&eacute;gocier, s&rsquo;il y a lieu, avec tout titulaires d&rsquo;un droit de pr&eacute;emption, le mandant restant Libre d&rsquo;accepter ou de refuser le prix d&eacute;finitif (si ce prix est inf&eacute;rieur au prix convenu au mandat).</li>
+								<li>Informer le mandant de l&rsquo;accomplissement du pr&eacute;sent mandat dans les 8 jours au plus qui suivront la signature de l&rsquo;acqu&eacute;reur, en y joignant, s&rsquo;il est lui-m&ecirc;me s&eacute;questre, le duplicata du re&ccedil;u d&eacute;livr&eacute; &agrave; l&rsquo;acqu&eacute;reur, soit par lettre recommand&eacute;e avec avis de r&eacute;ception, soit par tout autre &eacute;crit remis contre r&eacute;c&eacute;piss&eacute; ou &eacute;margement.</li>
+							</ol>
+						</li>
+						<li><span class="soustitre-formulaire">B &ndash; Pouvoirs &ndash; Afin que le mandataire puisse accomplir sa mission, le mandant lui donne les pouvoirs suivants :</span>
+							<ol>
+								<li>Proposer, pr&eacute;senter, visiter et faire visiter les biens &agrave; toute personne qu&rsquo;il jugera utile frais restant &agrave; la charge exclusive du mandataire.</li>
+								<li>Faire toute publicit&eacute; qu&rsquo;il jugera utile (Commerciale, petites annonces, etc &hellip;), ces frais  restant &agrave; la charge exclusive du mandataire.</li>
+								<li>Communiquer le dossier de l&rsquo;op&eacute;ration &agrave; tout confr&egrave;re qu&rsquo;il jugera susceptible de concourir &agrave; la vente.</li>
+								<li>R&eacute;clamer toutes pi&egrave;ces, actes et certificats n&eacute;cessaires au dossier aupr&egrave;s de toutes Personnes priv&eacute;es ou publiques et effectuer, le cas &eacute;ch&eacute;ant, toutes d&eacute;marches Administratives (division, urbanisme, d&eacute;claration d&rsquo;intention d&rsquo;ali&eacute;ner exig&eacute;e par la loi Expos&eacute;s restant &agrave; la charge du mandant.</li>
+								<li>Etablir tous actes sous seing priv&eacute; aux prix, charges et conditions des pr&eacute;sentes et recueillir la signature de l&rsquo;acqu&eacute;reur.</li>
+							</ol>
+						</li>
+						<li><span class="soustitre-formulaire">C &ndash; De sons c&ocirc;t&eacute;, le mandant devra :</span>
+							<ol>
+								<li>Assurer au mandataire les moyens de visiter pendant le cours du pr&eacute;sent mandat.</li>
+								<li>Fournir au mandataire toutes justifications de propri&eacute;t&eacute; des biens &agrave; vendre ainsi que Tous documents n&eacute;cessaires au dossier.</li>
+								<li>Signaler imm&eacute;diatement au mandataire toutes modifications juridiques ou mat&eacute;rielles pouvant modifier ledit dossier.</li>
+							</ol>
+						</li>
+					</ul>
+					La r&eacute;mun&eacute;ration du mandataire, dont le montant ou le mode de calcul est indiqu&eacute; au Paragraphe r&eacute;mun&eacute;ration du mandataire, deviendra exigible le jour o&ugrave; l&rsquo;op&eacute;ration sera<br />
+					Effectivement conclue et constat&eacute;e dans un seul acte &eacute;crit, sign&eacute; par l&rsquo;acqu&eacute;reur et le vendeur, conform&eacute;ment &agrave; l&rsquo;article 74 du d&eacute;cret n&deg; 72-678 du 20 juillet 1972.<br />
+					En cas d&rsquo;exercice &eacute;ventuel d&rsquo;un droit de pr&eacute;emption, le pr&eacute;empteur sera subrog&eacute; dans tous les droits et obligations de l&rsquo;acqu&eacute;reur : en cons&eacute;quence, toute r&eacute;mun&eacute;ration incombant &eacute;ventuellement &agrave; l&rsquo;acqu&eacute;reur sera &agrave; la charge du pr&eacute;empteur.<br />
+					La pr&eacute;sente condition est imp&eacute;rative.<br />
+					Pour l&rsquo;application des pr&eacute;sentes et de leur suite, les parties font &eacute;lection de domicile &agrave; Leurs adresses respectives stipul&eacute;es au recto.<br />
+					Elles attribuent comp&eacute;tence exclusive aux tribunaux du ressort de la situation des biens &agrave; Vendre.<br />
+					Le Mandat reconna&icirc;t avoir prix connaissance des conditions figurant sur le Mandat N&deg; <input type="text" name="Numero" value="$$FORM:NUMERO$$" style="width:60px;" />, qu&rsquo;il vient de lire et en avoir re&ccedil;u un exemplaire<br /><br />
+					Fait en double exemplaire, dans les locaux du mandataire<br />
+					Le : <input type="text" name="Date3" value="$$FORM:DATE3$$" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center">
+					<strong>Le Mandant</strong><br />
+					Signature pr&eacute;c&eacute;d&eacute;e de la mention manuscrite<br />
+					Lu et approuv&eacute;, bon pour Mandat.
+				</td>
+				<td colspan="2" style="text-align:center">
+					<strong>Le Mandataire</strong><br />
+					Signature pr&eacute;c&eacute;d&eacute;e de la mention manuscrite<br />
+					Lu et approuv&eacute; Mandat accept&eacute;.
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: right;">$$LG:OBLIGATOIRE$$</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align: right;"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</form>
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$
