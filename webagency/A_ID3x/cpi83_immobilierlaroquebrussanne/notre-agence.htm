@@ -1,0 +1,67 @@
+$$SET:PAGE:IDT=NOS AGENCES$$
+$$INCL:HAUT.HTM$$
+	<div class="contact">
+		
+		$$B:IMMOBW:AGENCES$$
+		$$BIF:IMMOBW:AGENCES$$
+		$$DO$$
+		$$LOOP$$
+		$$BFIN$$
+		
+	
+		<div class="coordonnees">
+						<!--coordonnee-->
+							$$B:IMMOBW:AGENCES:ALIAS:SEB$$
+							$$BIF:SEB$$
+							$$DO:1:2$$
+							<strong>$$SEB:NOM ucase$$</strong><br />
+							$$SEB:ADRESSE crlf2br$$<br />
+							TEL: $$SEB:TEL formattel$$<br />
+							FAX: $$SEB:FAX formattel$$<br />
+							$$SEB:EMAIL encodemail javascript full$$<br /><br /><br />
+							$$LOOP$$
+							$$BFIN$$
+	
+		</div>
+		
+		<div class="lienscoordonnees">
+			<a href="/message.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a>
+				<br />
+		
+			<div class="noussituerbarme">			
+				<!--nous situer barme-->			
+				
+					$$B:IMMOBW:AGENCES:ALIAS:MAP$$
+							$$BIF:MAP$$
+							$$DO:1:2$$
+							$$LOOP$$
+							$$A:CARTE:CP=@@1_MAP:CP@@$$
+							$$A:CARTE:VILLE=@@1_MAP:VILLE replace ' \'@@$$
+							$$A:CARTE:ADRESSE=@@1_MAP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+							$$INCL:LOCALISATION_AGENCE.HTM$$				
+						$$BFIN$$
+			</div>
+			<div class="separate"></div>
+			<div>
+				
+				
+				<!--nous situer barme sud-->
+				$$B:IMMOBW:AGENCES:ALIAS:MAP$$
+				$$BIF:MAP$$
+				$$DO:1:2$$
+				$$LOOP$$
+				$$A:CARTE:CP=@@2_MAP:CP@@$$
+				$$A:CARTE:VILLE=@@2_MAP:VILLE replace ' \'@@$$
+				$$A:CARTE:ADRESSE=@@2_MAP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+				$$INCL:LOCALISATION_AGENCE.HTM$$				
+				$$BFIN$$
+			
+			
+			
+			</div>
+		
+		
+		
+		
+		</div>
+$$INCL:BAS.HTM$$
