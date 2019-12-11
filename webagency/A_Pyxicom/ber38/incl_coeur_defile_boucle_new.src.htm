@@ -1,0 +1,172 @@
+<!-- [ttl: 1d] -->
+<!-- Lang1 : ££FORM:LANG££ -->
+$$REM$$
+<!-- ph 7/03/06
+DISPLAYINFOSC2C : affichage de l'information, 0 desactivé
+NBC2C : nombre de coups de coeur affiché(s), sans limite
+GDTAILLE : 1 si grande taille
+MODE : normal par defaut, random possible
+NBTOTAL : nombre total de bien, pb remarqué avec si_exclusivif=1 donc limité à 20 dans ce cas
+ROLLOVER : activation du rollover pour changer de coup de coeur, 0 desactivé
+//-->
+$$END$$
+
+$$SET:PAGE:DISPLAYINFOSC2C=1$$ 
+$$SET:PAGE:NBC2C=1$$
+$$SET:PAGE:NBNEW=1$$
+$$SET:PAGE:GDTAILLE=1$$ 
+$$SET:PAGE:MODE=normal$$ 
+$$SET:PAGE:NBTOTAL=10$$ 
+$$SET:PAGE:ROLLOVER=1$$
+
+$$IF=:0:PAGE:GDTAILLE$$
+	$$A:PAGE:IMGWIDTH=211$$ 
+	$$A:PAGE:IMGHEIGHT=157$$ 
+$$END$$
+
+$$IF=:1:PAGE:GDTAILLE$$
+	$$A:PAGE:IMGWIDTH=211$$ 
+	$$A:PAGE:IMGHEIGHT=157$$ 
+$$END$$
+
+<style type="text/css">
+.divc2c {
+	width: $$IF=:1:PAGE:GDTAILLE$$123$$END$$$$IF=:0:PAGE:GDTAILLE$$123$$END$$px;
+	border: 0;
+	display: none;
+	text-align: center;
+	}
+
+.tabc2c {
+	width: $$IF=:1:PAGE:GDTAILLE$$123$$END$$$$IF=:0:PAGE:GDTAILLE$$123$$END$$px;
+	height: 123;
+	border: 0;
+	height: 115px;
+}
+
+.Cdc {
+display:inline;
+width:211px;
+}
+
+.tabc2cinfo {
+	width: 211px;
+	border: 0;
+ 	text-align: center;
+}
+<!--
+ .tabc2c td{
+	border-color: #fff; 
+	border-width: 0px; 
+	border-style: solid;
+  	height: 8px;
+}
+ -->
+.tabc2c img{
+	width: $$IF=:1:PAGE:GDTAILLE$$150$$END$$$$IF=:0:PAGE:GDTAILLE$$101$$END$$px;
+	height: $$IF=:1:PAGE:GDTAILLE$$90$$END$$$$IF=:0:PAGE:GDTAILLE$$61$$END$$px;
+	border:3px solid #E9E9E9;
+	text-align: center;
+}
+.BorderBlan {
+ border:3px solid #E9E9E9;
+
+}
+	
+.allc2c a {	
+	font-size:10px;
+	color:#01257B;
+	text-decoration:underline;
+	font-weight:normal;
+}
+
+.exclu a {
+font-size: 11px;
+color:#013A71;
+text-decoration:none;	
+font-weight:normal;	
+}
+
+.exclu a:hover {
+font-size: 11px;
+color:#013A71;
+text-decoration:underline;	
+font-weight:normal;	
+}
+
+.exclu2 a {
+font-size: 11px;
+color:#F2242E;
+text-decoration:none;	
+font-weight:bold;	
+}
+
+.exclu2 a:hover {
+font-size: 11px;
+color:#F2242E;
+text-decoration:underline;
+font-weight:bold;	
+}
+
+</style>
+
+<script language="javascript" type="text/javascript" src="$$-$$scripts/C2C.js"></script>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="50%" align="center" valign="top">
+		$$B:IMMOBW:ANN:ALIAS:COUPDECOEUR:2:FR:::si_coupdecoeur=1&tri=d_dt_crea$$
+		$$BIF:COUPDECOEUR$$ 
+		<div id="div_C2C">
+		$$DO:1:50$$
+			<div id="tabc2c$$COUPDECOEUR:I$$" name="tabc2c$$COUPDECOEUR:I$$" align="center" class="Cdc">
+				<table cellpadding="0" cellspacing="0" align="center" background="images/vignette-cdc.jpg" class="tabc2c">
+					<tr>
+						<td height="160" colspan="2" align="center" valign="top">
+						<a href="$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/plus_annonce_full.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&lang=££LANGUE££">
+						$$IF:COUPDECOEUR:IDPHOTO$$
+							<img src="$$IF=:1:PAGE:GDTAILLE$$$$COUPDECOEUR:THUMB_URL$$$$END$$$$IF=:0:PAGE:GDTAILLE$$$$COUPDECOEUR:PHOTOURL0$$$$END$$" alt="$$IF:COUPDECOEUR:NB_PIECES$$ $$COUPDECOEUR:NB_PIECES$$ $$LG:PIECES$$$$END$$$$IF:COUPDECOEUR:SURFACE$$ ($$COUPDECOEUR:SURFACE$$ m&sup2;$$END$$) $$COUPDECOEUR:CP$$ $$COUPDECOEUR:VILLE htmlencode$$ $$COUPDECOEUR:PRIX$$ $$COUPDECOEUR:PRIX_UNITE htmlencode$$" title="$$IF:COUPDECOEUR:NB_PIECES$$ $$COUPDECOEUR:NB_PIECES$$ $$LG:PIECES$$$$END$$$$IF:COUPDECOEUR:SURFACE$$ ($$COUPDECOEUR:SURFACE$$ m&sup2;$$END$$) $$COUPDECOEUR:CP$$ $$COUPDECOEUR:VILLE htmlencode$$ $$COUPDECOEUR:PRIX$$ $$COUPDECOEUR:PRIX_UNITE htmlencode$$"  border="0" class="borderImg" />
+						$$END:IDPHOTO$$
+						$$IF0:COUPDECOEUR:IDPHOTO$$
+							<img src="$$_$$img/sans_photo1.gif" />
+						$$END:IDPHOTO$$
+						</a>
+			    </tr>
+				<tr>
+					<td height="32" align="center" valign="bottom" colspan="2">
+						<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/plus_annonce_full.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&lang=$$LANGUE$$">
+							$$IF:COUPDECOEUR:LIBELLE$$
+								$$COUPDECOEUR:LIBELLE htmlencode$$
+							$$END$$
+							$$IF0:COUPDECOEUR:LIBELLE$$
+								$$COUPDECOEUR:LIBELLE_FR htmlencode$$
+							$$END$$<br />
+							$$IF:COUPDECOEUR:SURFACE$$
+								($$COUPDECOEUR:SURFACE$$ m&sup2;)
+							$$END$$
+							<br />
+							$$COUPDECOEUR:VILLE htmlencode$$ <!--($$COUPDECOEUR:CP$$)-->
+						</a><br />
+												<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/plus_annonce_full.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&lang=$$LANGUE$$">
+							<b>$$COUPDECOEUR:PRIX$$ $$COUPDECOEUR:PRIX_UNITE htmlencode$$</b>
+						</a>
+					</td>
+				    <!--<td width="69" align="right" valign="bottom">
+						<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/plus_annonce_full.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&lang=$$LANGUE$$">
+							<b>$$COUPDECOEUR:PRIX$$ $$COUPDECOEUR:PRIX_UNITE htmlencode$$</b>
+						</a>
+					</td>-->
+				</tr>
+			</table>
+			</div>
+		$$LOOP$$
+		</div>
+		<script language="javascript" type="text/javascript">
+		C2C_install( /*ID C2C*/ "div_C2C", /*Prefixe C2C*/ "tabc2c", /*Nombre affiches*/ $$PAGE:NBC2C$$, /*Nombre total*/ $$COUPDECOEUR:NBR$$, /*Vitesse*/ 3500, /*Mode*/ "$$PAGE:MODE$$", /*Si souris*/ $$IF=:1:PAGE:ROLLOVER$$true$$END$$$$IF0:PAGE:ROLLOVER$$false$$END$$ );	
+		</script>
+		$$BFIN$$
+		$$BIF0:COUPDECOEUR$$
+		$$LG:NOCOUPDECOEUR$$
+		$$BFIN$$
+		</td>
+	</tr>
+</table>
