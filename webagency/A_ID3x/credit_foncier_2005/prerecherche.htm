@@ -1,0 +1,93 @@
+$$INCL:HAUT.HTM$$
+<script language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.villes.length)
+	{
+		if (document.villes.elements[i].name=='ci')
+		{
+			document.villes.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 15);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.villes.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 15);
+	}
+}
+function subm()
+{
+var modeRech;
+var url = '/recherche.htm?$$REP:QRY escape$$';
+
+$$IF:FORM:PRELISTE$$
+modeRech = "$$FORM:PRELISTE$$";
+$$END$$
+if (modeRech == "/preliste.htm")
+url = '/preliste.htm?$$REP:QRY escape$$';
+
+	for(i=0; i<document.villes.length; i++)
+	{
+		if (document.villes.elements[i].checked)
+		{
+			if (url.indexOf('&ci='+document.villes.elements[i].value) == -1) url += '&' + document.villes.elements[i].name + '=' + document.villes.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+function carte(ci)
+{
+	window.open('http://www.seloger.com/'+ci+'/france.htm','france','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=650,height=570');
+}
+// -->
+</script>
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche.htm" name="villes">
+<table width="560" border="0" cellpadding="0" cellspacing="0" align="center">
+		<tr><td background="/images/haut_ct.gif" height="11" colspan="3"></td></tr>
+		<tr><td width="1" bgcolor="#B8BFE5"></td>
+            <td>
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center">
+<tr>
+	<td align="center">
+$$LG:LOCAMBIGU$$ <br />
+$$LG:SELECLOC$$
+<input type="hidden" name="lang" value="$$LANGUE$$">
+<div align="center">
+$$B:IMMOBW:PREANN:QRY:CP:ADD:/+REP_1+/recherche.htm$$$$BIF:IMMOBW:PREANN:QRY$$
+	$$DO:2:50$$<font size=1>
+		$$IF:IMMOBW:PREANN:QRY:ISDEP$$
+			<input type="checkbox" name="cp" value="$$IMMOBW:PREANN:QRY:DEP$$" style="border:0px solid #ffffff;" />
+			$$IMMOBW:PREANN:QRY:DEPARTEMENTAFF$$ ($$LG:DEPART$$)</a>
+		$$END$$
+		$$IF0:IMMOBW:PREANN:QRY:ISDEP$$
+			<input type="checkbox" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ checked$$END$$ style="border:0px solid #ffffff;">
+			<A href="javascript:carte('$$IMMOBW:PREANN:QRY:CODEINSEE$$');">$$IMMOBW:PREANN:QRY:VILLEAFF$$</A> ($$IMMOBW:PREANN:QRY:CODEINSEE left 2$$)
+		$$END$$
+		<br />
+		</font>
+	$$LOOP$$
+$$BFIN$$
+</div><br />
+<input type="button" value="$$LG:TTSELEC$$" onclick="coche(0);">
+<input type="button" value="$$LG:TTDESLEC$$" onclick="decoche(villes.length-1);">
+</td>
+</tr>
+</table>
+</td><td width="1" bgcolor="#B8BFE5"></tr>
+<tr><td height="1" bgcolor="#B8BFE5" colspan="3"></td></tr>
+</table>
+<!-- Validation Form -->
+<table border="0" align="right" cellpadding="0" cellspacing="0" height="25">
+                  <tr><td></td>
+                    <td bgcolor="#7A85CB">&nbsp;&nbsp;<a href="javascript:subm();" class="valider">$$LG:RECHERCHER$$</a>&nbsp;&nbsp;</td><td width="6"></td>
+                  </tr>
+</table>
+</form>
+$$INCL:BAS.HTM$$

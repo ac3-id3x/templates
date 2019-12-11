@@ -1,0 +1,421 @@
+$$SET:PAGE:IDT=VEN$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:REF=1$$
+$$SET:PAGE:TYPEDEBIEN=1$$
+$$SET:PAGE:BUDGET=1$$
+$$SET:PAGE:SURFACE=1$$
+$$SET:PAGE:LISTEDEROULANT=1$$
+$$SET:PAGE:LISTEVILLES=0$$
+$$SET:PAGE:CARTE=0$$
+$$SET:PAGE:AFFICHEPAYS=0$$
+$$SET:PAGE:PHOTO=0$$
+$$SET:PAGE:FRAICHEUR=0$$
+$$SET:PAGE:PROXIMITE=1$$
+<script language="javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$', 'cdp', ',height=330, width=360, scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+
+function setdp (dp) {
+	var cps;
+	var acps;
+	var i;
+	cps = document.annonces.cp[0].value;
+	if(cps){
+		document.annonces.cp[0].value="";
+		acps = cps.split(',');
+		for (i=0; i<acps.length;i++) {
+			if (document.annonces.cp[0].value.indexOf(acps[i]+",")==-1) document.annonces.cp[0].value+= acps[i]+",";
+		}
+		acps = dp.split(',');
+		for (i=0; i<acps.length;i++) {
+			if (document.annonces.cp[0].value.indexOf(acps[i]+",")==-1) document.annonces.cp[0].value+= acps[i]+",";
+		}
+		i=document.annonces.cp[0].value.length;
+		if (i>0) document.annonces.cp[0].value = document.annonces.cp[0].value.substring(0,i-1);
+	}
+	else{document.annonces.cp[0].value=dp;}
+}
+
+function change_carte( oldidcarte, newidcarte ) {
+	var elt_oldcarte = document.getElementById( oldidcarte );
+	var elt_newcarte = document.getElementById( newidcarte );
+	if( elt_oldcarte && elt_newcarte ) {
+		elt_oldcarte.style.visibility="hidden";
+		elt_oldcarte.style.display="none";
+		elt_newcarte.style.visibility="visible";
+		elt_newcarte.style.display="";
+	}
+}
+
+function changeImg( idcarte, srcImg, idmap) {
+	var elt_carte = document.getElementById( idcarte );
+	var elt_map = document.getElementById( idmap );
+	if( elt_carte && elt_map ) {
+		elt_carte.src = srcImg;
+//		alert( elt_carte.useMap );
+		elt_carte.setAttribute( 'useMap', "#" + elt_map.name);
+//		elt_carte.useMap = "#" + elt_map.name;
+	}
+/*	document.images['carte'].src = srcImg;
+	//document.images['carte'].useMap = "#Mapparis";
+	//document.all.map1.innerHTML = document.all.map2.innerHTML ;
+	//document.all.map1.id = 'Mapparis';
+	//document.all.map2.id = '#Map';
+	document.getElementsByName('map1').id = '#Mapparis';
+	document.getElementsByName('map2').id = '#Map';*/
+}
+
+
+function verifField(id){
+	var cpfield = false;
+	var typebienfield = false;
+	var msg = new String();
+	var doc = document.forms["annonces"];
+
+
+	if(id == 1){
+		if(doc.elements["cp"].value != null){cpfield = true;}
+		for(var i = 0; i < doc.elements["cp"].length;i++){
+			if(doc.elements["cp"][i].checked == true){cpfield = true;}
+		}
+
+	}else{
+		if((doc.elements["cp"][0].value)||(doc.elements["cp"][1].value)){
+			if((doc.elements["cp"][0].value).charAt(0) != ','){
+				 cpfield = true;
+			}else{doc.elements["cp"][0].value ='';}
+		}else{doc.elements["cp"][0].value ='';}
+	}
+
+	$$IF!:8$9:FORM:IDTT$$
+	for(var i = 0; i < doc.elements["idtypebien"].length;i++){
+		if(doc.elements["idtypebien"][i].checked == true){typebienfield = true;}
+	}
+	$$END$$
+
+	if(!cpfield){if(id == 1){msg=" \n $$LG:REGION pcase$$$$LG:S$$";}else{msg=" \n $$LG:VILLES pcase$$$$LG:S$$";}}
+	$$IF!:8$9:FORM:IDTT$$if(!typebienfield){msg +=" \n $$LG:TYPEDEBIEN pcase$$$$LG:S$$";}
+	if(cpfield&&typebienfield){
+		document.forms["annonces"].submit();
+	}$$END$$
+	$$IF=:8$9:FORM:IDTT$$
+		if(cpfield){
+			document.forms["annonces"].submit();
+	}$$END$$
+	else{
+		$$IF!:8$9:FORM:IDTT$$if((!cpfield)&&(!typebienfield)){alert("$$LG:CHAMPOBLIGATOIRE pcase$$ :"+msg);}
+		else{alert("$$LG:CHAMPOBLIGATOIRE pcase$$ :"+msg);}$$END$$
+		$$IF=:8$9:FORM:IDTT$$alert("$$LG:CHAMPOBLIGATOIRE pcase$$ :"+msg);$$END$$
+	}
+}
+//-->
+</script>
+
+
+
+<!-- $$FORM:IDTT$$ -->
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" id="annonces" name="annonces" style="display:inline">
+<table width="560" border="0" cellpadding="0" cellspacing="0" align="center">
+		<tr><td background="/images/haut_ct.gif" height="11" colspan="3"></td></tr>
+		<tr><td width="1" bgcolor="#B8BFE5"></td>
+            <td>
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center">
+<tr>
+	<td align="center">
+	<p class="veuillez">$$LG:SELECTIONNEZ$$$$REM$$<a href="/liste_transactions.htm" class="atypebien">.</a>$$END$$</p>
+
+	$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<!-- TYPE DE BIEN -->
+
+	<tr>
+		<td>
+		<table border="0" cellpadding="2" cellspacing="2" width="100%">
+			<tr>
+				<td width="55%" valign="top">
+				$$IF!:0:PAGE:TYPEDEBIEN$$
+					$$INCL:VENTES_.GEN.HTM$$
+				$$END$$
+				</td>
+				<td width="45%" valign="top">
+					<table border="0" width="100%" cellpadding="0" cellspacing="0">
+						<!-- Budget -->
+						$$IF=:1:PAGE:BUDGET$$
+						<tr>
+							<td class="tabTitre1"><b>$$LG:BUDGET$$</b></td>
+						</tr>
+						<tr>
+							<td valign="top" align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr>
+								<td class="simple" width="25%">$$LG:MINI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="pxmin" size="8" value="$$FORM:PXMIN$$" /></td>
+							</tr>
+							<tr>
+								<td class="simple">$$LG:MAXI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="pxmax" size="8" value="$$FORM:PXMAX$$" />
+							<select name="euro">
+								<option value="1"$$IF=:1:FORM:EURO$$ selected="selected"$$END$$>&euro;</option>
+								<option value="0"$$IF=:0:FORM:EURO$$ selected="selected"$$END$$>ff</option>
+							</select></td>
+							</tr></table>
+							</td>
+						</tr>
+						$$END$$
+						<!-- Surface -->
+						$$IF=:1:PAGE:SURFACE$$
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td class="tabTitre1">$$LG:SURFACE$$</td>
+						</tr>
+						<tr>
+							<td valign="top" align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr>
+								<td class="simple" width="25%">$$LG:MINI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="surfacemin" size="8" value="$$FORM:SURFACEMIN$$" />
+							m&sup2;</td>
+							</tr>
+							<tr><td class="simple">$$LG:MAXI$$&nbsp;:</td>
+							<td><input class="imputForm" type="text" name="surfacemax" size="8" value="$$FORM:SURFACEMAX$$" /> m&sup2;
+								</td>
+							</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						$$END$$
+						<!-- RECHERCHE PAR REFERENCE -->
+						$$IF!:1:PAGE:REF$$
+						<input type="hidden" name="idtt" value="2" />
+						$$END$$
+						$$IF=:1:PAGE:REF$$
+						<input type="hidden" name="idtt" value="2" />
+
+						<tr>
+							<td class="tabTitre1"><b>$$LG:RECHREF$$</b></td>
+						</tr>
+						<tr>
+							<td align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr><td class="simple" width="25%"></td>
+							<td><input class="imputForm" type="text" name="refannonce" size="8" id="ref_ann" value="$$FORM:REF$$" /></td></tr></table>
+							</td>
+						</tr>
+						$$END$$
+					</table>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+
+	<!-- Proximité -->
+	$$IF=:1:PAGE:PROXIMITE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+		<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+		<tr>
+			<td$$IF=:1:PAGE:CARTE$$ colspan="2"$$END$$ class="tabTitre1"><b>$$LG:VILLES$$</b><font class="star">*</font></td>
+		</tr>
+		<tr>
+			<td valign="top" align="center">
+				<table width="100%" border="0" cellpadding="4" cellspacing="2">
+				<tr><td colspan="2" class="simple">($$LG:ZONEDESAISIE$$)</td></tr>
+				<tr>
+				<td>
+					<img src="images/carte_france.jpg" border="0" usemap="#Map" name="cartefrance" id="cartefrance" />
+					<img src="images/paris.jpg" border="0" usemap="#Mapparis" name="carteparis" id="carteparis" style="display:none; visibility: hidden" />
+				</td>
+				<td valign="top">
+				<table border="0" cellpadding="2" cellspacing="0">
+				<tr><td><input class="imputForm" type="text" name="cp" size="30" id="cp1" value="$$FORM:CP field 1$$" /></td></tr>
+				<tr><td><input class="imputForm" type="text" name="cp" size="30" id="cp2" maxlength="50" value="$$FORM:CP field 2$$" /></td></tr>
+				<tr><td><input class="imputForm" type="text" name="cp" size="30" id="cp3" maxlength="50" value="$$FORM:CP field 3$$" />
+				</td></tr></table>
+			<a href="javascript:openCodes_Postaux();" class="simpleita">$$LG:RETROUVER$$</a>
+			</td></tr></table></td>
+			<!-- Mini carte de France -->
+			$$IF=:1:PAGE:CARTE$$
+			<td valign="top" align="center" bgcolor="#ffffff">$$INCL:CARTE.HTM$$</td>
+			$$END$$
+		</tr>
+		<tr><td align="right"><font class="star">*$$LG:CHAMPOBLIGATOIRE pcase$$</font></td></tr>
+		</table>
+		</td>
+	</tr>
+	$$END$$
+	<!-- Pays -->
+	$$IF=:1:PAGE:AFFICHEPAYS$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>$$INCL:PAYS.HTM$$</td>
+	</tr>
+	$$END$$
+	$$IF0:PAGE:AFFICHEPAYS$$
+		<input type="hidden" name="idpays" value="250" />
+	$$END$$
+	<!-- Annonces fraicheur -->
+	$$IF!:0:PAGE:FRAICHEUR$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />&nbsp;$$LG:NOUV$$</td>
+	</tr>
+	$$END$$
+	<!-- Photos -->
+	$$IF=:1:PAGE:PHOTO$$
+	<tr>
+		<td valign="top"><input type="checkbox" name="photo" value="1" />&nbsp;$$LG:PHOTO$$</td>
+	</tr>
+	$$END:PHOTO$$
+	<!-- Préliste -->
+	$$IF=:1:PAGE:PRELISTE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top">$$LG:DETAILANN$$&nbsp;
+		<input type="radio" name="preliste" value="/recherche.htm" checked="checked" onclick="javascript:document.forms['annonces'].action = '/prerecherche.htm';" /><br />
+		$$LG:PRELISTE$$&nbsp;
+		<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = '/prerecherche_liste.htm';" />
+		</td>
+	</tr>
+	$$END$$
+	</table>
+	</td>
+</tr>
+</table>
+</td>
+<td width="1" bgcolor="#B8BFE5">
+	</tr>
+<tr><td height="1" bgcolor="#B8BFE5" colspan="3"></td></tr>
+<tr><td colspan="3" align="right"><div style="background:#7A85CB;width:57px;height:25px;padding-top:3px;"><a href="javascript:verifField();" class="valider">&nbsp;&nbsp;$$LG:VALIDER$$&nbsp;&nbsp;</a></div></td></tr>
+</table>
+<!-- Validation Form -->
+<!--<table border="0" align="right" cellpadding="0" cellspacing="0" height="25">
+<tr><td></td>
+<td bgcolor="#7A85CB">&nbsp;&nbsp;<a href="javascript:verifField();" class="valider">$$LG:VALIDER$$</a>&nbsp;&nbsp;</td><td width="6"></td>
+</tr>
+</table>-->
+</form>
+
+<map name="Mapparis" id="Mapparis">
+  <area shape="poly" coords="150,15,156,22,161,29,158,42,175,51,177,44,189,46,196,50,194,38,189,30,192,24,196,15,186,13,175,5,164,12" href="javascript:change_carte('carteparis', 'cartefrance');" alt="Autres départements">
+  <area shape="poly" coords="71,95,82,94,86,99,76,105,69,102" href="javascript:setdp('75');">
+  <area shape="poly" coords="107,68,111,79,111,100,99,126,97,150,89,157,89,184,102,182,111,193,112,177,131,180,142,157,166,158,177,132,169,108,154,83,150,65,139,73,112,65" href="javascript:setdp('77');">
+  <area shape="poly" coords="21,59,35,69,39,66,51,72,63,72,71,80,65,84,59,93,55,98,59,109,56,117,48,129,41,135,37,139,18,118,25,104,10,66" href="javascript:setdp('78');">
+  <area shape="poly" coords="60,109,68,113,75,109,77,115,85,115,89,117,96,124,98,137,95,148,90,156,75,162,68,153,64,160,49,162,46,146,37,138,51,126" href="javascript:setdp('91');">
+  <area shape="poly" coords="73,103,72,108,65,109,54,101,59,92,71,81,78,81,78,91,68,95,65,100,68,104" href="javascript:setdp('92');">
+  <area shape="poly" coords="81,83,95,83,98,77,109,75,111,99,106,110,93,98,87,97,80,91" href="javascript:setdp('93');">
+  <area shape="poly" coords="104,112,98,124,89,115,77,113,77,104,84,101,90,100,95,101" href="javascript:setdp('94');">
+  <area shape="poly" coords="23,57,32,44,39,54,73,49,104,69,99,74,92,79,79,82,67,71,45,66,35,66" href="javascript:setdp('95');">
+</map>
+
+<map name="Map" id="Map">
+  <area shape="poly" coords="13,46,20,45,25,49,25,61,16,63,11,58" href="javascript:setdp('29');" alt="Finistère - 29">
+  <area shape="poly" coords="26,66,37,70,42,73,46,66,46,60,38,58,28,55,25,65,23,44" href="javascript:setdp('56');" alt="Morbihan - 56">
+  <area shape="poly" coords="27,45,31,45,36,48,38,49,46,48,47,55,43,60,25,57" href="javascript:setdp('22');" alt="Côtes d'Armor - 22">
+  <area shape="poly" coords="60,56,59,66,46,69,46,49,47,48,54,50" href="javascript:setdp('35');" alt="Île-et-Vilaine - 35">
+  <area shape="poly" coords="42,76,43,82,52,86,61,77,58,67,44,69" href="javascript:setdp('44');" alt="Loire-Atlantique - 44">
+  <area shape="poly" coords="62,52,74,52,71,67,60,67" href="javascript:setdp('53');" alt="Mayenne - 53">
+  <area shape="poly" coords="76,55,81,57,87,63,80,71,70,69" href="javascript:setdp('72');" alt="Sarthe - 72">
+  <area shape="poly" coords="60,84,63,87,73,81,81,72,59,67" href="javascript:setdp('49');" alt="Maine-et-Loire - 49">
+  <area shape="poly" coords="42,85,47,95,58,99,64,97,62,87,60,82" href="javascript:setdp('85');" alt="Vendée - 85">
+  <area shape="poly" coords="56,101,54,108,62,119,66,110,68,104,61,99" href="javascript:setdp('17');" alt="Charente-Maritime - 17">
+  <area shape="poly" coords="68,119,65,114,73,105,83,104,81,115,72,122" href="javascript:setdp('16');" alt="Vienne - 16">
+  <area shape="poly" coords="74,81,81,86,92,99,84,103,74,103,74,93" href="javascript:setdp('86');" alt="Charente  - 86">
+  <area shape="poly" coords="65,87,72,84,74,102,65,101" href="javascript:setdp('79');" alt="Deux-Sèvres - 79">
+  <area shape="poly" coords="55,118,53,127,56,134,63,140,74,133,70,125,63,120" href="javascript:setdp('33');" alt="Gironde - 33">
+  <area shape="poly" coords="74,135,84,136,93,129,88,117,81,116,70,123" href="javascript:setdp('24');" alt="Dordogne - 24">
+  <area shape="poly" coords="65,141,69,145,64,155,43,157,50,136,54,133" href="javascript:setdp('49');" alt="Maine-et-Loire - 49">
+  <area shape="poly" coords="71,148,83,146,86,135,73,135,65,140" href="javascript:setdp('47');" alt="Lot-et-Garonne - 47">
+  <area shape="poly" coords="68,154,68,159,62,171,45,168,41,160,44,158" href="javascript:setdp('64');" alt="Pyrénées-Atlantiques - 64">
+  <area shape="poly" coords="70,159,75,163,77,175,63,172" href="javascript:setdp('65');" alt="Hautes-Pyrénées - 65">
+  <area shape="poly" coords="77,161,85,158,82,149,71,148,66,153,70,161" href="javascript:setdp('33');" alt="Gironde - 33">
+  <area shape="poly" coords="79,172,97,162,92,152,85,157,76,163" href="javascript:setdp('31');" alt="Haute-Garonne - 31">
+  <area shape="poly" coords="94,166,97,172,99,177,89,178,81,173" href="javascript:setdp('09');" alt="Ariège - 09">
+  <area shape="poly" coords="85,153,94,149,99,143,89,142,83,143,81,146" href="javascript:setdp('82');" alt="Tarn-et-Garonne - 82">
+  <area shape="poly" coords="100,146,110,153,111,157,108,161,98,161,92,153,94,150" href="javascript:setdp('81');" alt="Tarn - 81">
+  <area shape="poly" coords="114,154,120,149,117,144,114,131,108,136,104,136,96,143" href="javascript:setdp('12');" alt="Aveyron - 12">
+  <area shape="poly" coords="95,127,101,130,103,137,96,141,86,140,87,134" href="javascript:setdp('46');" alt="Lot - 46">
+  <area shape="poly" coords="94,180,103,183,118,184,116,174,105,173" href="javascript:setdp('66');" alt="Pyrénées-Orientales - 66">
+  <area shape="poly" coords="101,174,96,166,103,162,112,164,114,171"  href="javascript:setdp('11');" alt="Aude - 11">
+  <area shape="poly" coords="117,167,127,166,135,162,133,155,127,151,121,151,114,156,109,161"  href="javascript:setdp('34');" alt="Hérault - 34">
+  <area shape="poly" coords="137,159,144,153,139,146,133,144,127,147,121,148,124,150"  href="javascript:setdp('30');" alt="Gard - 30">
+  <area shape="poly" coords="138,163,147,165,156,170,158,162,143,154"  href="javascript:setdp('13');" alt="Bouches-du-Rhône - 13">
+  <area shape="poly" coords="160,170,170,170,176,162,174,157,158,157"  href="javascript:setdp('83');" alt="Var - 83">
+  <area shape="poly" coords="92,101,98,113,91,118,83,115,83,107"  href="javascript:setdp('87');" alt="Haute-Vienne - 87">
+  <area shape="poly" coords="118,132,125,132,132,140,123,148,116,139"  href="javascript:setdp('48');" alt="Lozère - 48">
+  <area shape="poly" coords="101,130,106,120,108,116,101,113,90,118,92,125"  href="javascript:setdp('19');" alt="Corrèze - 19">
+  <area shape="poly" coords="105,123,110,122,121,127,118,132,111,132,103,135,103,132"  href="javascript:setdp('15');" alt="Cantal - 15">
+  <area shape="poly" coords="129,133,137,127,130,120,125,121,117,120,117,123,123,127,120,131"  href="javascript:setdp('43');" alt="Haute-Loire - 43">
+  <area shape="poly" coords="107,115,107,111,109,106,107,98,95,97,92,100,97,113"  href="javascript:setdp('23');" alt="Creuse - 23">
+  <area shape="poly" coords="107,118,110,107,113,102,121,109,125,111,131,121,117,120,116,124,109,120"  href="javascript:setdp('63');" alt="Puy-de-Dôme - 63">
+  <area shape="poly" coords="126,110,128,103,134,102,129,94,123,94,116,94,107,97,109,103,112,104"  href="javascript:setdp('03');" alt="Allier - 03">
+  <area shape="poly" coords="141,151,142,146,154,147,156,156,155,159"  href="javascript:setdp('84');" alt="Vaucluse - 84">
+  <area shape="poly" coords="157,155,156,149,174,140,175,155,167,155" href="javascript:setdp('04);" alt="Alpes de Haute-Provence - 04">
+  <area shape="poly" coords="176,162,186,152,176,144,174,156" href="javascript:setdp('06');" alt="Alpes-Maritimes - 06">
+  <area shape="poly" coords="156,147,155,140,167,128,176,134,172,140" href="javascript:setdp('05');" alt="Hautes-Alpes - 05">
+  <area shape="poly" coords="141,143,145,135,144,124,131,133,131,142" href="javascript:setdp('07');" alt="Ardêche - 07">
+  <area shape="poly" coords="144,144,155,146,154,134,145,125" href="javascript:setdp('26');" alt="Drôme - 26">
+  <area shape="poly" coords="168,128,161,119,155,119,153,115,144,115,143,122,152,133,156,139" href="javascript:setdp('38');" alt="Isère - 38">
+  <area shape="poly" coords="170,127,177,119,171,115,166,114,158,112,155,114" href="javascript:setdp('73');" alt="Savoie - 73">
+  <area shape="poly" coords="141,119,136,116,137,106,133,103,127,105,126,109,128,117,132,121,138,127,143,124" href="javascript:setdp('42');" alt="Loire - 42">
+  <area shape="poly" coords="145,114,145,104,136,103,136,112,141,121" href="javascript:setdp('69');" alt="Rhône - 69">
+  <area shape="poly" coords="159,111,163,104,150,97,145,102,146,116,156,114" href="javascript:setdp('01');" alt="Ain - 01">
+  <area shape="poly" coords="173,115,174,107,172,101,165,101,164,106,160,113,167,113" href="javascript:setdp('74');" alt="Haute-Savoie - 74">
+  <area shape="poly" coords="163,100,164,97,157,87,157,82,152,85,152,93,152,98,157,100" href="javascript:setdp('39');" alt="Jura - 39">
+  <area shape="poly" coords="193,156,193,179,182,169,185,163" href="javascript:setdp('2B');" alt="Haute-Corse - 2B">
+  <area shape="poly" coords="180,171,182,182,188,191,192,180,182,172" href="javascript:setdp('2A');" alt="Corse-du-Sud - 2A">
+  <area shape="poly" coords="167,96,175,85,176,76,159,82" href="javascript:setdp('25');" alt="Doubs - 25">
+  <area shape="poly" coords="177,75,162,68,154,73,154,82" href="javascript:setdp('70');" alt="Haute-Saône - 70">
+  <area shape="poly" coords="119,89,116,76,107,72,101,81,104,87,104,97,113,95" href="javascript:setdp('18');" alt="Cher - 18">
+  <area shape="poly" coords="88,90,93,82,102,80,105,96,91,100" href="javascript:setdp('36');" alt="Indre - 36">
+  <area shape="poly" coords="91,83,89,77,84,71,78,73,74,81,79,85,87,91" href="javascript:setdp('37');" alt="Indre-et-Loire - 37">
+  <area shape="poly" coords="93,81,101,81,106,75,97,73,96,65,87,64,82,70" href="javascript:setdp('41');" alt="Loir-et-Cher - 41">
+  <area shape="poly" coords="120,92,132,94,135,83,132,79,123,75,116,74" href="javascript:setdp('58');" alt="Nièvre - 58">
+  <area shape="poly" coords="132,97,133,103,142,104,151,99,153,89,142,88,135,86" href="javascript:setdp('71');" alt="Saône-et-Loire - 71">
+  <area shape="poly" coords="135,80,135,68,142,68,145,72,152,76,152,83,151,90,136,85" href="javascript:setdp('21');" alt="Côte-d'Or - 21">
+  <area shape="poly" coords="133,67,123,58,117,60,119,65,116,73,133,81" href="javascript:setdp('89');" alt="Yonne - 89">
+  <area shape="poly" coords="117,62" href="javascript:setdp('link');" alt="link - 21">
+  <area shape="poly" coords="117,64,111,63,107,59,97,63,95,68,97,74,103,76,106,73,114,74" href="javascript:setdp('45');" alt="Loiret - 45">
+  <area shape="poly" coords="157,69,157,61,149,55,146,52,142,55,145,62,141,66,151,75" href="javascript:setdp('52');" alt="Haute-Marne - 52">
+  <area shape="poly" coords="174,70,181,81,185,74,185,64,178,59" href="javascript:setdp('68');" alt="Haut-Rhin - 68">
+  <area shape="poly" coords="179,58,186,64,188,54,194,46,186,44,179,48" href="javascript:setdp('67');" alt="Bas-Rhin  - 67">
+  <area shape="poly" coords="157,57,179,58,175,70,160,66" href="javascript:setdp('88');" alt="Vosges - 88">
+  <area shape="poly" coords="155,55,157,45,156,33,147,33,146,43,146,52" href="javascript:setdp('55');" alt="Meuse - 55">
+  <area shape="poly" coords="159,34,165,45,177,56,157,57" href="javascript:setdp('54');" alt="Meurthe-et-Moselle - 54">
+  <area shape="poly" coords="164,37,181,44,177,54,167,46" href="javascript:setdp('57');" alt="Moselle - 57">
+  <area shape="poly" coords="141,59,131,52,131,55,126,55,123,56,135,65,140,69,142,62" href="javascript:setdp('10');" alt="Aube - 10">
+  <area shape="poly" coords="125,54,127,45,133,37,145,40,146,51,142,56" href="javascript:setdp('51');" alt="Marne - 51">
+  <area shape="poly" coords="134,34,136,26,143,21,144,29,150,32,146,36,139,38" href="javascript:setdp('08');" alt="Ardennes - 08">
+  <area shape="poly" coords="134,25,121,22,120,30,118,43,120,44,124,51,131,36" href="javascript:setdp('02');" alt="Aisne - 02">
+  <area shape="poly" coords="102,15,100,6,109,3,111,9,117,13,120,20,112,20" href="javascript:setdp('59');" alt="Nord - 59">
+  <area shape="poly" coords="135,24,134,18,128,16,122,9,116,8,111,3,120,18,128,22" href="javascript:setdp('62');" alt="Pas-de-Calais - 62">
+  <area shape="poly" coords="55,50,57,42,53,32,53,26,60,30,61,36,60,46,65,49,60,57" href="javascript:setdp('50');" alt="Manche - 50">
+  <area shape="poly" coords="63,36,73,40,82,36,80,43,73,46,64,48,60,46" href="javascript:setdp('14');" alt="Calvados - 14">
+  <area shape="poly" coords="79,54,88,56,86,49,81,43,73,45,62,52" href="javascript:setdp('61');" alt="Orne - 61">
+  <area shape="poly" coords="105,61,98,52,98,48,91,48,89,49,88,55,85,62,92,64" href="javascript:setdp('28');" alt="Eure-et-Loire - 28">
+  <area shape="poly" coords="94,47,100,39,100,35,92,36,83,35,81,39,80,44,88,49" href="javascript:setdp('27');" alt="Eure - 27">
+  <area shape="poly" coords="102,36,101,26,97,23,91,24,83,27,80,32,87,35" href="javascript:setdp('76');" alt="Seine-et-Marne - 76">
+  <area shape="poly" coords="103,30,115,32,120,23,111,20,101,17,97,24" href="javascript:setdp('80');" alt="Somme - 80">
+  <area shape="poly" coords="101,40,107,40,117,45,120,33,109,32,102,29" href="javascript:setdp('60');" alt="Oise - 60">
+  <area shape="poly" coords="98,49,102,60,114,61,123,58,122,49,115,45,104,40,100,45" href="javascript:change_carte('cartefrance', 'carteparis');" alt="Ile-de-France - 75,77,78,91,92,93,94,95">
+</map>
+
+
+$$INCL:BAS.HTM$$
