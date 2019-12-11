@@ -1,0 +1,185 @@
+$$SET:PAGE:IDT=PETITMOTEUR$$
+<script language="javascript" type="text/javascript">
+<!--
+function openCodes_Postaux() 
+{
+	window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no'); 
+}
+function replaceMenu(id) 
+{
+	var idtt = id.value;
+	var typecommerce = document.getElementById("typecommerce");
+	var typebien = document.getElementById("typebien");
+	if (idtt == 10) 
+	{
+		if (typecommerce && typebien) 
+		{
+			typecommerce.style.display = "inline";
+			typebien.style.display = "none";
+		}
+	}
+	if ((idtt == 11) || (idtt == 1) || (idtt == 2)) 
+	{
+		if (typecommerce && typebien) 
+		{
+			typecommerce.style.display = "none";
+			typebien.style.display = "inline";
+		}
+	}
+}
+//change la liste des prix en fonction du type de transaction
+listeVenMin = new Array(["-30000","-30.000"],["30000","30.000"],["40000","40.000"],["50000","50.000"],["60000","60.000"],["70000","70.000"],["80000","80.000"],["90000","90.000"],["100000","100.000"],["130000","130.000"],["200000","200.000"],["250000","250.000"],["300000","300.000"],["350000","350.000"],["500000","500.000"]);
+listeVenMax = new Array(["30000","30.000"],["40000","40.000"],["50000","50.000"],["60000","60.000"],["70000","70.000"],["80000","80.000"],["90000","90.000"],["100000","100.000"],["130000","130.000"],["200000","200.000"],["250000","250.000"],["300000","300.000"],["350000","350.000"],["500000","500.000"],["+500000","+500.000"]);
+listeLoc = new Array(["200","200"],["400","400"],["600","600"],["800","800"],["1000","1.000"],["1200","1.200"],["1400","1.400"],["1600","1.600"],["1800","1.800"],["2000","2.000"],["2200","2.200"],["2400","2.400"],["2600","2.600"],["2800","2.800"],["3000","3.000"],["+3000","+3.000"])
+
+function changeListe(id)
+{
+	listeMin = (id==2)?listeVenMin:listeLoc;
+	listeMax = (id==2)?listeVenMax:listeLoc;
+	//min
+	t='<select id="pxmin" name="pxmin" size="1" class="imputForm" style="width:80px;"><option value="">$$LG:MINI$$</option>';
+	for(i=0;i<listeMin.length;i++)
+	{
+		t+="<option value=\""+listeMin[i][0]+"\">"+listeMin[i][1]+"</option>";
+	}
+	document.getElementById("tmin").innerHTML=t+"</select>";
+	//max
+	t='<select id="pxmax" name="pxmax" size="1" class="imputForm" style="width:80px;"><option value="">$$LG:MAXI$$</option>';
+	for(i=0;i<listeMax.length;i++)
+	{
+		t+="<option value=\""+listeMax[i][0]+"\">"+listeMax[i][1]+"</option>";
+	}
+	document.getElementById("tmax").innerHTML=t+"</select>";
+}
+-->
+</script>
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annonces">
+	$$IF!:1:PAGE:PROXIMITE$$
+		<input type="hidden" name="cp" value="" />
+	$$END$$
+	$$IF!:1:PAGE:IDTT$$
+	<input type="hidden" name="idtt" value="2" />
+	$$END$$
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<!-- $$FORM:IDTT$$ -->
+	<!-- TYPE DE BIEN -->
+	$$IF=:1:PAGE:IDTT$$
+	<table width="280" border="0" cellpadding="0" cellspacing="2">
+		<tr>
+			<td style="width:120px;" class="TabTitreMini">$$LG:TYPEDETRANSACTION pcase$$</td>
+			<td style="width:80px;" class="TabTitreMini">
+				<!-- Gymnastique nécessaire pour tenir compte du A:PAGE:IDTT1=0 => n'affiche pas l'id TT1, et l'affiche si A:PAGE:IDTT1=1 ou si rien (par défaut) -->
+				$$IF0:PAGE:IDTT1$$
+					$$IF!:0:PAGE:IDTT1$$
+						$$A:AFFICHER:IDTT1=1$$
+					$$END:!0$$
+				$$END:IDTT1$$
+				$$IF=:1:PAGE:IDTT1$$
+					$$A:AFFICHER:IDTT1=1$$
+				$$END:IDTT1$$
+				<input type="radio" name="idtt" value="2" checked="checked" style="vertical-align:bottom;" onchange="changeListe(this.value)" />&nbsp;$$LG:MINIVEN$$		
+			</td>
+			<td style="width:80px;" class="TabTitreMini">
+				$$IF:AFFICHER:IDTT1$$<input type="radio" name="idtt" value="1" style="vertical-align:bottom;" onchange="changeListe(this.value)" />&nbsp;$$LG:MINILOC$$$$END:AFFICHER:IDTT1$$
+				$$IF:PAGE:IDTT4$$<input type="radio" name="idtt" value="4" style="vertical-align:bottom;" onchange="changeListe(this.value)" />&nbsp;$$LG:MINILOCVAC$$&nbsp;$$END:PAGE:IDTT4$$
+			</td>
+		</tr>
+	</table>
+	$$END$$
+	<table width="280" border="0" cellpadding="0" cellspacing="2">
+		<tr>
+			<td width="80" colspan="2" class="TabTitreMini2">$$LG:TYPEDEBIEN$$</td>
+			<td width="210" colspan="3">
+				<select name="idtypebien" size="1" class="imputForm" style="width:140px;">
+					<option value=""></option>
+					$$IF=:1:PAGE:IDTB1$$<option value="1,9"$$IF(:form_idtypebien:1$$$$IF(:form_idtypebien:9$$ selected="selected"$$END$$$$END$$> $$LG:APPARTEMENT$$$$LG:MINILOFT$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB2$$<option value="2"$$IF(:form_idtypebien:2$$ selected="selected"$$END$$>$$LG:MAISON$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB3$$<option value="4"$$IF(:form_idtypebien:4$$ selected="selected"$$END$$>$$LG:TERRAIN$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB4$$<option value="5,6"$$IF(:form_idtypebien:5$$$$IF(:form_idtypebien:6$$ selected="selected"$$END$$$$END$$>$$LG:COMMERCE$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB5$$<option value="8"$$IF(:form_idtypebien:8$$ selected="selected"$$END$$>$$LG:BUREAUX$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB7$$<option value="3"$$IF(:form_idtypebien:3$$ selected="selected"$$END$$>$$LG:PARKING$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB8$$<option value="7"$$IF(:form_idtypebien:7$$ selected="selected"$$END$$>$$LG:LOCAL$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB9$$<option value="11"$$IF(:form_idtypebien:11$$ selected="selected"$$END$$>$$LG:IMMEUBLE$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB10$$<option value="12"$$IF(:form_idtypebien:12$$ selected="selected"$$END$$>$$LG:HANGAR$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB11$$<option value="13"$$IF(:form_idtypebien:13$$ selected="selected"$$END$$>$$LG:CHATEAU$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB12$$<option value="14"$$IF(:form_idtypebien:14$$ selected="selected"$$END$$>$$LG:HOTEL$$</option>$$END$$
+					$$IF=:1:PAGE:IDTB6$$<option value="10"$$IF(:form_idtypebien:10$$ selected="selected"$$END$$>$$LG:DIVERS$$</option>$$END$$
+				</select>
+			</td>
+		</tr>
+		$$IF=:1:PAGE:PIECES$$
+		<tr>
+			<td colspan="2" class="TabTitreMini2">$$LG:MININBRPIECES$$</td>
+			<td colspan="3">
+				<input type="checkbox" name="nb_pieces" class="Check" value="1"$$IF=:1:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> 1
+				<input type="checkbox" name="nb_pieces" class="Check" value="2"$$IF=:2:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> 2
+				<input type="checkbox" name="nb_pieces" class="Check" value="3"$$IF=:3:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> 3
+				<input type="checkbox" name="nb_pieces" class="Check" value="4"$$IF=:4:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> 4
+				<input type="checkbox" name="nb_pieces" class="Check" value="5"$$IF=:5:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> 5
+				<input type="checkbox" name="nb_pieces" class="Check" value="5+"$$IF=:5+:FORM:NB_PIECES$$ checked="CHECKED"$$END$$> $$IF=:FR:LANGUE$$ et + $$END$$ $$IF=:EN:LANGUE$$ and + $$END$$
+			</td>
+		</tr>
+		$$END$$
+		<!-- Liste des Villes en menu déroulant -->
+		$$IF=:0:PAGE:LISTEVILLES$$
+			$$B:IMMOBW:VILLESANNONCES:::2$$
+			$$BIF:IMMOBW:VILLESANNONCES:$$
+				<tr>
+					<td colspan="2" class="TabTitreMini2">Villes</td>
+					<td colspan="3">
+						<select name="ci" size="1" class="imputForm" style="width:140px;">
+							<option value=""></option>
+							$$DO:1:120$$
+								<option value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$">$$IMMOBW:VILLESANNONCES::VILLEAFF$$</option>
+							$$LOOP$$
+						</select>
+					</td>
+				</tr>
+			$$BFIN$$	
+		$$END$$
+		<!-- Budget -->
+		$$IF=:1:PAGE:BUDGET$$
+		<tr>
+			<td style="width: 60px;" class="TabTitreMini2">$$LG:BUDGET$$</td>
+			<td style="width: 30px;" class="TabTitreMini2">$$LG:MINI pcase$$ :</td>
+			<td style="width: 60px;"><input type="text" name="pxmin" size="4" value="" class="imputForm" style="width:50px;" /></td>
+			<td style="width: 30px;" class="TabTitreMini2">$$LG:MAXI pcase$$ :</td>
+			<td style="width :70px;" class="TabTitreMini2"><input type="text" name="pxmax" size="4" value="" class="imputForm" style="width:50px;" />&nbsp;&euro;</td>
+		</tr>
+		$$END$$
+		<!-- Prix -->
+		<tr>
+			<td colspan="2" class="TabTitreMini2">$$LG:PRIX$$</td>
+			<td>
+				<a id="tmin"></a>&nbsp;<a id="tmax"></a>
+				&euro;<input type="hidden" name="euro" value="1" />
+				<script>changeListe(2)</script>
+			</td>
+		</tr>
+		<!-- surface -->
+		$$IF=:1:PAGE:SURFACE$$
+			<tr>
+				<td class="TabTitreMini2">$$LG:SURFACE pcase$$</td>
+				<td class="TabTitreMini2">Min :</td>
+				<td><input type="text" name="surfacemin" size="4" value="$$FORM:SURFACEMIN$$" class="imputForm" style="width:50px;" /></td>
+				<td class="TabTitreMini2">$$LG:MAXI$$ :</td>
+				<td class="TabTitreMini2"><input type="text" name="surfacemax" size="4" value="$$FORM:SURFACEMAX$$" class="imputForm" style="width:50px;" /></td>
+			</tr>
+		$$END$$
+		<!-- Proximité -->
+		$$IF=:1:PAGE:PROXIMITE$$
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="3">	
+					<input type="text" name="cp" size="5" maxlength="50" class="imputForm" style="width:80px;" />&nbsp;
+					<!-- 
+					<input type="text" name="cp" size="5" maxlength="50" />&nbsp;
+					<input type="text" name="cp3" size="5" maxlength="50" />&nbsp;
+					<br />(<i><a href="javascript:openCodes_Postaux();" class="minilien">$$LG:MINIRETROUVER$$</a></i>)
+					-->		
+				</td>
+			</tr>
+		$$END$$
+	</table>
+	<div align="center" style="margin:4px 0;"><input type="image" src="img/minienvoyer.gif" /></div>
+</form>

@@ -1,0 +1,90 @@
+<script type="text/javascript" language="javascript">
+<!--
+function findObj(n, d) { //Fonction permettant de trouver un élément HTML dans la page
+	var p, i, x;
+	if(!d) {
+		d=document;
+	}
+	if ( (p = n.indexOf("?") ) > 0 && parent.frames.length) {
+		d = parent.frames[n.substring(p + 1)].document;
+		n = n.substring(0, p);
+	}
+	if( !(x = d[n]) && d.all) {
+		x = d.all[n];
+	}
+	for (i = 0; !x && i < d.forms.length; i++) {
+		x = d.forms[i][n];
+	}
+	for(i = 0; !x && d.layers && i < d.layers.length; i++) {
+		x = findObj(n, d.layers[i].document);
+	}
+	if( !x && document.getElementById ) {
+		x = document.getElementById(n);
+	}
+	return x;
+}
+function changeDpt(idti) { //Change le champ "département" en fonction du type sélectionné
+	var bloc;
+	var defaulttype = document.getElementById("defaulttype");
+	var verif = false;
+	for (i = 1; i <= 64; i = i * 2) {
+		bloc = document.getElementById("type" + i);
+		if (bloc) {
+			if (bloc.style) {
+				if (i == idti) {
+					bloc.style.display = "";
+					verif = true;
+				} else {
+					bloc.style.display = "none";
+				}
+			}
+		}
+	}
+}
+//-->
+</script>
+
+
+
+
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annoncesInvest">
+<input type="hidden" name="idtypebien" value="15" />
+<input type="hidden" name="idtt" value="9" />
+<input type="hidden" name="euro" value="1" />
+
+	<table width="300" cellpadding="1" cellspacing="0" class="tabFond1Mini">	
+	<!-- TYPE D'INVESTISSEMENT -->
+	<tr>
+		<td class="tabTitremini">$$LG:TYPEINVEST pcase$$</td>
+		<td class="tabFond2mini">
+		$$B:IMMOBW:TYPESINVESTISSEMENT$$
+		$$BIF:IMMOBW:TYPESINVESTISSEMENT$$
+		<select name="typeinvestissement" id="typeinvest" onchange="javascript:changeDpt(this.value);" style="font-size:11px;">
+			$$DO$$
+			<option value="$$IMMOBW:TYPESINVESTISSEMENT:IDTYPEINVESTISSEMENT$$"$$IF=:FORM_TYPEINVESTISSEMENT:IMMOBW:TYPESINVESTISSEMENT:IDTYPEINVESTISSEMENT$$ selected="selected"$$END$$$$IF0:FORM:TYPESINVESTISSEMENT$$$$IF=:1:IMMOBW:TYPESINVESTISSEMENT:IDTYPEINVESTISSEMENT$$ selected="selected"$$END$$$$END$$>$$IMMOBW:TYPESINVESTISSEMENT:TYPEINVESTISSEMENT$$</option>
+			$$LOOP$$
+		</select>
+		$$BFIN$$
+		</td>
+	</tr>
+</table>
+
+	
+	<!-- Budget -->
+	<table>
+	<tr>
+		<td class="tabTitremini" valign="middle">$$LG:BUDGET$$</td>
+		<td valign="top" class="tabFond2mini">$$LG:MINI$$&nbsp;:&nbsp;<input class="Form" type="text" name="pxmin" size="4" value="$$FORM:PXMIN$$" style="font-size:11px;" />
+		&nbsp;$$LG:MAXI$$&nbsp;:&nbsp;<input class="Form" type="text" name="pxmax" size="4" value="$$FORM:PXMAX$$" style="font-size:11px;" />&nbsp;&euro;
+		</td>
+	</tr>
+
+
+	<tr>
+		<td align="right" colspan="2" class="tabFond2mini"><input type="submit"  border="0" style="background-color:#fff;font-size:11px;" /></td>
+	</tr>
+	</table>
+
+</form>
+
+
