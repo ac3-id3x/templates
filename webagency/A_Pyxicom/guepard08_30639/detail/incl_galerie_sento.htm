@@ -1,0 +1,83 @@
+$$REM$$====================================================================
+//// <summary>Script galerie photo</summary>
+//// <remarks>
+//// <para>Source : http://www.coffeescripter.com/code/ad-gallery/</para>
+//// <para>CSS intégré dans styles/detail_sento.css </para>
+//// <para>2 fichiers js appelés dans incl_scripts.htm</para>
+//// <para>2010-03-23 : Intégration script FANCY BOX</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2010-03-23" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+====================================================================$$END$$
+
+<div class="photo_ctn">
+	$$IF0:ANNDETAIL:IDPHOTO$$
+	<div id="SansPhoto">
+		<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+		<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->
+	</div>
+	$$END:SANSPHOTO$$
+	
+	$$B:IMMOBW:PHOTOS:ALIAS:GALERIE_TOP:REP:1$$
+	$$BIF:GALERIE_TOP$$
+	$$DO$$$$LOOP$$
+	<div class="photoTitre">		
+		<div class="photoNbr">
+			$$GALERIE:NBR$$
+			$$IF=:0$1:GALERIE:NBR$$$$LG:PHOT lcase$$$$END$$
+			$$IF+:2:GALERIE:NBR$$$$LG:PHOTS lcase$$$$END$$
+		</div>		
+		<!--#include virtual="/detail/incl_fancybox.htm" -->
+		<div class="clear"><!-- --></div>
+	</div>
+	$$BFIN$$
+	
+	$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+	$$BIF:GALERIE$$
+	<script type="text/javascript">
+	<!--
+	  $(function() {
+	   	$$DO$$
+	   	$('img.image$$GALERIE:I exec XX-1$$').data("'ad-desc", "$$GALERIE:DESCRIPTIF_FR$$");
+	   	$('img.image$$GALERIE:I exec XX-1$$').data('ad-title', '$$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$');
+	    $$LOOP$$   
+	    var galleries = $('.ad-gallery').adGallery();
+	    $('#switch-effect').change(
+	      function() {
+	        galleries[0].settings.effect = $(this).val();
+	        return false;
+	      }
+	    );
+	    $('#toggle-slideshow').click(
+	      function() {
+	        galleries[0].slideshow.toggle();
+	        return false;
+	      }
+	    );
+	  });
+	//-->
+	</script>
+	$$BFIN$$
+	
+	$$BIF:GALERIE$$
+	<div id="container">
+		<div id="Masque">&nbsp;</div>
+		<div id="gallery" class="ad-gallery">	
+			<div class="ad-image-wrapper"></div>
+			<div class="ad-controls"></div>
+			<div class="ad-nav">
+				<div class="ad-thumbs">				
+					<ul class="ad-thumb-list">
+					  $$DO$$
+					  <li><a href="$$GALERIE:URL$$" title=""><img src="$$GALERIE:CARRE_URL$$" class="image$$GALERIE:I exec XX-1$$" alt="" title="" /></a></li>
+					  $$LOOP$$
+					</ul><!-- fin .ad-thumb-list -->
+				</div><!-- fin .ad-thumbs -->			
+			</div><!-- fin .ad-nav -->
+		</div><!-- fin #gallery -->
+	</div><!-- fin #container -->
+	$$BFIN$$
+</div><!-- .photo_ctn -->

@@ -1,0 +1,42 @@
+$$REM$$================================================================================================
+//// <summary>Moteur recherche rapide</summary>
+//// <remarks>
+//// <para>Généralement placé en accueil, parfois visible sur tout la navigation</para>
+//// <para>On est obligé d'adapter le nom des macros et des incl_ par rapport aux erreurs pouvant être généré par le cfg_custom_rep</para>
+//// <para>Pour l'instant on ne met pas en place l'option des onglets carte ou liste, car on est pressés de sortir le pack avantage</para>
+//// <para>INIT:MINIMOTEUR=1 sert à conditionner le css correspondant dans styles,incl_styles.htm</para>
+//// <para>Modifier les macros du mini moteur dans votre incl_param.htm</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Recopiage de version x_v2 vers x_v3</update>
+================================================================================================$$END$$
+$$INIT:MINIMOTEUR=1$$
+
+<!--#include virtual="header/all_global_param.htm" -->
+<!--#include virtual="header/incl_param.htm" -->
+<form method="get" action="/moteur,mini,prevalidation.htm" id="MiniMoteur_Form" onsubmit="Envoi();$$IF0:MINIMOTEUR_IDTTUNIQUE$$return Verif();$$END$$">	
+	<div id="MiniMoteur_Ctn">
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		$$IF=:1:FORM:IDTT$$
+			<input type="hidden" name="tri" value="d_px_loyer" />
+		$$END$$
+		$$IF!:1:FORM:IDTT$$
+			<input type="hidden" name="tri" value="d_px" />
+		$$END$$	
+			
+			
+$$REM$$<!-- ================= FICHIER DE MACROS QUI CONDITIONNE PAR DEFAUT LE MINI MOTEUR ================= -->$$END:REM$$
+$$REM$$<!-- macros mini moteur par défaut -->$$END:REM$$				<!--#include virtual="moteur/incl_moteur_param.htm" -->	
+																																													
+$$REM$$<!-- /////////////////////////////// tous les critères de recherche sont à paramétrer par incl_param.htm /////////////////////////////// -->$$END:REM$$
+		$$REM$$<!-- === pour forcer le pays de son choix === -->$$END:REM$$										$$IF:MINIMOTEUR_FORCE_PAYS$$<input type="hidden" name="idpays" value="$$MINIMOTEUR_FORCE_PAYS$$" />$$END:MINIMOTEUR_FORCE_PAYS$$
+		$$REM$$<!-- === à démutualiser pour ajout input hidden persos === -->$$END:REM$$			<!--#include virtual="/moteur/mini/incl_input_hidden.htm" -->
+		
+		$$REM$$<!-- === à démutualiser pour ajout input persos === -->$$END:REM$$			<!--#include virtual="/moteur/mini/incl_moteur_inputperso.htm" -->
+		
+		$$REM$$<!-- === type de bien === -->$$END:REM$$ 																			<div class="miniDiv" id="MiniTypeBien"><!--#include virtual="/moteur/mini/incl_type_bien.htm" --></div>
+		$$REM$$<!-- === budget === -->$$END:REM$$																							<div class="miniDiv" id="MiniBudget"><!--#include virtual="/moteur/mini/incl_budget.htm" --></div>	
+		$$REM$$<!-- === villes === -->$$END:REM$$																							<div class="miniDiv" id="MiniVilles"><!--#include virtual="/moteur/mini/incl_villes.htm" --></div>	
+		<!--#include virtual="/moteur/mini/incl_bouton.htm" -->
+	</div><!-- #MiniMoteur_Ctn -->
+</form><!-- #MiniMoteur_Form -->

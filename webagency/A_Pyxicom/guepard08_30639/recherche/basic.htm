@@ -1,0 +1,253 @@
+$$INIT:IDT=RESULTATS$$
+$$INIT:CSS_RECHERCHE=1$$
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_METRO=1$$
+$$INIT:PN_GOOGLE=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$REM$$<!-- ============== // tous types de transactions // ============== -->$$END:REM$$
+	$$A:TITLE=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@
+						@@1_ANNLISTE:IDTYPEBIEN gettypebien lcase@@ 
+						@@1_ANNLISTE:VILLE@@ 	
+						@@1_ANNLISTE:QUARTIER@@ :
+						@@1_ANNLISTE:DESCRIPTIF  smalltext 50 htmlencode@@... $$
+	$$A:DESCRIPTION=immobilier @@1_ANNLISTE:VILLE@@ par @@NOM_AGENCE@@ : @@1_ANNLISTE:DESCRIPTIF  smalltext 80 htmlencode$$
+	$$A:KEYWORDS=@@1_ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@
+						@@1_ANNLISTE:IDTYPEBIEN gettypebien lcase@@,
+						@@1_ANNLISTE:VILLE@@,
+						agence immobili&egrave;re @@1_ANNLISTE:VILLE@@, 
+					  annonces immobili&egrave;res @@1_ANNLISTE:VILLE@@,
+					  @@1_ANNLISTE:NOM@@ @@1_ANNLISTE:VILLE@@ (@@1_ANNLISTE:CP@@)$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$REM$$<!-- ============== // tous types de transactions // ============== -->$$END:REM$$
+	$$A:TITLE=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien pcase@@ @@FORM:CI codeinsee2ville@@$$
+	$$A:DESCRIPTION=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien pcase@@ @@FORM:CI codeinsee2ville@@$$
+	$$A:KEYWORDS=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien pcase@@ @@FORM:CI codeinsee2ville@@$$	
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+$$INIT:MAXMODULEBERLIN=$$
+$$INIT:QUERYMODULE=photo=10&fraicheur=5&idtypebien=2,1&tri=px_loyer$$
+
+
+<!-- SI 0 ANNONCE -->
+$$BIF0:MODULEBERLIN$$
+<h2>$$LG:OFFRESGUEPARD ucase$$</h2>
+$$IF!:50 000 000/100 000 000$25 000/100 000:FORM:PXBTW$$
+	$$LG:AUCUNEANNONCE pcase$$
+	<span>
+	$$IF=:8:FORM:IDTT$$$$LG:VENTESGUEPARD pcase$$$$END$$
+		$$IF=:1:FORM:IDTT$$$$LG:LOCATIONSGUEPARD pcase$$$$END$$
+		
+		$$IF=:1:FORM:IDTYPEBIEN$$$$LG:APPARTEMENTSGUEPARD pcase$$$$END$$
+		$$IF=:14:FORM:IDTYPEBIEN$$$$LG:HOTELSPARTGUEPARD pcase$$$$END$$
+		$$IF=:2:FORM:IDTYPEBIEN$$$$LG:BELLESDEMGUEPARD pcase$$$$END$$
+		$$IF=:11:FORM:IDTYPEBIEN$$$$LG:HOTELSIMMEUBLES$$$$END$$
+	
+		$$IF!:75,93,94,91,92,77,78,95:FORM:CP$$
+			$$IF=:13:FORM:IDTYPEBIEN$$$$LG:CHATEAUXVIGNOBLES$$$$END$$
+		$$END$$
+		$$IF=:75,93,94,91,92,77,78,95:FORM:CP$$
+			$$IF=:13:FORM:IDTYPEBIEN$$$$LG:CHATEAUX pcase$$$$END$$
+		$$END$$
+		
+		$$IF=:75,93,94,91,92,77,78,95:FORM:CP$$$$LG:PARISGUEPARD pcase$$ - $$LG:ILEDEFRANCE pcase$$$$END$$
+		$$IF=:75:FORM:CP$$$$LG:PARISGUEPARD pcase$$$$END$$
+		$$IF=:75001:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 1$$END$$
+		$$IF=:75003:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 3$$END$$
+		$$IF=:75006:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 6$$END$$
+		$$IF=:75007:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 7$$END$$
+		$$IF=:75008:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 8$$END$$
+		$$IF=:75016:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 16$$END$$
+		$$IF=:75017:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 17$$END$$
+		
+		$$IF=:93,94,91,92,77,78,95:FORM:CP$$$$LG:ILEDEFRANCE pcase$$$$END$$
+		$$IF=:-75,-93,-94,-91,-92,-77,-78,-95:FORM:CP$$France$$END$$
+		$$IF=:NOFR:FORM:IDPAYS$$$$LG:INTERNATIONALGUEPARD pcase$$$$END$$
+$$END$$		
+		
+		$$IF=:1/1 000 000:FORM:PXBTW$$$$LG:MOINSDEGUEPARD lcase$$ 1 000 000 &euro;$$END$$
+		$$IF=:1 000 000/2 500 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 1 000 000 &euro; $$LG:AGUEPARD lcase$$ 2 500 000 &euro;$$END$$
+		$$IF=:2 500 000/5 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 2 500 000 &euro; $$LG:AGUEPARD lcase$$ 5 000 000 &euro;$$END$$
+		$$IF=:5 000 000/10 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 5 000 000 &euro; $$LG:AGUEPARD lcase$$ 10 000 000 &euro;$$END$$
+		$$IF=:10 000 000/50 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 10 000 000 &euro; $$LG:AGUEPARD lcase$$ 50 000 000 &euro;$$END$$
+		
+		$$IF=:1/5 000:FORM:PXBTW$$$$LG:MOINSDEGUEPARD lcase$$ 5 000 &euro;$$END$$
+		$$IF=:5 000/10 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 5 000 $$LG:AGUEPARD lcase$$ 10 000 &euro;$$END$$
+		$$IF=:10 000/15 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 10 000 $$LG:AGUEPARD lcase$$ 15 000 &euro;$$END$$
+		$$IF=:15 000/25 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 15 000 $$LG:AGUEPARD lcase$$ 25 000 &euro;$$END$$
+	
+	</span>
+	$$IF=:1:FORM:IDTT$$
+	$$IF=:25 000/100 000:FORM:PXBTW$$
+	$$LG:BIENSDISPOS2 pcase$$<br /><br />
+	$$LG:BIENS25 pcase$$ <a href="$$URLBASE$$$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$">$$LG:NOUSCONSULTERGUEPARD lcase$$</a>.$$END$$
+	
+	$$IF!:25 000/100 000:FORM:PXBTW$$	
+	<br />
+	<br />
+	$$IF!:1/5 000:FORM:PXBTW$$$$LG:BIENSDISPOS2 pcase$$$$END$$ $$LG:NOUVELLERECHERCHE pcase$$
+	$$END$$
+	$$END$$
+	
+	$$IF=:8:FORM:IDTT$$
+	$$IF=:50 000 000/100 000 000:FORM:PXBTW$$
+	$$LG:BIENSDISPOS2 pcase$$<br /><br />
+	$$LG:BIENS50 pcase$$ <a href="$$URLBASE$$$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$">$$LG:NOUSCONSULTERGUEPARD lcase$$</a>.$$END$$
+	$$IF!:50 000 000/100 000 000:FORM:PXBTW$$	
+	<br />
+	<br />
+	$$IF!:1/1 000 000:FORM:PXBTW$$$$LG:BIENSDISPOS2 pcase$$$$END$$ $$LG:NOUVELLERECHERCHE pcase$$
+	$$END$$
+	$$END$$
+$$BFIN$$
+
+<!-- FIN SI 0 ANNONCE -->
+
+<!-- SI ANNONCES -->
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1::d_px,d_px_loyer:~limit:VAL:MAXMODULEBERLIN:~NOSTAT:1:ALIAS:MODULEBERLIN$$
+$$BIF:MODULEBERLIN$$
+	
+	<h2>$$LG:OFFRESGUEPARD ucase$$</h2>	
+	<p class="results">
+		
+		$$IF+:2:MODULEBERLIN:NBR$$
+			$$MODULEBERLIN:NBR$$  $$LG:ANNONCESTROUVEE lcase$$
+		$$END$$
+		
+		$$IF=:1:MODULEBERLIN:NBR$$
+			$$MODULEBERLIN:NBR$$ $$LG:ANNONCETROUVEE lcase$$
+		$$END$$
+		
+	<span>
+		$$IF=:8:FORM:IDTT$$$$LG:VENTESGUEPARD pcase$$$$END$$
+		$$IF=:1:FORM:IDTT$$$$LG:LOCATIONSGUEPARD pcase$$$$END$$
+		
+		$$IF=:1:FORM:IDTYPEBIEN$$$$LG:APPARTEMENTSGUEPARD pcase$$$$END$$
+		$$IF=:14:FORM:IDTYPEBIEN$$$$LG:HOTELSPARTGUEPARD pcase$$$$END$$
+		$$IF=:2:FORM:IDTYPEBIEN$$$$LG:BELLESDEMGUEPARD pcase$$$$END$$
+		$$IF=:11:FORM:IDTYPEBIEN$$$$LG:HOTELSIMMEUBLES$$$$END$$
+		
+		$$IF!:75,93,94,91,92,77,78,95:FORM:CP$$
+			$$IF=:13:FORM:IDTYPEBIEN$$$$LG:CHATEAUXVIGNOBLES$$$$END$$
+		$$END$$
+		
+		$$IF=:75,93,94,91,92,77,78,95:FORM:CP$$
+			$$IF=:13:FORM:IDTYPEBIEN$$$$LG:CHATEAUX pcase$$$$END$$
+		$$END$$
+		
+		$$IF=:75,93,94,91,92,77,78,95:FORM:CP$$$$LG:PARISGUEPARD pcase$$ - $$LG:ILEDEFRANCE pcase$$$$END$$
+		$$IF=:75:FORM:CP$$$$LG:PARISGUEPARD pcase$$$$END$$
+		$$IF=:75001:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 1$$END$$
+		$$IF=:75003:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 3$$END$$
+		$$IF=:75006:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 6$$END$$
+		$$IF=:75007:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 7$$END$$
+		$$IF=:75008:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 8$$END$$
+		$$IF=:75016:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 16$$END$$
+		$$IF=:75017:FORM:CP$$$$LG:PARISGUEPARD pcase$$ 17$$END$$
+		$$IF=:93,94,91,92,77,78,95:FORM:CP$$$$LG:ILEDEFRANCE pcase$$$$END$$
+		$$IF=:-75,-93,-94,-91,-92,-77,-78,-95:FORM:CP$$France$$END$$
+		$$IF=:NOFR:FORM:IDPAYS$$$$LG:INTERNATIONALGUEPARD pcase$$$$END$$
+		
+		
+		$$IF=:1/1 000 000:FORM:PXBTW$$$$LG:MOINSDEGUEPARD lcase$$ 1 000 000 &euro;$$END$$
+		$$IF=:1 000 000/2 500 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 1 000 000 &euro; $$LG:AGUEPARD lcase$$ 2 500 000 &euro;$$END$$
+		$$IF=:2 500 000/5 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 2 500 000 &euro; $$LG:AGUEPARD lcase$$ 5 000 000 &euro;$$END$$
+		$$IF=:5 000 000/10 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 5 000 000 &euro; $$LG:AGUEPARD lcase$$ 10 000 000 &euro;$$END$$
+		$$IF=:10 000 000/50 000 000:FORM:PXBTW$$$$LG:DEGUEPARD lcase$$ 10 000 000 &euro; $$LG:AGUEPARD lcase$$ 50 000 000 &euro;$$END$$
+	</span>
+		
+		$$IF=:50 000 000:FORM:PXMIN$$$$LG:PLUSDEGUEPARD pcase$$ 50 000 000 &euro;$$END$$
+		
+		<br /><br />
+		$$IF=:8:FORM:IDTT$$
+		$$IF!:1/1 000 000$10 000 000/50 000 000:FORM:PXBTW$$
+		$$LG:BIENSDISPOS$$ <a href="$$URLBASE$$$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$">$$LG:NOUSCONSULTERGUEPARD pcase$$</a><br /><br />
+		$$END$$
+		$$END$$
+		
+		$$IF=:1:FORM:IDTT$$
+		$$IF!:1/5 000$25 000/100 000:FORM:PXBTW$$
+		$$LG:BIENSDISPOS$$ <a href="$$URLBASE$$$$IF=:0:MULTIAGENCES$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$">$$LG:NOUSCONSULTERGUEPARD pcase$$</a><br /><br />
+		$$END$$
+		$$END$$
+		</p>
+	$$DO:1:12$$
+			$$A:TITLE_SELECTION_INDEX=$$
+			$$IF:PAGE:URLREWRITINGENABLED$$
+			$$IF:FORM:LANG$$
+				$$IF!:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@MODULEBERLIN:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+				$$END$$
+				$$IF=:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@MODULEBERLIN:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:FORM:LANG$$
+				$$IF!:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@MODULEBERLIN:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$END$$
+			$$IF0:PAGE:URLREWRITINGENABLED$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@MODULEBERLIN:IDPUBLICATION@@/@@MODULEBERLIN:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$A:TITLE_SELECTION_INDEX=@@MODULEBERLIN:IDTYPETRANSACTION gettypetransaction pcase@@ @@MODULEBERLIN:IDTYPEBIEN gettypebien lcase@@ @@MODULEBERLIN:AVILLE ncase@@$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				<div class="blocModule borderModule shadow" id="annonce$$MODULEBERLIN:IDANNONCE$$">
+						<div class="infoModule">
+							<ul>
+								<li><h3>$$MODULEBERLIN:IDTYPEBIEN gettypebien$$</h3></li>
+								<li><h1>$$MODULEBERLIN:AVILLE replace ème $$</h1></li>
+								<li>
+									<h2>
+									<!-- Ajout bout de code by Muriel pour gérer automatiquement le "masquage" de prix via la case Si promo -->
+									$$IF0:MODULEBERLIN:SI_PROMO$$
+										$$MODULEBERLIN:PRIX$$ $$MODULEBERLIN:PRIX_UNITE$$
+									$$END$$
+									$$IF:MODULEBERLIN:SI_PROMO$$
+										<span style="font-size:16px;color:#beb192;font-weight:normal;">Prix - Nous consulter</span>
+									$$END$$
+									</h2>
+								</li>
+							</ul>			
+						</div>
+						$$IF:MODULEBERLIN:PHOTO_URL$$
+							<img src="$$MODULEBERLIN:PHOTO_URL$$" width="206" height="140" />
+						$$END$$
+						$$IF0:MODULEBERLIN:PHOTO_URL$$
+							<img src="$$_$$images/sans_photo.jpg" width="205" height="140" />
+						$$END$$
+				</div>
+			</a>
+	$$LOOP$$
+	<div class="clear"></div>
+<script type="text/javascript" src="$$_$$scripts/annonces.js"></script>
+
+
+$$BFIN$$
+<!-- FIN SI ANNONCES -->
+$$IF=:RESULTATS:IDT$$
+	$$IF:MODULEBERLIN:NBRPAGES$$
+	<br />
+	<div id="RechPagesBas">
+		<div class="pageCourante">$$LG:PAG pcase$$ $$MODULEBERLIN:PAGE$$ $$LG:SUR lcase$$ $$MODULEBERLIN:NBRPAGES$$</div>
+<div class="rechLiensPages">
+	<script type="text/javascript">
+		<!--	
+			document.write('$$IF!:1$2:MODULEBERLIN:PAGE$$<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry MODULEBERLINpg$$&amp;MODULEBERLINpg=1" title="$$LG:PREMIEREPAGE pcase$$"><span>&lt;&lt;</span></a>$$END$$$$IF:MODULEBERLIN:LIENARRIERE$$<a class="prev" href="$$MODULEBERLIN:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$"><span>&lt;</span></a>$$END$$$$MODULEBERLIN:MULTIPAGE removeqry alierr$$$$IF:MODULEBERLIN:LIENAVANT$$<a class="next" href="$$MODULEBERLIN:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$"><span>&gt;</span></a>$$END$$$$IF!:MODULEBERLIN_NBRPAGES$MODULEBERLIN_NBRPAGES exec (XX-1):MODULEBERLIN:PAGE$$<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry MODULEBERLINpg$$&amp;MODULEBERLINpg=$$MODULEBERLIN:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><span>&gt;&gt;</span></a>$$END$$'); 
+		//-->
+	</script>
+	<div class="clear"><!-- --></div>
+</div>
+<div class="clear"><!-- --></div>
+	</div><!-- #RechPagesBas -->
+		$$END:MODULEBERLIN:NBRPAGES$$
+$$END:RESULTATS:IDT$$
+<div class="clear"></div><br /><br /><br />
+<!--#include virtual="footer/incl_bas.htm" -->

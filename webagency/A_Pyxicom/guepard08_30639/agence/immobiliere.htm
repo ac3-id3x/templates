@@ -1,0 +1,157 @@
+$$REM$$====================================================================
+//// <summary>Affiche toutes les infos concernant l'agence</summary>
+//// <remarks>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V3/styles/agence-immobiliere.css</para>
+//// <para>Portefeuille d'annonces + vignettes des 4 dernières annonces apparaîssent si l'agence a souscrit à un contrat de référencement</para>
+//// <para>MENTIONS LEGALES : SI MODIFS > MODIFIER AUSSI LE FICHIER "LEGAL,MENTIONS.HTM"</para>
+//// </remarks>
+//// <update date="2010-06-10" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOTREAGENCE$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ - @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE lcase@@ à @@CV:VILLE@@ est spécialiste de l'immobilier à @@CV:VILLE@@ (@@CV:CP@@).$$
+	$$A:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ à @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@TITLE@@.$$
+	$$A:KEYWORDS=@@CV:NOM@@, @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- NE PAS METTRE &amp; dans l'appel des css -->$$END:REM$$
+$$A:STYLE=@import url( "/styles,agence_immobiliere.css?idp=@@FORM:IDP@@" );$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+
+<div id="AgImmo_Ctn" itemscope itemtype="http://schema.org/Person">
+	<!--#include virtual="agence/incl_titre_h3.htm" -->
+	
+	<table id="AgImmo" $$IF=:AR:LANGUE$$style="text-align:right;"$$END$$>
+		<tr>
+$$REM$$<!-- ============================== gauche ============================== -->$$END:REM$$
+			<td id="AgImmoGauche">
+
+$$REM$$<!-- ==================== carte geoloc sur option (par défaut depuis 12.01.2011) ==================== -->$$END:REM$$	
+				<!--#include virtual="carto/incl_BingMap_agences.htm" -->
+
+				
+				<div id="AgImmoMentions">
+					$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+					$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+					<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+				</div><!-- #AgImmoMentions -->
+				
+			</td><!-- #AgImmoGauche -->
+			
+$$REM$$<!-- ============================== droite ============================== -->$$END:REM$$
+			<td id="AgImmoDroite" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$id="AgImmo_Ctn" itemscope itemtype="http://schema.org/Person"$$END$$>
+				<h2>$$IF=:FR:LANGUE$$GUEPARD IMMOBILIER$$END$$$$IF!:FR:LANGUE$$GUEPARD REAL ESTATE$$END$$</h2><br /><br />
+$$LG:SIEGESOCIALGUEPARD$$<br /><br />$$LG:TELGUEPARD pcase$$ : +33 (0) 1 5660 5268<br />$$LG:FAX pcase$$ : +33 (0) 1 5660 5600 <br />
+				</p>
+				
+				
+		
+				
+				<div class="clear"><!-- --></div>
+				
+$$B:EASA:TEXTES:~idCategorie:20948:ALIAS:CRORESEAU$$
+$$BIF:CRORESEAU$$
+$$DO$$
+
+$$IF=:FR:LANGUE$$
+$$IF=:6973524:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:ES:LANGUE$$
+$$IF=:6979934:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+
+$$IF=:RU:LANGUE$$
+$$IF=:6989549:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:EN:LANGUE$$
+$$IF=:6973525:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:DE:LANGUE$$
+$$IF=:6989548:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:NL:LANGUE$$
+$$IF=:6992757:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:PT:LANGUE$$
+$$IF=:6992756:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:IT:LANGUE$$
+$$IF=:6979935:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:AR:LANGUE$$
+$$IF=:6989550:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+$$IF=:CN:LANGUE$$
+$$IF=:6992755:CRORESEAU:IDTEXTE$$
+$$CRORESEAU:TEXTE$$
+$$END$$
+$$END$$
+
+
+$$LOOP$$
+$$BFIN$$
+
+				
+				
+				$$IF:CV:LANGUESPARLEES$$
+				<h4>$$LG:LANGUESPARLEES pcase$$</h4>
+$$REM$$<!-- ============================== langues parlées from selogerpro ============================== -->$$END:REM$$
+				<p>
+					$$IF=:FR:LANGUE$$
+					$$CV:LANGUESPARLEESFR ncase$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+					$$CV:LANGUESPARLEESEN ncase$$
+					$$END$$
+				</p>
+				$$END:LANGUESPARLEES$$
+
+
+
+
+			</td><!-- #AgImmoDroite -->
+		</tr>
+	</table>		
+	
+</div><!-- #AgImmo -->
+<!--#include virtual="footer/incl_bas.htm" -->
