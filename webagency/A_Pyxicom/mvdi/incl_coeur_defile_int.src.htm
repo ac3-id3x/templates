@@ -1,0 +1,79 @@
+<!-- [ttl: 1d] -->
+<!-- Lang1 : $$FORM:LANG$$ -->
+
+$$REM$$
+<!-- ph 7/03/06
+DISPLAYINFOSC2C : affichage de l'information, 0 desactivé
+NBC2C : nombre de coups de coeur affiché(s), sans limite
+GDTAILLE : 1 si grande taille
+MODE : normal par defaut, random possible
+NBTOTAL : nombre total de bien, pb remarqué avec si_exclusivif=1 donc limité à 20 dans ce cas
+ROLLOVER : activation du rollover pour changer de coup de coeur, 0 desactivé
+//-->
+$$END$$
+
+$$SET:PAGE:DISPLAYINFOSC2C=1$$ 
+$$SET:PAGE:NBC2C=1$$
+$$SET:PAGE:GDTAILLE=0$$ 
+$$SET:PAGE:MODE=random$$ 
+$$SET:PAGE:NBTOTAL=8$$ 
+$$SET:PAGE:ROLLOVER=0$$
+
+<script language="javascript" type="text/javascript" src="$$-$$scripts/C2C.js"></script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<!--CDC -->
+			<td>
+			$$B:IMMOBW:ANN:ALIAS:COUPDECOEUR:2:FR:::si_coupdecoeur=1$$
+			$$BIF:COUPDECOEUR$$
+				<div id="div_C2C">
+				$$DO:1:@@COUPDECOEUR:NBR@@$$
+					<div id="tabc2c$$COUPDECOEUR:I$$" name="tabc2c$$COUPDECOEUR:I$$" align="center" style="display:none; margin:0px; padding:0px; float:left;">
+						<table cellpadding="0" cellspacing="0" border="0" width="202" class="cdc$$COUPDECOEUR:I$$" style="margin-bottom:10px;">
+							<tr>
+								<td valign="top" align="center" height="180">
+									<table cellpadding="0" cellspacing="0" border="0" width="190">
+										<tr>
+											<td height="129" colspan="3" valign="bottom" align="center">
+												<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/detail,classic.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&amp;idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&amp;lang=$$LANGUE$$">
+													$$IF:COUPDECOEUR:IDPHOTO$$<img src="$$COUPDECOEUR:PHOTOURL0$$" width="190" height="123" border="0" alt="" />$$END:IDPHOTO$$
+													$$IF0:COUPDECOEUR:IDPHOTO$$<img src="$$_$$img/sans_photo.gif" width="190" height="123" border="0" alt="" />$$END:IDPHOTO$$
+												</a>
+											</td>
+										</tr>
+										<tr>
+											<td height="36" align="left" valign="middle" width="21"><img src="images/puceCdc.gif" alt="" /></td>
+											<td align="left" valign="middle" width="159">
+												<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/detail,classic.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&amp;idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&amp;lang=$$LANGUE$$">
+													$$IF:COUPDECOEUR:LIBELLE$$
+														$$COUPDECOEUR:LIBELLE htmlencode$$
+													$$END$$
+													$$IF0:COUPDECOEUR:LIBELLE$$
+														$$COUPDECOEUR:LIBELLE_FR htmlencode$$
+													$$END$$
+												</a><br />
+												<a href="/$$COUPDECOEUR:IDPUBLICATION$$/$$COUPDECOEUR:IDANNONCE$$/detail,classic.htm?idtt=$$COUPDECOEUR:IDTYPETRANSACTION$$$$IF:COUPDECOEUR:IDANNONCEPARENT$$&amp;idap=$$COUPDECOEUR:IDANNONCEPARENT$$$$END$$&amp;lang=$$LANGUE$$">
+													$$COUPDECOEUR:PRIX$$  $$COUPDECOEUR:PRIX_UNITE htmlencode$$
+												</a><br />
+												<span class="VilleCDC">$$COUPDECOEUR:NOM$$</span>
+											</td>
+											<td align="center" valign="top" width="65"><img src="images/cdc4.gif" alt="" /></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+
+					</div>
+				$$LOOP$$
+				</div>
+				<script language="javascript" type="text/javascript">
+					C2C_install( /*ID C2C*/ "div_C2C", /*Prefixe C2C*/ "tabc2c", /*Nombre affiches*/ 1, /*Nombre total*/ $$COUPDECOEUR:NBR$$, /*Vitesse*/ 6000, /*Mode*/ "$$PAGE:MODE$$", /*Si souris*/ $$IF=:1:PAGE:ROLLOVER$$true$$END$$$$IF0:PAGE:ROLLOVER$$false$$END$$ );	
+				</script>
+			$$BFIN$$
+			$$BIF0:COUPDECOEUR$$
+				££LG:NOCOUPDECOEUR££
+			$$BFIN$$
+		</td>
+	</tr>
+</table>

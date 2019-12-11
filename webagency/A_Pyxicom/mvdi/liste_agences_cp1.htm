@@ -1,0 +1,67 @@
+
+$$SET:PAGE:TITR=Agence immobiliere @@PAGE:CFG_TITRE@@$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAG$$
+<br />
+<!-- $$REP:1$$ -->
+$$B:IMMOBW:AGENCES:ALIAS:LIST::QRY:CP$$
+$$BIF:LIST$$
+<table width="95%" border="0" cellspacing="0" cellpadding="0" align="center">
+$$DO:1:120$$
+  <tr valign="middle" bgcolor="#FAFAFA">
+    <td height="20" colspan="2" align="left">&nbsp;$$IF=:282537$282533:LIST:IDPUBLICATION$$<img src="$$_$$images/puce_orange.gif" />$$END$$
+						$$IF=:282538$282535$283753$283754:LIST:IDPUBLICATION$$<img src="$$_$$images/puce_verte.gif" />$$END$$
+						$$IF=:282536$282531:LIST:IDPUBLICATION$$<img src="$$_$$images/puce_rouge.gif" />$$END$$	
+		
+	$$IF=:282537$282533:LIST:IDPUBLICATION$$<span class="carteVisiteOrange">$$END$$
+						$$IF=:282538$282535$283753$283754:LIST:IDPUBLICATION$$<span class="carteVisiteVerte">$$END$$
+						$$IF=:282536$282531:LIST:IDPUBLICATION$$<span class="carteVisiteRouge">$$END$$$$LIST:NOM$$</span></td>
+  </tr>
+  <tr>
+	<td valign="top" width="50%" align="left">
+	  <strong>$$IF!:282538$282537:LIST:IDPUBLICATION$$Centre Ouest Immobilier$$END$$
+								$$IF=:282538:LIST:IDPUBLICATION$$Agence du Val de Loire$$END$$
+								$$IF=:282537:LIST:IDPUBLICATION$$SARL MAEMI$$END$$
+		  <br />
+	$$LIST:ADRESSE htmlencode crlf2br$$<br /></strong>
+	<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$LIST:TEL formattel$$<br />
+	<font class="liste_agences_info">Fax :</font> $$LIST:FAX formattel$$<br />
+	$$IF:LIST:EMAIL$$<font class="liste_agences_info">E-mail : </font><a href="mailto:$$IMMOBW:AGENCE:EMAIL$$" 
+				$$IF=:282537$282533:LIST:IDPUBLICATION$$class="carteVisiteOrange"$$END$$
+						$$IF=:282538$282535$283753$283754:LIST:IDPUBLICATION$$class="carteVisiteVerte"$$END$$
+						$$IF=:282536$282531:LIST:IDPUBLICATION$$class="carteVisiteRouge"$$END$$
+				>$$LIST:EMAIL$$</a><br />$$END$$
+	<font class="liste_agences_info">$$LG:NOMRESP$$</font> $$LIST:RESPAG$$<br />
+	<br />
+	<br />
+	</td>
+	<td valign="top" width="50%" align="right">
+
+	<img src="/photos_agences/$$LIST:IDPUBLICATION$$_2.jpg" alt="$$IMMOBW:AGENCE:VILLE ucase$$" /><br />$$IF:LIST:SI_AFFURL$$
+	$$IF:LIST:URL$$
+	<a href="$$LIST:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$LIST:NOM$$</strong></a><br />
+	$$END:URL$$
+	$$END:SI_AFFURL$$
+	$$IF0:LIST:SI_AFFURL$$
+	$$IF=:CV:REP:1$$
+<a href="/$$LIST:IDPUBLICATION urlencode$$/carte_visite.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VITRINE pcase$$</a><br />
+	$$END$$
+	$$END:!SI_AFFURL$$
+	<a href="/$$LIST:IDPUBLICATION$$/contact.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a><br />
+	<a href="/$$LIST:IDPUBLICATION urlencode$$/vendeur.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a><br />
+$$A:CARTE:CP=@@LIST:CP@@$$
+$$A:CARTE:VILLE=@@LIST:VILLE replace ' \'@@$$
+$$A:CARTE:ADRESSE=@@LIST:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+$$INCL:LOCALISATION_AGENCE.HTM$$
+<br /><br />
+
+	</td>
+</tr>
+  <tr background="images/pixel.gif">
+    <td height="0" colspan="2" align="left" valign="top" bgcolor="656A6E"><img src="images/pixel.gif" width="1" height="1"></td>
+  </tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$INCL:BAS.HTM$$

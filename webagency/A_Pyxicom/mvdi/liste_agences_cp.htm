@@ -1,0 +1,91 @@
+
+$$SET:PAGE:TITR=Agence immobiliere @@PAGE:CFG_TITRE@@$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAG$$
+<br />
+<!-- $$REP:1$$ -->
+
+
+
+
+
+$$B:IMMOBW:AGENCES:ALIAS:LIST::QRY:CP$$
+$$BIF:LIST$$
+<table width="95%" border="0" cellspacing="0" cellpadding="0" align="center">
+$$DO:1:120$$
+
+
+
+  <tr valign="middle" bgcolor="#FAFAFA">
+    <td height="20" colspan="2" align="left">&nbsp;
+    				
+    				<!-- POUR AFFICHER LES COULEURS DES PUCES -->
+							<img src="$$_$$images/puce_verte.gif" />						
+						<!-- FIN COULEURS DES PUCES -->
+		
+		
+						<!-- POUR AFFICHER LA COULEUR DU NOM DE L'AGENCE -->
+							<span class="carteVisiteVerte">
+						<!-- FIN COULEUR DU NOM DE L'AGENCE -->						
+						$$LIST:NOM$$						
+						 
+						
+		</td>
+  </tr>
+  <tr>
+		<td valign="top" width="50%" align="left">
+		  <strong>Agence du Val de Loire<br />
+		$$LIST:ADRESSE htmlencode crlf2br$$<br /></strong>
+		
+		<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$LIST:TEL formattel$$<br />
+		<font class="liste_agences_info">Fax :</font> $$LIST:FAX formattel$$<br />
+		$$IF:LIST:EMAIL$$<font class="liste_agences_info">E-mail : </font><a href="mailto:$$LIST:EMAIL$$" class="carteVisiteVerte">$$LIST:EMAIL$$</a><br />$$END$$
+		<font class="liste_agences_info">$$LG:NOMRESP$$</font> $$LIST:RESPAG$$<br />
+		<br />
+		<br />
+		
+		
+		
+		</td>
+		<td valign="top" width="50%" align="right">			
+			<img src="/images/agences/$$LIST:IDPUBLICATION$$.jpg" alt="$$IMMOBW:AGENCE:VILLE ucase$$" /><br />
+			$$IF!::LIST:IDPUBLICATION$$
+				$$IF:LIST:SI_AFFURL$$
+				$$IF:LIST:URL$$
+				<a href="$$LIST:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$LIST:NOM$$</strong></a><br />
+				$$END:URL$$
+				$$END:SI_AFFURL$$
+				$$IF0:LIST:SI_AFFURL$$
+				$$IF=:CV:REP:1$$
+				<!--lien vitrine internet de l'agence-->
+				<a href="/$$IF!:364547:LIST:IDPUBLICATION$$$$LIST:IDPUBLICATION urlencode$$$$END$$$$IF=:364547:LIST:IDPUBLICATION$$364538$$END$$/carte_visite$$IF=::LIST:IDPUBLICATION$$2$$END$$.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VITRINE pcase$$</a><br />
+				<!--fin lien vitrine internet de l'agence-->
+				$$END$$
+				$$END:!SI_AFFURL$$
+				<a href="/$$LIST:IDPUBLICATION$$/contact.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a><br />
+				<a href="/$$LIST:IDPUBLICATION urlencode$$/vendeur.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a><br />
+				$$A:CARTE:CP=@@LIST:CP@@$$
+				$$A:CARTE:VILLE=@@LIST:VILLE replace ' \'@@$$
+				$$A:CARTE:ADRESSE=@@LIST:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+				$$INCL:LOCALISATION_AGENCE.HTM$$
+				<br /><br />
+			$$END$$
+		</td>
+	</tr>
+	
+  
+
+
+	
+
+  
+
+  
+$$LOOP$$
+
+
+</table>
+$$BFIN$$
+
+$$INCL:BAS.HTM$$
