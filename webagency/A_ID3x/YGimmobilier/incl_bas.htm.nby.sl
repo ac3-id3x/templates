@@ -1,0 +1,40 @@
+<!--fin texte--></td>
+          </tr>
+        </table>
+        
+            
+        <p align="center" style="margin-top:0; margin-left:40;">$$INCL:BAS2.HTM$$</p>
+        </td>
+        <td width="103" valign="top">
+            <p align="left" style="margin-top:0; margin-left:0;">&nbsp;</p>
+                <!--NAMO_NAVBAR_START T V L h-->
+<div align="left">
+<a href="index.htm" onmouseover="na_change_img_src('nav_lesvilla_TV0', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_accueil_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV0', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_accueil_tv.gif" name="nav_lesvilla_TV0" border="0" class="namo-button2" alt="     Accueil"></a><br>
+<a href="lagence.html" onmouseover="na_change_img_src('nav_lesvilla_TV1', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_lagence_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV1', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_lagence_tv.gif" name="nav_lesvilla_TV1" border="0" class="namo-button2" alt="    L'agence"></a><br>
+<a href="preliste.htm?idtt=2&idtypebien=2" onmouseover="na_change_img_src('nav_appartem_TV2', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_lesvilla_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_appartem_TV2', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_lesvilla_tv.gif" name="nav_appartem_TV2" border="0" class="namo-button2" alt="    Les Villas"></a><br>
+<a href="preliste.htm?idtt=2&idtypebien=1" onmouseover="na_change_img_src('nav_lesvilla_TV3', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_appartem_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV3', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_appartem_tv.gif" name="nav_lesvilla_TV3" border="0" class="namo-button2" alt="Appartements"></a><br>
+<a href="vousvend.html" onmouseover="na_change_img_src('nav_lesvilla_TV4', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_vousvend_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV4', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_vousvend_tv.gif" name="nav_lesvilla_TV4" border="0" class="namo-button2" alt=" Vous Vendez"></a><br>
+<a href="nosservi.html" onmouseover="na_change_img_src('nav_lesvilla_TV5', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_nosservi_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV5', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_nosservi_tv.gif" name="nav_lesvilla_TV5" border="0" class="namo-button2" alt=" Nos Services"></a><br>
+<a href="nosconse.html" onmouseover="na_change_img_src('nav_lesvilla_TV6', 'document', '/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_nosconse_tvr.gif', true)"
+onmouseout="na_restore_img_src('nav_lesvilla_TV6', 'document')">
+<img src="/z/sla/slagence_ygimmobilier/nav/nav_shades_of_blue_nosconse_tv.gif" name="nav_lesvilla_TV6" border="0" class="namo-button2" alt=" Nos Conseils"></a>
+</div>
+                <!--NAMO_NAVBAR_END-->        </td>
+    </tr>
+</table>
+</div>
+$$INCL:BAS_MAJ.HTM$$</BODY>
+
+</html>
