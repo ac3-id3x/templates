@@ -1,0 +1,353 @@
+$$REM$$
+====================================================================
+
+//// <summary>Pud page unique de destination à l'usage du référencement</summary>
+//// <remarks>
+//// <para> la page pud_agence ou pud_immobilier sont appelées par la page suivante : slagence_X_V2/pud.htm?kw=estimation+Geo : </para>
+//// <para>Utilise le style css : slagence_X_V2/styles,pud.css et /styles,annonces_pud.css</para>
+//// <para>Utilise la liste des dernières d'annonces slagence_X_V2/annonces/incl_annonces_pud.htm</para>
+//// <para>Utilise les coordonnées agences défilantes  slagence_X_V2/includes/incl_coord_agence_pud.htm</para>
+//// <para>Utilise les formulaires  slagence_X_V2includes/incl_forms_pud.htm</para>
+//// </remarks>
+//// <update date="2008-08-13" author="christophe.ledoux">Création v1</update>
+//// <update date="2008-08-13" author="christophe.ledoux">Validation HTML/CSS</update>
+//// <update date="2008-08-13" author="Ravi Horner,damien.robert">Validation oK</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$BIF:ANNVENTES$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNVENTES -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=2&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de vente sur @@FORM:CI codeinsee2ville field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNVENTES$$<!-- BIF0:ANNVENTES -->$$BFIN$$
+
+$$BIF:ANNLOCS$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNLOCS -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=1&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de location sur @@FORM:CI codeinsee2ville field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNLOCS$$<!-- BIF0:ANNLOCS -->$$BFIN$$
+
+$$BIF:ANNNEUF$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNNEUF -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=9&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de programme neuf sur @@FORM:CI codeinsee2ville field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNNEUF$$<!-- BIF0:ANNNEUF -->$$BFIN$$
+
+
+
+$$SET:PAGE:IDT=PUDESTIMATION$$
+$$SET:PAGE:TITRE=Vendre son appartement : Estimations immobili&egrave;res @@FORM:CI codeinsee2ville field 1@@ avec @@REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase@@$$
+$$SET:PAGE:DESCREF=Faites estimer gratuitement la valeur de votre bien immobilier sur le secteur de @@FORM:CI codeinsee2ville field 1@@ avec @@REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase@@$$
+$$SET:PAGE:KEYWORDS=estimation,immobilier,@@FORM:CI codeinsee2ville field 1@@,vendre son appartement,vendre son appart$$
+
+
+
+$$SET:PAGE:STYLE=<style type="text/css">@import url( "/styles,pud.css" );@import url( "/styles,annonces_pud.css" );</style>$$
+
+$$BIF:ANNVENTES$$
+<link rel="alternate" type="application/rss+xml" href="$$URLBASE$$/rss2.xml?idtt=2&amp;ci=$$FORM:CI field 1$$" target="_blank" title="Toutes les dernieres annonces immobilieres de vente sur $$FORM:CI codeinsee2ville field 1$$">
+$$BFIN$$
+
+$$BIF:ANNLOCS$$
+<link rel="alternate" type="application/rss+xml" href="$$URLBASE$$/rss2.xml?idtt=1&amp;ci=$$FORM:CI field 1$$" target="_blank" title="Toutes les dernieres annonces immobilieres de location sur $$FORM:CI codeinsee2ville field 1$$">
+$$BFIN$$
+
+$$BIF:ANNNEUF$$
+<link rel="alternate" type="application/rss+xml" href="$$URLBASE$$/rss2.xml?idtt=9&amp;ci=$$FORM:CI field 1$$" target="_blank" title="Toutes les dernieres annonces immobilieres de programme neuf sur $$FORM:CI codeinsee2ville field 1$$">
+$$BFIN$$
+
+<script language="javascript" type="text/javascript">
+        var coord2=new Array();
+$$B:IMMOBW:AGENCES:ALIAS:MULTI2:CP:75$$ $$BIF:MULTI2$$        var i=0;$$DO:1:120$$
+        coord2[i++]="adr2_$$MULTI2:IDPUBLICATION$$";$$LOOP$$$$BFIN$$   
+    var cpt2=0;
+function Adresse2()
+					{
+						document.getElementById(coord2[cpt2]).style.display="inline";
+						cpt2++;
+							if(cpt2>=coord2.length) {
+								cpt2=0;
+								setTimeout("document.getElementById(coord2[coord2.length-1]).style.display='none'",3500);
+							} else {
+								setTimeout("document.getElementById(coord2[cpt2-1]).style.display='none'",3500);
+							}
+						setTimeout("Adresse2()",3500);
+					}     
+</script>
+<div id="ContainPud">
+<div id="Estim">
+<!--<h1>Faites estimer gratuitement la valeur de votre bien immobilier sur le secteur de  $$FORM:CI codeinsee2ville field 1$$</h1>-->
+<h1>Vendre son Appartement : Estimations immobili&egrave;res sur $$FORM:CI codeinsee2ville field 1$$ avec $$REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase$$ :</h1>
+<div>&nbsp;</div>
+<!--/////////////////////////////////////////////////////////////////////////////////formulaire///////////////////////////////////////////////////////////////////-->
+
+<div id="PudForm3">	
+						$$IF!:0$1:MULTI$$
+						$$E:IMMOBW:AGENCE:ALIAS:CTCAGMONO$$
+						$$IF0:CTCAGMONO:EMAIL$$
+							<div ><br /><br />D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />L'adresse e-mail du destinataire n'est pas disponible.<br /><br />
+							</div>
+						$$END$$
+						$$IF:CTCAGMONO:EMAIL$$
+<table width="95%" border="0" cellspacing="0" cellpadding="5"  >
+<tr>
+	<td >
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="8" />
+<input type="hidden" name="page_ok" value="pud_ok_estimation.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_estimation.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. ""  pcase$$" />
+<strong>$$ERRE$$</strong>
+	
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:location:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$IF=:vente:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+
+		$$IF0:PAGE:IDTC1$$		
+		<input type="radio" name="typetransaction" style="border:none;" value="1" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked$$END$$$$END$$ />
+		$$LG:LOCATION$$
+		$$END$$
+		$$IF0:PAGE:IDTC3$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" style="border:none;" name="typetransaction" value="2" checked />
+		$$LG:VENTE$$
+		$$END$$
+		</td>
+	</tr>
+	$$END$$
+	$$END$$
+	<!--Vous possédez un bien-->
+	<tr>
+			<td>
+				<select name="typebien" size="1" style="width:250px;>
+		<option value=""> -- -- </option>
+			
+		<option value="1">$$LG:APPARTEMENT$$</option>
+		  
+		<option value="2">$$LG:MAISON$$</option>
+			
+		<option value="4">$$LG:TERRAIN$$</option>
+			
+		<option value="6">$$LG:BOUTIQUE$$</option>
+			
+		<option value="7">$$LG:LOCAL$$</option>
+			
+		<option value="8">$$LG:BUREAUX$$</option>
+			
+		<option value="9">$$LG:LOFT$$</option>
+			
+		<option value="11">$$LG:IMMEUBLE$$</option>
+			
+		<option value="12">$$LG:BATIMENT$$</option>
+			
+		<option value="13">$$LG:CHATEAU$$</option>
+			
+	   <option value="14">$$LG:HOTEL$$</option>
+		</select>
+			</td>
+		</tr>
+		<tr>
+			<td><input  type="text" name="surface" size="8" value="$$LG:SURFH$$" />
+			<input  type="text" name="nombrepieces" size="8" value="$$LG:NBRP$$" /></td>
+		</tr>
+		<tr>
+			<td><input  type="text" name="villebien" size="25" value="$$LG:VILLE$$ " /></td>
+		</tr>
+		<tr>
+			<td>	<textarea  name="message" style="width:250px; rows="3">$$LG:PRECIS$$</textarea></td>
+		</tr>
+	<tr>
+		<td width="70%" align="left"><input  type="text" name="nomfamille" size="25" value="$$LG:AI5$$ *" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="prenom" size="25" value="$$LG:VOTREPRENOM$$ *" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="telephone" size="25" value="$$LG:VOTRETEL pcase$$ *" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="email" size="25" value="$$LG:AI6$$ *" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input type="image" src="$$-$$img/pud/rechercher_$$LANGUE$$.png" style="border: none;position:absolute;bottom:-15px;right:25px;" name="image" alt="Faites estimer votre bien immobilier par notre agence" title="Faites estimer votre bien immobilier par notre agence" /></td>
+	</tr>
+	</form>
+</table>
+	$$END:EMAIL$$
+						$$END$$
+<!--/////////////////////////////////////////////////////////////////////////Condition n°2 pour le Formulaire/////////////////////////////////////////////////////////////////////////////////-->
+						$$IF=:0$1:MULTI$$
+						$$B:IMMOBW:AGENCES:ALIAS:CTCAG$$
+						$$BIF:CTCAG$$ $$DO:1:1$$
+								$$LOOP$$
+						$$BFIN$$
+								$$IF0:1_CTCAG:EMAIL$$
+							<div >
+							<br /><br /><br /><br />
+							D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+							L'adresse e-mail du destinataire n'est pas disponible.<br />
+							<br /><br /><br />
+							</div>
+						$$END$$
+						$$IF:1_CTCAG:EMAIL$$
+						<table width="95%" border="0" cellspacing="0" cellpadding="5"  >
+<tr>
+	<td>
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="8" />
+<input type="hidden" name="page_ok" value="pud_ok_estimation.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_estimation.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. ""  pcase$$" />
+<strong>$$ERRE$$</strong>
+	
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:location:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$IF=:vente:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	
+		$$IF0:PAGE:IDTC1$$		
+		<input type="radio" name="typetransaction" style="border:none;" value="1" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked$$END$$$$END$$ />
+		$$LG:LOCATION$$
+		$$END$$
+		$$IF0:PAGE:IDTC3$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" style="border:none;" name="typetransaction" value="2" checked />
+		$$LG:VENTE$$
+		$$END$$
+		</td>
+	</tr>
+	$$END$$
+	$$END$$
+	<!--Vous possédez un bien-->
+	<tr>
+			<td>
+								<select name="typebien" size="1" style="width:250px;">
+		<option value=""> -- -- </option>
+			
+		<option value="1">$$LG:APPARTEMENT$$</option>
+		  
+		<option value="2">$$LG:MAISON$$</option>
+			
+		<option value="4">$$LG:TERRAIN$$</option>
+			
+		<option value="6">$$LG:BOUTIQUE$$</option>
+			
+		<option value="7">$$LG:LOCAL$$</option>
+			
+		<option value="8">$$LG:BUREAUX$$</option>
+			
+		<option value="9">$$LG:LOFT$$</option>
+			
+		<option value="11">$$LG:IMMEUBLE$$</option>
+			
+		<option value="12">$$LG:BATIMENT$$</option>
+			
+		<option value="13">$$LG:CHATEAU$$</option>
+			
+	   <option value="14">$$LG:HOTEL$$</option>
+		</select>
+			</td>
+		</tr>
+		<tr>
+			<td><input  type="text" name="surface" size="19" value="$$LG:SURFH$$" />
+			<input  type="text" name="nombrepieces" size="19" value="$$LG:NBRP$$" /></td>
+		</tr>
+		<tr>
+			<td><input  type="text" name="villebien" size="45" value="$$LG:VILLE$$ " /></td>
+		</tr>
+		<tr>
+			<td>	<textarea  name="message" style="width:250px;" rows="3" >$$LG:PRECIS$$</textarea></td>
+		</tr>
+	<tr>
+		<td width="70%" align="left"><input  type="text" name="nomfamille" size="45" value="$$LG:AI5$$ *" maxlength="30"  /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="prenom" size="45" value="$$LG:VOTREPRENOM pcase$$ *" maxlength="30"  /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="telephone" size="45" value="$$LG:VOTRETEL pcase$$ *" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left"><input  type="text" name="email" size="45" value="$$LG:AI6$$ *" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input type="image" src="$$-$$img/pud/rechercher_$$LANGUE$$.png" style="border: none;position:absolute;bottom:-15px;right:25px;" name="image" alt="Faites estimer votre bien immobilier par notre agence" title="Faites estimer votre bien immobilier par notre agence" /></td>
+	</tr>
+	</form>
+</table>
+$$END:EMAIL$$
+						$$END$$
+</div>			
+<!-- /////////////////////////////////////////////////////////////////fin fomulaire/////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<div id="SubTitleEstim">
+$$IF0:REP:1$$
+$$IF=:1:MULTI$$
+$$B:IMMOBW:AGENCES:CP:75:ALIAS:COORD2$$ $$BIF:COORD2$$
+$$DO$$
+<div id="adr2_$$COORD2:IDPUBLICATION$$" style="display:none;" >
+	<h1>$$COORD2:NOM ncase$$</h1>
+	$$COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$COORD2:CP$$ $$COORD2:VILLE ncase$$<br />
+	$$IF:COORD2:TEL$$$$LG:MINITEL pcase$$ : $$COORD2:TEL formattel$$$$END$$$$IF:COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$COORD2:FAX formattel$$$$END$$
+</div>
+$$LOOP$$
+$$BFIN$$
+$$END$$
+$$END$$
+$$IF0:MULTI$$
+$$E:IMMOBW:AGENCE:ALIAS:COOAG$$
+	<h1>$$IMMOBW:AGENCE:NOM ncase$$</h1>
+	$$IMMOBW:AGENCE:ADRESSE crlf2br$$<br />
+	$$IF:IMMOBW:AGENCE:TEL$$$$LG:MINITEL pcase$$ : $$IMMOBW:AGENCE:TEL formattel$$$$END$$$$IF:IMMOBW:AGENCE:FAX$$ - $$LG:FAX pcase$$ :  $$IMMOBW:AGENCE:FAX formattel$$$$END$$
+$$END$$	
+$$IF0:REP:1$$
+$$IF=:0:MULTI$$
+	<h1>$$1_MULTI:NOM ncase$$</h1>
+	$$1_COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$1_COORD2:CP$$ $$1_COORD2:VILLE ncase$$<br />
+	$$IF:1_COORD2:TEL$$$$LG:MINITEL pcase$$ : $$1_COORD2:TEL formattel$$$$END$$$$IF:1_COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$1_COORD2:FAX formattel$$$$END$$
+$$END$$
+$$END$$
+$$IF:MULTI$$<script language="javascript" type="text/javascript">Adresse2();</script>$$END$$
+<p>&nbsp;</p>
+<p>Faites estimer gratuitement la valeur de votre bien immobilier sur le secteur de $$FORM:CI codeinsee2ville field 1$$ avec $$REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase$$ :</p>
+<p>
+Faire estimer la valeur de son bien immobilier demande une excellente connaissance du march&eacute; local de $$FORM:CI codeinsee2ville field 1$$, tenant compte &agrave; la fois des caract&eacute;ristiques propres de votre bien, de la demande des acqu&eacute;reurs et de l'offre disponible actuellement.
+</p>
+<p>
+Notre agence immobili&egrave;re est la plus &agrave;-m&ecirc;me de r&eacute;pondre au plus vite &agrave; vos besoins en estimant gratuitement la valeur de votre bien pour la vente ou la location.
+</p>
+<p>
+Remplissez le formulaire ci-contre, et nous prendrons contact le plus rapidement possible afin de convenir ensemble d'un rendez-vous ou contactez-nous directement au : <span><strong>$$COORD2:TEL formattel$$$$IMMOBW:AGENCE:TEL formattel$$$$1_COORD2:TEL formattel$$</strong></span>
+</p>
+</div>
+<br style="clear:both;" />
+<p>&nbsp;</p>
+<p style="font-size:16px;font-weight:bold;">
+Voici quelques exemples de biens qui nous ont &eacute;t&eacute; confi&eacute;s r&eacute;cemment :
+</p>
+<!--#include virtual="/annonces/incl_annonces_pud.htm" -->
+<div class="PudCguform">$$INCL:CGU_FORMULAIRE.HTM$$</div>
+</div>
+</div>
+
+$$INCL:BAS.HTM$$
