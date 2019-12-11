@@ -1,0 +1,56 @@
+
+$$INIT:CSS_AGENCE=1$$
+
+
+
+<!-- NOUVEAU FORMULAIRE -->
+$$IF=:1:FORM-CONTACT$$
+
+$$IF=:1:MULTIAGENCES$$
+$$REM$$<!-- SELECT AGENCE -->$$END$$
+<div class="row-fluid">
+    <div class="span6">
+        <p class="h3-like margin-bottom-5">$$LG:CHOISISSEZAGENCE pcase$$</p>
+        <form method="post" novalidate="novalidate">
+            <select class="center ctc-select-agence">
+                $$B:IMMOBW:AGENCES:ALIAS:CV$$
+                $$BIF:CV$$
+                $$DO$$
+                <option value="$$CV:IDPUBLICATION$$" $$IF=:FORM_IDP:CV:IDPUBLICATION$$selected$$END$$>$$CV:NOM ncase$$</option>
+                $$LOOP$$
+                $$BFIN$$
+            </select>
+        </form>
+        
+    </div>
+</div>
+<hr class="margin-top-30">
+$$END$$
+$$IF=:0:MULTIAGENCES$$
+<input type="hidden" class="ctc-select-agence" value="$$FORM:IDP$$">
+$$END$$
+<input type="hidden" id="bing-json-idp">
+<input type="hidden" id="bing-json-lat">
+<input type="hidden" id="bing-json-lng">
+        
+
+$$REM$$<!-- CONTENT AJAX -->$$END$$
+<div id="ctc-content">
+
+$$IF:FORM:IDP$$
+    <!--#include virtual="agence,contact_ajax.htm" -->
+$$END$$
+$$IF0:FORM:IDP$$
+    $$BIF:CV$$
+        $$DO$$
+            <a href="/agence,contact.htm?idp=$$CV:IDPUBLICATION$$">$$CV:NOM ncase$$</a><br>
+        $$LOOP$$
+    $$BFIN$$
+$$END$$
+</div>
+$$END$$
+
+
+<script>
+	var loading = '<p class="pagination-centered"><img src="$$~$$agence/loading.gif"><br>$$LG:CHARGEMENTENCOURS pcase$$...</p>';
+</script>
