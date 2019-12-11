@@ -1,0 +1,94 @@
+<div class="detail-header">
+    <div class="detail-header-col">
+        <h1 itemprop="name">
+            $$IF!:1:HIDE_TRANSACTION$$
+                $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF:ANNDETAIL:SI_LIBRE$$
+                        $$LG:VIAGERLIBRE2 pcase$$
+                    $$END$$
+                    $$IF0:ANNDETAIL:SI_LIBRE$$
+                        $$LG:VIAGEROCCUPE2 pcase$$
+                    $$END$$
+                $$END$$
+                $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF!:1:LOCALCESSION$$
+                            $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                    $$END$$
+                    $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF!:1:HIDE_TYPEBIEN$$
+                $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                    $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$ : $$ANNDETAIL:LIBELLE$$$$END$$
+                $$END$$
+                $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:1:LOCALCESSION$$
+                        $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$LG:AVEC$$ $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                    $$END$$
+                    $$IF!:1:LOCALCESSION$$
+                        $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF!:1:HIDE_SOUSTYPEBIEN$$
+                $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF!:1:HIDE_TYPEBIEN$$ - $$END$$$$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+                $$END$$
+            $$END$$
+            $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+        </h1>
+        <!--#include virtual="detail/mobilefirst/incl_detail_localisation.htm" -->
+    </div>
+    <div class="detail-header-col">
+        $$IF=:0:PRIXMASQUE$$
+            $$IF:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+            $$END$$
+            $$IF0:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                $$IF:ANNDETAIL:PRIX$$
+                    <div class="detail-prix">
+                        <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><!--#include virtual="detail/mobilefirst/incl_detail_prix.htm" --></div>
+                    </div>
+                $$END$$
+                $$IF0:ANNDETAIL:PRIX$$
+                    <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                $$END$$
+            $$END$$
+        $$END$$
+        $$IF=:1:PRIXMASQUE$$
+            <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+        $$END$$
+        <p class="detail-ref">
+            $$LG:REFER pcase$$ $$ANNDETAIL:REFANNONCE$$
+        </p>
+    </div>
+    <div class="detail-header-col hidden-phone">
+        $$IF=:1:TELEPHONEMASQUE$$
+            <div class="bloc-detail-telephone">
+                <div id="bouton-telephonez-nous-detail" $$IF=:1:AFFICHAGE_NOM_CONTACT$$class="btn-detail-tel"$$END$$>
+                    <span id="texte-telephonez-nous-detail">
+                        <span class="mf-icon-call typo-action"></span> &nbsp;$$LG:V5APPELEZNOUS pcase$$
+                    </span>
+                    <span id="numero-telephonez-nous-detail" class="display-none">
+                        <span class="mf-icon-call typo-action"></span> &nbsp;
+                        <!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" -->
+                    </span>
+                </div>
+            </div>
+        $$END$$
+        $$IF=:0:TELEPHONEMASQUE$$
+            <div class="bloc-detail-telephone">
+                <div id="bouton-telephonez-nous-detail" $$IF=:1:AFFICHAGE_NOM_CONTACT$$class="btn-detail-tel"$$END$$>
+                    <span class="mf-icon-call typo-action"></span> &nbsp;
+                    <!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" -->
+                </div>
+            </div>
+        $$END$$
+    </div>
+</div>

@@ -1,0 +1,302 @@
+$$A:JS_REFINE=1$$
+$$IF=:1:MINIVILLES_SUGGEST$$
+    $$A:JS_SUGGEST=1$$
+$$END$$
+
+<a href="javascript:void(0);" class="moteur-mobilefirst-mobile-toggle hidden-desktop btn btn-action">$$LG:AFFINEZRECH pcase$$</a>
+
+<div class="moteur-mobilefirst$$IF=:0:EMPLACEMENTMOTEURTOP$$ moteur-mobilefirst-vertical$$END$$$$IF=:1:RECHERCHEMOTEURBG$$ has-bg$$END$$">
+
+    $$IF!:0:EMPLACEMENTMOTEURTOP$$
+    <div class="container">
+    $$END$$
+
+        <div class="hidden-desktop pagination-right">
+            <a class="moteur-mobilefirst-close btn btn-important">X</a>
+        </div>
+
+        <form class="" action="" method="get" id="Mini_Moteur">
+
+            <input type="hidden" name="idqfix" value="1">
+            <input type="hidden" name="annlistepg" value="1">
+            <input type="hidden" id="idtypebien-hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$">
+            <input type="hidden" id="pxmax" name="pxmax" value="$$FORM:PXMAX$$$$FORM:PX_LOYERMAX$$">
+
+
+            $$IF:FORM:SI_PROMO$$
+                <input type="hidden" name="si_promo" value="$$FORM:SI_PROMO$$" />
+            $$END$$
+            $$IF:FORM:NOLOTINVENTES$$
+                <input type="hidden" name="nolotinventes" value="$$FORM:NOLOTINVENTES$$" />
+            $$END$$
+            $$IF:FORM:IDPUBLICATION$$
+                <input type="hidden" name="idpublication" value="$$FORM:IDPUBLICATION$$"  />
+            $$END$$
+            $$IF:FORM:SI_EXCLUSIF$$
+                <input type="hidden" name="si_exclusif" value="$$FORM:SI_EXCLUSIF$$"  />
+            $$END$$
+            $$IF:FORM:SI_COUPDECOEUR$$
+                <input type="hidden" name="si_coupdecoeur" value="$$FORM:SI_COUPDECOEUR$$"  />
+            $$END$$
+            $$IF:FORM:IDP$$
+                <input type="hidden" name="idp" value="$$FORM:IDP$$"  />
+            $$END$$
+            $$IF:FORM:IDSOUSTYPEBIEN$$
+                <input type="hidden" name="idsoustypebien" value="$$FORM:IDSOUSTYPEBIEN$$" />
+            $$END$$
+            $$IF:FORM:IDVPA$$
+                <input type="hidden" name="idvpa" value="$$FORM:IDVPA$$"  />
+            $$END$$
+            $$IF:FORM:SI_PISCINE$$
+                <input type="hidden" name="si_piscine" value="$$FORM:SI_PISCINE$$"  />
+            $$END$$
+            $$IF:FORM:RAYON$$
+                <input type="hidden" name="rayon" value="$$FORM:RAYON$$"  />
+            $$END$$
+            $$IF:FORM:360$$
+                <input type="hidden" name="360" value="$$FORM:360$$"  />
+            $$END$$
+
+            <!--#include virtual="moteur/incl_input_langue.htm" -->
+
+            <ul class="ville-suggest-liste liste-checkbox">
+                <!--#include virtual="moteur/suggest/incl_get_localisation.htm" -->
+            </ul>
+
+            $$BIF:TYPE_TRANSACTION$$
+                $$A:NBR=0$$
+                $$DO$$
+                    $$IF):MINI*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+                        $$A:NBR=@@NBR exec XX+1@@$$
+                    $$END$$
+                $$LOOP$$
+                $$IF=:1:NBR$$
+                    $$DO$$
+                        $$IF):MINI*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+                            <input type="hidden" name="idtt" id="idtt" value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$">
+                        $$END$$
+                    $$LOOP$$
+                $$END$$
+            $$BFIN$$
+            <div class="row-fluid">
+
+                $$REM$$<!-- TYPE TRANSACTION -->$$END$$
+                $$BIF:TYPE_TRANSACTION$$
+                $$IF+:2:NBR$$
+                    <div class="span3">
+                        <div class="moteur-mobilefirst-field has-select">
+                            <select data-name="idtt" data-idtt="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$" name="idtt" id="idtt" class="center" data-placeholder="$$LG:TYPEDETRANSACTION pcase$$">
+                                $$IF=:0:MINI_IDTTDEFAUT$$<option value="" selected="selected">$$LG:TYPEDETRANSACTION pcase$$</option>$$END:MINI_IDTTDEFAUT$$
+                                $$DO$$
+                                    $$IF):MINI*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+                                        <option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF0:FORM:IDTT$$$$IF=:MINI*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$$$END$$$$IF=:FORM_IDTT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+                                            $$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+                                            $$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$
+                                        </option>
+                                    $$END:MINI*IDTTCACHE$$
+                                $$LOOP$$
+                            </select>
+                        </div>
+                    </div>
+                $$END$$
+                $$BFIN$$
+
+                $$REM$$<!-- TYPE BIEN -->$$END$$
+                <div class="span3">
+                    <div id="Mini_Biens" class="Mini_Biens moteur-mobilefirst-field has-select"></script>
+                    </div>
+                </div>
+
+                $$REM$$<!-- VILLE -->$$END$$
+                <div class="span3">
+                    <div id="Mini_Villes" class="Mini_Villes moteur-mobilefirst-field$$IF=:1:MINIVILLES_SELECT$$ has-select$$END$$">
+                        $$IF=:1:MINIVILLES_SUGGEST$$
+                            <!--#include virtual="moteur/suggest/incl_input_mobilefirst.htm" -->
+                        $$END$$
+                        $$IF!:1:MINIVILLES_SUGGEST$$
+                            <!--#include virtual="moteur/mini/incl_villes.htm" -->
+                        $$END$$
+                    </div>
+                </div>
+
+
+                $$IF!:0:EMPLACEMENTMOTEURTOP$$
+                    $$REM$$<!-- SUBMIT -->$$END$$
+                    <div class="span3 hidden-phone">
+                        <button type="submit" class="btn btn-large btn-block btn-important moteur-mobilefirst-submit bouton-rechercher-moteur" data-loading-text="<i class='arcloc-icon-load'></i> $$LG:LOADING pcase$$">
+                            <i class="mf-icon-search"></i>
+                            $$LG:RECHERCHER pcase$$
+                        </button>
+                    </div>
+                $$END$$
+
+            </div>
+
+
+            <div class="moteur-mobilefirst-more">
+
+                <div class="row-fluid">
+
+                    $$REM$$<!-- BUDGET -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Budget" class="Mini_Budget moteur-mobilefirst-field"></div>
+                    </div>
+
+                    $$REM$$<!-- SURFACE -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Surface" class="Mini_Surface moteur-mobilefirst-field">
+                            <!--#include virtual="moteur/mini/incl_surface_mobilefirst.htm" -->
+                        </div>
+                    </div>
+
+                    $$REM$$<!-- RAYON -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Rayon" class="Mini_Rayon moteur-mobilefirst-field has-select">
+                            <select class="center" id="rayon" name="rayon">
+                                <option value="">$$LG:RAYON pcase$$ ($$LG:KM pcase$$)</option>
+                                <option value="">0 km</option>
+                                <option value="5"$$IF=:5:FORM:RAYON$$ selected="selected"$$END$$>5 km</option>
+                                <option value="10"$$IF=:10:FORM:RAYON$$ selected="selected"$$END$$>10 km</option>
+                                <option value="15"$$IF=:15:FORM:RAYON$$ selected="selected"$$END$$>15 km</option>
+                                <option value="20"$$IF=:20:FORM:RAYON$$ selected="selected"$$END$$>20 km</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    $$REM$$<!-- REF -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Ref" class="Mini_Ref moteur-mobilefirst-field">
+                            <input type="text" class="center" id="refannonce" name="refannonce" placeholder="$$LG:REFERENCE pcase$$" value="$$IF:FORM:REFANNONCE$$$$FORM:REFANNONCE$$$$END$$">
+                        </div>
+                    </div>
+
+                    $$REM$$<!-- PIECES -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Pieces" class="Mini_Pieces moteur-mobilefirst-field has-select">
+                            <select name="nb_pieces" class="center">
+                                <option value=""> $$LG:PIECES pcase$$</option>
+                                <option value="1"$$IF(:FORM_NB*PIECES:1$$ selected="selected"$$END$$> 1 $$LG:PIECE lcase$$</option>
+                                <option value="2"$$IF(:FORM_NB*PIECES:2$$ selected="selected"$$END$$> 2 $$LG:PIECES2 lcase$$</option>
+                                <option value="3"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 3 $$LG:PIECES2 lcase$$</option>
+                                <option value="4"$$IF(:FORM_NB*PIECES:4$$ selected="selected"$$END$$> 4 $$LG:PIECES2 lcase$$</option>
+                                <option value="+4"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 5 $$LG:PIECES2 lcase$$ $$LG:ET lcase$$ +</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    $$REM$$<!-- CHAMBRES -->$$END$$
+                    <div class="span2">
+                        <div id="Mini_Chambres" class="Mini_Chambres moteur-mobilefirst-field has-select">
+                            <select name="nb_chambres" class="center">
+                                <option value=""> $$LG:CHAMBRESYO pcase$$</option>
+                                <option value="1"$$IF(:FORM_NB*CHAMBRES:1$$ selected="selected"$$END$$> 1 $$LG:REFINE_CHAMBRE lcase$$</option>
+                                <option value="2"$$IF(:FORM_NB*CHAMBRES:2$$ selected="selected"$$END$$> 2 $$LG:REFINE_CHAMBRES lcase$$</option>
+                                <option value="3"$$IF(:FORM_NB*CHAMBRES:3$$ selected="selected"$$END$$> 3 $$LG:REFINE_CHAMBRES lcase$$</option>
+                                <option value="4"$$IF(:FORM_NB*CHAMBRES:4$$ selected="selected"$$END$$> 4 $$LG:REFINE_CHAMBRES lcase$$</option>
+                                <option value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ selected="selected"$$END$$> 5 $$LG:REFINE_CHAMBRES lcase$$ $$LG:ET lcase$$ +</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="margin-bottom-20">
+                    <div class="moteur-mobilefirst-checkbox">
+                        <label for="video"><input type="checkbox" id="video" name="video" value="1"> $$LG:REFINE_VIDEO pcase$$</label>
+                    </div>
+
+                    <div class="moteur-mobilefirst-checkbox">
+                        <label for="360"><input type="checkbox" id="360" name="360" value="1"> $$LG:REFINE_VISITE_VIRTUELLE pcase$$</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row-fluid">
+                <div class="span2">
+                    <a href="javascript:void(0);" class="btn btn-small btn-block btn-neutre moteur-mobilefirst-toggle">$$LG:PLUSCRIT pcase$$</a>
+                </div>
+                $$REM$$<!-- SUBMIT -->$$END$$
+                <div class="hidden-desktop margin-top-10 margin-bottom-20">
+                    <button type="submit" class="btn btn-large btn-block btn-important moteur-mobilefirst-submit bouton-rechercher-moteur" data-loading-text="<i class='arcloc-icon-load'></i> $$LG:LOADING pcase$$">
+                        <i class="mf-icon-search"></i>
+                        $$LG:RECHERCHER pcase$$
+                    </button>
+                </div>
+                $$IF=:0:EMPLACEMENTMOTEURTOP$$
+                    $$REM$$<!-- SUBMIT -->$$END$$
+                    <div class="hidden-phone margin-top-10">
+                        <button type="submit" class="btn btn-large btn-block btn-important moteur-mobilefirst-submit bouton-rechercher-moteur" data-loading-text="<i class='arcloc-icon-load'></i> $$LG:LOADING pcase$$">
+                            <i class="mf-icon-search"></i>
+                            $$LG:RECHERCHER pcase$$
+                        </button>
+                    </div>
+                $$END$$
+                $$REM$$<!-- SEO -->$$END$$
+                $$IF=:1:MOTEURRECHERCHEMF_VILLES_REF$$
+                    $$IF=:FR:LANGUE$$
+                        $$IF:MOTEURRECHERCHEMF_VILLE_1$$
+                            <div class="span10 hidden-phone">
+                                <div class="moteur-mobilefirst-suggestions hidden-phone">
+                                    <span class="moteur-mobilefirst-suggestions-ttl">$$LG:SUGGESTIONLIBELLE pcase$$ :</span>
+                                    $$MOTEURRECHERCHEMF_VILLE_1$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_2$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_2$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_3$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_3$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_4$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_4$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_5$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_5$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_6$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_6$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_7$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_7$$
+                                    $$END$$
+                                    $$IF:MOTEURRECHERCHEMF_VILLE_8$$
+                                        - $$MOTEURRECHERCHEMF_VILLE_8$$
+                                    $$END$$
+                                </div>
+                            </div>
+                        $$END$$
+                    $$END$$
+                $$END$$
+            </div>
+
+        </form>
+
+    $$IF!:0:EMPLACEMENTMOTEURTOP$$
+    </div>
+    $$END$$
+
+    <script type="text/javascript">
+        var maxpage = '$$ANNLISTE:NBRPAGES$$';
+        var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+        var lang = "$$LANGUE$$";
+        var typemoteur = "$$TYPEMOTEUR$$";
+        var typebudget = "$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$";
+        // TOGGLE CRITERES
+        $(document).ready(function(){
+            $('.moteur-mobilefirst-toggle').click(function(){
+                if ($(this).hasClass("is-active")) {
+                    $('.moteur-mobilefirst-more').removeClass('is-open');
+                    $(this).text('$$LG:PLUSCRIT pcase$$').removeClass('is-active');
+                } else {
+                    $('.moteur-mobilefirst-more').addClass('is-open');
+                    $(this).text('$$LG:MOINSCRITERES pcase$$').addClass('is-active');
+                }
+            });
+        });
+    </script>
+
+
+
+
+</div>
+
