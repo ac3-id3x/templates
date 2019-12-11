@@ -1,0 +1,143 @@
+$$REM$$====================================================================
+//// <summary>incl_haut des pages de resultats</summary>
+//// <remarks>
+//// <para>Affiché sur page résultat carte et liste</para>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_bas_annonces.htm</para>
+//// <para>Contient les conditions du title par défaut</para>
+//// <para>Les scripts nécessaires à cette page sont dans : slagence_X_V3/scripts/incl_scripts.htm</para>
+//// </remarks>
+//// <update date="2010-06-18" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+	<div id="RechHaut">
+
+		<div id="RechHautPictoResult">
+
+			
+			
+			<!-- ////////////////////////////////////////////////////// -->
+			
+		</div>
+	
+		$$IF:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== si x annonce(s) ==================== -->$$END:REM$$
+		$$IF0:ANNLISTE:SIPANIER$$
+		<!-- annonces trouvees -->
+	
+		
+		
+		$$END:ANNLISTE:SIPANIER$$	
+
+$$REM$$<!-- ==================== fin si x annonce(s) ==================== -->$$END:REM$$
+		$$END:ANNLISTE:NBR$$
+		
+		$$IF0:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== si 0 annonce ==================== -->$$END:REM$$
+			$$IF0:ANNLISTE:SIPANIER$$
+		<div class="loc">
+		<h2>Pour toute consultation de nos offres de location, veuillez nous contacter soit par email, téléphone ou en venant directement à notre agence de Bourg de Péage.</h2>
+ 		</div>
+ 			$$END:ANNLISTE:SIPANIER$$
+			
+$$REM$$<!-- ==================== fin si 0 annonce ==================== -->$$END:REM$$
+		$$END:ANNLISTE:NBR$$
+		
+		
+		$$IF:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on est dans le panier ==================== -->$$END:REM$$
+			$$IF:ANNLISTE:NBR$$
+			<!-- selection remplie -->		
+			<h1 id="NbAnnSelection"></h1>
+			$$END:ANNLISTE:NBR$$
+			
+			$$IF0:ANNLISTE:NBR$$
+			<!-- selection vide -->
+			<h1>$$LG:SELECTANNONCEVIDE pcase$$</h1>				
+			$$END:ANNLISTE:NBR$$
+			
+			<h2><span><!--#include virtual="immo/incl_retour_page_precedente.htm" --></span></h2>
+			
+$$REM$$<!-- ==================== FIN si on est dans le panier ==================== -->$$END:REM$$
+		$$END:ANNLISTE:SIPANIER$$
+		
+		<div class="clear"><!-- --></div>
+
+$$REM$$<!-- ==================== bloc agence si REP:1 ==================== -->$$END:REM$$
+		$$IF:REP:1$$
+			$$E:IMMOBW:AGENCE:REP:1:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:REP:1$$
+		
+		$$IF:FORM:IDPUBLICATION$$
+			$$E:IMMOBW:AGENCE:QRY:IDPUBLICATION:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:FORM:IDPUBLICATION$$		
+
+
+
+		$$IF0:ANNLISTE:SIPANIER$$
+		<!--#include virtual="recherche/incl_haut_annonces_onglets.htm" -->
+		$$END:ANNLISTE:SIPANIER$$
+
+		<div id="RechHautLiens">
+			$$IF0:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on est PAS dans le panier ==================== -->$$END:REM$$
+			<!--#include virtual="/recherche/incl_haut_annonces_liens.htm" -->
+			
+			$$IF!:RECHERCHE,CARTE.HTM:REP:0$$
+				$$IF>:1:ANNLISTE:NBR$$
+					<!--#include virtual="/recherche/incl_tri.htm" -->
+				$$END:ANNLISTE:NBR$$
+			$$END:REP:0$$
+			
+			$$END:ANNLISTE:SIPANIER$$
+			
+			$$IF:ANNLISTE:SIPANIER$$
+$$REM$$<!-- ==================== si on EST dans le panier ==================== -->$$END:REM$$
+			$$IF:ANNLISTE:NBR$$
+			$$REM$$<!-- ==================== ET que le panier est rempli ==================== -->$$END:REM$$
+				<a class="print" href="javascript:pop('recherche,imprimer.htm?lang=$$LANGUE$$',970,500,50,200);" title="">$$LG:IMPRIMERSELEC pcase$$</a>
+				<a class="vider" href="javascript:viderPanier();" title="">$$LG:VIDERSELEC pcase$$</a>
+				<!--#include virtual="immo/incl_retour_page_precedente.htm" -->
+			$$END:ANNLISTE:NBR$$
+			
+			$$END:ANNLISTE:SIPANIER$$
+			<div class="clear"><!-- --></div>
+			
+		</div><!-- #RechHautLiens -->
+		
+		
+		$$IF:ANNLISTE:SIPANIER$$
+		$$REM$$<!-- ==================== si on EST dans le panier ==================== -->$$END:REM$$			
+			$$IF0:ANNLISTE:NBR$$									
+			$$REM$$<!-- ==================== ET que le panier est VIDE ==================== -->$$END:REM$$
+				$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSACSDISPOS$$
+				$$BIF:TRANSACSDISPOS$$
+				<div class="transacDispo">
+					<p>$$LG:TEXTEVILLESDPT pcase$$ :</p>					
+					$$DO$$
+					<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSACSDISPOS:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="">$$TRANSACSDISPOS:DESCRIPTIONLG pcase$$</a>
+					$$LOOP$$
+					<div class="clear"><!-- --></div>			
+				</div>
+				$$BFIN$$															
+			$$END:ANNLISTE:NBR$$
+$$REM$$<!-- ==================== FIN si on EST dans le panier ==================== -->$$END:REM$$					
+		$$END:ANNLISTE:SIPANIER$$
+		
+		
+		$$IF=:RESULTATS:IDT$$
+			$$IF:ANNLISTE:NBRPAGES$$
+			<div id="RechPagesHaut">
+				<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+			</div>
+			<!-- fin #RechPagesHaut -->
+			$$END:ANNLISTE:NBRPAGES$$		
+		$$END:RESULTATS:IDT$$
+		
+	</div><!-- #RechHaut -->
+	
+	
+	
