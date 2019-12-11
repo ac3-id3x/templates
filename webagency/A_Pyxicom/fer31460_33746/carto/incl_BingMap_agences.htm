@@ -1,0 +1,70 @@
+$$REM$$====================================================================
+//// <summary>Fichier include du div qui va contenir la BingMaps des agences</summary>
+//// <remarks>
+//// <para>Fichier dépendant de : carto/js/BingMap.js</para>
+//// <para>INIT destiné à associer le fichier styles,BingMap.css dans incl_styles.htm</para>
+//// <para>INIT destiné à appeler les scripts dans scripts/incl_scripts.htm</para>
+//// <para>Fichier appelé par : carto/js/BingMap.js</para>
+//// </remarks>
+//// <update date="2010-04-12" author="ext-karim.mekni">Création v1</update>
+//// <update date="2010-05-21" author="lisbonne.siriphol">Update CSS</update>
+//// <update date="2010-08-31" author="lisbonne.siriphol">Update</update>
+====================================================================$$END$$
+$$INIT:GEOLOC=1$$
+$$IF0:ZOOMAGENCESDEFAUT$$
+	$$A:ZOOMAGENCESDEFAUT=15$$
+$$END:ZOOMAGENCESDEFAUT$$
+$$DYN:ID3:NODEBUGPOPUP$$
+<script type="text/javascript">
+	<!--
+  var langue = '$$LANGUE$$';
+  var linkPlusDetails = '$$LG:PLUSDETAILS pcase$$';
+  var baseUrl = '$$-$$';
+  var zoomAgencesDefaut = '$$ZOOMAGENCESDEFAUT$$';
+	//-->
+</script>
+<div id="MapMicrosoft">
+	<div id="MapHead">
+		<h3>$$LG:NOUSSITUER pcase$$</h3>
+	</div><!-- #MapHead -->
+	<div id="AgencesBingMap" style="position:relative; width: 100%; height:$$BINGMAPAGENCESHEIGHT$$;"></div>
+	<p class="geolocInfo">$$LG:GEOLOCNOTICE$$</p>
+</div><!-- #MapMicrosoft -->
+
+<!-- Debugg POUR CI en sur PUD -->
+
+$$IF:QRY:CP$$
+	$$B:IMMOBW:CARTO-AGENCES-MARKERS:~cp:QRY:CP:~idPublication:QRY:IDP:ALIAS:CARTO$$
+$$END$$
+$$IF:QRY:CI$$
+	$$B:IMMOBW:CARTO-AGENCES-MARKERS:~ci:QRY:CI:~idPublication:QRY:IDP:ALIAS:CARTO$$
+$$END$$
+
+$$B:IMMOBW:CARTO-AGENCES-MARKERS:~idPublication:QRY:IDP:ALIAS:CARTO$$
+
+<script type="text/javascript">
+	<!--
+	jQuery(document).ready(function() {
+		addOnLoadEvent("makeMap();");
+	});
+	function makeMap()
+		{
+			var arrayOfAgencies = new Array();	
+			try
+			{
+				$$BIF:CARTO$$
+				$$DO$$
+					$$IF:CARTO:LATITUDE$$
+						arrayOfAgencies.push({idPublication:$$CARTO:IDPUBLICATION$$,idAgence:$$CARTO:IDAGENCE$$,nom:'$$CARTO:NOM  escape htmlencode$$',tel:'$$CARTO:TEL formattel$$',fax:'$$CARTO:FAX$$',email:'$$CARTO:EMAIL$$',surl:'$$CARTO:URL$$',adresse:'$$CARTO:ADRESSE escape$$',respag:'$$CARTO:RESPAG  escape htmlencode$$',latitude:'43.586328',longitude:'1.530011'});
+					$$END$$
+				$$LOOP$$
+				$$BFIN$$
+				GetAgencesMap(arrayOfAgencies,$$IF:MAPDASHBOARDSIZE$$$$MAPDASHBOARDSIZE$$$$END$$$$IF0:MAPDASHBOARDSIZE$$VEDashboardSize.Small$$END$$);
+			}
+			catch(err)
+			{
+				//alert(err.description);
+			}	
+		}	
+	//-->
+</script>
