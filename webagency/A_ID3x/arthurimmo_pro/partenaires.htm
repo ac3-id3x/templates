@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>$$INCL:HAUT.HTM$$
+<title>espace pro arthur</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+body {
+margin-left: 0px;
+margin-top: 0px;
+font-family: Arial, Verdana, Helvetica, sans-serif;
+font-size: 12px;
+color: #363A90;
+}
+
+.txt_titre{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: bold;
+	color: #343399;
+	text-decoration: none;
+}
+
+.bleu{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: bold;
+	color: #343399;
+	text-decoration: none;
+}
+
+.bleu2{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: bold;
+	color: #343399;
+	text-decoration: none;
+}
+
+.orange{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: bold;
+	color: ##FF9933;
+	text-decoration: none;
+}
+
+-->
+</style>
+</head>
+
+<body text="#343399">
+
+$$SET:PAGE:IDT=PARTENAIRES$$
+$$IF0:FORM:CP$$
+	$$A:FORM:CP=@@FORM:DEP@@$$
+$$END$$
+   
+<table width="100%" border="0"><tr><td valign="top">
+
+<form>
+<table width="90%" cellpadding="0" cellspacing="0" border="0" align="center">
+
+<!-- Recherche par Departement $$FORM:CP$$ -->
+$$B:IMMOBW:AGENCES:DEP:::WITHDEP::ALL:ANNUAIRE$$
+$$BIF:IMMOBW:AGENCES:DEP$$
+<tr>
+	<td>
+	D&eacute;partement :
+	</td>
+	      <td> <select name="CP">
+              <option $$IF0:FORM:CP$$selected="selected"$$END:FORM:CP$$ value="">---</option>
+	$$DO:1:999$$
+		$$IFNEXT:IMMOBW:AGENCES:DEP:DEP$$
+		      <option value="$$IMMOBW:AGENCES:DEP:DEP$$"$$IF=:FORM_CP:IMMOBW:AGENCES:DEP:DEP$$ selected="selected"$$END$$>$$IMMOBW:AGENCES:DEP:DEPARTEMENT 
+              mixed$$ ($$IMMOBW:AGENCES:DEP:DEP$$)</option>
+		$$END$$
+	$$LOOP$$
+	        </select></td>
+</tr>
+$$BFIN$$
+
+<!--
+<tr>
+	<td align="center" colspan="2">
+	ou
+	</td>
+</tr>
+-->
+
+<!-- Recherche par ville -->
+<!--
+$$B:IMMOBW:AGENCES:VILLECP:::WITHDEP:::ANNUAIRE$$
+$$BIF:IMMOBW:AGENCES:VILLECP$$
+<tr>
+	<td>
+	Ville:
+	</td>
+	<td>
+	<select name="CP">
+	 	<option value="">---</option>
+	$$DO:1:999$$
+		$$A:VALUE1=$$ $$A:VALUE2=$$
+		$$IFNEXT:IMMOBW:AGENCES:VILLECP:CP$$
+			$$IF!:690:IMMOBW:AGENCES:VILLECP:CP left 3$$
+				$$A:VALUE1=@@IMMOBW:AGENCES:VILLECP:VILLE@@$$
+			$$END$$
+			$$IF=:690:IMMOBW:AGENCES:VILLECP:CP left 3$$
+				$$A:VALUE1=@@IMMOBW:AGENCES:VILLECP:VILLE@@$$ $$A:VALUE2=@@IMMOBW:AGENCES:VILLECP:CP@@$$
+			$$END$$
+		$$END$$
+		$$IF:VALUE1$$
+		<option value="$$IMMOBW:AGENCES:VILLECP:CP$$"$$IF=:FORM_CP:IMMOBW:AGENCES:VILLECP:CP$$ selected="selected"$$END$$>$$VALUE1 mixed$$$$IF:VALUE2$$ $$VALUE2 right 1$$$$END$$</option>
+		$$END$$
+	$$LOOP$$
+	</select>
+	</td>
+</tr>
+$$BFIN$$
+-->
+<tr>
+	<td align="center" colspan="2">
+	<input type="submit" value="Chercher">
+	</td>
+</tr>
+</form>
+<br />
+<br />
+
+<!-- $$FORM:CP$$ -->
+$$IF:FORM:CP$$
+
+<!-- liste des agences et classement -->
+$$B:IMMOBW:AGENCES:CP:QRY:CP::WITHDEP:::ANNUAIRE$$ 
+$$BIF:IMMOBW:AGENCES:CP$$
+<table width="90%" border="0" cellspacing="0" cellpadding="0" height="119">
+$$DO:1:999$$ 
+
+<!-- Affichage du n° et du nom de département -->
+$$IFPREV:IMMOBW:AGENCES:CP:DEP$$
+<tr>
+	<td height="25" align="center">
+	<a name="DEP_$$IMMOBW:AGENCES:CP:DEP$$"><span class="txt_titre">Département : $$IMMOBW:AGENCES:CP:DEP$$ ( $$IMMOBW:AGENCES:CP:DEPARTEMENT$$ )</span></a>
+	</td>
+</tr>
+$$END$$
+  
+<!-- Affichage des agences -->
+<tr> 
+	<td valign="top" width="65%" class="bleu2">
+$$IFPREV:IMMOBW:AGENCES:CP:CP$$
+<a name="CP_$$IMMOBW:AGENCES:CP:CP$$"></a>
+$$END$$
+	<b><span class="bleu">$$IMMOBW:AGENCES:CP:NOM$$<br />
+	$$IMMOBW:AGENCES:CP:ADRESSE crlf2br$$</b></span><br />
+	$$IF:IMMOBW:AGENCES:CP:TEL$$<FONT COLOR="#FF9933">$$LG:TEL$$ : </FONT>$$IMMOBW:AGENCES:CP:TEL formattel$$<br />$$END:TEL$$
+	$$IF:IMMOBW:AGENCES:CP:FAX$$<FONT COLOR="#FF9933">Fax : </FONT>$$IMMOBW:AGENCES:CP:FAX formattel$$<br />$$END:FAX$$
+	$$IF:IMMOBW:AGENCES:CP:EMAIL$$E-mail : $$IMMOBW:AGENCES:CP:EMAIL encodemail javascript full$$<br />$$END:EMAIL$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE$$
+	$$A:ACTIVITE=0$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_syndic$$$$A:ACTIVITE=1$$$$A:LASTACTIVITE=S$$$$END:si_syndic$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_gestion$$$$A:ACTIVITE=1$$$$A:LASTACTIVITE=G$$$$END:si_gestion$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_administration$$$$A:ACTIVITE=1$$$$A:LASTACTIVITE=A$$$$END:si_administration$$
+	$$IF:ACTIVITE$$Autres activités : $$END:ACTIVITE$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_syndic$$Syndic$$IF!:S:LASTACTIVITE$$,$$END:LASTACTIVITE$$$$END:si_syndic$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_gestion$$Gestion de biens$$IF!:G:LASTACTIVITE$$,$$END:LASTACTIVITE$$$$END:si_gestion$$
+	$$IF:IMMOBW:AGENCES:CP:XMLPRIVE xml si_administration$$Administration de biens$$END:si_administration$$
+	<br />$$END:XMLPRIVE$$
+	<br /><br />
+	</td>
+
+	<!--
+	<td valign="top" width="35%" align="right"> 
+	$$IF:IMMOBW:AGENCES:CP:SI_AFFURL$$
+	<b><a href="#" onclick="javascript:MM_openBrWindow('/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/vitrine.htm','', 'width=780, height=600');">$$LG:VITRINE$$</a><br />
+	$$END:SI_AFFURL$$
+	</td>
+	-->
+
+</tr>
+
+$$LOOP$$
+</table>
+$$BFIN$$
+
+$$END:FORM:CP$$
+
+</td></tr></table>
+
+</body>
+</html>
+
