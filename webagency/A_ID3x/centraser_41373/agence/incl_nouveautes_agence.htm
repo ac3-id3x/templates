@@ -1,0 +1,76 @@
+$$B:IMMOBW:ANN-ES:2:VAL:LANGUE:ADD:CV_IDPUBLICATION::VAL:QUERYESTIMATION:~nostat:1:ALIAS:ANNAGENCE$$
+$$BIF:ANNAGENCE$$
+<div class="bloc-annonces-agence margin-top-30">
+	<a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&idp=$$CV:IDPUBLICATION$$&tri=$$TRI_MENU$$" class="btn btn-neutre pull-right">Toutes mes annonces</a>
+	<h2>Mes dernières annonces</h2>
+	<hr class="margin-bottom-10">
+	<ul class="row-fluid margin-top-10">
+		$$DO:1:4$$
+		$$A:TITLE_ANNONCE=@@ANNAGENCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNAGENCE:IDTYPEBIEN gettypebien lcase@@ @@ANNAGENCE:AVILLE ncase@@$$
+		$$A:ALT_ANNONCE1=@@ANNAGENCE:IDTYPEBIEN gettypebien@@ @@ANNAGENCE:LIBELLE@@ - Photo 1$$
+		$$A:ALT_ANNONCE2=@@ANNAGENCE:IDTYPEBIEN gettypebien@@ @@ANNAGENCE:LIBELLE@@ - Photo 2$$
+		<li class="span3 transition-bg relative ligne-annonces-agence">
+			<a href="$$ANNAGENCE:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+				<div class="img-annonces-agence overflow height-170">
+					$$IF:ANNAGENCE:PHOTOURL0$$
+					<div style="background-image:url('$$ANNAGENCE:PHOTOURL0$$');" class="picture-responsive"></div>
+					$$END$$
+					$$IF0:ANNAGENCE:PHOTOURL0$$
+					<div style="background-image:url('$$~$$images/modules/sans_photo.jpg');" class="picture-responsive"></div>
+					$$END$$
+					$$IF:ANNAGENCE:PHOTOURL1$$
+					<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNAGENCE:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+					$$END$$
+				</div>
+				<div class="padding-5">
+
+					<div class="londres-bloc-type-bien-transaction">
+						<p class="padding-top-0 big">
+							<span class="h3-like big typo-body">$$ANNAGENCE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNAGENCE:IDTYPEBIEN gettypebien pcase$$</span><br>
+							<span class="typo-action small">$$ANNAGENCE:VILLE$$ ($$ANNAGENCE:CP$$)</span>
+						</p>
+						<p class="padding-top-0 typo-body">
+							<strong>
+								$$IF:ANNAGENCE:NB_PIECES$$
+									$$ANNAGENCE:NB_PIECES$$
+									$$IF=:1:ANNAGENCE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+									$$IF!:0$1:ANNAGENCE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+									,&nbsp;
+								$$END$$
+								$$ANNAGENCE:SURFACE$$ $$LG:M2$$
+							</strong><br>
+							$$IF:ANNAGENCE:DESCRIPTIF$$
+								$$ANNAGENCE:DESCRIPTIF pcase left 85$$...
+							$$END$$
+							$$IF0:ANNAGENCE:DESCRIPTIF$$
+								$$IF:ANNAGENCE:DESCRIPTIF_FR$$
+									$$ANNAGENCE:DESCRIPTIF_FR pcase left 85$$...
+								$$END$$
+								$$IF0:ANNAGENCE:DESCRIPTIF_FR$$
+									$$LG:ANNSANSDESCR pcase$$.
+								$$END$$
+							$$END$$
+						</p>
+						<p class="padding-top-0 typo-action big">
+							$$IF=:0:PRIXMASQUE$$
+								$$IF:ANNAGENCE:XML xml PRIX_NOUS_CONSULTER$$
+									<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+								$$END$$
+								$$IF0:ANNAGENCE:XML xml PRIX_NOUS_CONSULTER$$
+									<span id="prix$$ANNAGENCE:IDANNONCE$$">
+										$$ANNAGENCE:PRIX$$ $$ANNAGENCE:PRIX_UNITE$$
+									</span>
+								$$END$$
+							$$END$$
+							$$IF=:1:PRIXMASQUE$$
+								<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+							$$END$$
+						</p>
+					</div>
+				</div>
+			</a>
+		</li>
+		$$LOOP$$
+	</ul>
+</div>
+$$BFIN$$

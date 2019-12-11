@@ -1,0 +1,155 @@
+$$INIT:IDT=EXPERTS$$
+$$A:JS_LISTINGAGENCES=0$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$B:IMMOBW:DEPARTEMENTS-COUVERT:idtype=1:ALIAS:REGIONS$$
+$$B:IMMOBW:AGENCES:DEP:::WITHDEP::::::QRY:REGION:ALIAS:DEPT$$
+$$B:IMMOBW:VILLESAGENCES:ALIAS:VILLESAGENCES$$
+$$BIF:COMPTE_AGENCES$$$$A:TOTAL_AGENCES=@@COMPTE_AGENCES:NBRESULT@@$$$$DO:1:1$$$$LOOP$$$$BFIN$$
+<input type="hidden" name="searchGeolocUser" id="searchGeolocUser" value="">
+<input type="hidden" name="chem" id="chem" value="$$_$$">
+<input type="hidden" name="langue" id="langue" value="$$LANGUE$$">
+
+<div class="row-fluid experts">
+   <div class="span12">
+
+      <h1 class="phrase-agences">NOS EXPERTS ADVICE $$IF:FORM:REGION$$en $$FORM:REGION$$$$END$$</h1>
+      <hr class="margin-bottom-10">
+
+
+      <div class="row-fluid">
+         <div class="span7 padding-10 bg-pub-bottom pagination-left">
+            $$LG:CHOIXREGION pcase$$
+            $$BIF:REGIONS$$
+
+            <select name="experts-region" id="experts-region" class="margin-left-5 margin-right-5">
+               <option value="/experts,liste.htm">Toutes les régions</option>
+               $$DO$$
+               $$IFNEXT:REGIONS:LIBELLEREGION$$
+               $$A:REG=@@REGIONS:LIBELLEREGION@@$$
+               $$IF=:BOURGOGNE:REGIONS:LIBELLEREGION$$
+               <option value="/experts,liste.htm?region=$$REGIONS:LIBELLEREGION urlencode$$" $$IF=:REG:FORM:REGION$$ selected="selected"$$END$$ data-region="$$REGIONS:LIBELLEREGION lcase replace â a replace ô o replace é e replace î i $$">$$REGIONS:LIBELLEREGION ucase$$</option>
+               $$END$$
+               $$END$$
+               $$LOOP$$
+            </select>
+
+            $$BFIN$$
+         </div>
+         <div class="span5 padding-8 pagination-right hidden-phone">
+            <a href="/experts,liste.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-search-user hidden-phone">Voir tous nos eXperts Advice</a>
+         </div>
+      </div>
+      <div class="row-fluid$$IF=:2:AFFICHAGE_AGENCES_LISTE$$ margin-bottom-10$$END$$ hidden-phone" id="listing-agences">
+         $$BIF:COMPTE_AGENCES$$
+         <!--#include virtual="carto/incl_agences.htm" -->
+         $$BFIN$$
+      </div>
+      <div class="row-fluid display-none zone-agence-ajax"></div>
+
+
+      <div class="row-fluid margin-top-10 margin-bottom-10 bg-pub-bottom padding-10">
+         <div class="control-group span6">
+            <label class="typo-body bold">Filtrer par nom</label>
+            <select name="experts-byname" id="experts-byname" class="center">
+               <option value="">Tous les eXperts Advice $$IF:FORM:REGION$$en $$FORM:REGION$$$$END$$</option>
+               $$BIF:LISTEAG$$
+               $$DO$$
+               $$IF!:HIDDENAGENCE:COMPTE_AGENCES:IDPUBLICATION$$
+               <option value="$$LISTEAG:URLVIRTUELLE$$">
+                  $$LISTEAG:NOM ucase$$
+               </option>
+               $$END$$
+               $$LOOP$$
+               $$BFIN$$
+            </select>
+         </div>
+         <div class="control-group span3">
+            <label class="typo-body bold">Filtrer par département</label>
+            <select name="experts-bydpt" id="experts-bydpt" class="center">
+               <option value="">$$LG:TOUSLESDEPS pcase$$ $$IF:FORM:REGION$$en $$FORM:REGION$$$$END$$</option>
+               $$BIF:DEPT$$
+               $$DO$$
+               $$IFNEXT:DEPT:DEP$$
+               <option value="$$DEPT:DEPARTEMENT urlencode$$" data-cp="$$DEPT:DEP$$">$$DEPT:DEPARTEMENT ucase$$ ($$DEPT:DEP$$)</option>
+               $$END$$
+               $$LOOP$$
+               $$BFIN$$
+            </select>
+         </div>
+         <div class="control-group span3">
+            <label class="typo-body bold">Filtrer par ville / CP</label>
+            <select name="experts-byville" id="experts-byville" class="center">
+               <option value="">$$LG:TOUTESVILLES2 pcase$$ $$IF:FORM:REGION$$en $$FORM:REGION$$$$END$$</option>
+               $$IF0:FORM:REGION$$
+               $$BIF:VILLESAGENCES$$
+               $$DO$$               
+               $$IFNEXT:VILLESAGENCES:VILLE$$
+               $$A:CP=@@VILLESAGENCES:CP left 2@@$$
+               <option value="$$VILLESAGENCES:CP$$ $$IF=:75:CP$$Paris$$END$$$$IF):75:CP$$$$VILLESAGENCES:VILLE urlencode$$$$END$$" data-cp="$$VILLESAGENCES:CP$$" data-dep="$$CP$$">$$VILLESAGENCES:VILLE ucase$$ ($$VILLESAGENCES:CP$$)</option>
+               $$END$$
+               $$LOOP$$
+               $$BFIN$$
+               $$END$$
+               $$IF:FORM:REGION$$
+               $$B:IMMOBW:AGENCES:VILLE:::WITHDEP::::::QRY:REGION:ALIAS:VILLES2$$
+               $$BIF:VILLES2$$
+               $$DO$$
+               $$IFNEXT:VILLES2:VILLE$$
+               $$A:CP=@@VILLES2:CP left 2@@$$
+               <option value="$$VILLES2:CP$$" data-cp="$$VILLES2:CP$$" data-dep="$$CP$$">$$VILLES2:VILLE$$  ($$VILLES2:CP$$) </option>
+               $$END$$
+               $$LOOP$$
+               $$BFIN$$
+               $$END$$
+
+            </select>
+         </div>
+      </div>
+
+      $$IF:FORM:REGION$$
+      <div class="row-fluid margin-top-30 margin-bottom-30">
+         <div class="span3 pagination-centered hidden-phone" id="agences-liste-carte">
+            <img src="$$_$$images/cartes/$$FORM:REGION lcase$$.png" alt="">
+         </div>
+         <div class="span9">
+            <h2 id="agences-liste-anchor">Tous nos experts advice : <span class="typo-action secteur-recherche"></span></h2>
+            <hr class="margin-bottom-10">
+            <p class="hidden-phone">Nos « eXperts Advice » optimisent et finalisent le transfert de votre bien à un tiers dans votre département. N'hésitez pas à les contacter.</p>
+         </div>
+      </div>
+      $$END$$
+
+      $$IF:FORM:CP$$
+      <div class="row-fluid margin-top-30 margin-bottom-30">
+         <div class="span3 pagination-centered hidden-phone" id="agences-liste-carte">
+            <img src="$$_$$images/cartes/$$FORM:CP$$.png" alt="">
+         </div>
+         <div class="span9">
+            <h2 id="agences-liste-anchor">Tous nos experts advice : <span class="typo-action secteur-recherche"></span></h2>
+            <hr class="margin-bottom-10">
+            <p class="hidden-phone">Nos « eXperts Advice » optimisent et finalisent le transfert de votre bien à un tiers dans votre département. N'hésitez pas à les contacter.</p>
+         </div>
+      </div>
+      $$END$$
+
+
+      $$IF0:FORM:REGION$$$$IF0:FORM:CP$$
+      <div class="row-fluid margin-top-30 margin-bottom-30">
+         <div class="span12">
+            <h2 id="agences-liste-anchor">Tous nos experts advice : <span class="typo-action secteur-recherche">FRANCE</span></h2>
+            <hr class="margin-bottom-10">
+            <p class="hidden-phone">Nos « eXperts Advice » optimisent et finalisent le transfert de votre bien à un tiers dans votre département. N'hésitez pas à les contacter.</p>
+         </div>
+      </div>
+      $$END$$$$END$$
+
+
+      <div id="agences-liste-wrap">
+         <!--#include virtual="experts,liste-ajax.htm" -->
+      </div>
+
+   </div>
+
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
