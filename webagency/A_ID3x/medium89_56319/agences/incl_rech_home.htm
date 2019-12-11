@@ -1,0 +1,34 @@
+<form class="homeagc-form" action="/agences,liste.htm" method="get">
+    $$B:IMMOBW:AGENCES:DEP:::WITHDEP:::::::ALIAS:DEPT$$
+    $$B:IMMOBW:VILLESAGENCES:ALIAS:VILLESAGENCES$$
+    <div class="row-fluid">
+        <div class="homeagc-form-field span4">
+            <select class="select-carte select-dept center" name="cp">
+            <option value="">$$LG:DEPART pcase$$</option>
+            $$BIF:DEPT$$
+                $$DO$$
+                    $$IFNEXT:DEPT:DEP$$
+                        <option value="$$DEPT:DEPARTEMENT urlencode$$" data-cp="$$DEPT:DEP$$">$$DEPT:DEPARTEMENTAFF ncase replace ¤ -$$</option>
+                    $$END$$
+                $$LOOP$$
+            $$BFIN$$
+            </select>
+        </div>
+        <div class="homeagc-form-field span4">
+            <select class="select-carte select-ville center" disabled name="cp">
+            <option value="">Ville</option>
+            $$BIF:VILLESAGENCES$$
+                $$DO$$
+                    $$A:CP=@@VILLESAGENCES:CP left 2@@$$
+                    <option value="$$VILLESAGENCES:CP$$ $$VILLESAGENCES:VILLE urlencode$$" data-cp="$$VILLESAGENCES:CP$$" data-ville="$$VILLESAGENCES:VILLE ncase$$">$$VILLESAGENCES:VILLE ncase$$ ($$VILLESAGENCES:CP$$)</option>
+                $$LOOP$$
+            $$BFIN$$
+            </select>
+        </div>
+        <div class="agents-form-field span4">
+            <a href="/agences,liste.htm" class="btn btn-large btn-block btn-action agents-form-btn" title="$$LG:AFFICHER1 pcase$$">
+                $$LG:AFFICHER1$$
+            </a>
+        </div>
+    </div>
+</form>
