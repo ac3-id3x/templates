@@ -1,0 +1,89 @@
+$$REM$$<!--Fichier SEO a demutualiser pour ajouter des optimisations sur pages de contenus-->$$END$$
+
+$$REM$$<!-- ================================ index.htm ===============================-->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=Tout l'immobilier à @@1_VILLE_AGENCE@@, @@2_VILLE_AGENCE@@, @@3_VILLE_AGENCE@@ et @@4_VILLE_AGENCE@@ avec @@NOM_AGENCE@@$$
+		$$A:PAGE:DESCREF=Consultez toutes les annonces immobilières sur @@1_VILLE_AGENCE@@, @@2_VILLE_AGENCE@@, @@3_VILLE_AGENCE@@ et sa région. Achetez ou vendez votre bien immobilier avec @@NOM_AGENCE@@$$
+		$$A:PAGE:KEYWORDS=@@NOM_AGENCE@@,@@LG:IMMOBILIER pcase@@,@@1_VILLE_AGENCE@@,@@2_VILLE_AGENCE@@,@@3_VILLE_AGENCE@@,@@4_VILLE_AGENCE@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=L'immobilier à Castelnau d'Estrétefonds et Aucamville avec @@NOM_AGENCE pcase@@$$
+		$$A:PAGE:DESCREF=Consultez toutes les annonces immobilières à Castelnau d'Estrétefonds et Aucamville et la région. Achetez ou vendez votre bien immobilier à @@VILLE_AGENCE@@$$
+		$$A:PAGE:KEYWORDS=immobilier,agence immobiliere,@@NOM_AGENCE@@,@@VILLE_AGENCE@@ @@LG:IMMOBILIER pcase@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ agence,immobiliere.htm ===============================-->$$END:REM$$
+$$IF=:TRANSACTION:PAGE:IDT$$
+		$$A:PAGE:TITR=Nos agences immobilières Foncia Groupe Dezon à Castelnau d'Estrétefonds, Aucamville et Toulouse$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ sur Castelnau d'Estrétefonds, Aucamville et Toulouse.$$
+		$$A:PAGE:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,gestion.htm ===============================-->$$END:REM$$
+$$IF=:GESTIONSYNDIC:PAGE:IDT$$
+	$$IF:MULTIAGENCES$$
+		$$REM$$<!-- multi -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:GESTIONIMMO pcase@@ @@AGENCE_CP cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@LG:GESTIONIMMO pcase@@$$
+		$$A:PAGE:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@,@@AGENCE_CP cp2dep@@$$
+	$$END$$
+	
+	$$IF0:MULTIAGENCES$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:GESTIONIMMO pcase@@ @@LG:AVEC lcase@@ @@NOM_AGENCE@@ @@LG:A lcase@@ @@VILLE_AGENCE pcase@@$$
+		$$A:PAGE:DESCREF=@@NOM_AGENCE@@, @@LG:GESTIONIMMO pcase@@ : @@VILLE_AGENCE pcase@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@$$
+	$$END$$	
+$$END$$
+
+
+
+$$REM$$<!-- ================================ contact,estimation.htm ===============================-->$$END:REM$$
+$$IF=:ESTIMATION$ESTIM:PAGE:IDT$$
+
+		$$A:PAGE:TITR=@@LG:ESTIMVOTREBIEN pcase@@ @@AGENCE_CP cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@$$
+		$$A:PAGE:DESCREF=@@LG:DEMANDEZESTIM pcase@@ @@REP:RSRV@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:LIEN:ESTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+$$REM$$<!-- ================================ presentation-dezon.htm ===============================-->$$END:REM$$
+$$IF=:PRESENTATION:PAGE:IDT$$
+		$$A:PAGE:TITR=Groupe Dezon à Toulouse : Foncia Groupe Dezon et Groupe Dezon Promotion$$
+		$$A:PAGE:DESCREF=Foncia Groupe Dezon : spécialisé dans la vente et la location de bien immobilier à Castelnau d'Estrétefonds et Aucamville .$$
+		$$A:PAGE:KEYWORDS= @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+
+$$REM$$<!-- ================================ nosequipes.htm ===============================-->$$END:REM$$
+$$IF=:EQUIPE:PAGE:IDT$$
+		$$A:PAGE:TITR=Découvrez les équipes du Groupe Dezon : Foncia Groupe Dezon et Groupe Dezon Promotion$$
+		$$A:PAGE:DESCREF=Des femmes et des hommes passionnés au service l'immobilier à Castelnau d'Estrétefonds et Aucamville.$$
+		$$A:PAGE:KEYWORDS= @@LG:IMMOBILIER lcase@@$$
+$$END$$
+
+
+
+$$REM$$<!-- ================================ recherche,classic.htm ===============================-->$$END:REM$$
+$$IF=:RESULTATS$ANNONCESIMMO:PAGE:IDT$$
+
+	$$IF0:IMMOBW:ANN:QRY:PAGE$$
+	$$REM$$<!-- Si une seule page de résultats -->$$END:REM$$			
+						$$A:PAGE:TITR=@@IMMOBW:ANN:QRY:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@IMMOBW:ANN:QRY:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@$$
+						$$A:PAGE:DESCREF=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ @@REP:RSRV@@$$
+						$$A:PAGE:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+		$$END:ANN:QRY:PAGE$$
+		
+	$$IF+:1:IMMOBW:ANN:QRY:PAGE$$
+	$$REM$$<!-- Si plusieurs pages de résultats -->$$END:REM$$			
+						$$A:PAGE:TITR=@@IMMOBW:ANN:QRY:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@IMMOBW:ANN:QRY:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ (@@LG:PAG pcase@@ @@IMMOBW:ANN:QRY:PAGE@@)$$
+						$$A:PAGE:DESCREF=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ (@@LG:PAG pcase@@ @@IMMOBW:ANN:QRY:PAGE@@ @@LG:SUR lcase@@ @@IMMOBW:ANN:QRY:NBRPAGES@@) - @@REP:RSRV@@$$
+						$$A:PAGE:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANN:QRY:PAGE$$
+	
+$$END:RESULTATS:IDT$$

@@ -1,0 +1,38 @@
+$$SET:PAGE:RUBRIQUE=Selection des agences$$
+$$A:CHECKAGENCE=0$$
+<script language="javascript" type="text/javascript">
+<!--
+function valider(id) {
+	document.location.href='/'+id+'/estimation.htm?$$REP:QRY$$';
+}
+// -->
+</script><br />
+<table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+	<td><br /><br />
+		<br />
+	Envoyez &agrave; l'agence <strong>Foncia Groupe Dezon</strong> de votre choix :<br /><br />
+	<form action="/estimation.htm" method="post" name="preestimation">
+	<table border="0" cellpadding="0" cellspacing="0" width="95%" align="right">
+	<tr><td>
+	$$B:IMMOBW:AGENCES:ALIAS:LISTAG:VILLE$$
+	$$BIF:LISTAG$$ 
+	$$DO:1:120$$
+	$$IF!:293386:LISTAG:IDPUBLICATION$$
+		<input type="radio" name="idpub" value="$$LISTAG:IDPUBLICATION$$" onclick="valider(this.value)"$$IF0:LISTAG:EMAIL$$ disabled="disabled"$$END$$>
+			<strong>$$LISTAG:NOM$$</strong>
+		$$IF=:1:PAGE:ESTIM:AFFADRESS$$&nbsp;$$LISTAG:ADRESSE$$$$END$$
+		$$IF!:0:PAGE:ESTIM:AFFVILLE$$&nbsp;$$LISTAG:VILLE$$$$END$$
+		$$IF!:0:PAGE:ESTIM:CP$$&nbsp;($$LISTAG:CP$$)$$END$$ $$IF0:LISTAG:EMAIL$$<font size="1"> - email indisponible -</font>$$END$$
+		<br />
+	$$END$$
+	$$LOOP$$ 
+	$$BFIN$$
+	</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$SET:PAGE:IDT=ESTIM$$

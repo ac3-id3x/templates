@@ -1,0 +1,225 @@
+$$INCL:HAUT.HTM$$
+<span class="span_estimation">ETUDE PERSONNALISEE DE VOTRE PROJET IMMOBILIER</span><br /><br />
+$$SET:PAGE:IDT=ETUDE$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:CONTACT.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+	D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+	L'adresse e-mail du destinataire n'est pas disponible.<br />
+	<br /><br /><br />
+	</div>
+$$END$$
+
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="page_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_ok.htm" />
+	<input type="hidden" name="page_err" value="etude.htm" />
+	<input type="hidden" name="cfg_form" value="etude$$LANGUE$$" />
+	<input type="hidden" name="staann" value="O" />
+	<input type="hidden" name="cfg_emails" value="etude" />
+	$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font><br />
+	<!-- $$FORM:CONTACT$$ -->
+	$$IF=:1:PAGE:CONTACT$$ $$A:CONTACT:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:louer:FORM:CONTACT$$ $$A:CONTACT:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:2:PAGE:CONTACT$$ $$A:CONTACT:CHOIX=<input type="hidden" name="Rdesir" value="Acheter" />$$ $$END$$
+	$$IF=:acheter:FORM:CONTACT$$ $$A:CONTACT:CHOIX=<input type="hidden" name="Rdesir" value="Acheter" />$$ $$END$$
+	$$CONTACT:CHOIX$$
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td colspan="2" align="left" class="autresliens">$$IF=:EN:LANGUE$$CONTACT INFOS$$END$$$$IF=:FR:LANGUE$$MES COORDONN&Eacute;ES$$END$$</td>
+      </tr>
+      		      <tr>
+        <td colspan="2" align="center"><br /><br /></td>
+      </tr>
+      <tr>
+        <td width="30%">$$LG:AI5$$ * :</td>
+        <td width="70%"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+      </tr>
+      <tr>
+        <td>$$LG:PRENOM$$ * :</td>
+        <td><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+      </tr>
+      <tr>
+        <td>$$LG:ADRESSE$$ :</td>
+        <td>
+            <input class="imputForm" type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />
+</td>
+      </tr>
+      <tr>
+        <td>$$LG:VILLE$$ :</td>
+        <td><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$" /></td>
+      </tr>
+      <tr>
+        <td>$$LG:CODEP$$ :</td>
+        <td><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></td>
+      </tr>
+  $$IF!:FR:LANGUE$$  $$END$$
+  <tr>
+    <td>$$LG:TEL$$ * :</td>
+    <td><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+  </tr>
+  <tr>
+    <td>Fax :</td>
+    <td><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></td>
+  </tr>
+  <tr>
+    <td>$$LG:AI6$$ * :</td>
+    <td><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+  </tr>
+    </table>
+	<br />
+	<!--Vous possédez un bien-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+        <td colspan="2" align="left" class="autresliens">$$IF=:EN:LANGUE$$I AM INTERESTED BY$$END$$$$IF=:FR:LANGUE$$JE SUIS INT&Eacute;RESS&Eacute; PAR$$END$$</td>
+      </tr>
+	<tr>
+	  <td colspan="2" align="left" class="gris">$$IF=:EN:LANGUE$$A MAIN RESIDENCE HOUSING$$END$$$$IF=:FR:LANGUE$$UN LOGEMENT EN RESIDENCE PRINCIPAL$$END$$</td>
+	  </tr>
+	<tr>
+		<td colspan="2" align="left">
+		<table width="100%" border="0" cellpadding="4" cellspacing="0">
+		<tr>
+			<td>$$IF=:FR:LANGUE$$Type de logement$$END$$$$IF=:EN:LANGUE$$Sort of housing$$END$$ :</td>
+			<td colspan="2"><input type="radio" name="Pbien" value="un appartement" />$$LG:APPARTEMENT$$
+			<input type="radio" name="Pbien" value="une maison / villa" />
+			$$LG:MAISON$$</td>
+		</tr>
+		<tr>
+		  <td>$$LG:NBRP$$</td>
+		  <td><input type="radio" name="Ppieces" value="1" />
+		    1 
+		      <input type="radio" name="Ppieces" value="2" />
+		      2 
+		      <input type="radio" name="Ppieces" value="3" />
+		      3 
+		      <input type="radio" name="Ppieces" value="4" />
+		      4 
+		      <input type="radio" name="Ppieces" value="5 et +" />
+		      5 et +</td>
+		  </tr>
+		<tr>
+			<td>Budget Mini </td>
+			<td><input class="imputForm" type="text" name="Pbudmi" size="10" value="$$FORM:PBUDMI$$" /> m&sup2;</td>
+		</tr>
+		<tr>
+			<td>Budget Maxi </td>
+			<td><input class="imputForm" type="text" name="Pbudma" size="10" value="$$FORM:PBUDMA$$" /> m&sup2;</td>
+		</tr>
+		<tr>
+			<td>$$IF=:EN:LANGUE$$Desirable region$$END$$$$IF=:FR:LANGUE$$D&eacute;partement souhait&eacute;$$END$$</td>
+			<td><input class="imputForm" type="text" name="Pdep" size="25" value="$$FORM:PDEP$$" /></td>
+		</tr>
+		<tr>
+			<td>$$IF=:EN:LANGUE$$Desirable town$$END$$$$IF=:FR:LANGUE$$Ville souhait&eacute;$$END$$</td>
+			<td><input class="imputForm" type="text" name="Pville" size="25" value="$$FORM:PVILLE$$" /> </td>
+		</tr>
+		</table></td>
+	</tr>
+	</table>
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+      <tr>
+        <td colspan="2" align="left" class="gris">$$IF=:FR:LANGUE$$UN LOGEMENT EN INVESTISSEMENT LOCATIF$$END$$
+        	$$IF=:EN:LANGUE$$A RENTING INVESTMENT HOUSING$$END$$
+        	</td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left"><table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <tr>
+              <td>$$IF=:FR:LANGUE$$Ma situation familiale $$END$$$$IF=:EN:LANGUE$$My Family situation$$END$$ :</td>
+              <td colspan="2"><select name="Pselect">
+                <option>$$IF=:FR:LANGUE$$Mari&eacute;(e)$$END$$$$IF=:EN:LANGUE$$Married$$END$$</option>
+                <option>$$IF=:FR:LANGUE$$C&eacute;libataire$$END$$$$IF=:FR:LANGUE$$Single$$END$$</option>
+                <option>PACS</option>
+                <option>$$IF=:FR:LANGUE$$Divorc&eacute;(e)$$END$$$$IF=:EN:LANGUE$$Divorcee$$END$$</option>
+                <option>$$IF=:FR:LANGUE$$Veuf(ve)$$END$$$$IF=:EN:LANGUE$$Widowed$$END$$</option>
+              </select></td>
+            </tr>
+            <tr>
+              <td>$$IF=:FR:LANGUE$$Mon nombre de parts fiscales$$END$$$$IF=:EN:LANGUE$$Fiscal parts$$END$$ </td>
+              <td><input class="imputForm" type="text" name="Pparts" size="10" value="$$FORM:PPARTS$$" /></td>
+            </tr>
+            <tr>
+              <td>$$IF=:FR:LANGUE$$Mes revenus annuels nets imposables$$END$$
+              		$$IF=:EN:LANGUE$$My annuals taxables incomes$$END$$</td>
+              <td><input class="imputForm" type="text" name="Prev" size="10" value="$$FORM:PREV$$" /></td>
+            </tr>
+            <tr>
+              <td>$$IF=:FR:LANGUE$$Montants annuels de mes imp&ocirc;ts $$END$$
+              	$$IF=:EN:LANGUE$$Yearly tax ammount$$END$$</td>
+              <td><input class="imputForm" type="text" name="Pmont" size="10" value="$$FORM:PMONT$$" />
+            </td>
+            </tr>
+            <tr>
+              <td>$$IF=:EN:LANGUE$$Desirable region$$END$$$$IF=:FR:LANGUE$$D&eacute;partement souhait&eacute;$$END$$</td>
+              <td><input class="imputForm" type="text" name="Pdep2" size="25" value="$$FORM:PDEP2$$" /></td>
+            </tr>
+            <tr>
+              <td>$$IF=:EN:LANGUE$$Desirable town$$END$$$$IF=:FR:LANGUE$$Ville souhait&eacute;$$END$$</td>
+              <td><input class="imputForm" type="text" name="Pville2" size="25" value="$$FORM:PVILLE2$$" />
+              </td>
+            </tr>
+        </table></td>
+      </tr>
+    </table>
+	<br />
+	<!--vos coordonnées-->
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$
