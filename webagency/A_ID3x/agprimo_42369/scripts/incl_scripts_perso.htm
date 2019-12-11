@@ -1,0 +1,171 @@
+$$REM$$ <!-- SCROLL DOWN -->$$END$$
+$$IF=:INDEX:IDT$$
+<script>
+
+//Code stolen from css-tricks for smooth scrolling:
+
+$(document).ready(function() {
+
+	function filterPath(string) {
+		return string
+		.replace(/^\//,'')
+		.replace(/(index|default).[a-zA-Z]{3,4}$/,'')
+		.replace(/\/$/,'');
+	}
+	var locationPath = filterPath(location.pathname);
+	var scrollElem = scrollableElement('html', 'body');
+
+	$('a[href*=#]').each(function() {
+		var thisPath = filterPath(this.pathname) || locationPath;
+		if (  locationPath == thisPath
+			&& (location.hostname == this.hostname || !this.hostname)
+			&& this.hash.replace(/#/,'') ) {
+			var $target = $(this.hash), target = this.hash;
+		if (target) {
+			var targetOffset = $target.offset().top;
+			$(this).click(function(event) {
+				event.preventDefault();
+				$(scrollElem).animate({scrollTop: targetOffset}, 1000, function() {
+					location.hash = target;
+				});
+			});
+		}
+	}
+});
+
+  // use the first element that is "scrollable"
+  function scrollableElement(els) {
+  	for (var i = 0, argLength = arguments.length; i <argLength; i++) {
+  		var el = arguments[i],
+  		$scrollElement = $(el);
+  		if ($scrollElement.scrollTop()> 0) {
+  			return el;
+  		} else {
+  			$scrollElement.scrollTop(1);
+  			var isScrollable = $scrollElement.scrollTop()> 0;
+  			$scrollElement.scrollTop(0);
+  			if (isScrollable) {
+  				return el;
+  			}
+  		}
+  	}
+  	return [];
+  }
+
+});
+</script>
+$$END$$
+
+
+$$IF=:INDEX:IDT$$
+<script type="text/javascript">
+	var one = $('#section1').offset();
+	var two = $('#section2').offset();
+	var three = $('#section3').offset();
+	var four = $('#section4bis').offset();
+
+
+	$(document).ready(function() {
+		$(window).scroll(function(){
+			var screenPosition = $(document).scrollTop();
+			if (screenPosition < two.top) {
+				$( '.section1' ).addClass( 'active' );
+				$('.section2').removeClass('active');
+				$('.section3').removeClass('active');
+				$('.section4').removeClass('active');
+			}
+			if (screenPosition >= two.top) {
+				$( '.section2' ).addClass( 'active' );
+				$('.section1').removeClass('active');
+				$('.section3').removeClass('active');
+				$('.section4').removeClass('active');
+			}
+			if (screenPosition >= three.top) {
+				$( '.section3' ).addClass( 'active' );
+				$('.section1').removeClass('active');
+				$('.section2').removeClass('active');
+				$('.section4').removeClass('active');
+			}
+			if (screenPosition > four.top) {
+				$( '.section4' ).addClass( 'active' );
+				$('.section1').removeClass('active');
+				$('.section2').removeClass('active');
+				$('.section3').removeClass('active');
+			}
+		});
+	});
+</script>
+$$END$$
+$$REM$$ <!-- END SCROLL DOWN -->$$END$$
+
+$$REM$$ <!-- FORM ACCUEIL -->$$END$$
+<script type="text/javascript">
+	$('.selec-formulaire').on ('change',function() {
+
+		$('.input-form-acc').val($(this).val());
+		//console.log($(this).val());
+		$.ajax({
+			type: "GET",
+			data : 'idp='+$(this).val(),
+			dataType:'html',
+			url: '/scripts,agences_home_ajax.htm',
+			success: function(data) {
+				$('.aff-agence-home').html('');
+				$('.aff-agence-home').html(data);
+			},
+			error : function (jqXHR, textStatus, errorThrown) {
+
+			},
+			complete: function() {
+
+			}
+		});
+
+	});
+</script>
+
+
+
+
+$$REM$$ <!-- FORM ACCUEIL -->$$END$$
+<script type="text/javascript">
+	$('.selec-formulaire-mobile').on ('change',function() {
+		$('.input-form-acc-mobile').val($(this).val());
+		$.ajax({
+			type: "GET",
+			data : 'idp='+$(this).val(),
+			dataType:'html',
+			url: '/scripts,agences_home_ajax.htm',
+			success: function(data) {
+				$('.aff-agence-home-mobile').html('');
+				$('.aff-agence-home-mobile').html(data);
+			},
+			error : function (jqXHR, textStatus, errorThrown) {
+			//console.log(jqXHR, textStatus, errorThrown);
+		},
+		complete: function() {
+
+		}
+	});
+	});
+</script>
+
+
+
+
+$$IF=:RAJOUTERINDEXPOURACTIVERANOUVEAU.HTM:REP:0$$
+$$INIT:JS_FEATHERLIGHT=1$$
+$$INIT:CSS_FEATHERLIGHT=1$$
+
+<script src="$$_$$scripts/jquery.cycle2.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$.featherlight('#popup1');
+
+	});
+</script>
+
+$$END$$
+
+

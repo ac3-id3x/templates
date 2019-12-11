@@ -1,0 +1,150 @@
+$$SET:JS_MINI_MOTEUR=1$$
+$$SET:CSS_MINI_MOTEUR=1$$
+$$IF!:1:MOTEURMOBILE$$
+<form class="form-$$TYPEMOTEUR$$ hidden-tablet hidden-desktop moteur-avantage-mobile margin-top-20 mini-moteur" action="/moteur,prevalidation.htm" method="get">
+   <input type="hidden" name="idqfix" value="1">
+   <input type="hidden" name="idtt" value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$" id="idtt-mobile">
+   <!--#include virtual="moteur/incl_input_langue.htm" -->
+   <div>
+      <!--#include virtual="moteur/mini/incl_mobile.htm" -->
+   </div>
+</form>
+$$END$$
+<form class="form-$$TYPEMOTEUR$$ $$IF!:1:MOTEURMOBILE$$hidden-phone$$END$$ mini-moteur" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+   <input type="hidden" name="idqfix" value="1">
+   <!--#include virtual="moteur/incl_input_langue.htm" -->
+   <div class="moteur-avantage$$IF=:INLINE:TYPEMOTEUR$$ padding-10$$END$$">
+
+      $$IF=:INLINE:TYPEMOTEUR$$
+         <div class="row-fluid">
+      $$END$$
+      $$IF=:0:MINI_IDTTUNIQUE$$
+         $$IF!:INLINE:TYPEMOTEUR$$
+            <div class="row-fluid">
+         $$END$$
+            <div id="Mini_Transaction" class="Mini_Transaction span1">
+               <!--#include virtual="moteur/mini/incl_type_transaction.htm" -->
+            </div>
+         $$IF!:INLINE:TYPEMOTEUR$$
+            </div>
+         $$END$$
+      $$END$$
+      $$IF=:1:MINIBIENS_AFFICHAGE$$
+         $$IF!:INLINE:TYPEMOTEUR$$
+            <div class="row-fluid">
+         $$END$$
+            <div id="Mini_Biens" class="Mini_Biens span2" style="margin-left:2px;">
+               <script type="text/javascript">
+                  $(document).ready(function() {
+                     ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+                  });
+               </script>
+            </div>
+         $$IF!:INLINE:TYPEMOTEUR$$
+            </div>
+         $$END$$
+      $$END$$
+      $$IF=:1:MINIVILLES_AFFICHAGE$$
+         $$IF!:INLINE:TYPEMOTEUR$$
+         <div class="row-fluid">
+         $$END$$
+            <div id="Mini_Villes" class="relative Mini_Villes span1" style="margin-left:2px; margin-right:4px;">
+               $$IF=:1:MINIVILLES_SUGGEST$$
+                  $$REM$$<!-- VILLE SUGGEST -->$$END$$
+                  <!--#include virtual="moteur/suggest/incl_input.htm" -->
+               $$END$$
+               $$IF!:1:MINIVILLES_SUGGEST$$
+                  <script type="text/javascript">
+                  $(document).ready(function() {
+                        ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes_ajax','$$TYPEMOTEUR$$'$$IF:FORM:CI$$,'','ci=$$FORM:CI$$'$$END$$);
+                  });
+                  </script>
+                  <!--#include virtual="moteur/mini/incl_villes.htm" -->
+               $$END$$
+            </div>
+            $$IF!:INLINE:TYPEMOTEUR$$
+               $$IF=:INDEX:IDT$$
+                  $$IF=:1:MOTEUR_VILLES_REF$$
+                     <!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->
+                  $$END$$
+               $$END$$
+            $$END$$
+         $$IF=:ALERTEIMMO:IDT$$
+         </div>
+         $$END$$
+         $$IF!:ALERTEIMMO:IDT$$
+            $$IF!:INLINE:TYPEMOTEUR$$
+            </div>
+            $$END$$
+         $$END$$
+      $$END$$
+      $$IF!:INLINE:TYPEMOTEUR$$
+      <div class="row-fluid">
+      $$END$$
+         <div id="Mini_Budget" class="Mini_Budget span3" style="margin-left:-2px;">
+            <script type="text/javascript">
+            $(document).ready(function() {
+               ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+            });
+            </script>
+         </div>
+      $$IF!:INLINE:TYPEMOTEUR$$
+      </div>
+      $$END$$
+            $$IF!:INLINE:TYPEMOTEUR$$
+      <div class="row-fluid">
+      $$END$$
+         <div id="Mini_Surface"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Surface span2"$$END$$ style="margin-left: -97px;">
+            <!--#include virtual="moteur/mini/incl_surface.htm" -->
+         </div>
+      $$IF!:INLINE:TYPEMOTEUR$$
+      </div>
+      $$END$$
+      $$IF!:INLINE:TYPEMOTEUR$$
+      <div class="row-fluid">
+      $$END$$
+         <div id="Mini_Pieces"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Pieces span2"$$END$$ style="margin-left:-75px;">
+            <!--#include virtual="moteur/mini/incl_pieces.htm" -->
+         </div>
+      $$IF!:INLINE:TYPEMOTEUR$$
+      </div>
+      $$END$$
+
+      $$IF!:INLINE:TYPEMOTEUR$$
+      <div class="row-fluid">
+      $$END$$
+         <div id="Mini_Chambres"$$IF=:INLINE:TYPEMOTEUR$$ class="Mini_Chambres span2"$$END$$ style="margin-left:1px;">
+            <!--#include virtual="moteur/mini/incl_chambres.htm" -->
+         </div>
+      $$IF!:INLINE:TYPEMOTEUR$$
+      </div>
+      $$END$$
+
+
+
+
+
+
+
+
+
+         $$IF!:INLINE:TYPEMOTEUR$$
+         <div class="row-fluid">
+         $$END$$
+            <div id="Mini_Bouton" class="Mini_Bouton span2 margin-left-0">
+               <!--#include virtual="moteur/mini/incl_moteur_bouton_listing.htm" -->
+            </div>
+         $$IF!:INLINE:TYPEMOTEUR$$
+         </div>
+         $$END$$
+
+         $$IF=:1:MINI_IDTTUNIQUE$$
+            <input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+         $$END$$
+         <!--#include virtual="moteur/mini/incl_input_hidden.htm" -->
+      $$IF=:INLINE:TYPEMOTEUR$$
+         </div>
+      $$END$$
+
+   </div>
+</form>
