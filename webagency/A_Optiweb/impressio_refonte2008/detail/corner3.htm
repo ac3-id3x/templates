@@ -1,0 +1,774 @@
+$$SET:PAGE:IDT=DETAILANNONCE$$
+$$INCL:HAUT.HTM$$
+<!-- données de l'annonce -->
+$$E:IMMOBW:ANNONCE:REP:1:REP:2$$
+
+$$IF0:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+
+erreur !
+
+$$END$$
+
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,detail_corner3.css?lang=@@LANGUE@@" );	
+</style>$$
+	
+<link rel="stylesheet" href="$$-$$styles/detail_galerie950.css">
+<link rel="stylesheet" type="text/css" media="screen" href="$$-$$styles/detail_diapo950.css" />
+
+<!--// ====================================================== // GALERIE PHOTO & DIAPORAMA // ====================================================== //-->	
+<script type="text/javascript" src="$$-$$scripts/jquery-1.2.1.js"></script>
+<script language="JavaScript1.1" type="text/JavaScript" src="$$-$$scripts/jquery.cycle.all.js"></script>
+<script type="text/javascript" src="$$-$$scripts/detail_galerie.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+	$(function() {
+		$('#s1').cycle({ 
+			fx: '$$IF:PAGE:DETAILDIAPOEFFET$$$$PAGE:DETAILDIAPOEFFET$$$$END$$$$IF0:PAGE:DETAILDIAPOEFFET$$turnLeft$$END$$' 
+		});
+	}); // Fin fonction transition d'image DIAPORAMA //
+
+function TailleGrandePhoto(srcImg,largeur,hauteur) {
+	var photo = document.getElementById("GrandePhoto");
+	var cadre = document.getElementById("previewPane");
+	if(largeur >= hauteur ){
+	photo.width = 458;
+	photo.Height = 330;
+	photo.src = srcImg;
+	cadre.width = 490;
+	cadre.Height = 362;
+	  }else{
+			photo.Height = 330;
+			photo.width = '';
+			photo.src = srcImg;
+			cadre.Height = 362;
+			cadre.width = '';
+		}
+} // Fin fonction taille de la grande image pour GALERIE PHOTO //
+	
+	function clic(id) // Onglets Galerie - Diaporama - Video ON /OFF //
+	{
+		document.getElementById(id).style.background = "url($$-$$detail/img_corner2/onglet_on.gif) 0 0 no-repeat";
+		
+		if(id == "OngGal"){
+			document.getElementById("OngDiap").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+			document.getElementById("OngVid").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+		}
+		if(id == "OngDiap"){
+			document.getElementById("OngVid").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+			document.getElementById("OngGal").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+		}
+		if(id == "OngVid"){
+			document.getElementById("OngDiap").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+			document.getElementById("OngGal").style.background = "url($$-$$detail/img_corner2/onglet_off.gif) 0 0 no-repeat";
+		}
+		
+	}
+	function showGalerie() // Fonction div visible //
+	{
+		document.getElementById("Galerie").style.display = "block";
+		document.getElementById("Diapo").style.display = "none";
+		document.getElementById("Video").style.display = "none";
+	}
+	function showDiapos()
+	{
+		document.getElementById("Diapo").style.display = "block";
+		document.getElementById("Galerie").style.display = "none";
+		document.getElementById("Video").style.display = "none";
+	}
+	function showVideo()
+	{
+		document.getElementById("Diapo").style.display = "none";
+		document.getElementById("Galerie").style.display = "none";
+		document.getElementById("Video").style.display = "block";
+	}
+</script>
+<!------------------------- fin #Javascript ------------------------->	
+
+
+<div id="DetailAnnonce">
+
+<!--// ====================================================== // LES ONGLETS RETOUR // ====================================================== //-->
+<div id="LiensRetour">
+		<a href="javascript:window.history.go(-1);" title="">$$LG:PAGEPRECEDENTE pcase$$</a>		
+		<a href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$&lang=$$LANGUE$$" title="">$$LG:NOSANNVEN pcase$$</a>
+		<a href="http://$$REP:RSRV$$" title="">$$LG:RETOURACC pcase$$</a>
+		<div class="clear"><!-- --></div>		
+	</div>
+<!------------------------- fin #Liens Retour ------------------------->	
+	
+	
+	
+<div id="Galerie_Ctn">	
+	
+<!--// ====================================================== // LES ONGLETS // ====================================================== //-->	
+		
+		<div id="Onglets">
+			$$BIF:DIAPO$$$$DO$$$$LOOP$$
+			<a href="javascript:showGalerie();" onclick="clic(this.id);" title="" id="OngGal">$$LG:GALERIEPHOTO$$</a>
+			<a href="javascript:showDiapos();" title="" onclick="clic(this.id);" id="OngDiap" class="actif">Diaporama</a>
+			<a href="javascript:showVideo();" title="" onclick="clic(this.id);" id="OngVid">$$LG:VIDEOS$$</a>
+			$$BFIN$$
+			$$BIF0:DIAPO$$
+			<div id="Vide"><!-- --></div>
+			$$BFIN$$
+			<div class="clear"><!-- --></div>
+		</div>
+<!------------------------- fin #Onglets ------------------------->	
+
+
+
+		
+<!--// ====================================================== // GALERIE PHOTO & DIAPORAMA // ====================================================== //-->	
+
+
+$$IF:IMMOBW:ANNONCE:SI_EXCLUSIF$$
+<div id="Exclusif_Ctn"><!-- --></div>
+$$END$$
+$$IF:IMMOBW:ANNONCE:SI_COUPDECOEUR$$
+<div id="CoupCoeur_Ctn"><!-- --></div>
+$$END$$
+<!------------------------- fin conditions C2C / Exclusif ------------------------->
+
+$$B:IMMOBW:PHOTOS:ALIAS:DIAPO:REP:1$$
+<div id="All_Photo">
+	
+	<div id="Galerie" style="display:none;">	
+		<div id="dhtmlgoodies_slideshow">
+			<div id="previewPane">
+				<div id="grandeimage">
+					<!--<img src="images/image1_big.jpg">-->
+					$$BIF:DIAPO$$
+					$$DO:1:1$$
+					<img src="$$DIAPO:URL$$" id="GrandePhoto" width="$$DIAPO:WIDTH$$" height="$$DIAPO:HEIGHT$$">	
+					$$LOOP$$
+					$$BFIN$$	
+					<span id="waitMessage"><img src="$$_$$img/load.gif" onerror="this.src='$$-$$img/load.gif';"/></span>
+				</div>
+			<div id="largeImageCaption">$$1_DIAPO:DESCRIPTIF$$</div>
+		</div>
+		<div id="galleryContainer">
+			<div id="arrow_up"><img src="$$_$$img/arrow-up.gif" id="arrow_up_image" onerror="this.src='$$-$$img/arrow-up.gif';"></div>
+				<div id="theImages">
+					<div>	
+						$$BIF:DIAPO$$
+						$$IF+:2:DIAPO:NBR$$
+						$$DO$$
+						<a href="#" onclick="showPreview('$$DIAPO:URL$$','$$DIAPO:I$$');return false"><img src="$$DIAPO:THUMB_URL$$"></a>		
+						$$LOOP$$
+						$$DO$$
+						<div class="imageCaption">$$DIAPO:DESCRIPTIF$$</div>
+						$$LOOP$$
+						$$END$$
+						$$BFIN$$
+						<div id="slideEnd"></div>
+				</div>	
+			</div><div id="arrow_down"><img src="$$_$$img/arrow-down.gif" id="arrow_down_image" onerror="this.src='$$-$$img/arrow-down.gif';"></div>
+		</div>
+	</div>
+</div>
+<!------------------------- fin #All_Photo ------------------------->
+
+$$BIF:DIAPO$$
+<div id="Diapo" style="display: block;">
+	<div id="s1" class="pics">
+		$$DO$$
+			<img src="$$DIAPO:URL$$" border="0" alt="" /> 
+		$$LOOP$$
+	</div>
+</div>
+$$BFIN$$	
+
+<div id="Video" style="display:none;">
+	VIDEO
+</div>
+
+$$BIF0:DIAPO$$	
+<div id="NoPhoto"><!-- --></div>
+$$BFIN$$		
+</div>	
+<!------------------------- fin #Diapo ------------------------->
+</div>	
+<!------------------------- fin #Galerie_Ctn ------------------------->	
+
+<!--// ====================================================== //   LES   // ====================================================== //-->
+<!--// ====================================================== // OUTILS // ====================================================== //-->	
+	
+	<div id="Outils_Ctn">
+		
+		<div id="RefAnnonce">			
+			$$IF:IMMOBW:ANNONCE:REFANNONCE$$
+				$$LG:REF pcase$$ : $$IMMOBW:ANNONCE:REFANNONCE$$
+			$$END:IMMOBW:ANNONCE:REFANNONCE$$
+		</div>
+		
+		<div id="Outils">
+			
+			<h5>$$LG:NOSOUTILS pcase$$</h5>
+			<a class="options1" href="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/ajoutpanier.htm?lang=$$LANGUE$$','panier',200,170);">$$LG:AJOUTERSEL pcase$$</a>
+			<a class="options1" href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$">$$LG:CONSULTVOTSEL pcase$$</a>
+			<a class="options1" href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$FORM:IDTT$$&cp=$$IMMOBW:ANNONCE:CP$$&lang=$$LANGUE$$">$$LG:ANNALENTOURS pcase$$</a>
+			$$IF!:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$<a class="options1" href="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/estimation.htm?lang=$$LANGUE$$">$$LG:ESTIMVOTREBIEN pcase$$</a>$$END$$
+			$$IF=:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$<a class="options1" href="/sl_demenagement/guide_.htm?lang=$$LANGUE$$">$$LG:GUIDEDEMENAG pcase$$</a>$$END$$
+			
+			<div id="pointille">........................................................</div>
+			<a class="print options2" href="http://$$REP:RSRV$$/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/print_annonce.htm?idtt=$$FORM:IDTT$$&lang=$$LANGUE$$" target="_blank">$$LG:IMPRIMERANN pcase$$</a>
+			<a class="envoi_ami options3" href="javascript:go2('http://$$REP:RSRV$$/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/envoi_ami.htm?lang=$$LANGUE$$&amp;url=$$REP:URI$$&amp;style=$$PAGE:WAG_STYLE_DETAIL$$&amp;idtt=$$FORM:IDTT$$','ami',350,370);">$$LG:ENVOYERAMI pcase$$</a>
+			$$IF!:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$<a class="financer options4" href="javascript:affichage_popupoutils('http://www.seloger.com/ext,agences,index.htm?cnt=206019','popup_2');">$$LG:FINANCERVOTREACH pcase$$</a>$$END$$
+			<a class="portefeuille options5" href="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$FORM:IDTT$$&lang=$$LANGUE$$">$$LG:PORTEFEUILLE pcase$$</a>
+		
+		</div>
+		<!-- fin #Outils -->
+	</div>
+	<div id="Outils_end"><!-- --></div>
+	<!-- fin #Outils_Ctn -->
+	<div class="clear"><!-- --></div>		
+	
+	
+	
+	
+	
+<!--// ====================================================== //     LES     // ====================================================== //-->
+<!--// ====================================================== // OUTILS SUPP // ====================================================== //-->	
+	
+	<div id="OutilsPlus">
+		$$IF:DIAPO$$
+		<a href="javascript:showDiapos();" title="" id="OutilsDiapo">$$LG:NOTRE$$ <br /> $$LG:DIAPORAMA$$</a> <!-- Notre Diaporama -->
+		$$END$$
+		$$IF0:DIAPO$$
+		<a href="" title="" id="NoOutilsDiapo">$$LG:NOTRE$$ <br /> $$LG:DIAPORAMA$$</a>
+		$$END$$
+		<!--a href="javascript:go('http://$$REP:RSRV$$/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/incl_detail_visuels360.htm')" title="" id="OutilsVirtuelle">$$LG:NOTRE$$ <br /> $$LG:VISITEVIRTUELLE pcase$$</a--> <!-- Notre <br /> Visite virtuelle -->
+<!------------------------- fin #Lien diaporama ------------------------->		
+
+
+$$REM:BACKUPOLDCODE$$	
+		<!--$$IF:IMMOBW:ANNONCE:360_URL$$
+			<a href="javascript:go('$$IMMOBW:ANNONCE:360_URL$$','360',500,400)" class="bt">
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" alt="visiter en 360 degr&eacute;s" title="visiter en 360 degr&eacute;s" /> [$$LG:VISITEVIRT pcase$$]</a></a>$$CHEVRON$$$$END$$
+
+			$$IF:IMMOBW:ANNONCE:ID360$$
+			<a href="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/visuel_$$IF=:3:IMMOBW:ANNONCE:IDTYPEVISUEL360$$3dzoom.htm','360',520,400$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPEVISUEL360$$360previsite.htm','360',520,460$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPEVISUEL360$$egg.htm','360',500,400$$END$$)" class="bt">
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" alt="visiter en 360 degr&eacute;s" title="visiter en 360 degr&eacute;s" /> [$$LG:VISITEVIRT pcase$$]</a></a>$$CHEVRON$$$$END:ID360$$
+
+			$$IF0:IMMOBW:ANNONCE:SI_ABRITEL$$
+			$$IF!:ODALYS:IMMOBW:ANNONCE:REF$$
+			$$IF:IMMOBW:ANNONCE:IDLIEN$$
+			<a href="javascript:go('$$IMMOBW:ANNONCE:LIEN_URL$$','visuel',590,500)" class="bt">
+			$$IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR pcase$$$$IF0:IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" alt="visiter en 360 degr&eacute;s" title="visiter en 360 degr&eacute;s" /> [$$LG:VISITEVIRT pcase$$]</a>$$END$$</a>$$CHEVRON$$
+
+			$$END$$
+			$$END$$
+		$$END$$-->
+$$END:BACKUPOLDCODE$$
+
+$$IF:IMMOBW:ANNONCE:360_URL$$
+<a href="javascript:go('$$IMMOBW:ANNONCE:360_URL$$','360',500,400)" id="OutilsVirtuelle"><img src="img/360$$IF:PAGE:WAG_STYLE_DETAIL$$_$$PAGE:WAG_STYLE_DETAIL$$$$END$$.gif" title="" alt="" border="0" />$$LG:NOTRE$$ <br /> $$LG:VISITEVIRTUELLE pcase$$</a>$$END:360_URL$$
+$$IF:IMMOBW:ANNONCE:ID360$$
+<a href="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/visuel_$$IF=:3:IMMOBW:ANN:QRY:IDTYPEVISUEL360$$3dzoom.htm','360',520,400$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPEVISUEL360$$360previsite.htm','360',520,460$$END$$$$IF=:9:IMMOBW:ANN:QRY:IDTYPEVISUEL360$$egg.htm','360',500,400$$END$$)" id="OutilsVirtuelle">
+<img src="img/360$$IF:PAGE:WAG_STYLE_DETAIL$$_$$PAGE:WAG_STYLE_DETAIL$$$$END$$.gif" title="" alt="" border="0" />$$LG:NOTRE$$ <br /> $$LG:VISITEVIRTUELLE pcase$$</a>$$END:ID360$$
+
+$$IF0:IMMOBW:ANNONCE:ID360$$
+<a id="NoOutilsVirtuelle">$$LG:NOTRE$$ <br /> $$LG:VISITEVIRTUELLE pcase$$</a>
+$$END:ID360$$
+<!------------------------- fin #Lien visite virtuelle ------------------------->
+
+	
+		$$IF:PDF$$
+		<a href="#ancre1" title="" id="OutilsPDF">$$LG:TELECHARGER$$ <br /> $$LG:NOSPDF$$</a> <!-- Télécharger Nos PDF -->
+		$$END$$
+		$$IF0:PDF$$
+		<a href="#ancre1" title="" id="NoOutilsPDF">$$LG:TELECHARGER$$ <br /> $$LG:NOSPDF$$</a> 
+		$$END$$
+<!------------------------- fin #Lien PDF ------------------------->
+
+		
+		$$IF:VIDEO_URL$$
+		<a href="" title="" id="OuilsVideos">$$LG:VOIRTOUS$$ <br /> $$LG:VIDEOS$$</a> <!-- Voir toutes les Vidéos -->
+		$$END$$
+		$$IF0:VIDEO_URL$$
+		<a href="" title="" id="NoOuilsVideos">$$LG:VOIRTOUS$$ <br /> $$LG:VIDEOS$$</a> 
+		$$END$$
+	</div>	
+<!------------------------- fin #Lien video ------------------------->	
+	
+	
+	
+<!--// ====================================================== //     LE     // ====================================================== //-->
+<!--// ====================================================== // DESCRIPTIF // ====================================================== //-->	
+<div id="Descriptif_Ctn">
+		
+		
+		<div id="Descriptif_Top">
+			<h5>$$LG:DESCRIPTIONANN pcase$$</h5>
+				$$IF!:0:PAGE:FILTRE_PRESTIGE$$
+				$$IF:IMMOBW:ANNONCE:PRIX$$
+					<div id="Prix">
+					$$IMMOBW:ANNONCE:PRIX formatnumber 0$$ $$IMMOBW:ANNONCE:PRIX_UNITE$$		
+	 				$$IF=:2:FORM:IDTT$$<sub>FAI</sub>$$END$$
+	 				$$IF=:1:FORM:IDTT$$*$$END$$
+	 				$$IF=:4:FORM:IDTT$$<br />$$IMMOBW:ANNONCE:PRIX_PERIODEVAC$$$$END$$
+					</div>
+				$$END:IMMOBW:ANNONCE:PRIX$$
+				$$END:0:PAGE:FILTRE_PRESTIGE$$
+<!------------------------- fin #Prix ------------------------->
+				
+				
+		<div id="Libelle">
+			<h2> $$IF:IMMOBW:ANNONCE:LIBELLE$$
+					$$IMMOBW:ANNONCE:LIBELLE$$
+				$$END:IMMOBW:ANNONCE:LIBELLE$$			
+				$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+					$$IMMOBW:ANNONCE:LIBELLE_FR$$
+				$$END:IMMOBW:ANNONCE:LIBELLE$$
+				$$IF:IMMOBW:ANNONCE:SURFACE$$
+				<span class="surface">				
+				($$IMMOBW:ANNONCE:SURFACE$$ m&sup2;)				
+				</span>
+				$$END$$</h2>
+		  <div class="annonce">
+			</div>
+		</div>
+<!------------------------- fin #Libelle ------------------------->
+		
+
+		$$IF!:0:PAGE:FILTRE_PRESTIGE$$
+		<div id="Situation">
+			<h2>$$LG:SITUEA pcase$$ $$IMMOBW:ANNONCE:VILLE$$ ($$IMMOBW:ANNONCE:CP$$)</h2>
+ 			$$IF:IMMOBW:ANNONCE:PROX$$
+				<br />$$LG:PROXIMITE pcase$$ : $$IMMOBW:ANNONCE:PROX$$
+			$$END:IMMOBW:ANNONCE:PROX$$
+			$$IF0:IMMOBW:ANNONCE:PROX$$
+				<!-- <br />$$LG:PROXIMITE pcase$$ : $$IMMOBW:ANNONCE:PROX_FR$$ -->
+			$$END:IMMOBW:ANNONCE:PROX$$
+		</div>
+		$$END:0:PAGE:FILTRE_PRESTIGE$$
+<!------------------------- fin #Situation ------------------------->
+
+		
+		<div id="Pointille">.........................................................................................................................................</div>
+		<br />
+		<div id="Descriptif">			
+			$$IMMOBW:ANNONCE:DESCRIPTIF$$
+			$$IF!:FR:LANGUE$$
+				$$LG:COMMENTFRANCAIS$$ : $$IMMOBW:ANNONCE:DESCRIPTIF_FR$$
+	    $$END$$
+	  </div>
+	  
+		<div class="indice">
+		<!--#include virtual="/detail/incl_detail_mentions.htm" -->
+		$$IF=:1:FORM:IDTT$$<br />* $$LG:LOYERCC lcase$$$$END$$
+		</div>
+	</div>
+<!------------------------- fin #Descriptif ------------------------->	
+
+		
+		$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+		$$BIF:IMMOBW:AFFICHANNONCES:REP$$		
+		<a name="PDF"><!-- --></a>
+		<div id="InfosSupp_Ctn">
+			<h4>$$LG:INFOSCOMPLEMENTAIRES pcase$$<div id="IconeInfos"><!-- --></div></h4>
+			<div id="InfosSupp">
+				$$DO$$
+					<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$</p>
+				$$LOOP$$				
+				<div class="clear"><!-- --></div>
+			</div>	
+			<div id="Descriptif_Bas"><!-- --></div>
+		</div>
+		<!-- fin #InfosSupp_Ctn -->
+		$$BFIN$$
+		
+		$$BIF0:IMMOBW:AFFICHANNONCES:REP$$
+		<div id="Descriptif_Bas"><!-- --></div>
+		$$BFIN$$
+</div>
+<!------------------------- fin #Descriptif_Ctn ------------------------->	
+<!--// =========================== // FIN DESCRIPTIF // =========================== //-->
+
+
+
+
+	
+<!--// ====================================================== //     LE     // ====================================================== //-->
+<!--// ====================================================== // FORMULAIRE // ====================================================== //-->	
+<div id="Formulaire_Ctn">
+	<div id="Formulaire">
+			
+			
+			<h5>$$LG:SAVOIR pcase$$, $$LG:CONTACTERAGENCE lcase$$</h5>
+			<div id="Adresse">
+				  $$E:IMMOBW:AGENCE:REP:2$$
+				<span>$$IMMOBW:AGENCE:NOM ucase$$</span><br />			
+				  $$IF:IMMOBW:AGENCE:ADRESSE$$
+				    $$IMMOBW:AGENCE:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				    $$IMMOBW:AGENCE:CP$$ $$IMMOBW:AGENCE:VILLE$$<br />			
+				  $$END:AGENCE:ADRESSE$$
+			</div>
+<!------------------------- fin #Adresse ------------------------->
+			
+			
+				<div id="Numbers">
+				  $$IF:IMMOBW:ANNONCE:COOR-CONTACT$$
+				<span>$$LG:LIEN:CTC pcase$$ : $$IMMOBW:ANNONCE:COOR-CONTACT$$</span><br />
+				  $$END$$
+				  $$IF:IMMOBW:ANNONCE:TELEPHONE$$			
+				<span>
+					$$LG:MINITEL pcase$$ :
+					$$IF=:FR:LANGUE$$
+						$$IMMOBW:ANNONCE:TELEPHONE formattel$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						$$IMMOBW:ANNONCE:TELEPHONE formattel tel2inter$$
+					$$END$$
+				</span>
+				$$END:TELEPHONE$$	
+				
+				$$IF0:IMMOBW:ANNONCE:TELEPHONE$$
+				<span>
+				$$LG:MINITEL pcase$$ :
+					$$IF=:FR:LANGUE$$
+						$$IMMOBW:ANNONCE:TEL formattel$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						$$IMMOBW:ANNONCE:TEL formattel tel2inter$$
+					$$END$$
+				</span>
+				$$END:TELEPHONE$$
+			</div>
+<!------------------------- fin #Numbers ------------------------->
+
+
+			
+				$$IF:IMMOBW:ANNONCE:FAX$$
+				<div id="Fax">
+				  <span>
+				    $$LISTEAG:FAX formattel$$<br />
+				  </span>
+		    </div>
+				$$END:LISTEAG:FAX$$
+				
+				$$IF0:IMMOBW:ANNONCE:FAX$$
+				<div><!-- --></div>
+				$$END:LISTEAG:FAX$$
+<!------------------------- fin #Fax ------------------------->			
+
+
+	
+			<div class="clear"><!-- --></div>
+			<div id="Email">
+				$$IF:IMMOBW:ANNONCE:EMAIL$$
+				$$IMMOBW:ANNONCE:EMAIL encodemail javascript full$$
+				$$END:EMAIL$$
+			</div>
+<!------------------------- fin #Email ------------------------->		
+
+
+
+			<h4>$$LG:CONTACTFORM pcase$$<div id="IconeForm"><!-- --></div></h4><!-- Formulaire de contact -->
+			<div id="Formulaire_Contact">
+			<h6>$$LG:FORMSENDEMAIL$$</h6>			
+			<!--#include virtual="/detail/incl_detail_formulaire3.htm" -->
+		  </div>
+		 </div>
+<!------------------------- fin #Formulaire ------------------------->
+
+		 
+		 <div id="Formulaire_Bas"><!-- --></div>
+	</div>
+<div class="clear"><!-- --></div>
+	
+<!--// =========================== // FIN FORMULAIRE // =========================== //-->
+
+
+
+
+
+<!--// ====================================================== // LES // ====================================================== //-->	
+<!--// ====================================================== // PDF // ====================================================== //-->			
+<a name="ancre1"><!-- --></a>	
+$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$
+$$BIF:PDF$$
+
+
+<script type="text/javascript">
+	<!--
+	function pop(URLfen,W,H,L,T)
+	{
+		var w=window.open(URLfen,"","status=no,location=no,scrollbars=yes,toolbar=no,directories=no,resizable=yes,width="+W+",height="+H+",top="+T+",left="+L);
+	}
+	-->
+</script>
+<!------------------------- fin #Javascript ------------------------->
+
+
+<div id="PDF">
+	<div id="PDF_Ctn">
+		<h6>$$PDF:NBR$$ document$$PDF:NBR pluriel$$ PDF disponible$$PDF:NBR pluriel$$</h6> 
+		$$DO$$
+		<a href="javascript:pop('$$PDF:URL$$',800,600,50,200);" alt="" />$$PDF:DESCRIPTIF_FR left 40$$$$IF0:PDF:DESCRIPTIF_FR$$Document PDF $$PDF:ORDRE exec XX+1$$$$END$$</a>
+		$$LOOP$$					
+		<p class="clear"><!-- --></p>
+	</div>
+</div>
+$$BFIN$$
+
+$$BIF0:PDF$$
+<!-- pas de document pdf attache a cette annonce -->
+$$BFIN$$
+<!--// =========================== // FIN PDF // =========================== //-->
+
+
+
+
+ 
+<!--// ====================================================== //  DEBUT DETAIL  // ====================================================== //-->	 
+<!--// ====================================================== // PROGRAMME NEUF // ====================================================== //-->	
+$$IF=:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+
+<div class="DetailBoiteNeuf" id="DetailBoiteNeuf">
+<!-- SI_APPARTEMENT -->
+$$IF:IMMOBW:ANNONCE:SI_APPARTEMENT$$
+<!-- $$IMMOBW:ANNONCE:APT1$$ $$IMMOBW:ANNONCE:APT2$$ $$IMMOBW:ANNONCE:APT3$$ $$IMMOBW:ANNONCE:APT4$$ $$IMMOBW:ANNONCE:APT5$$ $$IMMOBW:ANNONCE:APT5$$ $$IMMOBW:ANNONCE:APT6$$ $$IMMOBW:ANNONCE:MAIV$$ -->
+<table class="DetailBoiteNeufAppartement" border="0" cellspacing="2" cellpadding="2">
+<thead>	
+<tr>
+	<td rowspan="2" width="20%" class="tabTitre">$$LG:APPARTEMENT$$</td>
+	<td colspan="2" class="tabTitre" align="center">$$LG:PRIX$$</td>
+	<td colspan="2" class="tabTitre" align="center">$$LG:SURFACE$$</td>
+	<td colspan="2" class="tabTitre" align="center">$$LG:PARKING$$</td>
+</tr>
+<tr>
+	<td width="10%" class="soustitre" align="center">$$LG:MINI$$</td>
+	<td width="10%" class="soustitre" align="center">$$LG:MAXI$$</td>
+	<td width="10%" class="soustitre" align="center">$$LG:MINI$$</td>
+	<td width="10%" class="soustitre" align="center">$$LG:MAXI$$</td>
+	<td width="10%" class="soustitre" align="center">$$LG:MINI$$</td>
+	<td width="10%" class="soustitre" align="center">$$LG:MAXI$$</td>
+</tr>
+</thead>
+<tbody>
+<!-- studio -->
+$$IF:IMMOBW:ANNONCE:APT1$$
+<tr>
+	<td width="20%" class="tabTitre">$$LG:STUDIO$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A1$$&nbsp;* $$A:DUPLEX=1$$ $$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A1_MIN$$ ($$IMMOBW:ANNONCE:PX_A1_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A1_MIN$$$$IMMOBW:ANNONCE:PX_A1_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A1_MAX$$ ($$IMMOBW:ANNONCE:PX_A1_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A1_MAX$$$$IMMOBW:ANNONCE:PX_A1_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A1_MIN$$ $$IMMOBW:ANNONCE:SURF_A1_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A1_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A1_MAX$$ $$IMMOBW:ANNONCE:SURF_A1_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A1_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A1_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A1_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A1_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A1_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A1_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A1_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- appartement 2 pieces -->
+$$IF:IMMOBW:ANNONCE:APT2$$
+<tr>
+	<td width="20%" class="tabTitre">2 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A2$$&nbsp;* $$A:DUPLEX=1$$ $$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A2_MIN$$ ($$IMMOBW:ANNONCE:PX_A2_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A2_MIN$$$$IMMOBW:ANNONCE:PX_A2_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A2_MAX$$ ($$IMMOBW:ANNONCE:PX_A2_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A2_MAX$$$$IMMOBW:ANNONCE:PX_A2_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A2_MIN$$ $$IMMOBW:ANNONCE:SURF_A2_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A2_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A2_MAX$$ $$IMMOBW:ANNONCE:SURF_A2_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A2_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A2_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A2_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A2_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A2_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A2_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A2_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- appartement 3 pieces -->
+$$IF:IMMOBW:ANNONCE:APT3$$
+<tr>
+	<td width="20%" class="tabTitre">3 $$LG:PIECES$$$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A3$$&nbsp;* $$A:DUPLEX=1$$ $$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A3_MIN$$ ($$IMMOBW:ANNONCE:PX_A3_MIN tofrancs 0$$ FF )$$END$$">$$IF:IMMOBW:ANNONCE:PX_A3_MIN$$$$IMMOBW:ANNONCE:PX_A3_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A3_MAX$$ ($$IMMOBW:ANNONCE:PX_A3_MAX tofrancs 0$$ FF )$$END$$">$$IF:IMMOBW:ANNONCE:PX_A3_MAX$$$$IMMOBW:ANNONCE:PX_A3_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A3_MIN$$ $$IMMOBW:ANNONCE:SURF_A3_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A3_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A3_MAX$$ $$IMMOBW:ANNONCE:SURF_A3_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A3_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A3_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A3_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A3_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A3_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A3_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A3_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- appartement 4 pieces -->
+$$IF:IMMOBW:ANNONCE:APT4$$
+<tr>
+	<td width="20%" class="tabTitre">4 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A4$$&nbsp;* $$A:DUPLEX=1$$ $$END$$<</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A4_MIN$$ ($$IMMOBW:ANNONCE:PX_A4_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A4_MIN$$$$IMMOBW:ANNONCE:PX_A4_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A4_MAX$$ ($$IMMOBW:ANNONCE:PX_A4_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A4_MAX$$$$IMMOBW:ANNONCE:PX_A4_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A4_MIN$$ $$IMMOBW:ANNONCE:SURF_A4_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A4_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A4_MAX$$ $$IMMOBW:ANNONCE:SURF_A4_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A4_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A4_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A4_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A4_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A4_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A4_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A4_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- appartement 5 pieces -->
+$$IF:IMMOBW:ANNONCE:APT5$$
+<tr>
+	<td width="20%" class="tabTitre">5 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A5$$&nbsp;* $$A:DUPLEX=1$$ $$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A5_MIN$$ ($$IMMOBW:ANNONCE:PX_A5_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A5_MIN$$$$IMMOBW:ANNONCE:PX_A5_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A5_MAX$$ ($$IMMOBW:ANNONCE:PX_A5_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A5_MAX$$$$IMMOBW:ANNONCE:PX_A5_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A5_MIN$$ $$IMMOBW:ANNONCE:SURF_A5_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A5_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A5_MAX$$ $$IMMOBW:ANNONCE:SURF_A5_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A5_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A5_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A5_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A5_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A5_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A5_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A5_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- appartement 6 pieces -->
+$$IF:IMMOBW:ANNONCE:APT6$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>(+) 6 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A6$$&nbsp;* $$A:DUPLEX=1$$ $$END$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A6_MIN$$ ($$IMMOBW:ANNONCE:PX_A6_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A6_MIN$$$$IMMOBW:ANNONCE:PX_A6_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_A6_MAX$$ ($$IMMOBW:ANNONCE:PX_A6_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_A6_MAX$$$$IMMOBW:ANNONCE:PX_A6_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A6_MIN$$ $$IMMOBW:ANNONCE:SURF_A6_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A6_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_A6_MAX$$ $$IMMOBW:ANNONCE:SURF_A6_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_A6_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A6_PK_MIN$$ $$IMMOBW:ANNONCE:PX_A6_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A6_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_A6_PK_MAX$$ $$IMMOBW:ANNONCE:PX_A6_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_A6_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison de ville -->
+$$IF:IMMOBW:ANNONCE:MAIV$$  
+<tr>
+	<td width="20%" class="tabTitre"><strong>$$LG:MAISONVI$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$ ($$IMMOBW:ANNONCE:PX_MV_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$$$IMMOBW:ANNONCE:PX_MV_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$ ($$IMMOBW:ANNONCE:PX_MV_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$$$IMMOBW:ANNONCE:PX_MV_MIN$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_MV_MIN$$ $$IMMOBW:ANNONCE:SURF_MV_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_MV_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_MV_MAX$$ $$IMMOBW:ANNONCE:SURF_MV_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_MV_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_MV_PK_MIN$$ $$IMMOBW:ANNONCE:PX_MV_PK_MIN$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_MV_PK_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:PX_MV_PK_MAX$$ $$IMMOBW:ANNONCE:PX_MV_PK_MAX$$ &euro;$$END$$ $$IF0:IMMOBW:ANNONCE:PX_MV_PK_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+</tbody>
+<tr><td class="Duplex" colspan="7">$$IF=:1:DUPLEX$$ * $$LG:DUPLEX pcase$$ $$END:DUPLEX$$</td></tr>
+</table>
+$$END:SI_APPARTEMENT$$
+
+<!-- SI_MAISON -->
+$$IF0:IMMOBW:ANNONCE:SI_APPARTEMENT$$  
+$$IF:IMMOBW:ANNONCE:SI_MAISON$$
+<table class="DetailBoiteNeufMaison" width="80%" border="0" cellspacing="2" cellpadding="2" id="DetailBoiteNeufMaison$$IMMOBW:ANNONCE:I$$">
+<thead>
+<tr>
+	<td rowspan="2" width="20%" class="tabTitre"><strong>$$LG:MAISON2$$</strong></td>
+	<td colspan="2" class="tabTitre" align="center"><strong>$$LG:PRIX$$</strong></td>
+	<td colspan="2" class="tabTitre" align="center"><strong>$$LG:SURFACE$$</strong></td>
+	<td colspan="2" class="tabTitre" align="center"><strong>$$LG:SURFTER pcase$$</strong></td>
+</tr>
+<tr>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MINI$$</strong></td>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MAXI$$</strong></td>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MINI$$</strong></td>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MAXI$$</strong></td>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MINI$$</strong></td>
+	<td width="10%" class="soustitre" align="center"><strong>$$LG:MAXI$$</strong></td>
+</tr>
+</thead>
+<tbody>
+<!-- maison 1 piece -->
+$$IF:IMMOBW:ANNONCE:MAI1$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>1 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M1_MIN$$ ($$IMMOBW:ANNONCE:PX_M1_MIN tofrancs 0$$ FF) $$END$$")>$$IF:IMMOBW:ANNONCE:PX_M1_MIN$$ $$IMMOBW:ANNONCE:PX_M1_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M1_MAX$$ ($$IMMOBW:ANNONCE:PX_M1_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M1_MAX$$ $$IMMOBW:ANNONCE:PX_M1_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M1_MIN$$ $$IMMOBW:ANNONCE:SURF_M1_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M1_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M1_MAX$$ $$IMMOBW:ANNONCE:SURF_M1_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M1_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 2 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI2$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>2 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M2_MIN$$ ($$IMMOBW:ANNONCE:PX_M2_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M2_MIN$$ $$IMMOBW:ANNONCE:PX_M2_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M2_MAX$$ ($$IMMOBW:ANNONCE:PX_M2_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M2_MAX$$ $$IMMOBW:ANNONCE:PX_M2_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M2_MIN$$ $$IMMOBW:ANNONCE:SURF_M2_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M2_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M2_MAX$$ $$IMMOBW:ANNONCE:SURF_M2_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M2_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 3 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI3$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>3 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M3_MIN$$ ($$IMMOBW:ANNONCE:PX_M3_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M3_MIN$$ $$IMMOBW:ANNONCE:PX_M3_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M3_MAX$$ ($$IMMOBW:ANNONCE:PX_M3_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M3_MAX$$ $$IMMOBW:ANNONCE:PX_M3_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M3_MIN$$ $$IMMOBW:ANNONCE:SURF_M3_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M3_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M3_MAX$$ $$IMMOBW:ANNONCE:SURF_M3_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M3_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 4 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI4$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>4 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M4_MIN$$ ($$IMMOBW:ANNONCE:PX_M4_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M4_MIN$$ $$IMMOBW:ANNONCE:PX_M4_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M4_MAX$$ ($$IMMOBW:ANNONCE:PX_M4_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M4_MAX$$ $$IMMOBW:ANNONCE:PX_M4_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M4_MIN$$ $$IMMOBW:ANNONCE:SURF_M4_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M4_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M4_MAX$$ $$IMMOBW:ANNONCE:SURF_M4_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M4_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 5 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI5$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>5 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M5_MIN$$ ($$IMMOBW:ANNONCE:PX_M5_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M5_MIN$$ $$IMMOBW:ANNONCE:PX_M5_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M5_MAX$$ ($$IMMOBW:ANNONCE:PX_M5_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M5_MAX$$ $$IMMOBW:ANNONCE:PX_M5_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M5_MIN$$ $$IMMOBW:ANNONCE:SURF_M5_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M5_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M5_MAX$$ $$IMMOBW:ANNONCE:SURF_M5_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M5_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 6 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI6$$
+<tr>
+	<td width="20%" class="tabTitre"><strong> 6 $$LG:PIECES$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M6_MIN$$ ($$IMMOBW:ANNONCE:PX_M6_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M6_MIN$$ $$IMMOBW:ANNONCE:PX_M6_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M6_MAX$$ ($$IMMOBW:ANNONCE:PX_M6_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M6_MAX$$ $$IMMOBW:ANNONCE:PX_M6_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M6_MIN$$ $$IMMOBW:ANNONCE:SURF_M6_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M6_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M6_MAX$$ $$IMMOBW:ANNONCE:SURF_M6_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M6_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+<!-- maison 7 pieces -->
+$$IF:IMMOBW:ANNONCE:MAI7$$
+<tr>
+	<td width="20%" class="tabTitre"><strong>7 $$LG:PIECES$$ $$LG:ETPlus$$</strong></td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M7_MIN$$ ($$IMMOBW:ANNONCE:PX_M7_MIN tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M7_MIN$$ $$IMMOBW:ANNONCE:PX_M7_MIN$$ &euro;$$END$$</td>
+	<td width="10%" style="cursor: help" title="$$IF:IMMOBW:ANNONCE:PX_M7_MAX$$ ($$IMMOBW:ANNONCE:PX_M7_MAX tofrancs 0$$ FF) $$END$$">$$IF:IMMOBW:ANNONCE:PX_M7_MAX$$ $$IMMOBW:ANNONCE:PX_M7_MAX$$ &euro;$$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M7_MIN$$ $$IMMOBW:ANNONCE:SURF_M7_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M7_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_M7_MAX$$ $$IMMOBW:ANNONCE:SURF_M7_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_M7_MAX$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ - $$END$$</td>
+	<td width="10%">$$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m&sup2;$$END$$ $$IF0:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ - $$END$$</td>
+</tr>
+$$END$$
+</tbody>
+</table>
+$$END:SI_MAISON$$
+$$END$$
+
+
+		<p>
+$$IF:IMMOBW:ANNONCE:URLLOGO1$$<img src="$$IMMOBW:ANNONCE:URLLOGO1$$">$$END:URLLOGO1$$
+$$IF:IMMOBW:ANNONCE:URLLOGO2$$<img src="$$IMMOBW:ANNONCE:URLLOGO2$$">$$END:URLLOGO2$$
+
+$$IF:IMMOBW:ANNONCE:IDLIEN$$
+		<br />
+		<!-- IDLIEN -->
+		<a href="$$IMMOBW:ANNONCE:LIEN_URL$$">$$IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR$$</a>
+$$END:QRY:IDLIEN$$
+		</p>		
+</div>
+
+$$END$$
+
+
+<!--// =========================== // FIN DETAIL PROGRAMME NEUF // =========================== //-->	
+	
+</div>
+<!--// =========================== // FIN DETAIL DETAIL ANNONCE // =========================== //-->	
+<!-- fin #DetailAnnonce -->
+
+
+$$INCL:BAS.HTM$$
