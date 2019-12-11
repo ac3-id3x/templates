@@ -1,0 +1,206 @@
+$$REM$$====================================================================
+//// <summary>Calculettes simples en javascripts</summary>
+//// <remarks>
+//// <para>Page qui doit remplacer provisoirement les outils meilleurs taux</para>
+//// <para>Copie et adaptation de xv2, pas de specs d'origine trouvés</para>
+//// <para>Fonctionne avec plusieurs scripts js qu'on appelle directement de cette page, car incl_scripts.htm va devenir trop lourd</para>
+//// </remarks>
+//// <update date="2010-08-24" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=CALCULETTES$$
+$$INIT:CSS_OUTILS=1$$
+$$INIT:JS_CALCUL=1$$
+$$INIT:JS_UI=1$$
+
+$$A:TITLE=@@LG:CALCULIMMO pcase@@$$
+$$A:DESCRIPTION=@@LG:EFFECTUEZCOMPTES@@$$
+
+<!--#include virtual="incl_haut.htm" -->
+<!--#include virtual="outils/incl_param_outils.htm" -->
+
+<form method="get" action="#">
+	<div id="CalculettesPicto"></div>
+		<h1>$$LG:CALCULIMMO pcase$$</h1>
+		<p>$$LG:EFFECTUEZCOMPTES pcase$$.</p>
+	<div class="clear"></div>
+	<div id="Outils">
+		$$REM$$<!-- ================== outil 1 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil1">$$LG:CALMONTEMPR$$</h3>
+		<div class="accordion_content outil1">			
+			<table>
+				<tr>
+					<th>$$LG:MENSOUHAIT pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="emprunt_mens" id="emprunt_mens" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 765 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:DUR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="emprunt_nbmens" id="emprunt_nbmens" maxlength="3" />
+	          <input type="radio" name="emprunt_duree" value="m" />
+	          <label>$$LG:MO lcase$$</label>
+	          <input type="radio" name="emprunt_duree" value="a" checked="checked" />
+	          <label>$$LG:AN lcase$$</label>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="emprunt_taux" id="emprunt_taux" value="$$TAUX_INT$$" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5 / sans espace, ni virgule)</em>
+					</td>
+				</tr>				
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="emprunt_calculer" id="emprunt_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('emprunt')" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:MONTEMPR pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="emprunt_emprunt" id="emprunt_emprunt" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 2 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil2">$$LG:REMBOUEMPR$$</h3>
+		<div class="accordion_content outil2">			
+			<table>
+				<tr>
+					<th>$$LG:MONTEMPR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="mens_emprunt" id="mens_emprunt" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 115000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:DUR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="mens_nbmens" id="mens_nbmens"  maxlength="3" />
+	          <input type="radio" name="mens_duree" value="m" />
+	          <label>$$LG:MO lcase$$</label>
+	          <input type="radio" name="mens_duree" value="a" checked="checked" />
+	          <label>$$LG:AN lcase$$</label>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="mens_taux" id="mens_taux" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5)</em>
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="mens_calculer" id="mens_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('mens')" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:MENS pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="mens_mens" id="mens_mens" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 3 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil3">$$LG:DUREMPR$$</h3>
+		<div class="accordion_content outil3">			
+			<table>
+				<tr>
+					<th>$$LG:MONTEMPR pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_emprunt" id="nbmens_emprunt" maxlength="9" />
+            <label>&euro;</label>
+            <em>(ex: 115000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+		
+				<tr>
+					<th>$$LG:APINIT pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_apport" id="nbmens_apport" maxlength="7" />
+            <label>&euro;</label>
+					</td>
+				</tr
+				<tr>
+					<th>$$LG:MENS pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="nbmens_mens" id="nbmens_mens" maxlength="4" />
+            <label>&euro;</label>
+            <em>(ex: 765 / sans espace, ni virgule)</em>
+	        </td>
+				</tr>
+				<tr>
+					<th><label>$$LG:TAUXINTERET pcase$$</label></th>
+        	<td>
+        		<input class="inputText" type="text" name="nbmens_taux" id="nbmens_taux" maxlength="3" />        		 
+          	<label>%</label>
+          	<em>(ex: 3 ou 3.5 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="nbmens_calculer" id="nbmens_calculer" value="$$LG:CALCUL pcase$$" onclick="MM_calc('nbmens');" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>$$LG:DUR pcase$$ :</strong></th>
+					<td>
+						<input class="inputResult" type="text" name="nbmens_nbmens" id="nbmens_nbmens" />
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+		$$REM$$<!-- ================== outil 4 ================== -->$$END:REM$$
+		<h3 class="accordion_toggle outil4">$$LG:ESTIM$$</h3>
+		<div class="accordion_content outil4">	
+			<p>$$LG:GARANT$$</p>
+			<table>
+				<tr>
+					<th>$$LG:REVMENS pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="revenus_mensuels" id="revenus_mensuels" maxlength="6" />
+            <label>&euro;</label>
+            <em>(ex: 2000 / sans espace, ni virgule)</em>
+					</td>
+				</tr>
+				<tr>
+					<th>$$LG:RATIO pcase$$</th>
+					<td>
+						<input class="inputText" type="text" name="revenus_ratio" id="revenus_ratio" value="33.3" maxlength="4" />
+						<label>%</label>
+						<em>(ex: 33.3 / sans espace, ni virgule)</em>   
+					</td>
+				</tr>
+				<tr>
+					<th><!-- --></th>
+					<td>
+						<input class="inputCalcul" type="button" name="loyer_calculer" id="loyer_calculer" value="$$LG:CALCUL pcase$$" onclick="estimeLoyer()" />
+					</td>
+				</tr>
+				<tr>
+					<th><strong>Montant maximal de votre loyer :</strong></th>
+					<td>
+						<input class="inputResult" type="text" id="montant_loyer" />
+						<label><strong>&euro;</strong></label>
+					</td>
+				</tr>
+			</table>
+		</div><!-- .accordion_content -->
+	</div><!-- #Outils -->   
+</form>
+<!--#include virtual="immo/incl_retour_haut.htm" -->
+<!--#include virtual="incl_bas.htm" -->
