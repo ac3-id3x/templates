@@ -1,0 +1,194 @@
+<!--#include virtual="header/incl_haut.htm" -->
+$$SET:PAGE:IDT=CHASSEURS-DE-BIENS$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+ <div id="chasseur">
+   <img src="images/ttc.gif" alt="" class="ttc" />
+    <div class="ttl-page">$$IF=:FR:LANGUE$$ CHASSEURS DE BIENS $$END$$ $$IF!:FR:LANGUE$$ HUNTERS PROPERTY $$END$$</div>
+	<div id="espace">
+	   
+	    <p>
+	    	Vous cherchez l'appartement ou la maison de vos rêves mais cela prend du temps, vous visitez des biens qui ne correspondent pas à vos attentes.<br />
+            Nous sommes totalement à votre disposition pour vous aider dans cette démarche pas toujours évidente quand on l'entreprend seul.<br />
+			Si vous désirez que cette recherche soit vraiment approfondie nous pouvons être pour vous un « chasseur de biens » que vous mandatez pour effectuer cette mission.<br />
+			Ce mandat de recherche nous permet d'avoir accès tous azimuts à tous les biens qui se présentent sur le marché, dans tous les réseaux professionnels et de particuliers de notre région. C'est un mandat qui vous laisse libre de visiter si vous le souhaitez des biens de votre côté, ne vous engageant à nos côtés que sur les biens que nous vous faisons visiter nous – même. 
+<br /><br />
+			Pour cela veuillez remplir ce formulaire de contact ci-dessous nous vous retournerons un mandat de recherche rempli selon vos souhaits avec un numéro correspondant au registre dont il faudra nous retourner un exemplaire signé (par mail ou par la poste).<br />
+<b>OU</b> <a href="$$_$$mandat de recherche.pdf" target="_blank">téléchargez le mandat de recherche</a> et retournez-le (par mail ou par la poste) préalablement rempli et signé, nous vous retournerons une copie après y avoir inscrit un numéro correspondant à notre registre."
+<br />
+</p>
+	    	
+
+	</div>
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="page_ok_chasseurs-de-biens.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_ok_chasseurs-de-biens.htm" />
+	<input type="hidden" name="page_err" value="immo,chasseurs-de-biens.htm" />
+	<input type="hidden" name="cfg_form" value="chasseurs-de-biens$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="chasseurs-de-biens" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+	$$END$$
+	$$IF:FORM:REMAIL$$
+		<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+	$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<script type="text/javascript">
+		var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+		document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+      </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong class="err">$$ERRE$$</strong></font><br />
+	<strong class="estimationNomAgence">$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$</strong>
+	<p align="center" id="$$FORM:ESTIMATION$$"><font size="3"><strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</strong></font></p>
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:louer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:vendre:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:3:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$IF=:gerer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2$3:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	$$END$$
+	$$END$$
+		<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COORD$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="30%" align="left">$$LG:AI5$$ * :</td>
+		<td width="70%" align="left"><input class="inputText" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td align="left"><input class="inputText" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:ADRESSE$$ *:</td>
+		<td align="left"><input class="inputText" type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:TEL pcase$$ *:</td>
+		<td align="left"><input class="inputText" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left">Mail *:</td>
+		<td align="left"><input class="inputText" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+		<tr>
+		
+		<td class="col1">$$LG:TYPEDEBIEN pcase$$ *:</td>
+		
+			<td>						
+				<select name="typebien" class="inputSelect">
+				$$REM$$<!-- apparition des macros conditionnées dans incl_param.htm -->$$END:REM$$
+				$$REM$$<!-- pas de programme neuf dans les choix car c'est logique de ne pas le mettre -->$$END:REM$$
+				$$IF=:1:TB_SITE_1$$<option value="$$LG:APPARTEMENT lcase$$" class="typeBien1">$$LG:APPARTEMENT lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_2$$<option value="$$LG:MAISON lcase$$" class="typeBien2">$$LG:MAISON lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_3$$<option value="$$LG:PARKING lcase$$" class="typeBien3">$$LG:PARKING lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_4$$<option value="$$LG:TERRAIN lcase$$" class="typeBien4">$$LG:TERRAIN lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_6$$<option value="$$LG:BOUTIQUE lcase$$" class="typeBien6">$$LG:BOUTIQUE lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_7$$<option value="$$LG:LOCALCOM lcase$$" class="typeBien7">$$LG:LOCALCOM lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_8$$<option value="$$LG:BUREAUX lcase$$" class="typeBien8">$$LG:BUREAUX lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_9$$<option value="$$LG:LOFT2 lcase$$" class="typeBien9">$$LG:LOFT2 lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_10$$<option value="$$LG:DIVERS lcase$$" class="typeBien10">$$LG:DIVERS lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_11$$<option value="$$LG:IMMEUBLE lcase$$" class="typeBien11">$$LG:IMMEUBLE lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_12$$<option value="$$LG:BATIMENT lcase$$" class="typeBien12">$$LG:BATIMENT lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_13$$<option value="$$LG:CHATEAU lcase$$" class="typeBien13">$$LG:CHATEAU lcase$$</option>$$END$$
+				$$IF=:1:TB_SITE_14$$<option value="$$LG:HOTEL lcase$$" class="typeBien14">$$LG:HOTEL lcase$$</option>$$END$$
+				</select>
+			</td>
+		</tr>
+
+	     <tr>
+			<td class="col1">$$LG:BUDGET$$ maximum *: </td>
+			<td><input class="inputText" type="text" name="budget" size="10" value="$$FORM:BUDGET$$" /></td>
+		</tr>
+	<tr>
+		
+		<td class="col1">$$LG:LOCALIS$$ *:</td>
+		<td>
+			<textarea type="text" class="inputText" name="localisation"  value="$$FORM:LOCALISATION$$"></textarea>
+		</td>
+	</tr>
+
+	<tr>
+			<td class="col1">Crit&egrave;res *:</td>
+			<td>
+				<textarea type="text" class="inputText inputAdresse" name="critere" rows="3" cols="30"  value="$$FORM:CRITERE$$"></textarea>
+			</td>
+		</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<br />
+
+	<br />
+	
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input class="boutonEnvoi" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+
+$$END$$
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
