@@ -1,0 +1,331 @@
+$$REM$$<!-- =========== FICHIER DE CONFIGURATION POUR LE REF =========== -->$$END:REM$$
+
+$$REM$$<!-- =========== INDEXATION DES LANGUES =========== -->$$END:REM$$
+$$REM$$<!-- =========== SI =1 toutes les langues seront indexées, SI =0 pas indexées =========== -->$$END:REM$$
+$$A:INDEXATION_LANGUE=0$$
+
+$$REM$$<!-- =========== NOM DU SITE (MULTI-AGENCES uniquement) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Cette variable est présente sur plusieurs pages du site (title de la page index, de la page agence liste...) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== Pour appeler cette variable ailleurs (dans du texte, une meta...) il faudra utiliser @@NOM_SITE_REF@@ =========== -->$$END:REM$$
+$$A:NOM_SITE_REF=$$
+
+$$REM$$<!-- =========== PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le TITLE de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est le title de l'incl_ref mutualisé qui sera affiché  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$IF=:0:MULTIAGENCES$$
+        $$A:TITLE_INDEX=@@AGENCE_NOM@@ agence immobilière à @@AGENCE_VILLE@@ vente de maisons, appartements sur @@AGENCE_VILLE@@, Macon, Tournus...$$
+    $$END$$
+    $$IF=:1:MULTIAGENCES$$
+        $$A:TITLE_INDEX=$$
+        $$BIF:COMPTE_AGENCES$$
+            $$DO$$
+                $$A:TITLE_INDEX=Arthurimmo Pont-de-Vaux | Immobilier Pont-de-Vaux, Tournus, Macon, Cuisery$$
+            $$LOOP$$
+        $$BFIN$$
+    $$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser la meta DESCRIPTION de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est la meta description de l'incl_ref mutualisé qui sera affichée  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$IF=:0:MULTIAGENCES$$
+        $$A:DESCRIPTION_INDEX=L'immobilier &agrave; @@AGENCE_VILLE@@ avec l'agence immobili&egrave;re @@AGENCE_NOM@@ &agrave; @@AGENCE_VILLE@@ : Annonces immobilieres de vente de maisons, appartements sur @@AGENCE_VILLE@@, Macon, Tournus et leurs environs$$
+    $$END$$
+    $$IF=:1:MULTIAGENCES$$
+        $$A:DESCRIPTION_INDEX=Achetez, vendez ou louez sur Pont-de-Vaux, Tournus, Macon,… Arthurimmo Pont-de-Vaux et Arthurimmo Tournus propose un large choix de Maisons, Terrains, Appartements, Immeubles,...$$
+        $$BIF:COMPTE_AGENCES$$
+            $$DO$$
+                $$A:DESCRIPTION_INDEX=@@DESCRIPTION_INDEX@@ @@COMPTE_AGENCES:VILLE@@, $$
+            $$LOOP$$
+        $$BFIN$$
+    $$END$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser le SLOGAN de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$A:SLOGAN_INDEX=Immobilier @@AGENCE_VILLE@@$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser l'ARCHITECTURE (H1, H2...) de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H1 =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$A:H1_INDEX=Agence immobilière @@AGENCE_VILLE@@$$
+$$END$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Par défaut le texte est "NOS DERNIÈRES ANNONCES IMMOBILIÈRES" =========== -->$$END:REM$$
+$$A:H2_INDEX_MODULE=@@LG:NOSDERANN pcase@@$$
+
+$$REM$$<!-- =========== Personnaliser le MODULE AGENCE de la page INDEX (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== MONO =========== -->$$END:REM$$
+$$IF=:0:MULTIAGENCES$$
+    $$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+$$REM$$<!-- =========== MULTI =========== -->$$END:REM$$
+$$IF=:1:MULTIAGENCES$$
+    $$IF=:FR:LANGUE$$
+        $$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+    $$END$$
+$$END$$
+$$REM$$<!-- =========== Ajout de TEXTE personnalisé pour le module BLOC AGENCE de la PAGE INDEX (MONO/MULTI) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera MASQUE (un texte par défaut sera affiché), SI =1 AFFICHAGE du texte personnalisé ci-dessous -->$$END$$
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+    $$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS REF SUR LE SLIDE AGENCE DE LA HOME =========== -->$$END:REM$$
+$$A:SLIDEAGENCE_LIENS_REF=$$
+
+
+
+$$REM$$<!-- =========== AJOUT DE CONTENU SUR LA PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera MASQUE, SI =1 AFFICHAGE du texte-->$$END$$
+$$A:ENCART_TXT_HOME=1$$
+$$REM$$<!-- SI =1 le texte sera affiché au DESSUS des modules (alerte mail, réseaux sociaux...), SI =2 en DESSOUS -->$$END$$
+$$A:POSITION_ENCART_TXT_HOME=1$$
+$$REM$$<!-- Ajout du TEXTE personnalisé -->$$END$$
+$$IF=:FR:LANGUE$$
+    $$A:ENCART_TXT_HOME_CONTENU=<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.</p>$$
+$$END$$
+
+$$REM$$<!-- =========== RAJOUT DE LIENS PERSONNALISES DANS LE MINI MOTEUR de la page INDEX =========== -->$$END:REM$$
+$$REM$$<!-- SI =1 les liens seront affichés, si =0 alors les liens seront masqués -->$$END$$
+$$A:MOTEUR_VILLES_REF=1$$
+$$REM$$<!-- Personnalisation des liens (ajout de 4 liens max) -->$$END$$
+$$A:MOTEUR_VILLE_1=<a href="/immobilier/tout/immo-pont-de-vaux-01/">Immobilier Pont de Vaux</a>$$
+$$A:MOTEUR_VILLE_2=<a href="/immobilier/achat/immo-pont-de-vaux-01/bien-maison/">Vente maison Pont de Vaux</a>$$
+$$A:MOTEUR_VILLE_3=<a href="/immobilier/tout/immo-tournus-71/">Immobilier Tournus</a>$$
+$$A:MOTEUR_VILLE_4=<a href="/immobilier/achat/immo-tournus-71/bien-maison/">Vente maison Tournus</a>$$
+
+$$REM$$<!-- =========== PAGE DETAIL =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS DE MICRO DONNES, SI =1 MICRODONNES AFFICHEES dans les SERPS-->$$END$$
+$$A:MICRO_DONNES_PRIX=1$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE ESTIMATION (estimation,immobiliere.htm) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_ESTIMATION=0$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:487807:REP:1$$
+$$REM$$<!-- Personnalisation du title -->$$END$$
+$$A:TITLE_ESTIMATION=$$
+$$REM$$<!-- Personnalisation de la meta description -->$$END$$
+$$A:DESCRIPTION_ESTIMATION=$$
+$$REM$$<!-- Personnalisation du H1 -->$$END$$
+$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$A:PHRASE_ESTIMATION=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,ESTIMATION (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h2 =========== -->$$END:REM$$
+$$A:H2_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,estimation (multi-agences) =========== -->$$END:REM$$
+$$A:AGENCES_LISTE_ESTIMATION_CONTENU=$$
+
+$$REM$$<!-- =========== PAGE OUTILS =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_OUTILS=0$$
+
+$$REM$$<!-- =========== PAGE REALISATION =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_REALISATION=0$$
+
+$$REM$$<!-- =========== PAGE RESPONSIVE =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 PAS D'INDEXATION, SI =1 INDEXATION -->$$END$$
+$$A:INDEXATION_RESPONSIVE=0$$
+
+$$REM$$<!-- =========== PAGE GESTION, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$A:TITLE_GESTION=$$
+    $$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+    $$A:H1_GESTION=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE SYNDIC, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+    $$A:TITLE_SYNDIC=$$
+    $$A:DESCRIPTION_SYNDIC=$$
+    $$A:H1_SYNDIC=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:550393:FORM:IDP$$
+    $$REM$$<!-- =========== Personnalisation du TITLE de la page AGENCE =========== -->$$END:REM$$
+    $$A:TITLE_AGENCE=Agence Arthurimmo Pont-de-Vaux | Annonces Immobilières Pont-de-Vaux$$
+    $$REM$$<!-- =========== Personnalisation de la meta DESCRIPTION de la page AGENCE =========== -->$$END:REM$$
+    $$A:DESCRIPTION_AGENCE=Expert Immobilier à Pont-de-Vaux et sa Région, l' Agence immobilière Arthurimmo Pont-de-Vaux propose des Appartements, Maisons, … à la Vente ou en Location à Pont-de-Vaux et alentours$$
+    $$REM$$<!-- =========== Personnalisation du H1 de la page AGENCE =========== -->$$END:REM$$
+    $$A:H1_AGENCE=Agence immobilière Arthurimmo Pont-de-Vaux$$
+    $$REM$$<!-- =========== Personnalisation du H2 de la page AGENCE =========== -->$$END:REM$$
+    $$A:H2_AGENCE=L’immobilier sur Pont de Vaux et sa région depuis 2003…$$
+    $$REM$$<!-- =========== Personnalisation du SLOGAN de la page AGENCE =========== -->$$END:REM$$
+    $$A:SLOGAN_AGENCE=L' <strong>agence Arthurimmo Pont de Vaux</strong> met à votre service sa double compétence ( Agent immobilier et Expert immobilier Agrée) et sa connaissance du secteur pour vous aider à réaliser votre projet immobilier.</span>$$
+    $$A:TXT_PUBLIC_PERSO=1$$
+    $$A:TXT_PUBLIC_PERSO_CONTENU=<em>Une équipe de conseillers qualifiés et dévoués, tous experts immobiliers !</em>
+
+        <p class="pagination-justify">C’est en effet, grâce au réseau <strong>Arthurimmo.com</strong> que l’ensemble des collaborateurs de l’agence bénéficie d’une solide formation en évaluation immobilière afin de vous proposer un travail d’estimation en qualité d’expert. Cette qualification validée par le CNE (Centre Nationale de l’Expertise), nous permet de vous donner un avis de valeur juste, précis et fiable en toute circonstance, qu’il s’agisse d’expertiser une maison, un appartement, dans le cadre d’une vente immobilière, d’une succession, d’une séparation ou d’un litige.<br/>
+        En nous confiant la vente de votre bien, vous pourrez bénéficier des divers avantages de notre mandat Equitable (avec partage de commission et une garantie après-vente).* </p>
+
+        <p class="pagination-justify"><strong>Arthurimmo Pont de Vaux</strong> (Immo Family) vous propose depuis 2003, un service de transaction immobilière pour l’achat, la vente et la location de biens immobiliers destinés à l’habitat, ou aux projets d’investissement ou projets professionnels, maisons, villas, propriétés, appartements, terrains constructibles, programmes immobiliers neufs, immeubles de rapport et locaux commerciaux.
+        Notre équipe vous accueille 64 avenue Marechal de Lattre de Tassigny à Pont de Vaux, en plein centre-ville, pour une découverte attentive de votre projet immobilier.
+        Nous développons une offre variée de biens sur un secteur immobilier qui se concentre <a href="/immobilier/">sur Tournus, Pont de Vaux et sa région</a>, sur les communes de Mâcon, Cuisery, Saint Trivier de Courtes, Lugny, Replonges, Feillens, Cluny, Chavannes sur Reyssouze, Manziat, L'Abergement de Cuisery, Louhans, Saint Germain du Plain, Sennecey le Grand…</p>
+
+        <p class="pagination-justify"><strong>Arthurimmo Pont de Vaux</strong> (Immo Family) et son équipe de conseillers immobiliers mettent toutes leurs énergies et leurs compétences, au service de votre projet immobilier, avec un accompagnement de chaque instant, tout au long du déroulement de la transaction, afin de répondre à toutes vos interrogations, sur les aspects techniques ou juridiques et mener votre projet jusqu’à sa réussite.
+        Découvrez également les biens proposés par notre <strong>agence immobilière Arthurimmo Tournus</strong> (AU COUP DE CŒUR IMMOBILIER), de Sennecey le Grand à la limite de Pont de Vaux et de La Chapelle sous Brancion à Louhans. </p>
+
+        <p class="pagination-justify">Retrouvez toutes nos annonces immobilières sur les portails immobiliers et portails d’annonces ainsi que sur les sites Arthurimmo.com. </p>
+        <p class="pagination-justify">* Voir conditions en agence. </p>
+    $$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS SUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:550393:FORM:IDP$$
+    $$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+    $$A:SEO_PORTEFEUILLE=1$$
+    $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="/immobilier/tout/immo-pont-de-vaux-01/">Immobilier Pont de Vaux</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="/immobilier/achat/immo-pont-de-vaux-01/bien-maison/">Vente maison Pont de Vaux</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="/immobilier/achat/immo-pont-de-vaux-01/bien-terrain/">Vente terrain Pont de Vaux</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="/agences,estimation.htm">Estimation immobilière Pont de Vaux</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="/immobilier/tout/immo-tournus-71/">Immobilier Tournus</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="/agence-immobiliere/tournus-71700/au-coup-de-coeur-immobilier/611115.htm">Agence immobiliere Tournus</a>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DES LIENS RESEAUX SOCIAUX POUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:550393:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+    $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+    $$A:SOCIAL_AGENCE_FACEBOOK=https://www.facebook.com/Arthurimmo-Pont-de-Vaux-1461353057497743/$$
+    $$A:SOCIAL_AGENCE_TWITTER=https://twitter.com/Immo_PontdeVaux$$
+    $$A:SOCIAL_AGENCE_GOOGLE_PLUS=https://plus.google.com/b/113760403576959130247/113760403576959130247$$
+    $$A:SOCIAL_AGENCE_YOUTUBE=$$
+    $$A:SOCIAL_AGENCE_GOOGLE_LOCAL=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:611115:FORM:IDP$$
+    $$REM$$<!-- =========== Personnalisation du TITLE de la page AGENCE =========== -->$$END:REM$$
+    $$A:TITLE_AGENCE=Agence Arthurimmo Tournus | Annonces Immobilières Tournus$$
+    $$REM$$<!-- =========== Personnalisation de la meta DESCRIPTION de la page AGENCE =========== -->$$END:REM$$
+    $$A:DESCRIPTION_AGENCE=Expert Immobilier à Tournus et sa Région, l' Agence immobilière Arthurimmo Tournus propose des Appartements, Maisons, … à la Vente ou en Location à Tournus et alentours$$
+    $$REM$$<!-- =========== Personnalisation du H1 de la page AGENCE =========== -->$$END:REM$$
+    $$A:H1_AGENCE=Agence immobilière Arthurimmo Tournus$$
+    $$REM$$<!-- =========== Personnalisation du H2 de la page AGENCE =========== -->$$END:REM$$
+    $$A:H2_AGENCE=L’immobilier sur Tournus et sa région depuis 2003…$$
+    $$REM$$<!-- =========== Personnalisation du SLOGAN de la page AGENCE =========== -->$$END:REM$$
+    $$A:SLOGAN_AGENCE=L' <strong>agence Arthurimmo Tournus</strong> met à votre service sa double compétence ( Agent immobilier et Expert immobilier Agrée) et sa connaissance du secteur pour vous aider à réaliser votre projet immobilier.</span>$$
+    $$A:TXT_PUBLIC_PERSO=1$$
+    $$A:TXT_PUBLIC_PERSO_CONTENU=$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DE LIENS SUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:611115:FORM:IDP$$
+    $$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+    $$A:SEO_PORTEFEUILLE=1$$
+    $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="/immobilier/tout/immo-tournus-71/">Immobilier Tournus</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="/immobilier/achat/immo-tournus-71/bien-maison/">vente maison Tournus</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="/immobilier/achat/immo-tournus-71/bien-appartement/">vente appartement Tournus</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="/agences,estimation.htm">estimation immobilière Tournus</a>$$
+	$$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="/immobilier/tout/immo-pont-de-vaux-01/">Immobilier Pont de Vaux</a>$$
+    $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="/agence-immobiliere/pont-de-vaux-01190/arthurimmo-pont-de-vaux/550393.htm">Agence immobiliere Pont de Vaux</a>$$
+$$END$$
+
+$$REM$$<!-- =========== AJOUT DES LIENS RESEAUX SOCIAUX POUR LA PAGE AGENCE =========== -->$$END:REM$$
+$$REM$$<!-- =========== RECUPERER L'IDP AGENCE, EXEMPLE : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:611115:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+    $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+    $$A:SOCIAL_AGENCE_FACEBOOK=$$
+    $$A:SOCIAL_AGENCE_TWITTER=$$
+    $$A:SOCIAL_AGENCE_GOOGLE_PLUS=$$
+    $$A:SOCIAL_AGENCE_YOUTUBE=$$
+    $$A:SOCIAL_AGENCE_GOOGLE_LOCAL=$$
+$$END$$
+
+
+$$REM$$<!-- =========== RAJOUT DE TEXTE SUR LA PAGE AGENCES,LISTE (MULTI-AGENCES) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 AFFICHAGE du texte -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=1$$
+$$A:AGENCES_LISTE_CONTENU=
+    <div class="row-fluid">
+        <div class="span12 hidden-phone">
+            <div class="typo-action bigger margin-bottom-5">Votre bien immobilier</div>
+            <div class="row-fluid relative">
+                <div class="span12">
+                    <div class="bg-secondary typo-white padding-11 margin-right-20 bigger height-110 pagination-left uppercase width-450">mérite notre expertise</div>
+                    <div class="bg-white top left margin-top-neg-65 margin-left-20 padding-10 z25 parallax-box-shadow span11 bloc-white-agence">
+                            <h2>Arthurimmo Pont de Vaux et Arthurimmo Tournus vous souhaitent la bienvenue.</h2>
+                            <p>Toutes transactions immobilières sur Tournus, Pont de Vaux, Mâcon et sa région.</p>
+                            <p>Le secteur immobilier de nos agences, s’étend en Saône et Loire, de Tournus jusqu’à la limite de Mâcon, puis de part et d’autre de la Saône, de Lugny à Saint Trivier de Courtes, Montrevel en Bresse, Cormoz ainsi que le long de l’axe de l’autoroute A6, entre les communes de Pont de Vaux et Bâgé le Châtel, Gorrevod, Ozan, Asnières, Chevroux, Manziat, Feillens, Bâgé la Ville, Replonges…
+                            Un secteur immobilier au cœur de la Bourgogne, sur lequel nous sommes présents depuis 2003.</p>
+                            <p>Vous trouverez dans chacune de nos agences immobilières de Tournus et Pont de Vaux, un service de transaction immobilière, pour l’achat, la location, l’expertise et la vente de biens immobiliers destinés à l’habitat ou aux projets professionnels et à l’investissement immobilier.<br>
+							Trouvez l'agence la plus proche : <a href="/agence-immobiliere/pont-de-vaux-01190/arthurimmo-pont-de-vaux/550393.htm">Agence Immobilière Pont de Vaux</a> ou <a href="/agence-immobiliere/tournus-71700/au-coup-de-coeur-immobilier/611115.htm">Agence Immobilière Tournus</a> <br>
+		
+                            <p>Vous trouverez sur notre site une sélection de maisons, de villas, de propriétés, de terrains à bâtir, d’appartements de toutes surfaces, dans le neuf, le récent ou l’ancien, ainsi que des biens à la vente en viager libres ou en viager occupés, des locaux commerciaux, des fonds de commerce et des biens immobiliers de prestige.
+                            Le réseau Arthurimmo.com nous permet de disposer d’une solide formation d’expert immobilier en valeur vénale. Qualification validée par le CNE.
+                            C’est d’ailleurs cette compétence, qui marque la différence de nos agences immobilières.<br>
+                            L’expertise de votre bien soumis à la vente sera le gage d’une vente efficace, réalisée dans les meilleures conditions, au prix le plus juste.
+                            Dans le cadre de la vente de votre maison, villa, appartement, terrain sur Tournus, Mâcon, Pont de Vaux et sa région, découvrez les avantages de notre mandat Accord, pour un partage de commission et une garantie après vente.*</p>
+                            <p>Notre agence immobilière vous accueille en plein centre-ville de Pont de Vaux, avenue Marechal de Lattre de Tassigny et met à votre disposition une équipe de conseillers immobiliers expérimentés.</p>
+                            <p class="small italic">* Voir conditions en agence. </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+$$
+
+
+$$REM$$<!-- =========== FOOTER 1 - Personnalisation de la section "RUBRIQUES" =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le titre de la "rubrique" =========== -->$$END:REM$$
+$$A:TITLE_1_FOOTER=$$
+$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+$$A:LINK_PERSO_1_FOOTER_1=<a href="/agence-immobiliere/pont-de-vaux-01190/arthurimmo-pont-de-vaux/550393.htm">Arthurimmo Pont de Vaux</a>$$
+$$A:LINK_PERSO_2_FOOTER_1=<a href="/agence-immobiliere/tournus-71700/au-coup-de-coeur-immobilier/611115.htm">Arthurimmo Tournus</a>$$
+$$IF=:1:MENUFOOTER_EXPERTISE_NATIONAL_AFFICHAGE$$
+    $$A:LINK_PERSO_3_FOOTER_1=<a href="http://www.arthurimmo.com/estimation,immobiliere.htm" target="_blank" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_CLASSIQUE_AFFICHAGE$$
+    $$A:LINK_PERSO_3_FOOTER_1=<a href="@@IF=:0:MULTIAGENCES@@/@@AGENCE_IDPUBLICATION@@/estimation,immobiliere.htm@@END@@@@IF=:1:MULTIAGENCES@@/agences,estimation.htm@@END@@" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$
+$$END$$
+$$IF=:1:MENUFOOTER_EXPERTISE_PAYANTE_AFFICHAGE$$
+    $$A:LINK_PERSO_3_FOOTER_1=<a href="/estimation,immobiliere.htm" title="@@LG:PREESTIMATION pcase@@">@@LG:PREESTIMATION pcase@@</a>$$
+$$END$$
+
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+$$REM$$<!-- =========== SLOGAN FOOTER =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MONO : si cette variable n'est pas renseignée c'est l'adresse de l'agence qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== EN MULTI : si cette variable n'est pas renseignée c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$A:SLOGAN_FOOTER=$$
+
+$$REM$$<!-- =========== ID CATEGORIE BLOG AVEC WORDPRESS, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$INIT:IDCATBLOGWORDPRESS=34746$$
+
+    $$REM$$<!-- =========== Personnalisation du H de la page AGENCE LISTE =========== -->$$END:REM$$
+    $$A:H1_AGENCESLISTE=<span class="hidden-phone">NOS @@LG:AGENCESAVOTRSERVICE lcase@@</span>$$
+
+$$REM$$<!-- =========== COPYRIGHT PHOTO HOME =========== -->$$END:REM$$
+$$A:COPY-PHOTOHOME=By Tangopaso (Own work) [Public domain], <a href="https://commons.wikimedia.org/wiki/File:Former_mills_in_Pont-de-Vaux.jpg" target="_blank">via Wikimedia Commons</a>$$
