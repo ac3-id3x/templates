@@ -1,0 +1,145 @@
+<script src="$$_$$scripts/js/jquery.sticky.min.js"></script>
+<script src="$$_$$scripts/js/global.js"></script>
+
+$$IF=:INDEX:IDT$$
+		<script src="/z/webagency/slagence_X_V5/pub/scripts/listing_agences_homepage.js"></script>
+    <!--#include virtual="scripts/js/carousel/incl_owl_carousel.htm" -->
+    <script src="$$_$$scripts/js/home.js"></script>
+    <script>
+        $(window).load(function(){
+
+            // ----------------------------------------------------------- //
+            // -- MOTEUR HOMEPAGE
+            // ----------------------------------------------------------- //
+
+            $(".moteurhome-tab-idtt").click(function(){
+                $(".moteurhome-tab-idtt").removeClass("is-active");
+                $(this).addClass("is-active");
+                var idtt = $(this).data("idtt");
+                $("#idtt").val(idtt).trigger('change');
+            });
+
+            $("#idtt").change(function(){
+                ajaxGet("idtt",'$$LANGUE$$','Mini_Biens','type_biens_home','$$TYPEMOTEUR$$');
+                ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget_home','$$TYPEMOTEUR$$','libre');
+            });
+
+            $('.moteurhome-toggle').click(function(){
+                if ($(this).hasClass("is-active")) {
+                    $('.moteurhome-more').removeClass('is-open');
+                    $(this).text('$$LG:PLUSCRIT pcase$$').removeClass('is-active');
+                } else {
+                    $('.moteurhome-more').addClass('is-open');
+                    $(this).text('Moins de critères').addClass('is-active');
+                }
+            });
+
+        });
+    </script>
+$$END$$
+
+$$IF=:PUBLICATION:IDT$$
+<script>
+   $("#pb-btn-pro").click(function(){
+      $("#pb-type").val(1);
+      $(this).addClass("btn-active");
+      $("#pb-btn-part").removeClass("btn-active");
+
+   });
+   $("#pb-btn-part").click(function(){
+      $("#pb-type").val(2);
+      $(this).addClass("btn-active");
+      $("#pb-btn-pro").removeClass("btn-active");
+   });
+</script>
+$$END$$
+
+
+
+
+$$REM$$
+
+// ----------------------------------------------------------- //
+// -- DEMUT CHRISTOPHE -  A REMUTUALISER
+// ----------------------------------------------------------- //
+$$END$$
+<script src="$$~$$scripts/libs/jquery.colorbox.js"></script>
+<script type="text/javascript">
+    $(window).load(function() {
+        $(".popup").colorbox({
+            close: "x",
+            title: "",
+            iframe: true,
+            width: "90%",
+            height: "80%",
+            maxWidth: 800
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $$IF=:DETAILANNONCE:IDT$$
+
+        $('.btn-rappel').click(function () {
+            $.colorbox({
+                inline: true,
+                width: "100%",
+                maxWidth: "600px",
+                open: true,
+                closeButton: false  ,
+                href: "#detail-form-rappel",
+                onClosed: function () {
+                    $('#detail-form-rappel').hide();
+                },
+                onOpen: function () {
+                    $('#detail-form-rappel').show();
+                }
+            });
+        });
+
+        $('.btn-visiter').click(function () {
+            $.colorbox({
+                inline: true,
+                width: "100%",
+                maxWidth: "600px",
+                open: true,
+                closeButton: false  ,
+                href: "#detail-form-visite",
+                onClosed: function () {
+                    $('#detail-form-visite').hide();
+                },
+                onOpen: function () {
+                    $('#detail-form-visite').show();
+                }
+            });
+        });
+
+    $$END$$
+
+</script>
+$$IF=:RESULTATS:IDT$$
+<script type="text/javascript">
+
+    /* ===============================================
+    == DISPLAY MOTEUR RECHERCHE ==
+    =============================================== */
+
+    $(".sidebar-display-minimot").click(function() {
+        $("#recherche-moteur").addClass("active");
+        $("body").addClass("modal-active");
+    });
+    $(".sidebar-close-minimot").click(function() {
+        $("#recherche-moteur").removeClass("active");
+        $("body").removeClass("modal-active");
+    });
+    $(window).load(function() {
+        $(".toggle-alert").click(function() {
+            $("#alerte-moteur").slideToggle();
+            $("html,body").animate({ scrollTop: 0 }, "slow");
+        });
+    });
+
+</script>
+$$END$$
+
