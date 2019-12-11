@@ -1,0 +1,161 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=CTC$$
+$$E:IMMOBW:AGENCE:REP:1$$ 
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+$$IF:AGENCE:EMAIL$$
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr> 
+<td align="center"> 
+	<div align="left">
+	<b>Audit fiscal</b>
+	<div><br />Comment bien s'informer sur la d&eacute;fiscalisation</div><br /><br />
+	<p><strong>A l'aide d'une &eacute;tude sur mesure, sans engagement :</strong><br />
+		- Vous souhaitez v&eacute;rifier si un investissement est adapt&eacute;e &agrave; vos besoins.<br />
+		- Vous souhaitez savoir ce que vous pourriez gagner en desfiscalisation en fonction de votre situation personnelle.<br />
+		- Vous souhaitez, concr&egrave;tement, disposer d'une simulation financi&egrave;re compl&egrave;te personnalis&eacute;e et sur mesure.</p>
+		<p>Merci de remplir compl&egrave;tement ce questionnaire n&eacute;cessaire &agrave; une &eacute;tude s&eacute;rieuse 
+				et fiable. Nous vous r&eacute;pondrons dans les d&eacute;lais les plus brefs.</p>
+			<br />
+	</div>
+	
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="1" />
+<input type="hidden" name="page_ok" value="validation_message.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_message.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+<input type="hidden" name="idPublication" value="$$REP:1$$" />
+<input type="hidden" name="message" value="N/A1234567891011234567890" />
+ 
+
+	<strong>$$ERRE$$</strong>
+	<strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>	
+	<!--Votre message-->
+	<table cellspacing="0" cellpadding="5" class="tabFond1"> 
+	<tr>
+	<td class="TextForms"><!--#include virtual="/incl_text_forms.htm" --></td>
+	</tr>
+	</table>
+	<br />
+	<!--vos coordonnées--> 
+	<table width="90%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+						<td width="250" align="right">Nom *:</td>
+						<td><input name="nomFamille" type="text" value="$$FORM:NOMFAMILLE$$" size="20" maxlength="50"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Pr&eacute;nom * :</td>
+						<td><input name="PRENOM" type="text" value="$$FORM:PRENOM$$" size="20" maxlength="50"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Adresse :</td>
+						<td><input name="ADRESSE" type="text" value="$$FORM:ADRESSE$$" size="20" maxlength="100"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Code postal :</td>
+						<td><input name="CODEPOSTAL" type="text" value="$$FORM:CODEPOSTAL$$" size="5" maxlength="5"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Ville *:</td>
+						<td><input name="VILLE" type="text" value="$$FORM:VILLE$$" size="20" maxlength="50"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">T&eacute;l&eacute;phone *:</td>
+						<td><input name="TELEPHONE" type="text" value="$$FORM:TELEPHONE$$" size="20" maxlength="12"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Email *:</td>
+						<td><input name="EMAIL" type="text" value="$$FORM:EMAIL$$" size="20" maxlength="25"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Situation familiale :</td>
+						<td>
+							<select name="2SITUATION" id="$$FORM:2SITUATION$$">
+								<option value="C&eacute;libataire">C&eacute;libataire</option>
+								<option value="Mari&eacute;"> Mari&eacute;</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Date de naissance :</td>
+						<td><input name="2DATENAISSANCE" type="text" value="$$FORM:2DATENAISSANCE$$" size="8" maxlength="8"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Revenu net imposable du foyer<br />
+							fiscal avant abattement (arrondi) **:</td>
+						<td><input name="2REVENU" type="text" value="$$FORM:2REVENU$$" size="20" maxlength="10"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Nombre de parts fiscales **:</td>
+						<td><input name="2PARTSFISCALES" type="text" value="$$FORM:2PARTSFISCALES$$" size="20" maxlength="10"></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Votre &eacute;pargne actuelle mensuelle</td>
+						<td><select name="2EPARGNE" id="$$FORM:2EPARGNE$$">
+								<option value="1" $$IF=:1:FORM:2EPARGNE$$selected$$END$$>de 150 &euro; &agrave; 250&euro;</option>
+								<option value="2" $$IF=:2:FORM:2EPARGNE$$selected$$END$$>de 250 &euro; &agrave; 350 &euro;</option>
+								<option value="3" $$IF=:3:FORM:2EPARGNE$$selected$$END$$>de 350 &euro; &agrave; 450 &euro;</option>
+								<option value="4" $$IF=:4:FORM:2EPARGNE$$selected$$END$$>de 450 &euro; &agrave; 550 &euro;</option>
+								<option value="5" $$IF=:5:FORM:2EPARGNE$$selected$$END$$>de 550 &euro; &agrave; 650 &euro;</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Capacit&eacute; d'&eacute;pargne mensuelle :</td>
+						<td>
+							<select name="2CAPACITE" id="$$FORM:2CAPACITE$$">
+								<option value="1" $$IF=:1:FORM:2CAPACITE$$selected$$END$$>de 150 &euro; &agrave; 250&euro;</option>
+								<option value="2" $$IF=:2:FORM:2CAPACITE$$selected$$END$$>de 250 &euro; &agrave; 350 &euro;</option>
+								<option value="3" $$IF=:3:FORM:2CAPACITE$$selected$$END$$>de 350 &euro; &agrave; 450 &euro;</option>
+								<option value="4" $$IF=:4:FORM:2CAPACITE$$selected$$END$$>de 450 &euro; &agrave; 550 &euro;</option>
+								<option value="5" $$IF=:5:FORM:2CAPACITE$$selected$$END$$>de 550 &euro; &agrave; 650 &euro;</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td width="250" align="right">Apport personnel **</td>
+						<td><input name="2APPORTPERSO" type="text" value="$$FORM:2APPORTPERSO$$" size="20" maxlength="10"><br /><br /></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center" class="tabTitre">$$LG:VERIFINFOS$$</td>
+					</tr>
+					
+	<tr> 
+		<td colspan="2" align="center"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	<tr>
+						<td colspan="2">
+							* Renseignements obligatoires.<br />
+							** Important pour une étude adaptée.
+							</td>
+					</tr>
+	</table> 
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$ 
