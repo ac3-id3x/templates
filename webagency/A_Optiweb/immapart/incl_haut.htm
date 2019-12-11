@@ -1,0 +1,80 @@
+﻿<!--#include virtual="incl_doctype_strict.htm"-->
+<head> 
+<!--#include virtual="incl_ref.htm" -->
+<!--#include virtual="incl_titre.htm" -->
+<!--#include virtual="scripts/incl_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+
+$$IF=:RECHERCHEMAP:PAGE:IDT$$
+  $$A:MAPWIDTH=898px$$
+  $$A:MAPCOLOR=rouge$$
+  <!--#include virtual="map/incl_scripts.htm" -->
+  <!--#include virtual="map/incl_map.htm" -->
+ $$END:PAGE:IDT$$
+
+<script language="javascript" type="text/javascript">
+	function miniAffiche(str){
+		if(str=='link-list'){
+			document.getElementById('map-engine').style.display = "block";
+			document.getElementById('list-engine').style.display = "none";
+			document.getElementById('list-menu').style.backgroundPosition = "0 -45px";
+			document.getElementById('map-menu').style.backgroundPosition = "0 0";
+			
+		}else if(str=='link-map'){
+			document.getElementById('map-engine').style.display = "none";
+			document.getElementById('list-engine').style.display = "block";
+			document.getElementById('list-menu').style.backgroundPosition = "0 0";
+			document.getElementById('map-menu').style.backgroundPosition = "0 -45px";
+		}
+	}	
+</script>
+
+</head>
+
+<body onLoad="$$IF:ONLOAD$$$$ONLOAD$$$$END$$" $$if:onload$$onunload="$$UNLOAD$$"$$end$$ >
+	<div id="wrapper">
+		<div id="wrap">
+			<div id="top">
+				<div id="adresse">
+					<strong>$$NOM_AGENCE htmlencode ucase$$</strong> - $$ADRESSE_AGENCE htmlencode$$ - $$LG:MINITEL pcase$$ : $$TEL_AGENCE formattel$$ - $$LG:EMAIL pcase$$ :  <span>$$MAIL_AGENCE formattel$$</span> 
+				</div>
+				<div id="logo">
+					<a title="$$EXPRESSION1$$"  href="http://$$REP:RSRV$$"><img alt="$$EXPRESSION2$$"  src="images/logo.gif" /><br /></a>
+				</div>
+				<div class="mise">
+					$$LG:MAJ pcase$$ : $$E:ID3:DATE:2$$$$ID3:DATE:VAL date dd.MM.yy$$<br />
+					<a title="$$EXPRESSION3$$"  href="http://www.fnaim.fr" target="_blank"><img alt="$$EXPRESSION1$$"  src="images/logo_fanim.gif" width="46" height="46" /><br /></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<div id="menu">
+				<!--#include virtual="/incl_menu.htm" -->
+			</div>
+			<div id="flash">
+				<img alt="$$EXPRESSION2$$"  src="images/img_flash.jpg" width="695" height="219" /><br />
+			</div>
+			<div class="mini-moteur">
+				<div id="top-search-engine">
+					<ul>
+						<li class="float-left"><a title="$$EXPRESSION3$$"  href="javascript:void(0)" id="map-menu" class="list-menu" onClick="miniAffiche('link-map')"></a></li>
+						<li class="float-right"><a title="$$EXPRESSION1$$"  href="javascript:void(0)" id="list-menu" class="map-menu" onClick="miniAffiche('link-list')"></a></li>
+					</ul>
+					<br class="clear-both" />
+				</div>
+				<div id="map-engine" class="tab-search-engine">
+					<div class="inter-mini_carte">
+						<!--#include virtual="map/geoloc_moteur_dyn02.htm" -->
+					</div>
+				</div>
+				<div id="list-engine" class="tab-search-engine">
+					<div class="inter-mini">
+						<!--#include virtual="/mini_moteur2/incl_mini_moteur.htm" -->
+					</div>
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+			<div id="content">
+				$$IF!:INDEX:PAGE:IDT$$<div id="navigue">$$END$$
+				$$IF=:GUI:PAGE:IDT$$<div id="MenuGuide">$$END$$
+				$$IF=:DOSSIERS:PAGE:IDT$$<div id="PageDossiers">$$END$$
+				$$IF=:ALERT.HTM:REP:0$$<div id="PageAlert">$$END$$
