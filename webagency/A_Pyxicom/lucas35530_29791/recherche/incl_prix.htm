@@ -1,0 +1,37 @@
+$$REM$$====================================================================
+//// <summary>Prix du bien</summary>
+//// <remarks>
+//// <para>N'affiche pas les honoraires de l'agence</para>
+//// <para>Conditionnement selon IDTT</para>
+//// <para>18.03.2011 aliasage des macros IMMOBW:ANN:QRY</para>
+//// </remarks>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$IF:ANNLISTE:PRIX$$
+$$IF!:9:FORM:IDTT$$
+<p class="prix $$IF:ANNLISTE:SI_PROMO$$prixSiPromo$$END$$" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemscope itemtype="http://schema.org/Offer" itemprop="price" $$END$$>
+	$$ANNLISTE:PRIX formatnumber 0$$ $$ANNLISTE:PRIX_UNITE$$$$ANNLISTE:PRIX_PERIODEVAC$$
+	
+	<!--#include virtual="/recherche/incl_bandeau_baisseprix.htm" -->
+	$$IF:ANNLISTE:PX_RENTE$$<span class="rente">($$LG:RENTE lcase$$ : $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$)</span>$$END$$
+
+	$$IF=:1:FORM:IDTT$$
+		<span class="prixCharges">
+			$$IF:ANNLISTE:PX_CHARGES$$<span class="charges">- $$LG:CHARGES pcase$$ : $$ANNLISTE:PX_CHARGES formatnumber 0$$ &euro;</span>$$END$$
+			$$IF:ANNLISTE:HONORAIRES$$<span class="honoraires">- $$LG:HONORAIRES pcase$$ : $$ANNLISTE:HONORAIRES formatnumber 0$$ &euro;</span>$$END$$
+			$$IF:ANNLISTE:GARANTIE$$<span class="garantie">- $$IF!:FR:LANGUE$$ $$LG:GARANTIE pcase$$ $$END$$
+			$$IF=:FR:LANGUE$$ Dépot de garantie $$END$$ : $$ANNLISTE:GARANTIE$$</span>$$END$$	 $$REM$$<!-- champ libre dans slpro, donc pas de formatnumber 0-->$$END$$
+		</span>
+	$$END:1:FORM:IDTT$$		
+	
+	
+	$$REM$$
+		$$IF=:5:FORM:IDTT$$
+			$$IF:ANNLISTE:AGE_F$$$$LG:AGEF pcase$$ : $$ANNLISTE:AGE_F$$$$END$$
+			$$IF:ANNLISTE:AGE_H$$$$LG:AGEH pcase$$ : $$ANNLISTE:AGE_H$$$$END$$
+		$$END$$
+	$$END:REM$$	
+</p>
+
+$$END:9:FORM:IDTT$$
+$$END:ANNLISTE:PRIX$$
