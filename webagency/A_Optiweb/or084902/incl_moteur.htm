@@ -1,0 +1,162 @@
+<script language="javascript" type="text/javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+function ventes() {
+		document.getElementById("listevilles").style.display = "inline";
+}
+function locations() {
+	document.getElementById("listevilles").style.display = "none";
+}
+//-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche,colonne.htm" name="annonces">
+$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+$$IF!:1:PAGE:IDTT$$<input type="hidden" name="idtt" value="2" />$$END$$
+<input type="hidden" name="lang" value="$$LANGUE$$" />
+<!-- TYPE DE TRANSACTION -->
+$$IF=:1:PAGE:IDTT$$
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="80" align="left" valign="top" height="35" style="padding-top: 2px !important; padding-top: 5px;">$$LG:TRANSACTION pcase$$</td>
+		<td width="130" align="left" valign="top" style="padding-left: 7px;">
+			<!-- Gymnastique nécessaire pour tenir compte du A:PAGE:IDTT1=0 => n'affiche pas l'id TT1, et l'affiche si A:PAGE:IDTT1=1 ou si rien (par défaut) -->
+			$$IF0:PAGE:IDTT1$$
+				$$IF!:0:PAGE:IDTT1$$
+					$$A:AFFICHER:IDTT1=1$$
+				$$END:!0$$
+			$$END:IDTT1$$
+			$$IF=:1:PAGE:IDTT1$$
+				$$A:AFFICHER:IDTT1=1$$
+			$$END:IDTT1$$
+			$$IF:AFFICHER:IDTT1$$<input class="miniMoteurRadio" type="radio" name="idtt" value="1" />&nbsp;$$LG:MINILOC$$<br />$$END:AFFICHER:IDTT1$$
+			$$IF:PAGE:IDTT4$$<input class="miniMoteurRadio" type="radio" name="idtt" value="4" />&nbsp;$$LG:MINILOCVAC$$<br />$$END:PAGE:IDTT4$$
+			<input class="miniMoteurRadio" type="radio" name="idtt" value="2" checked="checked" />&nbsp;$$LG:MINIVEN$$
+		</td>
+	</tr>
+</table>
+$$END$$
+<table border="0" cellpadding="0" cellspacing="0">
+<!-- TYPE DE BIEN -->
+$$IF!:0:PAGE:TYPEDEBIEN$$
+	<tr>
+		<td width="80" align="left" valign="middle" height="35">$$LG:TYPEDEBIEN pcase$$</td>
+		<td width="130" align="right" valign="middle">
+			<select name="idtypebien" size="1" style="width: 120px;">
+				<option value="" selected="selected"> -- $$LG:SELECTIONNEZ2 lcase$$ -- </option>
+				$$IF=:1:PAGE:IDTB1$$<option value="1,9"$$IF(:FORM_IDTYPEBIEN:1$$$$IF(:FORM_IDTYPEBIEN:9$$ selected="selected"$$END$$$$END$$> $$LG:APPARTEMENT$$&nbsp;$$LG:MINILOFT$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB2$$<option value="2"$$IF(:FORM_IDTYPEBIEN:2$$ selected="selected"$$END$$>$$LG:MAISON$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB3$$<option value="4"$$IF(:FORM_IDTYPEBIEN:4$$ selected="selected"$$END$$>$$LG:TERRAIN$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB4$$<option value="5,6"$$IF(:FORM_IDTYPEBIEN:5$$$$IF(:FORM_IDTYPEBIEN:6$$ selected="selected"$$END$$$$END$$>$$LG:COMMERCE$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB5$$<option value="8"$$IF(:FORM_IDTYPEBIEN:8$$ selected="selected"$$END$$>$$LG:BUREAUX$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB7$$<option value="3"$$IF(:FORM_IDTYPEBIEN:3$$ selected="selected"$$END$$>$$LG:PARKING$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB8$$<option value="7"$$IF(:FORM_IDTYPEBIEN:7$$ selected="selected"$$END$$>$$LG:LOCAL$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB9$$<option value="11"$$IF(:FORM_IDTYPEBIEN:11$$ selected="selected"$$END$$>$$LG:IMMEUBLE$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB10$$<option value="12"$$IF(:FORM_IDTYPEBIEN:12$$ selected="selected"$$END$$>$$LG:HANGAR$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB11$$<option value="13"$$IF(:FORM_IDTYPEBIEN:13$$ selected="selected"$$END$$>$$LG:CHATEAU$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB12$$<option value="14"$$IF(:FORM_IDTYPEBIEN:14$$ selected="selected"$$END$$>$$LG:HOTEL$$</option>$$END$$
+				$$IF=:1:PAGE:IDTB6$$<option value="10"$$IF(:FORM_IDTYPEBIEN:10$$ selected="selected"$$END$$>$$LG:DIVERS$$</option>$$END$$
+			</select>
+		</td>
+	</tr>
+	$$END$$
+	<!-- Nombre de pièces -->
+	$$IF=:1:PAGE:PIECES$$
+	<tr>
+		<td width="80" align="left">$$LG:MININBRPIECES$$</td>
+		<td width="130" align="right" valign="middle">
+			<select name="nb_pieces" size="1" style="width: 120px;">
+				<option value="" selected="selected"> -- $$LG:SELECTIONNEZ2 lcase$$ -- </option>
+				<option value="1"$$IF=:1:FORM:NB_PIECES$$ selected="selected"$$END$$>1</option>
+				<option value="2"$$IF=:2:FORM:NB_PIECES$$ selected="selected"$$END$$>2</option>
+				<option value="3"$$IF=:3:FORM:NB_PIECES$$ selected="selected"$$END$$>3</option>
+				<option value="4"$$IF=:4:FORM:NB_PIECES$$ selected="selected"$$END$$>4</option>
+				<option value="+4"$$IF=:+4:FORM:NB_PIECES$$ selected="selected"$$END$$>5 $$LG:ETPLUS lcase$$</option>
+			</select>
+		</td>
+	</tr>
+	$$END$$
+	<!-- RECHERCHE PAR REFERENCE -->
+	$$IF=:1:PAGE:REF$$
+	<tr>
+		<td width="80" align="left" valign="middle">$$LG:MINIRECHREF$$</td>
+		<td width="130" align="left" valign="middle">
+			<input type="text" name="refannonce" size="15" id="ref_ann" value="$$FORM:REF$$" size="1" style="width: 80px;" />
+		</td>
+	</tr>
+	$$END$$
+</table>
+	<!-- Budget -->
+	$$IF=:1:PAGE:BUDGET$$
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="210" colspan="4" align="left" valign="middle" height="30">$$LG:BUDGET$$ (&euro;)</td>
+	</tr>
+	<tr>
+		<td align="left" valign="middle">$$LG:MINI pcase$$</td>
+		<td align="left" valign="middle">
+			<input type="text" name="pxmin" size="4" value="$$FORM:PXMIN$$" style="width: 60px;"/>
+		</td>
+		<td align="right" valign="middle">$$LG:MAXI pcase$$</td>
+		<td align="right" valign="middle">
+			<input type="text" name="pxmax" size="4" value="$$FORM:PXMAX$$" style="width: 60px;"/>
+			<input type="hidden" name="euro" value="1" />
+		</td>
+	</tr>
+</table>
+	$$END$$
+	<!-- surface -->
+	$$IF=:1:PAGE:SURFACE$$
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="210" colspan="4" align="left" valign="bottom" height="35">$$LG:SURFACE$$ (m&sup2;)</td>
+	</tr>
+	<tr>
+		<td width="30" align="left" valign="middle">$$LG:MINI pcase$$</td>
+		<td width="75" align="left" valign="middle">
+			<input type="text" name="surfacemin" size="4" value="$$FORM:SURFACEMIN$$" style="width: 65px;"/>
+		</td>
+		<td width="30" align="right" valign="middle">$$LG:MAXI pcase$$</td>
+		<td width="75" align="right" valign="middle">
+			<input type="text" name="surfacemax" size="4" value="$$FORM:SURFACEMAX$$" style="width: 65px;"/>
+			<input type="hidden" name="euro" value="1" />
+		</td>
+	</tr>	
+</table>
+	$$END$$
+
+	<!-- Proximité -->
+	$$IF=:1:PAGE:PROXIMITE$$
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td width="210" align="left" valign="middle" style="padding: 15px 0 3px 0;">$$LG:MINIVILLES$$</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="cp" size="4" maxlength="45" style="width:100%;" /><br />
+				<input type="text" name="cp" size="4" maxlength="45" style="width:100%;" /><br />
+				<input type="text" name="cp" size="4" maxlength="45" style="width:100%;" /><br />
+				(<i><a href="javascript:openCodes_Postaux();" class="minilien">$$LG:MINIRETROUVER$$</a></i>)
+			</td>
+		</tr>	
+	</table>
+	$$END$$
+	<!-- Liste des Villes en menu déroulant -->
+	$$IF=:1:PAGE:LISTEVILLES$$
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="left" height="35" style="padding-top: 15px;">$$LG:VILLES3 pcase$$</td>    	
+			<td align="right" height="35" style="padding-top: 15px;"><!--#include virtual="/incl_cache_villesannonces_moteur.gen.htm" --></td>
+		</tr>
+	</table>
+	$$END:PAGE:LISTEVILLES$$
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="210" align="center" style="padding: 20px 0 0 0;">
+			<input type="submit" value="$$IF=:FR:LANGUE$$Lancer la recherche$$END$$$$IF!:FR:LANGUE$$$$LG:RECHERCHER pcase$$$$END$$" class="btMoteur" />
+		</td>
+	</tr>	
+</table>
+</form>
