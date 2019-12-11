@@ -1,0 +1,134 @@
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+<head>
+	<!--#include virtual="header/incl_titre.htm" -->
+	<!--#include virtual="scripts/incl_scripts.htm" -->
+	<!--#include virtual="styles/incl_styles.htm" -->
+
+	$$IF:FAVICON$$
+	$$REM$$<!-- ================= ICON onglet navigateur ================= -->$$END:REM$$
+	<link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico" />
+	$$END$$
+</head>
+<body>
+	<div id="TopHeader_Ctn">
+		<div id="TopHeader">
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$IF=:INDEX.HTM:REP:0$$<!--#include virtual="referencement/incl_marquee_js.htm" -->$$END:REP:0$$$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<a id="AccueilSite"
+				href="$$LIENACCUEIL$$"
+				title="$$TITLE_MENU_ACCUEIL$$"
+				>$$LG:ACCUEIL$$</a>
+
+			$$IF=:1:OPTION_INTERNATIONAL$$
+			<div id="Drapeaux"
+				style=" position: absolute;
+				$$IF:OPTION_SUIVICLIENT$$ right: 135px;$$END$$
+				$$IF0:OPTION_SUIVICLIENT$$ right: 0;$$END$$
+				$$IF=:suivi,client.htm$suivi,error.htm:REP:0$$ right: 0;$$END$$
+				"
+				>
+				$$IF=:1:FLAG_FR$$<a id="Lang-fr" class="flag" href="$$URLBASE$$$$IF:REP:2$$/$$REP:2$$$$END$$$$IF:REP:1$$/$$REP:1$$$$END$$$$IF:REP:0$$/$$REP:0$$$$END:REP:0$$?$$IF:REP:QRY$$$$REP:QRY removeqry lang htmlencode$$&amp;lang=fr$$END:REP:QRY$$$$IF0:REP:QRY$$lang=fr$$END:REP:QRY$$" title="Version fran&ccedil;aise"></a>$$END$$
+				$$IF=:1:FLAG_EN$$<a id="Lang-en" class="flag" href="$$URLBASE$$$$IF:REP:2$$/$$REP:2$$$$END$$$$IF:REP:1$$/$$REP:1$$$$END$$$$IF:REP:0$$/$$REP:0$$$$END:REP:0$$?$$IF:REP:QRY$$$$REP:QRY removeqry lang htmlencode$$&amp;lang=en$$END:REP:QRY$$$$IF0:REP:QRY$$lang=en$$END:REP:QRY$$" title="English version"></a>$$END$$
+			</div><!-- #Drapeaux -->
+			$$END:OPTION_INTERNATIONAL$$
+
+			<div class="clear"><!-- --></div>
+		</div><!-- #TopHeader -->
+	</div><!-- #TopHeader_Ctn -->
+
+	<div id="Header_Ctn">
+		<div id="Header">
+
+			$$IF:OPTION_SUIVICLIENT$$
+			$$REM$$<!-- ====================== lien vers suivi client ====================== -->$$END:REM$$
+			<!--#include virtual="suivi/incl_lien_suiviclient.htm" -->
+			$$END$$
+
+			<table>
+				<tr>
+					<td id="Logo">
+						<a href="$$LIENACCUEIL$$" title="$$TITLE_MENU_ACCUEIL$$"><img src="$$PA_LOGO_HEADER$$" alt="" title="" /></a>
+						<div class="clear"><!-- --></div>
+					</td>
+					<td id="HeaderTxt">
+
+						$$IF=:INDEX.HTM:REP:0$$<!--#include virtual="immo/incl_accueil_texte.htm" -->$$END$$
+						$$IF=:AGENCE,IMMOBILIERE.HTM:REP:0$$<!--#include virtual="immo/incl_agence_texte.htm" -->$$END$$
+						$$IF=:TOPVILLES-RACINE.HTM:REP:0$$<!--#include virtual="immo/incl_immobilier_texte.htm" -->$$END$$
+						$$IF=:TOPVILLES-VILLE.HTM:REP:0$$<!--#include virtual="immo/incl_topvilles-ville_texte.htm" -->$$END$$
+						$$IF=:DETAIL,SENTO.HTM:REP:0$$<!--#include virtual="immo/incl_detail-sento_texte.htm" -->$$END$$
+						<div class="clear"><!-- --></div>
+					</td><!-- #HeaderTxt -->
+				</tr>
+				<tr>
+					<td colspan="2" id="Menu_Ctn">
+						<ul id="Menu">
+							<!--#include virtual="menu/incl_menu.htm" -->
+						</ul>
+						<div class="clear"><!-- --></div>
+					</td>
+				</tr>
+			</table>
+		</div><!-- #Header -->
+	</div><!-- #Header_Ctn -->
+
+	<div id="Wrap">
+	<div id="Ctn">
+		$$IF0:TOPVILLE$$
+			<div id="FilAriane">
+				$$REM$$<!-- ====================================================
+							> macro RUBRIQUE fabriquée dans header/incl_variables.htm
+							> si no ref = variables simples
+							> si ref = variables optimisées avec liens
+				================================================= -->$$END:REM$$
+				<span id="FilArianePicto"><!-- --></span>
+				$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+					<span>$$LG:VOUSETESICI pcase$$ :</span> <em>$$RUBRIQUE pcase$$</em>
+				$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+					$$REM$$<!-- =================  ================= -->$$END:REM$$
+					<span>$$LG:VOUSETESICI pcase$$ :</span>
+					<a href="$$LIENACCUEIL$$" title="$$TITLE_MENU_ACCUEIL$$" >$$LG:ACCUEIL$$</a>
+					$$IF!:INDEX:IDT$$
+					<!-- -->
+					$$IF=:RESULTATS:IDT$$
+						$$A:RUBRIQUE=@@LG:LIEN:TOUTES pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$
+					$$END$$
+					$$IF=:DETAILANNONCE:IDT$$
+						$$A:RUBRIQUE=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:VILLE@@$$
+					$$END$$
+					&gt; <a href="$$URLBASE$$$$IF:REP:2$$/$$REP:2$$$$END$$$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY$$" title="$$TITLE$$">$$RUBRIQUE$$</a>
+					$$END$$
+				$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+			</div>
+		$$END$$
+		<!--#include virtual="immo/incl_contenu_haut.htm" -->
+
+        $$IF=:TOPVILLES-RACINE.HTM:REP:0$$
+            <h2>LOGIBAIL, agence immobilière à Denain vous présente ses annonces immobilières.</h2>
+            <p>Découvrez sur cette page, notre portefeuille de biens immobiliers.</p>
+            <p>Vente et location, vous trouverez sur cette page une vaste sélection de biens immobiliers sur le Nord, toutes catégories confondues, maisons, villas, pavillons, propriétés, terrains constructibles et viabilisés, immeubles de rapport et produits d’investissement immobilier locatif, programmes immobiliers neufs, studios, appartements de toutes surfaces, locaux divers, sur Denain, Douchy les Mines, Lourche, Wavrechain sous Denain, Escaudain, Haspres, Marcq en Ostrevent, Neuville sur Escaut, Noyelles sur Selle, Rœulx, Rouvignies, Saulzoir, Vendegies sur Écaillon, Wallers, Haulchin, Haussy, Haveluy, Hélesmes, Lieu Saint Amand, Avesnes le Sec, Bouchain…</p><br>
+        $$END$$
+        $$IF=:TOPVILLES-DEPARTEMENT.HTM:REP:0$$
+            $$IF=:59:FORM:CODEDEPARTEMENT$$
+                <h2>LOGIBAIL, agence immobilière à Denain vous présente ses annonces immobilières. Découvrez sur cette page, toutes nos annonces immobilières sur le département du Nord pas de Calais (59).</h2>
+                <p>Notre agence immobilière, spécialiste du marché immobilier du département du Nord Pas de Calais (59), vous propose un vaste choix de biens, pouvant correspondre à tous vos projets immobiliers, achat en résidence principale, en résidence secondaire, projet de retraite, d’investissement immobilier locatif ou encore projet professionnel.</p>
+                <p>Notre équipe de conseillers est à votre disposition pour une étude personnalisée de votre projet et vous aider à trouver rapidement le bien que vous recherchez dans le département du Nord Pas de Calais.</p><br>
+            $$END$$
+        $$END$$
+        $$IF=:TOPVILLES-VILLE.HTM:REP:0$$
+            $$IF=:590172:FORM:CODEINSEE$$
+                <p>LOGIBAIL, vous accompagne et guide votre projet pour acheter un bien immobilier et vivre à Denain. Découvrez sur cette page notre sélection d’annonces de vente de maisons et appartements sur Denain.</p>
+                <p>Denain est une commune d’un peu plus de 20 000 habitants, située à environ 15 km à l’ouest de Valenciennes. </p>
+                <p>Avec un paysage immobilier plutôt pavillonnaire, à plus de 80 % du parc de logements, vous trouverez sur Denain, un grand choix de maisons, de pavillons et de propriétés.<br>Denain dispose de plusieurs écoles maternelles, élémentaires et de 4 collèges et 5 lycées, dont 3 lycées professionnels, ce qui en fait un secteur immobilier idéal pour l’installation des familles et des jeunes couples.</p><br>
+            $$END$$
+        $$END$$
+        $$IF=:2:FORM:IDTT$$
+            $$IF=:2:FORM:IDTYPEBIEN$$
+                 $$IF=:590179:FORM:CI$$
+                    <br><p>LOGIBAIL, vous accompagne et guide votre projet pour acheter une maison à Douchy les Mines. Découvrez sur cette page notre sélection d’annonces de vente de maisons et propriétés sur Douchy les Mines.</p>
+                    <p>Douchy les Mines est une commune d’un peu plus de 10 000 habitants dont le paysage immobilier reste majoritairement pavillonnaire. </p>
+                    <p>Plus de 70 % du parc de logements se compose de maisons de toutes catégories, avec une variété de maisons de ville anciennes, de maisons traditionnelles, de plain pied ou sur 2 niveaux d’habitation, de pavillons contemporains, de maisons récentes et modernes, en diffus ou en résidences pavillonnaires, de maisons de caractère et de belles propriétés.</p><br>
+                $$END$$
+            $$END$$
+        $$END$$
