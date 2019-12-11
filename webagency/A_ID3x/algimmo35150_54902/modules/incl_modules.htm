@@ -1,0 +1,138 @@
+$$A:MODULE_ACTIF=1$$
+<!--#include virtual="modules/incl_calcul_column.htm" -->
+<div class="hidden-phone box-module-home">
+	<!--#include virtual="modules/annonces-9/annonces.htm" -->
+</div>
+<div class="hidden-tablet hidden-desktop bg-mobile">	
+	$$IF!:1:CAROUSELHIDDEN$$
+		<!--#include virtual="modules/incl_carousel.htm" -->
+	$$END$$
+	$$B:IMMOBW:ANN-ES:ALIAS:ANNONCESEXTRA:VAL:IDTTEXTRA:VAL:LANG:::VAL:QUERYEXTRA:~nostat:1:~limit:VAL:NBEXTRAANNONCES$$
+	$$BIF:ANNONCESEXTRA$$
+	$$A:JS_ANNONCES-1=1$$
+	$$A:JS_CAROU_INDEX=1$$
+	<!--#include virtual="modules/annonces-1/incl_tailles_photos.htm" -->
+
+	<div class="module-homepage relative hidden-tablet hidden-desktop">
+	    <div class="row-fluid margin-bottom-10">
+	        <div class="span12">
+	            <div class="row-fluid ligne-titre pagination-centered">
+	                <h2 class="span8"><!--#include virtual="extra/extra13/incl_titre_module.htm" --></h2>
+	                <div class="span4 hidden-phone">
+	                    <!--#include virtual="extra/extra13/incl_titre_bouton.htm" -->
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+
+	    <div class="owl-carousel">
+	        $$DO$$
+	        <div class="relative module-annonces-homepage pagination-centered bg-white padding-10 margin-top-0">
+	            <a href="$$ANNONCESEXTRA:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+	                <div class="img-homepage overflow" style="width: 100%; height: 250px;">
+	                    $$IF:ANNONCESEXTRA:PHOTOURL0$$
+	                        <div style="background-image:url('$$ANNONCESEXTRA:PHOTOURL0$$');" class="picture-responsive"></div>
+	                    $$END$$
+	                    $$IF0:ANNONCESEXTRA:PHOTOURL0$$
+	                        <!--#include virtual="modules/incl_no_photo_modules.htm" -->
+	                    $$END$$
+
+	                    $$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+	                        $$IF:ANNONCESEXTRA:PHOTOURL1$$
+	                            <div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESEXTRA:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+	                        $$END$$
+	                    $$END$$
+	                </div>
+					<div class="row-fluid relative margin-top-neg-25 homepage-bloc-type-bien-transaction">
+						<div class="span1 hidden-phone"></div>
+						<div class="h3-like span10 relative bg-white padding-5 typo-black">
+							$$IF=:5:ANNONCESEXTRA:IDTYPETRANSACTION$$
+							 	$$IF:ANNONCESEXTRA:SI_LIBRE$$
+							  		$$LG:VIAGERLIBRE2 pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase$$$$END$$
+							 	$$END$$
+								$$IF0:ANNONCESEXTRA:SI_LIBRE$$
+							  		$$LG:VIAGEROCCUPE2 pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase$$$$END$$
+							 	$$END$$
+							$$END$$
+								
+							$$IF!:5:ANNONCESEXTRA:IDTYPETRANSACTION$$
+								$$ANNONCESEXTRA:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESEXTRA:IDTYPEBIEN gettypebien pcase$$$$END$$
+							$$END$$
+						</div>
+					</div>
+	                <div class="typo-black">
+	                    <div class="row-fluid margin-top-5">
+	                        <ul class="span12 pagination-centered normal">
+	                            <li class="big typo-action ellipsis module-villes-annonces ville">$$ANNONCESEXTRA:VILLE$$ $$REM$$<span class="hidden-phone">($$ANNONCESEXTRA:CP$$)</span>$$END$$</li>
+	                            <li>$$ANNONCESEXTRA:SURFACE$$ m²</li>
+	                            <li>
+									$$IF:ANNONCESEXTRA:NB_PIECES$$
+										$$ANNONCESEXTRA:NB_PIECES$$ 
+										$$IF=:1:ANNONCESEXTRA:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+										$$IF!:0$1:ANNONCESEXTRA:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+									$$END$$
+									$$IF:ANNONCESEXTRA:NB_CHAMBRES$$
+										$$IF:ANNONCESEXTRA:NB_PIECES$$,$$END$$ 
+											$$ANNONCESEXTRA:NB_CHAMBRES$$ $$IF=:1:ANNONCESEXTRA:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$
+										$$END$$
+										$$IF!:0$1:ANNONCESEXTRA:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$
+									$$END$$
+	                            </li>                            
+	                        </ul>
+	                    </div>                                       
+	                    <div class="row-fluid">
+	                        <div class="span12">
+								$$IF=:0:PRIXMASQUE$$
+									$$IF:ANNONCESEXTRA:XML xml PRIX_NOUS_CONSULTER$$
+										<span class="h2-like" id="prix$$ANNONCESEXTRA:IDANNONCE$$"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+									$$END$$
+									$$IF0:ANNONCESEXTRA:XML xml PRIX_NOUS_CONSULTER$$
+										$$IF=:5:ANNONCESEXTRA:IDTYPETRANSACTION$$
+											<span class="h2-like" id="prix$$ANNONCESEXTRA:IDANNONCE$$">$$LG:BOUQUET pcase$$ : $$ANNONCESEXTRA:PRIX$$ $$ANNONCESEXTRA:PRIX_UNITE$$</span>
+									$$END$$
+										$$IF!:5:ANNONCESEXTRA:IDTYPETRANSACTION$$
+											<span class="h2-like" id="prix$$ANNONCESEXTRA:IDANNONCE$$">$$ANNONCESEXTRA:PRIX$$ $$ANNONCESEXTRA:PRIX_UNITE$$</span>
+									$$END$$
+									$$IF:ANNONCESEXTRA:PX_RENTE$$
+										<div class="row-fluid">
+											<div class="font-body typo-action small" id="px_rente$$ANNONCESEXTRA:IDANNONCE$$">
+											$$LG:RENTE pcase$$ : $$ANNONCESEXTRA:PX_RENTE$$ $$LG:EUROMOIS$$
+										</div>
+										</div>
+									$$END$$
+										<div class="row-fluid">
+											<div class="font-body typo-action small" id="age_f$$ANNONCESEXTRA:IDANNONCE$$">
+												$$IF:ANNONCESEXTRA:AGE_F$$
+											  $$LG:FEMME pcase$$ : $$ANNONCESEXTRA:AGE_F$$ ans
+												$$END$$
+												$$IF:ANNONCESEXTRA:AGE_H$$
+											  	$$IF!:0:ANNONCESEXTRA:AGE_F$$&nbsp;$$END$$
+											    $$LG:HOMME pcase$$ : $$ANNONCESEXTRA:AGE_H$$ ans
+											  $$END$$
+											</div>
+										</div>
+									$$END$$
+								$$END$$
+								$$IF=:1:PRIXMASQUE$$
+									<!--#include virtual="immo/incl_prix_nous_consulter.htm" -->
+								$$END$$
+	                        </div>
+	                    </div>                    
+	                </div>
+	            </a>
+	        </div>
+	        $$LOOP$$
+	    </div>
+
+	    <script>
+	        navText = ['$$LG:PRECEDENT$$', '$$LG:SUIVANT$$'];
+	    </script>
+	</div>
+	$$BFIN$$
+	<div class="row-fluid">
+		<div class="span12">
+			$$ENCART_TXT_HOME_CONTENU$$
+		</div>
+	</div>
+
+</div>
