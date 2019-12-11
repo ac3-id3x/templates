@@ -1,0 +1,37 @@
+
+ $$IF:ANNDETAIL:ANNONCEBAISSEPRIX$$
+            <!-- TEST 1 -->
+                $$B:IMMOBW:ANNONCEHISTORIQUEPRIX:~idAnnonce:REP:1:ALIAS:HISTOPRIX$$
+                $$BIF:HISTOPRIX$$
+                <!-- TEST 2 -->
+                <div id="det_box_evolprix" style="border-top:3px solid #E5E5E5;margin-top:25px;padding-top:20px;clear:both;float:left;">
+                    <h4>Evolution du prix</h4>
+                    <div style="float:left;width:438px;" id="det_evolprix">
+                    <table width="100%">
+                        <tr>
+                            <th width="17%">$$LG:DATE$$</th>
+                            <th width="23%">Evénement</th>
+                            <th width="16%">$$LG:PRIX$$</th>
+                            <th width="44%">Source</th>
+                        </tr>
+                        $$DO$$
+                            <tr$$IF!:0:HISTOPRIX:I mod2 0 1$$ style="background-color:#f9f4e8;"$$END$$>
+                                <td>$$HISTOPRIX:DATEPRIX date 2$$</td>
+                                <td>
+                                    $$IF!:HISTOPRIX_NBR:HISTOPRIX:I$$
+                                        $$IF<:HISTOPRIX_PRIXNEW:HISTOPRIX:PRIXOLD$$Hausse de prix$$END$$
+                                        $$IF>:HISTOPRIX_PRIXNEW:HISTOPRIX:PRIXOLD$$Baisse de prix$$END$$
+                                    $$END$$
+                                    $$IF=:HISTOPRIX_NBR:HISTOPRIX:I$$
+                                    -
+                                    $$END$$
+                                </td>
+                                <td>XPF $$HISTOPRIX:PRIXNEW$$</td>
+                                <td>$$1_BCLANN:COOR-NOM$$</td>
+                            </tr>
+                        $$LOOP$$
+                    </table>
+                    </div>
+                </div>
+                $$BFIN$$
+            $$END$$

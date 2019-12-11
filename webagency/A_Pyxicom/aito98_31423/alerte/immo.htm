@@ -1,0 +1,184 @@
+$$REM$$====================================================================
+//// <summary>Page 1/3 de creation alerte immo</summary>
+//// <remarks>
+//// <para>Utilise les mêmes includes et les même css que la page moteur</para>
+//// <para>Lien obligatoirement et exclusivement sur cette premiere page : alerte,creer.htm</para>
+//// <para>Pages reliees : immo.htm > prevalidation.htm > validation.htm > validation_ok.htm</para>
+//// <para>Page template envoyee par mail apres validation : inscription.htm</para>
+//// <para>Liens contenus dans l'Alerte Immo  : correspondance.htm + modification.htm + desinscription.htm</para>
+//// <para>Une alerte peut etre creee directement sans passer par la page des resultats de recherche</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = criteres, 2 = check champs libres cp (si champs libres), 3 = envoi coordonnees perso</para>
+//// </remarks>
+//// <update date="2011-04-26" author="lisbonne.siriphol">Creation XV3</update>
+====================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:CSS_ALERTE=1$$
+
+<!--#include virtual="/header/incl_haut.htm"-->
+<form method="get" action="/alerte,prevalidation.htm">
+	<div id="Moteur">
+		
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		
+		<h1>$$LG:CREATIONALERTEIMMO$$ - BETA : TOUS LES PRIX DES ANNONCES REçues SONT EN XPF</h1>
+		<h3>$$LG:PARAMALERTEIMMO$$</h3>
+		<table class="moteurTable moteurMargin moteurAlerte">
+			<tr>
+				<td class="col1">
+					$$REM$$<!-- ////// types de transactions sur cette publication ////// -->$$END:REM$$
+
+					<div class="ttr_alerte">				
+					<div class="alerteNumber"><span>1</span></div>
+					<h2>$$LG:TYPEDETRANSACTION pcase$$</h2>
+				</div>
+					<select name="idtt" class="miniForm" id="idtt">									
+						<option value="2" selected="selected">$$LG:ANN:VENTES pcase$$</option>
+						<option value="1">$$LG:LOCATION pcase$$</option>
+					</select>
+
+					<div class="clear"><!-- --></div>
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>2</span></div>
+					<h2>$$LG:MINITYPEBIEN pcase$$</h2>
+				</div>
+					<p class="moteurComment">($$LG:UNOUPLUSIEURS lcase$$)</p>
+					<!--#include virtual="moteur/incl_types_biens.htm" -->
+					
+				</td><!-- .col1 -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				<td class="col2">
+					
+					<div class="ttr_alerte">
+						<div class="alerteNumber"><span>3</span></div>
+						<h2>$$LG:BUDGET pcase$$</h2>
+					</div>
+					<!--debut budget-->					
+					<span class="miniBlocSelection">
+						<select name="pxbtw" class="miniForm" id="AlerteSelectBudgetVente">
+							<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+							<option value=""> - $$LG:DE lcase$$ 15 000 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 15 000 000 $$LG:A lcase$$ 20 000 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 20 000 000 $$LG:A lcase$$ 30 000 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 30 000 000 $$LG:A lcase$$ 40 000 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 40 000 000 $$LG:A lcase$$ 50 000 000 XPF </option>
+							<option value=""> + 50 000 000 XPF</option>
+						</select>
+						<select name="pxbtw" class="miniForm" id="AlerteSelectBudgetLoc">
+							<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+							<option value=""> - $$LG:DE lcase$$ 100 000 XPF</option>
+							<option value="">$$LG:DE lcase$$ 100 000 $$LG:A lcase$$ 150 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 200 000 $$LG:A lcase$$ 250 000 XPF </option>
+							<option value="">$$LG:DE lcase$$ 250 000 $$LG:A lcase$$ 300 000 XPF </option>
+							<option value=""> + $$LG:DE lcase$$  300 000 XPF</option>
+							</select>
+					</span>
+					<!--fin budget-->
+								
+					<!-- ////////////////////////////////////////////////////////////////////////// -->
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>4</span></div>
+					$$IF:MOTEUR_VILLES$$
+					<h2 class="moteurMargin">$$LG:ENTREZCPVILLEDPT pcase$$</h2>
+					</div>
+					<p class="moteurComment">($$LG:EXEMPLE lcase$$ : 45, 75011, Bordeaux)</p>
+					<!--#include virtual="moteur/incl_villes_champs_libres.htm" -->
+					$$END:MOTEUR_VILLES$$
+					
+					$$IF0:MOTEUR_VILLES$$
+					<h2 class="moteurMargin">
+					$$IF=:FR:LANGUE$$Sélectionnez une zone$$END$$
+					$$IF!:FR:LANGUE$$Select an area$$END$$
+					</h2>
+					</div>
+					<!--#include virtual="moteur/mini/incl_villes_alerte.htm" -->	
+					<div class="clear"></div>
+					$$END:MOTEUR_VILLES$$
+				
+					<!-- ////////////////////////////////////////////////////////////////////////// -->
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>5</span></div>
+					<h2 class="moteurMargin">$$LG:CRITERESAVANCES pcase$$</h2>
+					</div>
+					<p class="moteurComment">($$LG:FACULTATIF lcase$$)</p>
+					<!--#include virtual="moteur/incl_criteres_avances.htm" -->
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$					
+					<h4 class="moteurMargin">$$LG:CHAUFF pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_chauffage.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_SITUATIONS$$					
+					<h4 class="moteurMargin">$$LG:SITUATION pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_situations.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_SITUATIONS$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CUISINE$$					
+					<h4 class="moteurMargin">$$LG:CUISINE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_cuisine.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CUISINE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$					
+					<h4 class="moteurMargin">$$LG:ARCHITECTURE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_architecture.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$
+					$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<p style="margin:10px 0 0 0;font-weight:bold;">
+						<label><input type="checkbox" name="siOptinPoliris" value="1" /> $$IF=:FR:LANGUE$$Je d&eacute;sire &ecirc;tre contact&eacute; par une agence$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$</label>
+					</p>
+					$$END:OPTIN_CONTRAT$$
+					<div id="MoteurBouton">			
+			<input type="submit" class="inputfinalise" value="$$IF=:FR:LANGUE$$Finaliser votre alerte$$END:LANGUE$$$$IF!:FR:LANGUE$$Finalize your alert$$END:LANGUE$$" />
+		</div>
+				</td>
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				<td class="alerteInfo_wrap">
+					<div class="alerteInfo">
+						<h2>
+							$$IF=:FR:LANGUE$$L'Alerte Immo, qu'est-ce que c'est ?$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$The Realty Alarm, what is it?$$END:LANGUE$$						
+						</h2>					
+						$$IF=:FR:LANGUE$$
+							<p>L'Alerte Immo vous permet d'être prévenu(e) par courrier électronique dès qu'une nouvelle annonce correspondant à vos critères de recherche est diffusée sur le site <strong>$$SRV$$</strong>.</p>
+							<p><strong>L'inscription est gratuite et rapide.</strong> Vous pourrez stopper les envois d'annonces en cliquant sur un simple lien situé au bas des emails Alerte Immo.</p>
+						$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$
+							<p>The Realty Alarm allows you to be warned   by electronic mail when a new listing matching your search criteria is posted on our website : <strong>$$SRV$$</strong>.</p>
+							<p><strong>Registration is free and fast.</strong> You can stop the shipments of ads by clicking a simple link at the bottom of the email alert Realty.</p>
+						$$END:LANGUE$$
+					</div><!-- .alerteInfo -->
+					<div class="alerteInfo">
+						<h2>
+							$$IF=:FR:LANGUE$$Précisez les critères de votre alerte$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$Specify the criteria for your alert$$END:LANGUE$$						
+						</h2>
+						<p>
+							$$IF=:FR:LANGUE$$Nous vous recommandons par souci d'efficacité de préciser tous vos critères de recherche, en renseignant par exemple le prix minimum et maximum ou en vous limitant à une zone.$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$We recommend for efficiency you specify your search criteria, for example by entering the minimum and maximum prices or limiting yourself to one area.$$END:LANGUE$$
+						</p>
+					</div><!-- .alerteInfo -->					
+					
+				</td><!-- .alerteInfo_wrap -->
+			</tr>
+		</table>
+		
+		
+		
+	</div><!-- #Moteur -->
+</form>
+<script type="text/javascript">
+	jQuery(function($){
+		$('#idtt').change(function(){
+			var idtt = $(this).val();
+			if(idtt=='1'){
+				$('#AlerteSelectBudgetVente').hide();
+				$('#AlerteSelectBudgetLoc').show();
+			}else{
+				$('#AlerteSelectBudgetLoc').hide();
+				$('#AlerteSelectBudgetVente').show();
+			}
+		});
+	});
+</script>
+<!--#include virtual="/footer/incl_bas.htm"-->

@@ -1,0 +1,81 @@
+$$REM$$====================================================================
+//// <summary>Descriptif annonce des pages DETAIL</summary>
+//// <remarks>
+//// <para>Eviter au maximum de le démutualiser car il est souvent remanié (réf, trad etc.)</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2010-10-11" author="lisbonne.siriphol">Updates sur textes terrain en !FR</update>
+====================================================================$$END$$
+
+<div id="Descriptif">
+	<h4 class="titreDescriptif">$$LG:DESCRIPTIONANN pcase$$</h4>
+	<p>
+		$$ANNDETAIL:DESCRIPTIF_GEN htmlencode$$<br />
+	$$IF:ANNDETAIL:DESCRIPTIF$$
+		$$ANNDETAIL:DESCRIPTIF htmlencode$$
+	$$END$$
+		
+	$$IF0:ANNDETAIL:DESCRIPTIF$$														
+		$$IF:ANNDETAIL:DESCRIPTIF_FR$$
+			$$ANNDETAIL:DESCRIPTIF_FR htmlencode$$
+		$$END$$									
+		$$IF0:ANNDETAIL:DESCRIPTIF_FR$$
+			$$LG:ANNSANSDESCR pcase$$.
+		$$END$$	
+	$$END$$
+	</p>
+	
+	$$IF!:FR:LANGUE$$
+	<p>
+$$REM$$ <!-- ==============================
+		> 11.10.2010 c/o Lisbonne + SAV
+		> pour les terrains, divers et annonces peu décrites, on ne peut pas générer de description
+			car trop peu de critères à extraire. Ex : terrain, la plupart du temps on a que la surface, le cp et constructible ou pas.
+		> donc au lieu de demander un dév à l'info métier, on force une phrase
+=============================== --> $$END$$
+		$$IF=:4:ANNDETAIL:IDTYPEBIEN$$			
+		
+			$$IF:ANNDETAIL:SI_VIABILISE$$Developed land site$$END$$
+			$$IF:ANNDETAIL:SI_AGRICOLE$$Farmland$$END$$
+			
+			$$IF0:ANNDETAIL:SI_VIABILISE$$
+				$$IF0:ANNDETAIL:SI_AGRICOLE$$
+					Land
+				$$END$$
+			$$END$$
+			
+			$$IF:ANNDETAIL:SI_CONSTRUCTIBLE$$ready for building,$$END$$
+			
+			$$IF:ANNDETAIL:SURF$$
+				width an area of $$ANNDETAIL:SURF$$ $$ANNDETAIL:SURF_UNITE htmlencode$$ ($$ANNDETAIL:SURF exec XX*10.763910 formatnumber 0$$ Sq Ft),
+			$$END$$
+			
+			$$IF0:ANNDETAIL:SURF$$
+				$$IF:ANNDETAIL:SURFACE$$
+					width an area of $$ANNDETAIL:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft,
+				$$END$$
+			$$END$$
+			
+			$$IF:ANNDETAIL:SI_PLAN_DEAU$$
+				including a water source,
+			$$END$$
+			
+			$$IF:ANNDETAIL:SI_LAC$$
+				including a lake,
+			$$END$$
+			
+						
+			located in $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$), in the French department of $$ANNDETAIL:CP cp2dep$$.
+			
+			$$IF:ANNDETAIL:SI_CALME$$
+			The environment is quiet.
+			$$END:ANNDETAIL:SI_CALME$$
+			
+			$$IF:ANNDETAIL:SI_PENTE$$
+			This land is located on a slope.
+			$$END:ANNDETAIL:SI_CALME$$
+			
+		$$END:4:ANNDETAIL:IDTYPEBIEN$$
+	</p>
+	$$END:FR:LANGUE$$
+</div><!-- fin #Descriptif -->

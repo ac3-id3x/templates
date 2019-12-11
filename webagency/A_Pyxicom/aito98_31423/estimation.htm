@@ -1,0 +1,265 @@
+<!--#include virtual="/header/incl_haut.htm"-->
+$$INIT:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+$$REM$$
+<div id="bienEstimation">
+	<!--#include virtual="annonces/incl_selection_index.gen.htm" -->
+</div>
+$$END$$
+$$IF:TITRE_PAGE$$<h1 class="ttl-pages">$$TITRE_PAGE$$</h1>$$END$$
+
+$$IF=:FR:LANGUE$$
+<div id="EstimLeft">
+$$B:EASA:TEXTES:~idCategorie:22028:ALIAS:CROTXT$$
+	$$BIF:CROTXT$$
+	$$DO$$
+	$$CROTXT:TEXTE$$
+	$$LOOP$$
+$$BFIN$$
+</div>
+$$END$$
+<div id="EstimLeft">
+$$IF!:FR:LANGUE$$
+	<div class="pageInterne">
+		<h2>FREE ESTIMATE: SELL - RENT - KNOW THE VALUE</h2>
+		<img height="248" width="420" src="/zi/easa_dev/89/1189.jpg" alt=""><br><br>
+		<p>
+			<img height="61" align="left" width="96" src="/zi/easa_dev/90/1190.jpg" alt="" style="margin-right:10px;">
+			In a market as small as in french polynesia, only a strong experience as an agency aito real estate can help you determine the real value of your property for rental and for sale of a house, apartment or land in Tahiti.
+		</p>
+		<p>
+			<strong>
+			<img height="61" align="left" width="96" src="/zi/easa_dev/91/1191.jpg" alt="" style="margin-right:10px;">
+			The real estate market is a free market, prices are set between buyers and sellers by simple agreement. 
+			</strong>
+			Consequently, they fluctuate according to data difficult to grasp: available land, economic, political changes.
+		</p>
+		<p>
+			<img height="61" align="left" width="96" src="/zi/easa_dev/92/1192.jpg" alt="" style="margin-right:10px;">
+			As part of the <strong>property</strong> market of <strong>tahiti</strong>, the analysis of long periods is of no use, a real-time analysis, taking into account all the variations and strengths of the property: for, access, tranquility, proximity ... is the only possible so they can make a realistic estimate. this is where the expertise of a team aito estate can prove a <strong>real</strong> asset. with a limited budget, adapted as projects are completed.
+contact our expertise
+		</p>
+	</div>
+$$END$$
+</div>
+
+<div id="EstimRight">
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:ESTIMATION.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+<h2>
+	$$IF=:FR:LANGUE$$Contactez notre service expertise$$END$$
+	$$IF!:FR:LANGUE$$Contact our expertise$$END$$
+</h2>
+<table  border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">
+	<form method="post" action="page_ok_estimation.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_ok_estimation.htm" />
+	<input type="hidden" name="page_err" value="estimation.htm" />
+	<input type="hidden" name="cfg_form" value="estimation$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="estimation" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+	$$END$$
+	$$IF:FORM:REMAIL$$
+		<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+	$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<script type="text/javascript">
+		var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+		document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+      </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<table width="100%">
+	</table>
+	<p align="center" id="$$FORM:ESTIMATION$$"><font size="3"><strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</strong></font></p>
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:louer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:vendre:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:3:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$IF=:gerer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2$3:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td  class="tabTitre center"><strong>$$LG:VOUSPOSSEDEZ2$$&nbsp;$$LG:ESTIMER lcase$$</strong></td>
+	</tr>
+	<tr>
+		<td class="center">
+		$$IF0:PAGE:IDTC1$$		
+		<input type="radio" name="Rdesir" value="Location" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked$$END$$$$END$$ />
+		$$LG:LOCATION$$
+		$$END$$
+		$$IF0:PAGE:IDTC3$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="Rdesir" value="Vente" checked />
+		$$LG:VENTE$$
+		$$END$$
+		$$IF:PAGE:IDTC4$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="Rdesir" value="Gérer" checked />
+		$$LG:GERER$$
+		$$END$$
+		</td>
+	</tr>
+	</table>
+	<br />
+	$$END$$
+	$$END$$
+	<!--Vous possédez un bien-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2"  class="tabTitre center"><strong>$$LG:DESCRIPBIEN$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="left">
+		<table border="0" cellspacing="0" cellpadding="4">
+		<tr>
+			<td width="150">$$LG:BIENPROP$$ :</td>
+			<td class="gauche">
+				<input type="radio" name="Pbien" value="un appartement" />&nbsp;$$LG:APPARTEMENT$$&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="Pbien" value="une maison" />&nbsp;$$LG:MAISON$$
+			</td>
+			<td></td>
+		</tr>
+		<!--<tr>
+			<td>$$LG:SURFH$$</td>
+			<td class="gauche"><input class="imputForm" type="text" name="Psurf" size="10" value="$$FORM:PSURF$$" /> m&sup2;</td>
+		</tr>
+		<tr>
+			<td>$$LG:SURFT$$</td>
+			<td class="gauche"><input class="imputForm" type="text" name="Pterre" size="10" value="$$FORM:PTERRE$$" /> m&sup2;</td>
+		</tr>-->
+		<tr>
+			<td>$$LG:NBRP$$</td>
+			<td class="gauche"><input class="imputForm" type="text" name="Ppieces" size="10" value="$$FORM:PPIECES$$" /> $$LG:PIECES$$</td>
+		</tr>
+		<tr>
+			<td>$$LG:DPTV$$ :</td>
+			<td class="gauche"><input class="imputForm" type="text" name="Pville" size="25" value="$$FORM:PVILLE$$" /></td>
+		</tr>
+		<tr>
+			<td valign="top">$$LG:PRECIS$$ :</td>
+			<td class="gauche">	<textarea class="imputForm" name="PPrecisions" cols="35" rows="3">$$FORM:PPRECISIONS$$</textarea></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<!--
+	<tr>
+		<td>$$LG:PRIXLOYER$$ * :</td>
+		<td><input class="imputForm" type="text" name="Pprix" size="25" value="$$FORM:PPRIX$$">&nbsp;&euro;&nbsp;&nbsp;(<FONT SIZE="1">$$LG:SAISIE1$$</FONT>)</td>
+	</tr>
+	-->
+	</table>
+	<br />
+	<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre center"><strong>$$LG:COORD$$</strong></td>
+	</tr>
+	<tr>
+		<td width="30%" align="left">$$LG:AI5$$ * :</td>
+		<td width="70%" class="gauche"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:ADRESSE$$ :</td>
+		<td class="gauche">$$IF=:FR:LANGUE$$<input class="imputForm" type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:VILLE$$ :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$" /></td>
+	</tr>
+	<!--<tr>
+		<td align="left">$$LG:CODEP$$ :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></td>
+	</tr>-->
+	$$IF!:FR:LANGUE$$
+	<tr>
+		<td align="left">$$LG:PAYS$$ :</td>
+		<td class="gauche"><input type="text" name="2pays" size="25" value="$$FORM:2PAYS$$" /></td>
+	</tr>
+	$$END$$
+	<tr>
+		<td align="left">$$LG:TEL pcase$$ :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+	</tr>
+	<!--<tr>
+		<td align="left">$$LG:FAX pcase$$ :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></td>
+	</tr>-->
+	<tr>
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td class="gauche"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="gauche oblig">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center"><input class="boutonEnvoi" type="image" src="images/envoyer_$$FORM:LANG$$.png" style="border: none; cursor: pointer; margin: 20px 0; width: 290px; height: 41px;" name="image" /></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+</div>
+<!--#include virtual="/footer/incl_bas.htm"-->

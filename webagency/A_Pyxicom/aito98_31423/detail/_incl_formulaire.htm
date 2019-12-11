@@ -1,0 +1,159 @@
+$$IF:ANNDETAIL:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+$$IF:CHECKMAIL$$
+	$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+	$$REM$$<!-- // si message envoye // -->$$END:REM$$
+	<script type="text/javascript">
+		<!--
+		document.location= '/$$ANNDETAIL:IDPUBLICATION$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+		//-->
+	</script>
+	$$END:AGENCEMAIL:OK$$
+	$$IF=:1:FORM:CTC$$
+	$$REM$$<!-- // confirmation formulaire envoye // -->	$$END:REM$$
+	<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+	<script> var ouvrirform=1; </script>
+	$$END:FORM:CTC$$
+	$$IF!:1:FORM:CTC$$
+	<!-- // formulaire de contact // -->
+
+<form method="post" action="" id="formulaire" name="form_contact">
+								<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+								<input type="hidden" name="page_ok" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+								<input type="hidden" name="page_err" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+								<input type="hidden" name="PathTemplateMail" value="/contact,detail_formulaire_envoi.htm" />$$REM$$<!--// [INPUT FACULTATIVE] chemin template mail reçu par client > demutualisable //-->$$END$$
+								<input type="hidden" name="IDPUBLICATION" value="$$ANNDETAIL:IDPUBLICATION$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								<input type="hidden" name="idannonce" value="$$ANNDETAIL:IDANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+								<input type="hidden" value="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$" name="permalienForm" />$$REM$$<!--// [INPUT PERMALIEN]  //-->$$END$$
+								<input type="hidden" value="refann" name="$$ANNDETAIL:REFANNONCE$$" />
+								<input type="hidden" name="ctel" value="0123456789" />
+					
+					<div class="h1-like">$$LG:SOUHAITEZ pcase$$</div>
+					<select id="SelectSujet" name="motif">
+						<option value="1" selected="selected">$$LG:ETRERAPPEL pcase$$</option>
+						<option value="2">$$LG:PLUSDETAILS pcase$$</option>
+						<option value="3">$$LG:VISITERCEBIEN pcase$$</option>	
+						<option value="4">$$LG:VENDREUNBIENSIMILAIRE pcase$$</option>
+					</select>
+					<script type="text/javascript">
+						$('#SelectSujet').change(function() {
+							if($(this).val() == 4) {
+								window.location.href="$$URLBASE$$/$$ANNDETAIL:IDPUBLICATION$$/contact,estimation.htm?lang=$$LANGUE$$";
+							}
+						});
+					</script>
+					<div class="clear"></div>
+					<div class="separ"></div>
+					
+					$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+						<div class="pictoErre">$$IMMOBW:AGENCEMAIL:ERRE$$</div>
+						<script>
+							var ouvrirform=1;
+						</script>
+					$$END$$	
+
+					<div class="h2-like">$$LG:VOSINFOS pcase$$</div>
+					
+					<div class="WrapFields">
+						<table width="100%">
+							<tr>
+								<td colspan="2">
+									<label for="cnom">$$LG:NOM pcase$$ / $$LG:PRENOM pcase$$ * :</label>
+									<input type="text" id="cnom" class="prerempli" name="cnom" value="$$IF:FORM:CNOM$$$$FORM:CNOM$$$$END$$$$IF0:FORM:CNOM$$$$LG:VOTRENOM pcase$$ ($$LG:REQUIS lcase$$) / $$LG:PRENOM pcase$$$$END$$" />
+								</td>
+							</tr>
+							<tr>
+								<td><label for="from">$$LG:EMAIL pcase$$ * :</label></td>
+								<td><label for="ctel">$$LG:TEL pcase$$ :</label></td>
+							</tr>
+							<tr>
+								<td><input type="text" id="from" class="prerempli" name="from" value="$$IF:FORM:FROM$$$$FORM:FROM$$$$END$$$$IF0:FORM:FROM$$ex : email@gmail.com ($$LG:REQUIS lcase$$)$$END$$" /></td>
+								<td><input type="text" id="ctel" class="prerempli" name="telephone" value="$$IF:FORM:TELEPHONE$$$$FORM:TELEPHONE$$$$END$$$$IF0:FORM:TELEPHONE$$ex : 01 00 00 $$END$$" /></td>
+							</tr>
+							<tr id="horaires">
+								<td colspan="2">
+									<label for="horaire">$$LG:VOSPREFERENCES pcase$$ :</label>
+									<select name="horaire" id="horaire">
+										<option value="">$$LG:CHOISIR pcase$$</option>
+										<option value="Matin">$$LG:MATIN pcase$$</option>
+										<option value="Midi">$$LG:MIDI pcase$$</option>
+										<option value="Après-midi">$$LG:APRESMIDI pcase$$</option>
+										<option value="Soir">$$LG:SOIR pcase$$</option>
+									</select>
+								</td>
+							</tr>
+							<tr id="diversDetail">
+								<td colspan="2">
+									<label for="detail_demande">Votre demande concerne :</label>
+									<div class="checkbox">
+										<span>Montant des charges</span><span><input type="checkbox" value="Montant des charges" name="detail_demande"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Situation et environnement</span><span><input type="checkbox" value="Situation et environnement" name="detail_demande"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Etat du bien</span><span><input type="checkbox" value="Etat du bien" name="detail_demande"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Disponibilité du bien</span><span><input type="checkbox" value="Disponibilité du bien" name="detail_demande"></span>
+										<div class="clear"></div>
+									</div>
+								</td>
+							</tr>
+							<tr id="joursVisite">
+								<td colspan="2">
+									<label for="detail_demande">Jours de visite :</label>
+									<div class="checkbox">
+										<span>Lundi</span><span><input type="checkbox" value="Lundi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Mardi</span><span><input type="checkbox" value="Mardi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Mercredi</span><span><input type="checkbox" value="Mercredi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Jeudi</span><span><input type="checkbox" value="Jeudi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Vendredi</span><span><input type="checkbox" value="Vendredi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									<div class="checkbox">
+										<span>Samedi</span><span><input type="checkbox" value="Samedi" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>
+									$$REM$$<div class="checkbox">
+										<span>Dimanche</span><span><input type="checkbox" value="Dimanche" name="jourVisite"></span>
+										<div class="clear"></div>
+									</div>$$END$$
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+					<div class="h2-like" id="messageTitre">$$LG:MESSAGE pcase$$</div>
+						
+					<div class="WrapFields" id="messageChamp">
+						<label for="message">$$LG:MESS pcase$$ * :</label>
+						<textarea id="message" name="message">$$IF:FORM:MESSAGE$$$$FORM:MESSAGE$$$$END$$</textarea>
+					</div>
+
+					<div class="WrapFields">
+						<span>* $$LG:CHAMPSOBLIGATOIRES pcase$$</span>
+						<input type="button" id="boutonEnvoyerFormulaireCompact" class="BtnSubmit bgcolor2" value="$$LG:ENVOYER2 pcase$$" />
+					</div>
+					
+					<div class="separ"></div>
+					
+					<p>$$LG:LOI78AGENCE pcase$$</p>
+				</form>
+				$$END:FORM:CTC$$	
+$$END:CHECKMAIL$$				
