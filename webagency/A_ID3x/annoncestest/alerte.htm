@@ -1,0 +1,43 @@
+$$DYN:AUTH:CHECK_LOGIN:~AUTHREQUIREDLEVEL:FULL$$<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>$$IF=:0:REP:1$$Création $$END$$$$IF!:0:REP:1$$Modification $$END$$de l'alerte.</title>
+<link rel="stylesheet" type="text/css" href="$$_$$css/style.css" />
+</head>
+<body>
+$$E:MANDATSRECHERCHE:AFFICHE_ALERTE:~idalerte:REP:1:ALIAS:DETAIL$$
+$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_TRANSACTIONS:~idalerte:REP:1:ALIAS:LSTTT$$
+$$B:MANDATSRECHERCHE:AFFICHE_ALERTE_BIENS:~idalerte:REP:1:ALIAS:LSTBIEN$$
+
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 500px; margin: 0px; padding: 2px;">
+$$IF=:0:REP:1$$Création $$END$$$$IF!:0:REP:1$$Modification $$END$$de l'alerte$$IF:DETAIL:DTCREATION$$ créée le $$DETAIL:DTCREATION date 2$$ à $$DETAIL:DTCREATION date 4$$$$END$$.
+</div>
+<form method="post" action="/liste-recherches.htm">
+<input type="hidden" name="page_ok" value="/liste-recherches.htm" />
+<input type="hidden" name="page_err" value="/alerte_err.htm" />
+<input type="hidden" name="u" value="MANDATSRECHERCHE:MODIFICATION_ALERTE" />
+<input type="hidden" name="idtypepublication" value="$$DETAIL:IDTYPEPUBLICATION$$$$IF=:0:REP:1$$$$FORM:IDTYPEPUB$$$$END$$" />
+$$IF!:0:REP:1$$<input type="hidden" name="idalerte" value="$$DETAIL:IDALERTE$$" />$$END$$
+<div class="frm">Email&nbsp;:&nbsp;<input type="text" name="email" value="$$DETAIL:EMAIL$$"></div>
+<div class="frm">Localisations&nbsp;:&nbsp;<input type="text" name="localisation" value="$$DETAIL:LOCALISATIONS$$"></div>
+$$BIF:LSTTT$$
+<div class="frm">Types de transaction : 
+	<ul>$$DO$$
+		<li>$$LSTTT:LIBELLE$$<input type="checkbox" name="idtypetransaction" value="$$LSTTT:IDTYPETRANSACTION$$"$$IF:LSTTT:SELECTED$$ checked="checked"$$END$$ /></li>
+$$LOOP$$</ul>
+</div>
+$$BFIN$$
+$$BIF:LSTBIEN$$
+<div class="frm">Types de bien : 
+	<ul>$$DO$$
+		<li>$$LSTBIEN:LIBELLE$$<input type="checkbox" name="idtypebien" value="$$LSTBIEN:IDTYPEBIEN$$"$$IF:LSTBIEN:SELECTED$$ checked="checked"$$END$$ /></li>
+$$LOOP$$</ul>
+</div>
+$$BFIN$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 500px; margin: 0px; padding: 2px;; align=center">
+<input type="submit" value="Valider" />&nbsp;-&nbsp;<input type="button" value="Annuler" onclick="document.location='/liste-recherches.htm'"/>
+</div>
+</form>
+</body>
+</html>

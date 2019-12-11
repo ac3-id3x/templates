@@ -1,0 +1,90 @@
+$$DYN:AUTH:CHECK_LOGIN:~AUTHREQUIREDLEVEL:FULL$$<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+$$E:MANDATSRECHERCHE:DELETE_ALERTE:~idalerte:QRY:IDALERTESUPP$$
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Liste des alertes.</title>
+<link rel="stylesheet" type="text/css" href="$$_$$css/style.css" />
+</head>
+<body>
+$$B:MANDATSRECHERCHE:LISTE_ALERTES:ALIAS:LSTALERTES$$
+$$BIF:LSTALERTES$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 890px; margin: 2px; padding: 3px;">
+$$LSTALERTES:NBR$$ alerte$$LSTALERTES:NBR pluriel$$ trouvée$$LSTALERTES:NBR pluriel$$.
+</div>
+<table style="width: 900px">
+<tr>
+<th>Adresse email.</th>
+<th>Types de transaction.</th>
+<th>Types de biens.</th>
+<th>Départements ou code postaux.</th>
+<th>Date de création.</th>
+<th>Etat.</th>
+<th colspan="2">Actions.</th>
+</tr>
+$$DO$$
+<tr class="$$LSTALERTES:I mod2 clair fonce$$">
+<td class="centre">$$LSTALERTES:EMAIL$$</td>
+<td>$$LSTALERTES:TRANSACTIONS$$</td>
+<td>$$LSTALERTES:BIENS$$</td>
+<td>$$LSTALERTES:LOCALISATIONS$$</td>
+<td class="centre">$$LSTALERTES:DTCREATION date 2$$</td>
+<td class="centre">$$LSTALERTES:ETAT$$</td>
+<td class="centre"><a href="/$$LSTALERTES:IDALERTE$$/alerte.htm">Modifier</a></td>
+<td class="centre"><a href="javascript:if (confirm('Vouloir supprimer ?')) document.location='/liste-recherches.htm?idalertesupp=$$LSTALERTES:IDALERTE$$';">Supprimer</a></td>
+</tr>
+$$LOOP$$
+<tr>
+<th colspan="6" style="background-color: #EEE; border-color: #EEE;">&nbsp;</th>
+<th colspan="2" style="font-weight: normal;"><a href="/0/alerte.htm?idtypepub=1">Ajouter</a></th>
+</tr>
+</table>
+$$BFIN$$
+$$BIF0:LSTALERTES$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 440px; margin: 2px; padding: 3px;">
+Aucunes alertes trouvées.
+</div>
+$$BFIN$$
+<div><a href="/recherche.htm">Créer un recherche.</a></div>
+$$IF:MANDATSRECHERCHE:MODIFICATION_ALERTE:OKMSG$$
+<script language="javascript">
+	alert("$$MANDATSRECHERCHE:MODIFICATION_ALERTE:OKMSG$$");
+	document.location = "/liste-recherches.htm";
+</script>
+$$END$$
+$$IF:MANDATSRECHERCHE:PASSE_ANNONCE:OKMSG$$
+<script language="javascript">
+	alert("$$MANDATSRECHERCHE:PASSE_ANNONCE:OKMSG$$");
+	document.location = "/liste-recherches.htm";
+</script>
+$$END$$
+
+$$B:MANDATSRECHERCHE:LISTE_RECHERCHES:ALIAS:LSTRECHERCHES$$
+$$BIF:LSTRECHERCHES$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 890px; margin: 2px; padding: 3px;">
+$$LSTRECHERCHES:NBR$$ recherche$$LSTRECHERCHES:NBR pluriel$$ trouvée$$LSTRECHERCHES:NBR pluriel$$.
+</div>
+<ol>
+$$DO$$
+<li>$$LSTRECHERCHES:SITE$$ - $$LSTRECHERCHES:EMAIL encodemail javascript full$$, envoyée le $$LSTRECHERCHES:DTENVOISEMAIL date 2$$ à $$LSTRECHERCHES:DTENVOISEMAIL date 4$$.
+&nbsp;<a href="/liste-recherches.htm?idrech=$$LSTRECHERCHES:IDRECHERCHE$$">détail.</a></li>
+$$LOOP$$
+</ol>
+$$BFIN$$
+
+$$BIF0:LSTRECHERCHES$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 440px; margin: 2px; padding: 3px;">
+Aucunes recherches trouvées.
+</div>
+$$BFIN$$
+$$E:MANDATSRECHERCHE:AFFICHE_RECHERCHE:~idrecherche:QRY:IDRECH:ALIAS:DETAIL$$
+$$IF:DETAIL:IDRECHERCHE$$
+<div style="font-weight: bold; color: #FFF; background-color: #AAA; width: 440px; margin: 2px; padding: 3px;">
+Détail de la recherche n°$$DETAIL:IDRECHERCHE$$.
+</div>
+<div>Nom : $$DETAIL:NOM$$</div>
+$$END$$
+<p>toto=$$SESSION:TOTO$$</p>
+<p>idagence=$$SESSION:IDAGENCE$$</p>
+</body>
+</html>

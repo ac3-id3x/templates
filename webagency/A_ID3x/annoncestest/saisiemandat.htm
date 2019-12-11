@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Saisie d'un mandat</title>
+<link rel="stylesheet" type="text/css" href="$$_$$css/mandats.css" />
+</head>
+<body>
+
+<h1>Formulaire de test de la macro de saisie d'un mandat : <span class="blanc">P:MANDATVENTE:SAISIEMANDAT</span></h1>
+
+$$IF:ERRE$$
+<p class="remarque">Erreur pr&eacute;c&eacute;dente : <span class="titre">$$ERRE$$</span></p>
+$$END$$
+
+<form action="saisiemandat.htm" method="post">
+<input type="hidden" name="page_ok" value="saisiemandat_rez.htm" />
+<input type="hidden" name="page_err" value="saisiemandat.htm" />
+<input type="hidden" name="u" value="MANDATVENTE:SAISIEMANDAT" />
+
+<input type="hidden" name="source" value="S" />
+
+<TABLE>
+<TR><TD width="50%" valign="top">
+<TABLE>
+<TR>
+<TD colspan="3"><p class="titre">Information sur le mandat.</p>
+</TD>
+</TR>
+$$B:MANDATVENTE:BIENS$$
+	$$BIF:MANDATVENTE:BIENS$$
+<TR>
+<TD><p>Choix du type de bien</p></TD>
+<TD><p>:</p></TD>
+<TD><p>
+<select name="idtypebien">
+			<option value=""> --- </option>
+	$$DO:1:50$$
+			<option value="$$MANDATVENTE:BIENS:IDTYPEBIEN$$" $$IF=:MANDATVENTE_BIENS_IDTYPEBIEN:FORM:IDTYPEBIEN$$selected="selected"$$END$$>$$MANDATVENTE:BIENS:TYPEBIEN$$</option>
+	$$LOOP$$
+</select><span class="rouge">&nbsp;&nbsp;*</span>
+</p>
+</TD>
+</TR>
+	$$BFIN$$
+$$B:MANDATVENTE:TRANSACTIONS$$
+	$$BIF:MANDATVENTE:TRANSACTIONS$$
+<TR>
+<TD><p>Choix du type de transaction</p></TD>
+<TD><p>:</p></TD>
+<TD><p>
+<select name="idtypetransac">
+			<option value=""> --- </option>
+	$$DO:1:50$$
+			<option value="$$MANDATVENTE:TRANSACTIONS:IDTYPETRANSAC$$" $$IF=:MANDATVENTE_TRANSACTIONS_IDTYPETRANSAC:FORM:IDTYPETRANSAC$$selected="selected"$$END$$>$$MANDATVENTE:TRANSACTIONS:TYPETRANSACTION$$</option>
+	$$LOOP$$
+</select><span class="rouge">&nbsp;&nbsp;*</span>
+</p>
+</TD>
+</TR>
+	$$BFIN$$
+	<TR>
+		<TD><p>Code postal du bien</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="codepostal" size="5" maxlength="5" value="$$FORM:CODEPOSTAL$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Nombre de pi&egrave;ces du bien</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="nombrepieces" size="3" maxlength="3" value="$$FORM:NOMBREPIECES$$" /></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Surface du bien</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="surface" size="4" maxlength="4" value="$$FORM:SURFACE$$" />&nbsp;m&sup2;</p></TD>
+	</TR>
+	<TR>
+		<TD><p>Prix du bien</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="prix" size="10" maxlength="10" value="$$FORM:PRIX$$" />&nbsp;&euro;<span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD valign="top"><p>Description du bien</p></TD>
+		<TD valign="top"><p>:</p></TD>
+		<TD valign="top"><p><textarea name="description" rows="5" cols="30">$$FORM:DESCRIPTION$$</textarea><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+</TABLE>
+</TD>
+<TD width="50%" valign="top">
+	
+<TABLE>
+<TR>
+<TD colspan="3"><p class="titre">Information sur le vendeur.</p>
+</TD>
+</TR>
+	<TR>
+		<TD><p>Nom du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="nomvendeur" size="40" maxlength="256" value="$$FORM:NOMVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Pr&eacute;nom du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="prenomvendeur" size="40" maxlength="256" value="$$FORM:PRENOMVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD valign="top"><p>Adresse du vendeur</p></TD>
+		<TD valign="top"><p>:</p></TD>
+		<TD valign="top"><p><textarea name="adressevendeur" rows="3" cols="30" maxlength="512">$$FORM:ADRESSEVENDEUR$$</textarea><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Code postal du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="cpvendeur" size="6" maxlength="5" value="$$FORM:CPVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Ville du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="villevendeur" size="40" maxlength="32" value="$$FORM:VILLEVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Adresse email du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="emailvendeur" size="40" maxlength="64" value="$$FORM:EMAILVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Num&eacute;ro de t&eacute;l&eacute;phone du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="telvendeur" size="18" maxlength="16" value="$$FORM:TELVENDEUR$$" /><span class="rouge">&nbsp;&nbsp;*</span></p></TD>
+	</TR>
+	<TR>
+		<TD><p>Num&eacute;ro de fax du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="faxvendeur" size="18" maxlength="16" value="$$FORM:FAXVENDEUR$$" /></p></TD>
+	</TR>	<TR>
+		<TD><p>Num&eacute;ro de mobile du vendeur</p></TD>
+		<TD><p>:</p></TD>
+		<TD><p><input type="texte" name="mobilevendeur" size="18" maxlength="16" value="$$FORM:MOBILEVENDEUR$$" /></p></TD>
+	</TR>
+</TABLE>
+
+</TD></TR>
+<TR>
+	<TD colspan="2"><p class="titre"><input type="submit" value="Valider"></p></TD>
+</TR>
+</TABLE>
+<p class="remarque"><span class="rouge">*</span>&nbsp;:&nbsp;champ obligatoire.</p>
+
+</form>
+
+</body>
+</html>

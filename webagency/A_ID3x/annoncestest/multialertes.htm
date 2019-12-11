@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>R&eacute;sultat d'un formulaire</title>
+<link rel="stylesheet" type="text/css" href="$$_$$css/mandats.css" />
+</head>
+<body>
+
+
+<h1>Formulaire de test de la macro de modification de plusieurs alertes &aacute; la fois : <span class="blanc">P:MANDATVENTE:MULTIEDITALERTE</span></h1>
+
+$$IF:ERRE$$
+<p class="remarque">Erreur pr&eacute;c&eacute;dente : <span class="titre">$$ERRE$$</span></p>
+$$END$$
+
+<form action="multialertes.htm" method="post">
+<input type="hidden" name="page_ok" value="multialertes_rez.htm" />
+<input type="hidden" name="page_err" value="multialertes.htm" />
+<input type="hidden" name="u" value="MANDATVENTE:MULTIEDITALERTE" />
+<input type="hidden" name="iduser" value="9" />
+
+$$B:MANDATVENTE:LISTEALERTE:ALIAS:ZELISTE:48$$
+$$BIF:ZELISTE$$
+<table>
+	<tr>
+		<td>Alerte</td>
+		<td>Montant</td>
+		<td>Etat</td>
+	</tr>
+$$DO:1:50$$
+	<tr>
+		<td><p>Id n°$$ZELISTE:IDALERTE$$</p></td>
+		<input type="hidden" name="listeidalerte" value="$$ZELISTE:IDALERTE$$">
+		<td>
+			<input type="text" name="montantalerte_$$ZELISTE:IDALERTE$$" value="$$ZELISTE:MONTANTALERTE$$" size="5">
+		</td>
+		<td>
+			<input type="texte" name="etatalerte_$$ZELISTE:IDALERTE$$" value="$$ZELISTE:ETATALERTE$$" size="1">
+		</td>
+	</tr>
+$$LOOP$$
+<tr>
+<td colspan="3"><p align="center"><input type="submit" value="Valider"></p></td>
+</tr>
+$$BFIN$$
+</table>
+</form>
+</body>
+</html>
