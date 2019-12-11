@@ -1,0 +1,221 @@
+$$IF!:6$7$8$11$12:ANNDETAIL:IDTYPEBIEN$$
+<div class="bloc-detail-reference">	
+
+	$$A:BAREME_URL=$$
+	$$A:BAREME_LIBELLE=$$
+
+	$$IF:ANNDETAIL:URL_DOCHONORAIRES$$
+		$$A:BAREME_URL=@@ANNDETAIL:URL_DOCHONORAIRES@@$$
+
+		$$IF:LIBELLE_BAREME_HONORAIRES$$
+			$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+		$$END$$
+
+		$$IF0:LIBELLE_BAREME_HONORAIRES$$
+			$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+		$$END$$
+	$$END$$
+
+	$$IF0:ANNDETAIL:URL_DOCHONORAIRES$$
+		$$IF:EXTENSION_BAREME_HONORAIRES$$
+			$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@ANNDETAIL:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+			$$IF:LIBELLE_BAREME_HONORAIRES$$
+				$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+			$$END$$
+
+			$$IF0:LIBELLE_BAREME_HONORAIRES$$
+				$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+			$$END$$
+		$$END$$
+	$$END$$
+
+	$$IF:BAREME_URL$$
+		<span class="pull-right padding-left-5 margin-top-neg-1 italic cursor-pointer margin-right-15">
+		  <a href="/z/webagency/A_ID3X/costimmobilier_40061/bareme/bareme_40061.pdf" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+		</span>
+		<span class="icon-v5-pdf pull-right margin-top-1"></span>
+	$$END$$
+</div>
+
+
+<div class="hidden-phone">
+	<p class="pagination-justify">
+		$$LG:ALUR_LOYER$$ : $$ANNDETAIL:PRIX formatnumber 0$$
+
+		$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+		$$END$$
+
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			&euro; $$LG:PARMOIS lcase$$ + $$LG:CHARGES lcase$$
+		$$END$$
+
+		$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+			$$END$$
+			$$IF0:ANNDETAIL:PX_CHARGES$$
+				$$IF:ANNDETAIL:CMPLTLOYER$$
+					&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+				$$END$$
+				$$IF0:ANNDETAIL:CMPLTLOYER$$
+					&euro; $$LG:PARMOIS lcase$$ + $$LG:CHARGES lcase$$
+				$$END$$
+			$$END$$
+		$$END$$
+
+		<br />
+
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$LG:DONT ncase$$ :
+		$$END$$
+
+		$$IF!:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:CMPLTLOYER$$
+				$$LG:DONT ncase$$ :
+			$$END$$
+
+			$$IF0:ANNDETAIL:CMPLTLOYER$$
+				$$IF:ANNDETAIL:PX_CHARGES$$
+					$$LG:DONT ncase$$ :
+				$$END$$
+			$$END$$
+		$$END$$
+	</p>
+
+	<ul class="margin-top-neg-7">
+		$$IF:ANNDETAIL:CMPLTLOYER$$<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_COMPLEMENTLOYER$$ : $$ANNDETAIL:CMPLTLOYER formatnumber 0$$ &euro;</li>$$END$$
+		
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_REMBOURSEMENTANNUELLOCATAIREJUSTIF$$</li>
+		$$END$$
+		
+		$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				<li class="margin-left-30" style="list-style: disc;">
+					$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						$$LG:ALUR_CHARGESFORFAITAIRES$$ : 
+					$$END$$
+
+					$$IF=:2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						$$LG:ALUR_PROVISIONSCHARGESREGULANNUELLE$$ : 
+					$$END$$
+
+					$$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro; 
+
+					$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						/ $$LG:MOIS lcase$$
+					$$END$$
+				</li>
+			$$END$$
+		$$END$$
+
+		$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				<li class="margin-left-30" style="list-style: disc;">$$LG:CHARGES$$ : $$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro;</li>
+			$$END$$
+		$$END$$
+	</ul>
+
+	$$IF:ANNDETAIL:HONORAIRESLOCATAIRE$$
+		<p class="pagination-justify">
+			$$LG:ALUR_HONORAIRESTTCLOCATAIRE$$ : $$ANNDETAIL:HONORAIRESLOCATAIRE formatnumber 0$$ &euro;
+			<br />
+			$$IF:ANNDETAIL:HONORAIRESETATLIEUX$$ $$LG:DONT ncase$$ : $$LG:ALUR_HONORAIRESTTCRESILIATIONETATLIEUX$$ : $$ANNDETAIL:HONORAIRESETATLIEUX formatnumber 0$$ &euro;$$END$$
+		</p>
+
+		
+	$$END$$
+</div>
+
+<div class="hidden-desktop">
+	<p class="pagination-justify">
+		$$LG:ALUR_LOYER$$ : $$ANNDETAIL:PRIX formatnumber 0$$ &euro; 
+
+		$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+		$$END$$
+
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			&euro; $$LG:PARMOIS lcase$$ + $$LG:CHARGES lcase$$
+		$$END$$
+
+		$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+			$$END$$
+			$$IF0:ANNDETAIL:PX_CHARGES$$
+				$$IF:ANNDETAIL:CMPLTLOYER$$
+					&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+				$$END$$
+				$$IF0:ANNDETAIL:CMPLTLOYER$$
+					&euro; $$LG:PARMOIS lcase$$ + $$LG:CHARGES lcase$$
+				$$END$$
+			$$END$$
+		$$END$$
+
+		<br />
+
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$LG:DONT ncase$$ :
+		$$END$$
+
+		$$IF!:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:CMPLTLOYER$$
+				$$LG:DONT ncase$$ :
+			$$END$$
+
+			$$IF0:ANNDETAIL:CMPLTLOYER$$
+				$$IF:ANNDETAIL:PX_CHARGES$$
+					$$LG:DONT ncase$$ :
+				$$END$$
+			$$END$$
+		$$END$$
+	</p>
+
+	<ul class="margin-top-neg-7">
+		$$IF:ANNDETAIL:CMPLTLOYER$$<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_COMPLEMENTLOYER$$ : $$ANNDETAIL:CMPLTLOYER formatnumber 0$$ &euro;</li>$$END$$
+		
+		$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_REMBOURSEMENTANNUELLOCATAIREJUSTIF$$</li>
+		$$END$$
+		
+		$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				<li class="margin-left-30" style="list-style: disc;">
+					$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						$$LG:ALUR_CHARGESFORFAITAIRES$$ : 
+					$$END$$
+
+					$$IF=:2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						$$LG:ALUR_PROVISIONSCHARGESREGULANNUELLE$$ : 
+					$$END$$
+
+					$$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro; 
+
+					$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+						/ $$LG:MOIS lcase$$
+					$$END$$
+				</li>
+			$$END$$
+		$$END$$
+
+		$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+			$$IF:ANNDETAIL:PX_CHARGES$$
+				<li class="margin-left-30" style="list-style: disc;">$$LG:CHARGES$$ : $$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro;</li>
+			$$END$$
+		$$END$$
+	</ul>
+
+	$$IF:ANNDETAIL:HONORAIRESLOCATAIRE$$
+		<p class="pagination-justify">
+			$$LG:ALUR_HONORAIRESTTCLOCATAIRE$$ : $$ANNDETAIL:HONORAIRESLOCATAIRE formatnumber 0$$ &euro;
+			<br />
+			$$IF:ANNDETAIL:HONORAIRESETATLIEUX$$ $$LG:DONT ncase$$ : $$LG:ALUR_HONORAIRESTTCRESILIATIONETATLIEUX$$ : $$ANNDETAIL:HONORAIRESETATLIEUX formatnumber 0$$ &euro;$$END$$
+		</p>
+	$$END$$
+</div>
+$$END$$
+
+<!--#include virtual="detail/incl_alur_other.htm" -->
