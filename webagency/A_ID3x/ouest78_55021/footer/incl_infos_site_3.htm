@@ -1,0 +1,99 @@
+<div class="h3-like nav-footer-titre"> 	<span class="icon-v5-info opacity-5"></span> <!--#include virtual="footer/incl_nom_agence.htm" --></div>
+<ul class="nav-footer nav nav-pills nav-stacked">
+	<li><!--#include virtual="footer/incl_plan_site.htm" --></li>
+	<li><a href="$$_$$bareme/mentions-legales.pdf" title="$$LG:MENTIONSLEG pcase$$" target="_blank">$$LG:MENTIONSLEG pcase$$</a></li>
+	
+	$$IF=:0:MULTIAGENCES$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO:1:1$$
+				$$A:BAREME_URL=$$
+				$$A:BAREME_LIBELLE=$$
+
+				$$IF:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+					$$A:BAREME_URL=@@COMPTE_AGENCES:URL_DOCHONORAIRES@@$$
+
+					$$IF:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+					$$END$$
+
+					$$IF0:LIBELLE_BAREME_HONORAIRES$$
+						$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+					$$END$$
+				$$END$$
+
+				$$IF0:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+					$$IF:EXTENSION_BAREME_HONORAIRES$$
+						$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@COMPTE_AGENCES:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+						$$IF:LIBELLE_BAREME_HONORAIRES$$
+							$$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+						$$END$$
+
+						$$IF0:LIBELLE_BAREME_HONORAIRES$$
+							$$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+						$$END$$
+					$$END$$
+				$$END$$
+
+				$$IF:BAREME_URL$$
+					<li>
+						<a href="$$BAREME_URL$$" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+					</li>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+	$$END$$
+
+	$$REM$$<!-- MANTIS 0000772 -->$$END:REM$$
+	$$IF!:1:POLIRISMASQUE$$
+		<li><!--#include virtual="footer/incl_realisation.htm" --></li>
+	$$END:POLIRISMASQUE$$
+	
+	<!--  Mantis 0000811 -->
+    $$IF!:1:SELOGERMASQUE$$
+	<li><!--#include virtual="footer/incl_seloger.htm" --></li>
+    $$END:SELOGERMASQUE$$
+	$$REM$$
+	<li><!--#include virtual="footer/incl_selogerpro.htm" --></li>
+	$$END$$
+</ul>
+$$IF=:1:SOCIAL$$
+$$IF!:0:SOCIALFOOTER$$
+<hr class="opacity-4 margin-top-5 margin-bottom-5">
+<div class="row-fluid social-footer">
+	<div class="span5 h3-like padding-top-10 padding-bottom-10"> $$LG:SUIVEZNOUS pcase$$</div>
+	<div class="span7 margin-top-5 margin-bottom-5 social-ico-footer display-inline $$IF:URL_DAILYMOTION$$big$$END$$">
+		$$IF:URL_FACEBOOK$$
+			<a href="$$URL_FACEBOOK$$" title="$$URL_FACEBOOK$$" target="_blank" class="facebook-footer"><i class="icon-v5-facebook-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-facebook$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_TWITTER$$
+			<a href="$$URL_TWITTER$$" title="$$URL_TWITTER$$" target="_blank" class="twitter-footer"><i class="icon-v5-twitter-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-twitter$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_GOOGLE_PLUS$$
+			<a href="$$URL_GOOGLE_PLUS$$" title="$$URL_GOOGLE_PLUS$$" class="googleplus-footer" target="_blank"><i class="icon-v5-googleplus-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-googleplus$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_LINKEDIN$$
+			<a href="$$URL_LINKEDIN$$" title="$$URL_LINKEDIN$$" class="linkedin-footer" target="_blank"><i class="v2-icon-v5-linkedin-circle bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-linkedin$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_VIADEO$$
+			<a href="$$URL_VIADEO$$" title="$$URL_VIADEO$$" class="viadeo-footer" target="_blank"><i class="v2-icon-v5-viadeo-circle bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-viadeo$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_PINTEREST$$
+		<a href="$$URL_PINTEREST$$" title="$$URL_PINTEREST$$" target="_blank"><i class="icon-v5-pinterest bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-pinterest$$END$$"></i></a>
+	   $$END$$
+    	$$IF:URL_TUMBLR$$
+    		<a href="$$URL_TUMBLR$$" title="$$URL_TUMBLR$$" target="_blank"><i class="icon-v5-tumblr-2 bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-tumblr$$END$$"></i></a>
+    	$$END$$
+		$$IF:URL_YOUTUBE$$
+			<a href="$$URL_YOUTUBE$$" title="$$URL_YOUTUBE$$" class="youtube-footer" target="_blank"><i class="icon-v5-youtube bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-youtube$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_DAILYMOTION$$
+			<a href="$$URL_DAILYMOTION$$" title="$$URL_DAILYMOTION$$" class="dailymotion-footer" target="_blank"><i class="icon-v5-dailymotion bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-dailymotion$$END$$"></i></a>
+		$$END$$
+		$$IF:URL_INSTAGRAM$$
+			<a href="$$URL_INSTAGRAM$$" title="$$URL_INSTAGRAM$$" class="instagram-footer" target="_blank"><i class="v2-icon-v5-instagram bigger$$IF=:1:COULEUR_SOCIAL$$ social-couleur-instagram$$END$$"></i></a>
+		$$END$$
+	</div>
+</div>
+$$END$$
+$$END$$
