@@ -1,0 +1,122 @@
+
+$$A:ANNONCEIMG=0$$
+
+$$IF:ANNLISTE:PHOTO_URL$$
+    $$A:ANNONCEIMG=@@ANNLISTE:PHOTO_URL@@$$
+$$END$$
+
+$$IF=:1:RECHERCHECOL$$
+    $$IF:ANNLISTE:FULLSIZE_URL$$
+        $$A:ANNONCEIMG=@@ANNLISTE:FULLSIZE_URL@@$$
+    $$END$$
+$$END$$
+
+$$IF=:1$2:RECHERCHECOL$$
+    $$IF:ANNLISTE:BIG_URL$$
+        $$A:ANNONCEIMG=@@ANNLISTE:BIG_URL@@$$
+    $$END$$
+$$END$$
+
+$$IF0:ANNONCEIMG$$
+    $$IF!:1:SANS_PHOTO_PERSO$$
+        $$A:ANNONCEIMG=@@~@@images/recherche/sans_photo.jpg$$
+    $$END$$
+    $$IF=:1:SANS_PHOTO_PERSO$$
+        $$A:ANNONCEIMG=@@_@@images/recherche/sans_photo.jpg$$
+    $$END$$
+$$END$$
+
+
+<div class="annonce" id="annonce$$ANNLISTE:IDANNONCE$$">
+
+    $$IF0:ANNLISTE:SIPANIER$$
+        $$REM$$<!-- AJOUT SELECTION -->$$END$$
+        <div class="bouton-ajouter-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$">
+            <i class="mf-icon-star"></i>
+        </div>
+    $$END$$
+
+
+    <a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+
+        <div class="annonce-img$$IF=:1:PHOTORECHERCHENORESIZE$$ annonce-img-noresize$$END$$" style="background-image: url($$ANNONCEIMG$$);">
+
+            $$IF0:ANNLISTE:SIPANIER$$
+                $$IF!:1:PICTOANNONCELISTHOME$$
+                    <!--#include virtual="recherche/mobilefirst/incl_recherche_tags.htm" -->
+                $$END$$
+            $$END$$
+        </div>
+
+        <div class="annonce-content">
+            <div class="annonce-content-left">
+                <h3 class="annonce-type">
+                    <span class="annonce-typetransaction">
+                        $$IF!:9$10:FORM:IDTT$$
+                            $$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                    </span>
+                    <!--#include virtual="recherche/mobilefirst/incl_type_bien.htm" -->
+                    <!--#include virtual="recherche/mobilefirst/incl_type_viager.htm" -->
+                </h3>
+                <div class="annonce-specs">
+                    $$IF:ANNLISTE:SURFACE$$
+                        <span class="annonce-surface"><!--#include virtual="recherche/mobilefirst/incl_surface.htm" --></span>
+                    $$END$$
+                    $$IF:ANNLISTE:NB_PIECES$$
+                        <span class="annonce-pieces">
+                            $$IF:ANNLISTE:SURFACE$$ - $$END$$<!--#include virtual="recherche/mobilefirst/incl_pieces.htm" -->
+                            $$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                        </span>
+                    $$END$$
+                    $$IF0:ANNLISTE:SURFACE$$
+                        $$IF0:ANNLISTE:NB_PIECES$$
+                             -
+                        $$END$$
+                    $$END$$
+                </div>
+                <h4 class="annonce-ville">
+                    <i class="mf-icon-localisation typo-action"></i>&nbsp;
+                    <!--#include virtual="recherche/mobilefirst/incl_villes.htm" -->
+                </h4>
+            </div>
+            <div class="annonce-content-right">
+                $$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+                    <!--#include virtual="recherche/mobilefirst/incl_prix.htm" -->
+                $$END$$
+                <!--#include virtual="recherche/mobilefirst/incl_refannonce.htm" -->
+            </div>
+        </div>
+    </a>
+    <!-- CAFPI -->
+
+    <div>
+$$IF=:2$8$6$10$9$5$11:ANNLISTE:IDTYPETRANSACTION$$
+   $$A:PRIXANN=@@ANNLISTE:PRIX replace , .@@$$
+   $$IF0:PRIX$$
+   $$A:PRIX=@@ANNLISTE:PRIX replace , .@@$$
+   $$END$$
+   <script>
+      $(window).ready(function(){
+          var taux = "$$TAUX replace &nbsp; ¤ $$";
+          var prix = "$$PRIXANN replace &nbsp; ¤ $$";
+          var nmensualite = "$$NMENSUALITE$$";
+          var dureeemprunt = "$$DUREEEMPRUNT$$";
+          var idAnnonce = "$$ANNLISTE:IDANNONCE$$";
+          calculMensualite(taux,prix,nmensualite,dureeemprunt,idAnnonce);
+      });
+   </script>
+<span class="annonces-taux smaller italic"><i class="icon-v5-arrow-right-5"></i>&nbsp; J'emprunte avec Cafpi à <span class="mensualite-$$ANNLISTE:IDANNONCE$$"></span> &euro;/mois **</span>
+
+$$END$$
+    </div>
+    $$IF:ANNLISTE:SIPANIER$$
+        <div class="hidden-phone">
+            $$IF=:PACK2$PACK3:TYPE_OFFRE$$
+                <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-comparer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"><i class="mf-icon-star"></i> $$LG:AJOUTCOMPARAISON pcase$$</div>
+            $$END$$
+            <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-supprimer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"><i class="mf-icon-close"></i> $$LG:SUPPRIMERSELEC pcase$$</div>
+        </div>
+    $$END$$
+</div>
+
