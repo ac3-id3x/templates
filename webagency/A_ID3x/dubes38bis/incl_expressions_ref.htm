@@ -1,0 +1,137 @@
+$$REM$$<!--
+=========================================================
+//// <summary>Page qui définie les expressions par défaut des balises TITLE et META</summary>
+//// <remarks>apparaît seulement si le site a un de contrat de réf ou TDL en cours</remarks>
+//// <remarks>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</remarks>
+//// <remarks>si vous n'avez pas besoin des commentaires, effacez les, vous gagnerez des sauts de ligne dans le code source</remarks>
+//// <update date="2009-03-30" author="lisbonne.siriphol">Adaptation pour franchise Laforêt</update>
+=========================================================
+-->$$END$$
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// Eléments de réf du HEADER ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Au dessus du marquee : "Immobilier + DEP" -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:ACCROCHE:CP$$$$BIF:ACCROCHE$$$$DO$$
+$$A:HEADERACCROCHE=@@LG:IMMOBILIER@@ @@ACCROCHE:CP cp2dep@@$$
+$$LOOP$$$$BFIN$$
+
+
+$$REM$$<!-- ======================================================================================
+//////////////////////////// Expressions contenues dans alt et title /////////////////////////////
+=====================================================================================-->$$END:REM$$
+$$A:EXPRESSION1=achat maison Bourgoin Jallieu$$
+$$A:EXPRESSION2=appartement Nord Isere$$
+$$A:EXPRESSION3=immobilier Bourgoin$$
+$$A:EXPRESSION4=Immobilier La Verpilli&egrave;re$$
+$$A:EXPRESSION5=achat maison l'Isle d'abeau$$
+$$A:EXPRESSION6=achat maison Villefontaine$$
+$$A:EXPRESSION7=agence immobiliere la Verpilli&egrave;re$$
+$$A:EXPRESSION8=$$
+$$A:EXPRESSION9=$$
+
+
+$$REM$$<!-- ======================================================================================
+////////////////////// Exemples sans les dollars sinon ça fait tout sauter ///////////////////////
+==================================================================================================
+
+================== exemple de conditionnement balises meta TITLE, DESCRIPTION, KEYWORDS =========
+	IF=:INDEX:PAGE:IDT
+		A:PAGE:TITR=
+		A:PAGE:DESCREF=
+		A:PAGE:KEYWORDS=
+	END
+	
+========================= exemple de conditionnement sur IDPUBLICATION  =========================
+	IF=:CTC:PAGE:IDT
+		IF=:346519:REP:1
+			A:PAGE:TITR=
+			A:PAGE:DESCREF=
+			A:PAGE:KEYWORDS=
+		END
+	END
+
+==================================== tout est dans la query  ====================================
+	nommer directement la page							IF=:IMMOBILIER.HTM:REP:0
+	le numéro de page												IF=:1:IMMOBW:ANN:QRY:PAGE
+	l'idtt																	IF=:2:FORM:IDTT
+	code insee															IF=:123456:FORM:CI
+	coup de coeur														IF=:1:FORM:SI_COUPDECOEUR	
+	
+====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- ================== avec annonces et/ou liens vers annonces ================= -->$$END:REM$$
+$$REM$$<!--  index.htm > IDT=INDEX -->$$END:REM$$
+$$REM$$<!--  immobilier.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  résultat géoloc / map,recherche.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  recherche,...htm > IDT=RESULTATS -->$$END:REM$$
+$$REM$$<!--  detail,...htm > IDT=DETAILANNONCE -->$$END:REM$$
+$$REM$$<!--  rss.htm > IDT=RSS -->$$END:REM$$
+
+$$REM$$<!-- ============================== formulaires ============================== -->$$END:REM$$
+$$REM$$<!--  acheter.htm > IDT=ACHETER -->$$END:REM$$
+$$REM$$<!--  louer.htm > IDT=LOUER -->$$END:REM$$
+$$REM$$<!--  message.htm > IDT=CTC -->$$END:REM$$
+$$REM$$<!--  estimation.htm > IDT=ESTIM -->$$END:REM$$
+
+$$REM$$<!-- ============================== pages de contenu ============================== -->$$END:REM$$
+$$REM$$<!--  agence-immobiliere.htm > IDT=AGENCEIMMOBILIERE -->$$END:REM$$
+$$REM$$<!--  notre-agence-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  nos-agences-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  gestion.htm > IDT=GESTION -->$$END:REM$$
+$$REM$$<!--  annuaire-laforet.htm > IDT=ANNUAIRELAFORET -->$$END:REM$$
+$$REM$$<!--  plan.htm > IDT=PLAN -->$$END:REM$$
+$$REM$$<!--  contrat-privilege-laforet.htm > IDT=CONTRATPRIV -->$$END:REM$$
+$$REM$$<!--  guide-pratique.htm > IDT=GUI -->$$END:REM$$
+$$REM$$<!--  mentions.htm > IDT=MENTIONS -->$$END:REM$$
+
+
+$$IF=:INDEX:PAGE:IDT$$
+	$$A:PAGE:TITR=Immobilier bourgoin, Immobilier La Verpilli&egrave;re, immobilier L'Isle d'Abeau, agence immobiliere laforet : appartement Nord Isere, achat maison Bourgoin Jallieu, maison villefontaine, programmes neufs$$
+	$$A:PAGE:DESCREF=Consultez toutes nos dernieres annonces immobilieres d'achat appartement, achat maison villefontaine, vente immobilier Bourgoin Jallieu, la verpilli&egrave;re, L'Isle d'Abeau et Nord Isere.$$
+	$$A:PAGE:KEYWORDS=Vente appartement bourgoin jallieu, immobilier la Verpilli&egrave;re, L'Isle d'Abeau achat appartement nord isere, annonces immobilieres bourgoin, achat maison nord isere, achat maison villefontaine, vente appartement bourgoin jallieu$$
+$$END$$
+
+$$IF=:ACHETER:PAGE:IDT$$
+	$$A:PAGE:TITR=Vente appartement Nord Isere, achat maison villefontaine, Achat immobilier Bourgoin Jallieu, La Verpilli&egrave;re, L'isle d'Abeau$$
+	$$A:PAGE:DESCREF=Retrouvez en ligne toutes nos annonces immobilieres de vente appartement nord isere et Bourgoin Jallieu,L'isle d'Abeau$$
+	$$A:PAGE:KEYWORDS=vente appartement bourgoin jallieu, L'isle d'Abeau, achat appartement nord isere, annonces immobilieres bourgoin, achat maison nord isere, vente appartement bourgoin jallieu$$
+$$END$$
+
+$$IF=:LOUER:PAGE:IDT$$
+	$$A:PAGE:TITR=LOCATION MAISON Bourgoin Jallieu, L'Isle d'Abeau, LOCATION IMMOBILIER NORD ISERE$$
+	$$A:PAGE:DESCREF=Decouvrez en ligne sur notre site immobilier, toutes nos offres de location maison et appartement.$$
+	$$A:PAGE:KEYWORDS=Location appartement nord isere, annonces immobilieres, location bien immobilier bourgoin jallieu, location maison bourgoin jallieu, location immobilier nord isere.$$
+$$END$$
+
+$$IF=:AGENCES:PAGE:IDT$$
+	$$A:PAGE:TITR=Agence immobiliere Bourgoin Jallieu - Agence immobiliere la Verpilli&egrave;re : Laforet immobilier Bourgoin Jallieu, la Verpilli&egrave;re$$
+	$$A:PAGE:DESCREF=LAFORET immobilier Bourgoin Jallieu et la Verpilli&egrave;re mettent &agrave; votre disposition les outils les plus modernes et performants pour la vente de votre maison ou appartement en Nord Is&egrave;re.$$
+	$$A:PAGE:KEYWORDS=agence immobiliere la Verpilli&egrave;re, Bourgoin, vente appartement bourgoin jallieu, achat appartement nord isere, annonces immobilieres bourgoin, achat maison nord isere, vente appartement bourgoin jallieu$$
+$$END$$
+
+
+$$IF=:AGENCE-IMMOBILIERE.HTM:REP:0$$
+$$A:PAGE:TITR=Agence immobili&egrave;re @@CV:VILLE ncase@@, agence immo @@CV:VILLE ncase@@, cabinet immobilier @@CV:VILLE ncase@@ : agence Laforet @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+$$A:PAGE:DESCREF=Agence immobili&egrave;re @@VILLE_AGENCE@@ : L' agence immobili&egrave;re Laforet &agrave; @@VILLE_AGENCE@@, sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@ vous propose de nombreux biens immobiliers a la vente et a la location sur @@VILLE_AGENCE@@$$ 
+$$A:PAGE:KEYWORDS=Agence immobili&egrave;re @@VILLE_AGENCE@@, agence immo @@VILLE_AGENCE@@, cabinet immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+$$IF=:PLAN:PAGE:IDT$$
+	$$A:PAGE:TITR=ANNONCES IMMOBILIERES Bourgoin Jallieu, IMMOBILIER NORD ISERE$$
+	$$A:PAGE:DESCREF=Toutes nos annonces immobilieres d'achat, vente et location immobilier sont disponibles sur notre agence immobiliere.$$
+	$$A:PAGE:KEYWORDS=vente appartement bourgoin jallieu, achat appartement nord isere, annonces immobilieres bourgoin, achat maison nord isere, vente appartement bourgoin jallieu$$
+$$END$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+	$$A:PAGE:TITR=VENTE IMMOBILER BOURGOIN, ACHAT IMMOBILIER LA VERPILLIERE, L'ISLE D'ABEAU, NORD ISERE$$
+	$$A:PAGE:DESCREF=Consultez toutes nos annonces d'achat et vente immobilier sur bourgoin, la verpilli&egrave;re, l'Isle d'Abeau et nord isere.$$
+	$$A:PAGE:KEYWORDS=vente appartement bourgoin jallieu, achat maison villefontaine, achat appartement nord isere, l'isle d'Abeau annonces immobilieres bourgoin, achat maison nord isere, vente appartement bourgoin jallieu$$
+$$END$$
+
+$$IF=:PUDIMMOBILIER:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier @@FORM:CI codeinsee2ville field 1@@, immobilier @@FORM:CI codeinsee2ville field 1@@$$
+$$A:PAGE:DESCREF=L'immobilier sur le secteur de @@FORM:CI codeinsee2ville field 1@@ : toutes nos derni&egrave;res annonces   immobilieres sur @@FORM:CI codeinsee2ville field 1@@$$
+$$A:PAGE:KEYWORDS=Immobilier, annonces immobilieres, vente appartement, maison @@FORM:CI codeinsee2ville field 1@@$$
+$$END$$
