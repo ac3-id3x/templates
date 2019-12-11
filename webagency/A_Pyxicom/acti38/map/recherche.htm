@@ -1,0 +1,81 @@
+$$REM$$
+====================================================================
+
+//// <summary>Fichier affichant la carte de géolocalisation Miscrosoft.</summary>
+//// <remarks>
+//// <para>La commercialisation du produit doit être lancée rapidement, donc les buggs ne seront pas une surprise</para>
+//// </remarks>
+//// <update date="2007-11-12" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2007-11-12" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2007-11-12" author="isabelle.padrutt">Validation référencement en cours</update>
+//// <update date="2007-11-12" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+
+$$B:IMMOBW:DICHOARRBIS:ALIAS:DICH$$$$BIF:DICH$$ $$DO$$ $$LOOP$$ $$BFIN$$
+$$IF:DICH:LATITUDE$$
+$$A:ONLOAD=1$$
+$$END$$
+$$IF:1_DICH:LATITUDE$$
+$$A:ONLOAD=1$$
+$$END$$
+$$IF:1_DICH:LA1$$
+$$A:ONLOAD=1$$
+$$END$$
+$$IF0:ONLOAD$$
+$$A:LAT=45$$
+$$A:LNG=6$$
+$$A:ZOOM=8$$
+$$A:ONLOAD=1$$
+$$END$$
+$$IF:ONLOAD$$
+$$IF0:LAT$$
+$$A:LAT=@@1_DICH:LATITUDE replace , .@@$$
+$$A:LNG=@@1_DICH:LONGITUDE replace , .@@$$
+$$END$$
+$$IF:FORM:LAT$$
+$$A:LAT=@@FORM:LAT@@$$
+$$A:LNG=@@FORM:LNG@@$$
+$$END$$
+$$A:ONLOAD=mapInit({lat:'@@LAT@@',lng:'@@LNG@@',div:'map',
+la1:'@@1_DICH:LA1 replace , .@@',
+la2:'@@1_DICH:LA2 replace , .@@',
+lo1:'@@1_DICH:LO1 replace , .@@',
+lo2:'@@1_DICH:LO2 replace , .@@',
+surf:'@@1_DICH:SUPERFICIE replace , .@@',zoom:'@@ZOOM@@',dep:'@@1_DICH:DEP@@'});$$
+$$END$$
+$$IF:ONLOAD$$
+$$A:UNLOAD=UnloadMap()$$
+$$END$$
+
+$$INCL:HAUT.HTM$$
+<script language="javascript" type="text/javascript">
+	<!--
+	var urlpreliste='/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm';
+	var queryprelistesansgeo='$$REP:QRY removeqry kw removeqry gclid removeqry immobw_ann_qrypg removeqry ci removeqry cp removeqry div removeqry sdiv removeqry sdiv1 removeqry sdiv2 escape$$';
+	//-->
+</script>
+
+<div id="ongletgeoloc">
+	<span><a href="http://$$REP:RSRV$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="">
+		$$IF=:FR:LANGUE$$Modifier mes crit&egrave;res$$END$$
+		$$IF=:EN:LANGUE$$Change my criteria$$END$$</a>
+	</span>
+	<a href="recherche,panorama.htm?$$REP:QRY$$" title=""><img src="$$_$$images/ongletliste-gris.gif" /></a>
+	<img src="$$_$$images/ongletcarte-rouge.gif" />
+</div>
+
+<div id="MapMicrosoft">
+	<div id="MapHead">
+		<h3>Carte de g&eacute;olocalisation</h3>
+		<p>La carte de g&eacute;olocalisation permet d'effectuer une recherche immobili&egrave;re plus cibl&eacute;e.<br />
+		Vous pouvez maintenant visualiser votre futur appartement ou future maison selon son emplacement g&eacute;ographique.</p>
+		<h4>$$LG:VOTRERECHERCHE pcase$$ : $$FORM:IDTT gettypetransaction lcase$$$$IF:FORM:IDTYPEBIEN$$, $$FORM:IDTYPEBIEN gettypebien lcase$$$$END$$</h4>	
+	</div>
+	<div id="map" style="width:$$MAPWIDTH$$;$$IF:MAPHEIGHT$$ height:$$MAPHEIGHT$$;$$END:MAPHEIGHT$$"></div>
+	<div id="infoWindow"></div>
+	<h6>D&eacute;placez-vous sur la carte gr&acirc;ce &agrave; la souris, et scrollez pour zoomer sur le quartier du bien immobilier que vous souhaitez localiser.</h6>
+</div>
+$$INCL:BAS.HTM$$
+$$SET:PAGE:IDT=RECHERCHEMAP$$
