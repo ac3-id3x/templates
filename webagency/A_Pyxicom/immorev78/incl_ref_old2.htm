@@ -1,0 +1,180 @@
+$$REM$$
+
+//// <summary>page pour definir les balises metas pour le ref </summary>
+///  <summary>et les expressions a utiliser dans les alt et title </summary> 
+///  <summary>et pour declarer les variables d'affichage des infos agences</summary> 
+//// <remarks>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</remarks>
+//// <remarks>Enlever le commentaire lors du remplissage des metas</remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-16-07" author="christophe.ledoux">Creation v2</update>
+//// <update date="2009-10-16" author="laurence.moyer">mise en place des expressions - pas de contrat de ref naturel</update>
+
+$$END$$
+
+
+
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$  
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+
+
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL formattel@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX formattel@@$$
+
+
+
+
+<!-- EXPRESSIONS ALT + TITLE --> 
+
+
+<!-- OBLIGATOIRE definition des expressions pour les alt et title (même si pas d'option de ref !) A modifier selon cahier des charges ou laisser en auto si pas de réf -->
+
+
+$$SET:EXPRESSION1=Agence immobiliere Immo'Rev$$
+$$SET:EXPRESSION2=Estimation immobiliere Saint Germain en Laye$$
+$$SET:EXPRESSION3=Location appartement Saint Germain en Laye$$
+$$SET:EXPRESSION4=Agence immobiliere Immo'Rev$$
+$$SET:EXPRESSION5=Estimation immobiliere Saint Germain en Laye$$
+$$SET:EXPRESSION6=Location appartement St Germain en Laye$$
+
+
+
+
+<!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> 
+
+$$SET:PAGE:TITR=Agence immobiliere Immo'Rev -  Locations appartement St Germain en Laye - Estimation immobiliere Saint Germain en Laye$$
+$$SET:PAGE:DESCREF=Locations appartement, estimation de biens immobiliers et vente sur St Germain en Laye avec l'agence immobilière IMMO'REV$$
+$$SET:PAGE:KEYWORDS=Estimation immobiliere, location appartement st germain en laye, agence immobiliere immo'rev$$
+
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere Immo'Rev - Estimation immobiliere Saint Germain en Laye - Locations appartement St Germain en Laye$$
+$$A:PAGE:DESCREF=L'agence immobiliere Immo'Rev specialiste de l'immobilier sur St Germain en Laye (estimation immobiliere, location appartement st germain en Laye)$$
+$$A:PAGE:KEYWORDS=agence immobiliere Immo'rev, locations appartement Saint germain en Laye, estimation immobiliere St germain en Laye$$
+$$END$$
+
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobili&egrave;re Immo'Rev - @@SRV@@$$
+$$A:PAGE:DESCREF=L'agence immobili&egrave;re Immo'Rev &agrave; 36 rue du Belv&eacute;d&egrave;re, 78750 Mareil Marly (Tel:0174137732) sp&eacute;cialiste de l'immobilier &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=agence immobili&egrave;re Immo'Rev @@VILLE_AGENCE@@, @@SRV@@$$
+$$END$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=Estimation immobiliere Saint germain en Laye - Agence Immo'Rev$$
+$$A:PAGE:DESCREF=Estimation immobiliere sur Saint Germain en Laye de votre appartement, maison en location, en vente sur St Germain en Laye et ses environs$$
+$$A:PAGE:KEYWORDS=Estimation immobiliere saint Germain en laye, agence immo'rev$$
+$$END$$
+
+
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=Agence Immo'Rev - Message$$
+$$A:PAGE:DESCREF=Laissez votre message a l'agence immobiliere Immo'Rev pour toute demande d'informations concernant ses annonces immobilieres sur St Germain en Laye$$
+$$A:PAGE:KEYWORDS=agence immo'rev, message$$
+$$END$$
+
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence immobiliere @@NOM_AGENCE@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+
+
+$$IF!:FR:LANGUE$$
+$$A:PAGE:TITR=Real Estate Immo'Rev$$
+$$A:PAGE:DESCREF=Immo'Rev Mareil Marly$$
+$$A:PAGE:KEYWORDS=Real Estate Immo'Rev Mareil Marly$$
+$$END$$
+
+
+$$REM$$ 
+
+<!-- AUTRES PAGES SI OPTI --> 
+
+
+$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:COMMERCE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:ALERTIMMO:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:LOC:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VEN:PAGE:IDT$$
+$$A:PAGETITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:OFFRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:NOTAIRE:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+$$IF=:VIAGER:PAGE:IDT$$
+$$A:PAGE:TITR=expression_clé_pertinente$$
+$$A:PAGE:DESCREF=descriptif_pertinent$$
+$$A:PAGE:KEYWORDS=mots-cles_pertinents$$
+$$END$$
+
+$$END$$
+
+
+
+
+
