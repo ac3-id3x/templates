@@ -1,0 +1,228 @@
+$$A:JS_OWL=1$$
+$$A:JS_ANNONCES-18=1$$
+
+$$BIF0:ANNONCESHOME$$
+    <div class="row-fluid">
+        <div class="span12 pagination-centered">
+            <h2 class="section-ttl">
+                $$LG:NOBIENDISPO pcase$$
+            </h2>
+            <p><a href="/moteur,recherche.htm" title="$$LG:RECHERCHER pcase$$" class="btn btn-action module-annonces-btn">$$LG:RECHERCHER pcase$$</a></p>
+        </div>
+    </div>
+$$BFIN$$
+
+$$BIF:ANNONCESHOME$$
+
+    $$REM$$<!-- TITRE -->$$END$$
+    $$IF:H2_INDEX_MODULE$$
+        <div class="row-fluid">
+        	<div class="span4">
+        		<hr class="margin-top-30 hidden-phone">
+        	</div>
+        	<div class="span4 pagination-centered typo-important">
+        		<h2 class="section-ttl section-ttl-module">
+                    $$H2_INDEX_MODULE$$
+                </h2>
+        	</div>
+        	<div class="span4">
+        		<hr class="margin-top-30 hidden-phone">
+        	</div>
+            <!--<div class="span10">
+                <h2 class="section-ttl">
+                    $$H2_INDEX_MODULE$$
+                </h2>
+            </div>
+            <div class="span2">
+                $$IF:BOUTON_MODULE_LINK$$
+                    <a href="$$BOUTON_MODULE_LINK$$" title="$$BOUTON_MODULE_LABEL$$" class="btn btn-block btn-large btn-action module-annonces-btn">$$BOUTON_MODULE_LABEL$$</a>
+                $$END$$
+                $$IF0:BOUTON_MODULE_LINK$$
+                    <a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$IDTTMODULE$$&$$QUERYMODULE removeqry photo htmlencode$$" class="btn btn-block btn-action module-annonces-btn" title="$$LG:BOUTON_MODULE_LABEL pcase$$">$$BOUTON_MODULE_LABEL$$</a>
+                $$END$$
+            </div>-->
+        </div>
+    $$END$$
+
+    <div class="module-annonces">
+
+        <div class="module-annonces-items$$IF0:ROTATION_MODULE$$ module-annonces-fixe-$$SIZEMODULE$$$$END$$ owl-carousel">
+            $$DO$$
+                $$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+                $$IF:ANNONCESHOME:PHOTOURL0$$
+                    $$A:MODULEIMG=@@ANNONCESHOME:PHOTOURL0@@$$
+                $$END$$
+                $$IF0:ANNONCESHOME:PHOTOURL0$$
+                    $$IF!:1:SANS_PHOTO_PERSO$$
+                        $$A:MODULEIMG=@@~@@images/recherche/sans_photo.jpg$$
+                    $$END$$
+                    $$IF=:1:SANS_PHOTO_PERSO$$
+                        $$A:MODULEIMG=@@_@@images/recherche/sans_photo.jpg$$
+                    $$END$$
+                $$END$$
+
+                $$REM$$
+                $$IF0:ROTATION_MODULE$$
+                    $$IF=:1:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+                        <div class="row-fluid">
+                    $$END$$
+                $$END$$
+                $$END$$
+
+                <div class="module-annonces-item">
+                    <a href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+
+                        <div class="module-annonces-img" style="background-image: url($$MODULEIMG$$);">
+                            $$IF!:0:PICTOANNONCE$$
+                                <div class="module-tags">
+                                    $$IF:ANNONCESHOME:SI_EXCLUSIF$$
+                                        <div class="module-tag module-tag-exclu">
+                                            $$LG:EXCLUSIVITE pcase$$
+                                        </div>
+                                    $$END$$
+                                    $$IF:ANNONCESHOME:SI_COUPDECOEUR$$
+                                        <div class="module-tag module-tag-cdc">
+                                            $$LG:COUPDECOEUR pcase$$
+                                        </div>
+                                    $$END$$
+                                    $$IF+:FRAICHEUR:ANNONCESHOME:DT_CREA datediff now timespan days$$
+                                        <div class="module-tag module-tag-new">
+                                            $$LG:NEWCOURT pcase$$
+                                        </div>
+                                    $$END$$
+                                </div>
+                            $$END$$
+                            $$IF:ANNONCESHOME:ID360$$
+                                <div class="module-tag module-tag-360">
+                                    $$LG:VISITEVIRTUELLE pcase$$
+                                </div>
+                            $$END$$
+                            $$IF:ANNONCESHOME:360_URL$$
+                                <div class="module-tag module-tag-360">
+                                    $$LG:VISITEVIRTUELLE pcase$$
+                                </div>
+                            $$END$$
+                        </div>
+
+                        <div class="module-annonces-content">
+                            <div class="module-annonces-content-left">
+                                <div class="module-annonces-type">
+                                    <span class="module-annonces-typetransaction">$$ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase$$</span>
+                                    $$ANNONCESHOME:IDTYPEBIEN gettypebien$$
+                                </div>
+                               <div class="module-annonces-specs">
+                                    $$IF:ANNONCESHOME:SURFACE$$
+                                        <span class="module-annonces-surface">
+                                            $$IF!:EN:LANGUE$$$$ANNONCESHOME:SURFACE$$ m² $$END$$
+                                            $$IF=:EN:LANGUE$$ $$ANNONCESHOME:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+                                        </span>
+                                    $$END$$
+                                    $$IF:ANNONCESHOME:NB_PIECES$$
+                                        <span class="module-annonces-pieces">
+                                            $$IF:ANNONCESHOME:SURFACE$$ - $$END$$
+                                            $$IF:ANNONCESHOME:NB_PIECES$$
+                                                $$ANNONCESHOME:NB_PIECES$$
+                                            $$END$$
+                                            $$IF0:ANNONCESHOME:NB_PIECES$$
+                                                N/A
+                                            $$END$$
+                                            $$IF=:1:ANNONCESHOME:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNONCESHOME:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                                        </span>
+                                    $$END$$
+                                </div>
+                                <div class="module-annonces-ville">
+                                    $$IF:ANNONCESHOME:VILLE$$
+                                        <i class="mf-icon-localisation typo-action"></i>&nbsp;
+                                        $$ANNONCESHOME:VILLE$$
+                                    $$END$$
+                                    $$IF!:1:CPHIDDEN$$
+                                        $$IF:ANNONCESHOME:CP$$($$ANNONCESHOME:CP$$)$$END$$
+                                    $$END$$
+                                </div>
+                            </div>
+                            <div class="module-annonces-content-right">
+
+                                $$IF=:0:PRIXMASQUE$$
+                                    $$IF:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                                        <div class="module-annonces-prix module-annonces-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                                    $$END$$
+                                    $$IF0:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                                        $$IF:ANNONCESHOME:PRIX$$
+                                            <div class="module-annonces-prix">
+                                                $$ANNONCESHOME:PRIX formatnumber 0$$ $$ANNONCESHOME:PRIX_UNITE$$
+                                                $$IF=:1:HONORAIRESINCLUS$$
+                                                    <abbr class="small" title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>
+                                                $$END$$
+                                                $$IF:ANNONCESHOME:PX_RENTE$$
+                                                    <br><span class="small">$$LG:RENTE pcase$$ : </span>$$ANNONCESHOME:PX_RENTE formatnumber 0$$ $$LG:EUROMOIS$$
+                                                $$END$$
+                                            </div>
+                                        $$END$$
+                                    $$END$$
+                                $$END$$
+                                $$IF=:1:PRIXMASQUE$$
+                                    <div class="module-annonces-prix annonce-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                                $$END$$
+
+                                <div class="module-annonces-ref">
+                                    $$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$
+                                        <span class="module-annonces-ref-lgd">$$LG:REFER pcase$$ </span>
+                                    $$END$$
+                                    $$ANNONCESHOME:REFANNONCE$$
+                                </div>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+
+                $$REM$$
+                $$IF0:ROTATION_MODULE$$
+                    $$IF=:0:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+                        </div>
+                    $$END$$
+                $$END$$
+                $$END$$
+
+            $$LOOP$$
+        </div>
+
+    </div>
+    <div class="row-fluid margin-top-40">
+    	<div class="span4">
+    		&nbsp;
+    	</div>
+    	<div class="span4 pagination-centered typo-important">    		
+            $$IF:BOUTON_MODULE_LINK$$
+                <a href="$$BOUTON_MODULE_LINK$$" title="$$BOUTON_MODULE_LABEL$$" class="btn btn-block btn-large btn-action module-annonces-btn">$$BOUTON_MODULE_LABEL$$</a>
+            $$END$$
+            $$IF0:BOUTON_MODULE_LINK$$
+                <a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$IDTTMODULE$$&$$QUERYMODULE removeqry photo htmlencode$$" class="btn btn-block btn-action module-annonces-btn" title="$$LG:BOUTON_MODULE_LABEL pcase$$">$$BOUTON_MODULE_LABEL$$</a>
+            $$END$$            
+    	</div>
+    	<div class="span4">
+    		&nbsp;
+    	</div>
+    </div>
+
+$$BFIN$$
+
+<script>
+    var $module_items = $$SIZEMODULE$$;
+    $$IF0:ROTATION_MODULE$$
+        var $module_state = 'fixed';
+    $$END$$
+    $$IF=:1:ROTATION_MODULE$$
+        var $module_state = 'rotate';
+    $$END$$
+    $$IF0:SPEED_MODULE$$
+        var $module_autoplay = false;
+        var $module_autoplay_delay = 0;
+        var $module_autoplay_stop = false;
+    $$END$$
+    $$IF:SPEED_MODULE$$
+        var $module_autoplay = true;
+        var $module_autoplay_delay = $$SPEED_MODULE$$;
+        var $module_autoplay_stop = true;
+    $$END$$
+</script>
