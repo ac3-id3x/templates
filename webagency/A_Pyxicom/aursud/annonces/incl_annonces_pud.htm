@@ -1,0 +1,66 @@
+$$REM$$
+====================================================================
+
+//// <summary> Appelé par :Pud page unique de destination à l'usage du référencement</summary>
+//// <remarks>
+//// <para> la page pud_agence ou pud_immobilier sont appelées par la page suivante : slagence_X_V2/pud.htm?kw=agenceimmobiliere+Geo : </para>
+//// <para>Utilise le style css : slagence_X_V2/styles,pud.css et /styles,annonces_pud.css</para>
+//// <para>Utilise la liste des dernières d'annonces slagence_X_V2/annonces/incl_annonces_pud_immo.htm</para>
+//// <para>Utilise les coordonnées agences défilantes  slagence_X_V2/includes/incl_coord_agence_pud.htm</para>
+//// <para>Utilise les formulaires  slagence_X_V2includes/incl_forms_pud.htm</para>
+//// </remarks>
+//// <update date="2008-08-13" author="christophe.ledoux">Création v1</update>
+//// <update date="2008-08-13" author="christophe.ledoux">Validation HTML/CSS</update>
+//// <update date="2008-08-13" author="Ravi Horner,damien.robert">Validation oK</update>
+
+
+====================================================================
+$$END$$
+<!--#include virtual="/incl_choix_wag_style.htm" -->
+<div id="Annonces01">
+	$$IF=:PUDAGENCE:PAGE:IDT$$
+	<h1>Les derni&egrave;res annonces de notre agence immobili&egrave;re : $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>
+	$$END$$
+	$$IF=:PUDIMMOBILIER:PAGE:IDT$$
+	<h1>Immobilier $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$ : Nos derni&egrave;res annonces</h1>
+	<!--<h2>Nos derni&egrave;res annonces sur le secteur de $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$ :</h2>-->
+	$$END$$
+	$$IF=:PUDANNONCES:PAGE:IDT$$
+	<h1>Nos derni&egrave;res annonces sur le secteur de $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>
+	$$END$$
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVENTES:2:FR:::::d_dt_maj:~LIMIT:VAL:NBANNVENTES$$	
+	$$BIF:ANNVENTES$$
+	<!-- ventes immobilieres -->
+	<!--<h2>	Nos derniers biens trouv&eacute;s et vendus sur $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$ pour nos clients.</h2>-->
+	$$DO$$
+	
+	$$IF:PAGE:WAG_STYLE_DETAIL$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNVENTES:IDPUBLICATION@@/@@ANNVENTES:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm$$$$END$$
+	$$IF0:PAGE:WAG_STYLE_DETAIL$$$$A:LIENDETAIL=@@URLBASE@@/@@ANNVENTES:IDPUBLICATION@@/@@ANNVENTES:IDANNONCE@@/plus_annonce_full.htm$$$$END$$
+	<div class="ann_ctn idtt$$ANNVENTES:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="$$ANNVENTES:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$" /></div>
+		<p class="ann_transac">$$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ - VENDU</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">
+			<em>
+				<span>$$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$. $$ANNVENTES:DESCRIPTIF left 105$$ ...</span>
+			</em>
+			$$IF:ANNVENTES:PHOTOURL0$$<img class="thumb" src="$$ANNVENTES:PHOTOURL0$$" width="168" height="100" alt="$$ANNVENTES:DESCRIPTIF left 105$$ ..." title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$" />$$END:ANNVENTES:PHOTOURL0$$
+		</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">$$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$ANNVENTES:NB_PIECES$$ pi&egrave;ce(s)</a>
+			<span>$$ANNVENTES:VILLE$$ ($$ANNVENTES:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="annonce immobiliere $$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">$$ANNVENTES:PRIX$$ $$ANNVENTES:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNVENTES:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNVENTES:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both;" />
+	
+	$$BFIN$$	
+
+	<div class="clear"><!-- --></div>
+	
+</div>
+<!-- fin #Annonces01 -->
