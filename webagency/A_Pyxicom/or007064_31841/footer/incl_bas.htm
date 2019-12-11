@@ -1,0 +1,75 @@
+$$IF!:INDEX:IDT$$</div>$$END$$
+	<div class="clear1"></div>
+</div><!--div#contenu-->
+	</div><!--div#main-->
+	</div><!--div#wrap-->
+</div><!--div#wrapper-->
+<div id="footer">
+	<div class="footer">
+		<div id="bg_spacer_footer"></div>
+		<div class="adresse">
+			<span id="text_footer_gauche">
+				
+				$$IF:MULTIAGENCES$$
+				$$BIF:COMPTE_AGENCES$$
+				$$DO$$
+					<span class="data_footer_adresse">$$COMPTE_AGENCES:NOM$$</span>
+					<span class="data_footer_adresse">$$COMPTE_AGENCES:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$COMPTE_AGENCES:VILLE$$ - $$COMPTE_AGENCES:CP$$</span>  
+					<span class="data_footer_adresse">$$LG:MINITEL pcase$$ : $$COMPTE_AGENCES:TEL formattel$$ </span>   
+					$$IF:COMPTE_AGENCES:FAX$$<span class="data_footer_adresse">$$LG:FAX pcase$$ : $$COMPTE_AGENCES:FAX formattel$$</span>$$END:AGENCE_FAX$$    
+					<span class="data_footer_adresse"><a href="$$URLBASE$$/$$COMPTE_AGENCES:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="">$$LG:NOUSCTC pcase$$</a></span><br />
+				$$LOOP$$
+				$$BFIN$$
+				$$END:MULTIAGENCES$$
+				
+				$$IF=:0:MULTIAGENCES$$
+					<span class="data_footer">$$AGENCE_ADRESSE$$</span>
+					<span class="data_footer_adresse">$$AGENCE_VILLE$$ $$AGENCE_CP$$  - </span>
+					<span class="data_footer_adresse">$$LG:MINITEL pcase$$ : $$AGENCE_TEL$$  -  </span> 
+					$$IF:AGENCE_FAX$$<span class="data_footer_adresse">$$LG:FAX pcase$$ : $$AGENCE_FAX$$ -</span>    
+				$$END$$
+				
+				
+			</span>
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<div id="bloc_fb">
+				<script src="http://connect.facebook.net/fr_FR/all.js#xfbml=1"></script>
+				<fb:like href="$$PAGE:URL_FACEBOOK$$" layout="button_count" show_faces="true" width="450" font="arial"></fb:like>
+			</div>
+			$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<div style="clear:both"></div>
+		</div><!--div.adresse-->
+		
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		<div id="footer-left">
+			<h3><a href="$$LIENACCUEIL$$" title="$$TITLE_MENU_ACCUEIL$$">$$REP:RSRV$$</a></h3>
+						<!--#include virtual="referencement/incl_liste_villes_ventes_top5.gen.htm" -->
+			
+		</div><!--div.footer-left-->
+		
+		<div class="center-footer">
+			<p><strong>$$SRV$$</strong></p>
+			<p>
+				<a class="fluxRSS" href="$$URLBASE$$/flux,rss.htm?lang=$$LANGUE lcase$$" title="$$LG:FLUXRSS2$$ $$LG:DE lcase$$ $$REP:RSRV$$">$$LG:TOUTESOFFRES$$</a>
+			</p>
+		</div><!--div.center-footer-->
+		$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+		<div class="right-footer">
+			<p>
+				<a href="javascript:void(favoris());" title="">$$LG:AJOUTERFAV pcase$$ </a>  <span>|</span>
+				<a href="$$URLBASE$$/plan,site.htm?lang=$$LANGUE$$" title="">$$LG:LIEN:PLAN pcase$$</a> <span>|</span>  
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$<a href="$$URLBASE$$/plan,site.htm?lang=$$LANGUE$$" title="">$$LG:LIEN:PLAN pcase$$</a><span> |</span>$$END$$
+				<!--#include virtual="/footer/incl_lien_mentions.htm" -->  <span>|</span>
+				<!--#include virtual="/footer/incl_lien_realisation.htm" -->
+			</p>
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<p>
+				$$IF=:INDEX.HTM:REP:0$$<!--#include virtual="/footer/incl_portefeuille.htm" -->$$END$$
+			</p>
+			$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+		</div><!--div.right-footer-->
+		<div class="clear"></div>
+	</div><!--div.footer-->
+</div><!--div#footer-->
+</body>
+</html>
