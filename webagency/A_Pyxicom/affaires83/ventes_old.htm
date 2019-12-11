@@ -1,0 +1,476 @@
+$$INCL:HAUT.HTM$$
+
+$$A:FORM:IDTT=2$$
+
+$$SET:PAGE:IDT=VEN$$
+
+<script language="javascript">
+
+<!--
+
+function openCodes_Postaux() {
+
+	window.open('/cp_frame.htm?lang=$$LANGUE$$', 'cdp', ',height=330, width=360, scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+
+}
+
+//-->
+
+</script>
+
+<!-- $$FORM:IDTT$$ -->
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+
+<tr>
+
+	<td align="left">
+
+	$$LG:SELECTIONNEZ$$<a href="/liste_transactions.htm" class="selection">.</a>
+
+
+
+	<form method="get" action="/prerecherche_plus.htm" id="annonces" name="annonces">
+
+	$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+
+	<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+
+	<!-- TYPE DE BIEN -->
+
+	$$IF!:0:PAGE:TYPEDEBIEN$$
+
+	<tr>
+
+		<td>
+
+		<table border="0" cellpadding="2" cellspacing="2" width="100%">
+
+			<tr>
+
+				<td width="55%" valign="top">
+
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+				<tr>
+
+					<td><img src="images/fleche2.gif">&nbsp;<b>$$LG:TYPEDEBIEN$$ $$LG:DISPO2$$s</b></td>
+
+				</tr>
+				$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN:2$$
+				$$BIF:TYPEBIEN$$
+
+				$$DO:1:120$$
+
+
+
+				<tr>
+	$$IF!:11$7$3:TYPEBIEN:IDTYPEBIEN$$
+					<td><input type="checkbox" name="idtypebien" value="$$TYPEBIEN:IDTYPEBIEN$$"><a href="/recherche_plus.htm?idtt=$$FORM:IDTT$$&lang=$$LANGUE$$&idtypebien=$$TYPEBIEN:IDTYPEBIEN$$"> <strong>$$TYPEBIEN:DEF_LIBELLE sp2nbsp$$</strong> </a>  ($$TYPEBIEN:NBANN$$)</td>
+$$END$$
+				</tr>
+				$$LOOP$$
+				<tr>				
+					<td ><br /><img src="images/fleche3.gif">&nbsp;<b>$$LG:NOMBREDEPIECES pcase$$</b></td>
+				</tr>
+				<tr>
+					<td valign="top">
+					<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*PIECES:1$$ checked="checked"$$END$$ />1&nbsp;&nbsp;
+					<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*PIECES:2$$ checked="checked"$$END$$ />2&nbsp;&nbsp;
+					<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*PIECES:3$$ checked="checked"$$END$$ />3&nbsp;&nbsp;
+					<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*PIECES:4$$ checked="checked"$$END$$ />4&nbsp;&nbsp;
+					<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*PIECES:+4$$ checked="checked"$$END$$ />5 $$LG:ETPLUS$$
+					</td>
+				</tr>
+				$$BFIN$$
+				
+				<tr>
+				
+
+			</table>
+
+				</td>
+
+				<td width="45%" valign="top">
+
+					<table border="0" width="100%" cellpadding="0" cellspacing="0" valign="top">
+										
+						<!-- Budget -->
+
+						$$IF=:1:PAGE:BUDGET$$
+
+						<tr>
+
+							<td ><img src="images/fleche2.gif">&nbsp;<b>$$LG:BUDGET$$</b></td>
+
+						</tr>
+
+						<tr>
+
+							<td valign="top" align="center">
+
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+
+							<tr>
+
+								<td>$$LG:MINI$$&nbsp;:</td>
+
+								<td>&nbsp;<input class="imputForm" type="text" name="pxmin" size="8" value="$$FORM:PXMIN$$" /></td>
+
+							</tr>
+
+							<tr>
+
+								<td>$$LG:MAXI$$&nbsp;:</td>
+
+								<td>&nbsp;<input class="imputForm" type="text" name="pxmax" size="8" value="$$FORM:PXMAX$$" />
+
+							<select name="euro">
+
+								<option value="1"$$IF=:1:FORM:EURO$$ selected="selected"$$END$$>&euro;</option>
+
+								<option value="0"$$IF=:0:FORM:EURO$$ selected="selected"$$END$$>ff</option>
+
+							</select></td>
+
+							</tr></table>
+
+							</td>
+
+						</tr>
+
+						$$END$$
+
+						<!-- Surface -->
+
+						$$IF=:1:PAGE:SURFACE$$
+
+						<tr>
+
+							<td>&nbsp;</td>
+
+						</tr>
+
+						<tr>
+
+							<td ><img src="images/fleche3.gif">&nbsp;<b>$$LG:SURFACE$$</b></td>
+
+						</tr>
+
+						<tr>
+
+							<td valign="top" align="center">
+
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+
+							<tr>
+
+								<td>$$LG:MINI$$&nbsp;:</td>
+
+								<td><input class="imputForm" type="text" name="surfacemin" size="8" value="$$FORM:SURFACEMIN$$" />
+
+							m&sup2;</td>
+
+						<!--	</tr>
+
+							<tr><td>$$LG:MAXI$$&nbsp;:</td><td><input class="imputForm" type="text" name="surfacemax" size="8" value="$$FORM:SURFACEMAX$$" /> m&sup2;
+
+								</td> -->
+
+							</tr>
+
+							</table>
+
+							</td>
+
+						</tr>
+
+						<tr>
+
+							<td>&nbsp;</td>
+
+						</tr>
+
+						$$END$$
+
+						<!-- RECHERCHE PAR REFERENCE -->
+
+						$$IF=:1:PAGE:REF$$
+
+						<tr>
+
+							<td><img src="images/fleche4.gif">&nbsp;<b>$$LG:RECHREF$$</b></td>
+
+						</tr>
+
+						<tr>
+
+							<td align="center">
+
+							<table border="0" width="95%" cellpadding="0" cellspacing="2"><tr><td><input class="imputForm" type="text" name="refannonce" size="15" id="ref_ann" value="$$FORM:REF$$" /><br /><br />
+
+							<!--<img src="images/fleche5.gif"><a href="/recherche_plus.htm?idtt=2&lang=$$LANGUE$$&si_exclusif=1">&nbsp;$$LG:EXCLUSIVITE pcase$$s</a><br />
+
+							<img src="images/fleche5.gif"><a href="/recherche_plus.htm?idtt=2&lang=$$LANGUE$$&si_coupdecoeur=1">&nbsp;$$LG:TITRECOEUR pcase$$</a>-->
+
+							</td></tr></table></td>
+
+						</tr>
+
+						$$END$$
+
+						</tr>
+
+					</table>
+
+				</td>
+
+			</tr>
+
+		</table>
+
+	</td>
+
+	</tr>
+
+	$$END$$
+
+	<!-- Proximité
+
+	$$IF=:1:PAGE:PROXIMITE$$
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td>
+
+		<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+
+		<tr>
+
+			<td$$IF=:1:PAGE:CARTE$$ colspan="2"$$END$$ ><img src="images/fleche5.gif">&nbsp;<b>$$LG:VILLES$$</b></td>
+
+		</tr>
+
+		<tr>
+
+			<td valign="top" align="center"><table width="95%" border="0" cellpadding="0" cellspacing="2"><tr><td><i>($$LG:ZONEDESAISIE$$)</i><br />
+
+			<input class="imputForm" type="text" name="cp" size="20" id="cp1" value="$$FORM:CP field 1$$" /><br />
+
+			<input class="imputForm" type="text" name="cp" size="20" id="cp2" maxlength="50" value="$$FORM:CP field 2$$" /><br />
+
+			<input class="imputForm" type="text" name="cp" size="20" id="cp3" maxlength="50" value="$$FORM:CP field 3$$" /><br />
+
+			<input class="imputForm" type="text" name="cp" size="20" id="cp4" maxlength="50" value="$$FORM:CP field 4$$" /><br />
+
+			(<i><a href="javascript:openCodes_Postaux();">$$LG:RETROUVER$$</a></i>)
+
+			</td></tr></table></td>-->
+
+			<!-- Mini carte de France
+
+			$$IF=:1:PAGE:CARTE$$
+
+			<td valign="top" align="center" bgcolor="#ffffff">$$INCL:CARTE.HTM$$</td>
+
+			$$END$$
+
+		</tr>
+
+		</table>
+
+		</td>
+
+	</tr>
+
+	$$END$$-->
+
+	<!-- Liste des villes ayant des annonces
+
+
+
+	$$B:IMMOBW:VILLESANNONCES:::2$$
+
+	$$BIF:IMMOBW:VILLESANNONCES:$$
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td ><img src="images/fleche5.gif">&nbsp;<strong>$$IF=:FR:LANGUE$$ $$LG:VILLES left 31 replace , &nbsp;ou$$$$END$$$$IF=:EN:LANGUE$$ $$LG:VILLES left 25 replace , &nbsp;or$$$$END$$</strong></td>
+
+	</tr>
+
+	<tr>
+
+		<td>
+
+			<select name="ci">
+
+				<option value="">$$LG:SELECVILLE$$</option>
+
+				$$DO:1:120$$
+
+				<option value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$">$$IMMOBW:VILLESANNONCES::VILLEAFF$$ $$IF0:PAGE:LISTEVILLE:SANSCP$$($$IMMOBW:VILLESANNONCES::CODEINSEE codeinsee2cps$$)$$END:PAGE:LISTEVILLE:SANSCP$$</option>
+
+				$$LOOP$$
+
+			</select>
+
+			ou
+
+			$$B:IMMOBW:DEPARTEMENTSANNONCES:ALIAS:DEPT$$
+
+				$$BIF:DEPT$$
+
+				<select name="cp">
+
+					<option value="">$$LG:SELECREG replace région département$$</option>
+
+				$$DO$$
+
+					<option value="$$DEPT:DEP$$">$$DEPT:DEPARTEMENTAFF$$  ($$DEPT:DEP$$)</option>
+
+				$$LOOP$$
+
+				</select>&nbsp;&nbsp;
+
+				$$BFIN$$
+
+		</td>
+
+	</tr>$$BFIN$$-->
+
+	<tr>
+
+		<td align="right"><input type="image" src="img/rechercher_$$LANGUE$$.gif" border="0" /></td>
+
+	</tr>
+
+
+
+
+
+
+
+
+
+	<!-- Pays -->
+
+	$$IF=:1:PAGE:AFFICHEPAYS$$
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td>$$INCL:PAYS.HTM$$</td>
+
+	</tr>
+
+	$$END$$
+
+	$$IF0:PAGE:AFFICHEPAYS$$
+
+		<input type="hidden" name="idpays" value="250" />
+
+	$$END$$
+
+	<!-- Annonces fraicheur -->
+
+	$$IF!:0:PAGE:FRAICHEUR$$
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td valign="top"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />&nbsp;$$LG:NOUV$$</td>
+
+	</tr>
+
+	$$END$$
+
+	<!-- Photos -->
+
+	$$IF=:1:PAGE:PHOTO$$
+
+	<tr>
+
+		<td valign="top"><input type="checkbox" name="photo" value="1" />&nbsp;$$LG:PHOTO$$</td>
+
+	</tr>
+
+	$$END:PHOTO$$
+
+	<!-- Préliste -->
+
+	$$IF=:1:PAGE:PRELISTE$$
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td valign="top">$$LG:DETAILANN$$&nbsp;
+
+		<input type="radio" name="preliste" value="/recherche_plus.htm" checked="checked" onclick="javascript:document.forms['annonces'].action = '/prerecherche_plus.htm';" /><br />
+
+		$$LG:PRELISTE$$&nbsp;
+
+		<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = '/prerecherche_liste.htm';" />
+
+		</td>
+
+	</tr>
+
+	$$END$$
+
+	<!-- Validation Form -->
+
+	<tr>
+
+		<td>&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+
+
+	</tr>
+
+	</table>
+
+	</form>
+
+	</td>
+
+</tr>
+
+</table>
+
+$$INCL:BAS.HTM$$

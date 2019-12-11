@@ -1,0 +1,73 @@
+<div class="DetailFormulaire" id="DetailFormulaire">
+$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+		<!-- debut du formulaire -->
+		<div class="DetailFormulaireLib">$$LG:SAVOIR$$</div>
+		<div class="DetailFormulaireForm">
+		$$LG:FORMSENDEMAIL$$
+		<form name="f" method="post" action="/$$REP:PAGE$$">
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="page_ok" value="plus_annonce_ok.htm" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="cfg_form" value="plus_annonce" />
+		<input type="hidden" name="cfg_emails" value="plus_annonce" />
+		<input type="hidden" name="refannonce" value="$$IMMOBW:ANNONCE:REFANNONCE$$" />
+		<input type="hidden" name="prix" value="$$IMMOBW:ANNONCE:PRIX$$" />
+		<input type="hidden" name="libelle" value="$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+		$$IF:IMMOBW:ANNONCE:EMAIL$$
+		<input type="hidden" name="email_agence" value="$$IMMOBW:ANNONCE:EMAIL$$" />
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:EMAIL$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="email_agence" value="$$IMMOBW:AGENCE:EMAIL$$" />
+		$$END$$
+		$$END$$
+		<input type="hidden" name="nom_agence" value="$$IMMOBW:ANNONCE:NOM$$" />
+		<input type="hidden" name="ville" value="$$IMMOBW:ANNONCE:VILLE$$" />
+		<input type="hidden" name="cp" value="$$IMMOBW:ANNONCE:CP$$" />
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<table class="DetailFormulaire">
+		<tr>
+			<td>
+			<table>
+			<tr>
+				<td colspan="3">
+				$$LG:COORD3$$</td>
+			</tr>
+			<tr>
+				<td align=right>$$LG:AI5$$</td>
+				<td><input type="text" name="nom" value="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:NOM$$$$END$$" /></td>
+				<td align=right>$$LG:PRENOM$$</td>
+				<td><input type="text" name="prenom" value="$$FORM:PRENOM$$$$IF0:FORM:PRENOM$$$$SESSION:PRENOM$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td align=right>$$LG:TEL$$</td>
+				<td><input type="text" name="telephone" value="$$FORM:TELEPHONE$$$$IF0:FORM:TELEPHONE$$$$SESSION:TELEPHONE$$$$END$$"></td>
+				<td align=right>$$LG:OU$$&nbsp;Email</td>
+				<td><input type="text" name="email" value="$$FORM:EMAIL$$$$IF0:FORM:EMAIL$$$$SESSION:EMAIL$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center">$$LG:PRECIS$$</td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center"><textarea name="questions" cols="40" rows="5">$$FORM:QUESTIONS$$$$IF0:FORM:QUESTIONS$$$$SESSION:QUESTIONS$$$$END$$</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center">$$LG:VERIFINFOS$$</td>
+			</tr>
+			<tr>
+				<td align="right" colspan="4"><input type="button" value="$$LG:ENVOYER2$$" onclick="validate();" /></td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+		</form>
+		</div>
+		<!-- fin du formulaire -->
+$$END:CHECKMAIL$$
+</div>

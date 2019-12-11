@@ -1,0 +1,80 @@
+$$SET:PAGE:IDT=PETITMOTEUR$$
+<script language="javascript">
+<!--
+function openCodes_Postaux()
+	{
+		window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+	}
+
+function ventes()
+	{
+		document.getElementById("listevilles").style.display = "inline";
+	}
+
+function locations()
+	{
+		document.getElementById("listevilles").style.display = "none";
+	}
+
+//-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annonces" style="display:inline;">
+	$$IF!:1:PAGE:PROXIMITE$$
+		<input type="hidden" name="cp" value="" />
+	$$END$$
+		<input type="hidden" name="idtt" value="2" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="idtypebien" value="2" />
+	<table width="90%" border="0" cellpadding="2" cellspacing="2" class="tabFond1">
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN:2$$
+		$$BIF:TYPEBIEN$$
+		$$DO:1:120$$
+		<tr>
+			$$IF=:2:TYPEBIEN:IDTYPEBIEN$$<td colspan="2" height="30" valign="top"><img src="images/fleche2.gif" align="absmiddle"><strong> $$LG:MAISON$$ ($$TYPEBIEN:NBANN$$)</strong></td>
+			$$END$$		</tr>
+		$$LOOP$$
+		$$BFIN$$
+		<!-- surface -->
+		$$IF=:1:PAGE:SURFACE$$
+		<tr>
+			<td width="51%" valign="middle">$$LG:SURFACE$$:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$IF=:FR:LANGUE$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$END$$$$IF=:DE:LANGUE$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$END$$$$LG:MINI$$</td>
+			<td valign="middle" class="tabFond2mini"><input class="imputForm" type="text" name="surfacemin" size="4" value="$$FORM:SURFACEMIN$$" />&nbsp;$$LG:MAXI$$ <input class="imputForm" type="text" name="surfacemax" size="4" value="$$FORM:SURFACEMAX$$" /> m&sup2;</td>
+		</tr>
+		$$END$$
+		<!-- surface Terrain -->
+		<tr>
+			<td valign="middle">$$LG:SURFT$$&nbsp;&nbsp;&nbsp;$$IF=:EN:LANGUE$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$END$$$$LG:MINI$$</td>
+			<td valign="middle"><input class="imputForm" type="text" name="surfacemin" size="4" value="$$FORM:SURFACEMIN$$" />&nbsp;$$LG:MAXI$$ <input class="imputForm" type="text" name="surfacemax" size="4" value="$$FORM:SURFACEMAX$$" /> m&sup2;</td>
+		</tr>
+		<!-- Nombre de pièces -->
+		$$IF=:1:PAGE:PIECES$$
+		<tr>
+			<td valign="middle">$$LG:NBCHAMBRES pcase$$</td>
+			<td valign="middle" class="tabFond2mini">
+				<select class="nbPieces" name="nb_chambres" size="1">
+					<option value=""> -- -- </option>
+					<option value="1"$$IF=:1:FORM:NB_PIECES$$ selected="selected"$$END$$>1</option>
+					<option value="2"$$IF=:2:FORM:NB_PIECES$$ selected="selected"$$END$$>2</option>
+					<option value="3"$$IF=:3:FORM:NB_PIECES$$ selected="selected"$$END$$>3</option>
+					<option value="4"$$IF=:4:FORM:NB_PIECES$$ selected="selected"$$END$$>4</option>
+					<option value="+4"$$IF=:+4:FORM:NB_PIECES$$ selected="selected"$$END$$>5 $$LG:ETPLUS$$</option>
+				</select>			</td>
+		</tr>
+		$$END$$
+
+		<!-- Budget -->
+		$$IF=:1:PAGE:BUDGET$$
+		<tr>
+			<td valign="middle">$$LG:BUDGET$$ :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$IF!:DE:LANGUE$$&nbsp;&nbsp;$$END$$$$IF=:FR:LANGUE$$&nbsp;$$END$$$$LG:MINI$$</td>
+			<td valign="middle" class="tabFond2mini">
+				<input class="imputForm" type="text" name="pxmin" size="4" value="$$FORM:PXMIN$$" />&nbsp;$$LG:MAXI$$ <input class="imputForm" type="text" name="pxmax" size="4" value="$$FORM:PXMAX$$" /> &euro;
+				<input type="hidden" name="euro" value="1" />
+			</td>
+		</tr>
+		$$END$$
+		<tr>
+			<td align="right" colspan="2"><input type="image" src="img/rechercher_$$LANGUE$$.gif" vspace="5px" /></td>
+		</tr>
+	</table>
+</form>

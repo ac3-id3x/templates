@@ -1,0 +1,78 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=CTC$$
+
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+		<!-- debut du formulaire --><br />
+		<div align="center" class="veuillez"><b>$$LG:SAVOIR$$</b><br />$$LG:FORMSENDEMAIL$$</div><br />
+		<form name="f" method="post" action="/$$REP:PAGE$$">
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="page_ok" value="plus_annonce_ok.htm" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="cfg_form" value="plus_annonce" />
+		<input type="hidden" name="cfg_emails" value="plus_annonce" />
+		<input type="hidden" name="refannonce" value="$$IMMOBW:ANNONCE:REFANNONCE$$" />
+		<input type="hidden" name="prix" value="$$IMMOBW:ANNONCE:PRIX$$" />
+		<input type="hidden" name="libelle" value="$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+			$$IF:IMMOBW:ANNONCE:EMAIL$$
+			<input type="hidden" name="email_agence" value="$$IMMOBW:ANNONCE:EMAIL$$" />
+			$$END$$
+			$$IF0:IMMOBW:ANNONCE:EMAIL$$
+				$$IF:IMMOBW:AGENCE:EMAIL$$
+				<input type="hidden" name="email_agence" value="$$IMMOBW:AGENCE:EMAIL$$" />
+				$$END$$
+			$$END$$
+		<input type="hidden" name="nom_agence" value="$$IMMOBW:ANNONCE:NOM$$" />
+		<input type="hidden" name="ville" value="$$IMMOBW:ANNONCE:VILLE$$" />
+		<input type="hidden" name="cp" value="$$IMMOBW:ANNONCE:CP$$" />
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<table width="95%" cellspacing="0" cellpadding="5" border="0" align="center">
+		<tr>
+			<td align="center">
+			<table width="100%" border="0" cellspacing="2" cellpadding="0">
+			<tr>
+				<td COLSPAN="4" align="center"><img src="images/fleche5.gif"><b>&nbsp;$$LG:COORD3$$</b></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>$$LG:AI5$$</strong></td>
+				<td><input class="imputForm" type="text" name="nom" value="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:NOM$$$$END$$"></td>
+				<td align="right"><strong>$$LG:PRENOM$$</strong></td>
+				<td><input class="imputForm" type="text" name="prenom" value="$$FORM:PRENOM$$$$IF0:FORM:PRENOM$$$$SESSION:PRENOM$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>$$LG:TEL$$</strong></td>
+				<td><input class="imputForm" type="text" name="telephone" value="$$FORM:TELEPHONE$$$$IF0:FORM:TELEPHONE$$$$SESSION:TELEPHONE$$$$END$$"></td>
+				<td align="right">$$LG:OU$$&nbsp;<strong>Email</strong></td>
+				<td><input class="imputForm" type="text" name="email" value="$$FORM:EMAIL$$$$IF0:FORM:EMAIL$$$$SESSION:EMAIL$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center"><img src="images/fleche5.gif"><b>&nbsp;$$LG:PRECIS$$</b></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center"><textarea name="questions" cols="40" rows="5">$$FORM:QUESTIONS$$$$IF0:FORM:QUESTIONS$$$$SESSION:QUESTIONS$$$$END$$</textarea></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center">$$LG:VERIFINFOS$$</td>
+			</tr>
+			<tr>
+				<td align="center" COLSPAN="4"><a href="#" onclick="validate();"><img src="img/envoyer_$$LANGUE$$.gif" border="0"></a></td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+		</form>
+		$$END$$
+		</div>
