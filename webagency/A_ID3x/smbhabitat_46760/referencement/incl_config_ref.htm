@@ -1,0 +1,389 @@
+$$REM$$<!-- =========== FICHIER DE CONFIGURATION POUR LE REF =========== -->$$END:REM$$
+$$REM$$<!-- =========== FICHIER MODIFIE LE 02/10/2014 =========== -->$$END:REM$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// INDEXATION DES LANGUES /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== SI =1 toutes les langues seront indexées, SI =0 pas indexées =========== -->$$END:REM$$
+$$A:INDEXATION_LANGUE=0$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// NOM DU SITE (MULTI-AGENCES UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Cette variable est présente sur plusieurs pages du site (title de la page index, de la page agence liste...) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== Pour appeler cette variable ailleurs (dans du texte, une meta...) il faudra utiliser @@NOM_SITE_REF@@ =========== -->$$END:REM$$
+$$A:NOM_SITE_REF=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE INDEX /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le title de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est le title de l'incl_ref mutualisé qui sera affiché  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:TITLE_INDEX=Agence Immobilière à PAU, BILLERE, LONS, LESCAR, GELOS, JURANCON$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser la meta description de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est la meta description de l'incl_ref mutualisé qui sera affichée  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:DESCRIPTION_INDEX=$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser le slogan de la page index (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$B:EASA:TEXTES:~idCategorie:40959:ALIAS:CROTXT$$ 
+   $$BIF:CROTXT$$ 
+   $$DO$$ 
+      $$A:SLOGAN_INDEX=<span class="big bold text-shadow-2">@@CROTXT:DESCRIPTION@@</span>$$
+   $$LOOP$$ 
+   $$BFIN$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser les slogans de la page index sur les photos en rotations (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:PHRASEROTATION1=$$
+   $$A:PHRASEROTATION2=$$
+   $$A:PHRASEROTATION3=$$
+   $$A:PHRASEROTATION4=$$
+   $$A:PHRASEROTATION5=$$
+$$END$$
+
+$$REM$$<!-- =========== Architecture (H1, H2...) de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H1 =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:H1_INDEX=<span class="text-shadow-2">LES AGENTS IMMOBILIERS QUI ONT DU COEUR</span>$$
+$$END$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Par défaut le texte est "Nos dernières annonces immobilières" =========== -->$$END:REM$$
+$$A:H2_INDEX_MODULE=@@LG:NOSDERANN pcase@@$$
+
+$$REM$$<!-- =========== Personnaliser le module agence de la page index (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Mono =========== -->$$END:REM$$
+$$IF=:0:MULTIAGENCES$$
+   $$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+$$REM$$<!-- =========== Multi =========== -->$$END:REM$$
+$$IF=:1:MULTIAGENCES$$
+   $$IF=:FR:LANGUE$$
+      $$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+   $$END$$
+$$END$$
+$$REM$$<!-- =========== Ajout de texte personnalisé pour le module bloc agence de la page index (mono/multi) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masque (un texte par défaut sera affiché), SI =1 affichage du texte personnalisé ci-dessous -->$$END$$
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+   $$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout de contenu sur la page index =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera masque, SI =1 affichage du texte-->$$END$$
+$$A:ENCART_TXT_HOME=1$$
+$$REM$$<!-- SI =1 le texte sera affiché au dessus des modules (alerte mail, réseaux sociaux...), SI =2 en dessous -->$$END$$
+$$A:POSITION_ENCART_TXT_HOME=1$$
+$$REM$$<!-- Ajout du texte personnalisé -->$$END$$
+$$IF=:FR:LANGUE$$
+   $$A:ENCART_TXT_HOME_CONTENU=
+<div class="span3 bloc-bienvenue"><img src="images/region.jpg" class="margin-top-15"/></div><div class="span9 bloc-bienvenue"><p><span class="h1-like">SMB –L’Agence Immobilière Engagée</span><br />
+<span class="big typo-important">Un projet immobilier ?</span></p>
+<p>Nous souhaitons être bien plus qu'une simple agence immobilière et voulons placer l'humain au coeur de notre métier, de nos valeurs et de nos actions.</p>
+<p>Nous sommes conscients de notre responsabilité et du rôle fondamental que notre métier d'agent immobilier doit jouer dans le cadre d'un projet de vie tel que la vente ou l'acquisition d'un bien. Pour cela, nous nous engageons humblement, mais activement dans une démarche de transparence, d'écoute et de conseils.</p>
+<p class="margin-bottom-20"><a href="@@AGENCE_URLVIRT@@" class="@@TYPEBOUTON@@ @@TYPEBOUTONACTION@@ btn-important">@@LG:DECOUVRIRAG pcase@@</a></p></div> 
+
+<div class="span12 margin-bottom-20"><a href="/immo,associations-caritatives.htm" title="Associations Caritatives"><img src="/images/concept.jpg"/></a>
+	</div>
+   $$
+$$END$$
+
+$$REM$$<!-- =========== Rajout de liens personnalises dans le mini moteur de la page index =========== -->$$END:REM$$
+$$REM$$<!-- SI =1 les liens seront affichés, si =0 alors les liens seront masqués -->$$END$$
+$$A:MOTEUR_VILLES_REF=0$$
+$$REM$$<!-- Personnalisation des liens (ajout de 4 liens max) -->$$END$$
+$$A:MOTEUR_VILLE_1=<a href="/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_2=<a href="/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_3=<a href="/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_4=<a href="/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE DETAIL /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas de micro donnes, si =1 microdonnes affichees dans les serps-->$$END$$
+$$A:MICRO_DONNES_PRIX=1$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE ESTIMATION (estimation,immobiliere.htm) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_ESTIMATION=0$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:667414:REP:1$$
+$$REM$$<!-- Personnalisation du title -->$$END$$
+$$A:TITLE_ESTIMATION=Estimation appartement et maison PAU, BILLERE, LONS, LESCAR, GELOS, JURANCON$$
+$$REM$$<!-- Personnalisation de la meta description -->$$END$$
+$$A:DESCRIPTION_ESTIMATION=$$
+$$REM$$<!-- Personnalisation du H1 -->$$END$$
+$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$A:PHRASE_ESTIMATION=
+<div class="pagination-left">
+   <p><span class="big typo-important">L'estimation immobilière par SMB votre Agence Immobilière Engagée</span></p>
+   <p>La détermination du « prix de marché » est essentielle pour réaliser votre projet de vente au meilleur prix et dans les meilleurs délais.<br>
+   Nous nous engageons à vous fournir une estimation gratuite de votre maison, appartement, terrain, immeuble sur Pau, Billère, Lons, Jurançon, Gelos, Lescar et l’agglomération proche Paloise.</p>
+   <p><span class="big typo-important">Réaliser une estimation gratuite par un professionnel : Une étape primordiale !</span></p>
+   <p>Qu'il s'agisse d'une maison sur Pau, d'un appartement à Billère, d'un garage à Gelos ou simplement d'un terrain à Lons, il est indispensable de passer par une phase d'estimation immobilière avant une mise en vente. Etablir un prix cohérent permet de vendre au meilleur prix et dans un délai optimisé.</p>
+   <p>Un prix de départ trop important pourrait en effet griller votre bien sur le marché et par conséquent  vous faire perdre de l’argent sur le long terme, les acquéreurs potentiels se détournant de votre bien.</p>
+   <p>Chez SMB nos conseillers sont expert du marché immobilier Palois et s’engage à vous proposer une estimation gratuite de votre bien afin d’en optimiser la commercialisation.</p>
+   <p><span class="big typo-important">Peut-on faire confiance à une estimation immobilière en ligne ?</span></p>
+   <p>Faire une estimation immobilière en ligne est très facile sur Internet : de nombreux sites plus ou moins spécialisés le proposent. C’est rapide, gratuit et peu engageant mais peut-on faire confiance à l’évaluation du prix d’un appartement ou d’une maison sans l’avoir vu ?</p>
+   <p>Notre expérience en tant que Conseillers Immobilier nous a appris que chaque bien est différents.</p> 
+   <p>L’estimation immobilière en ligne peut être une première démarche pour se donner une vague idée de la valeur de votre bien. Toutefois, l’estimation immobilière en ligne ne peut remplacer l’avis de professionnels expérimentés se rendant chez vous pour estimer votre maison ou appartement.</p>
+   <p>L'estimation immobilière d'une maison, d'un appartement, d'un terrain, est réalisée par des professionnels de l'immobilier en fonction de l'environnement du bien, des expositions, de la qualité des matériaux de construction utilisés et des données locatives ou vénales provenant du prix consenti lors des dernières ventes ou locations de maison ou d'appartement pour des biens immobiliers comparables.</p>
+   <p>Le prix moyen du m² dans un secteur de la ville pour une maison ou dans une résidence pour un appartement donne une première idée et les caractéristiques intrinsèques du bien immobilier conduisent à un ajustement de l'évaluation de la maison ou de l'appartement.</p>
+   <p>Notre expérience passée nous oblige à constater que l'estimation en ligne ne peut pas être fiable.</p>
+   <p>En effet, la même typologie d'appartements au sein d'une même résidence ou encore la même surface de deux maisons dans un même lotissement n'amène pas nécessairement à une même estimation. La qualité des prestations, l'agencement, l'exposition, la vue et les évolutions des logements au fil du temps font varier l'estimation.</p>
+
+   <p>C’est pourquoi nos Conseillers sont à votre disposition pour vous proposer un rendez-vous d’estimation gratuite pour votre bien immobilier sur PAU, BILLERE, LONS, LESCAR, GELOS, JURANCON… sous 48h !</p>
+</div>
+
+$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PUB ESTIMATION GRATUITE /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Personnalisation du titre -->$$END$$
+$$A:ESTIMATIONPUBTITLE=$$
+$$REM$$<!-- Personnalisation du texte -->$$END$$
+$$A:ESTIMATIONPUBTXT=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// MENTIONS LEGALES ESTIMATION  /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera masque, SI =1 affichage du texte-->$$END$$
+$$A:LEGALESTIMATION=0$$
+$$REM$$<!-- Ajout du texte personnalisé -->$$END$$
+$$A:LEGALESTIMATIONTXT=@@LG:LOI2004AGENCE@@$$
+
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,ESTIMATION (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE_ESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Personnalisation du h2 =========== -->$$END:REM$$
+$$A:H2_AGENCESESTIMATION=$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,estimation (multi-agences) =========== -->$$END:REM$$
+$$A:AGENCES_LISTE_ESTIMATION_CONTENU=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE OUTILS /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_OUTILS=0$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE REALISATION /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_REALISATION=0$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE RESPONSIVE /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_RESPONSIVE=0$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE GESTION (ATTENTION N'EXISTE PAS TOUT LE TEMPS) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:TITLE_GESTION=$$
+   $$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+   $$A:H1_GESTION=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE SYNDIC (ATTENTION N'EXISTE PAS TOUT LE TEMPS) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:TITLE_SYNDIC=$$
+   $$A:DESCRIPTION_SYNDIC=$$
+   $$A:H1_SYNDIC=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE EXPERTISE (ATTENTION N'EXISTE PAS TOUT LE TEMPS) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$IF=:FR:LANGUE$$
+   $$A:TITLE_EXPERTISE=$$
+   $$A:DESCRIPTION_EXPERTISE=$$
+   $$A:H1_EXPERTISE=$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCE /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:471084:FORM:IDP$$
+   $$REM$$<!-- =========== Personnalisation du title de la page agence =========== -->$$END:REM$$
+   $$A:TITLE_AGENCE=$$
+   $$REM$$<!-- =========== Personnalisation de la meta description de la page agence =========== -->$$END:REM$$
+   $$A:DESCRIPTION_AGENCE=$$
+   $$REM$$<!-- =========== Personnalisation du H1 de la page agence =========== -->$$END:REM$$
+   $$A:H1_AGENCE=$$
+   $$REM$$<!-- =========== Personnalisation du H2 de la page agence bloc coordonées =========== -->$$END:REM$$
+   $$A:H2_AGENCE_COORDPERSO=$$
+   $$REM$$<!-- =========== Personnalisation du H2 de la page agence bloc qui sommes nous =========== -->$$END:REM$$
+   $$A:H2_AGENCE=$$
+   $$REM$$<!-- =========== Personnalisation du slogan de la page agence =========== -->$$END:REM$$
+   $$A:SLOGAN_AGENCE=$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout de contenu sous le H2 (généralement intitulé "Présentation de l'agence immobilière" ou "Qui sommes-nous") =========== -->$$END:REM$$
+$$REM$$<!-- =========== 2 possibilités pour rajouter du texte : soit via SAISS soit via le code ci-dessous (cf. wiki) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'IDP de l'agence, Exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:667414:FORM:IDP$$
+  $$REM$$<!-- =========== SI =1 le texte s'affiche, si =0 alors masqué =========== -->$$END:REM$$
+  $$A:TXT_PUBLIC_PERSO=1$$
+  $$REM$$<!-- =========== Ajout du contenu =========== -->$$END:REM$$
+  $$A:TXT_PUBLIC_PERSO_CONTENU=
+<p class="typo-important big bold">SMB s'engage</p>
+<p>Nous sommes conscients de notre responsabilité et du rôle fondamental que notre métier d'agent immobilier doit jouer dans le cadre d'un projet de vie tel que la vente ou l'acquisition d'un bien. Pour cela, SMB s'engage humblement, mais activement dans une démarche de transparence, d'écoute et de conseils.</p>
+<p>Certaines de ces actions peuvent paraître simples, telles que l'écoute et la compréhension de votre projet.
+Ces conditions sont primordiales afin de vous accompagner et vous apporter les solutions appropriées à la concrétisation de vos projets en toute confiance.<br />
+D'autres engagements paraissent plus complexes comme la garantie de répondre à vos besoins dans un délai imparti ou celui de vous apporter un réel service de qualité.<br />
+Notre méthodologie, notre connaissance du marché local et notre esprit d'équipe nous permettent de nous engager auprès de vous afin que vos projets se réalisent en toute satisfaction.</p>
+<p class="typo-important big bold">Nous accompagnons nos clients</p>
+<ul class="padding-10">			
+<li><span class="icon-v5-checkmark typo-action"></span> En garantissant une estimation juste et précise,</li> 
+<li><span class="icon-v5-checkmark typo-action"></span> En réfléchissant avec vous à des solutions pour maximiser la réussite de vos projets,</li> 
+<li><span class="icon-v5-checkmark typo-action"></span> En vous informant et conseillant de façon juste et sincère,</li> 
+<li><span class="icon-v5-checkmark typo-action"></span> En s'occupant de l'ensemble des démarches administratives avant, pendant et après chaque projet.</li> 
+</ul>
+
+<div>
+	<div class="span12">
+	<div id="ma_w_wrapper" class="ma-widget-feedback ma-widget-feedback-v2 ma-widget-feedback-type3 ma-widget-feedback--large" data-version="v2" data-script-url="https://widgets.meilleursagents.com/feedback.js"><div id="ma_w_content"></div><a id="ma_w_feedback_licence" class="ma-widget-feedback__logo_perso" target="_blank" href="https://www.meilleursagents.com/agence-immobiliere/agence-smb-habitat-l-immobilier-solidaire-53055"><img src="https://static0.meilleursagents.com/static/mypro/images/widget-logo-textless-144.png" width="25" alt="SMB Habitat - L' Immobilier Solidaire -"/></a></div><script type="text/javascript" src="https://widgets.meilleursagents.com/feedback.js?version=v2&type=3&size=large&id=53055"></script>
+	</div>
+</div>
+
+<p class="typo-important big bold margin-top-40">Nous voulons donner du sens à notre métier</p>
+<p>Parce que nous souhaitons placer l'humain au cœur de notre métier, de nos valeurs et de nos actions, 
+parce que nous croyons en la bienveillance et en l'humain et que nous souhaitons donner du sens à notre métier, 
+Notre agence s'engage à verser un pourcentage de ses honoraires à des œuvres caritatives locales choisies par vos soins*.<br /> Parce que 10% de moins pour nous, c'est 10% de plus pour ceux qui ont un réel besoin.<br />
+C'est ainsi que par notre métier et professionnalisme, nous souhaitons susciter des actes altruistes, en mettant nos compétences au service de vos projets, mais aussi d'initiatives, structures et produits qui apportent une valeur ajoutée et positive à la collectivité.</p>
+<p class="margin-top-20 big bold typo-important">Pour de plus amples renseignements et connaitre l’ensemble de nos services, contactez-nous.</p>
+<p class="margin-top-20 margin-bottom-50"><i>* voir condition en agence</i></p>
+
+
+  $$
+$$END$$
+
+$$REM$$<!-- =========== Ajout de liens sur la page agence =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:471084:FORM:IDP$$
+   $$REM$$<!-- =========== Si =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+   $$A:SEO_PORTEFEUILLE=1$$
+   $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_1=<a href="#">test</a>$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_2=<a href="#">test1</a>$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_3=<a href="#">test2</a>$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_4=<a href="#">test3</a>$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_5=<a href="#">test4</a>$$
+   $$A:LINK_PERSO_PORTEFEUILLE_AGENCE_6=<a href="#">test5</a>$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout des liens reseaux sociaux pour la page agence =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:471084:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 les liens seront affichés, si =0 alors les liens seront masqués =========== -->$$END:REM$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+   $$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+   $$A:SOCIAL_AGENCE_FACEBOOK=http://www.test.fr$$
+   $$A:SOCIAL_AGENCE_TWITTER=http://www.test1.fr$$
+   $$A:SOCIAL_AGENCE_GOOGLE_PLUS=http://www.test2.fr$$
+   $$A:SOCIAL_AGENCE_YOUTUBE=http://www.test3.fr$$
+   $$A:SOCIAL_AGENCE_GOOGLE_LOCAL=http://www.test4.fr$$
+   $$A:SOCIAL_AGENCE_DAILYMOTION=http://www.test3.fr$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout du badge google+ (dans la sidebar) pour la page agence =========== -->$$END:REM$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:471084:FORM:IDP$$
+$$REM$$<!-- =========== SI =1 le badge sera affiché, si =0 alors masqué =========== -->$$END:REM$$
+$$A:BADGE_GOOGLE_AGENCE=0$$
+   $$REM$$<!-- =========== Récupérer l'id de la page google+, exemple : 104269285648801442131 = https://plus.google.com/104269285648801442131/ =========== -->$$END:REM$$
+   $$A:SOCIAL_BADGE_GOOGLE_AGENCE=104269285648801442131$$
+$$END$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE AGENCES,LISTE (MULTI UNIQUEMENT) /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE=$$
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESLISTE=$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,liste (multi-agences) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 affichage du texte -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=0$$
+$$A:AGENCES_LISTE_CONTENU=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed nulla quis quam lobortis luctus nec in lectus. Duis vitae lorem eget risus feugiat egestas. Curabitur vel vestibulum tellus. Nunc commodo sapien fringilla dui pharetra vehicula. Fusce quis neque lectus, non viverra est. Integer tincidunt semper libero quis semper. Mauris id tellus et turpis mattis porta.$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE BIENS VENDUS  /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1BIENSVENDUS=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// PAGE SUIVI CLIENT  /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1SUIVICLIENT=$$
+$$A:PHRASESUIVI=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// SLOGAN FOOTER /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== En mono : si cette variable n'est pas renseignée c'est l'adresse de l'agence qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== En multi : si cette variable n'est pas renseignée c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$A:SLOGAN_FOOTER=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// FOOTER /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le titre de la rubrique "Plus d'infos" =========== -->$$END:REM$$
+$$A:TITLE_1_FOOTER=$$
+$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+$$A:LINK_PERSO_1_FOOTER_1=$$
+$$A:LINK_PERSO_2_FOOTER_1=$$
+$$A:LINK_PERSO_3_FOOTER_1=$$
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// BLOG WORDPRESS /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Id catégorie doit être créer au prealable (cf. wiki) =========== -->$$END:REM$$
+$$INIT:CATWORDPRESS=$$
+
+$$REM$$<!-- =========== TEXTE OPTIMISER REF SUR DETAIL ANNONCE ACTIVER=1 =========== -->$$END:REM$$
+$$A:OPTIDETAILTEXTSUP=$$
+
+$$REM$$<!-- =========== TEXTE OPTIMISER REF SUR RECHERCHE ANNONCE ACTIVER=1 =========== -->$$END:REM$$
+$$A:OPTIRECHERCHETEXTEAG=$$
+
+$$REM$$<!-- =======================================================================================
+////////////////////// 404 /////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser la page 404.htm =========== -->$$END:REM$$
+$$IF=:404:IDT$$
+$$A:TITLE=404$$
+$$A:DESCRIPTION=$$
+$$A:KEYWORDS=$$
+$$END$$
