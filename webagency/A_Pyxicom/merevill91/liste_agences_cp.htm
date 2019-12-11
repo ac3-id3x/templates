@@ -1,0 +1,45 @@
+
+$$SET:PAGE:TITR=Agence immobiliere @@PAGE:CFG_TITRE@@$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAG$$
+<br />
+<!-- $$REP:1$$ -->
+$$B:IMMOBW:AGENCES:CP:QRY:CP$$
+$$BIF:IMMOBW:AGENCES:CP$$
+<table width="95%" border="0" cellspacing="0" cellpadding="0" align="center">
+$$DO:1:120$$
+<tr>
+	<td valign="top" width="50%"><span class="liste_agences_nom">$$IMMOBW:AGENCES:CP:NOM$$</span><br />
+	<strong>$$IMMOBW:AGENCES:CP:ADRESSE htmlencode crlf2br$$<br /></strong>
+	<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$IMMOBW:AGENCES:CP:TEL formattel$$<br />
+	<font class="liste_agences_info">Fax :</font> $$IMMOBW:AGENCES:CP:FAX formattel$$<br />
+	$$IF:IMMOBW:AGENCES:CP:EMAIL$$<font class="liste_agences_info">E-mail : </font>$$IMMOBW:AGENCES:CP:EMAIL encodemail javascript full$$<br />$$END$$
+	<font class="liste_agences_info">$$LG:NOMRESP$$</font> $$IMMOBW:AGENCES:CP:RESPAG$$<br />
+	<br />
+	<br />
+	</td>
+	<td valign="top" width="50%" align="right">
+
+	$$IF:IMMOBW:AGENCES:CP:SI_AFFURL$$
+	$$IF:IMMOBW:AGENCES:CP:URL$$
+	<a href="$$IMMOBW:AGENCES:CP:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$IMMOBW:AGENCES:CP:NOM$$</strong></a><br />
+	$$END:URL$$
+	$$END:SI_AFFURL$$
+	$$IF0:IMMOBW:AGENCES:CP:SI_AFFURL$$
+<a href="$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/carte_visite.htm?lang=$$LANGUE$$"  class="liste_agences_lien">$$LG:VITRINE$$</a><br />
+	
+	$$END:!SI_AFFURL$$
+	<a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/contact.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a><br />
+	<a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/vendeur.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a><br />
+$$A:CARTE:CP=@@IMMOBW:AGENCES:CP:CP@@$$
+$$A:CARTE:VILLE=@@IMMOBW:AGENCES:CP:VILLE replace ' \'@@$$
+$$A:CARTE:ADRESSE=@@IMMOBW:AGENCES:CP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+$$INCL:LOCALISATION_AGENCE.HTM$$
+
+	</td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$INCL:BAS.HTM$$
