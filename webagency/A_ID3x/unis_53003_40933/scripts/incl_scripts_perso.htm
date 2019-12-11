@@ -1,0 +1,222 @@
+$$REM$$
+<!-- MENU BLOC -->$$END$$
+<script type="text/javascript">
+    // MENU SUB
+    $('.menu-sub-container-perso').children('a').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // TEST IF ALREADY OPEN
+        var openMenu = $(this).parent().children('.menu-sub-perso').hasClass('openSub');
+        if (openMenu === true) {
+            $(this).find('a').first().removeClass('menu-sub-on');
+            $(this).children('.menu-sub-perso').removeClass('openSub').hide();
+        } else {
+            // RESET
+            $('.menu-sub').parent().find('a').removeClass('menu-sub-on');
+            $('.menu-sub').removeClass('openSub').hide();
+            // FIX GOOD MENU
+            if ($(this).parent().children('.menu-sub-perso').hasClass('openSub')) {
+                $(this).parent().find('a').first().removeClass('menu-sub-on');
+                $(this).parent().children('.menu-sub-perso').removeClass('openSub').hide();
+            } else {
+                $(this).parent().find('a').first().addClass('menu-sub-on');
+                $(this).parent().children('.menu-sub-perso').addClass('openSub').show();
+            }
+        }
+    });
+
+    $('.menu-sub-perso').click(function (e) {
+        e.stopPropagation();
+    });
+    $(document).on('click', ":not('.menu-sub-perso')", function () {
+        $('.menu-sub-container-perso').find("a").removeClass('menu-sub-on');
+        $('.menu-sub-perso').removeClass('openSub').hide();
+    });
+
+    $(".bloc-index-menu").click(function (event) {
+        event.stopPropagation();
+        var tmp = $(this).find(".bloc-index-sub").is(":visible");        
+        $('.bloc-index-sub').hide();
+        if( tmp ){
+        	$(this).find(".bloc-index-sub").hide();
+        }else{
+        	$(this).find(".bloc-index-sub").show();
+        }
+    });
+    $(document).on('click', ":not('.bloc-index-menu')", function () {
+        $('.bloc-index-sub').hide();
+    });
+
+    $('#form-extranet #login').focus(function () {
+        $(this).val("");
+    });
+
+    $('#form-extranet #mdp').focus(function () {
+        $(this).val("");
+    });
+</script>
+
+
+
+$$REM$$
+<!-- SCROLL DOWN -->$$END$$
+
+<script>
+    //Code stolen from css-tricks for smooth scrolling:
+    $(document).ready(function () {
+
+        function filterPath(string) {
+            return string
+                .replace(/^\//, '')
+                .replace(/(index|default).[a-zA-Z]{3,4}$/, '')
+                .replace(/\/$/, '');
+        }
+        var locationPath = filterPath(location.pathname);
+        var scrollElem = scrollableElement('html', 'body');
+
+        $('a[href*=#]').each(function () {
+            var thisPath = filterPath(this.pathname) || locationPath;
+            if (locationPath == thisPath && (location.hostname == this.hostname || !this.hostname) && this.hash.replace(/#/, '')) {
+                var $target = $(this.hash),
+                    target = this.hash;
+                if (target) {
+                    var targetOffset = $target.offset().top;
+                    $(this).click(function (event) {
+                        event.preventDefault();
+                        $(scrollElem).animate({
+                            scrollTop: targetOffset
+                        }, 400, function () {
+                            location.hash = target;
+                        });
+                    });
+                }
+            }
+        });
+
+        // use the first element that is "scrollable"
+        function scrollableElement(els) {
+            for (var i = 0, argLength = arguments.length; i < argLength; i++) {
+                var el = arguments[i],
+                    $scrollElement = $(el);
+                if ($scrollElement.scrollTop() > 0) {
+                    return el;
+                } else {
+                    $scrollElement.scrollTop(1);
+                    var isScrollable = $scrollElement.scrollTop() > 0;
+                    $scrollElement.scrollTop(0);
+                    if (isScrollable) {
+                        return el;
+                    }
+                }
+            }
+            return [];
+        }
+
+    });
+</script>
+
+
+
+
+$$REM$$
+<!-- MAPS AGENCE -->$$END$$
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".map-show-france").click(function () {
+            $(".map-agence-paris").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeOut("fast");
+            $(".map-agence-paca").fadeOut("fast");
+            $(".map-agence-france").fadeIn("fast");
+        });
+
+        $(".map-show-paris").click(function () {
+            $(".map-agence-france").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeOut("fast");
+            $(".map-agence-paca").fadeOut("fast");
+            $(".map-agence-paris").fadeIn("fast");
+        });
+
+        $(".map-show-rhonealpes").click(function () {
+            $(".map-agence-france").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeOut("fast");
+            $(".map-agence-paca").fadeOut("fast");
+            $(".map-agence-paris").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeIn("fast");
+        });
+
+        $(".map-show-bourgogne").click(function () {
+            $(".map-agence-france").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeOut("fast");
+            $(".map-agence-paca").fadeOut("fast");
+            $(".map-agence-paris").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeIn("fast");
+        });
+
+        $(".map-show-aquitaine").click(function () {
+            $(".map-agence-france").fadeOut("fast");
+            $(".map-agence-paca").fadeOut("fast");
+            $(".map-agence-paris").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeIn("fast");
+        });
+
+        $(".map-show-paca").click(function () {
+            $(".map-agence-france").fadeOut("fast");
+            $(".map-agence-paris").fadeOut("fast");
+            $(".map-agence-rhonealpes").fadeOut("fast");
+            $(".map-agence-bourgogne").fadeOut("fast");
+            $(".map-agence-aquitaine").fadeOut("fast");
+            $(".map-agence-paca").fadeIn("fast");
+        });
+
+        $('.map-tooltip').tooltip({
+            html: true
+        });
+
+
+
+    });
+</script>
+
+$$REM$$<!-- FORM EXTRANET -->$$END$$
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle-extranet").click(function () {
+            $("#form-extranet").slideToggle("fast");
+        });
+    });
+</script>
+
+$$IF=:RESULTATS:IDT$$
+    $$REM$$<!-- FORM RECHERCHE MOBILE -->$$END$$
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // ALERTE
+            $("#Btn_Alerte").click(function () {            
+                $('#Alerte_Show').show('slow');
+				$("a").attr("href", "#Alerte_Show");
+            });
+            $("#Close_Alerte").click(function () {            
+                $('#Alerte_Show').hide('slow');
+            });
+
+            // REFINER
+            $("#Btn_Filter").click(function () {            
+                $('#Filter_Show').show('slow');
+				$("a").attr("href", "#Filter_Show");
+            });
+            $("#Close_Filter").click(function () {            
+                $('#Filter_Show').hide('slow');
+            });                
+        });
+    </script>
+    
+$$END$$

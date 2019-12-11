@@ -1,0 +1,364 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+$$IF=:10$11:FORM:IDTT$$
+    $$A:TAILLEMOTEURRESULTATS=0$$
+    $$A:TAILLERESULTATS=12$$
+$$END$$
+    $$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+        $$BIF:FIL$$
+            $$IF+:2:FIL:NBR$$
+            <div class="row-fluid">
+                <div class="span12 margin-bottom-10">
+                <!--#include virtual="recherche/incl_fil_ariane.htm" -->
+                </div>
+            </div>
+            $$END$$
+        $$BFIN$$
+    $$END$$
+    <!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 class="phrase-recherche margin-bottom-10">
+                $$ANNLISTE:PHRASE pcase replace france France$$ $$IF!:1:HIDE_SOUSTYPEBIEN$$$$IF!:9:FORM:IDTT$$$$IF:FORM:IDSOUSTYPEBIEN$$
+                  $$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+                    $$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+                  $$END:!FORM:IDSOUSTYPEBIEN$$
+                $$END:FORM:IDSOUSTYPEBIEN$$ $$END$$$$END$$
+            </h1>
+        </div>
+    </div>
+    <div class="row-fluid bloc-top-alerte-email $$IF=:1:BIGLISTINGMOBI$$hidden-phone$$END$$">
+        <div class="$$TAILLEMOTEURRESULTATS$$">
+            <p>$$LG:V5NOUVELLESANNONCES pcase$$</p>
+            <div class="row-fluid">
+                <div class="span12">
+                    <!--#include virtual="recherche/incl_bouton_alerte.htm" -->
+                </div>
+            </div>
+        </div>
+        <div class="$$TAILLERESULTATS$$ padding-left-20 border-solid-left-block-2 padding-bottom-15 bloc-nb-annonces hidden-phone">
+            <p>$$LG:V5ACTUELLEMENT pcase$$</p>
+            <div class="bloc-prase-nb">
+                <!--#include virtual="recherche/incl_recherche_haut_phrase.htm" -->
+                $$IF=:1:REFERENCETOP$$
+                <div class="pull-right hidden-tablet hidden-phone">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <!--#include virtual="recherche/incl_recherche_reference.htm" -->
+                        </div>
+                        <div class="span6">
+                            <!--#include virtual="recherche/incl_bouton_selection.htm" -->
+                        </div>
+                    </div>
+                </div>
+                $$END$$
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12 margin-top-10">
+            <!--#include virtual="recherche/incl_alerte.htm" -->
+        </div>
+    </div>
+    <hr class="margin-bottom-15" />
+    $$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+    $$IF=:1:CANONICAL$$
+        $$IF:SEO_RESULTS_CONTENT$$
+      <div class="row-fluid margin-bottom-20 hidden-phone">
+          <p class="span12">$$SEO_RESULTS_CONTENT$$</p>
+      </div>
+      $$END$$
+    $$END$$
+    $$REM$$<!--AFFICHAGE DE LA PHRASE POUR LA GARANTI REVENTE ARTHURIMMO-->$$END$$
+    $$IF=:2:FORM:IDTT$$
+        $$IF=:1:GARANTIEREVENTE$$
+            <div class="row-fluid margin-top-20 hidden-phone">
+                <div class="span3 pagination-centered">
+                    <a href="/immo,revente.htm" target="_blank" class="active margin-top-15" title="Garantie revente"><img src="$$~$$images/garantierevente/gallian-listing.png" alt="Pour les surprises de la vie, il y a la garantie revente offerte !"></a>
+                </div>
+                <div class="span9 small">
+                    $$IF0:CUSTOMGARANTIESENTENCE$$
+                        Cette icône indique que ce bien bénéficie de la garantie revente
+                    $$END$$
+                    $$IF:CUSTOMGARANTIESENTENCE$$
+                        $$CUSTOMGARANTIESENTENCE$$
+                    $$END$$
+                    <a href="/immo,revente.htm" target="_blank" class="padding-left-15" title="Garantie revente"><img src="$$~$$images/garantierevente/gallian-picto2.png" alt="Garantie revente"></a>
+                </div>
+            </div>
+        $$END$$
+    $$END$$
+
+    <!--#include virtual="recherche/incl_recherche_onglets.htm" -->
+    <div class="row-fluid">
+        $$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+        $$IF:TAILLEMOTEURRESULTATS$$
+            <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+        $$END$$
+        $$BIF:ANNLISTE$$
+
+        $$REM$$<!--AFFICHAGE DU LISTING-->$$END$$
+        <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_basic_resultats.htm" -->                      
+        </div>
+$$REM$$
+        $$REM$$<!--AFFICHAGE DE CARTO-->$$END$$
+        <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ relative margin-top-10">
+            <div id="recherche-carto" class="display-none">
+                <!--#include virtual="recherche/incl_basic_resultats_carto.htm" -->
+            </div>
+        </div>
+$$END:REM$$
+            $$IF0:ANNLISTE:SIPANIER$$
+                $$B:IMMOBW:ANN-ES:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+                <!--#include virtual="recherche/incl_calcul_selection.htm" -->
+            $$END$$
+        $$BFIN$$
+        $$BIF0:ANNLISTE$$
+        <div class="$$TAILLERESULTATS$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+            <!--LOADER-->
+            <div class="layer display-none fixe height-100-pourcent top right left bottom row-fluid">
+                <div class="z25 span12 margin-top-200">
+                    <div class="row-fluid">
+                        <div class="span4"></div>
+                        <div class=" span4 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+                            <img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+                            <p class="typo-black pagination-centered">
+                                $$LG:VEUILLEZPATIENTER$$
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bg-picture opacity-7 top right left bottom z-25" ></div>
+            </div>
+            <!-- FINLOADER-->
+            <script type="text/javascript">
+                var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+                var maxpage = '$$ANNLISTE:NBRPAGES$$';
+                var btnaction = 'choix-selection-refine';
+                var btnneutre = 'choix-neutre-refine';
+                var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+                var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:LOYERBTW$$$$FORM:LOYERBTW$$$$END$$';
+            </script>
+        </div>
+        $$BFIN$$
+        $$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES RIGHT -->$$END$$
+
+    </div>
+    <div class="row-fluid bloc-bottom-alerte-email">
+        <div class="$$TAILLEMOTEURRESULTATS$$"></div>
+        <div class="$$TAILLERESULTATS$$">
+            <!--#include virtual="recherche/incl_recherche_alerte.htm" -->
+        </div>
+    </div>
+    $$IF0:ANNLISTE:SIPANIER$$
+    <div class="row-fluid">
+        <div class="span12">
+            $$IF:ANNLISTE:NBR$$
+                <hr />
+                <div class="margin-top-20 small mentions">
+                    $$IF:ANNLISTE:NBR$$
+                        <!-- $$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$ -->
+                    $$END:ANNLISTE:NBR$$
+                    <p>$$LG:LOI78AGENCE$$ <a href="$$URLBASE$$/legal,mentions.htm$$IF=:0:MULTIAGENCES$$?idp=$$AGENCE_IDPUBLICATION$$$$END$$" title="$$LG:ADR2EDITEUR$$">$$LG:ADR2EDITEUR$$</a>.</p>
+                </div>
+                <div class="margin-top-20"></div>
+            $$END$$
+        </div>
+    </div>
+    $$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+    $$BIF:ANNLISTE$$
+    <div class="row-fluid">
+        <div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+            <h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <!--#include virtual="recherche/incl_basic_resultats.htm" -->
+    </div>
+    $$BFIN$$
+    $$BIF0:ANNLISTE$$
+        $$IF0:ANNLISTE:SIPANIER$$
+        <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+        $$END$$
+        $$IF:ANNLISTE:SIPANIER$$
+        <div class="row-fluid">
+            <div class="span12">
+                <h1>$$LG:DANSVOTRESELEC pcase$$ : <span class="typo-action">0 $$LG:ANNONCE$$</span></h1>
+                <hr />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 margin-top-10">
+                <p>$$LG:CREERSELECTION pcase$$</p>
+            </div>
+        </div>
+        $$END$$
+    $$BFIN$$
+$$END$$
+
+<!-- TEST RAPHAEL -->
+<div class="recherche-sidebar $$IF=:2:FORM:IDTT$$recherche-sidebar-vente$$END$$ $$IF=:1:FORM:IDTT$$recherche-sidebar-location$$END$$ hidden-desktop">          
+    <a href="javascript:void(0);" title="Filtrer" class="btn btn-action btn-sidebar sidebar-display-minimot" id="Btn_Filter">Filtrer</a>                
+    <a href="javascript:void(0);" title="$$LG:ALERTEMAIL pcase$$" class="btn btn-action btn-sidebar toggle-alert" id="Btn_Alerte">$$LG:ALERTEMAIL pcase$$</a>
+</div>
+
+
+<div id="Filter_Show" style="display: none;">
+    <span id="Close_Filter" class="$$IF=:2:FORM:IDTT$$Close-alerte-vente$$END$$ $$IF=:1:FORM:IDTT$$Close-alerte-location$$END$$">X</span>
+    <div class="row-fluid moteur-all relative">
+        <div class="span12 filter-mobile moteur-refine">
+            
+
+            $$REM$$<!--#include virtual="moteur/refine/incl_refine_moteur.htm" -->$$END$$
+
+
+
+            <form class="form-$$TYPEMOTEUR$$ hidden-tablet hidden-desktop moteur-avantage-mobile margin-top-20 mini-moteur" action="/moteur,prevalidation.htm" method="get">
+                <input type="hidden" name="idqfix" value="1">
+                <input type="hidden" name="idtt" value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$" id="idtt-mobile">
+                <!--#include virtual="moteur/incl_input_langue.htm" -->
+                <div>
+                    $$IF+:2:TYPE_TRANSACTION:NBR$$
+                        $$A:MINIMOBILEAUTRE_AFFICHAGE=1$$
+                    $$END$$
+                    $$IF-:3:TYPE_TRANSACTION:NBR$$
+                        $$A:MINIMOBILEAUTRE_AFFICHAGE=0$$
+                    $$END$$
+                    $$BIF:TYPE_TRANSACTION$$
+                        $$DO$$
+                            $$IF=:1:TYPE_TRANSACTION:I$$
+                                $$A:SEARCHTAB1TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+                                $$A:SEARCHTAB1LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+                            $$END$$
+                            $$IF=:2:TYPE_TRANSACTION:I$$
+                              $$A:SEARCHTAB2TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+                              $$A:SEARCHTAB2LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+                            $$END$$
+                            $$IF=:3:TYPE_TRANSACTION:I$$
+                              $$A:SEARCHTAB3TYPE=@@TYPE_TRANSACTION:IDTYPETRANSACTION@@$$
+                              $$A:SEARCHTAB3LABEL=@@TYPE_TRANSACTION:DESCRIPTIONLG pcase@@$$
+                            $$END$$
+                        $$LOOP$$        
+                    $$BFIN$$
+                    
+                    $$REM$$<!--#include virtual="moteur/mini/incl_avantage_moteur_form.htm" -->$$END:REM$$
+
+                    <div class="row-fluid">
+                        <div id="Mini_Transaction" class="Mini_Transaction$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+                            <!--#include virtual="moteur/mini/incl_type_transaction.htm" -->
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div id="Mini_Biens" class="Mini_Biens$$IF=:INLINE:TYPEMOTEUR$$ $$TAILLEMOTEUR$$$$END$$">
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div id="Mini_Villes" class="relative Mini_Villes$$IF=:INLINE:TYPEMOTEUR$$$$IF0:TAILLESUGGEST$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLESUGGEST$$ $$TAILLESUGGEST$$$$END$$$$END$$">
+                            $$IF=:1:MINIVILLES_SUGGEST$$
+                                $$REM$$<!-- VILLE SUGGEST -->$$END$$
+                                <!--#include virtual="moteur/suggest/incl_input.htm" -->
+                                <!--#include virtual="moteur/suggest/incl_json.htm" -->
+                            $$END$$
+                            $$IF!:1:MINIVILLES_SUGGEST$$
+                                <script type="text/javascript">
+                                $(document).ready(function() {
+                                        ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes_ajax','$$TYPEMOTEUR$$'$$IF:FORM:CI$$,'','ci=$$FORM:CI$$'$$END$$);
+                                });
+                                </script>
+                                <!--#include virtual="moteur/mini/incl_villes.htm" -->
+                            $$END$$
+                        </div>
+                    </div>
+
+
+                    <div class="row-fluid">
+						<div class="control-group">
+							<select name="surfacebtw" class="center" id="MiniSelectSurface">
+								<option value="" selected="selected">$$LG:V5SURFACE pcase$$</option>
+								<option value="$$MINI_SURFTRANCHEMIN1$$/$$MINI_SURFTRANCHEMAX1$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN1 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX1 formatnumber 0$$ m&sup2;</option>
+								$$IF+:3:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN2$$/$$MINI_SURFTRANCHEMAX2$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN2 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX2 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:4:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN3$$/$$MINI_SURFTRANCHEMAX3$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN3 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX3 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:5:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN4$$/$$MINI_SURFTRANCHEMAX4$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN4 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX4 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:6:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN5$$/$$MINI_SURFTRANCHEMAX5$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN5 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX5 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:7:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN6$$/$$MINI_SURFTRANCHEMAX6$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN6 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX6 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:8:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN7$$/$$MINI_SURFTRANCHEMAX7$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN7 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX7 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:9:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN8$$/$$MINI_SURFTRANCHEMAX8$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN8 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX8 formatnumber 0$$ m&sup2;</option>$$END$$
+								$$IF+:10:MINI_SURFNBTRANCHE$$<option value="$$MINI_SURFTRANCHEMIN9$$/$$MINI_SURFTRANCHEMAX9$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMIN9 formatnumber 0$$ $$LG:A lcase$$ $$MINI_SURFTRANCHEMAX9 formatnumber 0$$ m&sup2;</option>$$END$$
+								<option value="$$MINI_SURFTRANCHEMAX$$">$$LG:DE lcase$$ $$MINI_SURFTRANCHEMAX formatnumber 0$$ m&sup2; $$LG:ETPLUS$$</option>
+							</select>
+						</div>
+                    </div>        
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <select name="nb_pieces" class="center">
+                                <option value=""> $$LG:MININBRPIECES$$</option>
+                                <option value="1"$$IF(:FORM_NB*PIECES:1$$ selected="selected"$$END$$> 1</option>
+                                <option value="2"$$IF(:FORM_NB*PIECES:2$$ selected="selected"$$END$$> 2</option>
+                                <option value="3"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 3</option>
+                                <option value="4"$$IF(:FORM_NB*PIECES:4$$ selected="selected"$$END$$> 4</option>
+                                <option value="+4"$$IF(:FORM_NB*PIECES:3$$ selected="selected"$$END$$> 5 $$LG:ET lcase$$ +</option>
+                            </select>
+                        </div>  
+                    </div> 
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <select name="nb_chambres" class="center">
+                                <option value=""> $$LG:CHAMBRESYO$$</option>
+                                <option value="1"$$IF(:FORM_NB*CHAMBRES:1$$ selected="selected"$$END$$> 1</option>
+                                <option value="2"$$IF(:FORM_NB*CHAMBRES:2$$ selected="selected"$$END$$> 2</option>
+                                <option value="3"$$IF(:FORM_NB*CHAMBRES:3$$ selected="selected"$$END$$> 3</option>
+                                <option value="4"$$IF(:FORM_NB*CHAMBRES:4$$ selected="selected"$$END$$> 4</option>
+                                <option value="+4"$$IF(:FORM_NB*CHAMBRES:3$$ selected="selected"$$END$$> 5 $$LG:ET lcase$$ +</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div id="Mini_Budget" class="Mini_Budget$$IF=:INLINE:TYPEMOTEUR$$$$IF0:TAILLEMINIBUDGET$$ $$TAILLEMOTEUR$$$$END$$$$IF:TAILLEMINIBUDGET$$ $$TAILLEMINIBUDGET$$$$END$$$$END$$">
+                            <script type="text/javascript">
+                            $(document).ready(function() {
+                                ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','tranche');
+                            });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="control-group margin-0">            
+                        <div class="$$TYPEBOUTON$$ $$IF=:2:FORM:IDTT$$rechercher-vente$$END$$ $$IF=:1:FORM:IDTT$$rechercher-location$$END$$ btn-important btn-block bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$"
+                             onclick="initIdttField()"><p class="filter-rechercher">
+                            $$LG:RECHERCHER pcase$$
+                       </p> </div>
+                    </div>
+                </div>    
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<div id="Alerte_Show" style="display: none;">
+    <span id="Close_Alerte" class="$$IF=:2:FORM:IDTT$$Close-alerte-vente$$END$$ $$IF=:1:FORM:IDTT$$Close-alerte-location$$END$$">X</span>
+    <div class="row-fluid">
+        <div class="span12 margin-top-40">
+            <!--#include virtual="recherche/incl_recherche_alerte.htm" -->  
+        </div>
+    </div>    
+</div>
