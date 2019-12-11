@@ -1,0 +1,52 @@
+$$E:EASA:TEXTE:~idCategorie:VAL:IDCATPUBEDITEUR:~idTexte:QRY:IDTEXTE:ALIAS:BT$$
+$$INIT:IDT=ACTUSEDITEUR$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid actu" itemscope itemtype="http://schema.org/Article">
+	<div class="span12">
+		<div class="row-fluid">
+			<div class="span12">
+				<h1 itemprop="name">$$BT:TITRE$$</h1>
+				<hr>
+			</div>
+		</div>
+		<div class="row-fluid margin-top-20">
+			<div class="span8">
+				$$IF=:BT:DESCRIPTION$$
+					<div itemprop="description">$$BT:DESCRIPTION$$</div>
+				$$END$$
+				<div itemprop="text">$$BT:TEXTE$$</div>
+				<div class="italic lowercase margin-top-10" itemprop="author">
+					$$IF=:0:MULTIAGENCES$$
+						$$AGENCE_NOM$$
+					$$END$$	
+					$$IF=:1:MULTIAGENCES$$
+						$$IF:NOM_SITE_REF$$
+							$$NOM_SITE_REF$$
+						$$END$$
+						$$IF0:NOM_SITE_REF$$
+							$$URLBASE$$
+						$$END$$
+					$$END$$	
+				</div>
+				<p class="typo-action pair padding-10 margin-top-20">$$LG:PUBLIELE pcase$$ <span itemprop="datePublished">$$BT:DTCREA date 1 lcase$$</span></p>
+			</div>
+			<div class="span4 border-solid-primary-1 detail-bloc-contact padding-10">
+				<div class="h2-like margin-bottom-10">$$LG:NOSAUTRESACTU pcase$$</div>
+				$$B:EASA:TEXTES:~idCategorie:VAL:IDCATPUBEDITEUR:~inverse:1:ALIAS:EDITEURPUB$$
+				$$BIF:EDITEURPUB$$
+					<ul>
+						$$DO:1:5$$
+							<li class="padding-5">
+								<a href="/immo,actu.htm?idtexte=$$EDITEURPUB:IDTEXTE$$" title="$$EDITEURPUB:TITRE pcase$$">$$EDITEURPUB:TITRE smalltextv2 50$$</a>
+							</li>
+						$$LOOP$$
+					</ul>
+				$$BFIN$$
+				<div class="margin-top-20 pagination-centered">
+					<a href="/immo,actus.htm" title="$$LG:TOUTESNOSACTUS pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:TOUTESNOSACTUS pcase$$</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
