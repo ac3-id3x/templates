@@ -1,0 +1,197 @@
+$$REM$$<!--
+=========================================================
+//// <summary>Page qui définie les expressions par défaut des balises TITLE et META</summary>
+//// <remarks>
+//// <para>apparaît seulement si le site a un de contrat de réf ou TDL en cours</para>
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>si vous n'avez pas besoin des commentaires, effacez les, vous gagnerez des sauts de ligne dans le code source</para>
+//// <para>2009.07.28 : ajout param sur titre, descr et keyw, dont le contenu par défaut provient de la conf, sauf si conditionnement</para>
+//// </remarks>
+//// <update date="2009-07-28" author="lisbonne.siriphol">Updates</update>
+//// <update date="2009-03-30" author="lisbonne.siriphol">Adaptation pour franchise Laforêt</update>
+=========================================================
+-->$$END$$
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// Eléments de réf du HEADER ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- Au dessus du marquee : "Immobilier + DEP" -->$$END:REM$$
+$$B:IMMOBW:AGENCES:ALIAS:ACCROCHE:CP$$$$BIF:ACCROCHE$$$$DO$$
+$$A:HEADERACCROCHE=@@LG:IMMOBILIER@@ @@ACCROCHE:CP cp2dep@@$$
+$$LOOP$$$$BFIN$$
+
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// TITLE des liens du menu ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- accueil -->$$END:REM$$													$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@$$
+
+$$REM$$<!-- ===================== transactions ===================== -->$$END:REM$$
+
+$$REM$$<!-- coups de coeur -->$$END:REM$$										$$A:TITLE_MENU_CDC=@@LG:LIEN:CDC pcase@@$$
+$$REM$$<!-- exclusivités -->$$END:REM$$											$$A:TITLE_MENU_EXCLUS=@@LG:EXCLUSIVITES pcase@@$$
+$$REM$$<!-- nos nouveautés -->$$END:REM$$										$$A:TITLE_MENU_NOUVEAUTES=@@LG:NOSNOUVEAUTES pcase@@$$
+$$REM$$<!-- acheter (formulaire) -->$$END:REM$$							$$A:TITLE_MENU_ACHETER=@@LG:ACHETER pcase@@$$
+$$REM$$<!-- louer (formulaire) -->$$END:REM$$								$$A:TITLE_MENU_LOUER=@@LG:LOUER pcase@@$$
+$$REM$$<!-- louer (résultats) -->$$END:REM$$								$$A:TITLE_RESULTATS_LOC=@@LG:LOUER pcase@@$$
+$$REM$$<!-- loc vacances (résultats) -->$$END:REM$$					$$A:TITLE_RESULTATS_LOCVAC=@@LG:VACANCES pcase@@$$
+$$REM$$<!-- prestige (résultats) -->$$END:REM$$							$$A:TITLE_RESULTATS_PRESTIGE=@@LG:PRESTIGE2 pcase@@$$
+$$REM$$<!-- prod. invest. (résultats) -->$$END:REM$$				$$A:TITLE_RESULTATS_INVEST=@@LG:INVESTISSEMENT2 pcase@@$$
+$$REM$$<!-- Prog neufs (résultats) -->$$END:REM$$						$$A:TITLE_RESULTATS_NEUF=@@LG:NEUF pcase@@$$
+
+$$REM$$<!-- ===================== rubrique(s) personnalisée(s) ===================== -->$$END:REM$$
+$$REM$$<!-- lien rubrique perso 1 -->$$END:REM$$						$$A:TITLE_MENU_PERSO1=@@MENU_PERSO1_TITRE@@$$
+$$REM$$<!-- lien rubrique perso 2 -->$$END:REM$$						$$A:TITLE_MENU_PERSO2=@@MENU_PERSO2_TITRE@@$$
+
+$$REM$$<!-- ===================== services ===================== -->$$END:REM$$
+$$BIF:ACCROCHE$$$$DO$$
+$$REM$$<!-- notre agence -->$$END:REM$$											$$IF=:1:MULTI:NBR$$$$A:TITLE_MENU_AGENCE=@@LG:LIEN:AGEN pcase@@ @@LG:A lcase@@ @@ACCROCHE:VILLE@@$$$$END$$
+$$LOOP$$$$BFIN$$
+$$REM$$<!-- nos agences -->$$END:REM$$											$$IF!:1:MULTI:NBR$$$$A:TITLE_MENU_AGENCE=@@LG:NOSAGENCES pcase@@$$$$END$$
+$$REM$$<!-- gestion -->$$END:REM$$													$$A:TITLE_MENU_GESTION=@@LG:GESTION pcase@@$$
+$$REM$$<!-- estimation -->$$END:REM$$												$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMATION pcase@@$$
+$$REM$$<!-- contact -->$$END:REM$$													$$A:TITLE_MENU_CONTACT=@@LG:CONTACT pcase@@$$
+$$REM$$<!-- partenaires -->$$END:REM$$											$$A:TITLE_MENU_PARTENAIRES=@@LG:LIEN:PART pcase@@$$
+$$REM$$<!-- notre réseau -->$$END:REM$$											$$A:TITLE_MENU_RESEAU=@@LG:LIEN:RESEAU pcase@@$$
+
+
+$$REM$$<!-- ===================== annonces sélectionnées ===================== -->$$END:REM$$
+$$REM$$<!-- selection -->$$END:REM$$												$$A:TITLE_MENU_SELECTION=@@LG:MASELECT pcase@@$$
+
+
+
+$$REM$$<!-- ======================================================================================
+//////////////////////////// Expressions contenues dans alt et title /////////////////////////////
+=====================================================================================-->$$END:REM$$
+$$A:EXPRESSION1=agence immobiliere macon$$
+$$A:EXPRESSION2=immobilier macon$$
+$$A:EXPRESSION3=vente appartement creches sur saone$$
+$$A:EXPRESSION4=terrain a vendre sud bourgogne$$
+$$A:EXPRESSION5=annonces immobilieres creches sur saone$$
+$$A:EXPRESSION6=agence immobiliere Bourgogne$$
+
+
+
+$$REM$$<!-- ======================================================================================
+////////////////////// Exemples sans les dollars sinon ça fait tout sauter ///////////////////////
+==================================================================================================
+
+================== exemple de conditionnement balises meta TITLE, DESCRIPTION, KEYWORDS =========
+	IF=:INDEX:PAGE:IDT
+		A:PAGE:TITR=
+		A:PAGE:DESCREF=
+		A:PAGE:KEYWORDS=
+	END
+	
+========================= exemple de conditionnement sur IDPUBLICATION  =========================
+	IF=:CTC:PAGE:IDT
+		IF=:346519:REP:1
+			A:PAGE:TITR=
+			A:PAGE:DESCREF=
+			A:PAGE:KEYWORDS=
+		END
+	END
+
+==================================== tout est dans la query  ====================================
+	nommer directement la page							IF=:IMMOBILIER.HTM:REP:0
+	le numéro de page												IF=:1:IMMOBW:ANN:QRY:PAGE
+	l'idtt																	IF=:2:FORM:IDTT
+	code insee															IF=:123456:FORM:CI
+	coup de coeur														IF=:1:FORM:SI_COUPDECOEUR	
+	
+====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- ================== avec annonces et/ou liens vers annonces ================= -->$$END:REM$$
+$$REM$$<!--  index.htm > IDT=INDEX -->$$END:REM$$
+$$REM$$<!--  immobilier.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  résultat géoloc / map,recherche.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  recherche,...htm > IDT=RESULTATS -->$$END:REM$$
+$$REM$$<!--  detail,...htm > IDT=DETAILANNONCE -->$$END:REM$$
+$$REM$$<!--  rss.htm > IDT=RSS -->$$END:REM$$
+
+$$REM$$<!-- ============================== formulaires ============================== -->$$END:REM$$
+$$REM$$<!--  acheter.htm > IDT=ACHETER -->$$END:REM$$
+$$REM$$<!--  louer.htm > IDT=LOUER -->$$END:REM$$
+$$REM$$<!--  message.htm > IDT=CTC -->$$END:REM$$
+$$REM$$<!--  estimation.htm > IDT=ESTIM -->$$END:REM$$
+
+$$REM$$<!-- ============================== pages de contenu ============================== -->$$END:REM$$
+$$REM$$<!--  agence-immobiliere.htm > IDT=AGENCEIMMOBILIERE -->$$END:REM$$
+$$REM$$<!--  notre-agence-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  nos-agences-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  gestion.htm > IDT=GESTION -->$$END:REM$$
+$$REM$$<!--  annuaire-laforet.htm > IDT=ANNUAIRELAFORET -->$$END:REM$$
+$$REM$$<!--  plan.htm > IDT=PLAN -->$$END:REM$$
+$$REM$$<!--  contrat-privilege-laforet.htm > IDT=CONTRATPRIV -->$$END:REM$$
+$$REM$$<!--  guide-pratique.htm > IDT=GUI -->$$END:REM$$
+$$REM$$<!--  mentions.htm > IDT=MENTIONS -->$$END:REM$$
+$$REM$$<!--  partenaires.htm > IDT=PART -->$$END:REM$$
+$$REM$$<!--  gestion.htm > IDT=GESTION -->$$END:REM$$
+
+$$REM$$<!-- ======= a moins de conditionner, voici ce qui apparaîtra sur toutes les pages ======= -->$$END:REM$$
+
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Achat appartement Macon, immobilier Macon, vente maison, agence immobili&egrave;re Macon Lafor&ecirc;t.$$
+$$A:PAGE:DESCREF=Consultez toutes nos dernieres annonces immobilieres d'achat et vente bien immobilier macon$$
+$$END$$
+
+$$IF=:ACHETER:PAGE:IDT$$
+$$A:PAGE:TITR=ACHAT APPARTEMENT PONT DE VAUX, VENTE MAISON CHARNAY LES MACON$$
+$$A:PAGE:DESCREF=Retrouvez nos annonces d'achat, vente appartement et maison sur pont de vaux et charnay les macon$$
+$$END$$
+
+$$IF=:LOUER:PAGE:IDT$$
+$$A:PAGE:TITR=LOCATION APPARTEMENT MACON, LOCATION IMMOBILIER MACON$$
+$$A:PAGE:DESCREF=Decouvrez toutes nos offres immobilieres de location immobilier macon$$
+$$END$$
+
+$$IF=:AGENCES:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobili&egrave;re M&acirc;con : Lafor&ecirc;t Immobilier 71.$$
+$$A:PAGE:DESCREF=Notre agence immobili&egrave;re de M&acirc;con vous propose de consulter nos annonces d'achat, de location et de vente de biens immobiliers.$$
+$$END$$
+
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=ANNONCES IMMOBILIERES CRECHES SUR SAONE, VENDRE TERRAIN BOURGOGNE$$
+$$A:PAGE:DESCREF=Consultez en ligne les annonces immobilieres sur bourgogne et creches sur saone$$
+$$END$$
+
+$$IF=:CONTRATPRIV:PAGE:IDT$$
+$$A:PAGE:TITR=IMMOBILIER CRECHES SUR SAONE, ACHAT TERRAIN BOURGOGNE$$
+$$A:PAGE:DESCREF=Decouvrez en ligne sur notre site immobilier, toutes nos annonces immobilieres creches sur saone et bourgogne$$
+$$END$$
+
+$$IF=:ESTIM:PAGE:IDT$$
+$$A:PAGE:TITR=IMMOBILIER CHARNAY LES MACON, AGENCE IMMOBILIERE PONT DE VAUX$$
+$$A:PAGE:DESCREF=L'agence immobiliere pont de vaux, vous propose de consulter toutes les annonces d'achat et vente immobilier charnay les macon$$
+$$END$$
+
+$$IF=:PART:PAGE:IDT$$
+$$A:PAGE:TITR=ACHAT IMMOBILIER BOURGOGNE, VENTE APPARTEMENT MACON$$
+$$A:PAGE:DESCREF=Toutes nos annonces immobilieres d'achat immobilier bourgogne et vente appartement macon sont desormais disponibles sur notre agence immobiliere.$$
+$$END$$
+
+$$IF=:GESTION:PAGE:IDT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE CRECHES SUR SAONE, ACHAT MAISON CHARNAY LES MACON$$
+$$A:PAGE:DESCREF=Notre agence immobiliere chreches sur saone vous propose de consulter en ligne toutes les annonces d'achat maison charnay les macon$$
+$$END$$
+
+$$IF=:CTC:PAGE:IDT$$
+$$A:PAGE:TITR=IMMOBILIER PONT DE VAUX, VENTE MAISON MACON, ACHAT APPARTEMENT BOURGOGNE$$
+$$A:PAGE:DESCREF=Toutes nos annonces immobilieres pont de vaux, macon et bourgogne sont disponibles sur notre site immobilier.$$
+$$END$$
+
+$$IF=:MENTIONS:PAGE:IDT$$
+$$A:PAGE:TITR=ACHAT MAISON BOURGOGNE, VENTE IMMOBILIER MACON$$
+$$A:PAGE:DESCREF=Consultez en ligne toutes nos dernieres offres d'achat maison bourgogne et vente immobilier macon$$
+$$END$$
+
+$$IF=:ANNUAIRELAFORET:PAGE:IDT$$
+$$A:PAGE:TITR=AGENCE IMMOBILIERE BOURGOGNE, ANNONCE IMMOBILIERE MACON$$
+$$A:PAGE:DESCREF=Gestion d'achat appartement, vente maison et location bien immobilier sur bourgogne et macon$$
+$$END$$
+
+$$IF=:GUI:PAGE:IDT$$
+$$A:PAGE:TITR=ANNONCES IMMOBILIERES BOURGOGNE, VENTE IMMOBILIER PONT DE VAUX$$
+$$A:PAGE:DESCREF=Gestion d'achat logement bourgogne, vente immobilier macon et pont de vaux$$
+$$END$$
