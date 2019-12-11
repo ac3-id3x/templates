@@ -1,0 +1,172 @@
+$$REM$$<!--Fichier SEO a demutualiser pour ajouter des optimisations sur pages de contenus-->$$END$$
+
+$$REM$$<!-- ================================ index.htm ===============================-->$$END:REM$$
+$$IF=:INDEX:PAGE:IDT$$
+		$$A:PAGE:TITR=Tout l'immobilier à Royan avec @@NOM_AGENCE@@$$
+		$$A:PAGE:DESCREF=Consultez toutes les annonces immobilières sur Royan et sa région. Achetez ou vendez votre bien immobilier à Royan$$
+		$$A:PAGE:KEYWORDS=immobilier,agence immobiliere,@@NOM_AGENCE@@,Royan @@LG:IMMOBILIER pcase@@$$
+
+$$END$$
+
+$$REM$$<!-- ================================ reseau.htm ===============================-->$$END:REM$$
+$$IF=:RESEAU:PAGE:IDT$$
+		$$A:PAGE:TITR=Réseau La Gersoise Square Habitat: depuis 60 ans votre partenaire immobilier à Royan$$
+		$$A:PAGE:DESCREF=10 agences réunissent sur ce site leurs annonces sur toute la Côte de Beauté et vous garantissent une grande sécurité tout au long de votre projet immobilier.$$
+		$$A:PAGE:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ nosagences.htm ===============================-->$$END:REM$$
+$$IF=:NOSAGENCES:PAGE:IDT$$
+		$$A:PAGE:TITR=Découvrez nos 10 agences immobilières Square Habitat sur Royan, Vaux sur Mer, Saint Palais sur Mer et la région$$
+		$$A:PAGE:DESCREF=Notre implantation sur une vaste partie du département de la Charente Maritime (17), nous permet de vous proposer un choix de biens immobiliers très complet.$$
+		$$A:PAGE:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ services-location-annuelle.htm ===============================-->$$END:REM$$
+$$IF=:SERVICES-LOCATION-ANNUELLE:PAGE:IDT$$
+		$$A:PAGE:TITR=La Gersoise Square Habitat vous propose ses services en location annuelle en Charente Maritime (17)$$
+		$$A:PAGE:DESCREF=Simplifiez-vous la vie en toute sécurité avec notre service en location annuelle.$$
+		$$A:PAGE:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ services-location-saisonniere.htm ===============================-->$$END:REM$$
+$$IF=:SERVICES-LOCATION-SAISONNIERE:PAGE:IDT$$
+		$$A:PAGE:TITR=La Gersoise Square Habitat vous propose ses services en location saisonnière en Charente Maritime (17)$$
+		$$A:PAGE:DESCREF=Louez votre bien à Royan et sa région en toute sérénité avec notre service location saisonnière.$$
+		$$A:PAGE:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ recrutement.htm ===============================-->$$END:REM$$
+$$IF=:RECRUTEMENT:PAGE:IDT$$
+		$$A:PAGE:TITR=La Gersoise Square Habitat recrute sur Royan et en Charente Maritime (17)$$
+		$$A:PAGE:DESCREF=Vous êtes à la recherche d'un emploi dans l'immobilier ? Contactez-nous sans plus tarder !$$
+		$$A:PAGE:KEYWORDS=$$
+$$END$$
+
+
+
+
+$$REM$$<!-- ================================ recherche,basic.htm / tous les résultats de recherche par requête en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:RESULTATS$RESULTATSCARTE$ANNONCIMMOS:PAGE:IDT$$
+
+	$$IF0:IMMOBW:ANN:QRY:PAGE$$
+	$$REM$$<!-- Si une seule page de résultats -->$$END:REM$$			
+						$$A:PAGE:TITR=@@IMMOBW:ANN:QRY:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@IMMOBW:ANN:QRY:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@$$
+						$$A:PAGE:DESCREF=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ @@REP:RSRV@@$$
+						$$A:PAGE:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+		$$END:ANN:QRY:PAGE$$
+		
+	$$IF+:1:IMMOBW:ANN:QRY:PAGE$$
+	$$REM$$<!-- Si plusieurs pages de résultats -->$$END:REM$$			
+						$$A:PAGE:TITR=@@IMMOBW:ANN:QRY:NBRESULT formatnumber 0@@ @@LG:ANNONCE lcase@@@@IF=:FR:LANGUE@@@@IMMOBW:ANN:QRY:NBR pluriel@@@@END:FR@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ (@@LG:PAG pcase@@ @@IMMOBW:ANN:QRY:PAGE@@)$$
+						$$A:PAGE:DESCREF=@@LG:TOUTESANNONC pcase@@ @@LG:DE lcase@@ @@IMMOBW:ANN:QRY:PHRASE@@ (@@LG:PAG pcase@@ @@IMMOBW:ANN:QRY:PAGE@@ @@LG:SUR lcase@@ @@IMMOBW:ANN:QRY:NBRPAGES@@) - @@REP:RSRV@@$$
+						$$A:PAGE:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+	$$END:ANN:QRY:PAGE$$
+
+$$END:RESULTATS:IDT$$
+$$END$$
+
+
+
+
+$$REM$$<!-- ================================ detail,sento.htm / pour tous les autres types de bien -- en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+	$$IF=:DETAILANNONCE:PAGE:IDT$$
+				$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ 
+							@@IMMOBW:ANNONCE:LIBELLE@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:VILLE@@ : 
+							@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECE lcase@@@@IMMOBW:ANNONCE:NB_PIECES pluriel@@ @@LG:DE lcase@@ 
+							@@IMMOBW:ANNONCE:SURFACE@@ @@LG:M2 lcase@@ @@LG:AVEC lcase@@ @@IMMOBW:ANNONCE:NB_CHAMBRES@@ @@LG:CHAMBRE@@@@IMMOBW:ANNONCE:NB_CHAMBRES pluriel@@ @@LG:A lcase@@ @@IMMOBW:ANNONCE:PRIX@@ euros - @@REP:RSRV@@$$
+			$$A:PAGE:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF smalltextv2 150@@$$
+			$$A:PAGE:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@, @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+
+	
+$$END:DETAILANNONCE:IDT$$
+$$END$$
+
+
+$$REM$$<!-- ================================ agence,immobiliere.htm  -- en ANGLAIS ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:NOTREAGENCE:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@ @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+		$$A:PAGE:DESCREF=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,gestion.htm  -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:GESTION:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:GESTIONIMMO pcase@@ @@AGENCE_CP cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ @@REP:RSRV@@ : @@LG:GESTIONIMMO pcase@@$$
+		$$A:PAGE:KEYWORDS=@@LG:GESTIONIMMO pcase@@, @@LG:IMMOBILIER lcase@@,@@AGENCE_CP cp2dep@@$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ contact,estimation.htm  -- en ANGLAIS   ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:ESTIMATION:PAGE:IDT$$
+	$$A:PAGE:TITR=@@LG:ESTIMVOTREBIEN pcase@@ @@AGENCE_CP cp2dep@@ @@LG:AVEC lcase@@ @@LG:NOSAGENCESIMMO lcase@@$$
+		$$A:PAGE:DESCREF=@@LG:DEMANDEZESTIM pcase@@ @@REP:RSRV@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:LIEN:ESTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ contact,agence.htm  -- en ANGLAIS   ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:CONTACTAGENCE:PAGE:IDT$$
+		$$REM$$<!-- mono -->$$END:REM$$
+		$$A:PAGE:TITR=@@LG:CONTACT pcase@@ @@REP:RSRV@@.$$
+		$$A:PAGE:DESCREF=@@LG:CONTACTEZNOUS pcase@@$$
+		$$A:PAGE:KEYWORDS=@@LG:CONTACT pcase@@, @@LG:IMMOBILIER pcase@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ outils,calculettes.htm   -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:CALCULETTES:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:CALCULIMMO pcase@@ @@REP:RSRV@@$$
+		$$A:PAGE:DESCREF=@@LG:EFFECTUEZCOMPTES@@ : @@REP:RSRV@@$$
+		$$A:PAGE:KEYWORDS=@@LG:CALCULIMMO pcase@@, @@LG:IMMOBILIER pcase@@$$
+	$$END$$	
+$$END$$
+
+$$REM$$<!-- ================================ plan,site.htm  -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:PLAN:PAGE:IDT$$
+			$$A:PAGE:TITR=@@LG:LIEN:PLAN pcase@@ @@REP:RSRV@@$$
+		$$A:PAGE:DESCREF=@@LG:LIEN:PLAN pcase@@$$
+		$$A:PAGE:KEYWORDS=@@LG:LIEN:PLAN pcase@@$$
+	$$END$$	
+$$END$$
+
+
+$$REM$$<!-- ================================ legal,mentions.htm   -- en ANGLAIS  ===============================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:MENTIONS:PAGE:IDT$$
+		$$A:PAGE:TITR=Legal mentions - @@REP:RSRV@@$$
+		$$A:PAGE:DESCREF=Legal mentions for website @@REP:RSRV@@$$
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ flux,rss.htm ================ANGLAIS===============-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:RSS:PAGE:IDT$$
+		$$A:PAGE:TITR=Rss newsfeed @@AGENCE_NOM@@$$
+		$$A:PAGE:DESCREF=Subscribes to our Rss newsfeed @@REP:RSRV@@ $$
+		
+$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ agences,liste.htm ===========ANGLAIS====================-->$$END:REM$$
+$$IF!:FR:LANGUE$$
+$$IF=:NOSAGENCES$LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@$$
+		$$A:PAGE:DESCREF=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ @@LG:ETSAREGION lcase@@.$$
+		$$A:PAGE:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END$$
+$$END$$
