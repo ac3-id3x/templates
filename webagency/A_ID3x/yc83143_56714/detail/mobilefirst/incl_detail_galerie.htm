@@ -1,0 +1,85 @@
+$$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+<!--#include virtual="detail/incl_detail_selection_js.htm" -->
+
+<div class="detail-galerie">
+    <div class="detail-panier" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$">
+        <i class="mf-icon-star"></i>
+    </div>
+    $$IF!:0:PICTOANNONCE$$
+        <div class="detail-tags">
+            $$IF:ANNDETAIL:SI_EXCLUSIF$$
+                <div class="detail-tag detail-tag-exclu">
+                    $$LG:EXCLUSIVITE pcase$$
+                </div>
+            $$END$$
+            $$IF:ANNDETAIL:SI_COUPDECOEUR$$
+                <div class="detail-tag detail-tag-cdc">
+                    $$LG:COUPDECOEUR pcase$$
+                </div>
+            $$END$$
+            $$IF+:FRAICHEUR:ANNDETAIL:DT_CREA datediff now timespan days$$
+                <div class="detail-tag detail-tag-new">
+                    $$LG:NEWCOURT pcase$$
+                </div>
+            $$END$$
+        </div>
+    $$END$$
+
+    $$BIF:GALERIE$$
+        <div class="detail-galerie-module owl-carousel">
+            $$DO$$
+                $$IF:GALERIE:BIG_URL$$
+                    <div class="detail-galerie-item" style="background-image:url($$GALERIE:BIG_URL$$);" data-index="$$GALERIE:I$$">
+                        <div class="detail-galerie-count hidden-phone">$$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$</div>
+                    </div>
+                $$END$$
+                $$IF0:GALERIE:BIG_URL$$
+                    $$IF:GALERIE:B600_URL$$
+                        <div class="detail-galerie-item" style="background-image:url($$GALERIE:B600_URL$$);" data-index="$$GALERIE:I$$">
+                            <div class="detail-galerie-count hidden-phone">$$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$</div>
+                        </div>
+                    $$END$$
+                    $$IF0:GALERIE:B600_URL$$
+                        <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);" data-index="$$GALERIE:I$$">
+                            <div class="detail-galerie-count hidden-phone">$$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$</div>
+                        </div>
+                    $$END$$
+                $$END$$
+            $$LOOP$$
+        </div>
+
+        $$IF=:1:DETAILMF_GALERIE_ZOOM$$
+            <a href="javascript:void(0);" class="btn btn-action detail-galerie-zoom">
+                <i class="mf-icon-search"></i>
+                $$LG:AGRANDIRPHOTO pcase$$
+            </a>
+            <script>
+                $(document).ready(function(){
+                    var num = 0;
+                    $('.detail-galerie-zoom').click(function() {
+                        var num = $(".owl-item.active").find(".detail-galerie-item").data("index") - 1;
+                        $('.detail-galerie-item').colorbox({
+                            href: function() {
+                                return $(this).css("backgroundImage").replace('url("','').replace('")','');
+                            },
+                            rel: 'detail-galerie-item',
+                            previous: '<',
+                            next: '>',
+                            close: "x"
+                        });
+                        $(".cboxElement").eq(num).trigger('click');
+                    });
+                });
+            </script>
+        $$END$$
+
+
+    $$BFIN$$
+    $$BIF0:GALERIE$$
+        <div class="detail-galerie-module">
+            <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);"></div>
+        </div>
+    $$BFIN$$
+</div>
+
+
