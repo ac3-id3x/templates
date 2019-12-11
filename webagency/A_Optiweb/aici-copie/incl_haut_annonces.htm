@@ -1,0 +1,138 @@
+$$REM$$
+====================================================================
+
+//// <summary>incl_haut des pages de resultats</summary>
+//// <remarks>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_bas_annonces.htm</para>
+//// <para>Contient les conditions du title par défaut</para>
+//// <para>Les scripts nécessaires à cette page sont dans : slagence_X_V2/scripts/incl_scripts.htm</para>
+//// </remarks>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+
+====================================================================
+$$END$$
+
+
+$$SET:PAGE:IDT=RESULTATS$$
+
+
+$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+	$$B:IMMOBW:AGENCES:ALIAS:AG$$
+	$$BIF:AG$$
+	$$A:AGNOM=@@AG:NOM@@$$
+	$$A:AGVILLE=@@AG:VILLE@@$$
+	$$A:AGCP=@@AG:CP@@$$
+	$$DO$$$$LOOP$$$$BFIN$$
+		
+	$$A:PAGE:TITR=@@AGNOM@@, @@LG:AGENCEIMMOBILIERE pcase@@ @@AGVILLE@@ (@@AGCP@@)$$
+$$END$$
+
+$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+
+	$$IF:IMMOBW:ANN:QRY:NBR$$
+		$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@$$
+		$$IF:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+			$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN getsoustypesbien lcase@@$$
+		$$END$$
+		$$IF0:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+			$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@$$
+		$$END$$
+		$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:VILLE@@ (@@1_IMMOBW:ANN:QRY:CP@@)$$
+		$$A:PAGE:TITR=@@PAGE:TITR@@ - @@1_IMMOBW:ANN:QRY:DESCRIPTIF left 40 htmlencode@@...$$
+	$$END$$
+	
+	$$IF0:IMMOBW:ANN:QRY:NBR$$
+		$$B:IMMOBW:AGENCES:ALIAS:AG$$
+		$$BIF:AG$$
+		$$A:AGNOM=@@AG:NOM@@$$
+		$$A:AGVILLE=@@AG:VILLE@@$$
+		$$A:AGCP=@@AG:CP@@$$
+		$$DO$$$$LOOP$$$$BFIN$$
+			
+		$$A:PAGE:TITR=@@AGNOM@@, @@LG:AGENCEIMMOBILIERE pcase@@ @@AGVILLE@@ (@@AGCP@@)$$
+	$$END$$
+	
+$$END$$
+
+
+
+$$A:REFERENCEMENT:IDPAGE=_MANUEL$$$$A:REFERENCEMENT:KEYWORD=Immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ Agence immobiliere$$
+
+
+$$INCL:HAUT.HTM$$
+
+<!-- scripts pages resultats -->
+<script type="text/javascript" src="$$-$$scripts/prototype_1.6.js"></script>
+<!--#include virtual="/recherche/incl_scripts_recherche.htm" -->
+
+<!--// =========================== haut recherche =========================== //-->
+
+<div id="RechercheWrap">
+
+<div id="RechercheContainer">
+		
+	<div id="RechHaut">	
+		
+		<div id="RechHautCtn">		
+			
+			$$IF0:IMMOBW:ANN:QRY:NBR$$
+				$$LG:AUCUNEANN pcase$$
+			$$END$$
+				
+			$$IF:IMMOBW:ANN:QRY:NBR$$
+			
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+					
+			<span class="textetrouve">	$$LG:PHRASE pcase$$ : </span>
+				<span class="tri">
+				$$IMMOBW:ANN:QRY:PHRASE lcase replace . $$
+				</span> 
+				
+				<span class="nbannonce">
+					$$IMMOBW:ANN:QRY:NBRESULT formatnumber 0$$
+					$$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+				</span>
+				
+
+				
+			$$END:IMMOBW:ANN:QRY:SIPANIER$$
+				
+			$$END:IMMOBW:ANN:QRY:NBR$$			
+
+			
+			
+			
+		</div>
+		$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+	$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+	
+	
+	
+	$$BIF:CHECKBASKET$$
+		
+	<div id="selection_perso">
+
+					<a class="selection" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$" title="" onclick="javascript:Stock('$$REP:QRY$$');">$$LG:MASELECT pcase$$ <span id="NbAnnPanier"></span></a>
+					<a class="print" href="javascript:go('/print_panier.htm','panierv',685,500);" title="">$$LG:IMPRIMERSELEC pcase$$</a>
+					<a class="vider" href="javascript:viderPanier();" title="">$$LG:VIDERSELEC pcase$$</a>
+
+	</div>
+	$$BFIN$$
+	
+		<!-- fin #RechHautCtn -->		
+		<div id="RechHautEnd"><!-- --></div>
+	</div>
+	<!-- fin #RechHaut -->	
+	
+	
+	
+	
+<!--// =========================== //resultats annonces // =========================== //-->	
+	<div id="RechResultat">
+		
+		$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:QRY:URLONERROR$$
+		$$BIF:IMMOBW:ANN:QRY$$	
