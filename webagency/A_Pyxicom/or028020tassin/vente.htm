@@ -1,0 +1,388 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=VENTE$$
+
+<script language="javascript" type="text/javascript">
+<!--
+   var wdth=770;
+   var lft=(screen.Width/2)-(wdth/2);
+
+  function MM_findObj(n, d){
+  	var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    	d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  	if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  	for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  	if(!x && document.getElementById) x=document.getElementById(n); return x;}
+  
+  function MM_showHideLayers(){
+  	var i,p,v,obj,args=MM_showHideLayers.arguments;
+  	for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    	if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v; }
+    	obj.visibility=v;
+    	obj.left=lft+182;}}
+
+ //-->
+</script>
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$ $$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:VENTE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<BR><BR><BR><BR>
+	D&eacute;sol&eacute;, mais cette page de contact ne peut être utilis&eacute;e actuellement.<BR>
+	  L'adresse e-mail du destinataire n'est pas disponible. <BR>
+	<BR><BR><BR>
+	</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<form method="post" name="formu" action="page_ok_envoi.htm?lang=$$LANGUE$$">
+<table width="95%" border="0" cellspacing="3" cellpadding="0" align="center" class="tabFond1" onLoad="MM_showHideLayers('appart','','show','maison','','hide','terrain','','hide','parking','','hide')">
+<tr> 
+	<td align="center"> 
+	<input type="hidden" name="idtt" value="2">
+	<input type="hidden" name="lang" VALUE="$$LANGUE$$">
+	<input type="hidden" name="u" value="id3:formmail">
+	<input type="hidden" name="page_ok" value="page_ok_envoi.htm">
+	<input type="hidden" name="page_err" value="vente.htm">
+	<input type="hidden" name="cfg_form" value="form$$LANGUE$$"> 
+	<input type="hidden" name="cfg_emails" value="achat-vente">
+	
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$">$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$">
+	<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$"> 
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$">
+	<input type="hidden" name="SACTION" value="$$LG:LIEN:SACTION$$">
+	<font size="3" color="#CC0033"><b>$$ERRE$$</b></font><br>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr> 
+		<td><P class="selection"><B>$$LG:LIEN:SOUHACTION$$</b></P></td>
+	</tr>
+	</table>
+	<br>
+	
+	<!--vos coordonnées--> 
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabFond1">
+	<tr> 
+		<td colspan="2" align="left" class="tabTitre"><b>$$LG:LIEN:COORD$$</b></td>
+	</tr>
+	<tr> 
+		<td align="center" colspan="2">
+		<table width="60%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+				<input type="radio" name="2TYPE" value="Madame">$$LG:LIEN:MADAME$$
+			</td><td>
+				<input type="radio" name="2TYPE" value="Mademoiselle">$$LG:LIEN:MADEMOI$$
+			</td><td>
+				<input type="radio" name="2TYPE" value="Monsieur" checked>$$LG:LIEN:MONSIEUR$$
+			</td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr> 
+		<td width="30%">$$LG:NOM$$ * :</td>
+		<td width="70%"><input class="imputForm" type="text" name="2NOM" size="25" value="$$FORM:2NOM$$" maxlength="30"></td>
+	</tr>
+	<tr> 
+		<td>$$LG:PRENOM$$ * :</td>
+		<td><input class="imputForm" type="text" name="2PRENOM" size="25" value="$$FORM:2PRENOM$$" maxlength="30"></td>
+	</tr>
+	<tr> 
+		<td>$$LG:ADRESSE$$ :</td>
+		<td><input type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$"></td>
+	</tr>
+	<tr> 
+		<td>$$LG:VILLE$$ :</td>
+		<td><input class="imputForm" type="text" name="2VILLE" size="25" value="$$FORM:2VILLE$$"></td>
+	</tr>
+	<tr>
+		<td>$$LG:CODEP$$ :</td>
+		<td><input class="imputForm" type="text" name="2CP" size="10" value="$$FORM:2CP$$">
+		$$IF!:FR:LANGUE$$
+			&nbsp;$$LG:PAYS$$ * :&nbsp;
+			<input type="text" name="2PAYS" size="25" value="$$FORM:2PAYS$$">
+		$$END$$	  
+		</td>
+	</tr>
+	<tr> 
+		<td>$$LG:TEL$$ * :</td>
+		<td><input class="imputForm" type="text" name="2PHONE" size="15" value="$$FORM:2PHONE$$" maxlength="20">
+	</tr>
+	<tr>
+		<td>Fax :</td>
+		<td><input class="imputForm" type="text" name="2FAX" size="15" value="$$FORM:2FAX$$"></td>
+	</tr>
+	<tr> 
+		<td>$$LG:AI6$$ * :</td>
+		<td><input class="imputForm" type="text" name="2EMAIL" size="25" value="$$FORM:2EMAIL$$"></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$&nbsp;</td>
+	</tr>
+	</table>
+	<br>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabFond1">
+	<tr> 
+		<td colspan="2" align="left" class="tabTitre"><b>$$LG:LIEN:PROJET$$</b></td>
+	</tr>
+	<tr>
+		<td>$$LG:LIEN:DATEPREV$$ :</td>
+		<td>
+			<select name="2JOUR" value=$$FORM:2JOUR$$>
+			         <option>1</option>
+			         <option>2</option>
+			         <option>3</option>
+			         <option>4</option>
+			         <option>5</option>
+			         <option>6</option>
+			         <option>7</option>
+			         <option>8</option>
+			         <option>9</option>
+			         <option>10</option>
+			         <option>11</option>
+			         <option>12</option>
+			         <option>13</option>
+			         <option>14</option>
+			         <option>15</option>
+			         <option>16</option>
+			         <option>17</option>
+			         <option>18</option>
+			         <option>19</option>
+			         <option>20</option>
+			         <option>21</option>
+			         <option>22</option>
+			         <option>23</option>
+			         <option>24</option>
+			         <option>25</option>
+			         <option>26</option>
+			         <option>27</option>
+			         <option>28</option>
+			         <option>29</option>
+			         <option>30</option>
+			         <option>31</option>
+			</select>&nbsp;
+			<select name="2MOIS" value=$$FORM:2MOIS$$>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+	   		 	<option>6</option>
+				<option>7</option>
+    			<option>8</option>
+    			<option>9</option>
+    			<option>10</option>
+    			<option>11</option>
+    			<option>12</option>
+			</select>&nbsp;
+			<select name="2ANNEE" value=$$FORM:2ANNEE$$>
+				<option>2004</option>
+				<option>2005</option>
+				<option>2006</option>
+				<option>2007</option>
+				<option>2008</option>
+				<option>2009</option>
+				<option>2010</option>
+				<option>2011</option>
+				<option>2012</option>
+				<option>2013</option>
+				<option>2014</option>
+				<option>2015</option>
+				<option>2016</option>
+				<option>2017</option>
+				<option>2018</option>
+				<option>2019</option>
+				<option>2020</option>
+				<option>2021</option>
+				<option>2022</option>
+				<option>2023</option>
+				<option>2024</option>
+				<option>2025</option>
+				<option>2026</option>
+				<option>2027</option>
+				<option>2028</option>
+				<option>2029</option>
+				<option>2030</option>
+				<option>2031</option>
+				<option>2032</option>
+				<option>2033</option>
+				<option>2034</option>
+				<option>2035</option>
+				<option>2036</option>
+				<option>2037</option>
+				<option>2038</option>
+				<option>2039</option>
+		   </select>
+		   <!-- <input type="text" name="jour" maxlength="2" size="2" value=$$FORM:2JOUR$$>/ 
+		    <input type="text" name="mois" maxlength="2" size="2" value=$$FORM:2MOIS$$>/ 
+		    <input type="text" name="annee" maxlength="4" size="4" value=$$FORM:2ANNEE$$>-->
+		</td>
+	</tr>
+	<tr> 
+		<td>$$LG:LIEN:BUDJETPREV$$ :</td>
+		<td> 
+			<select name="2BUDGET">
+				<option>$$LG:LIEN:MOINS$$ 50 000 Euros</option>
+				<option>$$LG:LIEN:ENTRE$$ 50 000 & 100 000 Euros</option>
+				<option>$$LG:LIEN:ENTRE$$ 100 000 & 200 000 Euros</option>
+				<option>$$LG:LIEN:ENTRE$$ 200 000 & 300 000 Euros</option>
+				<option>$$LG:LIEN:ENTRE$$ 300 000 & 400 000 Euros</option>
+				<option>$$LG:LIEN:PLUS$$ 400 000 Euros</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width="30%">$$LG:VILLES$$ :</td>
+		<td><input class="imputForm" type="text" name="2VILLES" size="25" value="$$FORM:2VILLES$$"></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	</table>
+	<br>
+	
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabFond1">
+	<tr> 
+		<td colspan="2" align="left" class="tabTitre"><b>$$LG:LIEN:TYPE2BIEN$$</b></td>
+	</tr>
+	<tr>
+			<td align="center" colspan="2">
+			<table width="70%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td>
+				<input type="radio" name="2TBIEN" value="Appartement" onClick="MM_showHideLayers('appart','','show','maison','','hide','terrain','','hide','parking','','hide')"  checked>$$LG:APPARTEMENT$$
+			</td><td>
+				<input type="radio" name="2TBIEN"" value="Maison" onClick="MM_showHideLayers('appart','','show','maison','','hide','terrain','','hide','parking','','hide')" >$$LG:MAISON2$$
+			</td><td>
+				<input type="radio" name="2TBIEN"" value="Terrain" onClick="MM_showHideLayers('appart','','hide','maison','','hide','terrain','','show','parking','','hide')" >$$LG:TERRAIN$$
+			</td><td>
+				<input type="radio" name="2TBIEN" value="Parking" onClick="MM_showHideLayers('appart','','hide','maison','','hide','terrain','','hide','parking','','show')" >$$LG:PARKING$$
+			</td>
+			</tr>
+			</table>
+	</tr>
+        <tr> 
+		<td style="width:500;height:30">
+		<!-- type de bien : appartement/maison -->
+		<div id="appart" style="visibility:visible;position:absolute;">
+		<table border="0" style="width:500" cellspacing="2" cellpadding="4" class="tabFond1">
+			<tr>
+				<td width="30%">$$LG:MININBRPIECES$$ :</td>
+				<td>$$LG:LIEN:ENTRE$$&nbsp;<select name="2NBPIECEMIN">
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					</select>&nbsp;&&nbsp;
+					<select name="2NBPIECEMAX">
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+	 			<td>$$LG:SURFH$$</td>
+				<td><input class="imputForm" type="text" name="2SURFH" size="10">&nbsp;m2</td>
+			</tr>
+			<tr>
+				<td>$$LG:LIEN:COMMENT$$ :</td>
+				<td><textarea name="2COMMENT" cols="30" rows="6"></textarea></td>
+			</tr>
+		</table>
+		</div>
+		<!-- type de bien : terrain -->
+		<div id="terrain" style="visibility:hidden;position:absolute;">
+		<table style="width:500" border="0" cellspacing="2" cellpadding="4" class="tabFond1">
+			<tr>
+				<td width="30%">$$LG:SURFACE$$ :</td>
+				<td><input class="imputForm" type="text" name="2SURFACE" size="10">&nbsp;m2</td>
+			</tr>
+			<tr>
+				<td>$$LG:LIEN:LFACADE$$ :</td>
+				<td><input class="imputForm" type="text" name="2LFACADE" size="10">&nbsp;m</td>
+			</tr>
+			<tr>
+	 			<td>$$LG:SURFH$$</td>
+				<td><input class="imputForm" type="text" name="2SURFH" size="10">&nbsp;m2</td>
+			</tr>
+			<tr>
+				<td>$$LG:LIEN:COMMENT$$ :</td>
+				<td><textarea name="2COMMENT" cols="30" rows="6"></textarea></td>
+			</tr>
+		</table>
+		</div>
+		<!-- type de bien : parking -->
+		<div id="parking" style="visibility:hidden;position:absolute;">
+		<table style="width:500" border="0" cellspacing="2" cellpadding="4" class="tabFond1">
+			 <tr> 
+			 	  <td width="30%">$$LG:LIEN:SOUSSOL$$ :</td>
+				  <td align="left">
+				  	<table width="30%" border="0" cellspacing="0" cellpadding="0">
+				  		<tr>
+				  			<td><input type="radio" name="2SSOL" value="1" checked> 1</td>
+				  			<td><input type="radio" name="2SSOL" value="2"> 2</td>
+				  			<td><input type="radio" name="2SSOL" value="3"> 3</td>
+						</tr>
+					</table>
+				  </td>
+			</tr>
+			<tr>
+				<td>$$LG:LIEN:ACCES$$ :</td>
+				<td>$$LG:LIEN:RAMPE$$&nbsp;<input type="checkbox" name="2ACCRAMPE" value="oui">
+				$$LG:LIEN:ASCENCEUR$$&nbsp;<input type="checkbox" name="2ACCASC" value="oui"></td>
+			</tr>
+			<tr>
+				<td>$$LG:LIEN:COMMENT$$ :</td>
+				<td><textarea name="2COMMENT" cols="30" rows="6"></textarea></td>
+			</tr>
+		</table>
+		</div>
+		
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="200">&nbsp;</td>
+	</tr>
+	
+	</table>
+	<br>
+	<!--validation--> 
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr> 
+		<td colspan="2" align="left" class="tabTitre"><b>$$LG:VERIFINFOS$$</b></td>
+	</tr>
+	<tr> 
+		<td align="right"><br><input type="image" src="img/envoyer_$$LANGUE$$.gif"  border="0" name="image"></td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+</form>
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$ 
