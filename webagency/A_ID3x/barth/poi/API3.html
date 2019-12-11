@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+		<title>Points d'intérêts (API 3)</title>
+		
+		<link rel="shortcut icon" href="assets/Favicon.ico">
+		
+		<link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster+Two:400,700' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Share:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'/>
+		
+		<link href="css/reset.css" rel="stylesheet" type='text/css'>
+		<link href="css/style_commun.css" rel="stylesheet" type='text/css'>
+		<link href="css/style_API3.css" rel="stylesheet" type='text/css'>
+
+	</head>
+	<body>
+		<div id="telecommandePOI">
+			<div id="titreTelecommande">Points d'intérêts <img id="fleche" value="open" src="assets/fleche.png"/></div>
+			<div id="contenuModal">
+				<a id="CommercesTitle" class="catTitle" value="2|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_commerces" value="2|" type="checkbox"></input><label> Commerces</label></a>
+				<a id="CultureTitle" class="catTitle" value="5|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_culture" value="5|" type="checkbox"></input><label> Culture</label></a>
+				<a id="EducationTitle" class="catTitle" value="4|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_education" value="4|" type="checkbox"></input><label> Education</label></a>
+				<a id="LoisirsTitle" class="catTitle" value="3|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_loisirs" value="3|" type="checkbox"></input><label> Loisirs</label></a>
+				<a id="PetiteEnfanceTitle" class="catTitle" value="8|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_petiteenfance" value="8|" type="checkbox"></input><label> Petite enfance</label></a>
+				<a id="SanteTitle" class="catTitle" value="7|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_sante" value="7|" type="checkbox"></input><label> Santé</label></a>
+				<a id="ServicePublicTitle" class="catTitle" value="10|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_servicepublic" value="10|" type="checkbox"></input><label> Service public</label></a>
+				<a id="TourismeTitle" class="catTitle" value="9|"onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_tourisme" value="9|" type="checkbox"></input><label> Tourisme</label></a>
+				<a id="TransportsTitle" class="catTitle" value="1|" onclick="chkClick2(this);" href="#"><div class="miniatureTitle"></div><div class="miniatureTitle2 invisible"></div><input name="chk_poi" id="chk_poi_transports" value="1|" type="checkbox"></input><label> Transport</label></a>
+			</div>
+		</div>
+		<div id="mapG" class="gmap3"></div>
+
+		<script src="http://maps.googleapis.com/maps/api/js" type="text/javascript"></script>
+		<script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+		<script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+		
+		<script src="js/js_commun.js" type="text/javascript"></script>
+		<script src="js/gestion_zoom_commun.js" type="text/javascript"></script>
+
+		<script src="js/new_poi_API3.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			var dossierIcon = 'assets';//Répertoire des images de l'API
+			var domaineURL = '';
+
+			var Lat = '48.8913255';
+			var Lng = '2.3484281';
+
+			var Adresse = '';
+			
+			var oCentre;
+			var map;
+			var tabMarker = [];
+			var GoogleMapMarkerAdresse;
+			var GoogleMapPolygone;
+			var TabData = new Array();	
+			
+			var TabDataMarker = new Array();
+			
+			var opaciteBtn = 0.7;
+
+			var ObliqueMode = 0;
+			
+			var infowindow = null;
+
+			var TabEquiv = [];
+			var TabEquiv2 = [];
+
+			var bAvecInfo = true;
+
+			var idLastMarker = null;
+
+			function initialize() {
+				init_TabEquiv();
+				init_TabData();
+				
+				oCentre = new google.maps.LatLng(Lat, Lng);
+				// Création de l'objet MAP avec par défaut un zoom à 17 et le LngLat que vous désirez		
+				
+				var mapOptions = {
+					zoom: 16,
+					center: oCentre,
+					mapTypeControl: false,
+					zoomControl: false,
+					streetViewControl : true,
+					streetViewControlOptions: {
+	        			position: google.maps.ControlPosition.LEFT_TOP
+	    			}
+				};
+
+				//De base la vue à 45° est désactivée pour la vue satellite
+				map = new google.maps.Map(document.getElementById('mapG'), mapOptions);
+				map.setTilt(0);
+
+				//Marqueur pour le centre de la carte
+				marker = new google.maps.Marker({
+				  position: new google.maps.LatLng(Lat, Lng ), 
+				  map: map
+				}); 
+				
+				// enregistrement d'un écouteur sur le changement de cadrage de la carte
+				google.maps.event.addListener(map, 'idle', refresh_DATA);
+				google.maps.event.addListener(map, 'center_changed', gestionCenter);
+
+				//Div de la télécommande des POI
+				var telecommande = document.getElementById('telecommandePOI');
+				telecommande.index = 1;
+				map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(telecommande);
+											
+				//Div de contrôle du zoom + et -	
+				var zoomControlDiv = document.createElement('div');
+				zoomControlDiv.style.marginLeft= '15px';
+				gestionControlZoom(zoomControlDiv, map);
+				zoomControlDiv.index = 1;
+				map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
+
+				//Div de contrôle des vues (satellite, plan et oblique)
+				var viewControlDiv = document.createElement('div');
+				viewControlDiv.style.marginBottom = '5px';
+				viewControlDiv.style.marginLeft= '15px';
+				gestionControlView(viewControlDiv, map);
+				viewControlDiv.index = 1;
+				map.controls[google.maps.ControlPosition.TOP_LEFT].push(viewControlDiv);
+			}
+			$(document).ready(initialize);
+
+			$('#fleche').css({
+				"-webkit-transform": "rotate(90deg)",
+				"-moz-transform": "rotate(90deg)",
+				"transform": "rotate(90deg)"
+			});
+
+			//Permet de déplier et replier la télécommande des Poi et gère la flèche
+			$('#titreTelecommande').click(function(){
+				if($(this).find('#fleche').attr("value") == "open"){
+					$(this).find('#fleche').css({
+						"-webkit-transform": "rotate(0deg)",
+						"-moz-transform": "rotate(0deg)",
+						"transform": "rotate(0deg)" 
+					});
+					$(this).find('#fleche').attr("value","close");
+					$("#contenuModal").addClass("invisible");
+					$("#telecommandePOI").css({
+						"padding-bottom" : "5px",
+						"padding-top" : "10px"
+					});
+					$('#titreTelecommande').css({
+						"margin-bottom" : "5px"
+					});
+				}
+				else{
+					$(this).find('#fleche').css({
+						"-webkit-transform": "rotate(90deg)",
+						"-moz-transform": "rotate(90deg)",
+						"transform": "rotate(90deg)"
+					});
+					$(this).find('#fleche').attr("value","open");
+					$("#contenuModal").removeClass("invisible");
+					$("#telecommandePOI").css({
+						"padding-bottom" : "0px",
+						"padding-top" : "20px"
+					});
+					$('#titreTelecommande').css({
+						"margin-bottom" : "20px"
+					});
+				}
+			});
+		</script>
+	</body>
+</html>
