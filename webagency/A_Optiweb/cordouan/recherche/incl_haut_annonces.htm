@@ -1,0 +1,171 @@
+$$REM$$
+====================================================================
+
+//// <summary>incl_haut des pages de resultats</summary>
+//// <remarks>
+//// <para>Contient incl_nb_pages.htm, qui est aussi appelé par incl_bas_annonces.htm</para>
+//// <para>Contient les conditions du title par défaut</para>
+//// <para>Les scripts nécessaires à cette page sont dans : slagence_X_V2/scripts/incl_scripts.htm</para>
+//// <para>Le lien "modifier ma recherche" diffère si le site est franchisé ou non/para>
+//// </remarks>
+//// <update date="2009-11-20" author="lisbonne.siriphol">Updates phrase résultat : ajout sous types bien</update>
+//// <update date="2009-06-11" author="lisbonne.siriphol">Updates pour franchises</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+//// <update date="2009-07-29" author="christophe.ledoux">Update opti ref</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=RESULTATS$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$IF:IMMOBW:ANN:QRY:NBR$$
+	$$A:PAGE:TITR=
+		@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ 
+		@@1_IMMOBW:ANN:QRY:VILLE@@ 	
+		@@1_IMMOBW:ANN:QRY:QUARTIER@@ :
+		@@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@... 
+	$$
+	$$A:PAGE:DESCREF=immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ par @@NOM_AGENCE@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 80 htmlencode@@
+	$$
+	$$A:PAGE:KEYWORDS=
+	   @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ 
+		@@1_IMMOBW:ANN:QRY:VILLE@@,
+		agence immobili&egrave;re @@1_IMMOBW:ANN:QRY:VILLE@@, 
+	    annonces immobili&egrave;res @@1_IMMOBW:ANN:QRY:VILLE@@,
+	   @@1_IMMOBW:ANN:QRY:NOM@@ @@1_IMMOBW:ANN:QRY:VILLE@@ (@@1_IMMOBW:ANN:QRY:CP@@)
+	$$
+	$$END$$
+	$$IF0:IMMOBW:ANN:QRY:NBR$$
+			$$B:IMMOBW:AGENCES:ALIAS:AG$$
+			$$BIF:AG$$
+			$$A:AGNOM=@@1_AG:NOM@@$$
+			$$A:AGVILLE=@@1_AG:VILLE@@$$
+			$$A:AGCP=@@1_AG:CP@@$$
+			$$DO$$$$LOOP$$$$BFIN$$
+			$$A:PAGE:TITR=@@AGNOM@@, @@LG:AGENCEIMMOBILIERE pcase@@ &agrave; @@AGVILLE@@ (@@AGCP@@)$$
+	$$END$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+
+$$INCL:HAUT.HTM$$
+
+<!-- scripts pages resultats -->
+<!--#include virtual="/recherche/incl_scripts_recherche.htm" -->
+
+<!--// =========================== haut recherche =========================== //-->
+<div id="RechercheWrap">
+
+<div id="RechercheContainer">
+	
+	
+	<div id="RechHaut">	
+
+		<div id="RechHautCtn"
+			$$IF:IMMOBW:ANN:QRY:NBR$$
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$class="results"$$END$$
+			$$END$$
+			$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$			
+			$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+				$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$
+				$$IF:IMMOBW:ANN:QRY:NBR$$class="results_selection"$$END$$				
+			$$END$$			
+			>
+	
+			<div id="RechHautPictoResult">
+			
+				<p
+				$$IF:IMMOBW:ANN:QRY:NBR$$
+					$$IF0:IMMOBW:ANN:QRY:SIPANIER$$class="results"$$END$$
+				$$END$$
+				$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$			
+				$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+					$$IF0:IMMOBW:ANN:QRY:NBR$$class="results_null"$$END$$
+					$$IF:IMMOBW:ANN:QRY:NBR$$class="results_selection"$$END$$				
+				$$END$$
+			><!-- --></p>		
+			</div>
+			
+			
+			$$IF:IMMOBW:ANN:QRY:NBR$$
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+					<!-- annonces trouvees -->
+					<h1>
+						$$IMMOBW:ANN:QRY:NBRESULT formatnumber 0$$
+						$$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+						$$IF=:FR:LANGUE$$<span>correspondant à votre recherche de</span>$$END:FR$$
+						$$IF!:FR:LANGUE$$$$LG:TROUVE lcase$$ $$END:FR$$
+				
+						$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$
+						$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$
+						$$IMMOBW:ANN:QRY:PHRASE$$
+$$REM$$<!-- 20.11.2009 : ajout condition sous type de bien (Lisbonne) -->$$END:REM$$
+						$$IF:FORM:IDSOUSTYPEBIEN$$
+							$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$
+							<br />
+							$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$
+							$$END:!FORM:IDSOUSTYPEBIEN$$
+						$$END:FORM:IDSOUSTYPEBIEN$$						
+					</h2>
+					<div class="clear"><!-- --></div>				
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$
+				$$IF!:1:IMMOBW:ANN:QRY:NBR$$
+						$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+							<!--#include virtual="/recherche/incl_tri.htm" -->	
+						$$END:IMMOBW:ANN:QRY:SIPANIER$$
+					$$REM$$<!-- 16.06.2009 ajout lien popup calculettes financieres -->$$END:REM$$
+					$$REM$$<!-- 25.11.2009 on cache le lien, les outils vont bientôt disparaître -->
+					$$IF=:2$5$6$8$9$10$11:FORM:IDTT$$					
+						<div id="CalculetteFinanciere"><a href="javascript:pop('http://old.seloger.com/ext,agences,index.htm?cnt=206019',800,600,50,200);" title="$$LG:CALCVOTFINANC pcase$$">$$LG:CALCVOTFINANC pcase$$</a></div>
+					$$END:FORM:IDTT$$
+					$$END:REM$$
+					
+				$$END:!1:IMMOBW:ANN:QRY:NBR$$
+				
+			$$END:IMMOBW:ANN:QRY:NBR$$			
+			
+			$$IF0:IMMOBW:ANN:QRY:NBR$$			
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+				<!-- pas d'annonce trouvee -->	
+				<h2>$$LG:AUCUNEANN pcase$$</h2>
+				<h1><span>$$IMMOBW:ANN:QRY:PHRASE pcase$$</span></h1>
+				$$END:IMMOBW:ANN:QRY:SIPANIER$$			
+			$$END:IMMOBW:ANN:QRY:NBR$$
+						
+			$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+				$$IF:IMMOBW:ANN:QRY:NBR$$
+				<!-- selection remplie -->		
+				<h2 id="NbAnnSelection"></h2>
+				$$END:IMMOBW:ANN:QRY:NBR$$
+				
+				$$IF0:IMMOBW:ANN:QRY:NBR$$
+					<!-- selection vide -->
+					<h2>$$LG:SELECTANNONCEVIDE pcase$$</h2>
+					<h1><span>$$LG:TEXTEVILLESDPT pcase$$ :</span></h1>
+				$$END:IMMOBW:ANN:QRY:NBR$$
+				
+			$$END:IMMOBW:ANN:QRY:SIPANIER$$	
+			
+			<!--#include virtual="/recherche/incl_haut_annonces_liens.htm" -->
+			
+		</div>
+		<!-- fin #RechHautCtn -->		
+		<div id="RechHautEnd"><!-- --></div>
+	</div>
+	<!-- fin #RechHaut -->	
+	
+	
+	$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+	$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+	
+<!--// =========================== //resultats annonces // =========================== //-->	
+	<div id="RechResultat">
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+			$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:QRY:URLONERROR$$
+		$$END:IMMOBW:ANN:QRY:SIPANIER$$
+		$$BIF:IMMOBW:ANN:QRY$$	
