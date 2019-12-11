@@ -1,0 +1,42 @@
+<div class="row-fluid">
+	<ul class="span12 pagination-centered normal padding-5 typo-body">
+		<li class="h3-like typo-action margin-bottom-10 ville">$$ANNAGENCE:VILLE$$ ($$ANNAGENCE:CP$$)</li> $$REM$$<!-- 10/06 CC SUPPRESION PCASE A PASSER EN PROD QUAND LE RESTE EN COURS PAR BARTH EST OK POUR LUI --> $$END$$
+		<li>$$ANNAGENCE:SURFACE$$ $$LG:M2$$</li>
+		<li>$$IF:ANNAGENCE:NB_PIECES$$$$ANNAGENCE:NB_PIECES$$ $$IF=:1:ANNAGENCE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF!:0$1:ANNAGENCE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$END$$$$IF:ANNAGENCE:NB_CHAMBRES$$, $$ANNAGENCE:NB_CHAMBRES$$ $$IF=:1:ANNAGENCE:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNAGENCE:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$$$END$$</li>
+		<li class="hidden-phone">
+		$$IF:ANNAGENCE:DESCRIPTIF$$
+			$$ANNAGENCE:DESCRIPTIF pcase left 48$$...
+		$$END$$
+		$$IF0:ANNAGENCE:DESCRIPTIF$$
+			$$IF:ANNAGENCE:DESCRIPTIF_FR$$
+				$$ANNAGENCE:DESCRIPTIF_FR pcase left 48$$...
+			$$END$$
+			$$IF0:ANNAGENCE:DESCRIPTIF_FR$$
+				$$LG:ANNSANSDESCR pcase$$.
+			$$END$$
+		$$END$$
+		</li>
+	</ul>
+</div>
+<div class="row-fluid pagination-centered margin-top-5">
+	<div class="span12 margin-bottom-10">
+    $$IF(:ANNPRIXMASQUE:ANNAGENCE:IDANNONCE$$
+        <span class="small"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+    $$END$$
+    $$IF):ANNPRIXMASQUE:ANNAGENCE:IDANNONCE$$
+    	$$IF=:0:PRIXMASQUE$$
+    		$$IF:ANNAGENCE:XML xml PRIX_NOUS_CONSULTER$$
+    			<span class="small"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+    		$$END$$
+    		$$IF0:ANNAGENCE:XML xml PRIX_NOUS_CONSULTER$$
+    			<span class="h2-like typo-action" id="prix$$ANNAGENCE:IDANNONCE$$">
+    				$$ANNAGENCE:PRIX$$ $$ANNAGENCE:PRIX_UNITE$$
+    			</span>
+    		$$END$$
+    	$$END$$
+    	$$IF=:1:PRIXMASQUE$$
+    		<span class="small"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+        $$END$$
+    $$END$$
+	</div>
+</div>
