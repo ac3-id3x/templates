@@ -1,0 +1,106 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=CTC$$
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+<!--$$IF:AGENCE:EMAIL$$-->
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+
+<tr><td align="center">
+	<form method="post" action="page_newsletter_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_newsletter_ok.htm" />
+	<input type="hidden" name="page_err" value="newsletter-desinscription.htm" />
+	<input type="hidden" name="cfg_form" value="desinscription$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="desinscription" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	<strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>	
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+	  <td colspan="2">&nbsp;</td>
+	  </tr>
+	<tr> 
+		<td colspan="2"><h2 class="titreNewsLettre">D&Eacute;SINSCRIPTION DE LA NEWSLETTER</h2></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td width="30%" align="left">$$LG:AI5$$ * :</td>
+		<td width="70%" align="left"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+	<tr>
+	  <td colspan="2" align="right">&nbsp;</td>
+	  </tr>
+	<tr>
+	  <td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	  </tr>
+	<tr>
+	  <td colspan="2" align="center">&nbsp;</td>
+	  </tr>
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right"><br /><input  class="btnEnvoyer" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table>
+	</form></td></tr>
+</table>
+
+
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$INCL:BAS.HTM$$ 

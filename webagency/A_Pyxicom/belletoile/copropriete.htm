@@ -1,0 +1,158 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=CTC$$
+<div id="gestion">	
+<h2 style="font-size:14px; color:#333367;">Copropriété</h2>
+<br />
+
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$
+	
+
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_copro_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_copro_ok.htm" />
+	<input type="hidden" name="page_err" value="copropriete.htm" />
+	<input type="hidden" name="cfg_form" value="copro" />
+	<input type="hidden" name="cfg_emails" value="copro" />
+	
+	
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	<strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>	
+	<br />
+	<!--vos coordonnées--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COPROPRIETE pcase$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td width="50%" align="left">Adresse de la copropriété * :</td>
+		<td width="50%" align="left"><input class="imputForm" type="text" name="copro_adresse" size="25" value="$$FORM:COPRO_ADRESSE$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Nombre de lots principaux<br />(logements  / bureaux / commerces) :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_lots" size="25" value="$$FORM:COPRO_LOTS$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Chauffage collectif :</td>
+		<td align="left">
+			<label><input type="radio" class="imputForm" name="copro_chauffage" value="Oui" />Oui</label>
+			<label><input type="radio" class="imputForm" name="copro_chauffage" value="Non" />Non</label>	
+		</td>
+	</tr>
+	<tr> 
+		<td align="left">Gardien ou employé d'immeuble :</td>
+		<td align="left">
+			<label><input type="radio" class="imputForm" name="copro_gardien" value="Oui" />Oui</label>
+			<label><input type="radio" class="imputForm" name="copro_gardien" value="Non" />Non</label>	
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>Contact pour l'envoi d'une proposition de contrat</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td align="left">Civilité :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_civilite" size="25" value="$$FORM:COPRO_CIVILITE$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Nom * :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_nom" size="25" value="$$FORM:COPRO_NOM$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Téléphone :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_tel" size="25" value="$$FORM:COPRO_TEL$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Email * :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_mail" size="25" value="$$FORM:COPRO_MAIL$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Adresse postale :</td>
+		<td align="left"><input class="imputForm" type="text" name="copro_adresse2" size="25" value="$$FORM:COPRO_ADRESSE2$$" maxlength="200" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Vous souhaitez recevoir notre proposition par :</td>
+		<td align="left">
+			<label><input type="radio" class="imputForm" name="copro_choix" value="Email" />Email</label>
+			<label><input type="radio" class="imputForm" name="copro_choix" value="Courrier" />Courrier</label>	
+		</td>
+	</tr>
+	<tr> 
+		<td align="right" colspan="2"><br /><input class="btnEnvoyer" type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>  
+	</form>	</td>
+</tr>
+</table>
+
+
+
+$$INCL:CGU_FORMULAIRE.HTM$$
+
+
+</div>
+	
+$$INCL:BAS.HTM$$
