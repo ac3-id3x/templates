@@ -1,0 +1,91 @@
+$$REM$$
+ 
+//// <summary>page pour definir les balises metas pour le ref </summary>
+//// <summary>et les expressions a utiliser dans les alt et title </summary> 
+////  <summary>et pour declarer les variables d'affichage des infos agences</summary> 
+//// <remarks>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</remarks>
+//// <update date="2007-10-29" author="christophe.ledoux">Creation v1</update>
+//// <update date="2009-05-05" author="christophe.ledoux">Creation v2</update>
+ 
+$$END$$
+ 
+ 
+ 
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS) DANS LE CAS D'UN MONO AGENCE -->
+$$B:IMMOBW:AGENCES:ALIAS:TEXTEDYNAMIQUE$$
+$$BIF:TEXTEDYNAMIQUE$$
+$$DO$$ $$LOOP$$
+$$BFIN$$
+ 
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->  
+ $$SET:IDPUB_AGENCE=@@1_TEXTEDYNAMIQUE:IDPUBLICATION@@$$
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+$$SET:NOM_AGENCE=@@1_TEXTEDYNAMIQUE:NOM@@$$
+<!-- Définition de l'adresse à afficher sur le site  -->
+$$SET:ADRESSE_AGENCE=@@1_TEXTEDYNAMIQUE:ADRESSE@@$$
+<!-- Définition de la ville à afficher sur le site  -->
+$$SET:VILLE_AGENCE=@@1_TEXTEDYNAMIQUE:VILLE@@$$
+<!-- Définition du CP à afficher sur le site  -->
+$$SET:CP_AGENCE=@@1_TEXTEDYNAMIQUE:CP@@$$
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+$$SET:DEP_AGENCE=@@1_TEXTEDYNAMIQUE:DEPARTEMENTAFF@@$$
+<!-- Définition du tel à afficher sur le site  -->
+$$SET:TEL_AGENCE=@@1_TEXTEDYNAMIQUE:TEL@@$$
+<!-- Définition du fax à afficher sur le site  -->
+$$SET:FAX_AGENCE=@@1_TEXTEDYNAMIQUE:FAX@@$$
+ 
+ 
+ 
+
+<!-- EXPRESSIONS ALT + TITLE --> 
+ 
+
+<!-- OBLIGATOIRE definition des expressions pour les alt et title (même si pas d'option de ref !) A modifier selon cahier des charges ou laisser en auto si pas de réf -->
+<!-- Si mutli agence les metas par defaut doivent être modifiées -->
+
+$$SET:EXPRESSION1=achat maison chennevières sur marne$$
+$$SET:EXPRESSION2=fidimmo$$
+$$SET:EXPRESSION3=immobilier chennevieres sur marne$$
+$$SET:EXPRESSION4=immobilier ormesson sur marne$$
+ 
+
+<!-- TITRE DERCREF ET KEYWORDS PAR DEFAUT  SI PAGE NON OPTIMISEE--> 
+ 
+$$SET:PAGE:TITR=Immobilier Chennevieres sur Marne, immobilier Ormesson sur Marne - Achat maison Chennevières sur Marne - Fidimmo$$
+$$SET:PAGE:DESCREF=L'immobilier sur Chennevieres sur Marne et Ormesson sur marne avec Fidimmo (achat maison chennevieres sur marne)$$
+$$SET:PAGE:KEYWORDS=achat maison ormesson sur marne, Immobilier Chennevieres, achat maison chennevieres sur marne, immobilier ormesson sur marne$$
+ 
+
+<!--  OPTIS REF DE BASE PAGES INDEX AGENCE ET PLAN AVANT OPTIMISATION--> 
+ 
+$$IF=:INDEX:PAGE:IDT$$
+$$A:PAGE:TITR=Immobilier Chennevi&egrave;res sur Marne - Immobilier Ormesson sur Marne$$
+$$A:PAGE:DESCREF=Immobilier chennevieres sur marne, immobilier ormesson sur marne - Annonces immobili&egrave;res &agrave; Chennevieres avec l'agence immobiliere fidimmo$$
+$$A:PAGE:KEYWORDS=Immobilier chennevieres sur marne, achat maison chennevieres sur marne, immobilier ormesson sur marne, achat maison ormesson sur marne, achat pavillon, villa Val-de-marne$$
+$$END$$
+ 
+$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+$$A:PAGE:TITR=Agence immobiliere Fidimmo Chennevieres sur Marne - Immobilier Chennevieres sur Marne - Achat maison Chennevieres$$
+$$A:PAGE:DESCREF=Notre agence immobiliere Fidimmo, 24 rue du General de Gaulle, 94430 Chennevieres sur marne (Tel:0145941212) vous propose des biens immobiliers, achat de maisons, sur Ormesson et chennevieres.$$
+$$A:PAGE:KEYWORDS=agence immobiliere chennevieres, immobilier chennevieres sur marne, achat maison chennevieres sur marne (94430), immobilier ormesson sur marne, achat maison ormesson sur marne (94490)$$
+$$END$$
+ 
+$$IF=:PLAN:PAGE:IDT$$
+$$A:PAGE:TITR=Plan du site : @@SRV@@$$
+$$A:PAGE:DESCREF=Plan du site de l'agence @@SRV@@ &agrave; @@VILLE_AGENCE@@$$
+$$A:PAGE:KEYWORDS=Immobilier @@VILLE_AGENCE@@$$
+$$END$$
+ 
+<!-- AUTRES PAGES SI OPTI  Enlever les commentaire REM et END pour que les variables remplies soient prises en compte . Remettre les commentaires autour des pages non renseignées --> 
+ 
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:TITR=Annonces immobilieres Chennevieres, Ormesson sur Marne - Locations$$
+$$A:PAGE:DESCREF=locations sur Ormesson et chennevieres sur Marne : location appartement, studio, maison$$
+$$A:PAGE:KEYWORDS=annonces immobilieres location appartement, maison ormesson Chennevieres sur marne$$
+$$END$$
+
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:TITR=Achat maison Chennevieres, Ormesson sur Marne - Annonces immobilieres vente$$
+$$A:PAGE:DESCREF=achat de maison sur Ormesson et chennevieres sur Marne : achat, vente maison, villa sur chennevieres$$
+$$A:PAGE:KEYWORDS=annonces immobilieres vente maison, appartement, villa Chennevieres, ormesson sur marne$$
+$$END$$
