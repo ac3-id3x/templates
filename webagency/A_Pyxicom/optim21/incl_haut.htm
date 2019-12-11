@@ -1,0 +1,111 @@
+<!--#include virtual="incl_doctype_transitional.htm"-->
+<head> 
+    <!--#include virtual="referencement/incl_ref.htm" -->
+    <!--#include virtual="incl_titre.htm" -->
+    <!--#include virtual="scripts/incl_scripts.htm" -->
+    <!--#include virtual="styles/incl_styles.htm" -->
+	<link type="text/css" rel="stylesheet" href="styles/commun.css" />
+	<!--[if gte IE 5.5000]>
+		<script type="text/javascript" language="javascript" src="$$-$$scripts/pngfix.js"></script>
+	<![endif]-->
+	<script type="text/javascript" language="javascript">
+		<!--
+			function favoris()
+			{ 
+				if (navigator.appName != 'Microsoft Internet Explorer') 
+					{
+						window.sidebar.addPanel("$$SRV$$","http://$$SRV$$","");
+					} 
+				else
+					{
+						window.external.AddFavorite("http://$$SRV$$","$$SRV$$");
+					}
+			}
+		-->
+	</script>
+	$$IF=:RECHERCHEMAP:PAGE:IDT$$
+		<!-- largeur de la carte selon votre contenu -->
+		$$A:MAPWIDTH=955px$$
+		<!-- choisir votre couleur parmi : rouge, orange, bleu ou vert -->
+		$$A:MAPCOLOR=orange$$
+		<!-- fichier contenant les scripts js et ajax -->
+		<!--#include virtual="map/incl_scripts.htm" -->
+		<!-- fichier contenant les CSS -->
+		<!--#include virtual="map/incl_map.htm" -->
+	$$END:PAGE:IDT$$
+</head>
+<body $$IF:ONLOAD$$onload="$$ONLOAD$$" onunload="$$UNLOAD$$"$$END$$>
+	<div id="header">
+		<!-- marquee + langues -->
+		<div class="contenuHeader">
+		
+			<div class="langues">
+				<a href="http://$$REP:RSRV$$" title="Fran&ccedil;ais" $$IF=:FR:LANGUE$$class="actif"$$END$$>Fran&ccedil;ais</a>
+				<img src="images/sep.gif" alt="" />
+				<a href="http://$$REP:RSRV$$/index.htm?lang=en" title="Anglais" $$IF=:EN:LANGUE$$class="actif"$$END$$ rel="nofollow">Anglais</a>
+			</div>
+		</div>
+	</div>
+	<div id="situation">
+		<div class="logo"><a href="http://$$REP:RSRV$$/index.htm?lang=$$LANGUE$$"><img src="images/logo.gif" alt="" title="" /></a></div>
+		<!-- Adresse de la première agence -->
+		<div class="adresse">
+			$$B:IMMOBW:AGENCES:ALIAS:ADRESSEAG:QRY:TRI:QRY:CP$$
+			$$BIF:ADRESSEAG$$
+				$$DO:1:1$$
+					<h3>$$ADRESSEAG:NOM pcase$$</h3>
+					<address>
+						$$ADRESSEAG:ADRESSE crlf2br$$<br />
+						$$LG:TELABREGE pcase$$ : $$ADRESSEAG:TEL formattel$$<br />
+						$$LG:FAX pcase$$ : $$ADRESSEAG:FAX formattel$$<br />
+						$$IF:ADRESSEAG:EMAIL$$$$LG:EMAIL pcase$$ : $$ADRESSEAG:EMAIL encodemail javascript full$$$$END:EMAIL$$
+					</address>
+				$$LOOP$$
+			$$BFIN$$
+		</div>
+		<!-- Adresse de la deuxième agence -->
+		<div class="adresse">
+			$$B:IMMOBW:AGENCES:ALIAS:ADRESSEAG:QRY:TRI:QRY:CP$$
+			$$BIF:ADRESSEAG$$
+				$$DO:1:1$$
+					<h3>Optim</h3>
+					<address class="adresseAgence">
+						33 avenue de la République <br />
+						Chevigny Saint Sauveur 21800<br />
+						$$LG:TELABREGE pcase$$ : 03 80 46 17 00<br />
+						$$LG:FAX pcase$$ : 03 80 46 84 68
+					</address>
+				$$LOOP$$
+			$$BFIN$$
+		</div>
+		<!-- Menu haut droit -->
+		<menu class="menuHaut">
+			<li><a href="$$URLBASE$$/alert.htm?lang=$$LANGUE$$" title="$$LG:LIEN:ALERTE pcase$$ - $$EXPRESSION1$$" class="alertEmail">$$LG:LIEN:ALERTE pcase$$</a></li>
+			<li><a href="javascript:go2('/nous_situer.htm?lang=$$LANGUE$$','$$LG:NOUSSITUER pcase$$',425,350);" title="$$LG:NOUSSITUER pcase$$ - $$EXPRESSION2$$">$$LG:NOUSSITUER pcase$$</a></li>
+			<li><a href="#" title="$$LG:AJOUTERFAV pcase$$ - $$EXPRESSION1$$" onclick="favoris();">$$LG:AJOUTERFAV pcase$$</a></li>
+			<li><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$" title="$$LG:MONPANIER pcase$$ - $$EXPRESSION2$$">$$LG:MONPANIER pcase$$</a></li>
+			<li><a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/message.htm?lang=$$LANGUE$$" title="$$LG:LIEN:CTC pcase$$ - $$EXPRESSION1$$">$$LG:LIEN:CTC pcase$$</a></li>
+			<li><a href="$$URLBASE$$/agence,immobiliere.htm?$$IF=:0:MULTI$$idp=$$1_MULTI:IDPUBLICATION$$&amp;$$END$$lang=$$LANGUE$$" title="$$LG:LIEN:AGEN pcase$$ - $$EXPRESSION2$$">$$LG:LIEN:AGEN pcase$$<!-- --><!-- --></a></li>
+		</menu>
+		<div class="clear"></div>
+	</div>
+	<div id="banniere">
+		<div class="contenuBanniere"><!-- 2 photos banniere --><img src="images/photoCanape.jpg" alt="" /><img src="images/photofleure.jpg" alt="" /><!-- menu navig --><menu class="menuNavig">
+				<li><a href="$$URLBASE$$/agence-immobiliere.htm?$$IF=:0:MULTI$$idp=$$1_MULTI:IDPUBLICATION$$&amp;$$END$$lang=$$LANGUE$$" title="$$LG:LAGENCE pcase$$ - $$EXPRESSION1$$">$$LG:LAGENCE pcase$$</a></li>
+				<li><img src="images/sepMenuNavig.gif" alt="" /></li>
+				<li><a href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$LG:NOSVENTES pcase$$ - $$EXPRESSION2$$">$$LG:NOSVENTES pcase$$</a></li>
+				<li><a href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$LG:NOSLOCATIONS pcase$$ - $$EXPRESSION1$$">$$LG:NOSLOCATIONS pcase$$</a></li>
+				<li><a href="$$URLBASE$$/gestion.htm?lang=$$LANGUE$$" title="$$LG:LIEN:GESTION pcase$$ - $$EXPRESSION2$$">$$LG:LIEN:GESTION pcase$$</a></li>
+				<li><img src="images/sepMenuNavig.gif" alt="" /></li>
+				<li><a href="$$URLBASE$$/syndic.htm?lang=$$LANGUE$$" title="$$LG:LIEN:SYNDIC pcase$$ - $$EXPRESSION1$$">$$LG:LIEN:SYNDIC pcase$$</a></li>
+				<li><img src="images/sepMenuNavig.gif" alt="" /></li>
+				<li><a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/message.htm?lang=$$LANGUE$$" title="$$LG:NOUSCTC pcase$$ - $$EXPRESSION2$$">$$LG:NOUSCTC pcase$$</a></li>
+				<li><a href="$$URLBASE$$/outils.htm?lang=$$LANGUE$$" title="$$LG:LIEN:OUT pcase$$ - $$EXPRESSION2$$">$$LG:LIEN:OUT pcase$$</a></li>
+				<li><a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/estimation.htm?lang=$$LANGUE$$" title="$$LG:LIEN:ESTIM pcase$$ - $$EXPRESSION2$$">$$LG:LIEN:ESTIM pcase$$</a></li>
+				<li><img src="images/sepMenuNavig.gif" alt="" /></li>
+				<li><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;si_exclusif=1&amp;lang=$$LANGUE$$" title="$$LG:NOSEXCLUSIVITES pcase$$ - $$EXPRESSION2$$">$$LG:NOSEXCLUSIVITES pcase$$</a></li>
+			</menu>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div id="navigation">
