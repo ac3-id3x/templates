@@ -1,0 +1,260 @@
+
+<p>$$INCL:HAUT.HTM$$ $$SET:PAGE:RUBRIQUE=Calculette$$ 
+  <SCRIPT LANGUAGE="JavaScript"><!--
+
+function calc(what)
+{
+	switch(what) {
+		case 'mens':
+			T = document.monform.mens_taux.value.replace(',','.')/100;
+			t = T/12;
+			C = document.monform.mens_emprunt.value.replace(',','.');
+			n = document.monform.mens_nbmens.value.replace(',','.');
+			if (document.monform.mens_duree[1].checked) n *= 12;
+			document.monform.mens_mens.value = Math.round(100*C*(t/(1-(1/Math.pow(1+t,n)))))/100;
+			break;
+		case 'emprunt':
+			T = document.monform.emprunt_taux.value.replace(',','.')/100;
+			t = T/12;
+			//n = document.monform.emprunt_nbmens.value.replace(',','.');
+			n = document.monform.emprunt_nbmens.value.replace(',','.');
+			if (document.monform.emprunt_duree[1].checked) n *= 12;
+			m = document.monform.emprunt_mens.value.replace(',','.');
+			document.monform.emprunt_emprunt.value = Math.round(m*((1-(1/Math.pow(1+t,n)))/t));
+			break;
+		case 'nbmens':
+			T = document.monform.nbmens_taux.value.replace(',','.')/100;
+			t = T/12;
+			C = document.monform.nbmens_emprunt.value.replace(',','.');
+			m = document.monform.nbmens_mens.value.replace(',','.');
+			document.monform.nbmens_nbmens.value = Math.round(Math.log(-1/(((C/m)*t)-1))/Math.log(1+t));
+			document.monform.nbmens_nbmens.value += ' mois (' + Math.round(document.monform.nbmens_nbmens.value/12) + ' an' + ((Math.round(document.monform.nbmens_nbmens.value/12)>1)?'s':'') + ')';
+			break;
+	};
+}
+// --></SCRIPT>
+</p>
+<table width="90%" cellspacing="0" cellpadding="10" bgcolor="#FFFFFF" align="center">
+  <tr>
+    <td>
+      <p align="LEFT"><font color="#000000">Calculez au choix ,</font> <font color="#000000"><a href="#mensualites">les 
+        mensualités</a>,</font> <font color="#000000"><a href="#duree">la durée</a>, 
+        ou</font> <font color="#000000"><a href="#montant">le montant</a> de votre 
+        prêt. </font><br>
+      </p>
+      <form method="get" action="" name="monform">
+        <table border="0" width="100%">
+          <tr align="left" valign="bottom"> 
+            <td colspan="2" bgcolor="#878f94"><font face="Verdana, Arial, Helvetica, sans-serif" size="3" color="#B81313"></font> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="22" height="20">&nbsp;</td>
+                  <td width="100%" class="fond_tab" bgcolor="#2bac82"><font face="Verdana, Arial, Helvetica, sans-serif" size="3" color="#B81313"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#FFFFFF">&nbsp;•</font></font><font size="3" color="#B81313"><b> 
+                    <a name="mensualite"></a></b></font><b><font color="#FFFFFF">Calculer 
+                    vos mensualit&eacute;s</font></b></td>
+                  <td width="22" height="20" align="right" valign="bottom">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="5"><font color="#000000"></font></td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez le <b>montant</b> 
+              de votre projet :</font><font size="1" color="#000000"><br>
+              sans espace, ni virgule, ex :750000 </font> </td>
+            <td valign="top" width="154"> 
+              <div align="left"> <font color="#000000"> 
+                <input type="text" name="mens_emprunt" size="10">
+                Francs </font></div>
+            </td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez<b> la 
+              dur&eacute;e</b> :</font><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000000"><br>
+              </font><font size="2" color="#000000"><font size="1">pr&eacute;cisez 
+              (obligatoire):</font></font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000000"><font size="2"> 
+              <input type="radio" name="mens_duree" value="m">
+              </font></font><font size="2" color="#000000"><font size="1">Mois</font></font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000000"><font size="2"><font size="1"> 
+              <input type="radio" name="mens_duree" value="a" checked>
+              </font></font></font><font size="2" color="#000000"><font size="1">Ann&eacute;es</font> 
+              </font></td>
+            <td width="154"> 
+              <div align="left"> <font color="#000000"> 
+                <input type="text" name="mens_nbmens" size="10">
+                </font></div>
+            </td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez le <b>taux</b> 
+              :<br>
+              </font><font size="1" color="#000000">1 chiffre maximum apr&egrave;s 
+              la virgule, ex: 7,5 ou 7</font><font size="2" color="#000000"> </font></td>
+            <td width="154"> <font color="#000000"> 
+              <input type="text" name="mens_taux" size="10">
+              %<font face="Verdana, Arial, Helvetica, sans-serif" size="2"> </font></font></td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="34" class="fond_tab2"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="8">&nbsp;</td>
+                  <td width="70%" bgcolor="ffff99"> 
+                    <input type="BUTTON" name="mens_calculer" value="calculer" onClick="calc('mens')">
+                  </td>
+                  <td width="30%" bgcolor="#FFFF99"> &nbsp; 
+                    <input type="text" name="mens_mens" size="10">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="2" bgcolor="#878f94"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="22" height="20">&nbsp;</td>
+                  <td width="100%" class="fond_tab" bgcolor="#2bac82"><font face="Verdana, Arial, Helvetica, sans-serif" size="3" color="#B81313"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#880b2c">&nbsp;<font color="#FFFFFF">•</font></font><b><font size="3" color="#526B9C"> 
+                    <a name="montant"></a></font></b></font><b><font color="#FFFFFF">Calculer 
+                    le montant de votre projet</font></b> </td>
+                  <td width="22" height="20" align="right" valign="bottom">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2"><font color="#000000"></font></td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez la <b>mensualité</b> 
+              souhaitée:<br>
+              </font><font size="1" color="#000000">sans espace, ni virgule, ex 
+              : 5000</font> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000000"><br>
+              </font></td>
+            <td width="154"> <font color="#000000"> 
+              <input type="text" name="emprunt_mens" size="10">
+              <font size="2">Francs </font></font></td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez la <b>dur&eacute;e</b> 
+              :<br>
+              <font size="1">pr&eacute;cisez (obligatoire):</font> </font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000000"><font size="2"> 
+              <input type="radio" name="emprunt_duree" value="m">
+              </font></font><font size="2" color="#000000"><font size="1">Mois</font></font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000000"><font size="2"><font size="1"> 
+              <input type="radio" name="emprunt_duree" value="a" checked>
+              </font></font></font><font size="2" color="#000000"><font size="1">Ann&eacute;es</font> 
+              </font></td>
+            <td width="154"> <font color="#000000"> 
+              <input type="text" name="emprunt_nbmens" size="10">
+              </font></td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez le <b>taux</b> 
+              :<br>
+              </font><font size="1" color="#000000">1 chiffre maximum apr&egrave;s 
+              la virgule, ex: 7,5 ou 7</font><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000000"> 
+              </font></td>
+            <td width="154"> <font color="#000000"> 
+              <input type="text" name="emprunt_taux" size="10">
+              <font size="2">% </font></font> </td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="22">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="34" class="fond_tab2"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="8">&nbsp;</td>
+                  <td width="70%" bgcolor="#FFFF99"> 
+                    <input type="BUTTON" name="emprunt_calculer" value="calculer" onClick="calc('emprunt')">
+                  </td>
+                  <td width="30%" bgcolor="#FFFF99"> &nbsp; 
+                    <input type="text" name="emprunt_emprunt" size="10">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="24" bgcolor="#878f94"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="22" height="20">&nbsp;</td>
+                  <td width="100%" class="fond_tab" bgcolor="#2bac82"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#880b2c">&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#880b2c"><font color="#FFFFFF">•</font></font><b> 
+                    <a name="duree"></a><font color="#FFFFFF">Calculer la dur&eacute;e 
+                    de votre emprunt</font></b> </td>
+                  <td width="22" height="20" align="right" valign="bottom">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td width="373" height="31"><font size="2" color="#000000">&raquo; 
+              Entrez le <b>montant</b> de votre projet:<br>
+              </font><font size="1" color="#000000">sans espace, ni virgule, ex 
+              :750000</font> </td>
+            <td width="154" height="31"> <font color="#663366"> 
+              <input type="text" name="nbmens_emprunt" size="10">
+              <font size="2">Francs</font></font> </td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez la <b>mensualité</b> 
+              souhaitée :<br>
+              </font><font size="1" color="#000000">sans espace, ni virgule, ex 
+              : 5000</font><font size="2" color="#000000"> </font></td>
+            <td width="154"> <font color="#663366"> 
+              <input type="text" name="nbmens_mens" size="10">
+              <font size="2">Francs</font></font></td>
+          </tr>
+          <tr> 
+            <td width="373"><font size="2" color="#000000">&raquo; Entrez le <b>taux</b> 
+              :<br>
+              </font><font size="1" color="#000000">1 chiffre maximum apr&egrave;s 
+              la virgule, ex: 7,5 ou 7</font><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000000"> 
+              </font></td>
+            <td width="154"> <font color="#663366"> 
+              <input type="text" name="nbmens_taux" size="10">
+              <font size="2">%</font></font> </td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="5">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" height="34" class="fond_tab2"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="12">&nbsp;</td>
+                  <td width="70%" bgcolor="#FFFF99"> 
+                    <input type="BUTTON" name="nbmens_calculer" value="calculer" onClick="calc('nbmens')">
+                  </td>
+                  <td width="30%" bgcolor="#FFFF99"> &nbsp; 
+                    <input type="text" name="nbmens_nbmens" size="24">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<p>$$INCL:BAS.HTM$$ </p>
+
+
+$$SET:PAGE:TITR=Gironde$$
