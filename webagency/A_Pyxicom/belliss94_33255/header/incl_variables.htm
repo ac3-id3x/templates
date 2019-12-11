@@ -1,0 +1,91 @@
+$$REM$$====================================================================
+//// <summary>Déclaration diverses variables par défaut valables pour sites agences</summary>
+//// <remarks>
+//// <para>variable sur dossier ref en cours ou pas</para>
+//// <para>Contient un mini dico pour la macro RUBRIQUE</para>
+//// <para>Var URLBASE : url absolue affichée seulement si le site a un contrat de réf en cours</para>
+//// <para>Var NBANNVENTES, NBANNLOCS, NBANNNEUF, NBANNVIAGER : nb annonces affichées sur agence-immobiliere.htm</para>
+//// <para>Var MULTIAGENCE qui remplace incl_multi</para>
+//// <para>Var LANGUE</para>
+//// <para>01.03.2010 : update macro GALERIE_VIGNETTE_CLICK pour paramétrer les images des détails d'annonces</para>
+//// </remarks>
+//// <update date="2010-02-15" author="lisbonne.siriphol">Adapté pour la version slagence_x_v3</update>
+//// <update date="2010-01-18" author="christophe.ledoux">Ajout d'une redirection mutualisée vers version mobile</update>
+//// <update date="2008-05-04" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-05-04" author="erick.barbant">Validation ok</update>
+====================================================================$$END$$
+$$REM$$<!-- conditionnant le langage affiché ou langage par défaut -->$$END:REM$$
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$
+$$IF0:FORM:LANG$$$$A:LANGUE=fr$$$$END$$
+
+$$REM$$<!-- nouvelle macro MULTIAGENCES : determine si le site est multi ou non, avec des noms de macros improbables car on ne sait jamais -->$$END:REM$$
+$$A:MULTIAGENCES=0$$$$B:IMMOBW:AGENCES:ALIAS:COMPTE_AGENCES:QRY:TRI:QRY:CP$$$$BIF:COMPTE_AGENCES$$$$DO$$$$IF+:2:COMPTE_AGENCES:NBR$$$$A:MULTIAGENCES=1$$$$END$$$$LOOP$$$$BFIN$$
+$$A:URLBASE=http://@@REP:RSRV@@$$
+$$REM$$<!-- variables si NO contrat de réf en cours -->$$END:REM$$
+$$A:LIENACCUEIL=/index.htm?lang=@@LANGUE@@$$
+$$REM$$<!-- variables si contrat de réf en cours -->$$END:REM$$
+$$IF:WAGREF_IDDOSSIER_SITE$$$$A:LIENACCUEIL=http://@@REP:RSRV@@/?lang=@@LANGUE@@$$$$END$$
+
+$$REM$$<!-- bandeau "nouveau" sur annonces de -15 jours par défaut -->$$END:REM$$
+$$IF0:SELECTIONFRAICHEUR$$
+	$$A:SELECTIONFRAICHEUR=-15$$
+$$END$$
+
+$$REM$$<!-- carto agence(s), création macro pour rendre adresse images + niveau zoom dynamiques -->$$END:REM$$
+$$A:CARTO_ZOOM=15$$
+$$A:CARTO_PICTO=/z/webagency/slagence_X_V2/carto/picto_carto.gif$$
+$$A:CARTO_PICTO_MAISON=/z/webagency/slagence_X_V2/carto/picto_carto_detail.gif$$
+
+$$REM$$<!-- agence,immobiliere.htm : si réf, nb annonces par défaut (tout en bas après les autres infos) -->$$END:REM$$
+$$INIT:NBANNVENTES=2$$
+$$INIT:NBANNLOCS=2$$
+$$INIT:NBANNNEUF=2$$
+$$INIT:NBANNVIAGER=2$$
+
+$$REM$$<!-- DETAIL ANNONCE : GALERIE PHOTO LIGHT / 1 = changement de la grande photo au onclick sur la vignette / 0 = onmousover sur la vignette  -->$$END:REM$$
+$$A:GALERIE_VIGNETTE_CLICK=0$$
+
+$$REM$$<!-- dico -->$$END:REM$$
+$$IF=:DETAILANNONCE:IDT$$$$A:RUBRIQUE=@@LG:DETAILANNONCE@@$$$$END$$
+$$IF=:MENTIONS:IDT$$$$A:RUBRIQUE=@@LG:MENTION@@$$$$END$$
+$$IF=:RESULTATS:IDT$$$$A:RUBRIQUE=@@LG:RESULTRECH@@$$$$END$$
+$$IF=:RESULTATSCARTE:IDT$$$$A:RUBRIQUE=@@LG:RESULTRECH@@$$$$END$$
+$$IF=:BIENSVENDUS:IDT$$$$A:RUBRIQUE=@@LG:BIENVENDUS@@$$$$END$$
+$$IF=:RSS:IDT$$$$A:RUBRIQUE=@@LG:FLUXRSS2@@$$$$END$$
+$$IF=:PLAN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PLAN@@$$$$END$$
+$$IF=:MAP,RECHERCHE.HTM:REP:0$$$$A:RUBRIQUE=@@LG:RECHERCHEPARCARTE@@$$$$END$$
+$$IF=:ANNONCIMMOS:IDT$$$$A:RUBRIQUE=@@LG:ANNONCIMMOS@@$$$$END$$
+
+$$REM$$<!--  -->$$END:REM$$
+$$IF=:NOTREAGENCE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:AGEN@@$$$$END$$
+$$IF=:ACHETER:IDT$$$$A:RUBRIQUE=@@LG:VOUSOUHACH@@ : @@LG:SELECTIONNEZ@@$$$$END$$
+$$IF=:LOUER:IDT$$$$A:RUBRIQUE=@@LG:VOUSOUHLOU@@ : @@LG:SELECTIONNEZ@@$$$$END$$
+$$IF=:GESTION:IDT$$$$A:RUBRIQUE=@@LG:GESTION@@$$$$END$$
+$$IF=:NOSAGENCES:IDT$$$$A:RUBRIQUE=@@LG:NOSAGENCES@@$$$$END$$
+$$IF=:MESSAGE.HTM:REP:0$$$$A:RUBRIQUE=@@LG:NOUSECRIRE@@$$$$END$$
+$$IF=:1:FORM:SI_COUPDECOEUR$$$$A:RUBRIQUE=@@LG:TITRECOEUR@@$$$$END$$
+$$IF=:SUIVICLIENT:IDT$$$$A:RUBRIQUE=Suivi Client$$$$END$$
+$$IF=:CALCULETTES:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CALCUL@@$$$$END$$
+$$IF=:MOTEUR:IDT$$$$A:RUBRIQUE=@@LG:RECHERCHEDANNONCES pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$$$END$$
+$$IF=:EXPERTISE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:EXPERT@@$$$$END$$
+
+$$IF=:ACTUALITES:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ACTU@@$$$$END$$
+
+
+$$REM$$<!-- PUD -->$$END:REM$$
+$$IF=:PUDAGENCE:IDT$$$$A:RUBRIQUE=@@LG:PRESENTAGENCE@@$$$$END$$
+$$IF=:PUDAGENCES:IDT$$$$A:RUBRIQUE=@@LG:PRESNOSAGENCES@@$$$$END$$
+$$IF=:PUDANNONCES:IDT$$$$A:RUBRIQUE=@@LG:TOUTESANNONC@@$$$$END$$
+$$IF=:PUDESTIMATION:IDT$$$$A:RUBRIQUE=@@LG:ESTIMVOTREBIEN pcase@@$$$$END$$
+$$IF=:PUDIMMOBILIER:IDT$$$$A:RUBRIQUE=@@LG:IMMOBILIER pcase@@$$$$END$$
+
+$$REM$$<!-- copie de slagence_X/incl_rub.htm -->$$END:REM$$
+$$IF=:MSGCGU:IDT$$$$A:RUBRIQUE=@@LG:INFOSLEG@@$$$$END$$
+$$IF=:MSG_OK:IDT$$$$A:RUBRIQUE=@@LG:DEMENVOI@@$$$$END$$
+$$IF=:CONTACTAGENCE:IDT$$$$A:RUBRIQUE=@@LG:NOUSCTC@@$$$$END$$
+$$IF=:CONTRATPRIV:IDT$$$$A:RUBRIQUE=@@LG:CONTRATPRIV@@$$$$END$$
+$$IF=:404:IDT$$$$A:RUBRIQUE=@@LG:404PAGE@@$$$$END$$$$IF=:ACCUEIL:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ACCUEIL@@$$$$END$$$$IF=:INDEX:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ACCUEIL@@$$$$END$$$$IF=:ACH:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ACH@@$$$$END$$$$IF=:ACTU:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ACTU@@$$$$END$$$$IF=:ADR:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ADR@@$$$$END$$$$IF=:AGEN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:AGEN@@$$$$END$$$$IF=:AGENCES:IDT$$$$A:RUBRIQUE=@@LG:LIEN:AGENCES@@$$$$END$$$$IF=:ALERTEIMMO$MODIFALERTEIMMO$DESINSALERTEIMMO:IDT$$$$A:RUBRIQUE=@@LG:ALERTEIMMO@@$$$$END$$$$IF=:ANN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ANN@@$$$$END$$$$IF=:ASSUR:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ASSUR@@$$$$END$$$$IF=:ASSUR:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ASSUR@@$$$$END$$$$IF=:ATOU:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ATOU@@$$$$END$$$$IF=:CALDEMEN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CALDEMEN@@$$$$END$$$$IF=:CALFINANC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CALFINANC@@$$$$END$$$$IF=:CDC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CDC@@$$$$END$$$$IF=:COMMERCE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:COMMERCE@@$$$$END$$$$IF=:CONSEIL:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CONSEIL@@$$$$END$$$$IF=:CTC$MESSAGE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:CTC@@$$$$END$$$$IF=:DEFI:IDT$$$$A:RUBRIQUE=@@LG:LIEN:DEFI@@$$$$END$$$$IF=:DEMEN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:DEMEN@@$$$$END$$$$IF=:ENG:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ENG@@$$$$END$$$$IF=:ENT:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ENT@@$$$$END$$$$IF=:EQUIP:IDT$$$$A:RUBRIQUE=@@LG:LIEN:EQUIP@@$$$$END$$$$IF=:ESTIMATION:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ESTIM@@$$$$END$$$$IF=:ESTIMG:IDT$$$$A:RUBRIQUE=@@LG:LIEN:ESTIMG@@$$$$END$$$$IF=:EXCLU:IDT$$$$A:RUBRIQUE=@@LG:LIEN:EXCLU@@$$$$END$$$$IF=:FCOMMERCE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:FCOMMERCE@@$$$$END$$$$IF=:FINANC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:FINANC@@$$$$END$$$$IF=:GERER:IDT$$$$A:RUBRIQUE=@@LG:LIEN:GERER@@$$$$END$$$$IF=:GEST:IDT$$$$A:RUBRIQUE=@@LG:LIEN:GEST@@$$$$END$$$$IF=:GESTION:IDT$$$$A:RUBRIQUE=@@LG:LIEN:GESTION@@$$$$END$$$$IF=:HTLOC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:HTLOC@@$$$$END$$$$IF=:IMMOEN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:IMMOEN@@$$$$END$$$$IF=:INFO:IDT$$$$A:RUBRIQUE=@@LG:LIEN:INFO@@$$$$END$$$$IF=:INTERCAB:IDT$$$$A:RUBRIQUE=@@LG:LIEN:INTERCAB@@$$$$END$$$$IF=:INVE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:INVE@@$$$$END$$$$IF=:LISTEAG:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LISTEAG@@$$$$END$$$$IF=:LISTEANN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LISTEANN@@$$$$END$$$$IF=:LOC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOC@@$$$$END$$$$IF=:LOCPST:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOCPST@@$$$$END$$$$IF=:LOCTMP:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOCTMP@@$$$$END$$$$IF=:LOCVAC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOCVAC@@$$$$END$$$$IF=:LOCVENTE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOCVENTE@@$$$$END$$$$IF=:LOUER:IDT$$$$A:RUBRIQUE=@@LG:LIEN:LOUER@@$$$$END$$$$IF=:MENTION:IDT$$$$A:RUBRIQUE=@@LG:LIEN:MENTION@@$$$$END$$$$IF=:NOSBIENS:IDT$$$$A:RUBRIQUE=@@LG:LIEN:NOSBIENS@@$$$$END$$$$IF=:NOSGARANTIES:IDT$$$$A:RUBRIQUE=@@LG:NOSGARANTIES@@$$$$END$$$$IF=:NOSOFFRES:IDT$$$$A:RUBRIQUE=@@LG:MENTION@@$$$$END$$$$IF=:NOTAIRE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:NOTAIRE@@$$$$END$$$$IF=:OFFRE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:OFFRE@@$$$$END$$$$IF=:OUT:IDT$$$$A:RUBRIQUE=@@LG:LIEN:OUT@@$$$$END$$$$IF=:OUTILS:IDT$$$$A:RUBRIQUE=@@LG:LIEN:OUT@@$$$$END$$$$IF=:PART:IDT$$$$A:RUBRIQUE=@@LG:PARTENAIRES@@$$$$END$$$$IF=:PBA:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PBA@@$$$$END$$$$IF=:PBV:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PBV@@$$$$END$$$$IF=:PGRNEUF:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PGRNEUF@@$$$$END$$$$IF=:PLAN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PLAN@@$$$$END$$$$IF=:PLUS_ANNONCE$:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PLUSDINFOS@@$$$$END$$$$IF=:PRES:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PRES@@$$$$END$$$$IF=:PRODINVEST:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PRODINVEST@@$$$$END$$$$IF=:PROFESSIONNELS:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PROFESSIONNELS@@$$$$END$$
+$$IF=:PROPO:IDT$$$$A:RUBRIQUE=@@LG:LIEN:PROPO@@$$$$END$$$$IF=:QSN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:QSN@@$$$$END$$$$IF=:QUI:IDT$$$$A:RUBRIQUE=@@LG:LIEN:QUI@@$$$$END$$$$IF=:RECRUT:IDT$$$$A:RUBRIQUE=@@LG:LIEN:RECRUT@@$$$$END$$$$IF=:REG$REGION:IDT$$$$A:RUBRIQUE=@@LG:LIEN:REG@@$$$$END$$$$IF=:REJOIN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:REJOIN@@$$$$END$$$$IF=:RESEAU:IDT$$$$A:RUBRIQUE=@@LG:LIEN:RESEAU@@$$$$END$$$$IF=:DETAIL:IDT$$$$A:RUBRIQUE=@@LG:LIEN:RESULTATS@@$$$$END$$$$IF=:SELEC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:SELEC@@$$$$END$$$$IF=:SERV:IDT$$$$A:RUBRIQUE=@@LG:LIEN:SERV@@$$$$END$$$$IF=:SYNDIC:IDT$$$$A:RUBRIQUE=@@LG:LIEN:SYNDIC@@$$$$END$$$$IF=:TER:IDT$$$$A:RUBRIQUE=@@LG:LIEN:TER@@$$$$END$$$$IF=:TRANS:IDT$$$$A:RUBRIQUE=@@LG:LIEN:TRANS@@$$$$END$$$$IF=:TRANSACTIONS:IDT$$$$A:RUBRIQUE=@@LG:LIEN:TRANSACTIONS@@$$$$END$$$$IF=:TRAV:IDT$$$$A:RUBRIQUE=@@LG:LIEN:TRAV@@$$$$END$$$$IF=:VEN:IDT$$$$A:RUBRIQUE=@@LG:LIEN:VEN@@$$$$END$$$$IF=:VENB:IDT$$$$A:RUBRIQUE=@@LG:LIEN:VENB@@$$$$END$$$$IF=:VENDRE:IDT$$$$A:RUBRIQUE=@@LG:LIEN:VENDRE@@$$$$END$$$$IF=:VENPST:IDT$$$$A:RUBRIQUE=@@LG:LIEN:VENPST@@$$$$END$$$$IF=:VIAGER:IDT$$$$A:RUBRIQUE=@@LG:LIEN:VIAGER@@$$$$END$$$$IF=:TOUTESANNONCES:IDT$$$$A:RUBRIQUE=@@LG:LIEN:TOUTES@@$$$$END$$$$REM$$ url par defaut apres validation d'un formulaire, lien $$LG:RETOURACC$$$$END$$$$A:LG:URL:RETOUR_FORM=/index.htm$$$$IF0:IDT$$$$A:RUBRIQUE=@@LG:ACCUEIL@@$$$$END$$$$IF=:DETAILANNONCE:IDT$$$$A:RUBRIQUE=@@LG:DETAILANNONCE@@$$$$END$$
+
+$$A:URL_FACEBOOK=@@PAGE:URL_FACEBOOK@@$$
+$$A:URL_TWITTER=@@PAGE:URL_TWITTER@@$$
