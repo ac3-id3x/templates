@@ -1,0 +1,94 @@
+$$DYN:ID3:NODEBUGPOPUP$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<html>
+	<head>
+		<style>
+			@import url('styles,facebook.css');
+		</style>
+		<script src="$$_$$scripts/jquery.min.js" type="text/javascript"></script>
+		<script>
+			function changeDiv(iddiv,txt) {
+				document.getElementById(iddiv).value = txt;
+			}
+			$(document).ready(function() {
+				$('#cpInput').val('');
+				$('#submitSend').attr('disabled', true);
+				$('#submitSend').css('cursor','auto');
+				$('#submitSend').css({ opacity: 0.40 });
+				/* LISTENER ON SELECT ELEMENT */
+				$("#cpInput").change(function(event){changeValue(event);});
+				$("#cpInput").keypress(function(event){changeValue(event);});
+			});
+			function changeValue(event) {
+		  	var goTarget = $(event.target);
+		    if($(goTarget).is("select, input") && goTarget.val() != '') {
+		     	$('#submitSend').attr('disabled', false);
+					$('#submitSend').css('cursor','pointer');
+					$('#submitSend').css({ opacity: 1 });
+					$('#help').hide();
+		    } else {
+		    	$('#submitSend').attr('disabled', true);
+					$('#submitSend').css('cursor','auto');
+					$('#submitSend').css({ opacity: 0.40 });
+					$('#help').show();
+		    }
+  		};
+		</script>
+	</head>
+	<body>
+		<form method="get" action="http://$$REP:RSRV$$/moteur,mini,prevalidation.htm" id="MoteurRecherche" onsubmit="Envoi();return Verif();">	
+			<div id="global">
+				<div id="agence">
+					<img src="images/haut_fb.jpg">	
+				</div>
+				<div id="moteur">
+					<div class="bloc">
+						<h1>Type de transaction</h1>
+						<ul>
+							<li><input type="radio" name="Idtt" value="2" checked />Vente</li>
+							<li><input type="radio" name="Idtt" value="1"/>Location</li>
+						</ul>
+					</div>
+					<div class="bloc">
+						<h1>Type de bien</h1>
+						<ul>
+							<li><input type="checkbox" name="idTypeBien" value="2">Maison / Villa</li>
+							<li><input type="checkbox" name="idTypeBien" value="1">Appartement</li>
+							<li><input type="checkbox" name="idTypeBien" value="13,5,8,11,9,6">Autres</li>
+						</ul>
+					</div>
+					<div class="bloc">
+						<div class="left50">
+								<h1>Superficie</h1>
+								<div class="left50">Min <input type="text" class="inputText" name="surfacemin" value="" /> m&sup2;</div>
+								<div class="left50">Max <input type="text" class="inputText" name="surfacemax" value=""  /> m&sup2;</div>
+						</div>
+						<div class="left50">
+								<h1>Nombre de pièces</h1>
+								<input type="checkbox" name="nb_pieces" />1
+								<input type="checkbox" name="nb_pieces" />2
+								<input type="checkbox" name="nb_pieces" />3
+								<input type="checkbox" name="nb_pieces" />4
+								<input type="checkbox" name="nb_pieces" />5 $$LG:ET lcase$$ +
+						</div>
+					</div>
+					<div class="bloc">
+						<div class="left50">
+								<h1>Budget</h1>
+								<div class="left50">Min <input type="text" class="inputText" name="pxmin" value="" /> &euro;</div>
+								<div class="left50">Max <input type="text" class="inputText" name="pxmax" value=""  /> &euro;</div>
+						</div>
+						<div class="left50">
+								<h1>Ville ou code postal</h1>
+								<input type="text" value="" name="cp" class="inputBig" id="cpInput" />
+						</div>
+					</div>
+					<div class="clear"></div>
+					<input type="submit" class="inputSubmit" value="$$LG:RECHERCHER pcase$$" id="submitSend" onclick="changeDiv(this.id,'Chargement...');"/>
+					<div class="clear"></div>
+					<div id="help">Veuillez saisir une ville ou un code postal.</div>
+				</div>
+			</div>
+		</form>
+	</body>
+</html>

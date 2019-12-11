@@ -1,0 +1,135 @@
+$$DYN:ID3:NODEBUGPOPUP$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<html>
+	<head>
+		<style>
+			@import url('styles,facebook.css');
+		</style>
+		<script type="text/javascript" language="javascript">
+			function affiche(numero){
+				document.location = "$$ANNLISTE:JSBASEQUERY replace &amp; &$$"+numero;
+			}	
+		</script>
+		<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+		<script src="$$_$$scripts/moteur.js" type="text/javascript"></script>
+	</head>
+	<body>
+			<div id="global">
+				<div id="agence">
+					<img src="$$_$$images/haut_fb.jpg">	
+				</div>
+				<form method="get" action="http://$$REP:RSRV$$/moteur,mini,prevalidation.htm" id="MoteurRecherche" onsubmit="Envoi();return Verif();">
+					<div id="moteur">
+						<div class="bloc">
+							<h1>Type de transaction</h1>
+							<ul>
+								<li><input type="radio" name="Idtt" value="2" checked />Vente</li>
+								<li><input type="radio" name="Idtt" value="1"/>Location</li>
+							</ul>
+						</div>
+						<div class="bloc">
+							<h1>Type de bien</h1>
+							<ul>
+								<li><input type="checkbox" name="idTypeBien" value="2">Maison / Villa</li>
+								<li><input type="checkbox" name="idTypeBien" value="1">Appartement</li>
+								<li><input type="checkbox" name="idTypeBien" value="13,5,8,11,9,6">Autres</li>
+							</ul>
+						</div>
+						<div class="bloc">
+							<div class="left50">
+									<h1>Superficie</h1>
+									<div class="left50">Min <input type="text" class="inputText" name="surfacemin" value="" /> m&sup2;</div>
+									<div class="left50">Max <input type="text" class="inputText" name="surfacemax" value=""  /> m&sup2;</div>
+							</div>
+							<div class="left50">
+									<h1>Nombre de pièces</h1>
+									<input type="checkbox" name="nb_pieces" />1
+									<input type="checkbox" name="nb_pieces" />2
+									<input type="checkbox" name="nb_pieces" />3
+									<input type="checkbox" name="nb_pieces" />4
+									<input type="checkbox" name="nb_pieces" />5 $$LG:ET lcase$$ +
+							</div>
+						</div>
+						<div class="bloc">
+							<div class="left50">
+									<h1>Budget</h1>
+									<div class="left50">Min <input type="text" class="inputText" name="pxmin" value="" /> &euro;</div>
+									<div class="left50">Max <input type="text" class="inputText" name="pxmax" value=""  /> &euro;</div>
+							</div>
+							<div class="left50">
+									<h1>Ville ou code postal</h1>
+									<input type="text" value="" name="cp" class="inputBig" id="cpInput" />
+							</div>
+						</div>
+						<div class="clear"></div>
+						<input type="submit" class="inputSubmit" value="$$LG:RECHERCHER pcase$$" id="submitSend" onclick="changeDiv(this.id,'Chargement...');"/>
+						<div class="clear"></div>
+						<div id="help">Veuillez saisir une ville ou un code postal.</div>
+					</div>
+				</form>
+				<div class="clear"></div>
+					$$IF:ANNLISTE:NBR$$
+						<div id="nbresultats">
+							$$ANNLISTE:NBR$$ bien(s) trouvé(s)
+						</div>						
+					<div class="clear"></div>
+					$$END$$
+				<div id="recherche">
+					$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1:ALIAS:ANNLISTE:JSFUNC:affiche($$
+					$$BIF:ANNLISTE$$
+					$$IF+:0:ANNLISTE:NBR$$
+							$$DO:1:10$$
+							<div class="blocAnnonce">
+								<div class="imageAnnonce">
+									$$IF:ANNLISTE:CARRE_URL$$
+										<a href="http://www.solvimo.com/annonces-immobilieres/annonce-immobiliere.php?ref=$$ANNLISTE:REFEXTERNE$$" title="" target="_blank"><img width="130" height="93" src="$$ANNLISTE:C175URL0$$"/></a>
+									$$END:PHOTO$$
+									$$IF0:ANNLISTE:IDPHOTO$$
+										<a href="http://www.solvimo.com/annonces-immobilieres/annonce-immobiliere.php?ref=$$ANNLISTE:REFEXTERNE$$" title="" target="_blank"><img src="$$-$$detail/img_commun/fiche_sans_photo.jpg "/></a>
+									$$END:PHOTO$$
+								</div>
+								<div class="infoAnnonce">
+									<div class="titleAnnonce">
+										<a href="http://www.solvimo.com/annonces-immobilieres/annonce-immobiliere.php?ref=$$ANNLISTE:REFEXTERNE$$" title="" target="_blank">$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$ - $$ANNLISTE:ACP$$</a>
+									</div>
+									$$IF:ANNLISTE:DESCRIPTIF$$
+									<div class="descAnnonce">
+										$$ANNLISTE:DESCRIPTIF pcase left 150$$...
+									</div>
+									<div class="infoAgence">
+										SOLVIMO - $$ANNLISTE:AVILLE$$<br/>
+										$$ANNLISTE:TELEPHONE formattel$$
+									</div>
+								$$END$$
+								</div>
+								<div class="detailsAnnonce">
+									<ul>
+										<li>$$ANNLISTE:IDTYPEBIEN gettypebien$$</li>
+										<li>$$ANNLISTE:PRIXRAW$$$$ANNLISTE:PRIX_UNITE$$</li>
+										$$IF:ANNLISTE:SURF$$
+										<li>$$ANNLISTE:SURF$$ $$ANNLISTE:SURF_UNITE$$</li>
+										$$END$$
+									</ul>
+										<div class="clear"></div>
+									<div class="shareAnnonce">
+										<a name="fb_share" type="button" share_url="http://www.solvimo.com/annonces-immobilieres/annonce-immobiliere.php?ref=$$ANNLISTE:REFEXTERNE$$">Partager</a>	
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							$$LOOP$$
+						$$END:ANNLISTE$$
+					$$BFIN$$
+					$$IF0:ANNLISTE:NBR$$
+						<div id="error">$$LG:AUCUNEANN pcase$$...</div>
+						<div id="retour"><a href="index.htm">Retour au moteur de recherche</a></div>
+					$$END:ANNLISTE$$
+				</div>
+				<div class="clear"></div>
+				<div id="multiPages">
+					$$ANNLISTE:MULTIPAGE replace &lt; Précédente replace &gt; Suivante$$
+				</div>
+			</div>
+	</body>
+</html>
