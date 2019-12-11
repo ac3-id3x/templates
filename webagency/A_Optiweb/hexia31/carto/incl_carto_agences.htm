@@ -1,0 +1,206 @@
+$$B:IMMOBW:AGENCES::QRY:CP:ALIAS:AGENCESCARTO$$
+$$BIF:AGENCESCARTO$$
+
+<!-- http://dev.live.com/virtualearth/sdk/ -->
+	<style type="text/css">
+	.MSVE_Dashboard_Small .MSVE_MapStyle { width:50px !important; } <!-- réduit la largeur des boutons de sélection du type de carte (plan/sat/hybride), si affiché -->	
+	</style>
+	<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&mkt=fr-fr"></script>
+	<script type="text/javascript">
+	var myMapId = 'myMap';
+	var map = null;
+
+	var address;
+	var zip;
+	var town;
+	var country;
+	var lat, lng;
+
+	var numResults = 1;
+	var index = 0;
+
+	var tabwhere = new Array();		
+	var iCurrentAddress;
+	var results;
+	var icon = '<img src="/img/picto_carto.gif" onerror="this.src=\'$$~$$carto/picto_carto.gif\'";/>';
+
+	function mapLoaded()
+	{
+		// cale les boutons de zooms dans le coin supérieur gauche
+		var dashboard = document.getElementById(myMapId+'_dashboard');
+		if (dashboard != null) {
+			dashboard.style.top = dashboard.style.left = dashboard.style.marginLeft	= dashboard.style.marginTop = "0px";
+		}
+	}
+
+	function GetMap()
+	{	   
+		map = new VEMap(myMapId);
+		var LA = new VELatLong(46.37725420510028, 3.164062500000014); //France
+		map.SetDashboardSize(VEDashboardSize.Tiny);
+		map.onLoadMap = mapLoaded;
+		
+		map.LoadMap(LA,5);			
+
+		map.SetMouseWheelZoomToCenter(false); // ne pas zoomer sur le centre de la carte mais sur le pointeur de la souris avec la molette
+		// Firefox 3.5 fix: zoom avec molette fait scroller la page ET la carte
+		if (navigator.userAgent.indexOf("Firefox/3.5") != -1) { 
+			document.getElementById(myMapId).addEventListener('DOMMouseScroll', WindowMouseWheelHandler, false);
+		}			
+
+		StartFindLoc();       
+	}
+
+	function StartFindLoc()
+	{
+		var objAddress;
+		
+		$$DO$$
+		addr = "$$AGENCESCARTO:ADRESSE crlf2br$$";
+		tabaddress = addr.split('<br/>');/*recupere uniquement l'addresse*/
+		address = tabaddress[0];
+		zip = "$$AGENCESCARTO:CP$$";
+		town = "$$AGENCESCARTO:VILLE$$";
+		country = "$$AGENCESCARTO:PAYS$$";
+		lat = "$$AGENCESCARTO:LATITUDE replace , .$$";
+		lng = "$$AGENCESCARTO:LONGITUDE replace , .$$";
+		idpub = "$$AGENCESCARTO:IDPUBLICATION$$";
+		
+		//var where = address + ',' + zip + ',' + town + ',' + country;
+		objAddress = {address: address, zip: zip, town: town, country: country, lat: lat, lng: lng,idpub: idpub};
+		tabwhere.push(objAddress);
+		$$LOOP$$
+							
+		iCurrentAddress = 0;
+		results = new Array();
+		FindLoc();
+	}
+  
+	function FindLoc()
+	{
+		if (iCurrentAddress < tabwhere.length)
+		{ 
+			 if ((tabwhere[iCurrentAddress].lat != "") && (tabwhere[iCurrentAddress].lng != ""))
+			 {
+				//map.SetCenterAndZoom(new VELatLong(tabwhere[iCurrentAddress].lat, tabwhere[iCurrentAddress].lng), 15);
+				AddPushpin(new VELatLong(tabwhere[iCurrentAddress].lat, tabwhere[iCurrentAddress].lng), "");
+				iCurrentAddress++;
+				FindLoc();
+			 }
+			 else
+			 {
+				map.Find(null,
+				tabwhere[iCurrentAddress].address + ', ' + tabwhere[iCurrentAddress].zip + ', ' + tabwhere[iCurrentAddress].town + ', ' + tabwhere[iCurrentAddress].country,
+				null,
+				null,
+				index,
+				numResults,
+				true,
+				true,
+				false,
+				false,
+				MoreResults
+				);
+			}
+		}
+		else
+		{
+			// on va centrer la carte sur toutes les punaises positionnées
+			map.SetMapView(results);
+			
+			// on zoome si mono-agence. Niveau de zoom = param de conf WAG_BING_ZOOM.
+			if (results.length == 1)
+			{
+				// on vérifie que WAG_BING_ZOOM est un nombre entier
+				if (!isNaN(parseInt($$PAGE:WAG_BING_ZOOM$$)))
+					map.SetZoomLevel($$PAGE:WAG_BING_ZOOM$$);
+			}
+			
+			document.getElementById("Loader").style.display = "none";
+		}
+	}
+    
+	function MoreResults(layer, resultsArray, places, hasMore, veErrorMessage)
+	{
+		if(hasMore)
+		{
+		   var r = "<a href='#' onclick=\"javascript:FindLoc();\">" +
+				   "Cliquez pour + de résultats</a>";
+		   
+		}
+		else
+		{
+			var infos = "";
+			// Précision de la réponse
+			if (places[0].MatchConfidence != VEMatchConfidence.High)
+			{
+				infos = "<p style='text-align:left;font-size:10px;'>Localisation approximative de l'agence :</p>";
+			}else{
+				//map.SetZoomLevel(18);
+			}
+			
+			AddPushpin(places[0].LatLong, infos);
+			index=0;
+			number=Number(numResults); 
+			//document.getElementById('results').innerHTML = "Pas d'autres résultats disponibles.";
+			//document.getElementById("myMap").style.visibility = "visible";
+		}
+			  
+		//results.push(new VELatLong(places[0].LatLong.Latitude, places[0].LatLong.Longitude));
+		iCurrentAddress++;
+		FindLoc();
+	}
+     
+	function AddPushpin(latlng, infos)
+	{
+		var shape = new VEShape(VEShapeType.Pushpin, latlng);
+		
+		
+		results.push(latlng);
+		//Set the icon
+		shape.SetCustomIcon(icon);
+		if (infos == "") {
+			shape.SetTitle("<p style='text-align:left;font-size:10px;'>Localisation de l'agence :</p>");
+		} else {
+			shape.SetTitle(infos );
+		}
+		shape.SetDescription("<p style='text-align:left;color: Black;font-size:11px;'>" + tabwhere[iCurrentAddress].address + '<br/>' + tabwhere[iCurrentAddress].zip + ' ' + tabwhere[iCurrentAddress].town + ' ' + tabwhere[iCurrentAddress].country + '<br/><a href="agence-immobiliere.htm?idp=' + tabwhere[iCurrentAddress].idpub + '&lang=$$FORM:LANG$$" class="LienCartoAgences">$$LG:SAVOIR pcase$$</a></p>');
+		map.AddShape(shape);
+	}   
+
+	// Fix (=correction) du pb de scroll de de Firefox
+    function WindowMouseWheelHandler(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+        e.cancelBubble = false;
+        return false;
+    }		      
+
+	function UnloadMap()
+	{
+		if (map != null)
+		{
+			map.Dispose();
+		}
+	}
+
+	</script>
+	
+	
+
+	<div id="Map" style="position:relative;width:100%;height:100%;">
+		<div id="myMap" style="position:relative;width:100%;height:100%;"></div>
+		<div id="Loader" style="z-index:100;width:100%;height:100%;position:absolute;top:0;left:0;background:url($$~$$carto/loader.gif) no-repeat center center #FFF;"></div>
+	</div>
+	<script type="text/javascript" defer="defer"> <!-- "defer" permet de différer l'exécution du script pour IE -->
+	//window.onload=GetMap; /// pas de onload, sinon on risque d'écraser ce qu'il y a déjà d'affecté à onLoad
+	//GetMap();
+	eventsManager.addLoadEvent("GetMap()");
+	eventsManager.addToEvent("UnloadMap()", "unload");
+	
+	eventsManager.addLoadEvent("window.setTimeout('eventsManager.dbgListLoadEvents()', 2000)", 1000);
+	</script>
+	<!--<div id="results"></div>-->
+
+$$BFIN$$
