@@ -1,0 +1,124 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCE$$
+$$E:IMMOBW:AGENCE:REP:1$$
+	<div style="float:left;">
+		<h1>$$IMMOBW:AGENCE:NOM$$</h1>											 
+		<h2>$$LG:TEXTEAGENCES pcase$$ $$IMMOBW:AGENCE:VILLE ncase$$</h2>
+		<p>$$IMMOBW:AGENCE:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$	$$IMMOBW:AGENCE:CP$$ $$IMMOBW:AGENCE:VILLE ncase$$<br />
+		$$LG:MINITEL$$ : $$IMMOBW:AGENCE:TEL formattel$$ - $$IF:IMMOBW:AGENCE:FAX$$ $$LG:FAX$$ : $$IMMOBW:AGENCE:FAX formattel$$$$END$$<br />
+		$$IF:IMMOBW:AGENCE:EMAIL$$
+			E-mail : $$IMMOBW:AGENCE:EMAIL encodemail javascript full$$<br />
+		$$END$$
+			$$LG:NOMRESP$$&nbsp;$$IMMOBW:AGENCE:RESPAG$$<br />
+		$$IF:IMMOBW:AGENCE:RCS_FULL$$
+			RCS : $$IMMOBW:AGENCE:RCS_FULL$$
+		$$END$$</p>		
+		$$IF:IMMOBW:ANN:QRY:SI_AFFURL$$
+			<a href="$$IMMOBW:ANN:QRY:URL$$" target="_blank">$$IMMOBW:ANN:QRY:URL$$</a>
+		$$END:SI_AFFURL$$	
+	</div>
+	$$IF=:0:MULTI$$
+		<div style="float:right; margin-right:10px;">
+			<img src="images/agence/photo-accueil.jpg" alt="$$IMMOBW:AGENCE:VILLE ucase$$" title="$$IMMOBW:AGENCE:VILLE ucase$$" style="border:7px solid #FFF; height:110px; width:220px;" />
+		</div>
+	$$END$$
+	$$IF=:1:MULTI$$
+		<div style="float:right; margin-right:10px;">
+			<img src="images/agence/$$REP:1$$.jpg" alt="$$IMMOBW:AGENCE:VILLE ucase$$" title="$$IMMOBW:AGENCE:VILLE ucase$$" style="border:7px solid #FFF; height:110px; width:220px;" />
+		</div>
+	$$END$$
+	<div class="Clear"></div>
+<!-- AFFICHAGE SI MULTI AGENCE -->
+$$IF=:1:MULTI$$
+	<!-- Affichage des annonces -->
+	<div id="Annonces">
+		<h2>$$LG:TOUTESANNONC pcase$$ $$LG:SUR lcase$$ $$IMMOBW:AGENCE:VILLE pcase$$ $$LG:ETSAREGION$$.</h2>
+		<img class="Trait" src="$$-$$images/bg_trait_agence.gif" alt="$$EXPRESSION2$$" title="$$EXPRESSION2$$" />
+	 $$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:LISTRAN:REP:1$$
+				$$BIF:LISTRAN$$
+				$$DO:0:99$$
+				<ul>
+				$$IF=:1:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- location -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=1&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION7$$"> $$LG:LIEN:LOC pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$	
+				$$IF=:2:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- vente -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=2&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION8$$"> $$LG:LIEN:VEN pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$	
+				$$IF=:3:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- locations temporaires -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=3&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION9$$"> $$LG:LIEN:LOCTMP pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				$$IF=:4:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- locations vacances -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=4&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION10$$"> $$LG:LIEN:LOCVAC pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				$$IF=:5:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- viager -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=5&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION11$$">$$LG:ANN:VIAGERS pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				$$IF=:6:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- produits d'investissement -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=6&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION12$$"> $$LG:LIEN:PRODINVEST pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				$$IF=:7:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- locations de prestige -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=7&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$" title="$$EXPRESSION13$$"> $$LG:LIEN:LOCPST pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				$$IF=:8:LISTRAN:IDTYPETRANSACTION$$
+				$$REM$$<!-- biens de prestige -->$$END$$
+						<li><a href="/$$REP:1$$/recherche,classic.htm?idtt=8&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"title="$$EXPRESSION14$$"> $$LG:LIEN:VENPST pcase$$</a>
+						($$LISTRAN:NBANN$$
+						$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</a></li>
+					$$END$$
+				</ul>
+				$$LOOP$$
+				$$BFIN$$
+		</div>
+		<!-- Fin affichage des annonces -->
+$$END$$
+		<div id="Annonces">
+		<h2>$$LG:NOUSCTC pcase$$</h2>
+		<img class="Trait" src="$$-$$images/bg_trait_agence.gif" alt="$$EXPRESSION2$$" title="$$EXPRESSION2$$" />
+				<ul>
+			
+						<li><a href="http://$$REP:RSRV$$/$$IF=:1:MULTI$$$$1_MULTI:IDPUBLICATION$$/$$END$$message.htm?lang=$$LANGUE$$" title="$$LG:CTCMAIL pcase$$"> $$LG:CTCMAIL pcase$$</a></li>
+						<li><a href="http://$$REP:RSRV$$/$$IF=:1:MULTI$$$$1_MULTI:IDPUBLICATION$$/$$END$$estimation.htm?lang=$$LANGUE$$" title="$$LG:ESTIMATION pcase$$"> $$LG:ESTIMATION pcase$$</a></li>
+						<li><a href="http://$$REP:RSRV$$/$$IF=:1:MULTI$$$$1_MULTI:IDPUBLICATION$$/$$END$$vendeur.htm?lang=$$LANGUE$$" title="$$LG:VOUSVEND pcase$$">$$LG:VOUSVEND pcase$$</a></li>
+						<li><a href="http://$$REP:RSRV$$/$$IF=:1:MULTI$$$$1_MULTI:IDPUBLICATION$$/$$END$$contact.htm?lang=$$LANGUE$$" title="$$LG:VOUSRECHERCHEZUNBIEN pcase$$"> $$LG:VOUSRECHERCHEZUNBIEN pcase$$</a></li>
+
+				</ul>
+		</div>
+
+$$IF:IMMOBW:AGENCE:TXT_PUBLIC$$
+<!-- * Actualité si texte public * -->
+<h2>$$LG:NOTREACTUALITE pcase$$</h2>
+<img class="Trait" src="$$-$$images/bg_trait_agence.gif" alt="$$EXPRESSION2$$" title="$$EXPRESSION2$$" style="margin:5px 0 5px 10px;" />
+<p>$$IMMOBW:AGENCE:TXT_PUBLIC crlf2br$$</p>
+<!-- * Fin actualité si texte public * -->
+$$END$$
+<!--#include virtual="../includes/incl_texte_agence.htm"-->
+$$INCL:BAS.HTM$$
