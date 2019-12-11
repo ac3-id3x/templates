@@ -1,0 +1,170 @@
+$$INIT:IDT=TROUVER$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$INIT:MINI_IDTTDEFAUT=2$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_MOBILEFIRST=1$$
+<!--#include virtual="header/incl_refine.htm" -->
+
+
+$$REM$$<!-- BOUCLE ANNONCES -->$$END$$
+$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG:QRY:IDP:::REP:1:QRY:TRI:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VAL:ADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+$$REM$$<!-- BOUCLE FIL ARIANE -->$$END$$
+$$B:IMMOBW:FIL-ARIANE-ANNONCE:ALIAS:FIL$$
+
+$$REM$$<!--FILTRES PERSO MOTEUR RECHERCHE-->$$END$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:1:~langue:QRY:LANG:ALIAS:FILTREPERSO1$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:2:~langue:QRY:LANG:ALIAS:FILTREPERSO2$$
+$$B:IMMOBW:VALEURSFILTRESPERSO:~ordre:3:~langue:QRY:LANG:ALIAS:FILTREPERSO3$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR incl_VILLES-->$$END$$
+$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCLUDE_INPUT.HTM-->$$END$$
+$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+
+$$REM$$<!--BOUCLE POUR SUGGEST INCL_JSON.HTM-->$$END$$
+$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+
+$$REM$$<!--BOUCLE POUR MINI MOTEUR INCL_TYPE_TRANSACTION-->$$END$$
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+
+<div class="recherche-mobilefirst">
+
+    <script type="text/javascript">
+        var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+        var maxpage = '$$ANNLISTE:NBRPAGES$$';
+        var btnaction = 'choix-selection-refine';
+        var btnneutre = 'choix-neutre-refine';
+        var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+        var typemoteur = "$$TYPEMOTEUR$$";
+        var lang = "$$LANGUE$$";
+        var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:LOYERBTW$$$$FORM:LOYERBTW$$$$END$$';
+    </script>
+
+    $$REM$$<!-- RESULTATS DE RECHERCHE -->$$END$$
+    $$IF0:ANNLISTE:SIPANIER$$
+
+        $$REM$$<!-- FIL D'ARIANE -->$$END$$
+        $$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+            $$BIF:FIL$$
+                $$IF+:2:FIL:NBR$$
+                    <div class="container">
+                        <!--#include virtual="recherche/incl_fil_ariane.htm" -->
+                    </div>
+                $$END$$
+            $$BFIN$$
+        $$END$$
+
+        $$REM$$<!-- MOTEUR TOP -->$$END$$
+        $$IF:TAILLEMOTEURRESULTATS$$
+            $$IF=:1:EMPLACEMENTMOTEURTOP$$
+                $$IF=:MOBILEFIRST:STYLEMOTEURREFINE$$
+                    <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+                $$END$$
+            $$END$$
+        $$END$$
+    $$END$$
+</div>
+
+<div class="row-fluid">
+	<div class="span12">
+		<div class="row-fluid">
+			<div class="span12">
+			  <h1 class="pagination-centered h1-immo">CONSEIL & ACCOMPAGNEMENT <strong>PERSONNALISÉ</strong></h1>
+			</div>
+		</div>
+		<div class="row-fluid margin-top-20">
+			<!-- CONTENT -->
+			<div class="margin-left-0 span12">
+				<div class="row-fluid">
+					<div class="span12">
+						<div class="row-fluid margin-top-40">
+							<div class="span2">
+								<div class="padding-left-20">
+									<img src="/images/immo/trouver-loc.jpg" alt="" class="box-shadow">
+								</div>
+							</div>
+							<div class="span10 pagination-justify padding-right-20">
+								<h2 class="h2-immo margin-top-10"><strong>LOCATION :</strong> HABITATION & COMMERCES</h2>
+								<p class="bold typo-action">Vous êtes à la recherche d'une maison, d'un appartement, de locaux commerciaux à louer à Rousset, sur la métropole d'Aix-Marseille ?</p>
+								<hr class="margin-bottom-10">
+								<p>Vous n'êtes pas au fait des démarches à suivre et avez besoin d'un coup de pouce pour trouver le bien qui vous correspondra dans les meilleurs délai ?</p>
+								<p>Nos équipes sont à votre écoute pour vous accompagner de la recherche du bien à l'entrée dans les lieux !</p>
+								<p><a href="/recherche,basic.htm?idtt=1" title="$$LG:SAVOIR pcase$$" class="btn btn-important margin-top-10">Consultez nos annonces</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12 bg-white margin-top-40">
+						<div class="row-fluid margin-top-40">
+							<div class="span2">
+								<div class="padding-left-20">
+									<img src="/images/immo/trouver-achat.jpg" alt="" class="box-shadow">
+								</div>
+							</div>
+							<div class="span10 pagination-justify padding-right-20">
+								<h2 class="h2-immo margin-top-10"><strong>ACHETER :</strong> HABITATION & COMMERCES</h2>
+								<p class="bold typo-action">Vous avez l'intention de vous lancer dans l'achat d'un appartement ou maison ou locaux commerciaux à Rousset, en métropole Aix Marseille, ou ailleurs pour y habiter ou investir ?</p>
+								<hr class="margin-bottom-10">
+								<p>Comme souvent, notamment lors d'un premier achat, les recherches et les grandes étapes peuvent s'avérer compliquées par méconnaissance du secteur et des démarches. C'est pourquoi être accompagné par une équipe de professionnels c'est :</p>
+								<ul class="padding-left-10">
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> <strong>Sécuriser son projet</strong> grâce à l'expertise apportée</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> <strong>Optimiser ses recherches</strong> en ayant accès à un large panel de biens à la vente</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> <strong>Gagner un temps précieux</strong> grâce à l'accompagnement</li>
+								</ul>
+								<p>Abordez ce moment de vie en toute sérénité et construisez un projet qui correspond à vos besoins et à vos attentes !</p>
+								<p><a href="/recherche,basic.htm?idtt=2" title="$$LG:SAVOIR pcase$$" class="btn btn-important margin-top-10">Consultez nos annonces</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid margin-top-40">
+					<div class="span12">
+						<div class="row-fluid margin-top-40">
+							<div class="span2">
+								<div class="padding-left-20">
+									<img src="/images/immo/trouver-neuf.jpg" alt="" class="box-shadow">
+								</div>
+							</div>
+							<div class="span10 pagination-justify padding-right-20">
+								<h2 class="h2-immo margin-top-10"><strong>NEUF :</strong> HABITER & INVESTIR</h2>
+								<p class="bold typo-action">Vous avez l'intention d'acheter un bien immobilier neuf en Pays d'Aix en Provence, Marseille ou ailleurs ?</p>
+								<hr class="margin-bottom-10">
+
+								<p>Avant de procéder ç un achat immobilier de ce type, il est primordial d'être bien informé et bien accompagné dans sa démarche. Qui plus est, plusieurs objecteifs s'offrent à vous :</p>
+								<ul class="padding-left-10">
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Y habiter,</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Payer moins d'impôts,</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Préparer sa retraite,</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Se constituer un patrimoine.</li>
+								</ul>
+								<p>Depuis plusieurs années et fort de notre expertise sur tous les volets de l'immobilier (syndic, gestion locative, transaction) notre équipe immobilier Neuf & Conseil en investissement est à votre service pour vous accompagner dans l'achat d'un bien immobilier neuf sur la métropole Marseille Aix en Provence et au-delà puisque nous proposons ce service sur l'ensemble de nos territoires.</p>
+								<p>Comme souvent, notamment lors d'un premier achat, les recherches et les grandes étapes peuvent s'avérer compliquées par méconnaissance du secteur, de la réglementation et des démarches. C'est pourquoi être accompagné par une équipe de professionnels permet de :</p>
+								<ul class="padding-left-10">
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Sécuriser son projet grâce à l'expertise apportée,</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Optimiser ses recherches en ayant accès à un large panel de biens à la vente,</li>
+									<li><i class="icon-v5 icon-v5-checkmark typo-action"></i> Gagner un temps précieux grâce à l'accompagnement.</li>
+								</ul>
+								<p>Nous sommes à vos côtés de l'achat sur plan à la remise des clés en passant par le financement.</p>
+								<p>Abordez ce moment de vie en toute sérénité et construisez un projet qui correspond à vos besoins et à vos attentes !</p>
+
+								<p><a href="/recherche,basic.htm?idtt=9" title="$$LG:SAVOIR pcase$$" class="btn btn-important margin-top-10">Consultez nos annonces</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row-fluid margin-top-40">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
