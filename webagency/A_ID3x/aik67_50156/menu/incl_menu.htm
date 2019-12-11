@@ -1,0 +1,29 @@
+<!--#include virtual="menu/incl_menu_accueil.htm"-->
+<!--#include virtual="menu/incl_menu_vente.htm"-->
+<!--#include virtual="menu/incl_menu_location.htm"-->
+<!--#include virtual="menu/incl_menu_estimation.htm" -->
+<!--#include virtual="menu/incl_menu_agences.htm" -->
+$$BIF:COMPTE_AGENCES$$
+	$$DO:1:1$$
+		$$A:BAREME_URL=$$
+		$$A:BAREME_LIBELLE=$$
+
+		$$IF:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+			$$A:BAREME_URL=@@COMPTE_AGENCES:URL_DOCHONORAIRES@@$$
+		$$END$$
+
+		$$IF0:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+			$$IF:EXTENSION_BAREME_HONORAIRES$$
+				$$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@COMPTE_AGENCES:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+			$$END$$
+		$$END$$
+
+		$$IF:BAREME_URL$$
+			<li class="menu-bareme">
+				<a href="$$BAREME_URL$$" target="_blank" title="Honoraires">Honoraires</a>
+			</li>
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+<!--#include virtual="menu/incl_menu_alerte.htm"-->  
+<!--#include virtual="menu/incl_menu_outils.htm" -->
