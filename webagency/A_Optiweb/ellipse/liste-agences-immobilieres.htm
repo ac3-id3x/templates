@@ -1,0 +1,67 @@
+$$REM$$
+====================================================================
+
+//// <summary>Liste des agences immobilières présente sur le site</summary>
+//// <remarks>
+//// <para>Paramètre de tri des agences via la querystring : tri=cp, ville, dep, villecp, depvillenom, desc ou rand</para>
+//// <para>Sans paramètre dans la querystring, le tri par défaut sera le nom des agences par ordre alphabétique</para>
+//// <para>Affiche des liens vers : slagence_X_V2/agence-immobiliere.htm</para>
+//// <para>La photo de l'agence mesure par défaut 200px x 130px, sinon paramétrer le .css</para>
+//// <para>La photo de l'agence est rangée et doit se nommer ainsi : images/agences/idpublication.jpg</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/liste-agences-immobilieres.css</para>
+//// <para>Lien NOUS SITUER masqué tant qu'il est en panne</para>
+//// </remarks>
+//// <update date="2008-01-17" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-17" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-17" author="sophie.nataf">Validation référencement en attente</update>
+//// <update date="2008-01-17" author="erick.barbant">Validation Id3x en attente</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAGENCESIMMOBILIERES$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,liste-agences-immobilieres.css" );
+</style>$$
+<div id="ListeAgencesImmobilieres">
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	$$DO$$
+	
+	<div class="cadreAgence">			
+		<div class="img_Ctn">
+			<a id="Img$$LISTEAG:IDPUBLICATION$$" href="$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:AGEN pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:VILLE scase$$$$END$$"></a>
+		</div>
+		<div class="coordsAgence">
+			<h2>$$LISTEAG:NOM$$</h2>
+			<p>
+				$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				<strong>$$LISTEAG:CP$$ $$LISTEAG:VILLE$$</strong>
+			</p>
+			<p>
+				$$IF:LISTEAG:TEL$$<span>$$LG:MINITEL pcase$$ : $$LISTEAG:TEL formattelus$$</span><br />$$END:LISTEAG:TEL$$
+				$$IF:LISTEAG:FAX$$$$LG:FAX pcase$$ : $$LISTEAG:FAX formattelus$$<br />$$END:LISTEAG:FAX$$
+				$$IF:LISTEAG:RESPAG$$$$LG:NOMRESP pcase$$ $$LISTEAG:RESPAG$$$$END:LISTEAG:RESPAG$$
+			</p>
+			<p>
+				$$IF:LISTEAG:EMAIL$$<span>$$LG:EMAIL pcase$$ : </span> $$LISTEAG:EMAIL encodemail javascript full$$<br />$$END$$				
+				$$IF:LISTEAG:URL$$<span>$$LG:SITE pcase$$ :</span> <a href="$$LISTEAG:URL$$" target="_blank" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:SITE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:URL$$</a>$$END:URL$$
+			</p>
+		</div>
+		<div class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></div>
+	</div>
+	
+	<div class="links">
+
+		<p class="links_Ctn">
+			<a class="plus" href="$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:PLUSDINFOS pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:LIEN:PLUSDINFOS pcase$$</span></a>
+			<a class="message" href="$$URLBASE$$/$$LISTEAG:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+			$$A:CARTE:CP=@@LISTEAG:CP alphanum +@@$$$$A:CARTE:VILLE=@@LISTEAG:VILLE alphanum +@@$$$$A:CARTE:ADRESSE=@@LISTEAG:ADRESSE alphanum +@@$$$$INCL:LOCALISATION_AGENCE.HTM$$
+		</p>
+		<p class="clear"><!-- $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$PAGE:KEYWORDS$$$$END$$ --></p>
+
+	</div>
+	$$LOOP$$
+	$$BFIN$$
+</div>
+$$INCL:BAS.HTM$$
