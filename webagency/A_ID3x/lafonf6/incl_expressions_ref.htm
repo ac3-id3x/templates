@@ -1,0 +1,180 @@
+$$REM$$<!--
+=========================================================
+//// <summary>Page qui définie les expressions par défaut des balises TITLE et META</summary>
+//// <remarks>
+//// <para>apparaît seulement si le site a un de contrat de réf ou TDL en cours</para>
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>si vous n'avez pas besoin des commentaires, effacez les, vous gagnerez des sauts de ligne dans le code source</para>
+//// <para>2009.07.28 : ajout param sur titre, descr et keyw, dont le contenu par défaut provient de la conf, sauf si conditionnement</para>
+//// </remarks>
+//// <update date="2009-07-28" author="lisbonne.siriphol">Updates</update>
+//// <update date="2009-03-30" author="lisbonne.siriphol">Adaptation pour franchise Laforêt</update>
+=========================================================
+-->$$END$$
+
+$$REM$$<!-- ======================================================================================
+///////////// création des macros qui listent les agences, villes, dép, région etc.  /////////////
+///////////////////// ces macros sont utilisées dans les optis réf plus bas  /////////////////////
+// si création expressions directement en dur > retirer boucle B:IMMOBW et tout ce qui va avec //
+=====================================================================================-->$$END:REM$$
+$$REM$$<!-- dessus marquee : "Immobilier + DEP" -->$$END:REM$$		$$A:HEADERACCROCHE=@@LG:IMMOBILIER pcase@@ Oise (60) @@$LG:ET lcase@@ Val d'Oise (95)$$
+
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// TITLE des liens du menu ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- accueil -->$$END:REM$$													$$A:TITLE_MENU_ACCUEIL=@@LG:ACCUEIL pcase@@$$
+
+$$REM$$<!-- ===================== transactions ===================== -->$$END:REM$$
+
+$$REM$$<!-- coups de coeur -->$$END:REM$$										$$A:TITLE_MENU_CDC=@@LG:LIEN:CDC pcase@@$$
+$$REM$$<!-- exclusivités -->$$END:REM$$											$$A:TITLE_MENU_EXCLUS=@@LG:EXCLUSIVITES pcase@@$$
+$$REM$$<!-- nos nouveautés -->$$END:REM$$										$$A:TITLE_MENU_NOUVEAUTES=@@LG:NOSNOUVEAUTES pcase@@$$
+$$REM$$<!-- acheter (formulaire) -->$$END:REM$$							$$A:TITLE_MENU_ACHETER=@@LG:ACHETER pcase@@$$
+$$REM$$<!-- louer (formulaire) -->$$END:REM$$								$$A:TITLE_MENU_LOUER=@@LG:LOUER pcase@@$$
+$$REM$$<!-- louer (résultats) -->$$END:REM$$								$$A:TITLE_RESULTATS_LOC=@@LG:LOUER pcase@@$$
+$$REM$$<!-- loc vacances (résultats) -->$$END:REM$$					$$A:TITLE_RESULTATS_LOCVAC=@@LG:VACANCES pcase@@$$
+$$REM$$<!-- prestige (résultats) -->$$END:REM$$							$$A:TITLE_RESULTATS_PRESTIGE=@@LG:PRESTIGE2 pcase@@$$
+$$REM$$<!-- fonds de comm. (résultats) -->$$END:REM$$				$$A:TITLE_RESULTATS_FDC=@@LG:COM pcase@@$$
+$$REM$$<!-- prod. invest. (résultats) -->$$END:REM$$				$$A:TITLE_RESULTATS_INVEST=@@LG:INVESTISSEMENT2 pcase@@$$
+$$REM$$<!-- Prog neufs (résultats) -->$$END:REM$$						$$A:TITLE_RESULTATS_NEUF=@@LG:NEUF pcase@@$$
+
+$$REM$$<!-- ===================== rubrique(s) personnalisée(s) ===================== -->$$END:REM$$
+$$REM$$<!-- lien rubrique perso 1 -->$$END:REM$$						$$A:TITLE_MENU_PERSO1=@@MENU_PERSO1_TITRE@@$$
+$$REM$$<!-- lien rubrique perso 2 -->$$END:REM$$						$$A:TITLE_MENU_PERSO2=@@MENU_PERSO2_TITRE@@$$
+
+$$REM$$<!-- ===================== services ===================== -->$$END:REM$$
+$$BIF:INFOSAGENCES$$$$DO$$
+$$REM$$<!-- notre agence -->$$END:REM$$											$$IF=:1:MULTI:NBR$$$$A:TITLE_MENU_AGENCE=@@LG:LIEN:AGEN pcase@@ @@LG:A lcase@@ @@INFOSAGENCES:VILLE@@$$$$END$$
+$$LOOP$$$$BFIN$$
+$$REM$$<!-- nos agences -->$$END:REM$$											$$IF!:1:MULTI:NBR$$$$A:TITLE_MENU_AGENCE=@@LG:NOSAGENCES pcase@@$$$$END$$
+$$REM$$<!-- gestion -->$$END:REM$$													$$A:TITLE_MENU_GESTION=@@LG:GESTION pcase@@$$
+$$REM$$<!-- nos services -->$$END:REM$$											$$A:TITLE_MENU_SERVICES=@@LG:NOSSERVICES pcase@@$$
+$$REM$$<!-- estimation -->$$END:REM$$												$$A:TITLE_MENU_ESTIMATION=@@LG:ESTIMATION pcase@@$$
+$$REM$$<!-- contact -->$$END:REM$$													$$A:TITLE_MENU_CONTACT=@@LG:CONTACT pcase@@$$
+$$REM$$<!-- partenaires -->$$END:REM$$											$$A:TITLE_MENU_PARTENAIRES=@@LG:LIEN:PART pcase@@$$
+$$REM$$<!-- notre réseau -->$$END:REM$$											$$A:TITLE_MENU_RESEAU=@@LG:LIEN:RESEAU pcase@@$$
+
+
+$$REM$$<!-- ===================== annonces sélectionnées ===================== -->$$END:REM$$
+$$REM$$<!-- selection -->$$END:REM$$												$$A:TITLE_MENU_SELECTION=@@LG:MASELECT pcase@@$$
+
+
+
+$$REM$$<!-- ======================================================================================
+//////////////////////////// Expressions contenues dans alt et title /////////////////////////////
+//////////////////// il a été décidé qu'on s'arrête à 6 macros d'expressions /////////////////////
+=====================================================================================-->$$END:REM$$
+$$A:EXPRESSION1=laforet oise val d'oise$$
+$$A:EXPRESSION2=agence immobiliere oise$$
+$$A:EXPRESSION3=immobilier argenteuil$$
+$$A:EXPRESSION4=immobilier beauvais$$
+$$A:EXPRESSION5=immobilier cergy$$
+$$A:EXPRESSION6=immobilier compiegne$$
+
+
+
+$$REM$$<!-- ======================================================================================
+////////////////////// Exemples sans les dollars sinon ça fait tout sauter ///////////////////////
+==================================================================================================
+
+================== exemple de conditionnement balises meta TITLE, DESCRIPTION, KEYWORDS =========
+	IF=:INDEX:PAGE:IDT
+		A:PAGE:TITR=
+		A:PAGE:DESCREF=
+		A:PAGE:KEYWORDS=
+	END
+	
+========================= exemple de conditionnement sur IDPUBLICATION  =========================
+	IF=:CTC:PAGE:IDT
+		IF=:346519:REP:1
+			A:PAGE:TITR=
+			A:PAGE:DESCREF=
+			A:PAGE:KEYWORDS=
+		END
+	END
+
+==================================== tout est dans la query  ====================================
+	nommer directement la page							IF=:IMMOBILIER.HTM:REP:0
+	le numéro de page												IF=:1:IMMOBW:ANN:QRY:PAGE
+	l'idtt																	IF=:2:FORM:IDTT
+	code insee															IF=:123456:FORM:CI
+	coup de coeur														IF=:1:FORM:SI_COUPDECOEUR	
+	
+====================================================================================-->$$END:REM$$
+
+
+$$REM$$<!-- ======================================================================================
+/////////////////////////////////// listes des IDT existants ////////////////////////////////////
+=====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- ================== avec annonces et/ou liens vers annonces ================= -->$$END:REM$$
+$$REM$$<!--  index.htm > IDT=INDEX -->$$END:REM$$
+$$REM$$<!--  immobilier.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  résultat géoloc / map,recherche.htm > pas d'idt, faut nommer la page -->$$END:REM$$
+$$REM$$<!--  recherche,...htm > IDT=RESULTATS -->$$END:REM$$
+$$REM$$<!--  detail,...htm > IDT=DETAILANNONCE -->$$END:REM$$
+$$REM$$<!--  rss.htm > IDT=RSS -->$$END:REM$$
+
+$$REM$$<!-- ============================== formulaires ============================== -->$$END:REM$$
+$$REM$$<!--  acheter.htm > IDT=ACHETER -->$$END:REM$$
+$$REM$$<!--  louer.htm > IDT=LOUER -->$$END:REM$$
+$$REM$$<!--  message.htm > IDT=CTC -->$$END:REM$$
+$$REM$$<!--  estimation.htm > IDT=ESTIM -->$$END:REM$$
+
+$$REM$$<!-- ============================== pages de contenu ============================== -->$$END:REM$$
+$$REM$$<!--  agence-immobiliere.htm > IDT=AGENCEIMMOBILIERE -->$$END:REM$$
+$$REM$$<!--  notre-agence-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  nos-agences-laforet-immobilier.htm > IDT=AGENCES -->$$END:REM$$
+$$REM$$<!--  gestion.htm > IDT=GESTION -->$$END:REM$$
+$$REM$$<!--  annuaire-laforet.htm > IDT=ANNUAIRELAFORET -->$$END:REM$$
+$$REM$$<!--  plan.htm > IDT=PLAN -->$$END:REM$$
+$$REM$$<!--  contrat-privilege-laforet.htm > IDT=CONTRATPRIV -->$$END:REM$$
+$$REM$$<!--  guide-pratique.htm > IDT=GUI -->$$END:REM$$
+$$REM$$<!--  mentions.htm > IDT=MENTIONS -->$$END:REM$$
+$$REM$$<!--  partenaires.htm > IDT=PART -->$$END:REM$$
+$$REM$$<!--  gestion.htm > IDT=GESTION -->$$END:REM$$
+
+
+$$REM$$<!-- ======================================================================================
+////////////////////////////// listes des optimisations par défaut ///////////////////////////////
+// les optis de la conf apparaissent par défaut dans le title et les métas, si pas d'opti créee //
+//////////////////////////////// on boucle sur la première agence ////////////////////////////////
+///////////////////////// crée le 08.12.2009 avec l'aide de Stéph Debah //////////////////////////
+=====================================================================================-->$$END:REM$$
+$$BIF:INFOSAGENCES$$
+$$DO:1:1$$
+
+	
+	 
+	$$IF=:PLAN:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:LIEN:PLAN pcase@@ @@REP:RSRV@@$$
+		$$A:PAGE:DESCREF=Pr&eacute;sentation du site @@REP:RSRV@@ specialiste de l'immobilier &agrave; @@1_INFOSAGENCES:VILLE@@$$
+		$$A:PAGE:KEYWORDS=@@REP:RSRV@@$$
+	$$END$$
+	
+	$$IF=:AGENCES:PAGE:IDT$$
+		$$A:PAGE:TITR=Agence immobiliere @@1_INFOSAGENCES:NOM@@ &agrave; @@1_INFOSAGENCES:VILLE@@$$
+		$$A:PAGE:DESCREF=Les agences Lafor&ecirc;t Immobilier &agrave; @@1_INFOSAGENCES:VILLE@@ en @@1_INFOSAGENCES:CP cp2dep@@ vous propose un grand choix d'annonces immobili&egrave;res de vente de maison, d'appartement &agrave; @@1_INFOSAGENCES:VILLE@@$$
+		$$A:PAGE:KEYWORDS=agence immobili&egrave;re Lafor&ecirc;t Immobilier @@1_INFOSAGENCES:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_INFOSAGENCES:VILLE@@$$
+	$$END$$
+	
+	$$IF=:AGENCEIMMOBILIERE:PAGE:IDT$$
+		$$A:PAGE:TITR=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@, @@LG:AGENCE pcase@@ Lafor&ecirc;t @@LG:IMMOBILIER pcase@@ @@CV:CP cp2dep@@$$
+		$$A:PAGE:DESCREF=Notre agence immobili&egrave;re Lafor&ecirc;t Immobilier &agrave; @@CV:VILLE@@ vous accompagne tout au long de votre projet immobilier. Notre agence immobili&egrave;re &agrave; @@CV:VILLE@@  est sp&eacute;cialisée dans la vente et la location de maisons et appartements sur @@CV:VILLE@@ et de nombreuses villes de @@CV:CP cp2dep@@ (@@CV:CP left 2@@)$$
+		$$A:PAGE:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ (@@CV:CP@@), @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@, @@LG:AGENCE pcase@@ Lafor&ecirc;t @@LG:IMMOBILIER pcase@@ @@CV:CP cp2dep@@$$
+	$$END$$
+	
+$$LOOP$$
+$$BFIN$$
+
+$$IF=:INDEX:PAGE:IDT$$
+	$$A:PAGE:TITR=Immobilier Ermont, Immobilier Sannois, Immobilier Oise, immobilier Val d'Oise, agence immobilière Oise , agence immobilière Val d'Oise : Laforêt Oise val d'oise$$
+	$$A:PAGE:DESCREF=Les agences  Laforêt Immobilier, situées dans l'Oise (60) et le Val d'Oise (95) vous proposent un service complet de transaction immobilière. : Immobilier Oise, immobilier Val d'Oise, agence immobiliere Oise , agence immobiliere Val d'Oise : Laforet Oise val d'oise$$
+	$$A:PAGE:KEYWORDS=immobilier l'isle adam, immobilier pontoise, immobilier cergy , immobilier ermont, immobilier sannois, immobilier franconville, immobilier argenteuil, immobilier bezons, immobilier luzarches, immobilier magny en vexin, immobilier eaubonne , immobilier ezanville, immobilier taverny , immobilier herblay , immobilier deuil la barre, immobilier gonesse , immobilier sarcelles, immobilier crepy en valois, immobilier nanteuil le haudouin, immobilier breuil le vert, immobilier chambly, immobilier meru , immobilier chantilly , immobilier noyon, immobilier compiegne, immobilier la croix saint ouen, immobilier beauvais, immobilier creil, immobilier nogent sur oise, immobilier senlis, immobilier lamorlaye, immobilier neuilly en thelle$$
+$$END$$
+	
+
+
+
