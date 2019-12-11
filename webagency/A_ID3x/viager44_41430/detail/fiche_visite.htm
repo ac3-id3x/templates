@@ -1,0 +1,351 @@
+$$INIT:IDT=FICHEVISITE$$
+$$E:IMMOBW:AGENCE:REP:2:ALIAS:CV$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:~nostat:1:ALIAS:ANNDETAIL$$
+$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@
+@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@
+@@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@) @@LG:DE lcase@@
+@@ANNDETAIL:SURFACE replace , .@@ m²,
+@@ANNDETAIL:PRIX@@ euros
+avec @@ANNDETAIL:COOR-NOM@@
+$$
+
+$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF_GEN smalltextv2 150@@$$
+
+$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+@@LG:ANNONCEIMMO pcase@@ @@ANNDETAIL:VILLE@@,
+@@ANNDETAIL:COOR-NOM@@,
+@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase@@,
+@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@,
+@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+@@ANNDETAIL:NB_PIECES@@ @@LG:PIECES lcase@@
+$$
+$$REM$$<!-- ======================== FICHIER A NE PAS DEMUTUALISER ======================== -->$$END:REM$$
+$$REM$$<!-- ======================== VARIABLES ET PARAMS AGENCE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_var_params.htm" -->
+$$REM$$<!-- ======================== DOCTYPE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<!--#include virtual="header/incl_fichiers.htm"-->
+<body class="typo-black normal bg-print">
+    <div class="container">
+        <div class="row-fluid margin-top-20 margin-bottom-20">
+            <div class="span12 bg-white border-solid-print-1 padding-5">
+
+                <div class="row-fluid">
+                    <div class="span4 bg-primary pagination-centered">
+                        <img src="$$IF0:LOGOPRINT$$$$_$$images/logo.png$$END$$$$IF:LOGOPRINT$$$$LOGOPRINT$$$$END$$" alt="Logo" class="logoprint">
+                    </div>
+                    <div class="span6 typo-black">
+                        <span class="bold">$$CV:NOM$$</span><br />
+                        <span class="small">$$CV:ADRESSE$$</span><br />
+                        $$IF:IMMOBW:ANNONCE:COOR-CONTACT$$
+                        <span>$$LG:LIEN:CTC pcase$$ : $$IMMOBW:ANNONCE:COOR-CONTACT$$</span><br />
+                        $$END$$
+                        <span class="bold typo-black big"><!--#include virtual="header/incl_formatel.htm" --></span>
+                        $$IF:ANNDETAIL:EMAIL$$
+                        <div>$$LG:EMAIL pcase$$ : $$ANNDETAIL:EMAIL$$</div><br />
+                        $$END$$
+                    </div>
+                    <div class="span2 pagination-centered">
+                        <div id="qrcode">
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    var url = decodeURIComponent('$$CV:URLVIRTUELLE$$');
+                                    var url = url+'?utm_medium=QRcode%26utm_source=fiche-visite';
+                                    var urlQR = 'http://chart.googleapis.com/chart?chs=95x95&cht=qr&chl='+url+'&chld=L|1';
+                                    $('#qrcode').append('<img src="'+urlQR+'" alt="" />');
+                                });
+                            </script>
+                        </div>
+                        <a href="javascript:void(0);" onclick="javascript:window.print();" class="goprint"><img src="$$~$$images/print/minipicto-print.png" class="margin-right-5" /><span class="typo-print bold">$$LG:IMPRIMER pcase$$</span></a>
+                    </div>
+                </div>
+
+                <div class="row-fluid border-solid-top-print-2 margin-top-10 padding-10">
+
+                    <div class="row-fluid print-small bold">
+                        <div class="span8">
+
+
+                            $$IF=:499:ANNDETAIL:IDVALEURPERSO$$<span class="label-venteaterme">VENTE À TERME</span> $$END$$
+                            $$IF!:1:HIDE_TRANSACTION$$
+                            $$IF!:499:ANNDETAIL:IDVALEURPERSO$$
+
+
+                            $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+
+
+                            $$IF:ANNDETAIL:SI_LIBRE$$
+                            <span class="label-viagerlibre">$$LG:VIAGERLIBRE2 ucase$$</span>
+                            $$END$$
+                            $$IF0:ANNDETAIL:SI_LIBRE$$
+                            <span class="label-viageroccupe">$$LG:VIAGEROCCUPE2 ucase$$</span>
+                            $$END$$
+                            $$END$$
+                            $$END$$
+                            $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+                            <span class="label-venteaterme">$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction ucase$$</span>
+                            $$END$$
+                            $$END$$
+
+
+
+
+
+                            $$IF:ANNDETAIL:SI_COUPDECOEUR$$<span class="padding-5 border-bottom-cdc">$$LG:COUPDECOEUR ucase$$</span>$$END$$
+
+                        </div>
+                        <div class="span4 pagination-right">
+                            <span class="bg-print2 typo-print padding-5">Référence du bien : $$ANNDETAIL:REFANNONCE$$</span>
+                        </div>
+                    </div>
+
+                    <hr class="margin-bottom-10" />
+
+                    <div class="row-fluid bold">
+                        <div class="span7 line-height-20">
+                            <span class="print-biggest">$$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)</span>
+                            <span class="print-bigger">
+                                $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+                                <!--
+$$IF:ANNDETAIL:NB_PIECES$$
+$$ANNDETAIL:NB_PIECES$$
+$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+$$IF+:2:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+$$END$$-->
+                            </span>
+                            <!--<span class="print-big">($$ANNDETAIL:SURFACE$$ $$ANNDETAIL:SURF_UNITE$$)</span>-->
+                            <br>
+                            <span class="print-bigger">$$ANNDETAIL:LIBELLE$$</span>
+                        </div>
+                        <div class="span5 pagination-right">
+                            <span class="print-biggest label-prix-bouquet uppercase">
+                                $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                                <span class="smallest">$$LG:BOUQUET pcase$$ : </span>
+                                $$END$$
+
+
+                                $$IF:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                                $$LG:PRIXNOUSCONSULTER pcase$$
+                                $$END$$
+                                $$IF0:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                                $$ANNDETAIL:PRIX pcase$$ $$ANNDETAIL:PRIX_UNITE$$
+                                $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                                <span class="smallest">HAI</span>
+                                $$END$$
+                                $$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF:ANNDETAIL:SI_LOYER_CC$$<sup class="xsmallest">1</sup>$$END$$
+                                $$END$$
+                                $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF0:ANNDETAIL:SI_LOYER_CC$$$$IF!:1:HIDEPARSEMAINE$$$$LG:PARSEMAINE$$$$END$$<sup class="xsmallest">1</sup>$$END$$
+                                $$END$$
+                                $$IF!:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF!:1:HONORAIRESINCLUS$$*$$END$$$$IF=:1:HONORAIRESINCLUS$$<span class="xxsmallest"><abbr title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr></span>$$END$$
+                                $$END$$
+                                $$END$$
+
+                            </span>
+                            <div>
+                                $$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF:ANNDETAIL:PX_CHARGES$$$$LG:CHARGES pcase$$ : $$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro;$$END$$ <br />
+                                $$IF:ANNDETAIL:HONORAIRES$$$$LG:HONORAIRES pcase$$ : $$ANNDETAIL:HONORAIRES formatnumber 0$$ &euro;$$END$$<br />
+                                $$IF:ANNDETAIL:GARANTIE$$$$LG:V5DEPOTGARANTIE pcase$$ : $$ANNDETAIL:GARANTIE$$$$END$$<br />
+                                $$END$$
+                                $$IF:ANNDETAIL:XML xml TAXE_FONCIERE$$
+                                $$LG:TAXEFONCIERE pcase$$ : $$ANNDETAIL:XML xml TAXE_FONCIERE$$ &euro;<br />
+                                $$END$$
+                                $$IF:ANNDETAIL:XML xml TAXE_HABITATION$$
+                                $$LG:TAXEHABITATION pcase$$ : $$ANNDETAIL:XML xml TAXE_HABITATION$$ &euro;<br />
+                                $$END$$
+
+                                $$IF:ANNDETAIL:PX_RENTE$$
+                                <span  class="label-prix-rente uppercase print-bigger ">$$LG:RENTE pcase$$ : $$ANNDETAIL:PX_RENTE formatnumber 0$$ $$LG:EUROMOIS$$</span><br />
+                                $$END$$
+                                $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                                <span  class="smaller">
+                                    $$IF:ANNDETAIL:AGE_F$$
+                                    $$IF=:FR:LANGUE$$Dame$$END$$
+                                    $$IF!:FR:LANGUE$$$$LG:FEMME pcase$$$$END$$ : $$ANNDETAIL:AGE_F$$ ans
+                                    $$END$$
+                                    $$IF:ANNDETAIL:AGE_H$$
+                                    $$IF!:0:ANNDETAIL:AGE_F$$&nbsp;$$END$$
+                                    $$LG:HOMME pcase$$ : $$ANNDETAIL:AGE_H$$ ans
+                                    $$END$$
+                                </span><br>
+                                $$END$$
+                                $$IF:ANNDETAIL:PX_VALEUR_A_LACHAT$$
+                                <span  class="smaller">$$LG:VALEURACHAT pcase$$ : $$ANNDETAIL:PX_VALEUR_A_LACHAT formatnumber 0$$ &euro;</span><br />
+
+                                $$END$$
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row-fluid margin-top-10">
+                        <div class="span6 bg-print2">
+                            <div class="padding-5">
+                                $$IF:ANNDETAIL:PHOTOURL0$$
+                                <img src="$$ANNDETAIL:PHOTOURL0$$">
+                                $$END$$
+                                $$IF0:ANNDETAIL:PHOTOURL0$$
+                                <img src="$$~$$images/recherche/sans_photo.jpg">
+                                $$END$$
+                            </div>
+                            $$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+                            $$BIF:GALERIE$$
+                            <div class="row-fluid margin-bottom-5 padding-left-5 padding-right-5">
+                                <!-- BOUCLE IMAGES -->
+                                $$DO:1:4$$
+                                <div class="span3"><img class="" src="$$GALERIE:CARRE_URL$$" width="65" height="65"  alt=""/></div>
+                                $$LOOP$$
+                            </div>
+                            $$BFIN$$
+
+
+                        </div>
+                        <div class="span6 pagination-justify">
+                            <span class="bold print-small typo-print">$$LG:DESCRIPTIF pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                            $$IF!:1:DESCRIPTIFCLIENT$$<span>$$ANNDETAIL:DESCRIPTIF pcase$$</span>$$END$$
+                            $$IF=:1:DESCRIPTIFCLIENT$$<span>$$ANNDETAIL:DESCRIPTIF crlf2br$$</span>$$END$$
+
+
+                        </div>
+                    </div>
+
+                    <div class="row-fluid margin-top-10">
+                        <span class="bold print-small typo-print">$$LG:INFOSCOMPLEMENTAIRES pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                        $$B:IMMOBW:AFFICHANNONCES:ADD:ANNDETAIL_IDANNONCE:ALIAS:FICHE$$
+                        $$BIF:FICHE$$
+                        <ul class="print-list">
+                            $$DO:1:999$$
+                            $$IF=:Piéces:FICHE:LIB$$
+                            $$A:NBPIECE=@@FICHE:VAL@@ @@FICHE:LIB@@,$$
+                            $$END$$
+                            $$IF!:10:ANNDETAIL:IDTYPETRANSACTION$$
+                            <li title="$$FICHE:LIB$$">$$FICHE:LIB striphtml smalltextv2 24$$ : <b title="$$IF:FICHE:VAL$$$$IF!:0:FICHE:VAL$$$$FICHE:VAL$$$$END$$$$END$$">$$IF0:FICHE:VAL$$oui$$END$$ $$IF:FICHE:VAL$$ $$IF=:0:FICHE:VAL$$non$$END$$ $$IF!:0:FICHE:VAL$$ $$FICHE:VAL striphtml smalltextv2 10$$ $$END$$$$END$$</b></li>
+                            $$END$$
+
+                            $$IF=:10:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF!:Chambre$Chambres$Pièce$Pièces:FICHE:LIB$$
+                            <li title="$$FICHE:LIB$$">$$FICHE:LIB striphtml smalltextv2 24$$ : <b title="$$IF:FICHE:VAL$$$$IF!:0:FICHE:VAL$$$$FICHE:VAL$$$$END$$$$END$$">$$IF0:FICHE:VAL$$oui$$END$$ $$IF:FICHE:VAL$$ $$IF=:0:FICHE:VAL$$non$$END$$ $$IF!:0:FICHE:VAL$$ $$FICHE:VAL striphtml smalltextv2 10$$ $$END$$$$END$$</b></li>
+                            $$END$$
+                            $$END$$
+                            $$LOOP$$
+                        </ul>
+                        $$BFIN$$
+                    </div>
+
+                    $$IF:ANNDETAIL:BILANCONSOENERGIE$$
+                    <div class="row-fluid margin-top-10">
+                        <div class="span6">
+                            <span class="bold print-small typo-print">$$LG:CONSOENERGIE pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                            <div class="relative row-fluid pagination-centered line-height-30 height-30 dpe-show" title="$$LG:DETAILDPE pcase$$">
+                                <div class="span7 typo-black dpe-bloc-chiffre">
+                                    $$ANNDETAIL:CONSOENERGIE formatnumber 0$$ kWhEP/m&sup2;/an
+                                </div>
+                                <div class="span2 bg-black typo-white bold dpe-bloc-lettre">
+                                    $$ANNDETAIL:BILANCONSOENERGIE$$
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <span class="bold print-small typo-print">$$LG:EMISSIONGAZ pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                            <div class="relative row-fluid pagination-centered line-height-30 height-30 dpe-show" title="$$LG:DETAILDPE pcase$$">
+                                <div class="typo-black span7 dpe-bloc-chiffre">
+                                    $$ANNDETAIL:EMISSIONGES formatnumber 0$$ kgeqCO2/m&sup2;/an
+                                </div>
+                                <div class="span2 bg-black typo-white bold dpe-bloc-lettre">
+                                    $$ANNDETAIL:BILANEMISSIONGES$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    $$END$$
+
+                    $$IF0:ANNDETAIL:BILANCONSOENERGIE$$
+                        $$IF0:ANNDETAIL:CONSOENERGIE$$
+                            <div class="row-fluid margin-top-10">
+                                <div class="span6">
+                                    <span class="bold print-small typo-print">$$LG:CONSOENERGIE pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                                    <div class="relative row-fluid pagination-left line-height-30 height-30 dpe-show" title="$$LG:DETAILDPE pcase$$">
+                                            <p class="bold">$$LG:NONRENSEIGNE pcase$$</p>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <span class="bold print-small typo-print">$$LG:EMISSIONGAZ pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                                    <div class="relative row-fluid pagination-left line-height-30 height-30 dpe-show" title="$$LG:DETAILDPE pcase$$">
+                                       <p class="bold">$$LG:NONRENSEIGNE pcase$$</p>
+                                    </div>
+                                </div>
+                            </div>
+                        $$END$$
+                    $$END$$
+
+
+
+                    <div class="row-fluid margin-top-10 print-small">
+                        <span class="bold typo-print">$$LG:LIEN:FICHE pcase$$</span><hr class="margin-top-0 margin-bottom-10" />
+                        <div class="row-fluid">
+                            <div class="span3 margin-top-5">$$LG:DATEVISITE pcase$$ : </div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                            <div class="span3 margin-top-5">$$LG:HEURERDV pcase$$ : </div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                        </div>
+                        <div class="row-fluid margin-top-5">
+                            <div class="span3 margin-top-5">$$LG:ADRESSE pcase$$ :</div>
+                            <div class="span9"><input type="text" class="width-100-pourcent" value="" /></div>
+                        </div>
+                        <div class="row-fluid margin-top-5">
+                            $$IF!:1:ANNDETAIL:IDTYPETRANSACTION$$
+                            <div class="span3 margin-top-5">$$LG:TAXEFONCIERE pcase$$ :</div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                            $$END$$
+                            $$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+                            <div class="span3 margin-top-5">$$LG:CHARGES pcase$$ :</div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                            $$END$$
+                            <div class="span3 margin-top-5">$$LG:TAXEHABITATION pcase$$ :</div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                        </div>
+                        $$IF!:1$2:ANNDETAIL:IDTYPETRANSACTION$$
+                        <div class="row-fluid margin-top-5">
+                            <div class="span3 margin-top-5">$$LG:CHARGES pcase$$ :</div>
+                            <div class="span3"><input type="text" class="width-100-pourcent" value="" /></div>
+                        </div>
+                        $$END$$
+                        <div class="row-fluid margin-top-5">
+                            <div class="span3 margin-top-5">$$LG:COMMENTAIRES pcase$$ :</div>
+                            <div class="span9"><textarea class="width-100-pourcent" cols="3" rows="2"></textarea></div>
+                        </div>
+                    </div>
+
+                    $$IF!:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF!:1:HONORAIRESINCLUS$$
+                    $$IF=:False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                    <span class="small honoraires"><sup>*</sup> : $$LG:PRIXHORSFRAIS$$</span>
+                    $$END$$
+                    $$IF=:True:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                    <span class="small honoraires"><sup>*</sup> : $$LG:DONT$$ $$ANNDETAIL:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$</span>
+                    $$END$$
+                    $$IF!:True$False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                    <span class="small honoraires"><sup>*</sup> : Honoraires agence inclus</span>
+                    $$END$$
+                    $$END$$$$IF=:1:HONORAIRESINCLUS$$<p class="small">&sup1; <!--#include virtual="recherche/incl_honoraires.htm" --> : $$LG:HONORAIRESINCLUS lcase$$ - $$LG:PRIXNETHORSFRAIS pcase$$</p>$$END$$
+                    $$END:IDTYPETRANSACTION$$
+                    $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+                    <p class="small">&sup1; $$LG:V5HORSFRAIS pcase$$</p>
+                    $$END:IDTYPETRANSACTION$$
+                    $$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF:ANNDETAIL:SI_LOYER_CC$$<p class="small">&sup1; cc : $$LG:LOYERCC2 lcase$$</p><!-- loyer charges comprises-->$$END$$
+                    $$IF0:ANNDETAIL:SI_LOYER_CC$$<p class="small">&sup1; : $$LG:LOYERHC lcase$$</p>$$END$$
+                    $$END:IDTYPETRANSACTION$$
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+    <script src="/z/webagency/slagence_X_V5/scripts/js/tracking.js"></script>
+</body>
+</html>
