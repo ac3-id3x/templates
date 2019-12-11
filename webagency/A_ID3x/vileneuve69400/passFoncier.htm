@@ -1,0 +1,179 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=CTC$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_passFoncier_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_passFoncier_ok.htm" />
+	<input type="hidden" name="page_err" value="passFoncier.htm" />
+	<input type="hidden" name="cfg_form" value="passFoncier$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="passFoncier" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	<strong class="messageNomAgence">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</strong>	
+	<!--Votre message-->
+	<br /> <br />
+<p>DEVENEZ PROPRIETAIRE SUR LYON ET SA REGION GRACE AU </p> <br />
+
+<div id="textpass">PASS-FONCIER</div> <br />
+
+Avec une diminution possible de <br />
+
+<div id="textpass">30 %</div> SUR VOS MENSUALITES<br />
+
+<u>SUBVENTIONS – tva 5,5% - DIFFERE DE REMBOURSEMENT – ASSURANCE REVENTE</u> <br />
+
+<p>Sous réserve de l’acceptation du dossier</p> <br />
+
+<div id="textpass">POUVEZ-VOUS BENEFICIER DU PASS-FONCIER</div> <br />
+
+RENSEIGNEMENTS AVANT ETUDE GRATUITE POUR UN ACHAT OU UNE LOCATION <br />
+
+	<br /> 
+	<img src="images/fleche.gif" alt="$$EXPRESSION1$$" title="$$EXPRESSION1$$" />
+	<!--vos coordonnées--> 
+	
+    <table width="95%" border="0" cellspacing="0" cellpadding="2" id="pass">
+          <tr>
+            <td width="30%" align="left">$$LG:NOM$$ M:</td>
+            <td width="70%" align="left"><input class="imputForm" type="text" name="nomM" size="30" value="$$FORM:NOMM$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td align="left">$$LG:NOM$$ Mme:</td>
+            <td align="left"><input class="imputForm" type="text" name="nomMme" size="30" value="$$FORM:NOMMME$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td align="left">Age M:</td>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="40%"><input class="imputForm" type="text" name="ageM" size="10" value="$$FORM:AGEM$$" /></td>
+                  <td width="30%">Age Mme:</td>
+                  <td width="30%"><input class="imputForm" type="text" name="ageMme" size="10" value="$$FORM:AGEMME$$" /></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td align="left"></td>
+            <td align="left"></td>
+          </tr>
+          <tr>
+            <td align="left">$$LG:VSRECHERCHEZ$$ :</td>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="40%" align="left"><input class="imputForm" type="radio" name="recherchez" size="25" value="$$LG:APPARTEMENT$$" /> $$LG:APPARTEMENT$$ <input class="imputForm" type="radio" name="recherchez" size="25" value="$$LG:MAISON2$$" /> $$LG:MAISON2$$</td>
+                  <td width="30%" align="left">$$LG:NBCHAMBRES$$ :</td>
+                  <td width="30%" align="left"><input class="imputForm" type="text" name="chambresA" size="10" value="$$FORM:CHAMBRESA$$" /></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td align="left">Lieu d'habitation actuel :</td>
+            <td align="left"><input class="imputForm" type="text" name="habitationA" size="30" value="$$FORM:HABITATIONA$$" /></td>
+          </tr>
+          <tr>
+            <td align="left">Lieu d'habitation souhaité :</td>
+            <td align="left">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="40%" align="left"><input class="imputForm" type="text" name="habitationS" size="30" value="$$FORM:HABITATIONS$$" /></td>
+    <td width="30%" align="left">Département :</td>
+    <td width="30%" align="left"><input class="imputForm" type="text" name="departementS" size="25" value="$$FORM:DEPARTEMENTS$$" /></td>
+  </tr>
+</table></td>
+          </tr>
+          <tr>
+            <td width="30%" align="left">Je suis locataire depuis </td>
+            <td width="70%" align="left"><input class="imputForm" type="radio" name="locataire" size="25" value="+ 2 ANS" maxlength="30" />+ 2 ans <input class="imputForm" type="radio" name="locataire" size="25" value="- 2 ans" maxlength="30" />
+            - 2 ans</td>
+          </tr>
+          <tr>
+            <td width="30%" align="left">Je suis propriétaire depuis </td>
+            <td width="70%" align="left"><input class="imputForm" type="radio" name="proprietaire" size="25" value="+ 2 ans" maxlength="30" />+ 2 ans<input class="imputForm" type="radio" name="proprietaire" size="25" value="- 2 ans" maxlength="30" /> - 2 ans</td>
+          </tr>
+          <tr>
+            <td width="30%" align="left">$$LG:MINITEL$$ Fixe:</td>
+            <td width="70%" align="left"><input class="imputForm" type="text" name="tel" size="30" value="$$FORM:TEL$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td width="30%" align="left">$$LG:MINITEL$$ Portable:</td>
+            <td width="70%" align="left"><input class="imputForm" type="text" name="gsm" size="30" value="$$FORM:GSM$$" maxlength="30" /></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </table>
+	<br />
+	<!--validation--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr> 
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	</table> 
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$ 
