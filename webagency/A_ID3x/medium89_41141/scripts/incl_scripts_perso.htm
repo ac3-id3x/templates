@@ -1,0 +1,45 @@
+$$IF=:INDEX.HTM:REP:0$$
+    <!--#include virtual="moteur/suggest/incl_json.htm" -->
+$$END$$
+<script type="text/javascript">
+$(function(){
+   $(window).scroll(
+   function () {
+      if ($(this).scrollTop() > 90) { // valeur à changer selon la hauteur du menu
+      $('.navigation').addClass("fixe z150 top");
+      // $('.logo').addClass("display-none"); // à déconditionner si on utilise pas un 2ème logo
+      $('.logo img').attr("src","/z/webagency/A_ID3X/medium89_41141/images/logo-scroll.png"); //  à conditionner si on utilise pas un 2ème logo
+      $('.menu-principal li').css("margin-right","40px"); // valeur à changer selon le nombre de rubrique
+      $('.menu-principal', '.navigation .logo').css({
+        "height" : '50px',
+        "line-height" : '50px',
+      }); 
+      } else {
+      $('.navigation').removeClass("fixe z150 top");
+      // $('.logo').removeClass("display-none");
+      $('.logo img').attr("src","/z/webagency/A_ID3X/medium89_41141/images/logo.png");
+      $('.menu-principal li').css("margin-right","0px");
+            }
+         }
+      );
+   });
+		$$IF=:INDEX.HTM:REP:0$$
+	   createScript("$$_$$scripts/js/moteur_suggest.js",true);
+	   $$END$$
+</script>
+
+$$IF=:1:JS_MINI_MOTEUR$$
+<script type="text/javascript">
+$(document).ready(function() {
+   $(".minimotperso-idtt a").click(function(){
+     $(".minimotperso-idtt a").removeClass("active");
+     $(this).addClass("active");
+     var idtt = $(this).data("idtt");
+     $("#idtt").val(idtt);
+     //console.log(idtt);
+      ajaxGet("idtt",'$$LANGUE$$','Mini_Biens','type_biens','inline');
+
+   });
+});
+</script>
+$$END$$
