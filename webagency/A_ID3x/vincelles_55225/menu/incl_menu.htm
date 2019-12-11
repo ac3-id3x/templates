@@ -1,0 +1,47 @@
+<!--#include virtual="menu/incl_menu_accueil.htm"-->
+<!--#include virtual="menu/incl_menu_vente.htm"-->
+<!--#include virtual="menu/incl_menu_location.htm"-->
+<!--#include virtual="menu/incl_menu_agences.htm" -->
+<!--#include virtual="menu/incl_menu_outils.htm" -->
+<!--#include virtual="menu/incl_menu_estimation.htm" -->
+<li class="menu-contact"><a href="/immo,partenaires.htm" title="$$LG:PARTENAIRES pcase$$" />$$LG:PARTENAIRES pcase$$</a></li>
+<li class="menu-contact"> $$IF=:0:MULTIAGENCES$$
+    $$BIF:COMPTE_AGENCES$$
+      $$DO:1:1$$
+        $$A:BAREME_URL=$$
+        $$A:BAREME_LIBELLE=$$
+
+        $$IF:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+          $$A:BAREME_URL=@@COMPTE_AGENCES:URL_DOCHONORAIRES@@$$
+
+          $$IF:LIBELLE_BAREME_HONORAIRES$$
+            $$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+          $$END$$
+
+          $$IF0:LIBELLE_BAREME_HONORAIRES$$
+            $$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+          $$END$$
+        $$END$$
+
+        $$IF0:COMPTE_AGENCES:URL_DOCHONORAIRES$$
+          $$IF:EXTENSION_BAREME_HONORAIRES$$
+            $$A:BAREME_URL=/z/@@PAGE:CFG_REP@@/bareme/bareme_@@COMPTE_AGENCES:IDTIERS@@.@@EXTENSION_BAREME_HONORAIRES@@$$
+
+            $$IF:LIBELLE_BAREME_HONORAIRES$$
+              $$A:BAREME_LIBELLE=@@LIBELLE_BAREME_HONORAIRES@@$$
+            $$END$$
+
+            $$IF0:LIBELLE_BAREME_HONORAIRES$$
+              $$A:BAREME_LIBELLE=@@LG:ALUR_BAREMEHONORAIRES@@$$
+            $$END$$
+          $$END$$
+        $$END$$
+
+        $$IF:BAREME_URL$$
+          <li>
+            <a href="$$BAREME_URL$$" target="_blank" title="$$BAREME_LIBELLE$$">$$BAREME_LIBELLE$$</a>
+          </li>
+        $$END$$
+      $$LOOP$$
+    $$BFIN$$
+  $$END$$</li>
