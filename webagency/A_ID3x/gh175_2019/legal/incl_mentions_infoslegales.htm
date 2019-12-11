@@ -1,0 +1,120 @@
+$$REM$$
+====================================================================
+
+//// <summary>Include affichant les mentions l&eacute;gales de l'agence responsable du site</summary>
+//// <remarks>
+//// <para>Include appelé par : slagence_X_V2/mentions.htm</para>
+//// <para>Utilise le fichier css : slagence_X_V2/styles/mentions.css</para>
+//// <para>Si l'idpublication de l'agence n'est pas dans la querystring : on affiche les infos légales par wag_mentions_idtiers</para>
+//// <para>Si l'idpublication de l'agence est dans la querystring : on affiche les infos légales de selogerpro.com</para>
+//// <para>Depuis l'update du 2009.02.18 il est préférable de ne plus utiliser l'idp de la query mais wag_mentions_idtiers de la conf</para>
+//// <para>SI MODIFS DE CE FICHIER > MODIFIER AUSSI LE FICHIER "AGENCE,IMMOBILIERE.HTM"</para>
+//// </remarks>
+//// <update date="2009-02-18" author="lisbonne.siriphol">Update nouvelle macro B:IMMOBW:CARTESPRO:ALIAS:MENTIONS</update>
+//// <update date="2008-09-11" author="lisbonne.siriphol">Update</update>
+//// <update date="2007-11-20" author="lisbonne.siriphol">Cr&eacute;ation v1</update>
+//// <update date="2007-11-20" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2007-11-20" author="kamel.malek">Page non optimisée par les référenceurs</update>
+//// <update date="2007-11-20" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+
+
+<div class="h1-like">$$SRV$$</div>
+$$REM$$<p>
+	$$IF=:FR:LANGUE$$Ci-apr&egrave;s d&eacute;sign&eacute; par " le Site ", est &eacute;dit&eacute; par la soci&eacute;t&eacute; ci-apr&egrave;s d&eacute;nomm&eacute;e " l'Editeur ".$$END:FR$$
+	$$IF!:FR:LANGUE$$Hereinafter named " the Website ", is owned and operated by the company hereinafter named " the Publisher ".$$END:LANGUE$$
+</p>$$END$$
+<hr class="margin-bottom-10">
+$$IF0:FORM:IDP$$
+	$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+	$$BIF:MENTIONS$$
+		<ul>
+			<li><div class="h2-like margin-top-10 margin-bottom-10 titre-mention">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
+			$$DO$$
+				$$IF=:1:MENTIONS:IDTYPECARTEPRO$$
+					<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$</li>
+					<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$</li>
+					<li><strong>$$LG:RCS$$</strong> : $$IF:MENTIONS:RCS_FULL$$$$MENTIONS:RCS_FULL$$$$END$$ $$IF0:MENTIONS:RCS_FULL$$*$$END$$</li>
+					<li><strong>RCS juridique</strong> : $$IF0:MENTIONS:RCS_JURIDIQUE$$*$$END$$$$IF:MENTIONS:RCS_JURIDIQUE$$$$MENTIONS:RCS_JURIDIQUE$$$$END$$</li>
+					<li><strong>$$LG:FORMESOC pcase$$</strong> : $$IF:MENTIONS:FORMEJURIDIQUE$$$$MENTIONS:FORMEJURIDIQUE$$$$END$$ $$IF0:MENTIONS:FORMEJURIDIQUE$$*$$END$$</li>
+					<li><strong>Numéro TVA Intracommunautaire</strong> : $$MENTIONS:NOTVA$$$$IF0:MENTIONS:NOTVA$$*$$END$$</li>
+<!--LEGALE MENTION CONTACT-->
+					<li><strong>$$LG:NTEL pcase$$</strong> : $$MENTIONS:TEL$$$$IF0:MENTIONS:TEL$$*$$END$$</li>
+					<li><strong>$$LG:FAX pcase$$</strong> : $$IF0:AGENCE_FAX$$*$$END$$$$IF:AGENCE_FAX$$$$MENTIONS:FAX$$$$END$$</li>
+					<li><strong>$$LG:EMAIL pcase$$</strong> : $$IF0:AGENCE_EMAIL$$*$$END$$$$IF:AGENCE_EMAIL$$$$MENTIONS:EMAIL$$$$END$$</li>
+				$$END:MENTIONS:IDTYPECARTEPRO$$
+			$$LOOP$$
+		</ul>
+		$$DO$$
+			$$IFPREV:MENTIONS:IDTYPECARTEPRO$$
+				$$IF=:1:MENTIONS:IDTYPECARTEPRO$$
+					<ul class="mention-transac">
+						<li><div class="h2-like margin-top-10 margin-bottom-10">Carte professionnelle transaction n&deg; $$MENTIONS:NUMEROCARTEPRO$$</div></li>
+						<li>
+							$$IF!:1:CARTEPROCCI$$<strong>Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+							$$IF=:1:CARTEPROCCI$$<strong>Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+							 : $$IF:MENTIONS:PREFECTURECARTEPRO$$$$MENTIONS:PREFECTURECARTEPRO ncase$$$$END$$ $$IF0:MENTIONS:PREFECTURECARTEPRO$$*$$END$$</li>
+						<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:MENTIONS:CAPITALSOCIAL$$$$MENTIONS:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$ $$IF0:MENTIONS:CAPITALSOCIAL$$*$$END$$</li>
+						<li><strong>Caisse garantie financi&egrave;re</strong> : $$IF:MENTIONS:GARANTIEFINANCIERECAISSE$$$$MENTIONS:GARANTIEFINANCIERECAISSE$$$$END$$$$IF0:MENTIONS:GARANTIEFINANCIERECAISSE$$*$$END$$</li>
+						<li><strong>Montant garantie financi&egrave;re</strong> : $$IF:MENTIONS:GARANTIEFINANCIEREMONTANT$$$$MENTIONS:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:MENTIONS:GARANTIEFINANCIEREMONTANT$$*$$END$$</li>
+					</ul>
+				$$END:MENTIONS:IDTYPECARTEPRO$$
+				$$IF=:2:MENTIONS:IDTYPECARTEPRO$$
+					<ul class="mention-gestion">
+						<li><div class="h2-like margin-top-10 margin-bottom-10">Carte professionnelle gestion n&deg;$$MENTIONS:NUMEROCARTEPRO$$</div></li>
+						<li>
+							$$IF!:1:CARTEPROCCI$$<strong>Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+							$$IF=:1:CARTEPROCCI$$<strong>Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+							 : $$IF:MENTIONS:PREFECTURECARTEPRO$$$$MENTIONS:PREFECTURECARTEPRO ncase$$$$END$$ $$IF0:MENTIONS:PREFECTURECARTEPRO$$*$$END$$</li>
+						<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:MENTIONS:CAPITALSOCIAL$$$$MENTIONS:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$ $$IF0:MENTIONS:CAPITALSOCIAL$$*$$END$$</li>
+						<li><strong>Caisse garantie financi&egrave;re</strong> : $$IF:MENTIONS:GARANTIEFINANCIERECAISSE$$$$MENTIONS:GARANTIEFINANCIERECAISSE$$$$END$$$$IF0:MENTIONS:GARANTIEFINANCIERECAISSE$$*$$END$$</li>
+						<li><strong>Montant garantie financi&egrave;re</strong> : $$IF:MENTIONS:GARANTIEFINANCIEREMONTANT$$$$MENTIONS:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:MENTIONS:GARANTIEFINANCIEREMONTANT$$*$$END$$</li>
+					</ul>
+				$$END:MENTIONS:IDTYPECARTEPRO$$
+			$$END$$
+		$$LOOP$$
+	$$BFIN$$
+
+	$$BIF0:MENTIONS$$
+		<ul>
+			<li><div class="h2-like margin-top-10 margin-bottom-10">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
+			<li><strong>$$LG:RAISONSOC pcase$$</strong> : *</li>
+			<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : *</li>
+			<li><strong>$$LG:RCS$$</strong> : *</li>
+			<li><strong>RCS juridique</strong> : *</li>
+			<li><strong>$$LG:FORMESOC pcase$$</strong> : *</li>
+			<li><strong>Numéro TVA Intracommunautaire</strong> : *</li>
+<!--LEGALE MENTION CONTACT-->
+			<li><strong>$$LG:NTEL pcase$$</strong> : $$IF0:AGENCE_TEL$$*$$END$$$$IF:AGENCE_TEL$$$$AGENCE_TEL$$$$END$$</li>
+
+			<li><strong>$$LG:EMAIL pcase$$</strong> : $$IF0:AGENCE_EMAIL$$*$$END$$$$IF:AGENCE_EMAIL$$$$AGENCE_EMAIL$$$$END$$</li>
+		</ul>
+	$$BFIN$$
+$$END:FORM:IDP:MENTIONS:IDTYPECARTEPRO$$
+
+$$IF:FORM:IDP$$
+	$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+<p class="bold">Mentions obligatoires :</p>
+<p>ABAXIMMO   20, place du Docteur Paul German 14700 FALAISE</p>
+<p>SARL au Capital de 8 000 € - immatriculée au RCS de Caen sous le n° 429 097 546 00031</p>
+<p>Titulaire de la carte professionnelle n° CPI 14012015000001491 délivrées par la CCI de CAEN le 24/10/2018 portant les mentions : </p>
+<p><span class="icon-v5-arrow-right-3"></span>	"Gestion immobilière", garantie pour un montant de 200.000 €</p>
+<p><span class="icon-v5-arrow-right-3"></span>	"Transactions sur immeubles et fonds de commerce", garantie pour un montant de 120.000 €</p>
+<p>Garanties Financières : GALIAN - 89  rue la Boétie - 75008 - PARIS, sous le n° de police 120 137 405
+Et titulaire d’une assurance en responsabilité civile professionnelle auprès de MMA Entreprises - 14 bd Marie et Alexandre Oyon, 72100 LE MANS.</p>
+<p>Titulaire du compte spécial (article 55 du décret du 20 juillet1972) n° 200 900 01 ouvert auprès de Crédit Mutuel de Caen, 107 rue de Falaise.</p>
+<p>ORIAS n° 15005230 - www.orias.fr</p>
+
+
+
+$$END$$
+$$IF=:FR:LANGUE$$
+	$$IF=:1:MULTIAGENCES$$
+		<p class="small">* : Ces informations ne sont pas disponibles pour l'instant, cependant pour en prendre connaissance merci de nous laisser un message : <a href="/agences,liste.htm">demande d'informations</a>.</p>
+	$$END$$
+	$$IF!:1:MULTIAGENCES$$
+		<p class="small">* : Ces informations ne sont pas disponibles pour l'instant, cependant pour en prendre connaissance merci de nous laisser un message : <a href="$$AGENCE_URLVIRT$$">demande d'informations</a>.</p>
+	$$END$$
+$$END$$
