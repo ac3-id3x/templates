@@ -1,0 +1,53 @@
+$$REM$$<!--Fichier SEO a demutualiser pour ajouter des optimisations sur pages de contenus-->$$END$$
+$$REM$$<!-- EXEMPLE OPTIS POUR PAGE VILLE, ATTENTION IDT PEUT CHANGER EN FONCTION DE VOTRE PAGE, VOIR AVEC CHEF DE PROJET -->$$END$$
+$$IF=:ESTIMATION:IDT$$
+	$$A:TITLE=Estimation de votre maison ou appartement sur Toulouse (31500)$$
+	$$A:DESCRIPTION=$$
+	$$A:KEYWORDS=$$
+	$$A:H1_ESTIMATION=Faites estimer votre maison ou appartement sur Toulouse et Haute-Garonne$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$END$$
+
+$$IF=:VENDREVOTRE:IDT$$
+	$$A:TITLE=Vendez votre maison ou appartement sur Toulouse et Haute-Garonne$$
+	$$A:DESCRIPTION=$$
+	$$A:KEYWORDS=$$
+	$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$END$$
+
+$$IF=:CONTACT:IDT$$
+	$$A:TITLE=Le Service Immobilier - Contact$$
+	$$A:DESCRIPTION=$$
+	$$A:KEYWORDS=$$
+	$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$END$$
+
+
+$$REM$$<!-- ================================ detail annonce / pour les appartements, maisons, loft et chateaux ===============================-->$$END:REM$$
+$$IF=:DETAILANNONCE:IDT$$
+  $$IF:ANNDETAIL:IDPUBLICATION$$
+    	$$IF=:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ sur @@ANNDETAIL:VILLE@@: @@ANNDETAIL:PRIX@@ euros$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@@@IF:ANNDETAIL:NB_PIECES@@ @@ANNDETAIL:NB_PIECES lcase@@ @@LG:PIECES lcase@@@@END@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:AVEC lcase@@ @@ANNDETAIL:NB_CHAMBRES@@ @@LG:CHAMBRE@@@@ANNDETAIL:NB_CHAMBRES pluriel@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+    	$$REM$$<!-- ================================  detail annonce / pour tous les autres types de bien  ===============================-->$$END:REM$$
+    	$$IF!:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$IF:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$
+    		$$END$$
+    		$$IF0:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$	
+    		$$END$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+	$$END$$
+	$$IF0:ANNDETAIL:IDPUBLICATION$$
+	    $$A:TITLE=@@LG:ANNPLUSDISPO pcase@@$$
+	    $$A:DESCRIPTION=$$
+	    $$A:KEYWORDS=$$
+	$$END$$
+$$END:DETAILANNONCE:IDT$$
