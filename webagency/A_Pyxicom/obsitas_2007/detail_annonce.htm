@@ -1,0 +1,672 @@
+$$INCL:HAUT.HTM$$
+$$E:IMMOBW:AGENCE:REP:2$$
+$$SET:RUB:IDT=DET$$
+$$SET:PAGE:IDT=RESULTATS$$
+$$INCL:DICO-FORM.HTM$$
+
+<script language="javascript">
+<!--
+
+function go(url,n,w,h) {
+	window.open(url,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width='+w+',height='+h);
+}
+
+function validate(){
+	var errmsg = "";
+	if (document.forms['f']['nom'].value == "")
+		errmsg += '$$LG:AI5$$ !\n';
+	if (document.forms['f']['prenom'].value == "")
+		errmsg += '$$LG:PRENOM$$ !\n';
+	if ((document.forms['f']['telephone'].value == "") && (document.forms['f']['email'].value == ""))
+		errmsg += '$$LG:SAISIEERRSEND$$ !\n';
+	if (document.forms['f']['email'].value != "") {
+		if (!(document.forms['f']['email'].value.split('@')[1] && !document.forms['f']['email'].value.split('@')[2] && document.forms['f']['email'].value.split('@')[1].split('.')[1] && !document.forms['f']['email'].value.split('@')[1].split('.')[2]))
+			errmsg += 'Entrez un Email correct !\n';
+	}
+	if (errmsg != "")
+		alert (errmsg);
+	else
+		document.forms['f'].submit();
+}
+
+function changeImgAnnonce(srcImg) {
+	document.images['big'].src = srcImg;
+}
+
+-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<!-- $$FORM:LANG$$ -->
+<!-- $$REP:1$$ $$REP:2$$ -->
+$$SET:TITRE:TRANSACTION=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction@@$$
+$$SET:TITRE:BIEN=@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien@@$$
+$$SET:TITRE:VILLE=@@IMMOBW:ANNONCE:VILLE@@$$
+$$SET:TITRE:CP=@@IMMOBW:ANNONCE:CP@@$$
+$$IF:IMMOBW:ANNONCE:PROX$$
+	$$SET:TITRE:PROXIMITE=@@IMMOBW:ANNONCE:PROX@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:PROX$$
+	$$SET:TITRE:PROXIMITE=@@IMMOBW:ANNONCE:PROX_FR@@$$
+$$END$$
+$$IF:IMMOBW:ANNONCE:LIBELLE$$
+	$$A:TITRE:LIBELLE=@@IMMOBW:ANNONCE:LIBELLE@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+	$$A:TITRE:LIBELLE=@@IMMOBW:ANNONCE:LIBELLE_FR@@$$
+$$END$$
+$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$SET:TITRE:DESCRIPTIF=@@IMMOBW:ANNONCE:DESCRIPTIF htmlencode@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$SET:TITRE:DESCRIPTIF=@@IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode@@$$
+$$END$$
+
+$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:QRY:LANG$$
+<!-- données de l'annonce -->
+<!-- Stats annonces listing -->	$$INCL:STATD.HTM$$
+$$IF:ERRE$$ Erreur : $$ERRE$$ $$END$$
+<br />
+<table width="95%" border="0" cellspacing="0" cellpadding="0" class="tabFond22" align="justify">
+<tr><td align="right"><a href="/$$IF=:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$locations$$END$$$$IF=:2:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$vacances$$END$$$$IF=:5:IMMOBW:ANNONCE:IDTYPETRANSACTION$$viager$$END$$$$IF=:6:IMMOBW:ANNONCE:IDTYPETRANSACTION$$prod_inves$$END$$$$IF=:8:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes_prestige$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$neufs$$END$$$$IF=:10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$commerce$$END$$$$IF!:1$2$4$5$6$8$9$10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$index$$END$$.htm?lang=$$LANGUE$$">$$LG:NVELLERECH$$</a> - <a href="javascript:window.history.go(-1);">$$LG:RETOURNER$$</a></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+	<td>
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td>
+		<table width="100%" cellpadding="2" cellspacing="0" border="0">
+		<tr>
+			<td valign="top">
+			<strong><div class="Programmes">
+				<h1>$$IMMOBW:ANNONCE:VILLE htmlencode$$ ($$IMMOBW:ANNONCE:CP$$)</h1><br />
+			$$IF=:FR:LANGUE$$ $$FORM:DESC$$ $$END$$
+			$$IF:IMMOBW:ANNONCE:LIBELLE htmlencode$$
+				$$IMMOBW:ANNONCE:LIBELLE htmlencode$$
+			$$END$$
+			$$IF0:IMMOBW:ANNONCE:LIBELLE htmlencode$$
+				$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$
+			$$END$$
+			$$IF!:0:PAGE:FILTRE_PRESTIGE$$			
+			</div></strong>
+			<div align="justify">
+			$$IF:IMMOBW:ANNONCE:PROX$$<br />
+				$$LG:PROXIMITE$$&nbsp;:&nbsp;$$IMMOBW:ANNONCE:PROX htmlencode$$$$END$$
+				$$IF0:IMMOBW:ANNONCE:PROX$$$$IF:IMMOBW:ANNONCE:PROX_FR$$<br /><$$LG:PROXIMITE$$&nbsp;:&nbsp;$$IMMOBW:ANNONCE:PROX_FR htmlencode$$$$END$$$$END$$
+			$$END$$
+			$$IMMOBW:ANNONCE:SITUATION_FR htmlencode$$
+			$$IF:IMMOBW:ANNONCE:SURFACE$$($$IMMOBW:ANNONCE:SURFACE$$ m²)$$END$$
+		$$IF:IMMOBW:ANNONCE:SI_EXCLUSIF$$<br /><br /><font class="exclu">$$LG:EXCLU ucase$$</font>$$END$$<br /><br /><br />
+			</div></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="500" border="0" cellspacing="0" cellpadding="1" align="center" style="border:1px solid #DDDDDD">
+                    <tr>
+                      <td bgcolor="#FFFFFF" class="txt12bluebold" align="center">Disponibilité<br />(Nbr de biens)</td>
+                      <td rowspan="2" bgcolor="#FFFFFF" width="1"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td colspan="2" height="12" align="center" bgcolor="#FFFFFF" class="txt12bluebold">Prix* ($$IF!:0:FORM:EURO$$&euro;$$END$$$$IF=:0:FORM:EURO$$FF$$END$$$$IF:IMMOBW:ANNONCE:SI_PRIX_HT$$ HT$$END$$)</td>
+                      <td rowspan="2" bgcolor="#FFFFFF" width="1"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td colspan="2" height="12" align="center" bgcolor="#FFFFFF" class="txt12bluebold">Surface (m²)</td>
+                      <td rowspan="2" bgcolor="#FFFFFF" width="1"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td colspan="2" height="12" align="center" bgcolor="#FFFFFF" class="txt12bluebold">Parking ($$IF!:0:FORM:EURO$$&euro;$$END$$$$IF=:0:FORM:EURO$$FF$$END$$$$IF:IMMOBW:ANNONCE:SI_PRIX_HT$$ HT$$END$$)</td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#FFFFFF" class="ours" align="center">$$IMMOBW:ANNONCE:STOCK_DISPO$$ $$IF:IMMOBW:ANNONCE:STOCK_DISPO$$$$IF:IMMOBW:ANNONCE:STOCK_TOTAL$$/$$END$$$$END$$ $$IMMOBW:ANNONCE:STOCK_TOTAL$$ </td>
+					  <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Mini</td>
+                      <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Maxi</td>
+                      <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Mini</td>
+                      <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Maxi</td>
+                      <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Mini</td>
+                      <td align="center" bgcolor="#FFFFFF" class="ours" height="13">Maxi</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+	
+					
+					<!-- studio -->
+					$$IF:IMMOBW:ANNONCE:APT1$$
+					<tr>
+                      <td bgcolor="#EBF2D5" align="center">Studio$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A1$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A1_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A1_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A1_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A1_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A1_MIN$$$$IMMOBW:ANNONCE:SURF_A1_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A1_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A1_MAX$$$$IMMOBW:ANNONCE:SURF_A1_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A1_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A1_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A1_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A1_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A1_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A1_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A1_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A1_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+					$$END$$		
+					<!-- 2 pièces -->
+					$$IF:IMMOBW:ANNONCE:APT2$$
+					<tr>
+                      <td bgcolor="#EBF2D5" align="center">2 pièces$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A2$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A2_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A2_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A2_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A2_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A2_MIN$$$$IMMOBW:ANNONCE:SURF_A2_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A2_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A2_MAX$$$$IMMOBW:ANNONCE:SURF_A2_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A2_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A2_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A2_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A2_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A2_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A2_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A2_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A2_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>                    
+                $$END$$
+				<!-- 3 pièces -->
+				$$IF:IMMOBW:ANNONCE:APT3$$
+				<tr>
+                      <td bgcolor="#EBF2D5" align="center">3 pièces $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A3$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A3_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_MIN formatnumber 0$$ $$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A3_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A3_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_MAX formatnumber 0$$ $$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A3_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A3_MIN$$$$IMMOBW:ANNONCE:SURF_A3_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A3_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A3_MAX$$$$IMMOBW:ANNONCE:SURF_A3_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A3_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A3_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A3_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A3_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A3_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A3_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A3_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A3_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+                $$END$$
+					<!-- 4 pièces -->
+				$$IF:IMMOBW:ANNONCE:APT4$$
+				<tr>
+                      <td bgcolor="#EBF2D5" align="center">4 pièces$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A4$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A4_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A4_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A4_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A4_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A4_MIN$$$$IMMOBW:ANNONCE:SURF_A4_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A4_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A4_MAX$$$$IMMOBW:ANNONCE:SURF_A4_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A4_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A4_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A4_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A4_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A4_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A4_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A4_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A4_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+                $$END$$
+					<!-- 5 pièces -->
+				$$IF:IMMOBW:ANNONCE:APT5$$
+					<tr>
+                      <td bgcolor="#EBF2D5" align="center">5 pièces$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A5$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A5_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A5_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A5_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A5_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A5_MIN$$$$IMMOBW:ANNONCE:SURF_A5_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A5_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A5_MAX$$$$IMMOBW:ANNONCE:SURF_A5_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A5_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A5_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A5_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A5_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A5_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A5_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A5_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A5_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+                 $$END$$
+                  	<!-- 6 pièces -->
+							$$IF:IMMOBW:ANNONCE:APT6$$
+							<tr>
+                      <td bgcolor="#EBF2D5" align="center">6 pièces$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A6$$**$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A6_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A6_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A6_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_A6_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A6_MIN$$$$IMMOBW:ANNONCE:SURF_A6_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A6_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_A6_MAX$$$$IMMOBW:ANNONCE:SURF_A6_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_A6_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A6_PK_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_PK_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_PK_MIN tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A6_PK_MIN$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A6_PK_MIN$$ inclus $$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_A6_PK_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_PK_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_A6_PK_MAX tofrancs 0$$$$END$$$$END$$ $$IFNULL:IMMOBW:ANNONCE:PX_A6_PK_MAX$$ N.C $$END$$$$IF=:0:IMMOBW:ANNONCE:PX_A6_PK_MAX$$ inclus $$END$$</td>
+                    </tr>
+                $$END$$
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+
+                    
+                    $$IF:IMMOBW:ANNONCE:MAIV$$
+										<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison de ville</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_MV_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_MV_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_MV_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_MV_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_MV_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_MV_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_MV_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_MV_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_MV_MIN$$$$IMMOBW:ANNONCE:SURF_MV_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_MV_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_MV_MAX$$$$IMMOBW:ANNONCE:SURF_MV_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_MV_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>                    
+                    </tr>						   
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr> $$END$$
+                    <!-- Maison 3 pièces -->
+                    $$IF:IMMOBW:ANNONCE:MAI3$$
+										<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison (3 pièces)</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M3_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M3_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M3_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M3_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M3_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M3_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M3_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M3_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M3_MIN$$$$IMMOBW:ANNONCE:SURF_M3_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M3_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M3_MAX$$$$IMMOBW:ANNONCE:SURF_M3_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M3_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>  
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>   $$END$$		
+                    <!-- Maison 4 pièces -->
+                    $$IF:IMMOBW:ANNONCE:MAI4$$
+										<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison (4 pièces)</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M4_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M4_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M4_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M4_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M4_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M4_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M4_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M4_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M4_MIN$$$$IMMOBW:ANNONCE:SURF_M4_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M4_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M4_MAX$$$$IMMOBW:ANNONCE:SURF_M4_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M4_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td> 
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>  $$END$$
+										<!-- Maison 5 pièces -->
+										$$IF:IMMOBW:ANNONCE:MAI5$$
+										<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison (5 pièces)</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M5_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M5_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M5_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M5_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M5_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M5_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M5_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M5_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M5_MIN$$$$IMMOBW:ANNONCE:SURF_M5_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M5_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M5_MAX$$$$IMMOBW:ANNONCE:SURF_M5_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M5_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td> 
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+                    $$END$$
+                    <!-- Maison 6 pièces -->
+					$$IF:IMMOBW:ANNONCE:MAI6$$
+					<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison (6 pièces)</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M6_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M6_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M6_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M6_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M6_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M6_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M6_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M6_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M6_MIN$$$$IMMOBW:ANNONCE:SURF_M6_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M6_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M6_MAX$$$$IMMOBW:ANNONCE:SURF_M6_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M6_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td> 
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>               
+                    $$END$$     
+                    <!-- Maison 7 pièces -->
+                    $$IF:IMMOBW:ANNONCE:MAI7$$
+					<tr>
+                      <td bgcolor="#EBF2D5" align="center">Maison (7 pièces)</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M7_MIN$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M7_MIN formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M7_MIN tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M7_MIN$$ N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:PX_M7_MAX$$$$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M7_MAX formatnumber 0$$$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_M7_MAX tofrancs 0$$$$END$$$$END$$$$IF0:IMMOBW:ANNONCE:PX_M7_MAX$$ N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M7_MIN$$$$IMMOBW:ANNONCE:SURF_M7_MIN formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M7_MIN$$N.C$$END$$</td>
+                      <td bgcolor="#ECEDEE" align="center">$$IF>:1:IMMOBW:ANNONCE:SURF_M7_MAX$$$$IMMOBW:ANNONCE:SURF_M7_MAX formatnumber 2$$$$END$$$$IF0:IMMOBW:ANNONCE:SURF_M7_MAX$$N.C$$END$$</td>
+                      <td bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                      <td bgcolor="#ECEDEE" align="center">-</td>
+                      <td bgcolor="#ECEDEE" align="center">-</td> 
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>
+                    $$END$$
+                    
+                    $$IF=:NO:MAISONAPPART$$
+                    <tr>
+                    	<td  bgcolor="#EBF2D5" colspan="10" bgcolor="#FFFFFF" height="12">
+								<p align="center"> Le détail de cette résidence n'est pas disponible </p>	          
+                    	</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>		          	
+					$$END$$
+                    $$IF=:OK:MAISONAPPART$$
+                    <tr>
+                    	<td colspan="10" bgcolor="#ffffff" height="20">
+						<p align="left"> &nbsp;
+							<!-- $$FORM:EURO$$ -->
+							$$IF!:0:FORM:EURO$$<a href="$$REP:URI$$?$$REP:QRY removeqry euro$$&euro=0#tableauPrix$$IMMOBW:ANNONCE:I$$">Voir les prix en francs</a>$$END$$
+	            			$$IF=:0:FORM:EURO$$<a href="$$REP:URI$$?$$REP:QRY removeqry euro$$&euro=1#tableauPrix$$IMMOBW:ANNONCE:I$$">Voir les prix en euro</a>$$END$$<br>		
+							</p>
+                    	</td>
+                    </tr>
+                    <tr>
+                      <td colspan="10" bgcolor="#FFFFFF"><img src="img/immobilier-neuf.gif" width="1" height="1"></td>
+                    </tr>                  
+                  $$END$$
+                </table>
+          		&nbsp; &nbsp; * Prix indicatif - Sous réserve des stocks disponibles - mise à jour du $$IMMOBW:ANNONCE:DT_FRAICHEUR date 2$$ <br />
+          		$$A:ANNONCE:DUPLEX=False$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A1$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A2$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A3$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A4$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A5$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A6$$$$A:ANNONCE:DUPLEX=True$$$$END$$
+				$$IF=:True:ANNONCE:DUPLEX$$ &nbsp; &nbsp; ** existe en duplex $$END$$
+				<p>
+                  $$IF:IMMOBW:ANNONCE:PX_AU_M2$$Prix au m<sup>2</sup>> <b> $$IF!:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_AU_M2$$ &euro;$$END$$$$IF=:0:FORM:EURO$$$$IMMOBW:ANNONCE:PX_AU_M2 exec XX*6.55957 formatnumber 0$$FF$$END$$ </b><br> $$END$$
+				  $$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$
+					Terrain mini : $$IMMOBW:ANNONCE:SURF_TERRAIN_MIN$$ m<sup>2</sup><BR>
+				  $$END$$
+				  $$IF:IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$
+					Terrain maxi : $$IMMOBW:ANNONCE:SURF_TERRAIN_MAX$$ m<sup>2</sup><BR>
+				  $$END$$
+				</p>
+<br />
+<!--infos complémentaires-->
+			$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+			$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+			<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+			<tr>
+				<td class="txt11bluebold" colspan="2">$$LG:INFOSCOMPLEMENTAIRES$$ :</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+				$$DO:3:999$$
+				$$IMMOBW:AFFICHANNONCES:REP:VALEUR$$
+				$$LOOP$$
+				</td>
+			</tr>
+			</table>
+			$$BFIN$$
+		    <!-- infos complémentaires - fin --><br />
+
+			$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+			$$IF!:FR:LANGUE$$
+			<br /><br />
+			<i>$$LG:COMMENTFRANCAIS$$</i> : $$IMMOBW:ANNONCE:DESCRIPTIF_FR$$
+			$$END$$
+			<br />
+			
+			
+			<br />
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+			<td align="right">
+			<strong>REF&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:REFANNONCE$$<br />
+			<!-- debut des infos textes de l'annonce -->
+			$$IF:IMMOBW:ANNONCE:HONORAIRES$$<strong>$$LG:HONORAIRES$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:HONORAIRES$$&nbsp;&euro;<br />$$END$$
+			$$IF:IMMOBW:ANNONCE:PX_CHARGES$$<strong>$$LG:CHARGES$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:PX_CHARGES$$&nbsp;&euro;<br />$$END$$
+			$$IF:IMMOBW:ANNONCE:DT_DISPO$$<strong>$$LG:DISPOLE$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:DT_DISPO date 2$$<br />$$END:IMMOBW:ANNONCE:DT_DISPO$$
+			$$IF:IMMOBW:ANNONCE:PX_RENTE$$<br />
+			<strong>$$LG:RENTE$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:PX_RENTE$$ Euros/mois&nbsp;&nbsp;$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_VIDEO$$ [$$LG:TELEVISEUR$$]$$END:SI_VIDEO$$ $$IF:IMMOBW:ANNONCE:SI_ANIMAUX$$
+			[$$LG:ANIMAUX$$]$$END:SI_ANIMAUX$$ $$IF:IMMOBW:ANNONCE:SI_BEBE$$
+			[$$LG:BEBE$$]$$END:SI_BEBE$$ $$IF:IMMOBW:ANNONCE:SI_TELEPHONE$$
+			[$$LG:TEL$$]$$END:SI_TELEPHONE$$<br />
+			$$IF:IMMOBW:ANNONCE:AGE_H$$<strong>$$LG:AGEH$$ :</strong> $$IMMOBW:ANNONCE:AGE_H$$$$END$$
+			$$IF:IMMOBW:ANNONCE:AGE_F$$<strong>$$LG:AGEF$$ :</strong> $$IMMOBW:ANNONCE:AGE_F$$$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_LIBRE$$ <strong>$$LG:LIBRE$$</strong>$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_SEMAINE$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:SEMAINE$$ : $$IMMOBW:ANNONCE:PX_BS_SEMAINE$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_BS_SEMAINE
+			tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_QUINZ$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:QUINZAINE$$ : $$IMMOBW:ANNONCE:PX_BS_QUINZ$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_BS_QUINZ tofrancs
+			0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_MOIS$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:MOIS$$ : $$IMMOBW:ANNONCE:PX_BS_MOIS$$ $$IMMOBW:ANNONCE:PRIX_UNITE$$
+			($$IMMOBW:ANNONCE:PX_BS_MOIS tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_SEMAINE$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:SEMAINE$$ : $$IMMOBW:ANNONCE:PX_HS_SEMAINE$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_HS_SEMAINE
+			tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_QUINZ$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:QUINZAINE$$ : $$IMMOBW:ANNONCE:PX_HS_QUINZ$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_HS_QUINZ tofrancs
+			0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_MOIS$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:MOIS$$ : $$IMMOBW:ANNONCE:PX_HS_MOIS$$ $$IMMOBW:ANNONCE:PRIX_UNITE$$
+			($$IMMOBW:ANNONCE:PX_HS_MOIS tofrancs 0$$ FF)$$END$$
+			<!-- fin données de l'annonce -->
+			</td></tr>
+			<tr><td>$$IF:IMMOBW:ANNONCE:360_URL$$
+			<A HREF="javascript:go('$$IMMOBW:ANNONCE:360_URL$$','360',500,400)" class=bt>
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a></A>$$CHEVRON$$$$END$$
+
+			$$IF:IMMOBW:ANNONCE:ID360$$
+			<A HREF="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/visuel_$$IF=:3:IMMOBW:ANNONCE:IDTYPEVISUEL360$$3dzoom.htm','360',520,400$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPEVISUEL360$$360previsite.htm','360',520,460$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPEVISUEL360$$egg.htm','360',500,400$$END$$)" class=bt>
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a></A>$$CHEVRON$$$$END:ID360$$
+
+			$$IF0:IMMOBW:ANNONCE:SI_ABRITEL$$
+				$$IF!:ODALYS:IMMOBW:ANNONCE:REF$$
+					$$IF:IMMOBW:ANNONCE:IDLIEN$$
+					<A HREF="javascript:go('$$IMMOBW:ANNONCE:LIEN_URL$$','visuel',590,500)" class=bt>
+					$$IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR pcase$$$$IF0:IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a>$$END$$</A>$$CHEVRON$$
+
+					$$END$$
+				$$END$$
+			$$END$$
+		    </td></tr>
+			</table>
+
+
+
+<table width="95%"  border="0" cellspacing="0" cellpadding="4">
+  <tr>
+    <td width="85%" align="center">			<!-- affichage grand format -->
+			$$B:IMMOBW:PHOTOS:REP:1$$
+			$$BIF:IMMOBW:PHOTOS:REP$$
+
+				$$DO:1:1$$ $$LOOP$$
+					<img src="$$1_IMMOBW:PHOTOS:REP:URL$$" width="300" id="big" name="big" style="border: 2px solid #fff;" hspace="3" vspace="3" alt="$$1_IMMOBW:PHOTOS:REP:LIBELLE htmlencode$$ $$1_IMMOBW:PHOTOS:REP:VILLE htmlencode$$" title="$$1_IMMOBW:PHOTOS:REP:LIBELLE htmlencode$$ $$1_IMMOBW:PHOTOS:REP:VILLE htmlencode$$"/><br />
+			$$BFIN$$
+			<br />
+	</td>
+			
+			
+    <td width="15%" valign="top" align="right">$$B:IMMOBW:ANNONCEVISUELS:ALIAS:MINITOF:1:REP:1$$
+			$$BIF:MINITOF$$
+			$$IF+:2:MINITOF:NBR$$
+
+			$$DO:2:12$$
+
+			$$MINITOF:VAL:I$$
+			<a href="javascript:changeImgAnnonce('$$MINITOF:URL$$');">
+				<img src="$$MINITOF:THUMB_URL$$" style="border: 2px solid #FFF;" width="75" height="75" hspace="3" vspace="3" alt="$$IMMOBW:ANNONCE:LIBELLE htmlencode$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$" />
+			</a>
+
+			$$LOOP$$
+
+			$$END$$
+			$$BFIN$$</td>
+  </tr>
+</table>
+
+
+
+			
+
+
+			<br />
+
+			<div align="center"><a href="/$$REP:2$$/$$REP:1$$/print_annonce.htm?lang=$$LANGUE$$"><strong>$$LG:IMPRIMERANN$$</strong></a></div>
+			<br />
+
+			<br />
+			<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+			<tr>
+				<td valign="top">
+							<font bgcolor="#F3F3F3">
+							$$IF0:IMMOBW:ANNONCE:SI_PARTICULIER$$ $$IF:IMMOBW:ANNONCE:SI_AFFURL$$
+							$$IF:IMMOBW:ANNONCE:URL$$
+							<font color="#bd1010">&#149;&#149;&#149;<strong>$$LG:ENUNCLIC$$&nbsp;:</strong><br /></font><a href="$$IMMOBW:ANNONCE:URL$$" target="_blank"><strong>$$IMMOBW:ANNONCE:NOM$$</strong></a>
+							<font color="#bd1010"> &#149;&#149;&#149;</font>
+							$$END:URL$$
+							$$END:SI_AFFURL$$
+							$$IF0:IMMOBW:ANNONCE:SI_AFFURL$$ <strong>$$LG:AGENCE$$&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:NOM$$ $$END:!SI_AFFURL$$ <br />
+							$$END:SI_PARTICULIER$$ <br />
+							$$IF:IMMOBW:AGENCE:ADRESSE$$<strong>$$LG:ADRESSE$$&nbsp;:&nbsp;</strong>$$IMMOBW:AGENCE:ADRESSE$$<br />$$END$$
+							$$IF:IMMOBW:ANNONCE:EMAIL$$<strong>Email&nbsp;:&nbsp;</strong><a href="mailto:$$IMMOBW:ANNONCE:EMAIL encodemail hex$$?subject=A%20propos%20de%20l%27annonce%20$$IMMOBW:ANNONCE:REFANNONCE urlencode20$$%20&body=%0D%0A%0D%0A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%0D%0AAnnonce%20$$IMMOBW:ANNONCE:REFANNONCE urlencode20$$%20%28$$IMMOBW:ANNONCE:LIBELLE_FR urlencode20$$%2C%20$$IMMOBW:ANNONCE:PROX_FR urlencode20$$%2C%20$$IMMOBW:ANNONCE:PRIX urlencode20$$%20FF%29%0D%0ACe%20message%20vous%20est%20adress%E9%20%E0%20partir%20de%20votre%20site%20merci%20de%20lui%20r%E9server%20votre%20meilleur%20accueil%2E">$$IMMOBW:ANNONCE:EMAIL encodemail javascript$$</a><br />
+							$$END:EMAIL$$
+
+							$$IF:IMMOBW:ANNONCE:COOR-CONTACT$$<br />
+								<strong>Contact&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:COOR-CONTACT$$<br />
+							$$END:CONTACT$$
+
+				 			<strong>$$LG:TEL$$&nbsp;:</strong> $$IF0:IMMOBW:ANNONCE:TELEPHONE$$
+							$$IF=:FR:LANGUE$$ $$IMMOBW:ANNONCE:TEL formattel$$ $$END$$ $$IF!:FR:LANGUE$$
+							$$IMMOBW:ANNONCE:TEL formattel tel2inter$$ $$END$$ $$END:TELEPHONE$$
+							$$IF=:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel$$ $$END$$
+							$$IF!:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel tel2inter$$
+							$$END$$ $$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$$$END$$<br />
+							$$IF=:SELOGERNEUF:IMMOBW:ANNONCE:REF$$<a href="http://www.selogerneuf.com/neuf_doc.htm?ref=$$IMMOBW:ANNONCE:REFANNONCE left 8$$" target="_blank">$$LG:DEMANDEDEDOC$$</a><br />
+							$$END:NEUF$$ $$IF:IMMOBW:ANNONCE:IDPHOTO$$<br />
+							$$END$$
+				</td>
+			</tr>
+			</table>
+
+$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+		<!-- debut du formulaire --><br /><br />
+		<div align="center" class="veuillez"><strong>$$LG:SAVOIR$$</strong><br />$$LG:FORMSENDEMAIL$$</div>
+		<form name="f" method="post" action="/$$REP:PAGE$$">
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		<input type="hidden" name="page_ok" value="plus_annonce_ok.htm" />
+		<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+		<input type="hidden" name="cfg_form" value="plus_annonce" />
+		<input type="hidden" name="cfg_emails" value="plus_annonce" />
+		<input type="hidden" name="refannonce" value="$$IMMOBW:ANNONCE:REFANNONCE$$" />
+		<input type="hidden" name="idannonce" value="$$IMMOBW:ANNONCE:IDANNONCE$$" />
+		<input type="hidden" name="prix" value="$$IMMOBW:ANNONCE:PRIX$$" />
+		<input type="hidden" name="libelle" value="$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$" />
+		$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+		$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+			$$IF:IMMOBW:ANNONCE:EMAIL$$
+			<input type="hidden" name="email_agence" value="$$IMMOBW:ANNONCE:EMAIL$$" />
+			$$END$$
+			$$IF0:IMMOBW:ANNONCE:EMAIL$$
+				$$IF:IMMOBW:AGENCE:EMAIL$$
+				<input type="hidden" name="email_agence" value="$$IMMOBW:AGENCE:EMAIL$$" />
+				$$END$$
+			$$END$$
+		<input type="hidden" name="nom_agence" value="$$IMMOBW:ANNONCE:NOM$$" />
+		<input type="hidden" name="ville" value="$$IMMOBW:ANNONCE:VILLE$$" />
+		<input type="hidden" name="cp" value="$$IMMOBW:ANNONCE:CP$$" />
+		<input type="hidden" name="SRV" value="$$SRV$$" />
+		<table width="100%">
+<tr>
+			<td width="100%" align="center">
+		<strong>Vous souhaitez acheter ce bien en tant que (champ obligatoire) :</strong><br />
+		<input type="radio" name="2RACHAT" value="Residence principale" />R&eacute;sidence principale
+		
+		
+		<input type="radio" name="2RACHAT" value="Investissement" />Investissement 
+</td></tr></table>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+		<tr>
+			<td align="center">
+			<table width="100%" border="0" cellspacing="2" cellpadding="2">
+			<tr>
+				<td COLSPAN="4" align="left" class="txt11bluebold">$$LG:COORD3$$</td>
+			</tr>
+			<tr>
+				<td align=right><strong>$$LG:AI5$$</strong></td>
+				<td><input type="text" name="nom" value="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:NOM$$$$END$$"></td>
+				<td align=right><strong>$$LG:PRENOM$$</strong></td>
+				<td><input type="text" name="prenom" value="$$FORM:PRENOM$$$$IF0:FORM:PRENOM$$$$SESSION:PRENOM$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>$$LG:TEL$$</strong></td>
+				<td><input type="text" name="telephone" value="$$FORM:TELEPHONE$$$$IF0:FORM:TELEPHONE$$$$SESSION:TELEPHONE$$$$END$$"></td>
+				<td align="right">$$LG:OU$$&nbsp;<strong>Email</strong></td>
+				<td><input type="text" name="email" value="$$FORM:EMAIL$$$$IF0:FORM:EMAIL$$$$SESSION:EMAIL$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="left" class="txt11bluebold">$$LG:PRECIS$$</td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center"><textarea name="questions" cols="40" rows="5">$$FORM:QUESTIONS$$$$IF0:FORM:QUESTIONS$$$$SESSION:QUESTIONS$$$$END$$</textarea></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="left" class="txt11bluebold">$$LG:VERIFINFOS$$</td>
+			</tr>
+			<tr>
+				<td align="right" COLSPAN="4"><a href="#" onclick="validate();"><img src="img/envoyer_$$LANGUE$$.gif" border="0" /></a></td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+		</form>
+		<!-- fin du formulaire -->
+		$$END$$
+		</div>
+		<!-- affichage des vignettes et descriptif et infos agences -->
+		<!-- fin des vignettes et descriptif et infos agences -->
+		<!-- fin d'affichage grande format -->
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+<br />
+$$INCL:BAS.HTM$$
