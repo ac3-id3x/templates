@@ -1,0 +1,137 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<style>
+			ul {list-style:none;margin:0 0 25px 0;padding:0;}
+			li {color:#333;}
+			#zoneMasque {background:#000;opacity:0.3;width:100%;height:100%:}
+			#zoneRefine {float:left;margin:0;padding:0;width:300px;}
+			#zoneRefine h1 {margin:0 0 5px 0;padding:0;font-size:14px;}
+			#zoneResultats {float:left;border:1px solid #333;margin:0 0 0 20px;display:block;width:500px;height:500px;}
+			.ok {color:#fff;background-color:#999;}
+		</style>
+	</head>
+<body>
+<div id="zoneMasque"></div>
+$$B:IMMOBW:REFINE-BIENS:QRY:IDTT:REP:1:ALIAS:REFINEBIENS$$
+$$B:IMMOBW:REFINE-CHAMBRES:QRY:IDTT:REP:1:ALIAS:REFINECHAMBRES$$
+<div id="zoneRefine">
+	<h1>Type de biens</h1>
+<ul id="idtypebien">
+$$BIF:REFINEBIENS$$
+	$$DO$$
+		$$IF:REFINEBIENS:IDTYPEBIEN$$
+			<li$$IF:REFINEBIENS:SELECTED$$ class="ok"$$END$$><input $$IF:REFINEBIENS:SELECTED$$checked="checked"$$END$$ type="checkbox" name="typebien"  id="idtypebien$$REFINEBIENS:I$$" value="idtypebien-$$REFINEBIENS:IDTYPEBIEN$$">$$REFINEBIENS:IDTYPEBIEN gettypebien$$</li>
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+</ul>
+	<h1>Nombre de chambres</h1>
+<ul id="nb_chambres">
+$$BIF:REFINECHAMBRES$$
+	$$DO$$
+		$$IF!:ALL:REFINECHAMBRES:NB_CHAMBRES$$
+			<li$$IF:REFINECHAMBRES:SELECTED$$ class="ok"$$END$$><input $$IF:REFINECHAMBRES:SELECTED$$checked="checked"$$END$$ type="checkbox" name="nb_chambres"   id="nb_chambres$$REFINECHAMBRES:I$$" value="nb_chambres-$$REFINECHAMBRES:NB_CHAMBRES$$">$$REFINECHAMBRES:NB_CHAMBRES$$</li>
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+</ul>
+</div>
+$$B:IMMOBW:ANN:QRY:IDTT::::REP:1::d_dt_maj:~nostat:1:~limit:25:ALIAS:ANNONCES$$
+$$BIF:ANNONCES$$
+<div id="zoneResultats">
+	<ul>
+	$$DO$$
+		<li>$$ANNONCES:LIBELLE$$</li>
+	$$LOOP$$
+	</ul>
+</div>
+<div id="zoneInput">
+	<input id="query_start" name="query_start" value="$$REP:QRY$$" />
+	<input id="query_end" name="query_end" value="" />
+</div>
+$$BFIN$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#zoneRefine li').each(function() {
+			$(this).css('cursor','pointer');
+			$(this).mouseover(function() {
+				$(this).css('color','#fff');
+				$(this).css('background-color','#999');
+			});
+			$(this).mouseout(function() {
+				if(!$(this).hasClass('ok')) {
+					$(this).css('color','#333');
+					$(this).css('background-color','');	
+				}
+			});
+			$(this).click(function() {
+				if($(this).hasClass('ok')) {
+					$(this).children('input').attr('checked',false);
+					$(this).removeClass('ok');
+				} else {
+					$(this).children('input').attr('checked',true);
+					$(this).addClass('ok');
+				}
+				createQueryURL();
+			});
+		});
+	});
+	// DECOMPOSER LA FONCTION ENTRE LES DIFFERENTS UL
+	function createQueryURL() {
+		var $zoneRefine =  $('#zoneRefine')
+		var $ulLength = $zoneRefine.children('ul').length;
+		// FIND SELECTED !
+		var $query_hidden = $('#query_start');
+		var $query_end = $('#query_end');
+		var $query_url = document.location.search;
+		var $new_query_hidden = $query_hidden.val();
+		for(i = 0; i < $ulLength; i++) {
+			var $t = $zoneRefine.children('ul').eq(i)
+			$test = new RegExp($t.attr('id'), "g");
+			if($query_url.match($test)) {
+			} else {
+				$new_query_hidden += '&'+$t.attr('id')+'=';
+			}
+			$liLength = $t.children('li').length;
+			for(z = 1; z <= $liLength; z++) {
+				var $nom = $t.attr('id')+z;
+				if($('#'+$nom).attr('checked')) {
+					if($query_url.match($test)) {
+						var $test_position = $new_query_hidden.search($t.attr('id'));
+					} else {
+						var $value = $('#'+$nom).attr('value').split($t.attr('id')+'-');
+						$new_query_hidden += $value[1]+',';
+					}
+				}
+			}
+		}
+		document.location.search = $new_query_hidden;
+		$query_end.val($new_query_hidden);
+	};
+	function getQueryURL () {
+		$query_hidden = $('#query');
+		$query_url = document.location.hash;
+	}
+	function refineAjax(params) {
+		var xhr = $.ajax({
+			type: 'GET',
+			dataType: 'html',
+			url: '/refinex_ajax.htm',
+			beforeSend: function() {
+				$('#zoneResultats').html('');
+			},
+			success: function(data) {
+				$('#zoneResultats').html(data);
+			},
+			error: function(xhr,statusText) {
+				//console.log(xhr.status);
+			},
+			complete: function(xhr,statusText) {
+				//console.log(xhr.status);
+			}
+		});
+	}
+</script>
+</body>
+</html>

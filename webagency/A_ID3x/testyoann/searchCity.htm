@@ -1,0 +1,35 @@
+$$B:IMMOBW:SUGGEST-LOCALISATION:~texte:QRY:CPSEARCH:ALIAS:LISTING$$
+$$BIF:LISTING$$
+	$$DO$$
+		$$IF!:50$33:LISTING:TYPEHEADER$$
+			$$IFPREV:LISTING:TYPEHEADER$$
+			<ul><h2>$$LISTING:HEADER htmlencode$$</h2>
+			$$END$$
+			<li id="$$LISTING:LIBELLE htmlencode$$|$$IF:LISTING:CODE$$$$LISTING:CODE$$$$END$$">
+				$$LISTING:LIBELLE htmlencode$$$$IF:LISTING:CODE$$ - $$LISTING:CODE$$$$END$$
+			</li>
+		$$IFNEXT:LISTING:TYPEHEADER$$
+		</ul>
+		$$END$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+$$BIF0:SUGGEST$$
+	<b>pas de suggestion</b>
+$$BFIN$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		$("#suggestionsBox li").each(function() {
+			$(this).mouseover(function() {
+				$(this).addClass("onSugg");
+			});
+			$(this).mouseout(function() {
+				$(this).removeClass("onSugg");
+			});
+			$(this).click(function() {
+				insertTxt('cp',$(this).attr("id"));
+				$(this).parent().parent().hide();
+			});
+		});
+	});
+</script>

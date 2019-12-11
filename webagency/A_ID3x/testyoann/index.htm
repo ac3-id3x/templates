@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<script src="jquery.js" type="text/javascript"></script>
+		<script>
+			$(document).ready(function() {
+				$('.inputTxt').each(function() {
+					$(this).attr('autocomplete','off');
+					$(this).keyup(function() {
+						// SEND VALUE IF SUP > 2;
+						goSearch($(this).attr("id"),'box');
+					});
+				});
+			});	
+			function goSearch(divid,divresults) {
+					var xhr = $.ajax({
+					type: "GET",
+					data: $("#"+divid).attr("id")+'='+$("#"+divid).val(),
+					dataType: "html",
+					url: '/searchCity.htm',
+					beforeSend: function() {
+						$("#"+divid).addClass("wait");
+					},
+					success: function(data) {
+						$("#"+divid).removeClass("wait");
+						$("."+divresults).show();
+						$("."+divresults).html(data);
+			 	 	},
+			 	 	error: function(xhr,statusText) {
+			 	 		//console.log(xhr.status);
+			 	 	},
+			 	 	complete: function(xhr,statusText) {
+			 	 		//console.log(xhr.status);
+			 	 	},
+				});
+			}
+			function insertTxt(divid,txt) {
+					var valueTxt = txt.split('|');
+					if(!$("#"+divid).val()) {
+						$("#"+divid).val(valueTxt[1]);
+					} else {
+						var old_value = $("#"+divid).val();
+						$("#"+divid).val(old_value + ','+ valueTxt[1]);
+					}
+					$("#cpSearch").val("");
+			}
+		</script>
+		<style>
+			.body {font-family:arial,verdana;}
+			.ctn {position:relative;}
+			.zoneInput {position:relative;}
+			.inputTxt {font-size:18px;color:#ccc;padding:5px;height:30px;border:1px solid #333;width:500px;}
+			.inputSubmit {font-size:18px;color:#999;height:30px;border:1px solid #333;width:100px;}
+			.box {display:none;width:498px;height:200px;overflow:auto;position:absolute;left:0;background:#fff;border:1px solid #333;z-index:100;padding:0;}
+			.wait {background:url($$_$$ajaxloader.gif) no-repeat;background-position:475px;}
+			.onSugg {background:red;color:#fff;}
+			h2 {margin:0 0 5px 10px;font-size:14px;padding:0;}
+			ul {position:relative;margin:3px 0 3px; 0;list-style-type:none;padding:0;}
+			li {cursor:pointer;margin:0;padding:4px;font-size:13px;}
+		</style>
+	</head>
+	<body>
+		<form method="get" action="recherche.htm">
+		<div class="ctn">
+			<div class="zoneInput"><input type="text" class="inputTxt" id="cpSearch" name="cpSearch" value="" autocomplete="off"/> <input type="submit" class="inputSubmit" value="Chercher" /></div>
+			<input type="hidden" id="cp" name="cp" />
+			<div id="suggestionsBox" class="box"></div>
+		</div>
+	</form>
+	</body>
+</html>

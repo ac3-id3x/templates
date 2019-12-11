@@ -1,0 +1,71 @@
+$$IF=:1:BIENSPECIFIC$$
+	<input type="checkbox" value="1" name="idtypebien" id="idtb-1">
+		<label for="idtb-1">
+			$$LG:APPARTEMENTS pcase$$
+		</label>
+	<input type="checkbox" value="2,14" name="idtypebien" id="idtb-2">
+		<label for="idtb-2">
+			$$LG:MAISONS pcase$$ / $$LG:HOTELSPART pcase$$
+		</label>
+	<input type="checkbox" value="0" name="idtypebien" id="idtb-3">
+		$$REM$$<!--CAS DE MODIFICATION DE LA VALUE PENS2 A MODIFIER LIGNE 54 et 20 DE CE FICHIER et INCL MOTEUR PERSO-->$$END$$
+		<label for="idtb-3">
+			$$LG:CHATEAUDEMEURES pcase$$
+		</label>
+$$END$$
+<script type="text/javascript">
+var nomtransac = "$$LG:VENTE pcase$$";
+	//suppression chateau si location
+	$(document).delegate("#moteur_biens","pageinit", function (event) {
+		var storageTransaction = localStorage['idtypetransac'];
+		if(storageTransaction==1){
+			$('#idtb-3').parent('div').css('display','none');
+			$('input[id*="idtb-"]').prop('checked',false).checkboxradio("refresh");
+		}else{
+			$('#idtb-3').parent('div').attr('style','');
+			$('input[id*="idtb-"]').prop('checked',false).checkboxradio("refresh");
+		}
+	//suppression ville et dept si chateau
+	$('input[id*="idtb-"]').click(function(){
+		if($(this).is(':checked')){
+			if($(this).val()== "0" ){
+				$("#idtb-1").prop('checked',false).checkboxradio("refresh");
+				$("#idtb-1").parent().children('label').css('opacity',0.5);
+				$("#idtb-2").prop('checked',false).checkboxradio("refresh");
+				$("#idtb-2").parent().children('label').css('opacity',0.5);
+				$("#idtb-3").parent().children('label').css('opacity',1);
+				// FIXING ID PUB CHATEAU/IDTT
+				localStorage.setItem('idtypetransac','2');
+				localStorage.setItem('idtt',nomtransac);
+				localStorage.setItem('idtypepublication','460332');
+			}else{
+				// DELETE FIXING LINE 34
+				//localStorage.removeItem('idtypetransac');
+				//localStorage.removeItem('idtt');
+				//localStorage.removeItem('idtypepublication');
+				$("#idtb-1").parent().children('label').css('opacity',1);
+				$("#idtb-2").parent().children('label').css('opacity',1);
+				$("#idtb-3").parent().children('label').css('opacity',0.5);
+				$("#idtb-3").prop('checked',false).checkboxradio("refresh");
+			}
+		}
+	});
+	// ONLY FOR FEAU
+	var locIdbien = localStorage['idtypebien'];
+	if(locIdbien == 'undefined') {
+		$("#idtb-1").parent().children('label').css('opacity',1);
+		$("#idtb-2").parent().children('label').css('opacity',1);
+		$("#idtb-3").parent().children('label').css('opacity',1);
+	} else {
+		if(localStorage['idtypebien'] == '0,') {
+			$("#idtb-1").parent().children('label').css('opacity',0.5);
+			$("#idtb-2").parent().children('label').css('opacity',0.5);
+			$("#idtb-3").parent().children('label').css('opacity',1);
+		} else if (localStorage['idtypebien'] != '0,') {
+			$("#idtb-1").parent().children('label').css('opacity',1);
+			$("#idtb-2").parent().children('label').css('opacity',1);
+			$("#idtb-3").parent().children('label').css('opacity',0.5);
+		}	
+	}
+});
+</script>

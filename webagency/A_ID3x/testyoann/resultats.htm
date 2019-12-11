@@ -1,0 +1,170 @@
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1:ALIAS:RESULTATS$$
+$$BIF:RESULTATS$$
+	<div id="zoomPhoto"></div>
+	<h1>$$RESULTATS:PHRASE pcase$$</h1>
+	$$DO$$
+	<div class="annonce$$IF=:1:RESULTATS:I exec XX%2$$ color1$$END$$$$IF!:1:RESULTATS:I exec XX%2$$ color2$$END$$" id="annonce$$RESULTATS:IDANNONCE$$">
+		<div class="effectAnnonce"></div>
+		<div class="infoAnnonce">
+			<h2>$$RESULTATS:IDTYPEBIEN gettypebien$$</h2>
+			<ul>
+				<li>$$RESULTATS:AVILLE$$</li>
+				$$IF:RESULTATS:SURFACE$$
+					<li>$$RESULTATS:SURFACE$$ $$RESULTATS:SURF_UNITE$$</li>
+				$$END$$
+				$$IF:RESULTATS:NB_PIECES$$
+				<li>
+				$$RESULTATS:NB_PIECES$$
+					$$IF=:1:RESULTATS:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+					$$IF!:0$1:RESULTATS:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$					
+					$$IF:RESULTATS:NB_CHAMBRES$$
+						($$RESULTATS:NB_CHAMBRES$$ 
+						$$IF=:1:RESULTATS:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:RESULTATS:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+					$$END:RESULTATS:NB_CHAMBRES$$
+				</li>
+				$$END$$
+				<li><b>$$RESULTATS:PRIX$$ $$RESULTATS:PRIX_UNITE$$</b></li>
+			</ul>	
+			<div class="moreDetail"></div>
+		</div>
+		<div class="detailAnnonce">
+				<div class="libelle">
+					$$RESULTATS:IDTYPEBIEN gettypebien pcase$$
+					<br />
+					$$RESULTATS:AVILLE pcase$$
+				</div>
+			$$IF0:RESULTATS:C175_URL$$
+				<div class="sans_photo"></div>
+			$$END$$
+			$$IF:RESULTATS:C175_URL$$
+				<div class="photo"><img src="$$RESULTATS:C175_URL$$" /></div>
+			$$END$$
+		</div>
+	</div>
+	$$LOOP$$
+	<div class="clear"></div>
+$$BFIN$$
+$$BIF0:RESULTATS$$
+	<b>Aucun résultat</b>
+$$BFIN$$
+<script type="text/javascript">
+	var selectAnnonce = '';
+	var sizeNewW = 375;
+	var sizeNewH = 370;
+	$('.annonce').each(function() {
+		// CLICK & SIZE
+		var parent_sizeW = $(this).width();
+		var parent_sizeH = $(this).height();
+		$(this).css('cursor','pointer');
+		$(this).mouseover(function() {
+				$(this).children('.infoAnnonce').css('display','block');
+		});
+		$(this).mouseout(function() {
+			if(selectAnnonce != $(this).attr('id')) {
+				$(this).children('.infoAnnonce').css('display','none');
+			}
+		});
+		$(this).click(function() {
+				if(selectAnnonce == $(this).attr('id') || selectAnnonce == '') {
+					if($(this).children('.infoAnnonce').width() == sizeNewW && $(this).children('.infoAnnonce').height() == sizeNewH) {
+						$(this).children('.infoAnnonce').animate({
+							width:parent_sizeW,
+							height:parent_sizeH
+						}, 250, function() {
+							selectAnnonce = '';
+							$(this).parent().width(parent_sizeW);
+							$(this).parent().height(parent_sizeH);
+							$(this).css('display','none');
+							//resetEffect();
+						});
+					} else {
+						$(this).children('.infoAnnonce').animate({
+							width:sizeNewW,
+							height:sizeNewH
+						}, 250, function() {
+							selectAnnonce = $(this).parent().attr('id');
+							$(this).parent().width(sizeNewW);
+							$(this).parent().height(sizeNewH);
+							$(this).css('display','block');
+							//goEffect(selectAnnonce);
+							//goInfos(selectAnnonce);
+						});
+					}	
+				} else {
+				newAnnonce = $(this).attr('id');
+				if($('#'+selectAnnonce).children('.infoAnnonce').width() == sizeNewW && $('#'+selectAnnonce).children('.infoAnnonce').height() == sizeNewH) {
+					$('#'+selectAnnonce).children('.infoAnnonce').animate({
+						width:parent_sizeW,
+						height:parent_sizeH
+					}, 250, function() {
+						$(this).parent().width(parent_sizeW);
+						$(this).parent().height(parent_sizeH);
+						$(this).css('display','none');
+						//resetEffect();
+						$('#'+newAnnonce).children('.infoAnnonce').animate({
+							width:sizeNewW,
+							height:sizeNewH
+						}, 250, function() {
+							selectAnnonce = newAnnonce;
+							$(this).parent().width(sizeNewW);
+							$(this).parent().height(sizeNewH);
+							$(this).css('display','block');
+							//goEffect(selectAnnonce);
+							//goInfos(selectAnnonce);
+						});
+					});
+				}
+			}
+		});
+	});
+	function goEffect(idAnnonce,picture) {
+		$('.annonce').each(function() {
+			if($(this).attr('id') == idAnnonce) {
+				/*
+				// GET SIZE
+				var widthBody = $(window).width();
+				var heightBody = $(window).height();
+				// FIX CSS PIC
+				$('#zoomPhoto').width(widthBody);
+				$('#zoomPhoto').height(heightBody);
+				// GET PIC
+				var pic = $(this).find('img').attr('src');
+				var bigs = new RegExp("(c175)", "g");
+				// FIX PIC
+				$('#zoomPhoto').append('<img src="'+pic.replace(bigs,"bigs")+'" />');
+				$('#zoomPhoto img').width(widthBody);
+				$('#zoomPhoto img').height(heightBody);*/
+			} else {
+				$(this).children('.effectAnnonce').css('opacity','0.3');
+				$(this).children('.effectAnnonce').show();
+			}
+		})
+	}
+	function resetEffect() {
+		//$('#zoomPhoto img').remove();
+		$('.annonce').each(function() {
+			$(this).children('.effectAnnonce').hide();
+		});
+	}
+	function goInfos(idAnnonce) {
+		var okAnnonce = idAnnonce.split('annonce');
+		var xhr = $.ajax({
+			type: 'GET',
+			data: 'refAnnonce='+okAnnonce[1],
+			dataType: 'html',
+			url: '/go_infos.htm',
+			beforeSend: function() {
+				//$('#'+idAnnonce+' .moreDetail').html(data);
+			},
+			success: function(data) {
+				$('#'+idAnnonce+' .moreDetail').html(data);
+			},
+			error: function(xhr,statusText) {
+			//console.log(xhr.status);
+			},
+			complete: function(xhr,statusText) {
+				//console.log(xhr.status);
+			}
+		});
+	}
+</script>

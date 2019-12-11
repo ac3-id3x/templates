@@ -1,0 +1,38 @@
+<html
+	<head>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#bouton').click(function() {
+					var $value = $('#essai').val();
+					if($value != '') {
+						var date = new Date();
+						date.setTime(date.getTime()+(180*24*60*60*1000));
+						var expires = "; expires="+date.toGMTString();
+						document.cookie = 'site='+$value+''+expires;
+						location.reload();
+					}
+				});
+				readCookie('site');
+			});
+			function readCookie(nom) {
+				deb = document.cookie.indexOf(nom+"=");
+		        if (deb >= 0) {
+		            deb += nom.length + 1;
+		            fin = document.cookie.indexOf(";",deb)
+			            if (fin < 0) {
+			            	fin = document.cookie.length;
+			            	alert(unescape("cookie : "+document.cookie.substring(deb,fin)));
+			            }
+		       		}
+		       	else {
+			     	alert("no cookie");
+			     }
+			};
+		</script>	
+	</head>
+	<body>
+		<input type="text" name="essai" id="essai" value="$$REP:SRV$$"/>
+		<input type="button" value="Write" id="bouton" name="bouton">
+	</body>
+</html>

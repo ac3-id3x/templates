@@ -1,0 +1,72 @@
+$$INIT:IDT=AGENCE$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div data-role="content" id="liste">
+$$IF:FORM:PRESENTATION$$
+	$$IF=:1:FORM:PRESENTATION$$
+		$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$CV:NOM ucase$$</h2>
+		<div class="pageMobi">
+			$$IF=:1:AFFICHELOGOPHOTO$$
+				<!--#include virtual="agence/incl_photo_agence.htm" -->
+			$$END$$
+			<p>$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</p>
+			<p>$$CV:CP$$ $$CV:VILLE ncase$$</p>
+			$$IF:CV:TEL$$
+				<p>$$LG:MINITEL$$ : <a href="tel:$$CV:TEL$$">$$CV:TEL formattel$$</a></p>
+			$$END$$
+			$$IF:CV:FAX$$
+				<p>$$LG:FAX$$ : $$CV:FAX formattel$$</p>
+			$$END$$
+			$$IF:CV:RESPAG$$
+				<p>$$LG:RESPAGENCE pcase$$ : $$CV:RESPAG ncase$$</p>
+			$$END$$
+			$$IF:CV:EMAIL$$
+				<p>$$LG:EMAIL pcase$$ : <a href="/$$CV:IDPUBLICATION$$/contact,agence.htm">$$LG:CONTACTEZNOUS$$</a></p>
+			$$END$$
+			$$IF:CV:URL$$
+				<p>$$LG:SITE pcase$$ : <a href="$$CV:URL$$" target="_new" id="boutonExternal">$$CV:URL lcase$$</a></p>
+			$$END$$
+				<p><a href="/$$CV:IDPUBLICATION$$/contact,agence.htm">$$LG:NOUSCTC pcase$$ $$LG:PAR lcase$$ $$LG:EMAIL lcase$$</a></p>
+				<p><a href="/$$CV:IDPUBLICATION$$/contact,estimation.htm">$$IF:TEXTEESTIMATIONCARTO$$$$TEXTEESTIMATIONCARTO pcase$$$$END$$$$IF0:TEXTEESTIMATIONCARTO$$$$LG:FAITESESTIMGRATOS pcase$$$$END$$</a></p>
+		</div>
+		$$IF=:1:NODETAILIDTT$$
+			<!--#include virtual="agence/incl_recherche_agence.htm" -->
+		$$END$$
+		$$IF0:NODETAILIDTT$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">
+				$$LG:VOIRANNONCES ucase$$
+		</h2>
+		<div class="pageMobi">
+			$$B:IMMOBW:AGENCETRANSACTIONS:QRY:IDP:ALIAS:TRANSAC$$
+			$$BIF:TRANSAC$$
+				$$DO$$
+					<p><a href="/recherche,mobi.htm?idtt=$$TRANSAC:IDTYPETRANSACTION$$&idpublication=$$CV:IDPUBLICATION$$&presentation=1">$$TRANSAC:IDTYPETRANSACTION gettypetransaction pcase$$</a></p>
+				$$LOOP$$
+			$$BFIN$$
+		</div>
+		$$END$$
+	$$END$$
+$$END$$
+$$IF0:FORM:PRESENTATION$$
+	<div id="myMap"></div>
+	<script type="text/javascript">
+		colorPin = '$$PAGE:PIN_COULEUR_BMAP$$';
+		var langue = '$$LANGUE$$';
+		var linkPlusDetails = '$$LG:PLUSDETAILS pcase$$';
+		var telephone = '$$LG:TEL pcase$$';
+		var responsable = "$$LG:RESPAGENCE pcase$$";
+		var estimation = "$$IF:TEXTEESTIMATIONCARTO$$$$TEXTEESTIMATIONCARTO pcase$$$$END$$$$IF0:TEXTEESTIMATIONCARTO$$$$LG:FAITESESTIMGRATOS pcase$$$$END$$";
+		var contact = "$$LG:NOUSCTC pcase$$";
+		var listeAnnoncesV = "$$LG:NOSANNONCESVEN pcase$$";
+		var listeAnnoncesL = "$$LG:NOSANNONCESLOCA pcase$$";
+		$$IF:ONLYPHOTO$$
+			var onlyPhoto = 1;
+		$$END$$
+		$$IF0:ONLYPHOTO$$
+			var onlyPhoto = 0;
+		$$END$$
+	</script>
+	<!--#include virtual="scripts/incl_agence.htm" -->	
+$$END$$
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

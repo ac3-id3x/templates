@@ -1,0 +1,161 @@
+$$DYN:ID3:NODEBUGPOPUP$$
+<html>
+	<head>
+		<script src="jquery.js" type="text/javascript"></script>
+		<script src="recherche.js" type="text/javscript"></script>
+		<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+				$('body').click(function() {
+					$('#suggestionsBox').hide();
+				});
+				$('.containerMoteur').click(function() {
+					$('#cpSearch').focus();
+				});
+				$('#cpSearch').keyup(function() {
+					// FUNCTION SEARCH
+					if($(this).val().length > 0) {
+						searchContent($(this).attr("id"),'suggestionsBox');
+					}
+				});
+				$('.inputSubmit').css('cursor','pointer');
+				$('.inputSubmit').mouseover(function() {
+					$(this).addClass('onInput');
+				});
+				$('.inputSubmit').mouseout(function() {
+					$(this).removeClass('onInput');
+				});
+				$('.inputSubmit').click(function() {
+					if($('#cp').val() != '' || $('#div').val() != '' || $('#ci').val() != '' || $('#idq').val() != '') {
+						$(this).val('Recherche en cours...');
+						$(this).css('cursor','auto');
+						$(this).attr('disabled',true);
+						// DETERMINE VAR
+						var idtt = 'idtt='+$('#idtt').val();
+						var lang_sel = 'lang='+$('#lang').val();
+						var idtb = 'idtypebien='+$('#idtypebien').val();
+						var var_search = idtt+'&'+lang_sel+'&'+idtb;
+						if($('#cp').val() != '') {
+							var_search += '&cp='+$('#cp').val();
+						}
+						if($('#div').val() != '') {
+							var_search += '&div='+$('#div').val();
+						}
+						if($('#ci').val() != '') {
+							var_search += '&ci='+$('#ci').val();
+						}
+						if($('#idq').val() != '') {
+							var_search += '&idq='+$('#idq').val();
+						}
+						//
+							var xhr = $.ajax({
+								type: 'GET',
+								data: var_search,
+								dataType: 'html',
+								url: '/resultats.htm',
+								beforeSend: function() {
+									$('#resultats').html('');
+									$('#resultats').addClass('waitBig');
+								},
+								success: function(data) {
+									$('#resultats').removeClass('waitBig');
+									$('#resultats').html(data);
+						 	 	},
+						 	 	error: function(xhr,statusText) {
+						 	 		$('#resultats').addClass('waitBig');
+						 	 		//console.log(xhr.status);
+						 	 	},
+						 	 	complete: function(xhr,statusText) {
+						 	 		//console.log(xhr.status);
+						 	 		// RESET BTN SEARCH
+									$('.inputSubmit').css('cursor','pointer');
+									$('.inputSubmit').attr('disabled',false);
+									$('.inputSubmit').val('Chercher votre bien');
+									$('.inputSubmit').removeClass('onInput');
+						 	 	}
+							});
+						} else {
+							$("#resultats").html('<strong>Vous devez saisir des informations.</strong>');	
+						}
+					});
+			});
+			function searchContent(divid,container) {
+				var value_div = $('#'+divid).val();
+				var xhr = $.ajax({
+					type: 'GET',
+					async: 'true',
+					cache: 'true',
+					timeout : '1500',
+					data: 'cp='+value_div,
+					dataType: 'html',
+					url: '/rechercheCP.htm',
+					beforeSend: function() {
+						$('#'+divid).parent().addClass('wait');
+					},
+					success: function(data) {
+						$('#'+divid).parent().removeClass('wait');
+						$('#'+container).show();
+						$('#'+container).html(data);
+			 	 	},
+			 	 	error: function(xhr,statusText) {
+			 	 		$('#'+divid).parent().addClass('wait');
+			 	 		//console.log(xhr.status);
+			 	 	},
+			 	 	complete: function(xhr,statusText) {
+			 	 		//console.log(xhr.status);
+			 	 	}
+				});
+			}
+			function buildSearch() {
+				$('#cp').val('');
+				$('#div').val('');
+				$('#ci').val('');
+				$('#idq').val('');
+				$('.selectLi').each(function() {
+					var value_txt = $(this).attr('id').split('|');
+					var length_value_txt = value_txt.length;
+					// REGION
+					if(length_value_txt == 3) {
+						if($('#div').val() == ''){
+							$('#div').val(value_txt[2]);
+						} else {
+							$('#div').val($('#div').val()+','+value_txt[2]);
+						}
+					} else {
+						var num_value = Math.round(value_txt.length/2);
+						// START 1 TO SKIP FIRST LINE
+						for(i = 1; i < num_value; i++) {
+							if($('#'+value_txt[i * 2]).val() == '' ){
+								$('#'+value_txt[i * 2]).val(value_txt[i * 2 + 1]);
+								$('#'+value_txt[i * 2]).serialize();
+							} else {
+								$('#'+value_txt[i * 2]).val($('#'+value_txt[i * 2]).val()+','+value_txt[i * 2 + 1]);
+								$('#'+value_txt[i * 2]).serialize();
+							}
+						}
+					}
+				});
+			}
+		</script>
+		<link rel="stylesheet" href="recherche.css" type="text/css" />
+	</head>
+	<body>
+			<div id="nav">
+				<input type="hidden" name="div" id="div" />
+				<input type="hidden" name="cp" id="cp" />
+				<input type="hidden" name="ci" id="ci" />
+				<input type="hidden" name="idq" id="idq" />
+				<input type="hidden" name="idtt" id="idtt" value="2" />
+				<input type="hidden" name="lang" id="lang" value="fr" />
+				<input type="hidden" name="idtypebien" id="idtypebien" value="2,1" />
+				<div class="ctn">
+					<div id="suggestionsBox" class="box"></div>
+					<ul class="containerMoteur">
+						<input type="text" value="" id="cpSearch" class="boxSearch" />
+					</ul>
+					<input type="button" value="Chercher votre bien" class="inputSubmit" />
+				</div>
+			</div>
+				<div id="resultats"></div>
+			<div class="clear"></div>
+	</body>
+</html>
