@@ -1,0 +1,60 @@
+
+$$SET:PAGE:TITR=Agence immobiliere @@PAGE:CFG_TITRE@@$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAG$$
+<br />
+<!-- $$REP:1$$ -->
+$$B:IMMOBW:AGENCES::QRY:CP:ALIAS:LIAG$$
+$$BIF:LIAG$$
+<div align="center">
+<table width="70%" border="0" cellspacing="0" cellpadding="0" align="center" class="listeagence">
+$$DO:1:120$$
+<tr>
+	<td valign="top" width="50%"><span class="liste_agences_nom">$$LIAG:NOM$$</span><br />
+	<strong>$$LIAG:ADRESSE htmlencode crlf2br$$<br /></strong>
+	<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$LIAG:TEL formattel$$<br />
+	<font class="liste_agences_info">Fax :</font> $$LIAG:FAX formattel$$<br />
+	$$IF:LIAG:EMAIL$$<font class="liste_agences_info">E-mail : </font>$$LIAG:EMAIL encodemail javascript full$$<br />$$END$$
+	
+	$$IF!:287935$18167$405227:LIAG:IDPUBLICATION$$
+	<font class="liste_agences_info">$$LG:NOMRESP$$</font> $$LIAG:RESPAG$$<br />
+	$$END$$
+	
+	$$IF=:332624$189115$189114:LIAG:IDPUBLICATION$$
+	<font class="liste_agences_info">Directrice agence :</font>Mme Christelle Leduc</><br />
+	$$END$$
+		 
+	$$IF=:18387$405227$14347$307374$14348$287935$18167$14349$452689$405227:LIAG:IDPUBLICATION$$
+	<font class="liste_agences_info">Directeurs d'agence :</br></font>Mme Séverine Reiter & Mr Alexandre Dodille<br />
+	$$END$$
+ 
+	 $$IF:LIAG:RCS_FULL$$ RCS : $$LIAG:RCS_FULL$$ <br /> $$END$$ 
+	 
+	</td>
+	<td valign="top" width="50%" align="right">
+	<img src="images/agences/$$LIAG:IDPUBLICATION urlencode$$.jpg" style="border:1px solid #1DA5BD" alt="" /><br />
+	$$IF:LIAG:SI_AFFURL$$
+	$$IF:LIAG:URL$$
+	<a href="$$LIAG:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$LIAG:NOM$$</strong></a><br />
+	$$END:URL$$
+	$$END:SI_AFFURL$$
+	$$IF0:LIAG:SI_AFFURL$$
+	$$IF=:CV:REP:1$$
+<a href="javascript:MM_openBrWindow('/$$LIAG:IDPUBLICATION urlencode$$/carte_visite.htm?lang=$$LANGUE$$','CarteVisite','width=450,height=450');"  class="liste_agences_lien">$$LG:VITRINE$$</a><br />
+	$$END$$
+	$$END:!SI_AFFURL$$
+	<a href="/$$LIAG:IDPUBLICATION$$/contact.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a><br />
+	<a href="/$$LIAG:IDPUBLICATION urlencode$$/vendeur.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a><br />
+$$A:CARTE:CP=@@LIAG:CP@@$$
+$$A:CARTE:VILLE=@@LIAG:VILLE replace ' \'@@$$
+$$A:CARTE:ADRESSE=@@LIAG:ADRESSE crlf2br replace <br/> &nbsp; replace ' "" nbsp2sp@@$$
+$$INCL:LOCALISATION_AGENCE.HTM$$
+
+	</td>
+</tr>
+$$LOOP$$
+</table>
+</div>
+$$BFIN$$
+$$INCL:BAS.HTM$$
