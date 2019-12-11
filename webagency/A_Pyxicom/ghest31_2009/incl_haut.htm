@@ -1,0 +1,156 @@
+<!--#include virtual="incl_doctype_strict.htm"-->
+<head>
+	<!--#include virtual="incl_ref.htm" -->
+	<!--#include virtual="incl_titre.htm" -->
+	<!--#include virtual="scripts/incl_scripts.htm" -->
+	<!--#include virtual="styles/incl_styles.htm" -->
+<script language="javascript" src="$$_$$scripts/jquery.js" type="text/javascript"></script> 
+<script language="javascript" src="$$_$$scripts/menu.js" type="text/javascript"></script>
+$$IF=:RECHERCHEMAP:PAGE:IDT$$
+	$$A:MAPWIDTH=930px$$
+	$$A:MAPCOLOR=rouge$$
+	<!--#include virtual="map/incl_scripts.htm" -->
+	<!--#include virtual="map/incl_map.htm" -->
+$$END:PAGE:IDT$$
+ 
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:CP:QRY:CP$$ 
+	$$BIF:IMMOBW:AGENCES:CP$$        
+	var i=0;
+	$$DO:1:120$$
+		coord[i++]="adr_$$IMMOBW:AGENCES:CP:IDPUBLICATION$$";
+	$$LOOP$$
+	$$BFIN$$        
+</script>
+<script src="$$-$$scripts/coord.js" type="text/javascript"></script>
+$$IF=:MOTEUR:PAGE:IDT$$
+	$$IF=:2:FORM:IDTT$$
+	      $$A:LG:RUBRIQUE=@@LG:LIEN:VEN pcase@@$$
+	$$END$$
+	$$IF=:1:FORM:IDTT$$
+	      $$A:LG:RUBRIQUE=@@LG:LIEN:LOC pcase@@$$
+	$$END$$
+	$$IF=:6:FORM:IDTT$$
+	      $$A:LG:RUBRIQUE=@@LG:PRODUITINVEST  pcase@@$$
+	$$END$$
+	$$IF=:9:FORM:IDTT$$
+	      $$A:LG:RUBRIQUE=@@LG:LIEN:PGRNEUF  pcase@@$$
+	$$END$$
+$$END$$
+</head>
+
+<body onLoad="Adresse();$$IF:ONLOAD$$$$ONLOAD$$$$END$$" $$IF:ONLOAD$$onunload="$$UNLOAD$$"$$END$$>
+<div id="topHeader">
+	<div id="header">
+		<ul>
+			<li><a href="http://www.orpi.com/le-reseau-orpi.36.html" title="Le r&eacute;seau Orpi - $$EXPRESSION1$$" class="top" target="_blank" >Le r&eacute;seau Orpi</a></li>
+		</ul>
+	</div>
+	<p class="texte_ref">$$REP:RSRV$$ : achat immobilier $$VILLE_AGENCE pcase$$ - vente maisons $$VILLE_AGENCE pcase$$</p>
+</div>
+
+	<div id="bandeauLogo">
+		<a href="http://$$REP:RSRV$$/index.htm?lang=$$LANGUE$$ " title="$$LG:RETOURACCUEIL pcase$$ - $$EXPRESSION3$$"><img src="images/logo.gif" alt="$$LG:RETOURACCUEIL pcase$$" class="logo" /></a>
+		<div id="slogan">
+		<h1>Num&eacute;ro 1 pour votre bien</h1>
+		<div class="clear"></div>
+		<div class="clear"></div>
+		<h5>
+			$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSAC_DISPOS$$
+						
+			$$A:TOT_1_LOC=0$$ 
+			$$A:TOT_2_VEN=0$$
+			$$A:TOT_3_LOCTEMP=0$$
+			$$A:TOT_4_LOCVAC=0$$
+			$$A:TOT_5_VIAGER=0$$
+			$$A:TOT_6_PROD=0$$
+			$$A:TOT_7_LOCPRES=0$$
+			$$A:TOT_8_VENPRES=0$$
+			$$A:TOT_9_NEUF=0$$
+			$$A:TOT_10_FONDCOM=0$$
+			$$A:TOT_11_CESSIONB=0$$
+
+			$$REM$$<!-- //// on compte //// -->$$END$$
+			$$BIF:TRANSAC_DISPOS$$
+			$$DO$$						
+			$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_1_LOC=@@TOT_1_LOC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_2_VEN=@@TOT_2_VEN@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_3_LOCTEMP=@@TOT_3_LOCTEMP@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_4_LOCVAC=@@TOT_4_LOCVAC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_5_VIAGER=@@TOT_5_VIAGER@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_6_PROD=@@TOT_6_PROD@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_7_LOCPRES=@@TOT_7_LOCPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_8_VENPRES=@@TOT_8_VENPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_9_NEUF=@@TOT_9_NEUF@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_10_FONDCOM=@@TOT_10_FONDCOM@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+			$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_11_CESSIONB=@@TOT_11_CESSIONB@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+
+
+			$$LOOP$$
+			$$BFIN$$
+			
+			$$BIF:TRANSAC_DISPOS$$
+			$$DO$$		
+			$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+				<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+				<script type="text/javascript">document.write(eval($$TOT_2_VEN$$+$$TOT_6_PROD$$+$$TOT_8_VENPRES$$))</script>
+				$$IF-:2:TRANSAC_DISPOS:NBANN$$$$LG:BIENALAVEN lcase$$$$END$$ 	
+				$$IF+:2:TRANSAC_DISPOS:NBANN$$$$LG:BIENSIMMOAVENTE lcase$$$$END$$ 
+				</a>
+				&nbsp;-&nbsp;
+			$$END$$  
+			$$LOOP$$		
+			$$BFIN$$
+			
+			
+			$$BIF:TRANSAC_DISPOS$$
+			$$DO$$
+			$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$	
+				<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+				<script type="text/javascript">document.write(eval($$TOT_1_LOC$$+$$TOT_7_LOCPRES$$+$$TOT_11_CESSIONB$$))</script>
+				$$IF-:2:TRANSAC_DISPOS:NBANN$$$$LG:BIENALALOC lcase$$$$END$$ 	
+				$$IF+:2:TRANSAC_DISPOS:NBANN$$$$LG:BIENSIMMOLOC lcase$$$$END$$ 
+				</a>
+			$$END$$
+			$$LOOP$$
+			$$BFIN$$
+			
+		</h5>
+		</div>
+		<div id="coordonnes">
+			<img src="images/imgTopCoordonnes.gif" alt="" />
+			<h2><img src="images/nosCoord_$$LANGUE$$.gif" alt="$$LG:NOSCOORD ucase$$" title="$$LG:NOSCOORD ucase$$ - $$EXPRESSION3$$" /></h2>
+			<!-- MULTIAGENCES-->	
+			$$B:IMMOBW:AGENCES:CP:QRY:CP$$ $$BIF:IMMOBW:AGENCES:CP$$
+			$$DO:1:120$$
+			<div id="adr_$$IMMOBW:AGENCES:CP:IDPUBLICATION$$" class="coordonnees_agences">			
+			<p>
+				<span>$$IMMOBW:AGENCES:CP:NOM$$</span><br />
+				$$IMMOBW:AGENCES:CP:ADRESSE crlf2br$$
+			</p>
+			<p class="coor">
+				$$LG:TELABREGE pcase$$ : $$IMMOBW:AGENCES:CP:TEL formattel$$<br />
+				$$LG:FAX pcase$$ : $$IMMOBW:AGENCES:CP:FAX formattel$$<br />
+				<a href="http://$$REP:RSRV$$/agence-immobiliere.htm?idp=$$IMMOBW:AGENCES:CP:IDPUBLICATION$$&amp;lang=$$LANGUE$$" title="$$LG:SAVOIR pcase$$ - $$EXPRESSION1$$">$$LG:SAVOIR pcase$$</a>
+			</p>
+			</div>
+			$$LOOP$$
+			$$BFIN$$
+		<!-- FIN MONOAGENCE--> 	
+			<img src="images/imgBasCoordonnes.gif" alt="" />
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div id="global">
+	<div id="menu">
+		<ul>
+			<!--#include virtual="/incl_menu.htm" -->
+		</ul>
+	</div>
+	<div id="navigation">
+		$$IF=:LISTEAGENCESIMMOBILIERES:PAGE:IDT$$
+		<div id="mapGeo">
+			<div class="CarteGeo"><!--#include virtual="/carto/incl_carto_agences.htm" --></div>
+		</div>
+		$$END$$
