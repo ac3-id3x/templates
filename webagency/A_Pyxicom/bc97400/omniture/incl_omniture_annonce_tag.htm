@@ -1,0 +1,94 @@
+$$REM$$
+====================================================================
+//// <summary>Include comportant les variables liées aux annonces</summary>
+//// <remarks>
+//// <para>Projet Web Analytic avec la solution Omniture</para>
+//// </remarks>
+//// <update date="2009-08-26" author="florian.adam"></update>
+//// <update date="2009-09-23" author="florian.adam">Ajout du département</update>
+====================================================================
+$$END:REM$$
+
+<script type="text/javascript">
+
+	s.events = s.apl(s.events, "event4", ';',1);
+	
+	s.products = s.apl(s.products, ";$$ANNLISTE:IDANNONCE$$;;;event4=1;", ',',1);
+	
+	/****************************************/
+	/* 		Variables liés à une annonce			*/
+	/****************************************/
+		
+	// Département du bien immobilier
+	s.products = s.apl(s.products, "eVar26=$$ANNLISTE:DEP$$", ' ',0);
+	
+	// Postion dans la liste de résultat
+	s.products = s.apl(s.products, "eVar35=$$ANNLISTE:I$$", '|',0);
+	
+	// Numéro de la page
+	s.eVar36="$$ANNLISTE:PAGE$$";
+	
+	// Idconfig
+	$$IF:REP:IDCONFIG$$
+	s.eVar37="conf_$$REP:IDCONFIG$$";
+	$$END$$
+	
+$$REM$$
+	// Idconfig
+	$$IF:REP:IDCONFIG$$
+			s.products = s.apl(s.products, "evar37=conf_$$REP:IDCONFIG$$", '|',0);
+	$$END$$
+$$END:REM$$
+	// Idtiers
+	$$IF:ANNLISTE:IDTIERS$$
+	s.products = s.apl(s.products, "eVar38=$$ANNLISTE:IDTIERS$$", '|',0);
+	$$END:IDTIERS$$
+	
+	// Idagence
+	s.products = s.apl(s.products, "eVar39=$$ANNLISTE:IDAGENCE$$", '|',0);
+	
+	// Identifiant du syndicat
+	$$IF:ANNLISTE:IDSYNDICAT$$
+		s.products = s.apl(s.products, "eVar40=$$ANNLISTE:IDSYNDICAT$$", '|',0);
+	$$END:IDSYNDICAT$$
+	
+	// Type de bien
+	$$IF:ANNLISTE:IDTYPEBIEN$$
+		s.products = s.apl(s.products, "eVar41=$$ANNLISTE:IDTYPEBIEN$$", '|',0);
+	$$END:IDTYPEBIEN$$
+
+	// Type de transaction
+	$$IF:FORM:IDTT$$
+		s.eVar42 = "$$FORM:IDTT$$";
+		//s.products = s.apl(s.products, "eVar42=$$ANNLISTE:IDTT$$", '|',1);
+	$$END:IDTT$$
+	
+	// Code postal
+	$$IF:ANNLISTE:CP$$
+		s.products = s.apl(s.products, "eVar43=$$ANNLISTE:CP$$", '|',0);
+	$$END:CP$$
+	
+	// Nombre de pièces et chambres
+	if( s.eVar44 != "") s.products = s.apl(s.products, "eVar44=$$ANNLISTE:NB_PIECES$$#$$ANNLISTE:NB_CHAMBRES$$", '|',0);
+	
+	// Prix
+	$$IF:ANNLISTE:PRIX$$
+		s.products = s.apl(s.products, "eVar45=$$ANNLISTE:PRIXRAW$$", '|',0);
+	$$END:PRIX$$
+	
+	// Nombre de photos + visite virtuelle
+	if( s.eVar46 != "") s.products = s.apl(s.products, "eVar46=$$ANNLISTE:NB_PHOTOS$$#$$ANNLISTE:NB_360$$", '|',0);
+	
+	// Etages
+	$$IF:ANNLISTE:ETAGE$$
+		s.products = s.apl(s.products, "eVar47=$$ANNLISTE:ETAGE$$", '|',0);
+	$$END:ETAGE$$
+	
+	// Type de cuisine et chauffage
+	if( s.eVar48 != "") s.products = s.apl(s.products, "eVar48=$$ANNLISTE:IDTYPECHAUFFAGE$$#$$ANNLISTE:IDTYPECUISINE$$", '|',0);
+	
+	// Etat d'avancement (utile uniquement pour selogerNeuf )
+	//s.eVar49 = "$$ANNLISTE:$$";
+	
+	
+</script>
