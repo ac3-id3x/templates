@@ -1,0 +1,86 @@
+$$INCL:HAUT.HTM$$
+<script language="javascript" type="text/javascript">
+<!--
+function coche(i)
+{
+	if (i<document.villes.length)
+	{
+		if (document.villes.elements[i].name=='ci')
+		{
+			document.villes.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 15);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.villes.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 15);
+	}
+}
+function subm()
+{
+var modeRech;
+var url = '/recherche.htm?$$REP:QRY escape$$';
+
+$$IF:FORM:PRELISTE$$
+modeRech = "$$FORM:PRELISTE$$";
+$$END$$
+if (modeRech == "/preliste.htm")
+url = '/preliste.htm?$$REP:QRY escape$$';
+
+	for(i=0; i<document.villes.length; i++)
+	{
+		if (document.villes.elements[i].checked)
+		{
+			if (url.indexOf('&ci='+document.villes.elements[i].value) == -1) url += '&' + document.villes.elements[i].name + '=' + document.villes.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+function carte(ci)
+{
+	window.open('http://$$REP:RSRV$$/'+ci+'/france.htm','france','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=650,height=570');
+}
+// -->
+</script>
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td>
+$$FORM:PRELISTE$$ <b><font color="#B81313">»
+$$E:IMMOBW:TYPETRANSACTION:QRY:IDTT$$$$IMMOBW:TYPETRANSACTION:DESCRIPTION ncase$$</font></b>
+<br />
+$$LG:LOCAMBIGU$$ <br />
+$$LG:SELECLOC$$
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche.htm" name="villes">
+<input type="hidden" name="lang" value="$$LANGUE$$">
+<div align="center">
+$$B:IMMOBW:PREANN:QRY:CP:ADD:/+REP_1+/recherche.htm$$$$BIF:IMMOBW:PREANN:QRY$$
+	$$DO:2:50$$<font size="1">
+		$$IF:IMMOBW:PREANN:QRY:ISDEP$$
+			<input type="checkbox" name="cp" value="$$IMMOBW:PREANN:QRY:DEP$$" />
+			$$IMMOBW:PREANN:QRY:DEPARTEMENTAFF$$ ($$LG:DEPART$$)</a>
+		$$END$$
+		$$IF0:IMMOBW:PREANN:QRY:ISDEP$$
+			<input type="checkbox" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ checked$$END$$>
+			<a href="javascript:carte('$$IMMOBW:PREANN:QRY:CODEINSEE$$');">$$IMMOBW:PREANN:QRY:VILLEAFF$$</a> ($$IMMOBW:PREANN:QRY:CODEINSEE left 2$$)
+		$$END$$
+		<br />
+		</font>
+	$$LOOP$$
+$$BFIN$$
+</div><br />
+<input type="button" value="$$LG:TTSELEC$$" onclick="coche(0);">
+<input type="button" value="$$LG:TTDESLEC$$" onclick="decoche(villes.length-1);"><br /><br />
+<input type="button" value="$$LG:SELECTIONNEZ$$" onclick="history.back();">
+<br />
+<br />
+<div align="right"><a href="javascript:subm();"><img src="img/rechercher_$$LANGUE$$.gif" border="0"></a></div>
+</form>
+</td></tr></table>
+$$INCL:BAS.HTM$$

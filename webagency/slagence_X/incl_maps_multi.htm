@@ -1,0 +1,32 @@
+$$B:IMMOBW:AGENCES:CP:QRY:CP$$
+<script type="text/javascript">
+//<![CDATA[
+	function load() {
+$$BIF:IMMOBW:AGENCES:CP$$
+		maps_load( "carto" );
+
+$$DO:1:120$$
+	$$IF:IMMOBW:AGENCES:CP:LATITUDE$$
+		maps_addMarkerLatLon( $$IMMOBW:AGENCES:CP:LATITUDE replace , .$$, $$IMMOBW:AGENCES:CP:LONGITUDE replace , .$$, 
+	$$END$$
+	$$IF0:IMMOBW:AGENCES:CP:LATITUDE$$
+		maps_addMarkerAddress( "$$IMMOBW:AGENCES:CP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp rxreplace \d\d\d\d\d , rxreplace ' ,' ,$$, France",
+	$$END$$
+	"$$IMMOBW:AGENCES:CP:NOM$$",
+	 "<span class=\"liste_agences_nom\">$$IMMOBW:AGENCES:CP:NOM$$</span><br /><strong>$$IMMOBW:AGENCES:CP:ADRESSE htmlencode crlf2br$$<br /></strong><font class=\"liste_agences_info\">$$LG:MINITEL$$ :</font> $$IMMOBW:AGENCES:CP:TEL formattel$$<br /><font class=\"liste_agences_info\">Fax :</font> $$IMMOBW:AGENCES:CP:FAX formattel$$<br />$$IF:IMMOBW:AGENCES:CP:EMAIL$$<font class=\"liste_agences_info\">E-mail : </font>$$IMMOBW:AGENCES:CP:EMAIL$$<br />$$END$$<font class=\"liste_agences_info\">$$LG:NOMRESP$$</font> $$IMMOBW:AGENCES:CP:RESPAG$$<br />",
+	 "agence_$$IMMOBW:AGENCES:CP:IDAGENCE$$"
+	  );
+$$LOOP$$
+$$BFIN$$
+$$IF:PAGE:MAP_AUTOCENTER$$
+		maps_autocenter();
+$$END:MAP_AUTOCENTER$$
+	}
+	
+	function unload() {
+$$BIF:IMMOBW:AGENCES:CP$$
+		maps_unload();
+$$BFIN$$
+	}
+//]]>
+</script>

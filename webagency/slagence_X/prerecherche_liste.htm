@@ -1,0 +1,62 @@
+$$INCL:HAUT.HTM$$
+<script language="javascript" type="text/javascript">
+<!--
+function coche(i)
+{
+	if (i<document.villes.length)
+	{
+		if (document.villes.elements[i].name=='ci')
+		{
+			document.villes.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 15);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.villes.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 15);
+	}
+}
+function subm()
+{
+
+var url = '/preliste.htm?$$REP:QRY escape$$';
+	for(i=0; i<document.villes.length; i++)
+	{
+		if (document.villes.elements[i].checked)
+		{
+			if (url.indexOf('&ci='+document.villes.elements[i].value) == -1) url += '&ci=' + document.villes.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+function carte(ci)
+{
+	window.open('http://$$REP:RSRV$$/'+ci+'/france.htm','france','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=650,height=570');
+}
+// -->
+</script>
+$$FORM:PRELISTE$$
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b><font size="3" color="#B81313">»
+$$E:IMMOBW:TYPETRANSACTION:QRY:IDTT$$$$IMMOBW:TYPETRANSACTION:DESCRIPTION ncase$$</font></b> (cochez les villes que vous recherchez)<br />
+<form method="get" action="/preliste.htm" name="villes">
+<div align="center">
+$$B:IMMOBW:PREANN:QRY:CP:/preliste.htm$$$$BIF:IMMOBW:PREANN:QRY$$$$DO:2:50$$<font size=1>
+<input type="CHECKBOX" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ CHECKED$$END$$>
+<a href="javascript:carte('$$IMMOBW:PREANN:QRY:CODEINSEE$$');">$$IMMOBW:PREANN:QRY:VILLEAFF$$</a> ($$IMMOBW:PREANN:QRY:CODEINSEE left 2$$)<br />
+</font>$$LOOP$$$$BFIN$$
+</div>
+<br />
+<input type="button" value="Tout sélectionner" onclick="coche(0);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<input type="button" value="Tout désélectionner" onclick="decoche(villes.length-1);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<input type="button" value="Modifier vos critères" onclick="history.back();" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<br /><br />
+<div align="RIGHT"><a href="javascript:subm();"><img src="img/rechercher.gif" border="0"></a></div>
+</form>
+</font>
+$$INCL:BAS.HTM$$

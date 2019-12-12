@@ -1,0 +1,136 @@
+$$SET:PAGE:IDT=RESULTATS$$
+$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@$$
+$$IF:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN getsoustypesbien@@$$
+$$END$$
+$$IF0:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@$$
+$$END$$
+$$IF:1_IMMOBW:ANN:QRY:SURFACE$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:SURFACE@@ m2$$
+$$END$$
+$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:VILLE htmlencode@@$$
+$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF left 100 htmlencode@@$$
+
+$$A:REFERENCEMENT:IDPAGE=_MANUEL$$$$A:REFERENCEMENT:KEYWORD=Immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ Agence immobiliere$$$$INCL:HAUT.HTM$$$$A:CREDIT:DUREEAN=20$$$$A:CREDIT:DUREE=@@CREDIT:DUREEAN exec XX*12@@$$$$A:CREDIT:COEFF=0.7$$$$IF=:1:PAGE:UCB$$$$A:CREDIT:TAUX=0.06$$$$END:PAGE:UCB$$$$IF!:0:PAGE:UCB$$$$IF!:1:PAGE:UCB$$$$A:CREDIT:TAUX=0.0648$$$$END:PAGE:UCB$$$$END:PAGE:UCB$$
+<!--ajout CL du 05/08/2009 pour test et maj descref et keywords ajoutes -->
+$$IF:IMMOBW:ANN:QRY:NBR$$
+$$A:PAGE:TITR=
+	@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+	@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ - 
+	@@1_IMMOBW:ANN:QRY:VILLE@@ 	
+	@@1_IMMOBW:ANN:QRY:QUARTIER@@ :
+	@@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 50 htmlencode@@... 
+$$
+$$A:PAGE:DESCREF=
+immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ par @@1_IMMOBW:ANN:QRY:NOM@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF  smalltext 80 htmlencode@@
+$$
+$$A:PAGE:KEYWORDS=
+   @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase@@
+	@@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien lcase@@ 
+	@@1_IMMOBW:ANN:QRY:VILLE@@,
+	agence immobili&egrave;re @@1_IMMOBW:ANN:QRY:VILLE@@, 
+    annonces immobili&egrave;res @@1_IMMOBW:ANN:QRY:VILLE@@,
+    @@1_IMMOBW:ANN:QRY:VILLE@@ (@@1_IMMOBW:ANN:QRY:CP@@)
+$$
+$$END$$
+$$IF0:IMMOBW:ANN:QRY:NBR$$
+		$$B:IMMOBW:AGENCES:ALIAS:AG$$
+		$$BIF:AG$$
+		$$A:AGNOM=@@1_AG:NOM@@$$
+		$$A:AGVILLE=@@1_AG:VILLE@@$$
+		$$A:AGCP=@@1_AG:CP@@$$
+		$$DO$$$$LOOP$$$$BFIN$$
+		$$A:PAGE:TITR=@@AGNOM@@, @@LG:AGENCEIMMOBILIERE pcase@@ &agrave; @@AGVILLE@@ (@@AGCP@@)$$
+$$END$$
+<!-- Fin ajout CL du 05/08/2009  -->
+<!-- Ci dessous une variable qui sert a renseigner la query string pour le lien de recherche par Metro et appelee par la fonction refineLieux dans mm.js-->
+<script type="text/javascript">
+//<![CDATA[
+	var urlrequerylieux='$$REP:QRY removeqry kw removeqry gclid removeqry immobw_ann_qrypg removeqry idlieux removeqry idll removeqry cp removeqry ci removeqry idq escape$$';
+	var urlpreliste='/$$REP:URI escape$$';
+	//]]>
+</script>
+
+<a name="hautdepage"></a>
+
+<div id="ConteneurAnn">  
+	<div id="Legende" class="Legende">    
+	$$IF:IMMOBW:ANN:QRY:NBR$$      	      	
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		  	<p class="BoitePhraseRecherche" id="BoitePhraseRecherche">
+		  		$$LG:PHRASE$$&nbsp;: $$IMMOBW:ANN:QRY:PHRASE htmlencode$$ $$IF:FORM:IDSOUSTYPEBIEN$$$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$(style : $$FORM:IDSOUSTYPEBIEN 
+		  		getsoustypesbien$$)$$END:!FORM:IDSOUSTYPEBIEN$$$$END:FORM:IDSOUSTYPEBIEN$$  
+		  	</p>
+		$$END:SIPANIER$$
+		 
+		$$IF:ERRE$$
+			<span class="TitreErreur" id="TitreErreur">$$ERRE$$</span>
+		$$END:ERRE$$
+	    
+		<p class="NbAnnonces" id="NbAnnonces">
+		  $$IF:IMMOBW:ANN:QRY:SIPANIER$$
+			&raquo;&nbsp;
+			$$IF0:IMMOBW:ANN:QRY:NBR$$0 $$END:NBR$$$$IMMOBW:ANN:QRY:NBR$$&nbsp;
+			$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$&nbsp;
+			$$LG:TROUVE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+		  $$END:SIPANIER$$	
+		  $$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+			&raquo;&nbsp;
+			$$IF0:IMMOBW:ANN:QRY:NBR$$0 $$END:NBR$$
+			$$IF=:200:IMMOBW:ANN:QRY:NBR$$$$LG:PLUSDE$$$$END:200$$
+			$$IMMOBW:ANN:QRY:NBR$$&nbsp;
+			$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$&nbsp;
+			$$LG:TROUVE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+		  $$END:SIPANIER$$
+		</p>
+		  
+		<p class="contenuBoutonLegende">
+			<input class="BoutonLegende" id="BoutonLegende" type="button" value="$$LG:LEGENDE$$" onclick="javascript:go('/recherche,popup_legende.htm?lang=$$LANGUE$$','legende',200,170);" />
+		</p>
+		
+		$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+		<p class="LiensPanier" id="LiensPanier">
+			<a href="javascript:go('/print_panier.htm','panierv',685,500);">$$LG:IMPRIMER$$</a>
+			<a href="javascript:go('/videpanier.htm','panierv',200,170);">$$LG:VIDERMONPANIER$$</a>
+		  	<a href="javascript:history.go(-1);">$$LG:RETOURNER$$</a>
+		</p>
+		$$END:SIPANIER$$
+	  
+	    $$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		<p id="InclPanierHaut" class="InclPanier">
+			$$INCL:PANIER.HTM$$
+		</p>
+	    $$END$$
+
+	  	$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		<div id="RechercheTri" class="RechercheTri">
+		  <!--#include virtual="/recherche/incl_recherche_tri.htm" -->
+		</div>
+		$$END:SIPANIER$$	    
+	
+		$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+		<div class="NbPages" id="NbPagesHaut">	   	
+			<span class="NbPagesNb">$$IMMOBW:ANN:QRY:PAGE$$ / $$IMMOBW:ANN:QRY:NBRPAGES$$ $$LG:PAGES$$</span>
+			<span class="NbPagesLiens">$$IF:IMMOBW:ANN:QRY:NBRPAGES$$ $$LG:PAGES$$ :$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+	   		$$IMMOBW:ANN:QRY:MULTIPAGE$$
+	   	</span>
+	   	<p style="clear: both;"><!-- --></p>
+	  </div>
+		$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+		
+$$END$$	   
+</div>
+
+   
+	  $$REM$$ test affichage vignette ou grand format $$PAGE:VIGNETTE$$ $$END$$
+	  $$IF=:8:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$ $$A:PAGE:VIGNETTE=0$$ $$END$$
+
+    $$A:LAYOUT:CPTANNONCE=0$$$$A:LAYOUT:NBANNENTREPUB=@@PAGE:WAG_NBANNONCESENTREPUB@@$$$$A:LAYOUT:NBCOLUMNS=@@PAGE:WAG_NBCOLONNESRESULTAT@@$$$$A:LAYOUT:WIDTH=@@LAYOUT:NBCOLUMNS exec (95/XX) replace , .@@$$
+
+	  $$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:QRY:URLONERROR$$
+	  $$BIF:IMMOBW:ANN:QRY$$
+	  $$DO:config:config$$
+$$SET:PAGE:IDT=RESULTATS$$
+
+

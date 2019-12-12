@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--#include virtual="incl_dico-form.htm" -->
+<!--#include virtual="incl_rub.htm" -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$">
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:AGENCECARTO$$
+<head> 
+	<title>Localisation $$AGENCECARTO:VILLE pcase$$</title>
+<!-- http://dev.live.com/virtualearth/sdk/ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=fr-fr"></script>
+	<script type="text/javascript">
+		var map = null;
+
+		var address;
+		var zip;
+		var town;
+		var country;
+		var lat, lng;
+		
+		var numResults = 1;
+		var index = 0;
+		var results = null;
+		var franchise = "$$FORM:FRANCHISE$$";
+		if(franchise == ''){
+    	var icon = '<img src="/img/picto_carto.gif" onerror="this.src=\'$$~$$carto/picto_carto.gif\'";/>';  
+  	}else{
+  		 var icon = '<img src="/img/picto_carto.gif" onerror="this.src=\'$$-$$img/picto_carto.gif\'";/>';  
+  	}   
+
+         function GetMap()
+         {
+         	
+            map = new VEMap('myMap');
+            var LA = new VELatLong(46.37725420510028, 3.164062500000014); //France
+            map.LoadMap(LA,5);
+            FindLoc();
+            
+         }
+
+		 function FindLoc()
+     {
+				
+				addr = "$$AGENCECARTO:ADRESSE crlf2br$$";
+				tabaddress = addr.split('<br/>');/*recupere uniquement l'addresse*/
+				address = tabaddress[0];
+				zip = "$$AGENCECARTO:CP$$";
+				town = "$$AGENCECARTO:VILLE$$";
+				country = "$$AGENCECARTO:PAYS$$";
+				lat = "$$AGENCECARTO:LATITUDE replace , .$$";
+				lng = "$$AGENCECARTO:LONGITUDE replace , .$$";
+	
+				var where = address + ',' + zip + ',' + town + ',' + country;
+	
+				if (where == null)
+				{
+					document.getElementById("myMap").style.visibility = "visible";
+					return;
+				}
+					
+				try
+				{
+					 if ((lat != "") && (lng != ""))
+					 {
+						map.LoadMap(new VELatLong(lat, lng), 15 ,'s' ,false);	
+						AddPushpin(new VELatLong(lat, lng), "");
+					 }
+					 else
+					 {
+					   results = map.Find(null,
+										  where,
+										  null,
+										  null,
+										  index,
+										  numResults,
+										  true,
+										  true,
+										  true,
+										  true,
+										  MoreResults
+										  );
+							index = parseInt(index)+9;
+							
+						}
+				}
+				catch(e){
+				   alert(e.message);
+				}
+      }
+        
+     	function MoreResults(layer, resultsArray, places, hasMore, veErrorMessage)
+      {
+      	
+            if(hasMore)
+            {
+               var r = "<a href='#' onclick=\"javascript:FindLoc();\">" +
+                       "Cliquez pour + de résultats</a>";
+               document.getElementById('results').innerHTML = r;
+            }
+            else
+            {
+				var infos = "";
+				// Précision de la réponse
+				if (places[0].MatchConfidence != VEMatchConfidence.High)
+				{
+					infos = "Localisation approximative<br/> de l'agence :";
+					map.SetZoomLevel(14);
+				}else{
+					map.SetZoomLevel(18);
+				}
+				
+				AddPushpin(places[0].LatLong, infos);
+				index=0;
+				number=Number(numResults); 
+				//document.getElementById('results').innerHTML = "Pas d'autres résultats disponibles.";
+				//document.getElementById("myMap").style.visibility = "visible";
+            }
+      }
+         
+      function AddPushpin(latlng, infos)
+      {
+     			
+          var shape = new VEShape(VEShapeType.Pushpin, latlng);
+          shape.SetCustomIcon(icon);
+         
+		  		 if(infos == ""){
+			  		shape.SetTitle("Localisation de l'agence :");
+			  	}else{
+			  		shape.SetTitle(infos);
+			  	}
+         	shape.SetDescription("<span style='color: Black;'>" + address + '<br/>' + zip + ' ' + town + '</span>');
+          map.AddShape(shape);
+      }         
+
+	</script>
+	<style type="text/css">
+	<!--
+	body{
+	font-family: Arial;
+	margin:0;
+	padding:0;
+	}
+	-->
+	</style>
+</head>
+<body onload="GetMap();">
+	
+	<div id="myMap" style="position: relative; "></div>
+	
+	<!--<div id="results"></div>-->
+
+
+</body>
+</html>

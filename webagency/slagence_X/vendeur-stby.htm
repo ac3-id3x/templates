@@ -1,0 +1,193 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=VENDEU$$
+$$DYN:ID3:NOCNXWEB$$ 
+<!--#include virtual="/incl_choix_idtb_forms.htm" -->
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:CONTACT.HTM$$
+$$END$$
+$$END$$
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br />
+	D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+	L'adresse e-mail du destinataire n'est pas disponible.
+	<br /><br />
+	</div>
+$$END$$
+$$END$$
+$$IF:AGENCE:EMAIL$$
+<!-- $$FORM:LANGUE$$ -->
+<table width="95%" border="0" cellspacing="0" cellpadding="5" class="tabFond1" style="text-align:left !important;">
+<tr>
+	<td>
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="3" />
+<input type="hidden" name="page_ok" value="page_ok_vendeur.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_vendeur.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+<input type="hidden" name="idPublication" value="$$REP:1$$" />
+	<font size="3">
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2">
+		<table width="100%" border="0" cellspacing="0" cellpadding="2">
+		<tr>
+			<td class="tabTitre" align="center"><b>$$LG:VOUSPOSSEDEZ$$</b></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="159" height="27"></td>
+		<td width="822" height="27"><input type="radio" name="rdesir" value="Vendre" /> $$LG:VENTE$$
+		<input type="radio" name="rdesir" value="Estimation" /> $$LG:ESTIMATION$$</td>
+	</tr>
+	<tr>
+		<td width="300" Valign="top">$$LG:BIENPROP$$&nbsp;:</td>
+		<td>
+		<table width="95%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td colspan="3">
+			<select name="typebien" size="1" class="imputForm">
+			<option value=""> -- -- </option>
+			
+			$$IF=:1:PAGE:IDTB1$$<option value="1">$$LG:APPARTEMENT$$</option>$$END$$
+		  
+			$$IF=:1:PAGE:IDTB2$$<option value="2">$$LG:MAISON$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB3$$<option value="3">$$LG:PARKING$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB4$$<option value="4">$$LG:TERRAIN$$</option>$$END$$
+			
+		
+			$$IF=:1:PAGE:IDTB6$$<option value="6">$$LG:BOUTIQUE$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB7$$<option value="7">$$LG:LOCAL$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB8$$<option value="8">$$LG:BUREAUX$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB9$$<option value="9">$$LG:LOFT$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB11$$<option value="11">$$LG:IMMEUBLE$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB12$$<option value="12">$$LG:BATIMENT$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB13$$<option value="13">$$LG:CHATEAU$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB14$$<option value="14">$$LG:HOTEL$$</option>$$END$$
+			
+			$$IF=:1:PAGE:IDTB15$$<option value="15">$$LG:PROGRAMME$$</option>$$END$$
+			
+		</select></td>
+		</tr>		
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="300">$$LG:SURFH$$</td>
+		<td><input class="imputForm" type="text" name="surface" size="10" value="$$FORM:SURFACE$$" /> m2</td>
+	</tr>
+	<tr>
+		<td width="300">$$LG:TERRAIN$$&nbsp;:</td>
+		<td><input class="imputForm" type="text" name="terrain" size="10" value="$$FORM:TERRAIN$$" /> m2</td>
+	</tr>
+	<tr>
+		<td width="300">$$LG:NBRP$$&nbsp;</td>
+		<td><input class="imputForm" type="text" name="nombrepieces" size="10" value="$$FORM:NOMBREPIECES$$" /> $$LG:PIECES$$</td>
+	</tr>
+	<tr>
+		<td width="300">$$LG:DPTV$$&nbsp;:</td>
+		<td><input class="imputForm" type="text" name="villebien" size="25" value="$$FORM:VILLEBIEN$$" /></td>
+	</tr>
+	<tr>
+		<td width="300">$$LG:PRIXLOYER$$&nbsp;:</td>
+		<td><input class="imputForm" type="text" name="prix" size="25" value="$$FORM:PRIX$$" /> <font size="1">$$LG:EXSAISIE sp2nbsp$$</font></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="300" height="69">$$LG:MESSAGE$$&nbsp;:</td>
+		<td height="69"><textarea name="message" cols="35">$$FORM:MESSAGE$$</textarea></td>
+	</tr>
+	</table>
+	<br />
+	<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+	<tr>
+		<td colspan="2">
+		<table width="100%" border="0" cellspacing="0" cellpadding="2">
+		<tr>
+			<td class="tabTitre" align="center"> <b>$$LG:COORD3$$</b> </td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>$$LG:AI5$$ * :</td>
+		<td><input class="imputForm" type="text" name="nomFamille" size="20" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:PRENOM$$ * :</td>
+		<td><input class="imputForm" type="text" name="prenom" size="20" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:ADRESSE$$ :</td>
+		<td><input class="imputForm" type="text" name="adresse" size="30" value="$$FORM:ADRESSE$$" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:VILLE$$ :</td>
+		<td><input class="imputForm" type="text" name="ville" size="25" value="$$FORM:VILLE$$" />&nbsp;&nbsp;
+		$$LG:CODEP$$ <input class="imputForm" type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+	</tr>
+	<tr>
+		<td>$$LG:TEL$$ * :</td>
+		<td><input class="imputForm" type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" />&nbsp;&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>$$LG:AI6$$ * :</td>
+		<td><input class="imputForm" type="text" name="email" size="30" value="$$FORM:EMAIL$$" /></td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td colspan="2">
+		<table width="100%" border="0" cellspacing="0" cellpadding="2">
+		<tr>
+			<td class="tabTitre" align="center"><b>$$LG:VERIFINFOS$$</b></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif"  border="0" alt="$$LG:ENVOYER2$$" /></td>
+	</tr>
+	<tr>
+		<td align="justify"><br />$$INCL:CGU_FORMULAIRE.HTM$$</td>
+	</tr>
+	</table>
+	</font>
+	</form>
+	</td>
+</tr>
+</table>
+
+$$END$$
+$$INCL:BAS.HTM$$

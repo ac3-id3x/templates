@@ -1,0 +1,139 @@
+$$REM$$
+====================================================================
+
+//// <summary>Dernières annonces du portefeuille affichées sur la carte de visite de l'agence</summary>
+//// <remarks>
+//// <para>Fichier appelé par agence-immobiliere.htm</para>
+//// <para>N'apparait qu'en XDEV ou si le site a un contrat de réf en cours</para>
+//// <para>CSS : slagence_X_V2/styles/annonce01.css</para>
+//// <para>Nombre d'annonces par type de transaction paramétré par défaut dans slagence_X_V2/incl_variables.htm</para>
+//// <para>Pour modifier le nombre d'annonces affichées selon le type de transaction, placez les macros entre les balises head : INIT:NBANNVENTES=5, INIT:NBANNLOCS=3, INIT:NBANNNEUF=2 ou INIT:NBANNVIAGER=2</para>
+//// </remarks>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-08-06" author="damien.robert">Validation oK</update>
+//// <update date="2008-08-06" author="erick.barbant">Validation en attente</update>
+
+====================================================================
+$$END$$
+<!--#include virtual="/incl_choix_wag_style.htm" -->
+<div id="Annonces01">
+	<h2>Nos derni&egrave;res annonces sur le secteur de $$FORM:CI codeinsee2ville$$ </h2>
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVENTES:2:FR:::::d_dt_maj:~LIMIT:VAL:NBANNVENTES$$	
+	$$BIF:ANNVENTES$$
+	<!-- ventes immobilieres -->
+	<br />
+	<h2>Vente</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNVENTES:IDPUBLICATION@@/@@ANNVENTES:IDANNONCE@@/plus_annonce_full.htm$$
+	<div class="ann_ctn idtt$$ANNVENTES:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$img/pud/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNVENTES:IDTYPEBIEN gettypebien pcase$$ </p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="">
+			<em>
+				<span>$$ANNVENTES:DESCRIPTIF left 105$$ ...</span>
+			</em>
+			$$IF:ANNVENTES:PHOTOURL0$$<img class="thumb" src="$$ANNVENTES:PHOTOURL0$$" alt="" title="" />$$END:ANNVENTES:PHOTOURL0$$
+		</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNVENTES:LIBELLE$$</a>
+			<span>$$ANNVENTES:VILLE$$ ($$ANNVENTES:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNVENTES:PRIX$$ $$ANNVENTES:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNVENTES:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNVENTES:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	<br style="clear:both;" />
+	<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI$$&amp;lang=$$LANGUE$$">Voir toutes les annonces de ventes à $$FORM:CI codeinsee2ville$$</a></p>
+	$$BFIN$$	
+	
+	  $$BIF0:ANNVENTES$$	
+			     <h2> Pas d'annonce aujourd'hui &agrave; $$FORM:CI codeinsee2ville$$<br />
+			      <a href="/pud.htm?kw=immobilier+prox+$$FORM:CI codeinsee2ville$$" style="font-size:18px;">> Voir les annonces dans un rayon de 5 km</a>
+			      </h2>
+	 $$BFIN$$
+	 
+	$$B:IMMOBW:ANN:ALIAS:ANNLOCS:1:FR:::::d_dt_maj:~LIMIT:VAL:NBANNLOCS$$	
+	$$BIF:ANNLOCS$$
+	<!-- locations immobilieres -->
+		<br style="clear:both" />
+   <h2>Location</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLOCS:IDPUBLICATION@@/@@ANNLOCS:IDANNONCE@@/detail,plus_annonce_full.htm$$
+	<div class="ann_ctn idtt$$ANNLOCS:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$img/pud/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNLOCS:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNLOCS:PHOTOURL0$$<img class="thumb" src="$$ANNLOCS:PHOTOURL0$$" alt="" title="" />$$END:ANNLOCS:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNLOCS:LIBELLE$$</a>
+			<span>$$ANNLOCS:VILLE$$ ($$ANNLOCS:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNLOCS:PRIX$$ $$ANNLOCS:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNLOCS:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	
+	$$LOOP$$
+	<br style="clear:both" />
+		<p class="PudLiens" ><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;ci=$$FORM:CI$$&amp;lang=$$LANGUE$$">Voir toutes les annonces de locations à $$FORM:CI codeinsee2ville$$</a></p>
+	$$BFIN$$	
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNNEUF:9:FR:::::d_dt_maj:~LIMIT:VAL:NBANNNEUF$$	
+	$$BIF:ANNNEUF$$
+	<!-- programme neuf -->
+	<br style="clear:both" />
+	<h2>Programme neuf</h2>
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNNEUF:IDPUBLICATION@@/@@ANNNEUF:IDANNONCE@@/detail,plus_annonce_full.htm$$
+	<div class="ann_ctn idtt$$ANNNEUF:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$img/pud/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNNEUF:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNNEUF:PHOTOURL0$$<img class="thumb" src="$$ANNNEUF:PHOTOURL0$$" alt="" title="" />$$END:ANNNEUF:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNNEUF:LIBELLE$$</a>
+			<span>$$ANNNEUF:VILLE$$ ($$ANNNEUF:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNNEUF:PRIX$$ $$ANNNEUF:PRIX_UNITE htmlencode$$</a>
+				T&eacute;l:$$ANNNEUF:TELEPHONE formattel$$
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI$$&amp;lang=$$LANGUE$$">Voir toutes les annonces de neuf à $$FORM:CI codeinsee2ville$$</a></p>
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVIAGER:5:FR:::::d_dt_maj:~LIMIT:VAL:NBANNVIAGER$$	
+	$$BIF:ANNVIAGER$$
+		<br style="clear:both" />
+	<h2>Viager</h2>
+	<!-- viager -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNVIAGER:IDPUBLICATION@@/@@ANNVIAGER:IDANNONCE@@/plus_annonce_full.htm$$
+	<div class="ann_ctn idtt$$ANNVIAGER:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$img/pud/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNVIAGER:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNVIAGER:PHOTOURL0$$<img class="thumb" src="$$ANNVIAGER:PHOTOURL0$$" alt="" title="" />$$END:ANNVIAGER:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNVIAGER:LIBELLE$$</a>
+			<span>$$ANNVIAGER:VILLE$$ ($$ANNVIAGER:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNVIAGER:PRIX$$ $$ANNVIAGER:PRIX_UNITE htmlencode$$</a>
+			T&eacute;l: $$ANNVIAGER:TELEPHONE$$
+			
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<br style="clear:both" />
+		<p class="PudLiens"><a href="recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;ci=$$FORM:CI$$&amp;lang=$$LANGUE$$">Voir toutes les annonces de viager à $$FORM:CI codeinsee2ville$$</a></p>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$
+
+	<div class="clear"><!-- --></div>
+	
+</div>
+<!-- fin #Annonces01 -->

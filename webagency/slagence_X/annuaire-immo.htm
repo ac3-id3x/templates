@@ -1,0 +1,121 @@
+$$IF0:1_IMMOBW:ANNUAIRE:QRY:VILLE$$ $$IF0:FORM:DEPT$$ $$IF0:FORM:DEP$$ $$A:PAGE:LIEU=en France$$ $$END$$ $$END$$ $$END$$
+$$IF:1_IMMOBW:ANNUAIRE:QRY:VILLE$$ $$A:PAGE:LIEU= @@1_IMMOBW:ANNUAIRE:QRY:VILLE@@$$ $$END$$
+$$IF0:1_IMMOBW:ANNUAIRE:QRY:VILLE$$ $$IF:FORM:DEPT$$ $$A:PAGE:LIEU=du département @@FORM:DEPT@@$$ $$END$$ $$END$$
+$$IF0:1_IMMOBW:ANNUAIRE:QRY:VILLE$$ $$IF0:FORM:DEPT$$ $$IF:FORM:DEP$$ $$A:PAGE:LIEU=du département @@FORM:DEP@@$$ $$END$$ $$END$$ $$END$$
+$$A:PAGE:TITR=immobilier @@PAGE:LIEU@@ : annuaire des agences, annonces de ventes et locations immobilieres pour maisons, appartements et villas$$
+
+
+$$INCL:HAUT.HTM$$
+
+<table align="center" width="95%">
+<tr>
+<td width="100%">
+
+<p style="font-size:13px">
+<a href="$$REP:0$$"><font size="4">$$PAGE:TITR$$</font><a/> 
+
+
+
+$$IF:FORM:DEPT$$<br />&nbsp;&nbsp; +  <a href="$$REP:0$$?dept=$$FORM:DEPT$$" title="Département $$FORM:DEPT$$">Département $$FORM:DEPT$$<a/>  $$END$$ 
+$$IF:FORM:DEP$$<br /> &nbsp;&nbsp; +  <a href="$$REP:0$$?dept=$$FORM:DEP left 2$$" title="Département $$FORM:DEP left 2$$">Département $$FORM:DEP left 2$$<a/>   $$END$$ 
+$$IF:1_IMMOBW:ANNUAIRE:QRY:VILLE$$<br /> &nbsp; &nbsp; &nbsp;&nbsp;+ <b>immobilier $$1_IMMOBW:ANNUAIRE:QRY:VILLE$$ </b> $$END$$ 
+</p>
+
+
+$$B:IMMOBW:DEPTAGENCES:1$$
+$$BIF:IMMOBW:DEPTAGENCES:1$$
+<table width="100%"><tr><td>
+$$DO$$
+$$IF0:1_IMMOBW:ANNUAIRE:QRY:VILLE$$
+ $$IF:IMMOBW:DEPTAGENCES:1:DEPT$$<a href="$$REP:0$$?dept=$$IMMOBW:DEPTAGENCES:1:DEPT$$" title="Département $$IMMOBW:DEPTAGENCES:1:DEPT$$ ($$IMMOBW:DEPTAGENCES:1:NOMBRE$$ agence$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$)">Département $$IMMOBW:DEPTAGENCES:1:DEPT$$ ($$IMMOBW:DEPTAGENCES:1:NOMBRE$$ agence$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$ immobilière$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$)</a><br /> $$END$$
+ $$IF:IMMOBW:DEPTAGENCES:1:VILLE$$<a href="$$REP:0$$?dep=$$IMMOBW:DEPTAGENCES:1:CP urlencode$$" title="$$IMMOBW:DEPTAGENCES:1:VILLE$$ ($$IMMOBW:DEPTAGENCES:1:NOMBRE$$ agence$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$)">$$IMMOBW:DEPTAGENCES:1:VILLE$$ ($$IMMOBW:DEPTAGENCES:1:NOMBRE$$ agence$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$ immobilière$$IMMOBW:DEPTAGENCES:1:NOMBRE pluriel$$)</a><br />$$END$$
+$$END$$
+$$LOOP$$
+</td></tr></table>
+$$BFIN$$
+
+
+$$B:IMMOBW:ANNUAIRE:QRY:DEP:REP:1:1$$ $$BIF:IMMOBW:ANNUAIRE:QRY$$
+
+<p>
+$$IMMOBW:ANNUAIRE:QRY:NBR$$ agence$$IMMOBW:ANNUAIRE:QRY:NBR pluriel$$ immobilière$$IMMOBW:ANNUAIRE:QRY:NBR pluriel$$ à $$1_IMMOBW:ANNUAIRE:QRY:VILLE$$ ($$1_IMMOBW:ANNUAIRE:QRY:CP$$)
+</p>
+<!-- multipage -->
+$$IF:IMMOBW:ANNUAIRE:QRY:NBRPAGES$$
+$$IF!:1#:IMMOBW:ANNUAIRE:QRY:NBRPAGES$$
+<table width="100%" cellpadding="4" cellspacing="0" style="border: 1px black solid;margin:4px;">
+<tr>
+<td width="120">$$IF:IMMOBW:ANNUAIRE:QRY:LIENARRIERE$$<a href="$$IMMOBW:ANNUAIRE:QRY:LIENARRIERE$$"><img src="images/page-prec.gif" border=0></a>$$END$$</td>
+<td align="middle" width="350">$$IMMOBW:ANNUAIRE:QRY:MULTIPAGE$$
+</td>
+<td align="right" width="120">$$IF:IMMOBW:ANNUAIRE:QRY:LIENAVANT$$<a href="$$IMMOBW:ANNUAIRE:QRY:LIENAVANT$$"><img src="images/page-suiv.gif" border="0"></a>$$END$$</td>
+</tr></table>
+$$END$$$$END$$
+
+$$DO:1:10$$ 
+<table width="100%" cellpadding="4" cellspacing="0" style="margin:4px; padding:4px; border:1px black inset;">
+<thead class="tabTitre">
+	<tr>
+		<td width="260" style="border-bottom:1px solid black;"><!--260-->
+			<!--<span style="color:#CC0000; width:30px; font-weight: bold; text-align:right;">$$IMMOBW:ANNUAIRE:QRY:N$$</span>-->
+			<h4><nobr><b>$$IMMOBW:ANNUAIRE:QRY:NOM$$</nobr></h4>
+			<b><FONT SIZE="2">$$IMMOBW:ANNUAIRE:QRY:ADRESSE$$ </FONT>
+			</b>
+		</td>
+		<td style="border-bottom:1px solid black;" align="right">
+			<nobr>$$IF:IMMOBW:ANNUAIRE:QRY:TEL$$ Tél. : $$IMMOBW:ANNUAIRE:QRY:TEL formattelnb$$</nobr><br /> $$END$$
+			$$IF:IMMOBW:ANNUAIRE:QRY:FAX$$ Fax : $$IMMOBW:ANNUAIRE:QRY:FAX formattelnb$$ $$END$$ 
+		</td>
+	</tr>
+</thead>
+<tr>
+	<td colspan="2">
+		<font size="1">
+$$REM$$	$$IF:IMMOBW:ANNUAIRE:QRY:EMAIL$$
+			<b>Email:</b> $$IMMOBW:ANNUAIRE:QRY:EMAIL encodemail javascript full$$
+			$$END$$
+$$END:REM$$			
+			<b>Site:</b> <a href="$$IMMOBW:ANNUAIRE:QRY:URL$$" target="_blank" class="txt"><b>$$IMMOBW:ANNUAIRE:QRY:URL$$</a>
+		</font>
+		<br />
+		<font size="2">$$IMMOBW:ANNUAIRE:QRY:TXT_ANNUAIRE$$</font>
+	</td>
+</tr>
+</table>
+<br />
+		$$LOOP$$$$BFIN$$
+		$$BIF0:IMMOBW:ANNUAIRE:QRY$$
+		$$IF:FORM:DEP$$
+			<br /><br /><br />
+			
+			<table width="100%" border="0" align="center" class="xr" cellpadding="5">
+			  <tr> 
+					<td align="center">
+									<b>Désolé,<br />Nous n'avons répertorié aucune agence
+									dans le secteur géographique choisi, $$IMMOBW:DEPARTEMENT:DEPARTEMENTAFF pcase$$</b><br />
+		</td></tr></table>
+		$$END$$
+		$$BFIN$$
+
+		<!-- multipage -->
+		$$IF:IMMOBW:ANNUAIRE:QRY:NBRPAGES$$
+		$$IF!:1#:IMMOBW:ANNUAIRE:QRY:NBRPAGES$$
+		<table "width=100%" cellpadding="4" cellspacing="0" style="border: 1px black solid;margin:4px;">
+		<tr>
+		<td width="120">$$IF:IMMOBW:ANNUAIRE:QRY:LIENARRIERE$$<a href="$$IMMOBW:ANNUAIRE:QRY:LIENARRIERE$$"><img src="images/page-prec.gif" border="0"></a>$$END$$</td>
+		<td align="middle" width="350">$$IMMOBW:ANNUAIRE:QRY:MULTIPAGE$$
+		</td>
+		<td align="right" width="120">$$IF:IMMOBW:ANNUAIRE:QRY:LIENAVANT$$<a href="$$IMMOBW:ANNUAIRE:QRY:LIENAVANT$$"><img src="images/page-suiv.gif" border="0"></a>$$END$$</td>
+		</tr></table>
+		$$END$$$$END$$
+		<br />
+		</td>
+		<td width="200" valign="top"> 
+		</td>
+	</tr>
+</table>
+</td>
+</tr>
+</table>
+
+$$INCL:BAS.HTM$$

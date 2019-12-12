@@ -1,0 +1,302 @@
+$$INCL:HAUT.HTM$$
+<!-- $$REFERER$$ -->
+$$SET:IS:IDT=DEMDOC$$
+$$SET:IS:UNIVERS:CHEMINEMENT=NEUF> Recherche d'un bien neuf$$
+<!--
+page_ok:$$FORM:PAGE_OK$$<br>
+piece:$$FORM:PIECES$$<br>
+nb_piece:$$FORM:NB_PIECES$$
+pxmax:$$FORM:PXMAX$$<br>
+idtypebien:$$FORM:IDTYPEBIEN$$<br>
+-->
+<STYLE TYPE="TEXT/CSS">
+<!--
+/*TABLEAUX*/
+.form_annonce{background-color: #FFFFFF; border-color: #000000; border-width:1; border-style:solid; padding:2;}
+.form_titre{background-color: #E7EBEF; border-color: #000000; border-width:1; border-style:solid; padding:2; width:400;}
+.form_elt{background-color: #E7EBEF; border-color: #000000; border-width:1; border-style:solid; }
+-->
+</STYLE>
+<SCRIPT LANGUAGE="Javascript">
+<!-- 
+function MM_openBrWindow(theURL,winName,features) 
+{ //v2.0
+  window.open(theURL,winName,features);
+}
+// -->
+</SCRIPT>
+<TABLE width="95%">
+<TR>
+	<TD align="center"s>
+	<TABLE WIDTH="400" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+	<TR>
+		<TD WIDTH="400" VALIGN="TOP" id="$$FORM:CHX$$" align="center" class="size2">
+		<B><FONT COLOR="#24000E">
+		$$IF=:0:FORM:CHX$$Demande de documentation$$END$$
+		$$IF=:1:FORM:CHX$$Demande de RDV$$END$$
+		$$IF=:2:FORM:CHX$$Se faire rappeler$$END$$
+		</FONT></B>
+		</TD>
+	</TR>
+	</TABLE>
+	<FORM ACTION="/dem_doc_ok.htm" METHOD="POST" name=mainform>
+	<input type=hidden name="rep_qry" value="$$REP:QRY$$">
+	$$E:IMMOBW:ANNONCE:REP:1:REP:2::NOVISU$$
+	<input type=hidden name=chx value="$$FORM:CHX$$">
+	$$E:IMMOBW:ANNONCE2:VAL:IMMOBW_ANNONCE_IDANNONCEPARENT:REP:2::NOVISU$$
+	<TABLE WIDTH=400 class="form_annonce">
+	<TR>
+		<TD bgcolor=#E7EBEF class="size2"><B> $$IMMOBW:ANNONCE:VILLE$$ </B> $$IMMOBW:ANNONCE:CP$$</TD>
+	</TR>  
+	<TR>  
+		<TD class="size2"> 
+		• $$IF0:IMMOBW:ANNONCE:IDANNONCEPARENT$$
+		$$IF:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE_FR$$
+		$$END$$
+		</B><BR>
+		$$IMMOBW:ANNONCE:ADRESSE$$<BR>
+		Accès : $$IMMOBW:ANNONCE:SITUATION_FR$$<BR>
+		$$END:IMMOBW:ANNONCE:IDANNONCEPARENT$$		
+		$$IF:IMMOBW:ANNONCE:IDANNONCEPARENT$$
+		$$IF:IMMOBW:ANNONCE2:LIBELLE$$
+			$$IMMOBW:ANNONCE2:LIBELLE$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE2:LIBELLE$$
+			$$IMMOBW:ANNONCE2:LIBELLE_FR$$
+		$$END$$
+		</B> (
+		$$IF:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+			$$IMMOBW:ANNONCE:LIBELLE_FR$$
+		$$END$$
+		)<BR>
+		$$IMMOBW:ANNONCE2:ADRESSE$$<BR>
+		Accès : $$IMMOBW:ANNONCE2:SITUATION_FR$$<BR>
+		$$END:IMMOBW:ANNONCE:IDANNONCEPARENT$$		
+		$$IF:IMMOBW:ANNONCE:PRIX$$<B>PRIX : </B>$$IMMOBW:ANNONCE:PRIX$$ €$$END$$
+		</TD>
+	</TR>
+	</TABLE> 
+	$$IF:ERRE$$
+	<DIV ALIGN="left" CLASS="size1"><BR><B><FONT COLOR="#B91313">$$ERRE ucase$$</FONT></B><BR></DIV>
+	$$END$$
+	<BR>
+	<TABLE WIDTH=400 BORDER=0 CELLSPACING=3 class="size2">
+	<TR>
+		<TD VALIGN=top><B> 
+		<INPUT TYPE="hidden" NAME="u" VALUE="IMMOBW:NEUFDOC">
+		<INPUT TYPE="hidden" NAME="page_ok" VALUE="dem_doc_ok.htm">
+		<INPUT TYPE="hidden" NAME="page_err" VALUE="$$REP:URI$$">
+		<INPUT TYPE="hidden" NAME="Source" VALUE="immostreetneuf">
+		<INPUT TYPE="hidden" NAME="envoyer" VALUE="1">
+		<INPUT TYPE="hidden" NAME="idagence" VALUE="$$IMMOBW:ANNONCE:IDAGENCE$$">
+		$$IF:IMMOBW:ANNONCE:IDANNONCEPARENT$$
+		<INPUT TYPE="hidden" NAME="RefLot" VALUE="$$IMMOBW:ANNONCE:REFANNONCE$$">
+		<INPUT TYPE="hidden" NAME="LibelleLot" VALUE="$$IMMOBW:ANNONCE:LIBELLE_FR$$">
+		<INPUT TYPE="hidden" NAME="ProgCle" VALUE="$$IMMOBW:ANNONCE2:REFANNONCE$$">
+		<INPUT TYPE="hidden" NAME="ProgNom" VALUE="$$IMMOBW:ANNONCE2:LIBELLE_FR$$">
+		<INPUT TYPE="hidden" NAME="ProgVille" VALUE="$$IMMOBW:ANNONCE2:VILLE$$">
+		<INPUT TYPE="hidden" NAME="ProgCP" VALUE="$$IMMOBW:ANNONCE2:CP$$">
+		<INPUT TYPE="hidden" NAME="ProgTypeCtc1" VALUE="$$IF=:1:IMMOBW:ANNONCE2:IDTYPECTC1$$Promoteur$$END$$$$IF=:2:IMMOBW:ANNONCE2:IDTYPECTC1$$Co-promoteurs$$END$$$$IF=:3:IMMOBW:ANNONCE2:IDTYPECTC1$$Réalisateur$$END$$$$IF=:4:IMMOBW:ANNONCE2:IDTYPECTC1$$Commercialisateur$$END$$">	
+		<INPUT TYPE="hidden" NAME="ProgNomCtc1" VALUE="$$IMMOBW:ANNONCE2:NOMCTC1$$">
+		<INPUT TYPE="hidden" NAME="ProgCoordCtc1" VALUE="$$IMMOBW:ANNONCE2:COORDCTC1$$">
+		<INPUT TYPE="hidden" NAME="ProgNomCtc2" VALUE="$$IMMOBW:ANNONCE2:NOMCTC2$$">
+		<INPUT TYPE="hidden" NAME="ProgCoordCtc2" VALUE="$$IMMOBW:ANNONCE2:COORDCTC2$$">
+		<INPUT TYPE="hidden" NAME="ProgAdr" VALUE="$$IMMOBW:ANNONCE2:ADRESSE$$">
+		<INPUT TYPE="hidden" NAME="ProgBureau" VALUE="$$IMMOBW:ANNONCE2:ADRBUREAU$$">
+		<INPUT TYPE="hidden" NAME="ProgDesc" VALUE="$$IMMOBW:ANNONCE2:DESCRIPTIF_FR$$">
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:IDANNONCEPARENT$$
+		<INPUT TYPE="hidden" NAME="ProgCle" VALUE="$$IMMOBW:ANNONCE:REFANNONCE$$">
+		<INPUT TYPE="hidden" NAME="ProgNom" VALUE="$$IMMOBW:ANNONCE:LIBELLE_FR$$">
+		<INPUT TYPE="hidden" NAME="ProgVille" VALUE="$$IMMOBW:ANNONCE:VILLE$$">
+		<INPUT TYPE="hidden" NAME="ProgCP" VALUE="$$IMMOBW:ANNONCE:CP$$">
+		<INPUT TYPE="hidden" NAME="ProgTypeCtc1" VALUE="$$IF=:1:IMMOBW:ANNONCE:IDTYPECTC1$$Promoteur$$END$$$$IF=:2:IMMOBW:ANNONCE:IDTYPECTC1$$Co-promoteurs$$END$$$$IF=:3:IMMOBW:ANNONCE:IDTYPECTC1$$Réalisateur$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPECTC1$$Commercialisateur$$END$$">	
+		<INPUT TYPE="hidden" NAME="ProgNomCtc1" VALUE="$$IMMOBW:ANNONCE:NOMCTC1$$">
+		<INPUT TYPE="hidden" NAME="ProgCoordCtc1" VALUE="$$IMMOBW:ANNONCE:COORDCTC1$$">
+		<INPUT TYPE="hidden" NAME="ProgNomCtc2" VALUE="$$IMMOBW:ANNONCE:NOMCTC2$$">
+		<INPUT TYPE="hidden" NAME="ProgCoordCtc2" VALUE="$$IMMOBW:ANNONCE:COORDCTC2$$">
+		<INPUT TYPE="hidden" NAME="ProgAdr" VALUE="$$IMMOBW:ANNONCE:ADRESSE$$">
+		<INPUT TYPE="hidden" NAME="ProgBureau" VALUE="$$IMMOBW:ANNONCE:ADRBUREAU$$">
+		<INPUT TYPE="hidden" NAME="ProgDesc" VALUE="$$IMMOBW:ANNONCE:DESCRIPTIF_FR$$">
+		$$END$$
+		OUI</B>, Je souhaite recevoir une documentation sur ce programme</TD>
+	</TR>
+	</TABLE>
+	<BR>
+	<DIV ALIGN="LEFT" class="form_titre"><SPAN class="size2"><B>Votre Projet :<BR></B></SPAN></DIV>
+	<TABLE WIDTH=400 BORDER=0 CELLSPACING=2 class="size1">
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Civilit&eacute;* :</B></NOBR></TD>
+		<TD>
+		<INPUT TYPE="radio" NAME="civilite" VALUE="Mr" id="$$FORM:CIVILITE$$" $$IF=:Mr:FORM:CIVILITE$$CHECKED$$END$$$$IF0:FORM:CIVILITE$$CHECKED$$END$$>Mr 
+		<INPUT TYPE="radio" NAME="civilite" VALUE="Mme" id="$$SESSION:CIVILITE$$">Mme 
+		<INPUT TYPE="radio" NAME="civilite" VALUE="Melle">Mlle</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Nom* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME="nom" VALUE="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:NOM$$$$END$$" SIZE=35 MAXLENGTH=60></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Prénom* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME="prenom" VALUE="$$FORM:NOM$$$$IF0:FORM:NOM$$$$SESSION:PRENOM$$$$END$$" SIZE=35 MAXLENGTH=60></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>E-Mail* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME="email" VALUE="$$FORM:EMAIL$$$$IF0:FORM:EMAIL$$$$SESSION:EMAIL$$$$END$$" SIZE=35 MAXLENGTH=60></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Adresse* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME="adr1" VALUE="$$FORM:ADR1$$$$IF0:FORM:ADR1$$$$SESSION:ADR1$$$$END$$" SIZE=35 MAXLENGTH=60></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>CP* :</B></NOBR></TD>
+		<TD>
+		<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+		<TR> 
+			<TD><INPUT TYPE=text NAME=NCP VALUE="$$FORM:NCP$$$$IF0:FORM:NCP$$$$SESSION:NCP$$$$END$$" SIZE=10 MAXLENGTH=10></TD>
+			<TD class="size1"><B>Ville* :</B></TD>
+			<TD><INPUT TYPE=text NAME=nville VALUE="$$FORM:NVILLE$$$$IF0:FORM:NVILLE$$$$SESSION:NVILLE$$$$END$$" SIZE=15 MAXLENGTH=40></TD>
+		</TR>
+		</TABLE>
+		</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Pays</B></NOBR><NOBR></NOBR><NOBR><B>:</B></NOBR></TD>
+		<TD><INPUT TYPE="TEXT" NAME="pays" SIZE="15" value="$$FORM:PAYS$$$$IF0:FORM:PAYS$$$$SESSION:PAYS$$$$END$$">		
+		<!--  ATTENTE D'UNE LISTE DYNAMIQUE EXHAUSTIVE
+		<SELECT NAME="pays" SIZE="1">
+		</SELECT>
+		-->
+		</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Tél dom* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME=teldom VALUE="$$FORM:TELDOM$$$$IF0:FORM:TELDOM$$$$SESSION:TELDOM$$$$END$$" SIZE=15 MAXLENGTH=40><BR></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Tél bur :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME=telbur VALUE="$$FORM:TELBUR$$$$IF0:FORM:TELBUR$$$$SESSION:TELBUR$$$$END$$" SIZE=15 MAXLENGTH=40><BR></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B><NOBR>Tél GSM :</NOBR></B></TD>
+		<TD><INPUT TYPE=text NAME=telport VALUE="$$FORM:TELPORT$$$$IF0:FORM:TELPORT$$$$SESSION:TELPORT$$$$END$$" SIZE=15 MAXLENGTH=40><BR></TD>
+	</TR>
+	<TR> 
+		<TD colspan="2"><HR NOSHADE WIDTH="75%" color="#000000" align="center" size="1"></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Type de bien* :</B></NOBR></TD>
+		<TD><INPUT TYPE=CheckBox NAME=bAppt VALUE="On" $$IF:FORM:IDTYPEBIEN$$$$IF(:1:FORM:IDTYPEBIEN$$CHECKED$$END$$$$END$$ $$IF:FORM:BAPPT$$CHECKED$$END$$$$IF0:FORM:PAGE_OK$$$$IF:SESSION:BAPPT$$CHECKED$$END$$$$END$$ CHECKED>
+		Appartement &nbsp; 
+		<!-- $$SESSION:BAPPT$$ $$FORM:BAPPT$$ -->
+		<INPUT TYPE=CheckBox NAME=bMais VALUE="On" $$IF:FORM:IDTYPEBIEN$$$$IF(:2:FORM:IDTYPEBIEN$$CHECKED$$END$$$$END$$ $$IF:FORM:BMAIS$$CHECKED$$END$$$$IF0:FORM:PAGE_OK$$$$IF:SESSION:BMAIS$$ CHECKED$$END$$$$END$$> Maison &nbsp; 
+		<INPUT TYPE=CheckBox NAME=bLoft VALUE="On" $$IF:FORM:IDTYPEBIEN$$$$IF(:1:FORM:IDTYPEBIEN$$CHECKED$$END$$$$END$$ $$IF:FORM:BLOFT$$CHECKED$$END$$$$IF0:FORM:PAGE_OK$$$$IF:SESSION:BLOFT$$CHECKED$$END$$$$END$$> Loft</TD>
+		<!-- $$SESSION:BMAIS$$ $$FORM:BMAIS$$ -->
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Nbre de pièces* :</B></NOBR></TD>
+		<!--td>Minimum <input type=text name=bnbp1  size=10 maxlength=20 value=""> &nbsp;&nbsp;&nbsp;Maximum <input type=text name=bnbp2  size=10 maxlength=20 value=""></td-->
+		<TD><INPUT TYPE="checkbox" NAME="Pieces" VALUE="1" $$IF:FORM:PIECES$$$$IF(:1:FORM:PIECES$$CHECKED$$END$$$$END$$$$IF:FORM:NB_PIECES$$$$IF(:1:FORM:NB_PIECES$$CHECKED$$END$$ $$END$$> 1&nbsp;&nbsp; 
+		<INPUT TYPE="checkbox" NAME="Pieces" VALUE="2" $$IF:FORM:PIECES$$$$IF(:2:FORM:PIECES$$CHECKED$$END$$$$END$$$$IF:FORM:NB_PIECES$$$$IF(:2:FORM:NB_PIECES$$CHECKED$$END$$$$END$$> 2&nbsp;&nbsp; 
+		<INPUT TYPE="checkbox" NAME="Pieces" VALUE="3" $$IF:FORM:PIECES$$$$IF(:3:FORM:PIECES$$CHECKED$$END$$$$END$$$$IF:FORM:NB_PIECES$$$$IF(:3:FORM:NB_PIECES$$CHECKED$$END$$$$END$$> 3&nbsp;&nbsp; 
+		<INPUT TYPE="checkbox" NAME="Pieces" VALUE="4" $$IF:FORM:PIECES$$$$IF(:4:FORM:PIECES$$CHECKED$$END$$$$END$$$$IF:FORM:NB_PIECES$$$$IF(:4:FORM:NB_PIECES$$CHECKED$$END$$$$END$$> 4&nbsp;&nbsp; 
+		<INPUT TYPE="checkbox" NAME="Pieces" VALUE="5 et plus" $$IF:FORM:PIECES$$$$IF(:5:FORM:PIECES$$CHECKED$$END$$$$END$$$$IF:FORM:NB_PIECES$$$$IF(:5:FORM:NB_PIECES$$CHECKED$$END$$$$END$$> 5 et plus
+		</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Budget maxi* :</B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME=budget VALUE="$$IF0:FORM:BUDGET$$$$SESSION:BUDGET$$$$END$$$$FORM:BUDGET$$" SIZE=15 MAXLENGTH=20><B>(en Euros)</B></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B>Précisions :<BR></B></TD>
+		<TD><TEXTAREA COLS=30 NAME=comments ROWS=4>$$FORM:COMMENTS$$$$IF0:FORM:COMMENTS$$$$SESSION:COMMENTS$$$$END$$</TEXTAREA></TD>
+	</TR>
+	<TR> 
+		<TD colspan="2"><HR NOSHADE WIDTH="75%" color="#000000" align="center" size="1"></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B>Profession :</B></TD>
+		<TD> 
+		<SELECT NAME="PRF" id="$$FORM:PRF$$">
+			<OPTION VALUE=""$$IF0:FORM:PRF$$ selected$$END$$>
+			<OPTION VALUE="Employé"$$IF=:Employé:FORM:PRF$$ selected$$END$$>Employé
+			<OPTION VALUE="Ouvrier"$$IF=:Ouvrier:FORM:PRF$$ selected$$END$$>Ouvrier
+			<OPTION VALUE="Agent de Maitrise"$$IF=:Agent de Maitrise:FORM:PRF$$ selected$$END$$>Agent de Maitrise
+			<OPTION VALUE="Instituteur"$$IF=:Instituteur:FORM:PRF$$ selected$$END$$>Instituteur 
+			<OPTION VALUE="Cadre moyen"$$IF=:Cadre moyen:FORM:PRF$$ selected$$END$$>Cadre moyen
+			<OPTION VALUE="Cadre supérieur"$$IF=:Cadre supérieur:FORM:PRF$$ selected$$END$$>Cadre supérieur 
+			<OPTION VALUE="Ingenieur"$$IF=:Ingenieur:FORM:PRF$$ selected$$END$$>Ingenieur 
+			<OPTION VALUE="Professeur"$$IF=:Professeur:FORM:PRF$$ selected$$END$$>Professeur
+			<OPTION VALUE="Artisant"$$IF=:Artisant:FORM:PRF$$ selected$$END$$>Artisant 
+			<OPTION VALUE="Commercant"$$IF=:Commercant:FORM:PRF$$ selected$$END$$>Commercant
+			<OPTION VALUE="Chef d'Entreprise"$$IF=:Chef d'Entreprise:FORM:PRF$$ selected$$END$$>Chef d'Entreprise
+			<OPTION VALUE="Representant"$$IF=:Representant:FORM:PRF$$ selected$$END$$>Representant
+			<OPTION VALUE="Profession Liberale"$$IF=:Profession Liberale:FORM:PRF$$ selected$$END$$>Profession Liberale
+			<OPTION VALUE="Retraité"$$IF=:Retraité:FORM:PRF$$ selected$$END$$>Retraité 
+			<OPTION VALUE="Autre"$$IF=:Autre:FORM:PRF$$ selected$$END$$>Autre			
+		</SELECT>
+		<!--  ATTENTE D'UNE LISTE EXHAUSTIVE INSEE
+		<SELECT NAME="prf" SIZE="1">
+		<OPTION VALUE="test">test</OPTION>
+		</SELECT>
+		(liste insee)
+		-->
+		</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B>Ann&eacute;e de naissance : </B></TD>
+		<TD><INPUT TYPE=text NAME="naissance" VALUE="$$FORM:NAISSANCE$$$$IF0:FORM:NAISSANCE$$$$SESSION:NAISSANCE$$$$END$$" SIZE=5 MAXLENGTH=4><FONT SIZE="1" COLOR="#999999">exemple : 1935</FONT></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B>Situation familiale :</B></TD>
+		<TD><INPUT TYPE="radio" NAME="sit_fam" VALUE="marié" CHECKED> Mari&eacute;(e)
+		<INPUT TYPE="radio" NAME="sit_fam" VALUE="concubinage"> Concubin(e) 
+		<INPUT TYPE="radio" NAME="sit_fam" VALUE="célibataire"> C&eacute;libataire</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><NOBR><B>Nbre d'enfants : </B></NOBR></TD>
+		<TD><INPUT TYPE=text NAME=nbenfant VALUE="$$IF0:FORM:NBENFANT$$$$IF0:FORM:NBENFANT$$$$SESSION:NBENFANT$$$$END$$$$IF:FORM:NBENFANT$$$$FORM:NBENFANT$$$$END$$$$END$$$$FORM:NBENFANT$$" SIZE=2 MAXLENGTH=2></TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B>Actuellement <NOBR>vous &ecirc;tes* :</NOBR></B></TD>
+		<TD><INPUT TYPE="radio" NAME="situ_dom" VALUE="propriétaire" CHECKED> Propri&eacute;taire 
+		<INPUT TYPE="radio" NAME="situ_dom" VALUE="locataire"> Locataire 
+		<INPUT TYPE="radio" NAME="situ_dom" VALUE="autre"> Autre</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top HEIGHT="44"><B><NOBR>Ech&eacute;ance de</NOBR><NOBR>votre projet* :</NOBR></B></TD>
+		<TD HEIGHT="44"><INPUT TYPE="radio" NAME="situ_proj" VALUE="3" CHECKED>	3 mois 
+		<INPUT TYPE="radio" NAME="situ_proj" VALUE="6"> 6 mois 
+		<INPUT TYPE="radio" NAME="situ_proj" VALUE="12"> 12 mois et +<BR>
+		</TD>
+	</TR>
+	<TR> 
+		<TD VALIGN=top><B><NOBR>Vous recherchez</NOBR><NOBR> une r&eacute;sidence* :</NOBR></B></TD>
+		<TD><NOBR><INPUT TYPE="radio" NAME="type_proj" VALUE="principale" CHECKED> Principale 
+		<INPUT TYPE="radio" NAME="type_proj" VALUE="secondaire"> Secondaire 
+		<INPUT TYPE="radio" NAME="type_proj" VALUE="investissement"> Investissement</NOBR></TD>
+	</TR>
+	</TABLE>
+	<TABLE WIDTH=400 BORDER=0 CELLSPACING=3>
+	<TR>
+		<!--
+		<TD ALIGN=center >
+		<INPUT TYPE=reset VALUE="Effacer" >
+		</TD>
+		-->
+		<TD ALIGN=center><INPUT TYPE=submit VALUE="Valider" class="form_elt"></TD>
+	</TR>
+	</TABLE>
+	<DIV align="left" class="size1bold">* champs obligatoires</DIV>
+	</FORM>
+	</TD>
+</TR>
+</TABLE>
+$$INCL:BAS.HTM$$

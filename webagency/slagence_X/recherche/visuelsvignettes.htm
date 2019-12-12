@@ -1,0 +1,49 @@
+<html>
+<head>
+<script type="text/javascript" language="javascript">
+<!--
+function changeImgAnnonce(srcImg) {
+	var img = document.getElementById('big');
+	if(img){img.src = srcImg;
+	
+	}
+	else{alert('image non chargée');}
+}
+//-->
+</script>
+<link rel="stylesheet" type="text/css" media="screen" href="/styles,recherche_diaporama.css?a=1@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" />
+<link rel="stylesheet" type="text/css" media="screen" href="/styles,recherche.css?a=1@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" />
+</head>
+<body style="background-color:transparent;">
+<div class="RechercheVisuelsPhoto">
+$$B:IMMOBW:PHOTOS:ALIAS:DIAPOVIGN:REP:1$$						
+$$BIF:DIAPOVIGN$$
+$$DO:1:1$$			
+<a href="$$FORM:IDPUB$$/$$REP:1$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$FORM:LANG$$" target="_parent" title="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$">
+<img src="$$DIAPOVIGN:URL$$" id="big" name="big" alt="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$" onmouseover="javascript:window.parent.zoomer('ZoomRechercheVisuelsPhoto$$FORM:ID$$', '$$DIAPOVIGN:URL$$');" onmouseout="javascript:window.parent.dezoomer('ZoomRechercheVisuelsPhoto$$FORM:ID$$')"/>
+</a>
+$$LOOP$$
+$$BFIN$$
+$$BIF0:DIAPOVIGN$$
+		<img src="img/sans_photo.gif" id="SansPhoto" alt="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$" title="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$" />
+$$BFIN$$
+</div>
+<div class="RecherchePhotoVignettes" id="RecherchePhotoVignettes">
+$$B:IMMOBW:ANNONCEVISUELS:ALIAS:VIGN:1:REP:1$$
+$$BIF:VIGN$$
+$$IF+:2:VIGN:NBR$$
+<table border="0" cellpadding="2" cellspacing="0" align="center">
+<tr>
+$$DO:1:6$$
+<!--$$IF=:7:VIGN:I$$</tr><tr>$$END$$-->
+<td>
+	<a $$IF0:PAGE:ROLLOVER$$href="javascript:changeImgAnnonce('$$VIGN:URL$$');"$$END$$ $$IF:PAGE:ROLLOVER$$href="#" onmouseover="javascript:changeImgAnnonce('$$VIGN:URL$$');" onmouseout="javascript:changeImgAnnonce('$$1_VIGN:URL$$');"$$END$$><img src="$$VIGN:THUMB_URL$$" border="0" alt="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$" title="$$FORM:LIBELLE htmlencode$$ $$FORM:VILLE htmlencode$$" /></a>
+</td>
+$$LOOP$$
+</tr>
+</table>
+$$END$$
+$$BFIN$$
+</div>
+</body>
+</html>

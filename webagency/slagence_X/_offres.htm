@@ -1,0 +1,207 @@
+$$REM$$
+====================================================================
+
+//// <summary>Page affichant les mentions l&eacute;gales habituelles et les offres SeLoger.com</summary>
+//// <remarks>
+//// <para>Utilise le fichier css : slagence_X_V2/styles/mentions.css</para>
+//// </remarks>
+//// <update date="2007-11-20" author="lisbonne.siriphol">Cr&eacute;ation v1</update>
+//// <update date="2007-11-20" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2007-11-20" author="damien.robert">Validation r&eacute;f&eacute;rencement en cours</update>
+//// <update date="2007-11-20" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=MENTIONS$$
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,mentions.css" );
+</style>$$
+
+$$A:PRESSIMMOCAPITAL=1.350.000,00$$
+$$A:PRESSIMMORCS=Paris B 425 074 481$$
+$$A:PRESSIMMOADRESSE=216 avenue Jean Jaur&egrave;s 75019 Paris$$
+
+<div id="MentionsLegales">
+	<hr class="n1" />
+	<!-- incl_mt_infoslegales.htm -->
+	<h2>$$SRV$$</h2>
+	<p>
+		$$IF=:FR:LANGUE$$Ci-apr&egrave;s d&eacute;sign&eacute; par " le Site ", est &eacute;dit&eacute; par la soci&eacute;t&eacute; ci-apr&egrave;s d&eacute;nomm&eacute;e " l'Editeur ".$$END:FR$$
+		$$IF!:FR:LANGUE$$Hereinafter named " the Website ", is owned and operated by the company hereinafter named " the Publisher ".$$END:LANGUE$$
+	</p>
+	<h2>$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</h2>
+	$$REM$$
+	
+	<ul>	
+		$$B:IMMOBW:AGENCES:CP:QRY:CP$$
+		$$BIF0:IMMOBW:AGENCES:CP$$
+		$$E:IMMOBW:AGENCE$$
+		<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$IMMOBW:AGENCE:NOM ucase$$</li>
+		<li><strong>$$LG:FORMESOC pcase$$</strong> : $$IF:LG:LIEN:FORMSOC$$$$LG:LIEN:FORMSOC$$$$END$$ $$IF0:LG:LIEN:FORMSOC$$*$$END$$</li>
+		<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:LG:LIEN:CAPITAL$$$$LG:LIEN:CAPITAL$$ &euro;$$END$$ $$IF0:LG:LIEN:CAPITAL$$*$$END$$</li>
+		<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$IMMOBW:AGENCE:ADRESSE$$</li>
+		<li><strong>$$LG:RCS$$</strong> : $$IF:LG:LIEN:RCS$$$$LG:LIEN:RCS$$$$END$$ $$IF0:LG:LIEN:RCS$$*$$END$$</li>
+		<li><strong>$$LG:NTEL pcase$$</strong> : $$IMMOBW:AGENCE:TEL formattel$$</li>
+		<li><strong>$$LG:DIRPUBLICATION pcase$$</strong> : $$IMMOBW:AGENCE:RESPAG ncase$$</li>
+		$$BFIN$$
+				
+		$$BIF:IMMOBW:AGENCES:CP$$
+		$$DO$$
+		$$LOOP$$
+		<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$1_IMMOBW:AGENCES:CP:NOM ucase$$</li>
+		<li><strong>$$LG:FORMESOC pcase$$</strong> : $$IF:LG:LIEN:FORMSOC$$$$LG:LIEN:FORMSOC$$$$END$$ $$IF0:LG:LIEN:FORMSOC$$*$$END$$</li>
+		<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:LG:LIEN:CAPITAL$$$$LG:LIEN:CAPITAL$$ &euro;$$END$$ $$IF0:LG:LIEN:CAPITAL$$*$$END$$</li>
+		<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$1_IMMOBW:AGENCES:CP:ADRESSE$$</li>
+		<li><strong>$$LG:RCS$$</strong> : $$IF:LG:LIEN:RCS$$$$LG:LIEN:RCS$$$$END$$ $$IF0:LG:LIEN:RCS$$*$$END$$</li>
+		<li><strong>$$LG:NTEL pcase$$</strong> : $$1_IMMOBW:AGENCES:CP:TEL formattel$$</li>
+		<li><strong>$$LG:DIRPUBLICATION pcase$$</strong> : $$1_IMMOBW:AGENCES:CP:RESPAG ncase$$</li>
+		$$BFIN$$
+	</ul>
+	$$END:REM$$
+	
+	$$E:ID3:MENTIONS_LEGALES$$
+	<ul>
+		<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$ID3:MENTIONS_LEGALES:RAISON_SOCIALE ucase$$</li>
+		<li><strong>$$LG:FORMESOC pcase$$</strong> : $$IF:ID3:MENTIONS_LEGALES:FORME_SOCIALE$$$$ID3:MENTIONS_LEGALES:FORME_SOCIALE$$$$END$$ $$IF0:ID3:MENTIONS_LEGALES:FORME_SOCIALE$$*$$END$$</li>
+		<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:ID3:MENTIONS_LEGALES:CAPITAL$$$$ID3:MENTIONS_LEGALES:CAPITAL$$ &euro;$$END$$ $$IF0:ID3:MENTIONS_LEGALES:CAPITAL$$*$$END$$</li>
+		<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$ID3:MENTIONS_LEGALES:ADRESSE1$$ $$ID3:MENTIONS_LEGALES:ADRESSE2$$ $$ID3:MENTIONS_LEGALES:CP$$ $$ID3:MENTIONS_LEGALES:VILLE$$</li>
+		<li><strong>$$LG:RCS$$</strong> : $$IF:ID3:MENTIONS_LEGALES:RCS$$$$ID3:MENTIONS_LEGALES:RCS$$$$END$$ $$IF0:ID3:MENTIONS_LEGALES:RCS$$*$$END$$</li>
+		<li><strong>$$LG:NTEL pcase$$</strong> : $$ID3:MENTIONS_LEGALES:TELEPHONE formattel$$</li>
+		<li><strong>$$LG:DIRPUBLICATION pcase$$</strong> : $$ID3:MENTIONS_LEGALES:SIGNATAIRE ncase$$</li>
+	</ul>
+	
+
+
+	
+	
+	<p class="notaBene">* : Ces informations ne sont pas disponibles pour l'instant, cependant pour en prendre connaissance merci de nous laisser un message : <a class="demandeInfos" href="/msgcgu.htm?lang=$$LANGUE$$">Demande d'informations</a></p>	
+	<hr class="n2" />
+	<h2>H&eacute;bergement</h2>
+	<p class="hebergement">
+		$$IF=:FR:LANGUE$$
+		Le Site est h&eacute;berg&eacute; sur les serveurs de <strong>PRESSIMMO ON LINE</strong> ;<br />
+		SAS au capital de $$PRESSIMMOCAPITAL$$ &euro; ;<br />		
+		$$END:FR$$
+		
+		$$IF!:FR:LANGUE$$
+		The Website is hosted by <strong>PRESSIMMO ON LINE</strong> servers ;<br />
+		SAS (public limited company) with a board of directors ;<br/>
+		With a registered capital of $$PRESSIMMOCAPITAL$$ &euro; ;<br />
+		$$END:LANGUE$$
+		
+		$$LG:SIEGESOCIAL pcase$$ : $$PRESSIMMOADRESSE$$ $$IF!:FR:LANGUE$$(France)$$END:LANGUE$$ ;<br />
+		$$LG:RCS$$ $$PRESSIMMORCS$$ ;<br />
+		$$LG:NTEL pcase$$ : $$IF=:FR:LANGUE$$0826 620 620$$END:FR$$$$IF!:FR:LANGUE$$+ 33 (0)826 620 620$$END:LANGUE$$ - 0.15 &euro;/mn -
+	</p>
+	<hr class="n3" />
+	$$IF=:FR:LANGUE$$
+	<h2>Le contenu &eacute;ditorial</h2>	
+	<p>Le Site propose un contenu &eacute;ditorial (guides, actualit&eacute;s) dans un seul but documentaire et &agrave; titre indicatif. Ce contenu doit &ecirc;tre pris comme des éléments de r&eacute;flexion. Les Utilisateurs sont invit&eacute;s par l'Editeur &agrave; exploiter ces informations avec un esprit critique et discernement.</p>
+	
+	<h2>Service Petites Annonces</h2>
+	<p>L'Editeur d&eacute;ploie des efforts permanents en termes humain, technique et financier pour assurer un service Petites Annonces de qualit&eacute; professionnelle en faveur des Utilisateurs du Site.  En d&eacute;pit de ses efforts, l'Editeur ne pourra en aucun cas &ecirc;tre tenu pour toute erreur involontaire de sa part ayant pour cons&eacute;quence l'absence d'exactitude, de fiabilit&eacute;, de pertinence, d'exhaustivit&eacute;, d'actualit&eacute; des informations ins&eacute;r&eacute;es sur le service &quot;Petites Annonces&quot; du Site. Il en est de m&ecirc;me pour la disponibilit&eacute; juridique des biens cit&eacute;s dans les annonces.</p>
+	
+	<h2>Services de Simulations</h2>
+	<p>Les utilisateurs du Site ont &agrave; leur disposition des &quot;simulateurs&quot; permettant d'effectuer ais&eacute;ment un certain nombre de calculs. Ces services de simulation n'ont pour ambition que de fournir une estimation approximative concernant les valeurs calcul&eacute;es. Les r&eacute;sultats ne pouvant pas &ecirc;tre garantis pour exacts, l'utilisateur exploitera ces calculs avec un esprit critique et discernement.</p>
+	
+	<h2>Liens hypertextes vers des sites tiers</h2>
+	<p>Le Site propose des liens hypertextes pointant vers des sites Internet &eacute;dit&eacute;s par des tiers. La mise en place de ces liens ne signifie pas l'approbation par l'&eacute;diteur du contenu des dits sites. L'Editeur ne peut pas r&eacute;aliser en permanence un contr&ocirc;le du contenu des dits sites, et ne peut donc garantir :</p>
+	<ul>
+		<li>l'exactitude, la fiabilit&eacute;, la pertinence, la mise &agrave; jour, ou l'exhaustivit&eacute; de leur contenu ;</li>
+		<li>leur accès et bon fonctionnement technique.</li>
+	</ul>
+	<p>Par cons&eacute;quent, la responsabilit&eacute; de l'Editeur ne pourra &ecirc;tre retenue en cas d'&eacute;ventuel litige entre un site r&eacute;f&eacute;renc&eacute; sur le Site et un Utilisateur. Seule la responsabilit&eacute; des &eacute;diteurs des sites r&eacute;f&eacute;renc&eacute;s sur le Site pourra &ecirc;tre engag&eacute;e.</p>
+
+	<h2>La protection de la vie priv&eacute;e et des donn&eacute;es personnelles</h2>
+	<p>Le Site collecte les informations personnelles fournies par les Utilisateurs &agrave; l'occasion de leur visite sur le Site. Cette collecte permet :</p>
+	<ul>
+		<li>L'&eacute;tablissement de statistiques g&eacute;n&eacute;rales sur le trafic sur le Site ;</li>
+		<li>L'envoi vers les adresses mails fournies par les Utilisateurs de r&eacute;ponses, d'informations diverses ou annonces provenant de l'Editeur. La collecte et le traitement des informations personnelles sur Internet doivent se faire dans le respect des droits fondamentaux des personnes. Par cons&eacute;quent, l'Editeur s'engage &agrave; une politique de traitement en conformit&eacute; avec la loi n&deg;2004-575 du 21 juin 2004 pour la confiance dans l'&eacute;conomie num&eacute;rique.</li>
+	</ul>
+	<p>L'Editeur d&eacute;clare avoir effectu&eacute; une d&eacute;claration aupr&egrave;s de la Commission Nationale Informatiques et Libert&eacute;s (C.N.I.L). Par ailleurs, toujours au titre de ladite loi, tout Utilisateur du Site dispose d'un droit d'acc&egrave;s, modification, de rectification ou de suppression aux donn&eacute;es personnelles le concernant. Il peut exercer ces droits en contactant l'Editeur aux coordonn&eacute;es indiqu&eacute;es en haut de page. Pour faciliter l'exercice de ces droits, les Utilisateurs du Site peuvent se d&eacute;sinscrire en cliquant sur les liens hypertextes de d&eacute;sinscription pr&eacute;sents sur les mails adress&eacute;s.</p>
+	<p>Les ordinateurs se connectant aux serveurs du Site re&ccedil;oivent sur leur disque dur un ou plusieurs fichiers au format texte tr&egrave;s l&eacute;gers appel&eacute;s commun&eacute;ment &quot; Cookies &quot;. Les cookies enregistrent des informations relatives &agrave; la navigation sur le Site effectu&eacute;e &agrave; partir de l'ordinateur sur lequel est stock&eacute; le &quot;cookie&quot; (les pages consult&eacute;es, la date et l'heure de la consultation, etc.). Ils permettent d'identifier les visites successives faites &agrave; partir d'un m&ecirc;me ordinateur.</p>
+	<p>Les personnes connect&eacute;es au Site ont la libert&eacute; de s'opposer &agrave; l'enregistrement de &quot;cookies&quot;. Pour se faire, elles peuvent employer les fonctionnalit&eacute;s correspondantes sur leur navigateur. Cependant, l'Editeur attire l'attention des Utilisateurs que, dans un tel cas, l'acc&egrave;s &agrave; certains services du Site peut se r&eacute;v&eacute;ler alt&eacute;r&eacute;e, voire impossible.</p>
+
+	<h2>La s&eacute;curit&eacute; des &eacute;changes</h2>
+	<p>L'Editeur s'engage &agrave; prendre toutes les mesures juridiques et techniques pour s&eacute;curiser les &eacute;changes. A ce titre, L'Editeur s'engage &agrave; une obligation de moyen pour bloquer les d&eacute;tournements de donn&eacute;es, et &agrave; respecter les r&eacute;glementations applicables. N&eacute;anmoins, les Utilisateurs du Site connaissent les particularit&eacute;s techniques du r&eacute;seau Internet et les risques aff&eacute;rents. Par cons&eacute;quent, L'Editeur ne peut garantir &agrave; ses Utilisateurs que les donn&eacute;es &eacute;chang&eacute;es via les services propos&eacute;s par le Site ne soient pas r&eacute;colt&eacute;es de fa&ccedil;on frauduleuse par des tiers.</p>
+
+	<h2>Les droits de propri&eacute;t&eacute; intellectuelle</h2>
+	<p>L'Editeur est titulaire de droits concernant certaines donn&eacute;es prot&eacute;g&eacute;es par le Code de la propri&eacute;t&eacute; intellectuelle. Il en est notamment ainsi pour sa ou ses marques, sa charte graphique, sa base de donn&eacute;es. Par cons&eacute;quent, leur exploitation offline ou online, &agrave; titre gratuit ou on&eacute;reux, de tout ou partie de ces donn&eacute;es sans le consentement expresse de l'Editeur est interdite.</p>
+
+	<h2>La disponibilit&eacute; des services</h2>
+	<p>L'Editeur dispose d'une obligation de moyens en terme d'accessibilit&eacute; de service et met en place les structures n&eacute;cessaires pour rendre le Site accessible 7 jours sur 7 et 24 heures sur 24. N&eacute;anmoins, L'Editeur peut suspendre l'acc&egrave;s sans pr&eacute;avis, notamment pour des raisons de maintenance et de mises &agrave; niveau. L'Editeur n'est en aucun cas responsable des &eacute;ventuels pr&eacute;judices qui peuvent en d&eacute;couler pour l'Utilisateur ou tout tiers. L'Editeur peut &agrave; tout moment supprimer tout ou partie de ses Services ou en modifier leurs teneur notamment pour des raisons techniques, et cela sans pr&eacute;avis. L'Editeur se r&eacute;serve la facult&eacute; de refuser, unilat&eacute;ralement et sans notification pr&eacute;alable, &agrave; tout Utilisateur l'acc&egrave;s &agrave; tout ou partie du Site. Une telle d&eacute;cision pourrait notamment &ecirc;tre prise en cas de non-respect des termes du pr&eacute;sent texte par un Utilisateur.</p>
+
+	<h2>Droit applicable</h2>
+	<p>Le pr&eacute;sent texte est soumis au droit fran&ccedil;ais. L'Editeur se r&eacute;serve le droit d'en amender &agrave; tout moment les termes, conditions et mentions d'avertissement.</p>
+	$$END:FR$$
+	
+	$$IF!:FR:LANGUE$$
+	<h2>Editorial content</h2>
+	<p>The Website offers an editorial content (guides, news) for information only. This content should be considered as food for thought. The Users are invited by the Publisher to use this information with a critical mind and with discernment.</p>
+
+	<h2>Small ads service</h2>
+	<p>The Publisher is constantly improving this service in human, technical and financial terms to provide a small ads service of professional quality for the Users of the Website. Despite all its efforts, the Publisher cannot be hold responsible for any involuntary mistake which would result in a lack of accuracy, reliability, relevance, exhaustiveness and/or topicality of the information inserted in the “Small Ads” service of the Website. It is the same for the legal transferability of properties quoted in the ads.</p>
+
+	<h2>Simulation services</h2>
+	<p>" Simulators " are at the Users' disposal to carry out easily a certain number of calculations. The only aim of these simulation services is to provide a rough estimate of the calculated values. Since the results cannot be guaranteed for accurate, the User will consider these calculations with a critical mind and with discernment.</p>
+
+	<h2>Links to other websites</h2>
+	<p>The Website may provide access to other third party websites. But it does not mean that the Publisher approves the content of the said websites. The Publisher cannot permanently check the content of the said websites, and the Publisher cannot then guarantee :</p>
+	<ul>
+		<li>the exactness, reliability, relevance, update and/or exhaustiveness of their content ;</li>
+		<li>their access and good working order.</li>
+	</ul>
+	<p>Therefore, the responsibility of the Publisher cannot be hold in case of any possible litigation between a website referenced on the Website and a User. Only the responsibility of the publishers of the websites referenced on the Website may be committed.</p>
+
+	<h2>Private life and personal data protection</h2>
+	<p>The Website collects personal data provided by the Users during their visit of the Website. This collection allows the Publisher :</p>
+	<ul>
+		<li>to draw up general statistics of the traffic on the Website ;</li>
+		<li>to send answers, various information or announces to the email addresses provided by the Users.</li>
+	</ul>
+	<p>The personal data collection and processing online must be done in accordance with human fundamental rights. Therefore, the Publisher commits itself to a processing policy in accordance with the French Act n&deg; 2004-575 of the 21st op June 2004 relating to the protection of individuals with regard to the processing of personal data.<br/>
+	The Publisher declares having made a statement to the Commission Nationale Informatiques et Libertés (C.N.I.L.) [the French Data Protection Authority]. Furthermore, in accordance with article 39 of the said Act, every User of the Website has a right of access, correction, modification and deletion with regard to the User’s personal data. To exercise this right, the User may use the details provided at the top of this page to contact the Publisher. To make the exercise of this right easier, the Users of the Website may unsubscribe by clicking on the hypertext link present in each email sent.</p>
+
+	<h2>Cookies</h2>
+	<p>When a computer accesses the servers of the Website, the Publisher makes use of a block of data known as a " cookie ". A " cookie " is a small amount of data in text format that is sent to the User’s browser and stored on the User’s computer’s hard disk. They save information when the User visits the Website (the pages the User viewed, the date and time the User viewed them, etc.). They allow the Publisher to identify successive visits made from the same computer.</p>
+	<p>Users connected to the Website are free to block " cookies ". To do so, they can disable " cookies " through their Internet browser. However, the Publisher draws the Users' attention to the fact that, in such a case, access to some services of the Website may be altered, if not impossible.</p>
+
+	<h2>Data transfers security</h2>
+	<p>The Publisher commits itself to take all the technical and legal measures to secure the transfers. As such, the Publisher commits itself to an obligation of means to prevent data from highjacking and to abide by the relevant regulations. Nonetheless, the Users of the Website know the technical features of Internet and the related risks. Therefore, the Publisher cannot guarantee the Users that data transferred via the services provided by the Website will not be collected in a fraudulent way by third party.</p>
+
+	<h2>Copyright</h2>
+	<p>The Publisher is entitled to rights concerning some data protected by the Code de la Propri&eacute;t&eacute; Intellectuelle (the French Code of Intellectual Property). This includes (but not limited to) its trademark(s), graphic charter and database. Therefore, the use offline or online, free of charge or against payment, of all or part of these data without express consent of the Publisher, is forbidden.</p>
+
+	<h2>Availability of services</h2>
+	<p>The Publisher has an obligation of means in terms of service accessibility, and the Publisher is taking the necessary measures to make the Website accessible 7 days a week and 24 hours a day. Nonetheless, the Publisher may interrupt the access without notice for maintenance and upgrading reasons. The Publisher is not responsible for any possible damage which may result for the User or any third party. The Publisher may at any time suppress all or part of the services of the Website, or modify them, among others for technical reasons, without notice. The Publisher, unilaterally and without prior notice, reserves the right to deny access and use of all or part of the Website to any User. Such a decision could be taken in case of failure to respect the terms of the text therein by a User.</p>
+
+	<h2>Relevant law</h2>
+	<p>The text therein is subjected to French Law. The Publisher reserves the right to amend the terms, conditions and warnings at any time.</p>
+	$$END:LANGUE$$
+	<!-- fin incl_mt_infoslegales.htm -->
+	
+	<!-- incl_mt_offres.htm -->
+	<hr class="n4" />
+	<p>$$IF=:FR:LANGUE$$Ce site est une r&eacute;alisation$$END:FR$$$$IF!:FR:LANGUE$$This website is designed by$$END:LANGUE$$ <a href="http://www.seloger.com" title="SeLoger.com">SeLoger.com</a></p>
+				
+	<h3><a href="http://www.selogerpro.com" title="www.selogerpro.com">Publiez vos annonces sur SeLoger.com</a></h3>
+	<p>En diffusant vos annonces sur SeLoger.com, vous avez l'assurance d'&ecirc;tre vu par 100% des internautes fran&ccedil;ais &agrave; la recherche d'un bien immobilier.</p>
+
+	<h3><a href="http://www.selogerpro.com" title="www.selogerpro.com">R&eacute;alisez votre site immobilier</a></h3>
+	<p>SeLoger.com : un savoir-faire en mati&egrave;re de cr&eacute;ation, de reprise et de gestion de sites immobiliers.</p>
+
+	<h3><a href="http://www.selogerpro.com" title="www.selogerpro.com">Soyez visibles sur les principaux moteurs de recherche</a></h3>
+	<p>&quot; Le r&eacute;f&eacute;rencement &quot; : la meilleure strat&eacute;gie pour faire conna&icirc;tre son site. Garantie de positionnement et suivi mensuel.</p>
+	
+	<h3><a href="http://www.selogerpro.com" title="www.selogerpro.com">Offre Annuair'Immo</a></h3>
+	<p>G&eacute;n&eacute;rez de l'audience pour le site de votre agence en le r&eacute;f&eacute;ren&ccedil;ant sur SeLoger.com, le seul annuaire de sp&eacute;cialistes reconnu en France et &agrave; l'international.</p>
+	
+	<!-- fin incl_mt_offres.htm -->
+
+
+</div>
+
+$$INCL:BAS.HTM$$

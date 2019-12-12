@@ -1,0 +1,28 @@
+$$IF0:REP:1$$
+$$IF=:1:MULTI$$
+$$B:IMMOBW:AGENCES:CP:ALIAS:COORD2$$ $$BIF:COORD2$$
+$$DO$$
+<div id="adr2_$$COORD2:IDPUBLICATION$$" style="display:none;" >
+	<h1>$$COORD2:NOM ncase$$</h1>
+	$$COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$COORD2:CP$$ $$COORD2:VILLE ncase$$<br />
+	$$IF:COORD2:TEL$$$$LG:MINITEL pcase$$ : $$COORD2:TEL formattel$$$$END$$$$IF:COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$COORD2:FAX formattel$$$$END$$
+</div>
+$$LOOP$$
+$$BFIN$$
+$$END$$
+$$END$$
+$$IF0:MULTI$$
+$$E:IMMOBW:AGENCE:ALIAS:COOAG$$
+	<h1>$$COOAG:NOM ncase$$</h1>
+	$$COOAG:ADRESSE crlf2br$$<br />
+	$$IF:COOAG:TEL$$$$LG:MINITEL pcase$$ : $$COOAG:TEL formattel$$$$END$$$$IF:COOAG:FAX$$ - $$LG:FAX pcase$$ :  $$COOAG:FAX formattel$$$$END$$
+$$END$$	
+$$IF0:REP:1$$
+$$IF=:0:MULTI$$
+	<h1>$$1_MULTI:NOM ncase$$</h1>
+	$$1_COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$1_COORD2:CP$$ $$1_COORD2:VILLE ncase$$<br />
+	$$IF:1_COORD2:TEL$$$$LG:MINITEL pcase$$ : $$1_COORD2:TEL formattel$$$$END$$$$IF:1_COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$1_COORD2:FAX formattel$$$$END$$
+$$END$$
+$$END$$

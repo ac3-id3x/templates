@@ -1,0 +1,258 @@
+<form name=form_recherche action="/prerecherche.htm" method=get>
+<input type="hidden" name="R" value="$$FORM:R$$">
+<input type="hidden" name="idtt" value="$$FORM:IDTT$$">
+<input type="hidden" name="pays" value="fr">
+<img height="7"  src="images/x.gif" width="1" /><br />
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
+<tbody> 
+<tr> 
+	<td width="12"><img height="11" hspace="6" src="images/puce_red.gif" width="12" /></td>
+	<td class="Size2BoldRed" width="100%">
+	$$IF=:0:FORM:MSG$$
+	Nous n'avons pas d'annonce correspondant à vos critères, <font color="#000000">veuillez élargir vos critères de recherche :</font>
+	$$END$$
+	$$IF=:1:FORM:MSG$$
+	Nous avons plus de 200 annonces correspondant à vos critères, <font color="#000000">veuillez affiner vos critères de recherche :</font>
+	$$END$$
+	$$IF):0,1:FORM:MSG$$
+	Pour lancer une recherche, <font color=#000000>remplissez le formulaire :</font> 
+	$$END$$
+	</td>
+</tr>
+</tbody>
+</table>
+<div align="center">
+<img height="6" src="images/x.gif" width="1" />
+<br />
+<!-- Titre Formulaire -- Start -->
+<table cellspacing="0" cellpadding="0" width="440" border="0">
+<tbody> 
+<tr bgcolor="#0c4243"> 
+	<td width="15"><img height="20" src="images/x.gif" width="15" /></td>
+	<td class="FormTitre" width="100%">Rechercher un bien en location</td>
+	<td valign="top" width="8"><img height="5" src="images/coin_rech_d.gif" width="7" /></td>
+</tr>
+</tbody>
+</table>
+<input type="hidden" value="FR" name="pays">
+<!-- Line Departement ou Code Postal -- Start -->
+<table cellspacing="0" cellpadding="0" width="440" bgcolor="#e7ebef" border="0">
+<tbody> 
+<tr> 
+	<td colspan="6"><img height="7" src="images/x.gif" width="1" /></td>
+</tr>
+<tr> 
+	<td width="26"><img height="1" src="images/x.gif" width="26" /></td>
+	<td class="FormText" colSpan="5">Département ou Code Postal</td>
+</tr>
+<tr> 
+	<td colSpan="6"><img height="2" src="images/x.gif" width="1"></td>
+</tr>
+<tr> 
+	<td width="26"><img height="1" src="images/x.gif" width="26"></td>
+	<td width="100%"><img height="1" src="images/x.gif" width="75"></td>
+	<td nowrap="nowrap" align="right"> 
+	<input class="FormInput" value="$$FORM:CP field 1$$" maxLength="5" size="5" name="cp" />
+	<input class="FormInput" value="$$FORM:CP field 2$$" maxLength="5" size="5" name="cp" />
+	<input class="FormInput" value="$$FORM:CP field 3$$" maxLength="5" size="5" name="cp" />
+	<input class="FormInput" value="$$FORM:CP field 4$$" maxLength="5" size="5" name="cp" />
+	</td>
+	<td><img height="1" src="images/x.gif" width="10" /></td>
+	<td align="middle"><a href="javascript:openWindow('/carte.htm?C=FRANCE',400,470,0,0);">
+	<img height="30" src="images/bt_carte.gif" width="29" border="0" /></a></td>
+	<td><img height="1" src="images/x.gif" width="20" /></td>
+</tr>
+<tr> 
+	<td colSpan="6"><img height="7" src="images/x.gif" width="1" /></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Departement ou Code Postal -- End -->
+<!-- Line Ville -- Start -->
+<table cellspacing="0" cellpadding="0" width="440" bgcolor="#e7ebef" border="0">
+<tbody> 
+<tr> 
+	<td colSpan="5"><img height="7" src="images/x.gif" width="1"></td>
+</tr>
+<tr> 
+	<td width="26"><img height="1" src="images/x.gif" width="26"></td>
+	<td class="FormText" nowrap="nowrap">Ou Ville</td>
+	<td width="100%"><img height=1 src="images/x.gif" width=56></td>
+	<td align=right><input class=FormInput value="$$FORM:CP field 5$$" name=cp></td>
+	<td><img height=1 src="images/x.gif" width=60></td>
+</tr>
+<tr> 
+	<td colSpan=5><img height=7 src="images/x.gif" width=1></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Ville -- End -->
+<img height=1 src="images/x.gif" width=1><br />
+<!-- Line Type de bien -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#f6f6f6 border=0>
+<tbody> 
+<tr> 
+	<td colSpan=5><img height=7 src="images/x.gif" width=1></td>
+</tr>
+<tr> 
+	<td width=26><img height=1 src="images/x.gif" width=26></td>
+	<td class=FormText noWrap>Type de bien</td>
+	<td width="100%"><img height=1 src="images/x.gif" width=82></td>
+	<td align=right>
+	$$B:IMMOBW:TYPESBIENS:QRY:IDTT$$
+	$$BIF:IMMOBW:TYPESBIENS:QRY$$
+	<select CLASS="FormList" name="idtypebien">
+	<option value="1,2,3,4,5,6,7,8,9,10,11,12,13,14" $$IF0:FORM:IDTYPEBIEN$$SELECTED$$END$$>Indifférent</option>
+	$$DO$$
+	<option value="$$IMMOBW:TYPESBIENS:QRY:IDTYPEBIEN$$" $$IF=:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:QRY:IDTYPEBIEN$$selected$$END$$>$$IMMOBW:TYPESBIENS:QRY:DEF_LIBELLE$$</option>
+	$$LOOP$$
+	</select>
+	$$BFIN$$
+	</td>
+	<td><img height=1 src="images/x.gif" width=60></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Type de bien -- End -->
+<!-- Line Nombre de pieces -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#f6f6f6 border=0>
+<tbody> 
+<tr> 
+	<td colSpan=11><img height=7 src="images/x.gif" width=1></td>
+</tr>
+<tr> 
+	<td width=26><img height=1 src="images/x.gif" width=26></td>
+	<td class=FormText noWrap>Nombre de pièces</td>
+	<td width="100%"><img height=1 src="images/x.gif" width=22></td>
+	<td class=FormText noWrap>Min</td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td><input CLASS=FormInput MAXLENGTH=3 SIZE=3 value="$$FORM:NB_PIECESMIN$$" name=nb_piecesmin></td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText noWrap>Max</td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td align=right><input class=FormInput maxLength=3 size=3 value="$$FORM:NB_PIECESMAX$$" name=nb_piecesmax></td>
+	<td><img height=1 src="images/x.gif" width=60></td>
+</tr>
+<tr> 
+	<td colSpan=11><img height=7 src="images/x.gif" width=1></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Nombre de pieces -- End -->
+<!-- Line Envoyer -- End -->
+<!-- Line Surface -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#f6f6f6 border=0>
+<tbody> 
+<tr> 
+	<td width=26><img height=1 src="images/x.gif" width=26></td>
+	<td class=FormText noWrap>Surface entre</td>
+	<td width="100%"><img height=1 src="images/x.gif" width=58></td>
+	<td><input class=FormInput maxLength=8 size=5 value="$$FORM:SURFACEMIN$$" name=surfacemin></td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText noWrap>et</td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td><input class=FormInput maxLength=8 size=5 value="$$FORM:SURFACEMAX$$" name=surfacemax></td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText align=right>m<SUP>2</SUP></td>
+	<td><img height=1 src="images/x.gif" width=60></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Surface -- End -->
+<!-- Line Prix -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#f6f6f6 border=0>
+<tbody> 
+<tr> 
+	<td colSpan=11><img height=7 src="images/x.gif" width=1></td>
+</tr>
+<tr> 
+	<td width=26><img height=1 src="images/x.gif" width=26></td>
+	<td class=FormText noWrap>Prix entre</td>
+	<td width="100%"><img height=1 src="images/x.gif" width=22></td>
+	<td><input class=FormInput maxLength=13 size=10 value="$$FORM:PX_LOYERMIN$$" name=px_loyermin></td>
+	<td><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText>et</td>
+	<td><img height=1 src="images/x.gif" width=6></td>
+	<td><input class=FormInput maxLength=13 size=10 value="$$FORM:PX_LOYERMAX$$" name=px_loyermax></td>
+	<td><img height=1 src="images/x.gif" width=6></td>
+	<td align=right>
+	<select CLASS="FormList"  name="euro">
+	<option $$IF=:0:FORM:EURO$$selected$$END$$ value="0">FRF</option>
+	<option $$IF!:0:FORM:EURO$$selected$$END$$ value="1">&euro;</option>
+	</select>
+	</td>
+	<td><img height=1 src="images/x.gif" width=60></td>
+</tr>
+<tr> 
+	<td colSpan=11><img height=7 src="images/x.gif" width=1></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Prix -- End -->
+<img height=1 src="images/x.gif" width=1><br />
+<!-- Line Style Annonces -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#e7ebef border=0>
+<tbody> 
+<tr> 
+	<td colSpan=4><img height=7 src="images/x.gif" width=1></td>
+</tr>
+<tr> 
+	<td width=24><img height=1 src="images/x.gif" width=24></td>
+	<td><input type=CHECKBOX name="fraicheur" value="8" $$IF=:8:FORM:FRAICHEUR$$checked$$END$$></td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText width="100%">Uniquement les annonces de moins de 8 jours</td>
+</tr>
+<tr> 
+	<td colSpan=4><img height=7 src="images/x.gif" width=1></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Style Annonces -- End -->
+<!-- Line Style Annonces -- Start -->
+<table cellSpacing=0 cellPadding=0 width=440 bgColor=#e7ebef border=0>
+<tbody> 
+<tr> 
+	<td width=24><img height=1 src="images/x.gif" width=24></td>
+	<td><input type=CHECKBOX value="1" name="si_meuble" $$IF=:1:FORM:SI_MEUBLE$$checked$$END$$></td>
+	<td width=4><img height=1 src="images/x.gif" width=6></td>
+	<td class=FormText width="100%">Uniquement les annonces de location meublée</td>
+</tr>
+<tr> 
+	<td colSpan=4><img height=7 src="images/x.gif" width=1></td>
+</tr>
+</tbody>
+</table>
+<!-- Line Style Annonces -- End -->
+<img height=1 src="images/x.gif" width=1><br />
+<!-- Line Affiner Annonces -- End -->
+$$IF:FORM:AFFINER$$
+$$INCL:DETAIL.HTM$$
+$$END$$
+<!-- Line Affiner Annonces -- End -->
+<img height=1 src="images/x.gif" width=1><br />
+$$INCL:BOUTON_LANCER.HTM$$
+$$IF=:0:FORM:MSG$$
+<br />
+<table cellSpacing=0 cellPadding=0 width=100% border=0>
+<tr Valign=TOP>
+	<td width=12 rowspan=2><img src=images/puce_red.gif width=12 height=11 border=0 HSPACE=6 VSPACE=3></td>
+	<td colspan=8 CLASS=Size2BoldRed>Elargir la recherche aux environs</td>
+</tr>
+<tr>
+	<td CLASS="Size1" Valign="middle">Pour &eacute;largir la recherche aux 5, 10 ou 15 codes postaux les plus proches : </td>
+	<td Valign="middle"><input type=radio name=rayon value=5></td>
+	<td CLASS="Size1" Valign="middle">5</td>
+	<!-- <img src=../images/fr/bt_cpproximite5.gif  width=15 height=21 align=middle border=0 alt="mettre un onclik pour coche la case d'à coté"> -->
+	<td Valign="middle"><input type=radio name=rayon value=10></td>
+	<td CLASS="Size1" Valign="middle">10</td>
+	<!-- <img src=../images/fr/bt_cpproximite10.gif width=15 height=21 align=middle border=0> -->
+	<td Valign="middle"><input type=radio name=rayon value=15></td>
+	<td CLASS="Size1" Valign="middle">15
+	<!-- <img src=../images/fr/bt_cpproximite15.gif width=15 height=21 align=middle border=0> --></td>
+	<td align="right" Valign="middle" width="70"><input type=IMAGE src="images/fr/bt_envoyer.gif" width="53" height="15" border="0" ALT=""></td>
+</tr>
+</table>
+$$END$$
+</div>
+</form>
+

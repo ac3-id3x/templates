@@ -1,0 +1,149 @@
+$$INCL:HAUT.HTM$$
+$$B:EASA:CATEGORIESCONTENT:ALIAS:ALL$$
+ <style>
+div.titre_page {
+	clear: both;
+	padding: 20px 10px 25px 5px;
+}
+
+div.url-cat {
+	padding: 2px 0px 25px 0px;
+}
+
+div.titre_niv0 {
+	font-family: arial;
+ 	font-weight: bold;
+	font-size: 2.5em;
+	border: 2px solid #FF5555;
+	padding: 4px;
+}
+
+div.titre_niv1 {
+	font-family: arial;
+ 	font-weight: bold;
+	font-size: 2em;
+	padding: 2 2 2 20px;;
+}
+
+div.titre_niv2 {
+	font-size: 1.5em;
+	padding: 0 0 0 50px;
+}
+
+div.titre_niv3 {
+	font-size: 1em;
+	padding: 0 0 0 100px;
+}
+
+div.titre_niv4 {
+	font-size: 0.8em;
+	padding: 0 0 0 110px;
+}
+
+div.article {
+	margin: 20px;
+}
+div.article-titre {
+	float: left;
+	padding: 1px 0px 1px 0px;
+}
+
+div.article-url {
+	float: left;
+	padding: 1px 0px 1px 10px;
+}
+
+div.article-cadre-texte {
+	clear: both;
+	border: 1px inset #004000;
+}
+
+div.article-collapse-texte {
+	text-align: right;
+	cursor: pointer;
+	cursor: hand;
+	margin: 0px;
+	
+}
+div.article-texte {
+	display: none;
+	padding: 2px;
+ 	color: #000000;
+	background: #ffffff;
+}
+div.article-edition-texte {
+	display: none;
+	padding: 0px;
+	text-align: right;
+	cursor: pointer;
+	cursor: hand;
+}
+</style>
+<script>
+<!--
+function show(id)
+{
+	// récupération du div avec le symbole
+	var divSymbole = document.getElementById("collapse_"+id);
+
+	// récupération du div avec le texte
+	var divTexte = document.getElementById("article_"+id);
+	
+	// récupération du div avec le lien pour éditer
+	var divEdit = document.getElementById("edit_"+id);
+	
+	// si on a trouvé les 2
+	if (divSymbole && divTexte)
+	{
+		// si la valeur courante du symbole est un +
+		if (divSymbole.innerHTML == "+")
+		{
+			// on déplie
+			divTexte.style.display = "block";
+			divEdit.style.display = "block";
+			// on met un "-"
+			divSymbole.innerHTML = "-";
+		}
+		// sinon
+		else
+		{
+			// on replie
+			divTexte.style.display = "none";
+			divEdit.style.display = "none";
+			// on met un "+"
+			divSymbole.innerHTML = "+";
+		}
+	}
+}
+// -->
+</script>
+$$BIF0:ALL$$
+<p>Aucunes cat&eacute;gories ou textes trouv&eacute;es</p>
+$$BFIN$$
+$$BIF:ALL$$
+<div class="titre_page">
+<div style="float: left; text-align: left;">$$TITRE$$</div>
+</div>
+
+$$DO$$
+<div style="clear: both;"></div>
+$$IFPREV:ALL:CHEMIN$$
+<div class="titre_niv$$ALL:LEVEL$$">$$ALL:LIBELLE$$</div>
+$$IF:ALL:URLCAT$$<div class="url-cat"><a href="$$ALL:URLCAT$$" target="_new">$$ALL:URLCAT$$</a></div>$$END$$
+$$END$$
+
+$$IF:ALL:IDTEXTE$$
+<div class="article">
+<div class="article-titre">$$ALL:TITRE$$</div>
+<div class="article-url">$$IF:ALL:URLTEXTE$$<a href="$$ALL:URLTEXTE$$" target="_new">$$ALL:URLTEXTE$$</a>$$END$$</div>
+<div class="article-cadre-texte">
+<div class="article-collapse-texte" id="collapse_$$ALL:IDTEXTE$$" onclick="show($$ALL:IDTEXTE$$);" title="cliquer pour cacher/afficher le texte">+</div>
+<div style="clear: both;"></div>
+<div class="article-texte" id="article_$$ALL:IDTEXTE$$">$$ALL:TEXTE$$</div>
+</div>
+</div>
+$$END$$
+
+$$LOOP$$
+$$BFIN$$
+$$INCL:BAS.HTM$$

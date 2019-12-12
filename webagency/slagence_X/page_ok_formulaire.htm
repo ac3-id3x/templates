@@ -1,0 +1,195 @@
+$$INCL:HAUT.HTM$$ 
+
+$$SET:PAGE:IDT=@@FORM:TYPE@@$$
+$$SET:LG:RUBRIQUE=@@FORM:TYPE@@$$
+$$A:PAGE_ARGUS=1$$
+$$SET:PAGE:STYLE=<style type="text/css">
+@import url( "/styles,formulaires.css?a=1@@IF:FORM:TYPE@@&type=@@FORM:TYPE@@@@END@@" );
+@import url( "/styles,formulaire.css?a=1@@IF:FORM:TYPE@@&type=@@FORM:TYPE@@@@END@@" );
+</style>$$
+
+<div id="PageOkForm">
+	<div id="Message">
+		<p><span>$$FORM:PRENOM pcase$$&nbsp;$$FORM:NOMFAMILLE pcase$$</span>, 
+		$$E:IMMOBW:AGENCE:QRY:IDPUBLICATION:ALIAS:AGENVOIFORM$$$$IF:FORM:IDPUBLICATION$$ $$LG:ENVOYERAGENCE lcase$$ <span> $$AGENVOIFORM:NOM$$</span> $$END$$
+		$$IF0:FORM:IDPUBLICATION$$$$LG:FORMENVOYE lcase$$$$END$$
+	</p>
+	<p>$$LG:RECEV$$ : <span>$$FORM:EMAIL encodemail javascript$$</span></p>
+	</div>
+
+$$IF=:FR:LANGUE$$
+$$IF=:CONTACT$ESTIMATION$PROPRIETAIRE:FORM:TYPE$$
+$$IF=:LOC$VEN:FORM:TYPETRANSACTION$$
+$$IF=:MAI$APP:FORM:TYPEBIEN$$
+$$IF:FORM:SURFACE$$
+$$IF:FORM:CP$$
+$$E:IMMOBW:ARGUS$$
+<div id="CoteImmo">
+<div id="Contenu">
+<h2>Prix de mise en $$IF(:LOC:FORM:TYPETRANSACTION$$ location$$END$$$$IF(:VEN:FORM:TYPETRANSACTION$$ vente$$END$$ estimé ($$IMMOBW:ARGUS:DT date nommois pcase$$ $$IMMOBW:ARGUS:DT date annee$$)</h2>
+<h3>Vous avez choisi d'estimer le prix de mise en 
+	$$IF(:LOC:FORM:TYPETRANSACTION$$ <strong>location</strong>$$END$$
+$$IF(:VEN:FORM:TYPETRANSACTION$$ <strong>vente</strong>$$END$$
+$$IF(:APP:FORM:TYPEBIEN$$d'un <strong>appartement</strong> situé $$END$$
+$$IF(:MAI:FORM:TYPEBIEN$$une <strong>maison</strong> à $$END$$
+<strong>$$IMMOBW:ARGUS:VILLE$$</strong>$$IF:IMMOBW:ARGUS:QUARTIER$$ $$IMMOBW:ARGUS:QUARTIER$$$$END$$, d'une surface de $$IF:FORM:SURFACE$$ <strong>$$FORM:SURFACE$$ m&sup2;</strong>$$END$$.</h3>
+<br />
+<div>
+	&bull;&nbsp;Les évaluations de l'Argus sont indiquées en prix de mise en vente ou en location, hors frais de notaire.<br /><br />
+	&bull;&nbsp;Cette évaluation a été calculée à partir d'un échantillonnage sur plusieurs mois des annonces déposées sur nos portails Internet.<br /><br />
+	&bull;&nbsp;Le calcul est réalisé grâce à des données mises à jour en temps réel, et tient ainsi compte des dernières tendances du marché immobilier.<br /><br />	
+</div>
+</div>
+<table idth="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%">
+			<table class="tabbasic" cellpadding="0" cellspacing="0">					
+						<tr>
+							<td class="tabentete">Votre estimation</td>
+						</tr>
+						<tr>
+							<td>$$IMMOBW:ARGUS:PRIX formatnumber 2$$&nbsp;&euro;</td>
+						</tr>					
+				</table>	
+		</td>
+		<td width="50%">
+			<table class="tabbasic" cellpadding="0" cellspacing="0">		
+					<tr>
+						<td class="tabentete">Prix au m&sup2; estimé</td>
+					</tr>
+					<tr>
+						<td>$$IMMOBW:ARGUS:PRIX_M2 formatnumber 2$$&nbsp;&euro;</td>
+					</tr>
+				</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<h3>Les prix pour $$FORM:SURFACE$$ m&sup2; pour $$IMMOBW:ARGUS:VILLE$$</h3>
+
+					<table class="tabbasic" cellpadding="0" cellspacing="0">
+						<thead>
+						<tr>
+							<th>Standing </th>
+							<th width="20%">Standard</th>
+							<th width="20%">Recherché</th>
+							<th width="20%">Très&nbsp;recherché</th>
+						</tr>		
+					</thead>				
+						<tr>
+							<td>Prix estimé</td>
+							<td>$$IMMOBW:ARGUS:PRIX_L formatnumber 2$$&nbsp;&euro;</td>
+							<td>$$IMMOBW:ARGUS:PRIX_N formatnumber 2$$&nbsp;&euro;</td>
+							<td>$$IMMOBW:ARGUS:PRIX_M formatnumber 2$$&nbsp;&euro;</td>
+						</tr>
+						<tr>
+							<td>Prix au m&sup2;<br /><small>(pour cette surface)</small></td>
+							<td>$$IMMOBW:ARGUS:PRIX_L_M2 formatnumber 2$$&nbsp;&euro;</td>
+							<td>$$IMMOBW:ARGUS:PRIX_N_M2 formatnumber 2$$&nbsp;&euro;</td>
+							<td>$$IMMOBW:ARGUS:PRIX_M_M2 formatnumber 2$$&nbsp;&euro;</td>
+						</tr>												
+					</table>				
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+				$$B:IMMOBW:ARGUS$$
+	$$BIF:IMMOBW:ARGUS$$
+		<br />
+		</center>
+		
+
+<h3>Baromètre immobilier pour $$IMMOBW:ARGUS:VILLE$$ par type de bien</h3>	
+<table id="tbl_baro" cellspacing="4" cellpadding="4">
+			<thead>
+				<tr>
+					<th rowspan="2" id="cell_vide"></th>
+					<th colspan="3">LOCATION</th>
+					<th colspan="3">VENTE</th>
+				</tr>
+				<tr>
+					<th>Standard</th>
+					<th>Recherché</th>
+					<th>Très recherché</th>
+					<th>Standard</th>
+					<th>Recherché</th>
+					<th>Très recherché</th>
+				</tr>
+			</thead>
+			
+		$$DO:1:100$$
+				<tr>
+					<td rowspan="2" class="tblstrong">
+						$$IMMOBW:ARGUS:LIBELLE$$
+						<br />
+						<small>~ $$IMMOBW:ARGUS:SURFACE formatnumber 0$$ m&sup2;</small>
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L_L$$$$IMMOBW:ARGUS:PRIX_L_L formatnumber 2$$&nbsp;&euro;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L_L$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L$$$$IMMOBW:ARGUS:PRIX_L formatnumber 2$$&nbsp;&euro;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L_M$$$$IMMOBW:ARGUS:PRIX_L_M formatnumber 2$$&nbsp;&euro;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L_M$$n.d.$$END$$
+					</td>			
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_V_L$$$$IMMOBW:ARGUS:PRIX_V_L formatnumber 2$$&nbsp;&euro;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_V_L$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_V$$$$IMMOBW:ARGUS:PRIX_V formatnumber 2$$&nbsp;&euro;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_V$$n.d.$$END$$
+					</td>
+					<td>
+					$$IF:IMMOBW:ARGUS:PRIX_V_M$$$$IMMOBW:ARGUS:PRIX_V_M formatnumber 2$$&nbsp;&euro;$$END$$
+					$$IF0:IMMOBW:ARGUS:PRIX_V_M$$n.d.$$END$$
+					</td>
+				</tr>
+				<tr>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L_L_M2$$$$IMMOBW:ARGUS:PRIX_L_L_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L_L_M2$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L_M2$$$$IMMOBW:ARGUS:PRIX_L_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L_M2$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_L_M_M2$$$$IMMOBW:ARGUS:PRIX_L_M_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_L_M_M2$$n.d.$$END$$
+					</td>
+					
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_V_L_M2$$$$IMMOBW:ARGUS:PRIX_V_L_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_V_L_M2$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_V_M2$$$$IMMOBW:ARGUS:PRIX_V_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_V_M2$$n.d.$$END$$
+					</td>
+					<td>
+						$$IF:IMMOBW:ARGUS:PRIX_V_M_M2$$$$IMMOBW:ARGUS:PRIX_V_M_M2 formatnumber 2$$&nbsp;&euro; / m&sup2;$$END$$
+						$$IF0:IMMOBW:ARGUS:PRIX_V_M_M2$$n.d.$$END$$
+					</td>
+				</tr>
+			$$LOOP$$
+			</table>
+			<span class="legend">Les surfaces moyennes sont fonction de cette localité. n.d.: non déterminé</span>
+		$$BFIN$$
+			
+		</td>
+	</tr>
+</table>
+</div>
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+$$END$$
+</div>
+$$INCL:BAS.HTM$$

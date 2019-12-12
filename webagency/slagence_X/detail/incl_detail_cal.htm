@@ -1,0 +1,80 @@
+$$E:IMMOBW:DISPOVAC:REP:1$$
+$$IF=:1:IMMOBW:DISPOVAC:OK$$
+
+<!-- Calendrier -->
+$$B:IMMOBW:CALENDRIERVAC:REP:1:9:ALIAS:CAL$$
+<style type="TEXT/CSS">
+<!--
+td {font: 8pt, tahoma;}
+.d1, .d0, .d1 td {width: 15px; font: 8pt, tahoma; cursor:pointer;}
+.d1 td {background-color:#EEEEEE; text-align:center; width:150px;}
+.d0 { background-color:#FFBCB7;}
+.d1 { background-color:#CAFFCA;}
+.finresa {background-image:url('$$_$$img/cal_resafin.gif');background-repeat:no-repeat; background-position: bottom right;}
+.debutresa {background-image:url('$$_$$img/cal_resadebut.gif');background-repeat:no-repeat;}
+table.tour { border: 1px solid #000000; height:150px; }
+-->
+</style>
+
+
+<table width="450" align="center">
+	<tr>
+		<td>
+			$$BIF:CAL$$
+			<table align="center" border="0">
+			$$DO$$
+			$$IFNOTNULL:CAL:DEBUTMOIS$$
+				$$IF=:0:CAL:NUMMOIS modulo 2$$
+				<tr class="debutmois">
+				$$END$$
+					<td>
+						<table class="tour" width="150">
+							<tr>
+								<td colspan="7" style="width:150px; text-align:center;"><b><font size="2">$$CAL:DATE date MMM_yyyy pcase $$</font></b></td>
+							</tr>
+							<tr class="d1">
+								<td>S</td>
+								<td>D</td>
+								<td>L</td>
+								<td>M</td>
+								<td>M</td>
+								<td>J</td>
+								<td>V</td>
+							</tr>
+							<tr>
+								$$CAL:DEBUTMOIS repeatcode <td_class="d2"></td>$$
+							$$END$$
+								$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:6:CAL:WEEKDAY$$<tr>$$END$$ $$END$$
+								<td class="d$$CAL:DISPO$$$$IF:CAL:FINRESA$$ debutresa$$END$$$$IF:CAL:DEBUTRESA$$ finresa$$END$$" href="d$$CAL:DISPO$$$$IF:CAL:FINRESA$$ debutresa$$END$$$$IF:CAL:DEBUTRESA$$ finresa$$END$$">$$CAL:DATE day$$</td>
+								$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:5:CAL:WEEKDAY$$</tr>$$END$$ $$END$$
+								$$IFNOTNULL:CAL:FINMOIS$$
+								$$CAL:FINMOIS repeatcode <td_class="d2"></td>$$
+							</tr>
+						</table>
+						<br />
+					</td>
+				$$IF=:0:CAL:NUMMOIS exec XX+1 modulo 2$$
+				</tr>
+				$$END$$
+			$$END:CAL:DEBUTMOIS$$
+			$$LOOP$$
+		</table>
+		$$BFIN$$
+	</td>
+	</tr>
+</table>
+
+
+
+<div align="right">	
+<table width="180" style="border:1px solid black">
+	<tr>
+		<td class="d1"></td>
+		<td style="width:100px;">Disponible</td>
+		<td class="d0"></td>
+		<td style="width:100px;">Non disponible</td>
+	</tr>
+</table>
+</div>
+$$END$$
+<!-- Fin calendrier -->

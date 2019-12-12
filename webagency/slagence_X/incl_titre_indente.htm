@@ -1,0 +1,137 @@
+$$REM:INFO$$
+	<!-- PAGE:TITR est positionné dans les pages du site -->
+	<!-- -->
+	<!-- Dans start.aspx -->
+	<!-- 	DicMacros["PAGE:TITRE"]			= DicConfig["cfg_titre"];	-->
+	<!--	DicMacros["PAGE:DESCRIPTION"]	= DicConfig["cfg_description"];		-->
+	<!--	DicMacros["PAGE:KEYWORDS"]		= DicConfig["cfg_keywords"];	-->
+$$END:INFO$$
+
+
+$$REM$$<!-- Si la valeur de TITLE:REFERENCEMENT est différente de 0 -->$$END$$
+
+$$IF!:0:TITLE:REFERENCEMENT$$
+	$$REM$$<!-- Si la valeur de REFERENCEMENT:IDPAGE est égale à '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r' ou 's' -->$$END$$
+	$$IF=:4$5$6$7$8$9$10$11$12$13$14$15$d$e$f$g$h$i$j$k$l$m$n$o$p$q$r$s:REFERENCEMENT:IDPAGE$$
+		$$A:TITLE:REFERENCEMENT=1$$
+	$$END:REFERENCEMENT:IDPAGE$$
+	
+	$$REM$$<!-- et Si la valeur de PAGE:IDT est égale à "INDEX" -->$$END$$	
+	$$IF=:INDEX:PAGE:IDT$$
+		$$A:TITLE:REFERENCEMENT=1$$
+	$$END:PAGE:IDT$$
+	
+	$$REM$$<!-- alors on met TITLE:REFERENCEMENT à 1 -->$$END$$
+	
+$$END:TITLE:REFERENCEMENT$$
+
+
+$$REM$$<!-- écriture de PAGE:TITR (sans E au bout) dans la variable TITLE:DEFAULT -->$$END$$
+
+$$A:TITLE:DEFAUT=@@PAGE:TITR@@$$
+
+$$REM$$<!-- si TITLE:DEFAULT est vide, on écrit PAGE:TITRE (avec le E cette fois) -->$$END$$
+
+$$IF0:TITLE:DEFAUT$$
+	$$A:TITLE:DEFAUT=@@PAGE:TITRE@@$$
+$$END:DEFAULT$$
+
+$$REM:REFERENCEMENT$$
+	<!-- Tout ce qui ne concerne pas le référencement -->
+	<!-- ============================================ -->
+$$END:referencement$$
+
+
+$$REM$$<!-- si on a rien, ou 0 dans TITLE:REFERENCEMENT -->$$END$$
+
+$$IF0:TITLE:REFERENCEMENT$$
+	$$REM$$<!-- si dans RUB:IDT on n'a, ni "AG", ni "RESRECLISTE", ni "DET", ni "RESREC", ni "REF", ni "LISTE_VILLE" -->$$END$$
+	$$IF!:AG$RESRECLISTE$DET$RESREC$REF$LISTE_VILLE:RUB:IDT$$
+		$$REM$$<!-- on écrit dans la balise title, derrière cette balise on aura en plus t1 écrit en commentaire HTML -->$$END$$
+		<title>
+		$$IF:PAGE:TITR$$
+			$$REM$$<!-- la valeur de PAGE:TITR -->$$END$$
+			$$PAGE:TITR$$
+		$$END$$ 
+		$$IF0:PAGE:TITR$$
+			$$REM$$<!-- la valeur de PAGE:TITRE si PAGE:TITR était vide ou égale à 0 -->$$END$$
+			$$PAGE:TITRE$$
+		$$END$$
+		</title><!-- t1 -->
+	$$END$$
+	$$REM$$<!-- si dans RUB:IDT on a "DET" où "RESREC" -->$$END$$
+	$$IF=:DET$RESREC:RUB:IDT$$
+		$$REM$$<!-- on écrit dans la balise title, derrière cette balise on aura en plus V1 écrit en commentaire HTML -->$$END$$
+		$$REM$$<!-- La transaction, le type de bien -->$$END$$
+		<title>$$TITRE:TRANSACTION$$ $$TITRE:BIEN$$ 
+			$$REM$$<!-- Le TITRE:LIBELLE, où si il est vide le TITRE:LIBELLE_FR -->$$END$$
+			$$IF:TITRE:LIBELLE$$
+				$$TITRE:LIBELLE$$
+			$$END$$
+			$$REM$$<!-- Le TITRE:LIBELLE_FR -->$$END$$
+			$$IF0:TITRE:LIBELLE$$
+				$$TITRE:LIBELLE_FR$$
+			$$END$$ 
+			
+			$$REM$$<!-- TITRE:VILLE, TITRE:CP (département), TITRE:PROXIMITE -->$$END$$
+			$$TITRE:VILLE$$ $$TITRE:CP cp2dep$$ $$TITRE:PROXIMITE$$
+			
+			$$REM$$<!-- Le TITRE:DESCRIPTIF, où si il est vide le TITRE:DESCRIPTIF_FR -->$$END$$
+			$$IF:TITRE:DESCRIPTIF$$ 
+				$$TITRE:DESCRIPTIF$$
+			$$END$$
+			$$REM$$<!-- Le TITRE:DESCRIPTIF_FR -->$$END$$
+			$$IF0:TITRE:DESCRIPTIF$$ 
+				$$TITRE:DESCRIPTIF_FR$$
+			$$END$$
+		</title><!-- V1 -->
+	$$END:RUB:IDT$$
+	$$REM$$<!-- si dans RUB:IDT on a "NEUF", "AG", "RESRECLISTE", "REF" ou "LISTE_VILLE" -->$$END$$
+	$$IF=:NEUF$AG$RESRECLISTE$REF$LISTE_VILLE:RUB:IDT$$
+		$$REM$$<!-- on écrit dans la balise title, derrière cette balise on aura en plus V2 écrit en commentaire HTML -->$$END$$
+		$$REM$$<!-- Les variables RUB:UNIVERS:CHEMINEMENT et RUB:UNIVERS:NOM -->$$END$$
+		<title>$$RUB:UNIVERS:CHEMINEMENT$$ $$RUB:UNIVERS:NOM$$
+			$$REM$$<!-- si on a si_exclusif=1 dans la querystring, on écrit Eclusif (uniquement en français en dur) -->$$END$$
+			$$IF=:1:FORM:SI_EXCLUSIF$$ 
+				Exclusif
+			$$END$$
+		</title><!-- V2 -->
+	$$END:RUB:IDT$$
+$$END:TITLE:REFERENCEMENT$$
+
+$$REM:referencement$$
+	<!-- Tout ce qui concerne le référencement -->
+	<!-- ===================================== -->
+$$END:referencement$$
+
+$$REM$$<!-- si on a quelque chose dans TITLE:REFERENCEMENT (le sinon des autres cas) -->$$END$$
+
+$$IF:TITLE:REFERENCEMENT$$
+	$$REM$$<!-- si dans PAGE:IDT on n'a pas "INDEX" -->$$END$$
+	$$IF!:INDEX:PAGE:IDT$$
+		$$REM$$<!-- on écrit dans TITLE:NOUVEAU la valeur présente dans REFERENCEMENT:KEYWORD -->$$END$$
+		$$A:TITLE:NOUVEAU=@@REFERENCEMENT:KEYWORD@@$$
+	$$END:PAGE:IDT$$
+	
+	$$REM$$<!-- si dans RUB:IDT on a "INDEX" -->$$END$$
+	$$IF=:INDEX:PAGE:IDT$$
+		$$REM$$<!-- Appel de la macro d'exéction ID3:REF-TITRE -->$$END$$
+		$$E:ID3:REF-TITRE$$
+		$$REM$$<!-- on écrit dans TITLE:NOUVEAU la valeur récupérée de la macro TITRE (provenance de gestprod) -->$$END$$
+		$$A:TITLE:NOUVEAU=@@ID3:REF-TITRE:TITRE@@$$
+	$$END:PAGE:IDT$$
+	
+	$$REM$$<!-- on écrit dans la balise title, derrière cette balise on aura en plus r1 écrit en commentaire HTML -->$$END$$
+	$$REM$$<!-- La valeur contenue dans TITLE:NOUVEAU -->$$END$$
+	<title>$$TITLE:NOUVEAU$$
+		$$REM$$<!-- La valeur contenue dans TITLE:DEFAULT, si rien (ou 0) n'était présent dans TITLE:NOUVEAU -->$$END$$
+		$$IF0:TITLE:NOUVEAU$$
+			$$TITLE:DEFAUT$$
+		$$END:new$$
+	</title><!-- r1 -->
+$$END:TITLE:REFERENCEMENT$$
+
+<!--#include virtual="/referencement/incl_head_ref.htm" -->
+<!--#include virtual="/incl_meta.htm" -->
+<!--#include virtual="/incl_titre_rss.htm" -->
+<!--#include virtual="/incl_head_styles.htm" -->

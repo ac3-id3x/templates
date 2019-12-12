@@ -1,0 +1,106 @@
+$$REM$$
+====================================================================
+
+//// <summary>Pud page unique de destination à l'usage du référencement</summary>
+//// <remarks>
+//// <para> la page pud_agence ou pud_immobilier sont appelées par la page suivante : slagence_X_V2/pud.htm?kw=agence+immobiliere+Geo : </para>
+//// <para>Utilise le style css : slagence_X_V2/styles,pud.css et /styles,annonces_pud.css</para>
+//// <para>Utilise la liste des dernières d'annonces slagence_X_V2/annonces/incl_annonces_pud.htm</para>
+//// <para>Utilise les coordonnées agences défilantes  slagence_X_V2/includes/incl_coord_agence_pud.htm</para>
+//// <para>Utilise les formulaires  slagence_X_V2includes/incl_forms_pud.htm</para>
+//// </remarks>
+//// <update date="2008-08-13" author="christophe.ledoux">Création v1</update>
+//// <update date="2008-08-13" author="christophe.ledoux">Validation HTML/CSS</update>
+//// <update date="2008-08-13" author="Ravi Horner,damien.robert">Validation oK</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=PUDAGENCE$$
+$$INCL:HAUT.HTM$$
+<!-- pud agence slagence x -->
+$$BIF:ANNVENTES$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNVENTES -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=2&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de vente sur @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNVENTES$$<!-- BIF0:ANNVENTES -->$$BFIN$$
+
+$$BIF:ANNLOCS$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNLOCS -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=1&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de location sur @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNLOCS$$<!-- BIF0:ANNLOCS -->$$BFIN$$
+
+$$BIF:ANNNEUF$$
+$$DO$$$$LOOP$$
+<!-- BIF:ANNNEUF -->
+$$A:PAGE:STYLE=@@PAGE:STYLE@@<link rel="alternate" type="application/rss+xml" href="@@URLBASE@@/rss2.xml?idtt=9&amp;ci=@@FORM:CI field 1@@" target="_blank" title="Toutes les dernieres annonces immobilieres de programme neuf sur @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@">$$
+$$BFIN$$
+$$BIF0:ANNNEUF$$<!-- BIF0:ANNNEUF -->$$BFIN$$
+
+
+$$SET:PAGE:IDT=PUDAGENCE$$
+$$SET:PAGE:TITRE=Agence immobili&egrave;re @@FORM:CI codeinsee2ville@@ @@FORM:CP cp2dep@@ : découvrez nos services et toutes nos dernières annonces immobilières avec @@REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase@@$$
+$$SET:PAGE:DESCREF=D&eacute;couvrez tous les services notre agence immobili&egrave;re situ&eacute;e sur le secteur de @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@$$
+$$SET:PAGE:KEYWORDS=Agence immobili&egrave;re @@FORM:CI codeinsee2ville field 1@@ @@FORM:CP cp2dep field 1@@$$
+$$INIT:NBANNVENTES=6$$
+$$INIT:NBANNLOCS=6$$
+$$INIT:NBANNNEUF=6$$
+$$INIT:NBANNVIAGER=6$$
+$$INIT:NBLOCTEMPO=6$$
+$$INIT:NBLOCVACAN=6$$
+$$INIT:NBPRODINVEST=6$$
+$$INIT:NBLOCPREST=6$$
+$$INIT:NBVENTEPREST=6$$
+$$INIT:NBVENFONDSCOM=6$$
+$$INIT:NBLOCFONDSCOM=6$$
+
+$$SET:PAGE:STYLE=<style type="text/css">@import url( "/styles,pud.css" );@import url( "/styles,annonces_pud.css" );</style><!-- test -->$$
+
+
+<script language="javascript" type="text/javascript">
+        var coord2=new Array();
+$$B:IMMOBW:AGENCES:ALIAS:MULTI2:CP$$ $$BIF:MULTI2$$        var i=0;$$DO:1:120$$
+        coord2[i++]="adr2_$$MULTI2:IDPUBLICATION$$";$$LOOP$$$$BFIN$$   
+    var cpt2=0;
+function Adresse2()
+					{
+						document.getElementById(coord2[cpt2]).style.display="inline";
+						cpt2++;
+							if(cpt2>=coord2.length) {
+								cpt2=0;
+								setTimeout("document.getElementById(coord2[coord2.length-1]).style.display='none'",3500);
+							} else {
+								setTimeout("document.getElementById(coord2[cpt2-1]).style.display='none'",3500);
+							}
+						setTimeout("Adresse2()",3500);
+					}     
+</script>
+<div id="ContainPud">
+<!--<h1>D&eacute;couvrez notre agence immobili&egrave;re situ&eacute;e sur le secteur de $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>-->
+<h1>Agence immobili&egrave;re $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$ : Découvrez nos services et toutes nos dernières annonces immobili&egrave;res avec $$REP:SRV replace www. "" replace .com "" replace .fr "" replace .net "" replace .eu ""  pcase$$</h1>
+<div id="SubTitle"></br></br></div>
+<div id="SubTitle">
+$$MULTI2:CP:TXT_PUBLIC left500$$
+<!--#include virtual="includes/incl_coord_agence_pud.htm" -->
+$$IF:MULTI$$<script language="javascript" type="text/javascript">Adresse2();</script>$$END$$
+</div>
+<div>
+	<h2>Nos services : </h2>
+</div>
+<p class="PudLiens"><a href="$$IF:MULTI$$$$1_COORD2:IDPUBLICATION$$$$END$$$$IF0:MULTI$$$$COOAG:IDPUBLICATION$$$$END$$/vendeur.htm?lang=$$LANGUE$$" title="Vente immobilier $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">Mettez votre bien en vente<!--Vous &ecirc;tes vendeur&nbsp;--></a></p>
+<p class="PudLiens">|</p>
+<p class="PudLiens"><a href="$$IF:MULTI$$$$1_COORD2:IDPUBLICATION$$$$END$$$$IF0:MULTI$$$$COOAG:IDPUBLICATION$$$$END$$/contact.htm?lang=$$LANGUE$$" title="Achat immobilier $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">Laissez-nous effectuer votre recherche<!--Vous &ecirc;tes acqu&eacute;reur&nbsp;--></a></p>	
+<p class="PudLiens">|</p>
+<p class="PudLiens"><a href="$$IF:MULTI$$$$1_COORD2:IDPUBLICATION$$$$END$$$$IF0:MULTI$$$$COOAG:IDPUBLICATION$$$$END$$/estimation.htm?lang=$$LANGUE$$" title="Estimation immobili&egrave;re $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$">Faites estimer votre bien immobilier&nbsp;</a></p>
+<p style="clear:both;height:0px !important;"></p>
+<div>&nbsp;</div>
+<!--#include virtual="/annonces/incl_annonces_pud.htm" -->
+<br style="clear:both;"/>
+
+<!--#include virtual="/includes/incl_forms_pud.htm" -->
+<div class="PudCguform">$$INCL:CGU_FORMULAIRE.HTM$$</div>
+</div>
+
+$$INCL:BAS.HTM$$

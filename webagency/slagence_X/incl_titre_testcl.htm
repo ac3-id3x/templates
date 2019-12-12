@@ -1,0 +1,25 @@
+<!-- PREMIER CAS : titre, description et keywords par défaut si rien n'est mis dans l'include haut  -->
+	$$B:IMMOBW:AGENCES:ALIAS:NBAG$$ 
+	$$BIF:NBAG$$ 
+	$$DO:1:3$$
+	$$A:TITR=@@TITR@@ Agence immobiliere @@NBAG:VILLE@@, Immobilier @@NBAG:VILLE@@ : @@NBAG:NOM@@, $$
+	$$A:DESCREF=@@DESCREF@@ Agence immobiliere @@NBAG:VILLE@@, Immobilier @@NBAG:VILLE@@, $$
+   $$A:KEYWORDS=@@KEYWORDS@@ Agence immobilière @@NBAG:VILLE@@, Immobilier @@NBAG:VILLE@@ : @@NBAG:NOM@@ $$
+   	$$LOOP$$ 
+	$$BFIN$$
+<!-- PDEUXIEME CAS : titre, description et keywords POUR RECHERCHE si rien n'est mis dans l'include haut  -->
+$$IF=:RESULTATS:PAGE:IDT$$
+$$A:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@LG:DE@@ @@1_IMMOBW:ANN:QRY:TYPEBIEN gettypebien@@ $$  @@1_IMMOBW:ANN:QRY:VILLE@@ $$
+$$A:KEYWORDS= @@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@LG:DE@@ @@1_IMMOBW:ANN:QRY:TYPEBIEN gettypebien@@$$
+$$A:DESCREF=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@ @@LG:DE@@ @@1_IMMOBW:ANN:QRY:TYPEBIEN gettypebien@@  @@1_IMMOBW:ANN:QRY:VILLE@@ : @@1_IMMOBW:ANN:QRY:DESCRIPTIF left 300 htmlencode@@$$
+$$END$$
+<!-- TROISIEME CAS : titre, description et keywords pour la page detail  -->
+$$IF=:DETAIL:PAGE:IDT$$
+$$A:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien@@ @@IMMOBW:ANNONCE:VILLE@@ @@IMMOBW:ANNONCE:CP@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:LIBELLE@@$$
+$$A:DESCREF=@@IMMOBW:ANNONCE:DESCRIPTIF htmlencode@@$$
+$$A:KEYWORDS=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien@@ @@IMMOBW:ANNONCE:VILLE@@ @@IMMOBW:ANNONCE:CP@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:LIBELLE@@$$
+$$END$$
+<title>$$TITR$$</title>
+<meta name="Keywords" content="$$KEYWORDS$$" /><!--test -->
+<meta name="Description" content="$$DESCREF$$" /><!--test -->
+

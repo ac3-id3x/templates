@@ -1,0 +1,45 @@
+$$REM$$
+====================================================================
+
+//// <summary> Appelé par : Pud page unique de destination à l'usage du référencement</summary>
+//// <remarks>
+//// <para>  la page pud_agence ou pud_immobilier sont appelées par la page suivante : slagence_X_V2/pud.htm?kw=agenceimmobiliere+Geo : </para>
+//// <para>Utilise le style css : slagence_X_V2/styles,pud.css et /styles,annonces_pud.css</para>
+//// <para>Utilise la liste des dernières d'annonces slagence_X_V2/annonces/incl_annonces_pud.htm</para>
+//// <para>Utilise les coordonnées agences défilantes  slagence_X_V2/includes/incl_coord_agence_pud.htm</para>
+//// <para>Utilise les formulaires  slagence_X_V2includes/incl_forms_pud.htm</para>
+//// </remarks>
+//// <update date="2008-08-13" author="christophe.ledoux">Création v1</update>
+//// <update date="2008-08-13" author="christophe.ledoux">Validation HTML/CSS</update>
+//// <update date="2008-08-13" author="Ravi Horner,damien.robert">Validation oK</update>
+
+====================================================================
+$$END$$
+$$IF0:REP:1$$
+$$IF=:1:MULTI$$
+$$B:IMMOBW:AGENCES:CP:ALIAS:COORD2$$ $$BIF:COORD2$$
+$$DO$$
+<div id="adr2_$$COORD2:IDPUBLICATION$$" style="display:none;" >
+	<h1>$$COORD2:NOM ncase$$</h1>
+	$$COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$COORD2:CP$$ $$COORD2:VILLE ncase$$<br />
+	$$IF:COORD2:TEL$$$$LG:MINITEL pcase$$ : $$COORD2:TEL formattel$$$$END$$$$IF:COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$COORD2:FAX formattel$$$$END$$
+</div>
+$$LOOP$$
+$$BFIN$$
+$$END$$
+$$END$$
+$$IF0:MULTI$$
+$$E:IMMOBW:AGENCE:ALIAS:COOAG$$
+	<h1><a href="http://$$REP:RSRV$$/agence-immobiliere.htm?lang=$$LANGUE$$" title="$$IMMOBW:AGENCE:NOM ncase$$">$$IMMOBW:AGENCE:NOM ncase$$</a></h1>
+	$$IMMOBW:AGENCE:ADRESSE crlf2br$$<br />
+	$$IF:IMMOBW:AGENCE:TEL$$$$LG:MINITEL pcase$$ : $$IMMOBW:AGENCE:TEL formattel$$$$END$$$$IF:IMMOBW:AGENCE:FAX$$ - $$LG:FAX pcase$$ :  $$IMMOBW:AGENCE:FAX formattel$$$$END$$
+$$END$$	
+$$IF0:REP:1$$
+$$IF=:0:MULTI$$
+	<h1>$$1_MULTI:NOM ncase$$</h1>
+	$$1_COORD2:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+	$$1_COORD2:CP$$ $$1_COORD2:VILLE ncase$$<br />
+	$$IF:1_COORD2:TEL$$$$LG:MINITEL pcase$$ : $$1_COORD2:TEL formattel$$$$END$$$$IF:1_COORD2:FAX$$ - $$LG:FAX pcase$$ :  $$1_COORD2:FAX formattel$$$$END$$
+$$END$$
+$$END$$

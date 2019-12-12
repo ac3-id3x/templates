@@ -1,0 +1,82 @@
+$$REM$$<!-- Lightbox v2.04 > http://www.huddletogether.com/projects/lightbox2/ -->$$END:REM$$
+<script type="text/javascript" src="/z/webagency/slagence_X/scripts/lightbox2_04/js/prototype.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X/scripts/lightbox2_04/js/scriptaculous.js?load=effects,builder"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X/scripts/lightbox2_04/js/lightbox.js"></script>
+<link rel="stylesheet" href="/z/webagency/slagence_X/scripts/lightbox2_04/css/lightbox.css" type="text/css" media="screen" />
+
+
+<div class="DetailPhoto" id="DetailPhoto">
+	<script type="text/javascript">
+		<!--
+		function switchImage(srcImg, srcBigImg, nbImg, nbTotalImg)
+			{
+				var grandePhoto = document.getElementById('big');
+				if(grandePhoto)
+					{
+						grandePhoto.src = srcImg;
+					}
+				var agrandirPhoto = document.getElementById('Agrandir');
+				if(agrandirPhoto)
+					{
+						agrandirPhoto.href = srcBigImg;
+					}
+			}
+		//-->
+	</script>
+	<div class="DetailPhotoGdformat" id="DetailPhotoGdformat">
+		<!-- affichage grand format -->
+		$$B:IMMOBW:PHOTOS:REP:1$$
+		$$BIF:IMMOBW:PHOTOS:REP$$
+		$$DO:1:1$$$$LOOP$$
+			<img class="DetailPhotoGdformat" src="$$1_IMMOBW:PHOTOS:REP:URL$$" id="big" name="big" border="0" alt="$$1_IMMOBW:ANNONCE:LIBELLE htmlencode$$ $$1_IMMOBW:ANNONCE:VILLE htmlencode$$" title="$$1_IMMOBW:ANNONCE:LIBELLE htmlencode$$ $$1_IMMOBW:ANNONCE:VILLE htmlencode$$" />
+		$$BFIN$$
+		
+$$REM$$<!--==========================================
+				> 03.12.2009 : installation nouveau script lightbox (lisbonne)
+				> scripts et css appelés directement en haut de fichier
+				> appels en dur 
+=======================================-->$$END:REM$$
+		$$BIF:IMMOBW:PHOTOS:REP$$
+		<div id="LightBox_Ctn">
+			$$DO$$
+			$$IF:IMMOBW:PHOTOS:REP:BIG_URL$$
+			<a href="$$IMMOBW:PHOTOS:REP:BIG_URL$$" id="LightBoxPhoto$$IMMOBW:PHOTOS:REP:I$$" class="lightboxAnnonce" rel="lightbox[annonce]" title="$$LG:PHOT pcase$$ $$IMMOBW:PHOTOS:REP:I$$/$$IMMOBW:PHOTOS:REP:N$$">
+				$$IF=:FR:LANGUE$$Afficher $$IF>:2:IMMOBW:PHOTOS:REP:NBR$$les photos$$END:NBR$$ $$IF<:2:IMMOBW:PHOTOS:REP:NBR$$la photo$$END:NBR$$ en grand format$$END$$$$IF!:FR:LANGUE$$$$LG:AGRANDIR pcase$$$$END$$
+			</a>
+			$$END$$
+			$$IF0:IMMOBW:PHOTOS:REP:BIG_URL$$
+			<a href="$$IMMOBW:PHOTOS:REP:URL$$" id="LightBoxPhoto$$IMMOBW:PHOTOS:REP:I$$" class="lightboxAnnonce" rel="lightbox[annonce]" title="$$LG:PHOT pcase$$ $$IMMOBW:PHOTOS:REP:I$$/$$IMMOBW:PHOTOS:REP:N$$">$$LG:DIAPORAMA pcase$$</a>
+			$$END$$
+			$$LOOP$$   
+		</div>
+		$$BFIN$$
+		
+
+		
+		$$BIF0:IMMOBW:PHOTOS:REP$$
+		<img src="img/sans_photo.gif" id="SansPhoto" alt="$$LG:IMMOBILIER pcase$$ $$IMMOBW:ANNONCE:VILLE ncase$$" title="$$LG:IMMOBILIER pcase$$ $$IMMOBW:ANNONCE:VILLE ncase$$" />
+		$$BFIN$$
+		<br />
+	</div>
+		
+	<div class="DetailPhotoPtformat" id="DetailPhotoPtformat">
+		$$B:IMMOBW:PHOTOS:ALIAS:MINITOF:REP:1$$
+		$$BIF:MINITOF$$
+		$$IF+:2:MINITOF:NBR$$
+		<table border="0" cellpadding="2" cellspacing="2" align="center">
+			<tr>
+			$$DO:1:50$$
+			$$IF=:5$9$13$17$21$25$29$33$37$41$45$49:MINITOF:I$$</tr><tr>$$END$$
+				<td>
+					$$MINITOF:VAL:I$$
+					<a id="LightBoxPhoto$$MINITOF:N$$" class="lightboxAnnonce" href="$$IF:MINITOF:BIG_URL$$$$MINITOF:BIG_URL$$$$END$$$$IF0:MINITOF:BIG_URL$$$$MINITOF:URL$$$$END$$" rel="lightbox$$MINITOF:I$$" onmouseover="switchImage('$$MINITOF:URL$$','$$IF:MINITOF:BIG_URL$$$$MINITOF:BIG_URL$$$$END$$$$IF0:MINITOF:BIG_URL$$$$MINITOF:URL$$$$END$$','$$MINITOF:N$$', '$$MINITOF:NBR$$');" title="$$LG:AGRANDIR pcase$$ $$LG:PHOT pcase$$ $$MINITOF:N$$" alt="$$LG:AGRANDIR pcase$$">
+						<img src="$$MINITOF:THUMB_URL$$" border="0" alt="$$IMMOBW:ANNONCE:LIBELLE htmlencode$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$" title="" />
+					</a>
+				</td>
+			$$LOOP$$
+			</tr>
+		</table>
+		$$END$$
+		$$BFIN$$
+	</div>
+</div>

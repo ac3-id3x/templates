@@ -1,0 +1,86 @@
+$$SET:PAGE:IDT=MOTEURNEUF$$
+<script type="text/javascript" language="javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no'); 
+}
+//-->
+</script>
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annoncesNeuf">
+<input type="hidden" name="idtypebien" value="15" />
+<input type="hidden" name="idtt" value="9" />
+<input type="hidden" name="euro" value="1" />
+<table cellpadding="1" cellspacing="0" class="tabFond1Mini">
+<tr>
+	<td>
+	<table cellpadding="1" cellspacing="0" class="tabFond1Mini">
+	$$IF=:1:PAGE:CP$$
+	<!-- Code postal -->
+	<tr>
+		<td class="tabTitremini" valign="top">$$LG:CP$$<br />* <span class="minilien">$$LG:CHAMPOBLIGATOIRE$$</span></td>
+		<td><input type="text" name="cp" value="" size="10" class="Form" /><br />
+		<span class="minilien">$$LG:EXEMPLECP$$</span></td>
+	</tr>
+	$$END$$
+	$$IF!:0:PAGE:TYPEDEBIEN$$
+	<!-- Types de bien -->
+	$$B:IMMOBW:TYPESBIENS:9:QRY:LANG$$
+	$$BIF:IMMOBW:TYPESBIENS:9$$
+	$$IF=:1:PAGE:IDTB1$$$$A:PAGE:AFFICHETYPESBIEN=1,9,$$$$END$$
+	$$IF=:1:PAGE:IDTB2$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@2,$$$$END$$
+	$$IF=:1:PAGE:IDTB3$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@4,$$$$END$$
+	$$IF=:1:PAGE:IDTB4$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@5,6,$$$$END$$
+	$$IF=:1:PAGE:IDTB5$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@8,$$$$END$$
+	$$IF=:1:PAGE:IDTB7$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@3,$$$$END$$
+	$$IF=:1:PAGE:IDTB8$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@7,$$$$END$$
+	$$IF=:1:PAGE:IDTB9$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@11,$$$$END$$
+	$$IF=:1:PAGE:IDTB10$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@12,$$$$END$$
+	$$IF=:1:PAGE:IDTB11$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@13,$$$$END$$
+	$$IF=:1:PAGE:IDTB12$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@14,$$$$END$$
+	$$IF=:1:PAGE:IDTB6$$$$A:PAGE:AFFICHETYPESBIEN=@@PAGE:AFFICHETYPESBIEN@@10$$$$END$$
+	<tr>
+		<td class="tabTitremini" valign="top">$$LG:TYPEDEBIEN$$</td>
+		<td><select class="Form" name="idtypebien" size="1">
+		<option value=""> -- $$LG:TOUS$$ -- </option>
+		$$DO$$
+		$$IF(:PAGE_AFFICHETYPESBIEN:IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$
+		<option value="$$IMMOBW:TYPESBIENS:9:IDTYPEBIEN$$"$$IF(:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:9:IDTYPEBIEN$$selected="selected"$$END$$>$$IMMOBW:TYPESBIENS:9:DEF_LIBELLE$$</option>
+		$$END$$
+		$$LOOP$$
+		</select></td>
+	</tr>
+	$$BFIN$$
+	$$END$$
+	$$IF=:1:PAGE:PIECES$$
+	<!-- Nombre de pièces -->
+	<tr>
+		<td class="tabTitremini" valign="top">$$LG:MININBRPIECES$$</td>
+		<td valign="top" class="tabFond2mini">
+		<select class="Form" name="nb_pieces" size="1">
+			<option value=""> -- -- </option>
+			<option value="1"$$IF=:1:FORM:NB_PIECES$$ selected="selected"$$END$$>1</option>
+			<option value="2"$$IF=:2:FORM:NB_PIECES$$ selected="selected"$$END$$>2</option>
+			<option value="3"$$IF=:3:FORM:NB_PIECES$$ selected="selected"$$END$$>3</option>
+			<option value="4"$$IF=:4:FORM:NB_PIECES$$ selected="selected"$$END$$>4</option>
+			<option value="4+"$$IF=:4+:FORM:NB_PIECES$$ selected="selected"$$END$$>5 $$LG:ETPLUS$$</option>
+		</select>
+		</td>
+	</tr>
+	$$END$$
+	$$IF=:1:PAGE:BUDGET$$
+	<!-- Budget -->
+	<tr>
+		<td class="tabTitremini" valign="top">$$LG:BUDGET$$</td>
+		<td valign="top" class="tabFond2mini">$$LG:MINI$$&nbsp;:&nbsp;<input class="Form" type="text" name="pxmin" size="4" value="$$FORM:PXMIN$$" />
+		&nbsp;$$LG:MAXI$$&nbsp;:&nbsp;<input class="Form" type="text" name="pxmax" size="4" value="$$FORM:PXMAX$$" />&nbsp;&euro;
+		</td>
+	</tr>
+	$$END$$
+	<tr>
+		<td align="center" colspan="2" class="tabFond2mini"><input type="image" src="img/minienvoyer_$$LANGUE$$.gif" border="0" /></td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+</form>

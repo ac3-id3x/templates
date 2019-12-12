@@ -1,0 +1,28 @@
+$$SET:PAGE:RUBRIQUE=Selection des agences$$
+$$A:CHECKAGENCE=0$$
+<a href="/estimation.htm?lang=$$LANGUE$$&remail=$$BIF:IMMOBW:AGENCES$$$$DO:1:120$$$$IF:IMMOBW:AGENCES:EMAIL$$$$IF=:1:CHECKAGENCE$$>, <$$IMMOBW:AGENCES:EMAIL$$$$END$$$$IF!:1:CHECKAGENCE$$$$A:CHECKAGENCE=1$$$$IMMOBW:AGENCES:EMAIL$$$$END$$$$END$$$$LOOP$$$$BFIN$$&agence_nom=%20">$$LG:LISTOUTES$$</a> $$LG:OU$$
+<script language="javascript" type="text/javascript">
+<!--
+function valider(id) {
+	document.location.href='/'+id+'/estimation.htm?$$REP:QRY$$';
+}
+// -->
+</script>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+	<td><br /><b>$$LG:SELECTIONA$$</b><br /><br />
+	<form action="/estimation.htm" method="post" name="preestimation">
+	$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+	<input type="radio" name="idpub" value="$$IMMOBW:AGENCES:IDPUBLICATION$$" onclick="valider(this.value)"$$IF0:IMMOBW:AGENCES:EMAIL$$ disabled="disabled"$$END$$>
+	<font face="Geneva, Arial, Helvetica, san-serif">
+	<b>$$IMMOBW:AGENCES:NOM$$</b>
+	$$IF=:1:PAGE:ESTIM:AFFADRESS$$&nbsp;$$IMMOBW:AGENCES:ADRESSE$$$$END$$
+	$$IF!:0:PAGE:ESTIM:AFFVILLE$$&nbsp;$$IMMOBW:AGENCES:VILLE$$$$END$$
+	$$IF!:0:PAGE:ESTIM:CP$$&nbsp;($$IMMOBW:AGENCES:CP$$)$$END$$ $$IF0:IMMOBW:AGENCES:EMAIL$$<font size="1"> - email indisponible -</font>$$END$$
+	</font></b><br />
+	$$LOOP$$ $$BFIN$$
+	</form>
+	</td>
+</tr>
+</table>
+$$SET:PAGE:IDT=ESTIM$$

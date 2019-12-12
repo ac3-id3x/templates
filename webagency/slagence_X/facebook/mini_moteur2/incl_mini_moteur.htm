@@ -1,0 +1,136 @@
+$$REM$$====================================================================
+//// <summary>Include du mini moteur</summary>
+//// <remarks>
+//// <para>2010-03-23 : Intégration script FANCY BOX, et problèmes entre fichiers js (prototype et jquery)</para>
+//// <para>2010-03-25 : on attribue un ID à la page du mini moteur pour conditionner l'affichage ou non du fichier js</para>
+//// </remarks>
+//// <update date="2010-03-25" author="lisbonne.siriphol">Update</update>
+====================================================================$$END$$
+
+$$SET:PAGE:MINIMOTEUR=1$$
+$$REM$$
+	<!-- CEDRIC : 21/09/2010 :: Je supprime les conditions sur les pages PUD car on a l'impression que ça ne sert plus à rien -->
+	$$IF!:PUDIMMOBILIER$PUDESTIMATION$PUDAGENCE:PAGE:IDT$$<!--#include virtual="facebook/mini_moteur2/incl_mini_param.htm" -->$$END$$
+	$$IF=:PUDIMMOBILIER$PUDESTIMATION$PUDAGENCE:PAGE:IDT$$<!--#include virtual="facebook/mini_moteur2/incl_mini_param_pud.htm" -->$$END$$
+$$END$$
+<!--#include virtual="facebook/mini_moteur2/incl_mini_param.htm" -->
+<script type="text/javascript">
+	<!--
+		var lgmini="$$LG:MINI$$";
+		var lgmaxi="$$LG:MAXI$$";
+	//-->
+</script>
+<script type="text/javascript" src="/scripts,mini_moteur2.js?lang=$$LANGUE$$$$IF:PAGE:WAG_MINIIDTBCACHE$$&amp;miniidtbcache=$$PAGE:WAG_MINIIDTBCACHE$$$$END$$$$IF:PAGE:WAG_MINISOUSTBCACHE$$&amp;minisoustbcache=$$PAGE:WAG_MINISOUSTBCACHE$$$$END$$$$IF:PAGE:MININBANNVISIBLE$$&amp;nbannvisible=$$PAGE:MININBANNVISIBLE$$$$END$$&amp;wagstyle=$$PAGE:WAG_STYLE_RECHERCHE$$&amp;wag_geoloc=$$PAGE:WAG_STYLE_GEOLOC$$"></script>
+
+
+<form method="get" action="http://$$REP:RSRV replace fb. www.$$/mini_moteur2,prevalidation.htm" target="_blank" id="minimoteur" $$REM$$<!-- 02.04.2009 caché car erreur W3C -->name="minimoteur"$$END:REM$$ onsubmit="Envoi();$$IF0:PAGE:WAG_MINIIDTTUNIQUE$$return Verif();$$END$$">
+
+$$IF:PAGE:MINICHOIXBTN$$	<!--#include virtual="facebook/mini_moteur2/incl_mini_choixbtn.htm" -->$$END$$
+<!--#include virtual="facebook/mini_moteur2/incl_mini_inputperso.htm" -->
+<div class="BoiteMiniMoteurF" id="BoiteMiniMoteurF">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+
+	$$BIF0:VILLESANNONCES$$
+	<!-- Pas de resultat pour villesannonces -->
+	$$BFIN$$
+
+				<!--#include virtual="facebook/mini_moteur2/incl_mini_typetrans.htm" --><br style="clear:both;" />
+				$$IF:PAGE:MINITYPEVIAGER$$<!--#include virtual="facebook/mini_moteur2/incl_mini_typeviager.htm" -->$$END:PAGE:MINITYPEVIAGER$$
+				$$IF:PAGE:MINITYPELOI$$<!--#include virtual="facebook/mini_moteur2/incl_mini_typeloi.htm" -->$$END:PAGE:MINITYPELOI$$
+				$$IF:PAGE:MINITYPECOMMERCE$$<!--#include virtual="facebook/mini_moteur2/incl_mini_typecommerce.htm" -->$$END:PAGE:MINITYPECOMMERCE$$
+				$$IF:PAGE:MINITYPEACTIVITE$$<div class="MiniDiv" id="MiniTypeActivite" style="display:none;"></div>$$END:PAGE:MINITYPEACTIVITE$$
+				<div class="MiniDiv" id="MiniTypeBien" $$IF0:PAGE:WAG_MINIIDTTDEFAUT$$$$IF0:PAGE:WAG_MINIIDTTUNIQUE$$style="display:none;"$$END$$$$END$$></div> 
+				$$IF:PAGE:MINISOUSTYPEDEBIEN$$<div class="MiniDiv" id="MiniSousTypeBien" style="display:none;"></div>$$END:PAGE:MINISOUSTYPEDEBIEN$$
+				$$IF:PAGE:MINIPIECES$$<!--#include virtual="facebook/mini_moteur2/incl_mini_pieces.htm" -->$$END:PAGE:MINIPIECES$$
+				$$IF:PAGE:MINICHAMBRES$$<!--#include virtual="facebook/mini_moteur2/incl_mini_chambres.htm" -->$$END:PAGE:MINICHAMBRES$$
+				$$IF:PAGE:MININBPERS$$<!--#include virtual="facebook/mini_moteur2/incl_mini_nbpers.htm" -->$$END:PAGE:MININBPERS$$
+					
+
+					
+				$$IF:PAGE:MINIBUDGET$$<!--#include virtual="facebook/mini_moteur2/incl_mini_budget.htm" -->$$END:PAGE:MINIBUDGET$$
+							
+				$$IF:PAGE:MINIBUDGETVAC$$<!--#include virtual="facebook/mini_moteur2/incl_mini_budgetvac.htm" -->$$END:PAGE:MINIBUDGETVAC$$
+				
+				$$IF:PAGE:MINIBUDGETVIAGER$$<!--#include virtual="facebook/mini_moteur2/incl_mini_budgetviager.htm" -->$$END:PAGE:MINIBUDGETVIAGER$$
+							
+				$$IF:PAGE:MINISURFACE$$<!--#include virtual="facebook/mini_moteur2/incl_mini_surface.htm" -->$$END:PAGE:MINISURFACE$$
+				
+				$$IF:PAGE:MINISURFTERRAIN$$<!--#include virtual="facebook/mini_moteur2/incl_mini_surfaceterrain.htm" --> $$END:PAGE:MINISURFTERRAIN$$
+					
+				$$IF0:PAGE:MINIPROXIMITE$$
+				$$IF:PAGE:MINIPAYS$$
+				<div class="MiniDiv" id="MiniPays" $$IF0:PAGE:WAG_MINIIDTTDEFAUT$$$$IF0:PAGE:WAG_MINIIDTTUNIQUE$$style="display:none;"$$END$$$$END$$></div>
+				$$END:PAGE:MINIPAYS$$	
+					
+				$$IF:PAGE:MINIREGIONETR$$	<div class="MiniDiv" id="MiniRegionEtr" style="display:none;"></div>$$END$$
+				$$IF:PAGE:MINIREGION$$	<div class="MiniDiv" id="MiniRegion" style="display:none;"></div>$$END$$	
+				
+				$$IF:PAGE:MINIDEP$$<div class="MiniDiv" id="MiniDep" style="display:none;"></div>$$END$$	
+					
+				$$IF:PAGE:MINIVILLES$$<div class="MiniDiv" id="MiniVilles" style="display:none;"></div>$$END$$
+				
+				$$IF:PAGE:MINIQUARTIER$$<div class="MiniDiv" id="MiniQuartiers" style="display:none;"></div>$$END$$
+				$$END$$
+			
+				$$IF:PAGE:MINIPROXIMITE$$<!--#include virtual="facebook/mini_moteur2/incl_mini_proximite.htm" -->$$END:PAGE:MINIPROXIMITE$$
+				
+				$$IF:PAGE:MINIRAYON$$<!--#include virtual="facebook/mini_moteur2/incl_mini_rayon.htm" -->$$END:PAGE:MINIRAYON$$
+				
+				$$IF:PAGE:MINISITUATION$$<!--#include virtual="facebook/mini_moteur2/incl_mini_situation.gen.htm" --><br style="clear:both;" />$$END:PAGE:MINISITUATION$$
+								
+				$$IF:PAGE:MINIREF$$<!--#include virtual="facebook/mini_moteur2/incl_mini_ref.htm" --><br style="clear:both;" />$$END:PAGE:MINIREF$$
+
+$$IF:PAGE:MINICHOIXBAFFICHAGE$$
+<div class="MiniDiv" id="MiniChoixAffichage">
+	<p class="MiniTitre" id="TitreMiniChoixAffichage">$$LG:AFFICHERRESULPAR pcase$$</p>
+	<div id="MiniDivChoixAffichage">
+		<label class="MiniLabel" id="MiniLabelChoixAffichage1"><input type="radio" class="MiniRadio" onclick="ChoixTypeRech('l');" id="MiniChoixListe" name="affichage" value="" checked="checked" /> $$CHOIXBAFFICHAGELISTE$$</label>
+		<label class="MiniLabel" id="MiniLabelChoixAffichage2"><input type="radio" class="MiniRadio" onclick="ChoixTypeRech('c');" id="MiniChoixCarte" name="affichage" value="" /> $$CHOIXBAFFICHAGECARTE$$</label>
+		<div class="clear"><!-- --></div>		
+	</div><!-- fin #MiniDivChoixAffichage -->
+</div><!-- fin #MiniChoixAffichage -->
+$$END:PAGE:MINICHOIXBAFFICHAGE$$
+
+
+
+<!--#include virtual="facebook/mini_moteur2/incl_mini_bouton.htm" -->
+
+
+</div>
+<!-- affiche les types de bien si le type de transaction est deja selectionné au chargement du site -->
+<script type="text/javascript">
+	var divminitypecommerce = document.getElementById("MiniTypeCommerce");
+	var divminitypeactivite = document.getElementById("MiniTypeActivite");
+	var divminitypebien = document.getElementById("MiniTypeBien");
+	var divminisoustypebien = document.getElementById("MiniSousTypeBien");
+	var divminipays = document.getElementById("MiniPays");
+	var divminiregion = document.getElementById("MiniRegion");
+	var divminiregionetr = document.getElementById("MiniRegionEtr");
+	var divminidep = document.getElementById("MiniDep");
+	var divminivilles = document.getElementById("MiniVilles");
+	var divminiquartiers = document.getElementById("MiniQuartiers");
+	var divminirayon = document.getElementById("MiniRayon");
+	
+	$$IF:PAGE:WAG_MINIIDTTUNIQUE$$
+	ListeTypeBien($$PAGE:WAG_MINIIDTTUNIQUE$$);
+	$$IF=:1:PAGE:MINIPAYS$$ListePays($$PAGE:WAG_MINIIDTTUNIQUE$$, '');$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:1:PAGE:MINIREGION$$ListeRegion('250', $$PAGE:WAG_MINIIDTTUNIQUE$$, '');$$END$$$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:0:PAGE:MINIREGION$$$$IF=:1:PAGE:MINIDEP$$ListeDep($$PAGE:WAG_MINIIDTTUNIQUE$$, '');$$END$$$$END$$$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:0:PAGE:MINIREGION$$$$IF=:0:PAGE:MINIDEP$$$$IF=:1:PAGE:MINIVILLES$$ListeVilles($$PAGE:WAG_MINIIDTTUNIQUE$$, '');$$END$$$$END$$$$END$$$$END$$
+	$$IF=:1:PAGE:MINIBUDGET$$$$IF=:1:PAGE:MINIBUDGETTRANCHE$$ BudgetTranche($$PAGE:WAG_MINIIDTTUNIQUE$$);$$END$$$$END$$
+	$$END$$
+	$$IF:PAGE:WAG_MINIIDTTDEFAUT$$
+	ListeTypeBien($$PAGE:WAG_MINIIDTTDEFAUT$$);
+	$$IF=:1:PAGE:MINIPAYS$$ListePays($$PAGE:WAG_MINIIDTTDEFAUT$$, '');$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:1:PAGE:MINIREGION$$ListeRegion('250', $$PAGE:WAG_MINIIDTTDEFAUT$$, '');$$END$$$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:0:PAGE:MINIREGION$$$$IF=:1:PAGE:MINIDEP$$ListeDep($$PAGE:WAG_MINIIDTTDEFAUT$$, '');$$END$$$$END$$$$END$$
+	$$IF=:0:PAGE:MINIPAYS$$$$IF=:0:PAGE:MINIREGION$$$$IF=:0:PAGE:MINIDEP$$$$IF=:1:PAGE:MINIVILLES$$ListeVilles($$PAGE:WAG_MINIIDTTDEFAUT$$, '');$$END$$$$END$$$$END$$$$END$$
+	$$IF=:1:PAGE:MINIBUDGET$$$$IF=:1:PAGE:MINIBUDGETTRANCHE$$ BudgetTranche($$PAGE:WAG_MINIIDTTDEFAUT$$);$$END$$$$END$$
+	$$END$$
+	$$IF:PAGE:MINICHOIXBTN$$
+	ChoixTypeRech('$$PAGE:MINICHOIXBTNTYPE$$');
+	$$END$$
+	/*RegletteBudget();*/
+	
+</script>	
+</form>

@@ -1,0 +1,112 @@
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,incl_annonces.css" );
+</style>$$
+
+<form method="get" name="form_recherche" action="/prerecherche.htm" id="incl_annonces_htm">
+	<input type="hidden" name="euro" value="1" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="cp" value="" />
+	<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+	<input type="hidden" name="pays" value="fr" />	
+	<p>
+		<strong>
+		$$IF=:0:FORM:MSG$$
+			Nous n'avons pas d'annonce correspondant &agrave; vos crit&egrave;res, veuillez &eacute;largir vos crit&egrave;res de recherche :
+		$$END$$
+		$$IF=:1:FORM:MSG$$
+			Nous avons plus de 200 annonces correspondant &agrave; vos crit&egrave;res, veuillez affiner vos crit&egrave;res de recherche :
+		$$END$$
+		$$IF):0,1:FORM:MSG$$
+			Pour lancer une recherche, remplissez le formulaire  :
+		$$END$$
+		</strong>
+	</p>		
+	<h1>
+		$$IF=:1:FORM:IDTT$$Rechercher un bien en location$$END:FORM:IDTT$$
+		$$IF=:2:FORM:IDTT$$Rechercher un bien en vente$$END:FORM:IDTT$$
+	</h1>	
+	<table cellspacing="0" cellpadding="0" border="0" id="Moteur">		
+		<tr>
+			<td class="td1">$$LG:TYPEDEBIEN pcase$$ :</td>		
+			<td class="td2">
+				$$B:IMMOBW:TYPESBIENS:QRY:IDTT$$
+				$$BIF:IMMOBW:TYPESBIENS:QRY$$
+				<select name="idtypebien">
+					<option value="1,2,3,4,$$REM$$5,$$END:REM$$6,7,8,9,10,11,12,13,14" $$IF0:FORM:IDTYPEBIEN$$selected="selected"$$END$$>$$LG:INDIFFERENT pcase$$</option>
+					$$DO$$
+					<option value="$$IMMOBW:TYPESBIENS:QRY:IDTYPEBIEN$$" $$IF=:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:QRY:IDTYPEBIEN$$selected="selected"$$END$$>$$IMMOBW:TYPESBIENS:QRY:DEF_LIBELLE ncase$$</option>
+					$$LOOP$$
+				</select>
+				$$BFIN$$
+			</td>	
+		</tr>		
+		<tr>
+			<td>$$LG:NOMBREDEPIECES pcase$$ :</td>
+			<td>
+				<select name="nb_pieces">
+					<option value=""> -- $$LG:SELECTIONNEZ2 pcase$$ -- </option>
+					<option value="1"$$IF=:1:FORM:NB_PIECES$$ selected="selected"$$END$$>1</option>
+					<option value="2"$$IF=:2:FORM:NB_PIECES$$ selected="selected"$$END$$>2</option>
+					<option value="3"$$IF=:3:FORM:NB_PIECES$$ selected="selected"$$END$$>3</option>
+					<option value="4"$$IF=:4:FORM:NB_PIECES$$ selected="selected"$$END$$>4</option>
+					<option value="+4"$$IF=:+4:FORM:NB_PIECES$$ selected="selected"$$END$$>5 $$LG:ETPLUS$$</option>
+				</select>
+			</td>
+		</tr>		
+		<tr>
+			<td>$$LG:SURFACE pcase$$ (m&sup2;) :</td>
+			<td>			
+				<input class="surface" type="text" name="surfacemin" value="&nbsp;$$LG:MINI pcase$$" onclick="this.value=''" />
+				<input class="surface" type="text" name="surfacemax" value="&nbsp;$$LG:MAXI pcase$$" onclick="this.value=''" />		
+			</td>
+		</tr>
+		<tr>
+			<td>$$LG:BUDGET pcase$$ (&euro;) :</td>
+			<td>
+				<input type="hidden" name="euro" value="1" />
+				<input class="budget" type="text" name="pxmin" value="&nbsp;$$LG:MINI pcase$$" onclick="this.value=''" /> 
+				<input class="budget" type="text" name="pxmax" value="&nbsp;$$LG:MAXI pcase$$" onclick="this.value=''" /> 
+			</td>
+		</tr>
+		<tr>
+			<td>$$LG:VILLES pcase$$ :</td>
+			<td>
+				<input type="text" class="proximite" value="$$FORM:CP field 1$$" name="cp" />
+				<input type="text" class="proximite" value="$$FORM:CP field 2$$" name="cp" />
+				<input type="text" class="proximite" value="$$FORM:CP field 3$$" name="cp" />
+				<input type="text" class="proximite" value="$$FORM:CP field 4$$" name="cp" />
+			</td>
+		</tr>
+		$$IF=:0:FORM:MSG$$
+		<tr>
+			<td>	$$LG:ETENDRERECHERCHERAYON pcase$$ :</td>
+			<td>
+				<label><input type="radio" name="rayon" value="5" /> <span>5 $$LG:KM lcase$$</span></label>
+				<label><input type="radio" name="rayon" value="10" /> <span>10 $$LG:KM lcase$$</span></label>
+				<label><input type="radio" name="rayon" value="15" /> <span>15 $$LG:KM lcase$$</span></label>
+			</td>
+		</tr>
+		$$END:FORM:MSG$$
+		<tr>
+			<td colspan="2">
+				<label>
+					<input type="checkbox" name="fraicheur" value="8" $$IF=:8:FORM:FRAICHEUR$$checked="checked"$$END$$ />
+					<span>$$LG:UNIQMOINS8 pcase$$ :</span>
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<label>
+					<input type="checkbox" value="1" name="si_meuble" $$IF=:1:FORM:SI_MEUBLE$$checked="checked"$$END$$ />
+					<span>$$LG:UNIQLOCMBL pcase$$ :</span>
+				</label>
+			</td>
+		</tr>		
+		<tr>
+			<td colspan="2">
+				<input type="image" class="bouton" src="img/rechercher_$$LANGUE$$.gif" />
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,75 @@
+$$E:IMMOBW:AGENCE$$
+$$INIT:FORCECACHE=1$$
+$$TTL:5760$$
+
+$$SET:PAGE:TITR=Agence immobiliere @@IMMOBW:AGENCE:VILLE@@ @@1_IMMOBW:AGENCE:VILLE@@ @@2_IMMOBW:AGENCE:VILLE@@ @@3_IMMOBW:AGENCE:VILLE@@ @@4_IMMOBW:AGENCE:VILLE@@ @@5_IMMOBW:AGENCE:VILLE@@$$
+
+$$INCL:HAUT.HTM$$ $$SET:PAGE:IDT=LISTEAG$$
+
+<!-- $$REP:1$$ -->
+$$B:IMMOBW:AGENCES$$ 
+
+$$BIF:IMMOBW:AGENCES$$
+<table width="300" border="0" cellspacing="0" cellpadding="0" height="119">
+<tr>
+	<td valign="top" width="300">
+	<font size="5">Agence  immobiliere $$DO$$$$IMMOBW:AGENCES:VILLE$$ $$LOOP$$</font>
+	</td>
+</tr>
+</table>
+$$BFIN$$
+
+$$IF:IMMOBW:AGENCE:VILLE$$
+Agence  immobilière à $$IMMOBW:AGENCES:VILLE$$
+<table width="300" border="0" cellspacing="0" cellpadding="0" height="119">
+<tr>
+	<td valign="top" width="300"><b><font color="#CC0033">AGENCE IMMOBILIERE $$IMMOBW:AGENCES:NOM$$</font></b><br />
+	<b>$$IMMOBW:AGENCES:ADRESSE crlf2br$$<br />
+	
+	<!-- $$IMMOBW:AGENCE:CP$$ &nbsp;   $$IMMOBW:AGENCE:VILLE$$<br /> --></b>
+	$$IMMOBW:AGENCES:TXT_PUBLIC$$
+	<font color="#0099FF"><b>T&eacute;l. :</b></font> $$IMMOBW:AGENCES:TEL formattel$$<br />
+	<font color="#0099FF"><b>Fax :</b></font> $$IMMOBW:AGENCES:FAX formattel$$<br />
+	$$IF:IMMOBW:AGENCES:EMAIL$$<font color="#0099FF"><b>E-mail : </b></font>$$IMMOBW:AGENCES:EMAIL encodemail javascript full$$<br />$$END$$
+	<font color="#0099FF"><b>Nom du responsable :</b></font> $$IMMOBW:AGENCES:RESPAG$$</font><br />
+	</td>
+</tr>
+</table>
+
+$$END$$
+
+$$BIF:IMMOBW:AGENCES$$
+<table width="300" border="0" cellspacing="0" cellpadding="0" height="119">
+$$DO$$
+<tr>
+	<td valign="top" width="300"><b><font color="#CC0033">AGENCE IMMOBILIERE $$IMMOBW:AGENCES:NOM$$</font></b><br />
+	<b>$$IMMOBW:AGENCES:ADRESSE crlf2br$$<br />
+	<!-- $$IMMOBW:AGENCE:CP$$ &nbsp;   $$IMMOBW:AGENCE:VILLE$$<br /> --></b>
+	$$IMMOBW:AGENCES:TXT_PUBLIC$$
+	<font color="#0099FF"><b>T&eacute;l. :</b></font> $$IMMOBW:AGENCES:TEL formattel$$<br />
+	<font color="#0099FF"><b>Fax :</b></font> $$IMMOBW:AGENCES:FAX formattel$$<br />
+	$$IF:IMMOBW:AGENCES:EMAIL$$<font color="#0099FF"><b>E-mail : </b></font>$$IMMOBW:AGENCES:EMAIL encodemail javascript full$$<br />$$END$$
+	$$IF!:0:PAGE:LISTAGENCE:URL$$
+	<font color="#0099FF"><b>Site internet : </b></font><a href="$$IMMOBW:AGENCES:URL$$" target="_blank">$$IMMOBW:AGENCES:URL$$</a><br />
+	$$END$$	
+	<font color="#0099FF"><b>Nom du responsable :</b></font> $$IMMOBW:AGENCES:RESPAG$$</font><br />
+	$$REM$$ 
+	$$IF:IMMOBW:AGENCES:SI_AFFURL$$
+	$$IF:IMMOBW:AGENCES:URL$$ 
+	<font color="#bd1010">
+	<a href="$$IMMOBW:AGENCES:URL$$" TARGET="_blank" class="rouge">
+	<b>En un clic (!), vers le site de cette agence: $$IMMOBW:AGENCES:NOM$$</b></a></font><br />
+	$$END:URL$$
+	$$END:SI_AFFURL$$
+	$$IF0:IMMOBW:AGENCES:SI_AFFURL$$$$END:!SI_AFFURL$$ 
+	$$END$$
+	$$IF=:cv:REP:1$$
+	<b><a href="$$IMMOBW:AGENCES:IDPUBLICATION%20urlencode$$/carte_visite.htm" target="_blank" class="rouge">(vitrine internet de l'agence)</a><br />
+	$$END$$	
+	$$IF:IMMOBW:AGENCES:EMAIL$$<a href="$$IMMOBW:AGENCES:IDPUBLICATION%20urlencode$$/contact.htm">Nous contacter</a><br />$$END$$<br /></b>
+	</td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$INCL:BAS.HTM$$ 

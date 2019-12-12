@@ -1,0 +1,29 @@
+$$SET:PAGE:RUBRIQUE=Sélection des agences$$
+$$A:CHECKAGENCE=0$$
+
+<SCRIPT LANGUAGE="Javascript">
+<!--
+function valider(id)
+{
+document.location.href='/'+id+'/intercab.htm?$$REP:QRY$$';
+}
+// -->
+</SCRIPT>
+<br />
+<TABLE WIDTH="90%" BORDER="0" CELLSPACING="0" CELLPADDING="0" align="center">
+<TR> 
+	<TD><A class="envoiToutesAgences" HREF="/intercab.htm?lang=$$LANGUE$$&remail=$$BIF:IMMOBW:AGENCES$$$$DO:1:120$$$$IF:IMMOBW:AGENCES:EMAIL$$$$IF=:1:CHECKAGENCE$$>, <$$IMMOBW:AGENCES:EMAIL$$$$END$$$$IF!:1:CHECKAGENCE$$$$A:CHECKAGENCE=1$$$$IMMOBW:AGENCES:EMAIL$$$$END$$$$END$$$$LOOP$$$$BFIN$$&agence_nom=%20">$$LG:LISTOUTES$$</A><br />$$LG:OU$$&nbsp;<strong class="selectAgenceChoix">$$LG:SELECTIONA$$</strong><br /><br />
+	<FORM ACTION="/intercab.htm" METHOD="POST" NAME="preestimation">
+	$$BIF:IMMOBW:AGENCES$$ 
+	$$DO$$ 
+	<!-- $$IMMOBW:AGENCES:EMAIL encodemail javascript$$ -->
+	<INPUT TYPE="radio" NAME="idpub" VALUE="$$IMMOBW:AGENCES:IDPUBLICATION$$" onClick="valider(this.value)"$$IF0:IMMOBW:AGENCES:EMAIL$$ disabled$$END$$>
+	<strong>$$IMMOBW:AGENCES:NOM$$</strong>
+	$$IMMOBW:AGENCES:VILLE$$ ($$IMMOBW:AGENCES:CP$$) $$IF0:IMMOBW:AGENCES:EMAIL$$<FONT SIZE="1">- email indisponible -</FONT>$$END$$<br />
+	$$LOOP$$
+	$$BFIN$$
+	</FORM>
+	</TD>
+</TR>
+</TABLE>
+$$SET:PAGE:IDT=INTERCAB$$ 

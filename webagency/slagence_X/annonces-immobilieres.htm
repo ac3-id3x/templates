@@ -1,0 +1,64 @@
+$$REM$$====================================================================
+//// <summary>Liste villes ayant des annonces avec au moins une photo</summary>
+//// <remarks>
+//// <para>Ancien fichier appelé : incl_liste_villes_idtt.gen.htm</para>
+//// <para>Bug inexplicable sur certaines villes, donc on ne génère plus de .gen</para>
+//// </remarks>
+//// <update date="2010-05-20" author="lisbonne.siriphol">Update</update>
+====================================================================$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTANNONCES$$
+$$SET:PAGE:TITR=@@PAGE:CFG_TITRE@@$$
+<div id="AnnoncesImmo">
+	<h1>Toutes nos annonces immobili&egrave;res :</h1>
+	<br />
+	
+$$IF=:1:FORM:IDTT$$
+$$B:IMMOBW:VILLESANNONCES:#REF:::1:ALIAS:VILANN1$$
+$$BIF:VILANN1$$
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr><td>
+	$$DO$$
+	$$VILANN1:I$$)&nbsp;
+	<a href="http://$$REP:RSRV$$/immobilier.htm?ci=$$VILANN1:CODEINSEE$$&amp;idtt=1&amp;photo=1" title="Immobilier $$VILANN1:VILLEAFF$$">Immobilier &agrave; $$VILANN1:VILLEAFF$$</a>
+	
+	$$VILANN1:NBANN$$ annonce$$VILANN1:NBANN pluriel$$ immobiliere$$VILANN1:NBANN pluriel$$
+	
+	<br />
+	$$LOOP$$
+	$$IF+:999:VILANN1:NBR$$<a href="http://$$REP:RSRV$$/annuaire-annonces-suite.htm?idtt=1">Voir la liste compl&egrave;te de nos annonces</a>$$END$$
+	</td>
+</tr>
+</table>
+$$BFIN$$
+$$END$$
+
+$$REM$$
+==================================================================================================
+==			Ici je gère le cas ou il n'y a pas de idtt passé GB 21/04/2005		==
+==			Si pas de idtt ou idtt=2 alors on affiche les ventes 
+==================================================================================================
+$$END:REM$$
+
+$$IF=:2:FORM:IDTT$$ $$A:VEN=1$$ $$END$$
+$$IF0:FORM:IDTT$$ $$A:FORM:IDTT=2$$ $$A:VEN=1$$ $$END$$
+
+$$IF:VEN$$
+$$B:IMMOBW:VILLESANNONCES:#REF:::2:ALIAS:VILANN2$$
+$$BIF:VILANN2$$
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr><td>
+	$$DO$$
+	$$VILANN2:I$$)&nbsp;
+	<a href="http://$$REP:RSRV$$/immobilier.htm?ci=$$VILANN2:CODEINSEE$$&amp;idtt=2&amp;photo=1" title="Immobilier $$VILANN2:VILLEAFF$$">Immobilier &agrave; $$VILANN2:VILLEAFF$$</a>
+	$$VILANN2:NBANN$$ annonce$$VILANN2:NBANN pluriel$$ immobiliere$$VILANN2:NBANN pluriel$$<br />
+	$$LOOP$$
+	$$IF+:999:VILANN2:NBR$$<a href="/annuaire-annonces-suite.htm?idtt=2">Voir la liste compl&egrave;te de nos annonces</a>$$END$$
+	</td>
+</tr>
+</table>
+$$BFIN$$
+$$END$$
+	<br />
+</div>
+$$INCL:BAS.HTM$$

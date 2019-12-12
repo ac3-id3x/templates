@@ -1,0 +1,287 @@
+<!-- scripts -->
+<script language="javascript">
+<!--
+function writeIntitule(name) {
+	var elt_intitule = document.getElementById( "intitule" );
+	if ( elt_intitule ) {
+		elt_intitule.innerHTML = name.alt;
+	}
+}
+function redirect( mapName ) {
+	var elt_frm = document.getElementById( "map" );
+	if( elt_frm ) {
+		elt_frm.value = mapName;
+		var elt_formu = document.getElementById( "annonces" );
+		if( elt_formu ) {
+			elt_formu.action = "$$REP:URL$$";
+			elt_formu.submit();
+		}
+	}
+}
+function setdp(dp) {
+	var elt_cp1 = document.getElementById( "cp1" );
+	var elt_cp2 = document.getElementById( "cp2" );
+	var elt_cp3 = document.getElementById( "cp3" );
+	var elt_cp4 = document.getElementById( "cp4" );
+	var elt_cp = "";
+	if ( elt_cp1 ) {
+		elt_cp = elt_cp + elt_cp1.value;
+	}
+	if ( elt_cp2 ) {
+		elt_cp = elt_cp + ',' + elt_cp2.value;
+	}
+	if ( elt_cp3 ) {
+		elt_cp = elt_cp + ',' + elt_cp3.value;
+	}
+	if ( elt_cp4 ) {
+		elt_cp = elt_cp + ',' + elt_cp4.value;
+	}
+	acps = elt_cp.split(',');
+	for (i = 0; i < acps.length; i++) {
+		if (elt_cp.indexOf(acps[i] + ',') == -1) {
+			if ((elt_cp.indexOf(acps[i]) == -1)) {
+				elt_cp += acps[i] + ',';
+			} else {
+				elt_cp += ',';
+			}
+		}
+	}
+	acps = dp.split(',');
+	for (i = 0; i < acps.length; i++) {
+		if (elt_cp.indexOf(acps[i] + ',') == -1) {
+			if ( elt_cp1.value != "" ) {
+				elt_cp1.value += ',' + acps[i];
+			} else {
+				elt_cp1.value += acps[i];
+			}
+		}
+	}
+	i = elt_cp1.length;
+	if (i > 0) {
+		elt_cp1 = elt_cp1.substring(0, i - 1);
+	}
+}
+-->
+</script>
+
+<!-- affichage des cartes -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+<tr>
+	<td align="center">
+	$$IF0:FORM:MAP$$
+	<img src="img/carte_France.gif" id="carte_France" border="0" alt="" usemap="#carte_France">
+	</td>
+</tr>
+<tr>
+	<td align="center">
+	<img src="img/domtom.gif" border="0" alt="" usemap="#DomTom">
+	$$END$$
+	$$IF=:NE:FORM:MAP$$
+	<img src="img/NE.gif" id="NE" border="0" alt="" usemap="#NE">
+	$$END$$
+	$$IF=:NW:FORM:MAP$$
+	<img src="img/NW.gif" id="NW" border="0" alt="" usemap="#NW">
+	$$END$$
+	$$IF=:SE:FORM:MAP$$
+	<img src="img/SE.gif" id="SE" border="0" alt="" usemap="#SE">
+	$$END$$
+	$$IF=:SW:FORM:MAP$$
+	<img src="img/SW.gif" id="SW" border="0" alt="" usemap="#SW">
+	$$END$$
+	$$IF=:IDF:FORM:MAP$$
+	<img src="img/IdF.gif" id="IdF" border="0" alt="" usemap="#IdF">
+	$$END$$
+	$$IF=:Paris:FORM:MAP$$
+	<img src="img/Paris.gif" id="Paris" border="0" alt="" usemap="#Paris">
+	$$END$$
+	<div id="intitule">&nbsp;</div>
+	<input type="hidden" id="map" name="map" value="$$FORM:MAP$$">
+	</td>
+</tr>
+</table>
+
+<!-- Mapping -->
+<!-- Carte de France -->
+<map name="carte_France">
+  <area shape="poly" alt="Basse Normandie" coords="48,47,55,68,71,69,78,74,80,69,75,63,73,53,57,53,54,47" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Normandie" coords="75,48,77,61,82,65,90,65,90,58,90,47,86,42" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Picardie" coords="90,36,87,41,92,47,92,56,106,59,113,62,120,44,104,42" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Nord - Pas de Calais" coords="97,22,88,29,88,36,104,40,119,41,106,30" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Champagne Ardennes" coords="127,41,113,66,117,79,126,78,136,83,141,80,136,71,129,65,133,47" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Lorraine" coords="135,49,132,64,142,77,153,80,159,57,146,50" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ile de France" coords="92,59,92,70,105,77,110,65,102,62" href="javascript:redirect( 'IdF' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Alsace" coords="162,56,155,80,161,89,168,60" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Bretagne" coords="57,71,53,81,39,86,13,78,13,65,31,62" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Pays de la Loire" coords="58,71,69,72,79,78,73,86,67,95,60,100,60,107,51,109,42,98,40,90,57,82" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Centre" coords="82,68,86,68,104,78,106,99,99,107,84,107,78,98,72,95,81,83" href="javascript:redirect( 'NW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Bourgogne" coords="106,74,112,74,118,82,135,85,136,106,121,112,116,102,108,102" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Franche Comté" coords="144,81,138,85,138,107,147,109,158,91,153,81" href="javascript:redirect( 'NE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Rhône Alpes" coords="117,114,133,111,154,109,161,127,147,134,139,148,124,148,121,139,129,129,120,124" href="javascript:redirect( 'SE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Poitou Charentes" coords="69,97,62,102,63,109,55,110,55,121,67,132,80,118,81,109,77,100" href="javascript:redirect( 'SW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Auvergne" coords="105,103,101,109,102,124,98,139,105,134,119,136,122,130,116,124,117,109,114,103" href="javascript:redirect( 'SE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Limousin" coords="84,111,80,122,87,131,94,135,99,126,99,109" href="javascript:redirect( 'SW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Provence Alpes Côte d'Azur" coords="155,133,143,149,130,149,129,160,150,170,170,153" href="javascript:redirect( 'SE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Languedoc Roussillon" coords="109,139,116,138,121,149,128,149,125,161,110,173,110,181,95,180,98,174,91,168,104,165,115,156" href="javascript:redirect( 'SE' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aquitaine" coords="78,124,86,137,79,151,64,156,65,174,44,163,56,126,68,135" href="javascript:redirect( 'SW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Midi Pyrénées" coords="89,137,81,153,67,157,68,173,89,180,92,174,89,166,103,162,111,155,104,140,98,141" href="javascript:redirect( 'SW' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Corse" coords="184,156,176,168,182,182,189,185,191,165" href="javascript:redirect( 'SE' );" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Carte du Nord Est -->
+<map name="NE">
+  <area shape="rect" alt="France" coords="135,5,186,67" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Nord" coords="4,51,35,72,35,83,13,83,11,67,4,62" href="javascript:setdp( '59' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Pas de Calais" coords="10,85,7,68,1,65,1,79" href="javascript:setdp( '62' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ardennes" coords="43,87,36,104,55,109,63,97,54,80" href="javascript:setdp( '08' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aisne" coords="18,87,16,113,23,125,36,87" href="javascript:setdp( '02' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Somme" coords="14,95,1,99,2,81,13,86" href="javascript:setdp( '80' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Oise" coords="13,98,2,101,1,116,13,119" href="javascript:setdp( '60' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Seine et Marne" coords="3,120,14,120,22,128,20,144,1,152" href="javascript:setdp( '77' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Marne" coords="35,107,27,129,33,138,40,132,52,138,58,130,55,112" href="javascript:setdp( '51' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Loiret" coords="12,155,1,155,1,174,9,176,10,165" href="javascript:setdp( '45' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Yonne" coords="18,147,13,153,15,162,12,174,38,182,43,162,33,162,25,148" href="javascript:setdp( '89' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aube" coords="26,135,22,144,34,161,53,153,53,139,41,136,34,139" href="javascript:setdp( '10' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Cher" coords="2,176,10,177,14,195,2,196" href="javascript:setdp( '18' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Nièvre" coords="13,177,17,198,37,196,40,185" href="javascript:setdp( '58' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Meuse" coords="65,99,60,131,71,141,80,140,77,120,69,102" href="javascript:setdp( '55' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Meurthe et Moselle" coords="70,102,83,141,104,138,83,118,83,102" href="javascript:setdp( '54' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Moselle" coords="86,102,86,117,111,135,106,120,119,117" href="javascript:setdp( '57' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Marne" coords="59,135,56,156,70,171,78,165,78,148" href="javascript:setdp( ''52 );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Côte d'Or" coords="52,158,44,163,41,185,53,196,67,193,72,174" href="javascript:setdp( '21' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Bas Rhin" coords="110,119,136,118,125,147,110,141" href="javascript:setdp( '67' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Vosges" coords="78,141,82,157,105,159,109,140,93,142" href="javascript:setdp( '88' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Territoire de Belfort" coords="105,163,107,171,113,174,110,165" href="javascript:setdp( '90' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haut Rhin" coords="112,147,107,159,119,176,126,151" href="javascript:setdp( '68' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Saône" coords="82,161,75,179,81,183,102,172,101,162" href="javascript:setdp( '70' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Doubs" coords="83,186,92,197,113,181,103,175" href="javascript:setdp( '25' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Jura" coords="74,183,69,196,89,196" href="javascript:setdp( '39' );" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Carte du Nord Ouest -->
+<map name="NW">
+  <area shape="rect" coords="16,8,70,64" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Pas de Calais" coords="176,50,190,50,195,59,195,78,177,72" href="javascript:setdp( '62' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Somme" coords="177,75,196,82,196,93,183,93,174,84" href="javascript:setdp( '80' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Oise" coords="182,96,184,114,198,115,198,96" href="javascript:setdp( '60' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Seine maritime" coords="170,86,180,94,180,107,164,110,147,104,144,96" href="javascript:setdp( '76' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Eure" coords="147,107,150,123,161,132,174,131,180,110,163,114" href="javascript:setdp( '27' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ile de France" coords="180,116,180,129,189,146,196,146,197,119" href="javascript:redirect( 'IdF' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Eure et Loir" coords="162,135,166,144,160,150,172,159,188,149,177,132" href="javascript:setdp( '28' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Calvados" coords="114,108,121,120,116,130,146,124,143,108" href="javascript:setdp( '14' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Orne" coords="123,131,122,141,142,141,158,149,162,143,149,126" href="javascript:setdp( '61' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Loiret" coords="179,159,190,152,197,150,197,170,182,171" href="javascript:setdp( '45' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Cher" coords="194,173,191,185,185,191,196,197,197,177" href="javascript:setdp( '18' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Loir et Cher" coords="161,156,155,170,166,175,171,187,185,186,191,174,180,174,177,161,169,162" href="javascript:setdp( '41' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Indre" coords="182,189,173,189,163,196,191,197" href="javascript:setdp( '36' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Manche" coords="97,95,109,96,115,119,113,129,119,132,120,138,105,138,98,113" href="javascript:setdp( '50' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Sarthe" coords="142,142,130,165,146,175,158,155" href="javascript:setdp( '72' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Mayenne" coords="115,140,134,144,125,166,112,164,116,153" href="javascript:setdp( '53' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Indre et Loire" coords="152,173,141,185,151,196,164,196,170,189,164,178" href="javascript:setdp( '37' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Maine et loire" coords="112,167,131,167,143,175,137,190,120,193,109,184,119,179" href="javascript:setdp( '49' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Loire Atlantique" coords="106,167,77,181,93,195,107,189,108,181,114,178" href="javascript:setdp( '44' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ille et Vilaine" coords="93,135,95,145,86,152,92,170,109,164,113,142" href="javascript:setdp( '35' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Côtes d'Armor" coords="88,136,89,145,81,151,55,147,55,127,69,124,74,138,81,132" href="javascript:setdp( '22' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Morbihan" coords="87,172,56,165,53,151,83,155" href="javascript:setdp( '56' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Finistère" coords="50,129,50,149,51,161,24,152,24,131" href="javascript:setdp( '29' );" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Carte du Sud Est -->
+<map name="SE">
+  <area shape="rect" alt="France" coords="46,149,102,198" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Alpes maritimes" coords="116,88,111,96,119,104,111,109,119,120,137,98" href="javascript:setdp( '06' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Var" coords="90,114,87,133,102,138,111,132,118,122,108,112" href="javascript:setdp( '83' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Bouches du Rhône" coords="52,122,63,109,83,118,85,133,60,128" href="javascript:setdp( '13' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Gard" coords="48,124,61,107,56,95,43,95,40,101,25,101,28,109,40,109" href="javascript:setdp( '30' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Hérault" coords="23,134,8,125,27,110,35,110,44,121" href="javascript:setdp( '34' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aude" coords="18,146,1,148,3,128,18,135" href="javascript:setdp( '11' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Pyrénées orientales" coords="0,150,17,149,22,163,3,168" href="javascript:setdp( '66' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Vaucluse" coords="60,94,67,110,81,117,84,113,80,101,71,95" href="javascript:setdp( '84' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Alpes de Haute Provence" coords="82,100,89,113,112,106,108,96,115,87,116,79,94,89" href="javascript:setdp( '04' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Hautes Alpes" coords="99,62,102,70,78,87,83,95,93,85,119,76,106,62" href="javascript:setdp( '05' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ardèche" coords="58,56,39,78,43,90,57,92,60,69" href="javascript:setdp( '07' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Drôme" coords="61,56,60,92,78,97,79,94,73,87,82,80,73,68" href="javascript:setdp( '26' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Isère" coords="62,53,84,78,96,69,92,53,74,40,67,45" href="javascript:setdp( '38' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Savoie" coords="86,35,84,44,101,59,117,55,111,41,103,36,96,42" href="javascript:setdp( '73' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Savoie" coords="90,23,87,32,96,38,102,32,111,36,111,17,97,17" href="javascript:setdp( '74' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Lozère" coords="18,77,19,95,27,98,39,98,39,90,25,72" href="javascript:setdp( '48' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aveyron" coords="2,83,8,77,21,105,12,116,4,106" href="javascript:setdp( '12' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Loire" coords="20,56,27,72,37,76,50,60,44,56" href="javascript:setdp( '43' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Cantal" coords="5,54,2,78,9,71,15,81,19,71,16,58" href="javascript:setdp( '15' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Puy de Dôme" coords="6,28,3,47,15,56,21,52,36,53,30,34,17,29" href="javascript:setdp( '63' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Loire" coords="35,25,39,51,50,56,56,51,47,44,45,26" href="javascript:setdp( '42' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Rhône" coords="47,26,55,25,61,38,58,48,50,41" href="javascript:setdp( '69' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ain" coords="66,12,60,27,66,39,75,37,81,41,90,17,78,22" href="javascript:setdp( '01' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Allier" coords="3,13,4,25,31,32,34,15,26,7,9,5" href="javascript:setdp( '03' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Saône et Loire" coords="31,6,38,13,38,22,44,23,58,19,63,10,72,11,69,2,38,2" href="javascript:setdp( '71' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Jura" coords="72,2,75,15,81,17,96,2" href="javascript:setdp( '39' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Corse" coords="168,110,170,122,155,134,177,154,176,125,174,109" href="javascript:setdp( '2B' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Corse du Sud" coords="153,138,179,159,174,170,154,153" href="javascript:setdp( '2A' );" onmouseover="writeIntitule(this);" />
+</map>
+<!--  Carte du Sud Ouest -->
+<map name="SW">
+  <area shape="rect" alt="France" coords="12,139,69,195" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Vendée" coords="87,2,108,17,123,17,119,1" href="javascript:setdp( '85' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Deux-Sèvres" coords="122,0,124,16,121,2,137,3,141,25,135,32,124,24" href="javascript:setdp( '79' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Vienne" coords="139,2,145,29,160,29,159,21,165,16,158,2" href="javascript:setdp( '86' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Indre" coords="163,2,171,18,192,15,190,1" href="javascript:setdp( '36' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Charente maritime" coords="109,22,119,20,131,32,126,42,133,62,122,56,109,39" href="javascript:setdp( '17' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Charente" coords="137,33,129,40,137,61,160,31,147,30" href="javascript:setdp( '16' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Vienne" coords="158,45,163,34,163,24,171,21,179,39,186,43,170,51" href="javascript:setdp( '87' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Creuse" coords="175,21,187,40,197,42,197,21,187,17" href="javascript:setdp( '23' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Corrèze" coords="172,53,175,65,183,69,190,69,193,60,196,44,184,46" href="javascript:setdp( '19' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Cantal" coords="196,58,191,69,194,81,199,81" href="javascript:setdp( '15' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Dordogne" coords="140,64,139,75,148,72,148,79,163,83,172,72,168,54,154,44" href="javascript:setdp( '24' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Gironde" coords="108,51,135,66,138,79,130,97,106,85" href="javascript:setdp( '33' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Landes" coords="105,87,96,120,127,120,127,109,135,101" href="javascript:setdp( '40' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Lot et Garonne" coords="141,78,133,96,139,105,156,102,161,84,150,82" href="javascript:setdp( '47' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Lot" coords="163,86,172,98,184,93,184,84,192,81,188,73,177,69" href="javascript:setdp( '46' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aveyron" coords="192,84,186,92,189,97,196,93,197,84" href="javascript:setdp( '12' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Tarn" coords="190,100,178,109,191,127,197,127,197,106" href="javascript:setdp( '81' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Tarn et Garonne" coords="183,95,186,99,172,110,158,109,164,92,172,99" href="javascript:setdp( '82' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Aude" coords="195,129,184,129,184,136,190,143,187,151,196,155,196,141" href="javascript:setdp( '11' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Ariège" coords="178,134,160,149,181,159,186,151,187,141" href="javascript:setdp( '09' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Haute Garonne" coords="162,113,175,112,185,125,156,148,150,138,161,132,171,123" href="javascript:setdp( '31' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Gers" coords="133,109,130,117,139,123,148,129,167,125,154,107" href="javascript:setdp( '32' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Hautes Pyrénées" coords="134,123,148,132,147,155,129,147,135,135" href="javascript:setdp( '65' );" onmouseover="writeIntitule(this);" />
+  <area shape="poly" alt="Pyrénées Atlantique" coords="97,122,130,123,130,135,123,146,97,130,100,140,112,145" href="javascript:setdp( '64' );" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Carte d'Ile de France -->
+<map name="IdF">
+<area shape="rect" alt="France" coords="163,-1,201,37" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris" coords="82,62, 72,69, 81,73, 93,73, 95,68, 89,61" href="javascript:redirect('Paris');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Val-de-Marne" coords="93,69, 95,72, 83,72, 83,83, 106,91, 110,89, 108,71" href="javascript:setdp('94');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Hauts-de-Seine" coords="82,61, 73,68, 73,70, 82,72, 83,84, 64,71, 67,63, 77,52, 83,54, 82,55" href="javascript:setdp('92');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Seine-Saint-Denis" coords="82,54, 83,61, 90,62, 93,68, 106,71, 108,42, 96,53" href="javascript:setdp('93');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Val d'Oise" coords="106,33, 107,40, 95,54, 76,53, 73,57, 55,43, 16,35, 26,12, 101,22" href="javascript:setdp('95');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Seine-et-Marne" coords="108,34, 109,92, 91,145, 92,171, 139,170, 191,125, 199,61, 154,31" href="javascript:setdp('77');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Essonne" coords="74,78, 109,90, 103,136, 89,148, 43,148, 42,127" href="javascript:setdp('91');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Yvelines" coords="17,36, 1,41, 11,64, 15,71, 12,91, 40,127, 50,116, 58,99, 71,77, 64,69, 70,59, 72,55, 66,50, 54,44, 37,39" href="javascript:setdp('78');" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Arrondissements de Paris -->
+<map name="Paris">
+<area shape="poly" alt="Paris 1er" coords="90,72, 86,72, 84,79, 84,80, 111,91, 114,84, 92,75" href="javascript:setdp('75001');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 19ème" coords="142,15, 144,24, 135,41, 135,46, 141,47, 142,53, 148,66, 157,64, 163,59, 175,60, 187,57, 187,53, 178,46, 178,29, 168,17, 158,12" href="javascript:setdp('75019');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 18ème" coords="93,14, 88,40, 90,45, 92,46, 109,48, 113,46, 132,46, 135,35, 142,25, 142,22, 141,16" href="javascript:setdp('75018');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 20ème" coords="151,65, 150,67, 170,95, 172,98, 177,112, 193,112, 197,105, 194,89, 194,74, 189,57, 177,61, 161,63, 158,66" href="javascript:setdp('75020');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 17ème" coords="91,15, 87,38, 86,47, 54,60, 34,52, 36,41, 55,32, 57,31, 63,24, 85,15" href="javascript:setdp('75017');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 9ème" coords="109,52, 110,63, 87,70, 92,61, 90,49" href="javascript:setdp('75009');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 10ème" coords="139,49, 140,56, 146,65, 146,66, 134,73, 112,64, 111,49, 114,46" href="javascript:setdp('75010');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 11ème" coords="136,77, 141,102, 173,109, 171,99, 163,91, 149,68, 135,75" href="javascript:setdp('75011');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 12ème" coords="137,114, 170,149, 183,143, 195,129, 195,115, 167,110, 140,103" href="javascript:setdp('75012');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 13ème" coords="110,131, 109,154, 114,162, 112,170, 127,169, 163,153, 161,150, 136,119, 134,120, 132,127, 116,132" href="javascript:setdp('75013');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 14ème" coords="87,122, 105,128, 105,155, 110,162, 108,171, 93,168, 94,163, 57,151, 59,149" href="javascript:setdp('75014');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 2ème" coords="92,71, 109,65, 119,71, 115,82, 93,74" href="javascript:setdp('75002');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 3ème" coords="121,73, 116,83, 127,86, 129,93, 138,96, 134,78, 123,73" href="javascript:setdp('75003');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 4ème" coords="110,96, 127,109, 136,112, 138,101, 136,97, 128,94, 124,87, 116,85" href="javascript:setdp('75004');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 5ème" coords="112,103, 133,118, 131,124, 115,131, 101,123" href="javascript:setdp('75005');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 6ème" coords="98,92, 89,103, 79,111, 98,123, 110,101" href="javascript:setdp('75006');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 8ème" coords="88,50, 90,60, 82,79, 58,78, 55,71, 54,61, 80,51" href="javascript:setdp('75008');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 7ème" coords="50,94, 66,110, 77,111, 88,103, 96,91, 87,86, 73,84, 60,82" href="javascript:setdp('75007');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 15ème" coords="49,94, 15,133, 14,135, 22,135, 55,151, 86,118, 77,112, 74,113, 67,112, 65,111" href="javascript:setdp('75015');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Paris 16ème" coords="34,54, 53,61, 53,72, 56,78, 8,135, 4,133, 1,107" href="javascript:setdp('75016');" onmouseover="writeIntitule(this);" />
+<area shape="rect" alt="France" coords="-1,-1,32,34" href="javascript:redirect( '' );" onmouseover="writeIntitule(this);" />
+</map>
+<!-- Dom Toms -->
+<map name="DomTom">
+<area shape="poly" alt="Guyane" coords="16,3,10,10,9,17,14,23,12,29,8,38,13,41,17,37,24,44,31,36,41,19,31,7" href="javascript:setdp('970');"onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="La Réunion" coords="72,14,61,10,52,18,55,29,70,38,79,33,79,23" href="javascript:setdp('971');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Guadeloupe" coords="112,6,112,14,101,13,95,20,97,27,99,37,106,42,112,34,110,24,114,27,129,24,122,15,118,5" href="javascript:setdp('974');" onmouseover="writeIntitule(this);" />
+<area shape="poly" alt="Martinique" coords="146,5,156,9,169,29,166,38,150,36,149,27,143,14" href="javascript:setdp('973');" onmouseover="writeIntitule(this);" />
+</map>

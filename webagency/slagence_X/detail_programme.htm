@@ -1,0 +1,383 @@
+$$INCL:HAUT.HTM$$
+<!-- $$FORM:LANG$$ -->
+<style type="text/css">
+@import url( "/detail,styles,dpe.css?lang=$$FORM:LANG$$" );
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function go3(url,n,params) {
+window.open(url,n,params);
+}
+function go(url,n,w,h) {
+window.open(url,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width='+w+',height='+h);
+}
+// -->
+</SCRIPT>
+<BR><BR>
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:QRY:LANG$$
+<DIV ALIGN="CENTER">
+<TABLE width="95%" border="0" cellspacing="1" cellpadding="4" class="tabFond2">
+<tr>
+	<td VALIGN="TOP" width="45%"><a href="javascript:window.history.go(-1);">Retour</a><BR>
+	<SPAN CLASS="tabTitre"><BR>
+	<B>
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IMMOBW:ANNONCE:LIBELLE htmlencode ucase$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode ucase$$
+	$$END$$
+	</B>
+	</SPAN><BR><BR>D&eacute;tail du programme :<BR></td>
+	<td align="right" width="55%"><A HREF="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/dem_doc.htm?lang=$$FORM:LANG$$"><U>$$LG:SAVOIR$$</U></A></td>
+</tr>
+<tr>
+	<td VALIGN="BOTTOM" class="tabTitre" width="45%">
+	<b>
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IMMOBW:ANNONCE:LIBELLE htmlencode$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$
+	$$END$$
+	$$IF:IMMOBW:ANNONCE:SURFACE$$ ($$IMMOBW:ANNONCE:SURFACE$$m²) $$END$$</b>
+	$$IF:IMMOBW:ANNONCE:SI_EXCLUSIF$$ &nbsp;<B><FONT SIZE="1" COLOR="#bd1010">$$LG:EXCLU$$</FONT></B>$$END$$<BR>
+	$$LG:SITUEA$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$ ($$IMMOBW:ANNONCE:CP$$)
+	$$IF:IMMOBW:ANNONCE:PROX$$<BR><B><FONT SIZE="1">$$LG:PROXIMITE$$:</FONT></B><FONT SIZE="1"> $$IMMOBW:ANNONCE:PROX htmlencode$$</FONT>$$END$$
+	$$IF0:IMMOBW:ANNONCE:PROX$$<BR><B><FONT SIZE="1">$$LG:PROXIMITE$$:</FONT></B><FONT SIZE="1"> $$IMMOBW:ANNONCE:PROX_FR htmlencode$$</FONT>$$END$$
+	</td>
+	<td align="right" class="tabTitre" width="55%">
+	<B>$$IMMOBW:ANNONCE:PRIX$$  $$IMMOBW:ANNONCE:PRIX_UNITE htmlencode$$</B><BR>
+	$$IF:IMMOBW:ANNONCE:PRIX$$
+	<FONT FACE="Verdana, Arial, Helvetica, sans-serif" SIZE="1"><I>($$IMMOBW:ANNONCE:PRIX tofrancs 0$$ $$IMMOBW:ANNONCE:PRIX_UNITE euro2autre FF$$)</I></FONT><BR>
+	$$END:PRIX$$
+	$$IF!:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$<font size="1">
+	<B>$$LG:MAJ$$:</B>$$IMMOBW:ANNONCE:DT_FRAICHEUR date 2$$<BR>
+	$$END$$<B>$$LG:REF$$:</B> $$IMMOBW:ANNONCE:REFANNONCE$$</font>
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><BR>
+	$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+	$$IF!:FR:LANGUE$$
+	<FONT FACE="Arial, Helvetica, sans-serif" SIZE="2"> <BR><BR><I>$$LG:COMMENTFRANCAIS$$</I> :  $$IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode$$</FONT>
+	$$END$$
+	<br><br>
+	</td>
+</tr>
+<tr>
+	<td align="center" colspan="2">
+	$$B:IMMOBW:PHOTOS:VAL:IMMOBW_ANNONCE_IDANNONCE$$
+	$$BIF:IMMOBW:PHOTOS:VAL$$
+	$$DO:1:10$$
+	$$IF=:1:IMMOBW:PHOTOS:VAL:I$$
+	<TABLE border="0" cellspacing="0" cellpadding="0" width="100%">
+	<TR>
+		<TD colspan=3 align="center"><a name="grand"><img name="big" src=$$IMMOBW:PHOTOS:VAL:URL$$ vspace="10" hspace="5" name="grandphoto" align="center"></a><br></TD>
+	</TR>
+	</TABLE>
+	<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+	<TR>
+		<TD align="center">
+		<TABLE border="0" cellpadding="1" cellspacing="2">
+		<TR>
+			$$IF!:1:IMMOBW:PHOTOS:VAL:NBR$$
+			<TD align=center valign=middle width=90><a href="#grand" onclick="document.images['big'].src='$$IMMOBW:PHOTOS:VAL:URL$$'"><IMG alt="" SRC=$$IMMOBW:PHOTOS:VAL:THUMB_URL$$ BORDER=0></a></TD>
+			$$END$$
+			$$END$$
+			$$IF(:4,7:IMMOBW:PHOTOS:VAL:I$$</TR><TR ALIGN=CENTER VALIGN=BOTTOM>$$END$$
+			$$IF!:1:IMMOBW:PHOTOS:VAL:I$$
+			<TD align=center valign=middle width=90><a href="#grand" onclick="document.images['big'].src='$$IMMOBW:PHOTOS:VAL:URL$$';"><IMG alt="" SRC="$$IMMOBW:PHOTOS:VAL:THUMB_URL$$" BORDER=0></a></TD>
+			$$END$$
+			$$LOOP$$
+			<TD width=10><img src=images/x.gif width=10 height=1></TD>
+		</TR>
+		<TR>
+			<TD COLSPAN="3"><IMG SRC=images/fr/x.gif WIDTH=1 HEIGHT=10></TD>
+		</TR>
+		</TABLE>
+		</TD>
+	</TR>
+	</TABLE>
+	$$BFIN$$
+	$$IF!:1:IMMOBW:PHOTOS:VAL:NBR$$
+	$$BIF:IMMOBW:PHOTOS:VAL$$
+	<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+	<!--
+	function MM_preloadImages()
+	{ //v3.0
+	var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+	var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+	if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+	}
+	MM_preloadImages($$DO:1:10$$$$IF!:1:IMMOBW:PHOTOS:I$$'$$IMMOBW:PHOTOS:VAL:URL$$'$$IF!:IMMOBW_PHOTOS_VAL_NBR:IMMOBW:PHOTOS:VAL:I$$, $$END$$$$END$$$$LOOP$$);
+	// -->
+	</SCRIPT>
+	$$BFIN$$
+	$$END$$
+	</td>
+</tr>
+<!-- NEUF -->
+<tr>
+	<td colspan="2" ALIGN="CENTER"><BR>
+	<!-- Affichage des lots  DEBUT-->
+	$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG$$
+	$$BIF:IMMOBW:ANN:QRY$$
+	<BR><P ALIGN="LEFT" class="tabTitre">D&eacute;tail des lots :</P>
+	<TABLE WIDTH="95%" CELLSPACING="1" CELLPADDING="4" CLASS="tabfond2">
+	<TR>
+		<TD WIDTH="12%">Ref</TD>
+		<TD WIDTH="16%">Libellé</TD>
+		<TD WIDTH="27%">Prix </TD>
+		<TD WIDTH="16%">Surface</TD>
+		<TD WIDTH="9%">Infos Sup.</TD>
+	</TR>
+	$$DO:1:99$$
+	<TR onMouseOver="this.style.backgroundColor='CCCCCC'" onMouseOut="this.style.backgroundColor='EBF2F6'" BGCOLOR="#EBF2F6">
+		<TD WIDTH="12%"><A HREF="/$$IMMOBW:ANN:QRY:IDPUBLICATION$$/$$IMMOBW:ANN:QRY:IDANNONCE$$/plus_annonce.htm?lang=$$FORM:LANG$$"><FONT SIZE="1">$$IMMOBW:ANN:QRY:REFANNONCE$$</FONT></A></td>
+		<TD WIDTH="16%"><A HREF="/$$IMMOBW:ANN:QRY:IDPUBLICATION$$/$$IMMOBW:ANN:QRY:IDANNONCE$$/plus_annonce.htm?lang=$$FORM:LANG$$">
+		$$IF:IMMOBW:ANN:QRY:LIBELLE$$
+			$$IMMOBW:ANN:QRY:LIBELLE htmlencode$$
+		$$END$$
+		$$IF0:IMMOBW:ANN:QRY:LIBELLE$$
+			$$IMMOBW:ANN:QRY:LIBELLE_FR htmlencode$$
+		$$END$$
+		</A></TD>
+		<TD WIDTH="27%"><A HREF="/$$IMMOBW:ANN:QRY:IDPUBLICATION$$/$$IMMOBW:ANN:QRY:IDANNONCE$$/plus_annonce.htm?lang=$$FORM:LANG$$">$$IMMOBW:ANN:QRY:PRIX$$ $$IMMOBW:ANN:QRY:PRIX_UNITE htmlencode$$</A><BR>
+		<FONT SIZE="1">($$IMMOBW:ANN:QRY:PRIX tofrancs 0$$ $$IMMOBW:ANN:QRY:PRIX_UNITE euro2autre FF$$)</FONT></TD>
+		<TD WIDTH="10%">&nbsp;<A HREF="/$$IMMOBW:ANN:QRY:IDPUBLICATION$$/$$IMMOBW:ANN:QRY:IDANNONCE$$/plus_annonce.htm?lang=$$FORM:LANG$$">$$IMMOBW:ANN:QRY:SURFACE$$</A></TD>
+		<TD WIDTH="9%">$$IF:IMMOBW:ANN:QRY:LIEN_URL$$<A HREF="$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/plus_annonce.htm$$IF:IMMOBW:ANN:QRY:LIEN_URL$$?plan=$$IMMOBW:ANN:QRY:LIEN_URL$$$$END$$"><IMG SRC="images/acrobat_reader.gif" WIDTH="16" HEIGHT="16" BORDER="0"></A>$$END$$</TD>
+	</TR>
+	$$LOOP$$
+	</TABLE>
+	<BR>
+	$$BFIN$$
+	$$BIF0:IMMOBW:ANN:QRY$$
+	<!-- TABLEAU SI RENSEIGNE MAIS LOTS ABSENTS -->
+	$$IF:IMMOBW:ANNONCE:SI_APPARTEMENT$$
+	<TABLE WIDTH="80%" BORDER="1" CELLSPACING="2" CELLPADDING="2">
+	<TR>
+		<TD ROWSPAN="2" WIDTH="20%" CLASS="tabTitre"><B>$$LG:APPARTEMENT$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:PRIX$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:SURFACE$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:PARKING$$</B></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>$$LG:STUDIO$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A1$$* $$A:DUPLEX=1$$ $$END$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A1_MIN$$ $$IMMOBW:ANNONCE:PX_A1_MIN$$ &euro;&nbsp;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A1_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A1_MAX$$$$IMMOBW:ANNONCE:PX_A1_MAX$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A1_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A1_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A1_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A1_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A1_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>2 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A2$$* $$A:DUPLEX=1$$ $$END$$</B></TD>
+		<TD WIDTH="10%"><P>$$IF:IMMOBW:ANNONCE:PX_A2_MIN$$ $$IMMOBW:ANNONCE:PX_A2_MIN$$ &euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A2_MIN tofrancs 0$$ FF) $$END$$</FONT></P></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A2_MAX$$$$IMMOBW:ANNONCE:PX_A2_MAX$$ &euro;<BR><FONT SIZE="1"> ($$IMMOBW:ANNONCE:PX_A2_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A2_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A2_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A2_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A2_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>3$$LG:PIECES$$$$IF:IMMOBW:ANNONCE:SI_DUPLEX_A3$$* $$A:DUPLEX=1$$ $$END$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A3_MIN$$ $$IMMOBW:ANNONCE:PX_A3_MIN$$ &euro;&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A3_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A3_MAX$$$$IMMOBW:ANNONCE:PX_A3_MAX$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A3_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A3_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A3_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A3_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A3_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>4 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A4$$* $$A:DUPLEX=1$$ $$END$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A4_MIN$$$$IMMOBW:ANNONCE:PX_A4_MIN$$ &euro;<BR>&nbsp;<FONT SIZE="1">( $$IMMOBW:ANNONCE:PX_A4_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A4_MAX$$$$IMMOBW:ANNONCE:PX_A4_MAX$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A4_MAX tofrancs 0$$FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A4_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A4_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A4_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A4_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>5 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A5$$* $$A:DUPLEX=1$$ $$END$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A5_MIN$$$$IMMOBW:ANNONCE:PX_A5_MIN$$ &euro;<BR>&nbsp;<FONT SIZE="1">( $$IMMOBW:ANNONCE:PX_A5_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A5_MAX$$$$IMMOBW:ANNONCE:PX_A5_MAX$$ &euro;<BR>&nbsp;(<FONT SIZE="1">$$IMMOBW:ANNONCE:PX_A5_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A5_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A5_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A5_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A5_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>(+) 6 $$LG:PIECES$$ $$IF:IMMOBW:ANNONCE:SI_DUPLEX_A6$$* $$A:DUPLEX=1$$ $$END$$<B></B></B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A6_MIN$$$$IMMOBW:ANNONCE:PX_A6_MIN$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A6_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_A6_MAX$$$$IMMOBW:ANNONCE:PX_A6_MAX$$ &euro;&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_A6_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A6_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_A6_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A6_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_A6_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>$$LG:MAISON2$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$$$IMMOBW:ANNONCE:PX_MV_MIN$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_MV_MIN tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_MV_MIN$$$$IMMOBW:ANNONCE:PX_MV_MAX$$ &euro;&nbsp;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_MV_MAX tofrancs 0$$ FF)$$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_MV_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_MV_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">&nbsp;</TD>
+		<TD WIDTH="10%">&nbsp;</TD>
+	</TR>
+	</TABLE>
+	$$IF=:1:DUPLEX$$  &nbsp;&nbsp;*Disponible en duplex en duplex $$END$$
+	$$END$$
+	$$IF:IMMOBW:ANNONCE:SI_MAISON$$
+	<TABLE WIDTH="80%" BORDER="1" CELLSPACING="2" CELLPADDING="2">
+	<TR>
+		<TD ROWSPAN="2" WIDTH="20%" CLASS="tabTitre"><B>$$LG:MAISON2$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:PRIX$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:SURFACE$$</B></TD>
+		<TD COLSPAN="2" CLASS="tabTitre" align="center"><B>$$LG:PARKING$$</B></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MINI$$</B></TD>
+		<TD WIDTH="10%" CLASS="soustitre" align="center"><B>$$LG:MAXI$$</B></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>1 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M1_MIN$$ $$IMMOBW:ANNONCE:PX_M1_MIN$$ &euro;<BR>(&nbsp;$$IMMOBW:ANNONCE:PX_M1_MIN tofrancs 0$$ FF) $$END$$</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M1_MAX$$ $$IMMOBW:ANNONCE:PX_M1_MAX$$ &euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M1_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M1_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M1_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M1_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M1_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>2 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M2_MIN$$ $$IMMOBW:ANNONCE:PX_M2_MIN$$ &euro;<BR>&nbsp;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M2_MIN tofrancs 0$$ FF)</FONT> $$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M2_MAX$$ $$IMMOBW:ANNONCE:PX_M2_MAX$$&nbsp;&euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M2_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M2_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M2_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M2_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M2_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>3 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M3_MIN$$$$IMMOBW:ANNONCE:PX_M3_MIN$$&nbsp;&euro;<FONT SIZE="1"><BR>($$IMMOBW:ANNONCE:PX_M3_MIN tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M3_MAX$$ $$IMMOBW:ANNONCE:PX_M3_MAX$$&nbsp;&euro; <FONT SIZE="1"><BR>($$IMMOBW:ANNONCE:PX_M3_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M3_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M3_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M3_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M3_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>4 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M4_MIN$$ $$IMMOBW:ANNONCE:PX_M4_MIN$$&nbsp;&euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M4_MIN tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M4_MAX$$ $$IMMOBW:ANNONCE:PX_M4_MAX$$&nbsp;&euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M4_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M4_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M4_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M4_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M4_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>5 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M5_MIN$$ $$IMMOBW:ANNONCE:PX_M5_MIN$$ $$IMMOBW:ANNONCE:PX_M5_MIN$$&nbsp;&euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M5_MIN tofrancs 0$$ FF)</FONT>$$END$$ &nbsp;</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M5_MAX$$ $$IMMOBW:ANNONCE:PX_M5_MAX$$&nbsp;&euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M5_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M5_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M5_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M5_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M5_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B> 6 $$LG:PIECE$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M6_MIN$$ $$IMMOBW:ANNONCE:PX_M6_MIN$$&nbsp;&euro;<FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M6_MIN tofrancs 0$$ FF) </FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M6_MAX$$ $$IMMOBW:ANNONCE:PX_M6_MAX$$&nbsp;&euro;<BR><FONT SIZE="1"> ($$IMMOBW:ANNONCE:PX_M6_MAX tofrancs 0$$ FF) $$END$$&nbsp;</FONT></TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M6_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M6_MAX$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M6_MIN$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M6_MAX$$&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20%" CLASS="tabTitre"><B>7 $$LG:PIECE$$ $$LG:ETPlus$$</B></TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M7_MIN$$ $$IMMOBW:ANNONCE:PX_M7_MIN$$ &euro; <BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M7_MIN tofrancs 0$$ FF)</FONT> $$END$$&nbsp; </TD>
+		<TD WIDTH="10%">$$IF:IMMOBW:ANNONCE:PX_M7_MAX$$ $$IMMOBW:ANNONCE:PX_M7_MAX$$ &euro;<BR><FONT SIZE="1">($$IMMOBW:ANNONCE:PX_M7_MAX tofrancs 0$$ FF)</FONT>$$END$$&nbsp;</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M7_MIN$$</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:SURF_M7_MAX$$</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M7_MIN$$</TD>
+		<TD WIDTH="10%">$$IMMOBW:ANNONCE:PK_M7_MAX$$&nbsp;</TD>
+	</TR>
+	</TABLE>
+	$$END$$
+	$$BFIN$$
+	<!-- Affichage des lots FIN -->
+	<B>Informations complémentaires</B> <BR>
+	$$IF:IMMOBW:ANNONCE:IDTYPECHAUFFAGE$$[$$B:IMMOBW:TYPESCHAUFFAGE$$$$BIF:IMMOBW:TYPESCHAUFFAGE$$$$DO:1:999$$$$IF=:IMMOBW_ANNONCE_IDTYPECHAUFFAGE:IMMOBW:TYPESCHAUFFAGE:IDTYPECHAUFFAGE$$Chauffage : $$IMMOBW:TYPESCHAUFFAGE:CHAUFFAGE$$$$END$$$$LOOP$$$$BFIN$$]$$END:CHAUFFAGE$$
+	$$IF:IMMOBW:ANNONCE:IDTYPECUISINE$$[$$B:IMMOBW:TYPESCUISINE$$$$BIF:IMMOBW:TYPESCUISINE$$$$DO:1:999$$$$IF=:IMMOBW_ANNONCE_IDTYPECUISINE:IMMOBW:TYPESCUISINE:IDTYPECUISINE$$Cuisine : $$IMMOBW:TYPESCUISINE:CUISINE$$$$END$$$$LOOP$$$$BFIN$$]$$END:CUISINE$$
+	$$IF>:1:IMMOBW:ANNONCE:NB_BALCONS$$[Balcon]$$END:NB_BALCONS$$
+	$$IF:IMMOBW:ANNONCE:SI_ASCENSEUR$$[Ascenseur]$$END:SI_ASCENSEUR$$
+	$$IF:IMMOBW:ANNONCE:SI_CAVE$$[Cave]$$END:SI_CAVE$$
+	$$IF:IMMOBW:ANNONCE:SI_CLIMATISATION$$[Climatisation]$$END:SI_CLIMATISATION$$
+	$$IF:IMMOBW:ANNONCE:SI_CONSTRUCTIBLE$$[Constructible]$$END:SI_CONSTRUCTIBLE$$
+	$$IF:IMMOBW:ANNONCE:SI_DIGICODE$$[Digicode]$$END:SI_DIGICODE$$
+	$$IF:IMMOBW:ANNONCE:SI_INTERPHONE$$[Interphone]$$END:SI_INTERPHONE$$
+	$$REM$$ APPARTEMENT $$END$$
+	$$IF:IMMOBW:ANNONCE:SI_GARDIEN$$[Gardien]$$END:SI_GARDIEN$$
+	$$IF:IMMOBW:ANNONCE:SI_MEUBLE$$[Meublé]$$END:SI_MEUBLE$$
+	$$IF:IMMOBW:ANNONCE:SI_TERRASSE$$[Terrasse]$$END:SI_TERRASSE$$
+	$$IF:IMMOBW:ANNONCE:SI_CHEMINEE$$[Cheminée]$$END:SI_CHEMINEE$$
+	$$IF:IMMOBW:ANNONCE:SI_PLACARDS$$[Placards]$$END:PLACARDS$$
+	$$REM$$ MAISON $$END$$
+	$$IF:IMMOBW:ANNONCE:SURF_TERRAIN$$[$$SURF_TERRAIN$$m2 de terrain]$$END:SURF_TERRAIN$$
+	$$IF:IMMOBW:ANNONCE:SI_PARQUET$$[PARQUET]$$END:SI_PARQUET$$
+	$$IF:IMMOBW:ANNONCE:SI_PLAN_DEAU$$[Plan d'eau]$$END:SI_PLAN_DEAU$$
+	</td>
+</tr>
+<tr>
+<!--#include virtual="/detail/incl_dpe.htm" -->
+</tr>
+<tr>
+	<td VALIGN="TOP" width="45%"><font size="1">
+	$$INCL:PLAN.HTM$$<br>
+	<FONT SIZE="1">
+	$$IF:IMMOBW:ANNONCE:HONORAIRES$$<B>$$LG:HONORAIRES$$ :</B>$$IMMOBW:ANNONCE:HONORAIRES$$&nbsp;&nbsp;<BR>$$END$$
+	$$IF:IMMOBW:ANNONCE:DT_DISPO$$<B>$$LG:DISPOLE$$</B>: $$IMMOBW:ANNONCE:DT_DISPO date 2$$<BR>$$END:IMMOBW:ANNONCE:DT_DISPO$$</FONT>
+	$$IF:IMMOBW:ANNONCE:URLLOGO1$$<IMG SRC="$$IMMOBW:ANNONCE:URLLOGO1$$">$$END$$
+	$$IF:IMMOBW:ANNONCE:URLLOGO2$$<IMG SRC="$$IMMOBW:ANNONCE:URLLOGO2$$">$$END$$
+	$$IF:IMMOBW:ANNONCE:IDLIEN$$ <BR> <A HREF="$$IMMOBW:ANNONCE:LIEN_URL$$">$$IMMOBW:ANNONCE:LIEN_DESCRIPTIF$$</A> $$END$$
+	</td>
+	<td align="right" class="tabFond1" width="55%">
+	$$IF:IMMOBW:ANNONCE:EMAIL$$
+	<A HREF="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/dem_doc.htm" style="text-decoration=underline;"><B>$$LG:SAVOIR$$ </B></A><BR>
+	$$END:EMAIL$$
+
+	$$IF:IMMOBW:ANNONCE:COOR-CONTACT$$
+		<br><b>Contact:</b> $$IMMOBW:ANNONCE:COOR-CONTACT$$<BR>
+	$$END$$
+
+	<B><br>
+	$$LG:TEL$$:</B>
+	$$IF0:IMMOBW:ANNONCE:TELEPHONE$$
+	$$IF=:FR:LANGUE$$ $$IMMOBW:ANNONCE:TEL formattel$$ $$END$$
+	$$IF!:FR:LANGUE$$ $$IMMOBW:ANNONCE:TEL formattel tel2inter$$ $$END$$
+	$$END:TELEPHONE$$
+	$$IF=:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel$$ $$END$$
+	$$IF!:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel tel2inter$$ $$END$$ <BR>
+	<br>
+	</td>
+</tr>
+<TR>
+	<TD align="center" colspan="2"><BR><!-- $$FORM:NBPH$$ --></TD>
+</TR>
+</TABLE>
+</DIV>
+$$SET:PAGE:IDT=DETAIL_NEUF$$
+$$INCL:BAS.HTM$$
