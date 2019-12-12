@@ -1,0 +1,95 @@
+		<h3>
+			$$LG:AUJOURDHUI pcase$$ $$IF!:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date dd/MM/yyyy pcase$$ $$END$$
+			$$IF=:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date MM/dd/yyyy pcase$$ $$END$$
+		</h3>			
+		
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:VEN$$
+$$A:TOTVEN=0$$
+$$BIF:VEN$$
+$$DO$$
+	$$IF=:2:VEN:IDTYPETRANSACTION$$
+		$$A:TOTVEN=@@VEN:NBANN@@$$
+	$$END$$
+	
+	
+	
+$$LOOP$$
+$$BFIN$$		
+
+
+$$A:TOTVENPRESTIGE=0$$
+
+$$BIF:VEN$$
+$$DO$$
+	$$IF=:8:VEN:IDTYPETRANSACTION$$
+		$$A:TOTVENPRESTIGE=@@VEN:NBANN@@$$
+	$$END$$
+$$LOOP$$
+$$BFIN$$	
+
+$$A:TOTINVEST=0$$
+$$BIF:VEN$$
+$$DO$$
+	$$IF=:6:VEN:IDTYPETRANSACTION$$
+		$$A:TOTINVEST=@@VEN:NBANN@@$$
+	$$END$$
+$$LOOP$$
+$$BFIN$$	
+
+<h4>$$LG:VENTE pcase$$ : <script>document.write(eval($$TOTVENPRESTIGE$$+$$TOTVEN$$+$$TOTINVEST$$))</script> annonces 	
+	</h4>
+		
+		
+$$REM$$		
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:ANNMAGAGNOSC$$
+		$$BIF:ANNMAGAGNOSC$$
+			$$DO:0:99$$
+				$$IF=:2:ANNMAGAGNOSC:IDTYPETRANSACTION$$
+					<h4>
+						$$LG:VENTE pcase$$ : $$ANNMAGAGNOSC:NBANN$$ 
+						$$IF-:2:ANNMAGAGNOSC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:ANNMAGAGNOSC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+$$END$$		
+		
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VEN_MAGAGNOSC:2$$
+		$$BIF:TYPEBIEN_VEN_MAGAGNOSC$$
+			<ul>
+				$$DO$$
+					<li class="subList">
+						<a class="typeBien" href="$$URLBASE$$/$$FORM:IDP$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VEN_MAGAGNOSC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_VEN_MAGAGNOSC:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$">
+							$$TYPEBIEN_VEN_MAGAGNOSC:DEF_LIBELLE pcase$$ : $$TYPEBIEN_VEN_MAGAGNOSC:NBANN$$ $$IF-:2:TYPEBIEN_VEN_MAGAGNOSC:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_VEN_MAGAGNOSC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+						</a>
+					</li>
+				$$LOOP$$
+			</ul>
+		$$BFIN$$
+			
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:ANNMAGAGNOSC$$
+		$$BIF:ANNMAGAGNOSC$$
+			$$DO:0:99$$
+				$$IF=:1:ANNMAGAGNOSC:IDTYPETRANSACTION$$
+					<h4>
+						$$LG:LOCATION pcase$$ : $$ANNMAGAGNOSC:NBANN$$ 
+						$$IF-:2:ANNMAGAGNOSC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:ANNMAGAGNOSC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOC_MAGAGNOSC:1$$
+		$$BIF:TYPEBIEN_LOC_MAGAGNOSC$$
+			<ul>
+				$$DO$$
+					<li class="subList">
+						<a class="typeBien" href="$$URLBASE$$/$$FORM:IDP$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_LOC_MAGAGNOSC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_LOC_MAGAGNOSC:DEF_LIBELLE lcase$$ $$PORTEFEUILLE:VILLE$$">
+							$$TYPEBIEN_LOC_MAGAGNOSC:DEF_LIBELLE pcase$$ : $$TYPEBIEN_LOC_MAGAGNOSC:NBANN$$ $$IF-:2:TYPEBIEN_LOC_MAGAGNOSC:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_LOC_MAGAGNOSC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+						</a>
+					</li>
+				$$LOOP$$
+			</ul>
+		$$BFIN$$
