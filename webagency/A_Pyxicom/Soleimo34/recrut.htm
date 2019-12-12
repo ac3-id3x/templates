@@ -1,0 +1,175 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:TITR=Recrutement Cabinet Soleïmo$$
+$$SET:PAGE:IDT=RECRUT$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+ $$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+ $$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$ $$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:RECRUT.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<CENTER>
+	<BR><BR><BR><BR>
+	D&eacute;sol&eacute;, mais cette page de recrutement ne peut être utilis&eacute;e actuellement.<BR>
+	  L'adresse e-mail du destinataire n'est pas disponible. <BR>
+	<BR><BR><BR>
+	</CENTER>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+	<table width="95%" border="0" cellspacing="3" cellpadding="0" align="center" class="tabFond1">
+	  <tr>
+	    <td>
+	      <form method="post" action="page_ok_recrut.htm?lang=$$LANGUE$$">
+	      	  <INPUT TYPE="hidden" NAME="lang" VALUE="$$LANGUE$$">
+	        <div align="center">
+	          <input type="hidden" name="u" value="id3:formmail">
+	          <input type="hidden" name="page_ok" value="page_ok_recrut.htm">
+	          <input type="hidden" name="page_err" value="recrut.htm">
+	          <input type="hidden" name="cfg_form" value="recrut">
+	          <input type="hidden" name="cfg_emails" value="recrut">
+	          <INPUT TYPE="hidden" NAME="REMAILNOM" VALUE="$$AGENCE:NOM$$">
+			  $$REM$$ $$FORM:REMAIL$$ $$END$$
+			  $$IF:FORM:REMAIL$$  <INPUT TYPE="hidden" Name="REMAIL"  Value="$$FORM:REMAIL$$"> $$END$$
+			  $$IF0:FORM:REMAIL$$
+			  	$$IF:AGENCE:EMAIL$$
+			  		<INPUT TYPE="hidden" NAME="REMAIL" VALUE="$$IMMOBW:AGENCE:EMAIL$$">
+			  	$$END$$
+			  $$END$$
+			  <INPUT TYPE="hidden" NAME="SRV" VALUE="$$SRV$$">
+	          <b>$$ERRE$$</b><br>
+	         </div>
+
+
+
+	        <!--vos coordonnées-->
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+		  <tr>
+			<td colspan="2">
+			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr class="fond_tab">
+				  <td>
+					<div align="center" class="tabTitre"><b>$$LG:COORD$$</b></div>
+				  </td>
+				</tr>
+			  </table>
+			</td>
+		  </tr>
+		  <tr>
+			<td><b>$$LG:AI5$$</b></td>
+			<td>
+			  <input type="text" name="2nom" size="20" value="$$FORM:2NOM$$" maxlength="30">
+			</td>
+		  </tr>
+		  <tr>
+			<td><b>$$LG:PRENOM$$</b></td>
+			<td>
+			  <input type="text" name="2prenom" size="20" value="$$FORM:2PRENOM$$" maxlength="30">
+			</td>
+		  </tr>
+		  <tr>
+			<td><b>$$LG:ADRESSE$$</b></td>
+			<td> $$IF=:FR:LANGUE$$
+			  <input type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$">
+			  $$END$$ $$IF!:FR:LANGUE$$
+			  <textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>
+			  $$END$$ </td>
+		  </tr>
+		  <tr>
+			<td><b>$$LG:VILLE$$</b></td>
+			<td>
+			  <input type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$"></td>
+		  </tr>
+			 <tr>
+			<td><b>$$LG:CODEP$$</b></td>
+			<td>
+			  <input type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$">
+			</td>
+		  </tr>
+		  $$IF!:FR:LANGUE$$
+		  <tr>
+			<td><b>$$LG:PAYS$$</b></td>
+			<td>
+			  <input type="text" name="2pays" size="25" value="$$FORM:2PAYS$$">
+			</td>
+		  </tr>
+		  $$END$$
+		  <tr>
+			<td><b>$$LG:TEL$$</b></td>
+			<td>
+			  <input type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20">
+			</td>
+		  </tr>
+		  <tr>
+			<td><b>$$LG:AI6$$</b></td>
+			<td>
+			  <input type="text" name="2Email" size="30" value="$$FORM:2EMAIL$$">
+			</td>
+		  </tr>
+		  <tr>
+			<td colspan="2"> <br>
+			  <table cellspacing="0" cellpadding="5" class="tabFond1" align="center" width="50">
+				<tr>
+				  <td colspan="2">$$LG:MOTIV$$ :</td>
+				</tr>
+				<tr>
+				  <td colspan="2">
+					<textarea class="imputForm" name="Pmotiv" cols="40" rows="10">$$FORM:PMOTIV$$</textarea>
+				  </td>
+				</tr>
+			  </table>
+			  <br>
+			  <table cellspacing="0" cellpadding="5" class="tabFond1" align="center" width="50">
+				<tr>
+				  <td colspan="2">$$LG:CV$$ :</td>
+				</tr>
+				<tr>
+				  <td colspan="2">
+					<textarea class="imputForm" name="Pcv" cols="40" rows="10">$$FORM:PCV$$</textarea>
+				  </td>
+				</tr>
+			  </table>
+			</td>
+		  </tr>
+		</table>
+	        <br>
+	        <!--validation-->
+	        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+	          <tr>
+	            <td colspan="2">
+	              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                <tr class="fond_tab">
+	                  <td>
+	                    <div align="center" class="tabTitre"><b>$$LG:VERIFINFOS$$</b> </div>
+	                  </td>
+	                </tr>
+	              </table>
+	            </td>
+	          </tr>
+	          <tr align="right">
+	            <td> <br>
+	              <input type="image" src="IMG/envoyer_$$LANGUE$$.gif"  border="0" name="image">
+	            </td>
+	          </tr>
+	        </table>
+	        <br>
+	      </form>
+	    </td>
+	  </tr>
+	</table>
+$$END:EMAIL$$
+
+$$INCL:BAS.HTM$$
