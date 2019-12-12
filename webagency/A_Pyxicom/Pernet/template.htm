@@ -1,0 +1,107 @@
+<!--#include virtual="incl_doctype_transitional.htm"-->
+<head> 
+    <!--#include virtual="incl_ref.htm" -->
+    <!--#include virtual="incl_titre.htm" -->
+    <!--#include virtual="scripts/incl_scripts.htm" -->
+    <!--#include virtual="styles/incl_styles.htm" -->
+ <!--[if gte IE 5.5000]>
+  <script type="text/javascript" language="javascript" src="$$-$$scripts/pngfix.js"></script>
+ <![endif]-->
+
+	<script type="text/javascript" language="javascript">
+		<!--
+		function favoris()
+			{ 
+				if (navigator.appName != 'Microsoft Internet Explorer') 
+					{
+						window.sidebar.addPanel("$$SRV$$","http://$$SRV$$","");
+					} 
+				else
+					{
+						window.external.AddFavorite("http://$$SRV$$","$$SRV$$");
+					}
+			}
+		-->
+	</script>
+	$$IF=:RECHERCHEMAP:PAGE:IDT$$
+		<!-- largeur de la carte selon votre contenu -->
+		$$A:MAPWIDTH=930px$$
+		<!-- choisir votre couleur parmi : rouge, orange, bleu ou vert -->
+		$$A:MAPCOLOR=vert$$
+		<!-- fichier contenant les scripts js et ajax -->
+		<!--#include virtual="map/incl_scripts.htm" -->
+		<!-- fichier contenant les CSS -->
+		<!--#include virtual="map/incl_map.htm" -->
+	$$END:PAGE:IDT$$
+</head>
+<body>
+	<!--debut du global -->
+	<div id="global">
+		<!--debut header -->
+		<div id="header">
+			<!--debut coordonnes -->
+			<div id="coordonnes">
+				<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$"><img src="images/logo.gif" alt="Retour accueil" title="Retour accueil" /></a>
+				<span>$$SRV$$</span><br />
+				$$B:IMMOBW:AGENCES:ALIAS:ADRESSEAG:QRY:TRI:QRY:CP$$
+				$$BIF:ADRESSEAG$$
+					$$DO:1:1$$
+							
+							$$ADRESSEAG:ADRESSE$$<br />
+							$$LG:TELABREGE pcase$$ : $$ADRESSEAG:TEL formattel$$<br />
+							$$LG:FAX pcase$$ : $$ADRESSEAG:FAX formattel$$<br />
+					$$LOOP$$
+				$$BFIN$$
+			</div>
+			<!--fin coordonnes -->			
+			<!--debut texte accueil -->
+			$$INCL:TEXTE_ACCUEIL.HTM$$
+			<!--fin texte accueil -->	   
+			<!--debut RefMarque -->
+			<div id="RefMarque"><!--#include virtual="/referencement/incl_marquee_js.gen.htm" --><!-- --><!-- --></div>
+			<!--fin RefMarque -->
+		</div>
+		<!--Menu + flux -->
+		<div id="menuFlux">
+			 <!--debut menu -->
+			 $$INCL:MENU.HTM$$
+			<!--Flux -->
+			<div id="fluxRss"><img src="images/puce_rss.png" alt="$$EXPRESSION1$$" /><a href="$$URLBASE$$/rss2.xml?idtt=2" target="_blank">Nos derni&egrave;res annonces de vente</a></div>	
+		</div>
+		<br class="clear" />
+		<!--Navig -->
+		<div id="milieu"><!-- debut -->
+				<!-- Fin --></div>
+		<!--Footer-->
+		<div id="footer">
+			<!-- La liste des villes -->
+			<div class="porteFeuille">
+				<h4>$$LG:PORTEFEUILLE pcase$$ $$LG:IMMOBILIER lcase$$</h4>
+				<!--#include virtual="/referencement/incl_liste_villes.gen.htm" -->
+			</div>
+			<!-- bloc estimation Gratuite -->
+			<div class="menuSecondaire">
+				<h4>www.$$SRV$$</h4>
+				<!-- Lien estimation -->
+				<p>
+					L'immobilier &agrave; 
+					$$B:IMMOBW:AGENCES:ALIAS:VILLEAG:QRY:TRI:QRY:CP$$
+					$$BIF:VILLEAG$$
+						$$DO:1:1$$
+							$$VILLEAG:VILLE$$
+						$$LOOP$$
+					$$BFIN$$ depuis 1980&nbsp;&nbsp;|&nbsp;
+					<a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/estimation.htm?lang=$$LANGUE$$" title="$$EXPRESSION2$$">$$LG:ESTIMVOTREBIEN pcase$$</a>
+					<a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/vendeur.htm?lang=$$LANGUE$$" title="$$EXPRESSION1$$">$$LG:VENDREBIEN pcase$$</a>&nbsp;&nbsp;|&nbsp;
+					<a href="javascript:void(favoris());" title="$$EXPRESSION2$$">$$LG:AJOUTERFAV pcase$$</a>&nbsp;&nbsp;|&nbsp;
+					<a href="$$URLBASE$$$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/contact.htm?lang=$$LANGUE$$" title="$$EXPRESSION1$$">$$LG:NOUSCTC pcase$$</a><br />
+					<a href="$$URLBASE$$/plan.htm?lang=$$LANGUE$$" title="$$EXPRESSION1$$">$$LG:LIEN:PLAN pcase$$</a>&nbsp;&nbsp;|&nbsp;
+					<a href="$$URLBASE$$/offres.htm?lang=$$LANGUE$$" title="$$EXPRESSION2$$">$$LG:LIEN:MENTION pcase$$</a> : SeLoger
+				</p>
+			</div>
+			<br class="clear" />
+		</div>
+	</div>
+	<!--fin du global -->
+</body>
+</html>
