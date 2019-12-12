@@ -1,0 +1,105 @@
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head> 
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+<script src="$$_$$scripts/menu.js" type="text/javascript"></script>	
+$$IF=:RECHERCHEMAP:PAGE:IDT$$
+	$$A:MAPWIDTH=980px$$
+	$$A:MAPCOLOR=bleu$$
+	<!--#include virtual="map/incl_scripts.htm" -->
+	<!--#include virtual="map/incl_map.htm" -->
+$$END:PAGE:IDT$$
+
+<script language="javascript" type="text/javascript">
+	function miniAffiche(str){
+		if(str=='new'){
+			document.getElementById('new').style.display = "block";
+			document.getElementById('exclu').style.display = "none";
+			document.getElementById('menu-new').style.backgroundPosition = "0 0";
+			document.getElementById('menu-exclu').style.backgroundPosition = "0 -31px";
+			
+		}else if(str=='exclu'){
+			document.getElementById('new').style.display = "none";
+			document.getElementById('exclu').style.display = "block";
+			document.getElementById('menu-new').style.backgroundPosition = "0 -31px";
+			document.getElementById('menu-exclu').style.backgroundPosition = "0 0";
+		}
+	}	
+</script>	
+</head>
+
+<body>
+<div id="wrap">
+	<div id="bg-top">	
+			<marquee class="nouvelle">Nouvelle activit&eacute; ! Vente de fonds de commerces.</marquee>
+		<div class="logo">
+			<a href="$$URLBASE$$/index.htm?lang=$$LANGUE$$" title=""><img src="$$PA_LOGO_HEADER$$" alt="" /><br /></a>
+		</div>
+		<div class="bg-mobile">
+			<!--#include virtual="/immo/incl_text_mobile.htm" -->	
+		</div>
+		<div id="flag">
+				<a href="$$URLBASE$$/index.htm?lang=fr" title="Version fran&ccedil;aise" id="drapeau_fr"><img src="images/flag_fr.gif" alt="Version fran&ccedil;aise" /></a>
+				<a href="$$URLBASE$$/index.htm?lang=en" title="English version" id="drapeau_en"><img src="images/flag_en.gif" alt="English version" /></a>
+		</div>
+		
+		<div class="menu$$IF=:EN:LANGUE$$_en$$END$$">
+		<ul id="menu">
+			<!--#include virtual="/menu/incl_menu.htm" -->
+		</ul>	
+		</div>
+		<div class="clear"></div>
+		
+	</div>
+	<div id="main-content">
+		$$IF!:INDEX:IDT$$<div id="navigue">$$END$$
+		<!--#include virtual="/header/incl-titre-pages.htm" -->
+		$$IF=:CONTACT,AGENCE.HTM:REP:0$$	
+		<div id="cordonnes">
+		
+			$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+		
+		        <p class="cv_adresse">
+					<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="streetAddress" itemscope itemtype="http://schema.org/PostalAddress" $$END$$>$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br /></span>
+					<span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="postalCode" itemscope itemtype="http://schema.org/PostalAddress" $$END$$>$$CV:CP$$</span><span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="addressLocality"$$END$$> $$CV:VILLE ucase$$</span>
+				</p>
+				<br />
+				<p>
+					$$REM$$<!-- tous les téls -->$$END$$
+					$$IF:CV:TEL$$<!-- tel standard--><label><span >$$LG:MINITEL$$ :</span> <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="telephone" itemscope itemtype="http://schema.org/PostalAddress" $$END$$>$$CV:TEL formattel$$</span></label>$$END:TEL$$
+					$$IF:CV:TELVEN$$<label><span>$$LG:MINITEL$$ $$LG:VENTES lcase$$ :</span> $$CV:TELVEN formattel$$</label>$$END:TELVEN$$
+					$$IF:CV:TELLOC$$<label><span>$$LG:MINITEL$$ $$LG:LOCATION lcase$$ :</span> $$CV:TELLOC formattel$$</label>$$END:TELLOC$$
+					$$IF:CV:TELVAC$$<label><span>$$LG:MINITEL$$ $$LG:LOCVAC lcase$$ :</span> $$CV:TELVAC formattel$$</label>$$END:TELVAC$$
+					$$IF:CV:TELCOM$$<label><span>$$LG:MINITEL$$ $$LG:COMEETENT lcase$$ :</span> $$CV:TELCOM formattel$$</label>$$END:TELCOM$$
+					
+					$$REM$$<!-- tous les faxs -->$$END$$
+					$$IF:CV:FAX$$<!-- fax standard --><label><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label>$$END:FAX$$
+					$$IF:CV:FAXVEN$$<label><span>$$LG:FAX$$ $$LG:VENTES lcase$$ :</span> $$CV:FAXVEN formattel$$</label>$$END:FAXVEN$$
+					$$IF:CV:FAXLOC$$<label><span>$$LG:FAX$$ $$LG:LOCATION lcase$$ :</span> $$CV:FAXLOC formattel$$</label>$$END:FAXLOC$$
+					$$IF:CV:FAXVAC$$<label><span>$$LG:FAX$$ $$LG:LOCVAC lcase$$ :</span> $$CV:FAXVAC formattel$$</label>$$END:FAXVAC$$
+					$$IF:CV:FAXCOM$$<label><span>$$LG:FAX$$ $$LG:COMEETENT lcase$$ :</span> $$CV:FAXCOM formattel$$</label>$$END:FAXCOM$$
+				</p>
+				<br />
+				<p>
+					$$REM$$<!-- tous les responsables -->$$END$$
+					$$IF:CV:RESPAG$$<label class="respAgence"><span>$$LG:RESPAGENCE pcase$$ :</span> $$CV:RESPAG ncase$$</label>$$END:RESPAG$$
+					$$IF:CV:RESPVEN$$<label class="cntvente"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label>$$END$$
+					$$IF:CV:RESPLOC$$<label class="cntloc"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label>$$END$$
+					$$IF:CV:RESPVAC$$<label class="cntvac"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label>$$END$$
+					$$IF:CV:RESPCOM$$<label class="cntrespcom"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label>$$END$$
+					$$IF:CV:EMAIL$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ :</span> <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="email"$$END$$>$$CV:EMAIL encodemail javascript$$</a></label>$$END:EMAIL$$
+					$$IF:CV:URL$$<label class="cnturl"><span>$$LG:SITE pcase$$ :</span> <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="url"$$END$$>$$CV:URL$$</a></label>$$END:URL$$
+				</p>
+		
+		
+		 </div> 
+		$$END$$
+		$$IF=:RECHERCHE,BASIC.HTM:REP:0$$
+			$$IF=:2:FORM:IDTT$$
+			<div class="blocElargir">
+					<a href="$$URLBASE$$/moteur,recherche$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$LG:ELARGIRRECH pcase$$" class="elargir">$$LG:ELARGIRRECH pcase$$</a>
+			</div>
+			$$END$$
+		$$END$$		
