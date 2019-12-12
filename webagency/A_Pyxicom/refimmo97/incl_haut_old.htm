@@ -1,0 +1,108 @@
+<!--#include virtual="incl_doctype.htm" -->
+<head>
+<!--#include virtual="incl_ref.htm" -->
+<!--#include virtual="incl_titre.htm" -->
+<!--#include virtual="incl_multi.htm" -->
+<script src="$$-$$scripts/controls.js" type="text/javascript"></script>
+<script src="$$-$$scripts/immobilier.js" type="text/javascript"></script>
+<link href="$$_$$styles/commun.css"  rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="$$_$$scripts/btnhover.js"></script>
+<!--[if gte IE 5.5000]>
+		<script type="text/javascript" language="javascript" src="$$-$$scripts/pngfix.js"></script>
+<![endif]-->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+//-->
+</script>
+<script language="JavaScript" type="text/javascript">
+	function favoris() { 
+	if ( navigator.appName != 'Microsoft Internet Explorer' ){ 
+		window.sidebar.addPanel("REFERENCE IMMO","http://$$REP:RSRV$$/",""); 
+	} 
+	else { 
+		window.external.AddFavorite("http://$$REP:RSRV$$/","REFERENCE IMMO"); 
+	} 
+	}
+	function sousMenu()
+	{
+		document.getElementById('sousMenu').style.display='block';
+	}
+	function sousMenuOver()
+	{
+		document.getElementById('sousMenu').style.display='none';
+	}
+	var coord=new Array();
+	var elementTab;
+	$$B:IMMOBW:AGENCES$$
+	$$BIF:IMMOBW:AGENCES$$
+		$$DO:1:120$$
+			elementTab=$$IMMOBW:AGENCES:I$$-1
+			coord[elementTab]="adr_$$IMMOBW:AGENCES:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+
+</script>
+<script src="$$-$$scripts/coord.js" type="text/javascript"></script>					
+</head>
+<body onLoad="Adresse();init(); MM_preloadImages('$$_$$images/zone-ouest.jpg','$$_$$images/zone-nord.jpg','$$_$$images/zone-est.jpg','$$_$$images/zone-nord.jpg','$$_$$images/zone-sud.jpg')">
+<div id="Page">
+  <div id="Header">
+    <div id="Embreright"></div>
+    <div id="EmbreLeft"></div>
+    <!-- Ref marquee -->
+    <div id="Refmaquee">$$INCL:REF_MARQUEE2.GEN.HTM$$</div>
+    <!-- Flash -->
+    <div id="Flash">
+      <script type="text/javascript">
+				CreateFlashControl( "Flash", 990,200, "$$_$$fla/anim.swf?lang=$$LANGUE$$&amp;chemin=$$_$$fla/");
+			</script>
+    </div>
+    <!-- Menu -->
+	<div class="sousMenu" id="sousMenu"  onmouseover="sousMenu()" onMouseOut="sousMenuOver()"><a href="/groupement.htm?lang=$$LANGUE$$" title="">$$LG:NOTREGROUPEMENT pcase$$</a><br /><a href="/liste-agences-immobilieres.htm?lang=$$LANGUE$$" title="$$LG:NOSAGENCES pcase$$">$$LG:NOSAGENCES pcase$$</a></div>
+    <div id="Menu"><a href="/moteur,classic.htm?idtt=2&amp;lang=$$LANGUE$$" title=""><img src="images/nosventes_n.jpg" alt="" title="" border="0" /></a><a href="/moteur,classic.htm?idtt=1&amp;lang=$$LANGUE$$" title=""><img src="images/noslocations_n.jpg" alt="" title="" border="0" /></a><a href="/recherche,classic.htm?idtt=2&amp;si_coupdecoeur=1&amp;lang=$$LANGUE$$" title=""><img src="images/cdc_n.jpg" alt="" title="" border="0" /></a><a href="#" title="" onMouseOver="sousMenu()" onMouseOut="sousMenuOver()"><img src="images/qsn_n.jpg" alt="" name="image1" border="0" id="image1" title="" /></a><a href="$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/estimation.htm?lang=$$LANGUE$$" title=""><img src="/images/estimation_n.jpg" alt="" title="" border="0" /></a><a href="$$IF=:0:MULTI$$/$$1_MULTI:IDPUBLICATION$$$$END$$/message.htm?lang=$$LANGUE$$" title=""><img src="images/contact_n.jpg" alt="" title="" border="0" /></a><a href="outils.htm?lang=$$LANGUE$$" title=""><img src="images/outils_n.jpg" alt="" title="" border="0" /></a><img src="images/coin.jpg" alt="" title="" border="0" /></div>
+  </div>
+  <div id="Contenu">
+	<!-- Bloc Left -->
+	<div id="BlocLeft">
+	<div id="PorteFeuille"> <img src="images/IMG-portefeuille.jpg" alt="" title="" /> <strong>Annonces immobilières de ventes</strong> $$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VEN:2$$
+	$$BIF:TYPEBIEN_VEN$$
+	<ul>
+	$$DO$$
+	<li> <a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VEN:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_VEN:DEF_LIBELLE lcase$$"> $$TYPEBIEN_VEN:DEF_LIBELLE lcase$$ <span class="nbAnn">$$REM$$($$TYPEBIEN_VEN:NBANN$$
+	$$IF-:2:TYPEBIEN_VEN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+	$$IF+:2:TYPEBIEN_VEN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)$$END$$</span> </a> </li>
+	$$LOOP$$
+	</ul>
+	<br />
+	$$BFIN$$ <!--<strong>Annonces immobilières de locations</strong> $$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOC:1$$-->
+	</div>
+	<!-- Adresse -->
+	<div id="Adresse"> <img src="images/agenxes-immo.jpg" class="Titre" alt="" title="" /><br />
+		
+		
+		$$B:IMMOBW:AGENCES$$
+		$$BIF:IMMOBW:AGENCES$$
+		$$DO:1:120$$
+		
+		<div id="adr_$$IMMOBW:AGENCES:IDPUBLICATION$$" style="display:none;">
+		<img src="images/agence2/$$IMMOBW:AGENCES:IDPUBLICATION$$.jpg" alt="" title="" class="margeImag" /><br />
+			<img src="images/picto-accueil.gif" alt="" title="" />
+			<strong>$$IMMOBW:AGENCES:NOM$$</strong><br />
+			<span>$$IMMOBW:AGENCES:ADRESSE$$ </span>
+			<div class="Tel">
+				<img src="images/picto-tel.gif" alt="" title="" /> <strong>$$IMMOBW:AGENCES:TEL formattelus$$</strong><br />
+				<img src="images/picto-fax.gif" alt="" title="" /> $$IMMOBW:AGENCES:FAX formattelus$$<br />
+				<img src="images/picto-mail.gif" alt="" title="" /> $$IMMOBW:AGENCES:EMAIL encodemail javascript full$$
+			</div>
+		</div>	
+		$$LOOP$$
+		$$BFIN$$
+		<a href="/liste-agences-immobilieres.htm?lang=$$LANGUE$$"><img src="images/btn-agnece.jpg" class="btnAgnece" alt="" title="" border="0" /></a>
+	</div>
+	</div>
+	<div $$IF=:INDEX:PAGE:IDT$$id="ZoneNavg"$$END$$$$IF!:INDEX:PAGE:IDT$$id="PageNavig"$$END$$>
