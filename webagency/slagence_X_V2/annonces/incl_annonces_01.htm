@@ -1,0 +1,133 @@
+$$REM$$
+====================================================================
+
+//// <summary>Dernières annonces du portefeuille affichées sur la carte de visite de l'agence</summary>
+//// <remarks>
+//// <para>Fichier appelé par agence-immobiliere.htm</para>
+//// <para>Affiche blocs d'annonces avec photo + descr + lien</para>
+//// <para>N'apparait qu'en XDEV ou si le site a un contrat de réf en cours</para>
+//// <para>CSS : slagence_X_V2/styles/annonce01.css</para>
+//// <para>Nombre d'annonces par type de transaction paramétré par défaut dans slagence_X_V2/incl_variables.htm</para>
+//// <para>Pour modifier le nombre d'annonces affichées selon le type de transaction, placez les macros entre les balises head : INIT:NBANNVENTES=5, INIT:NBANNLOCS=3, INIT:NBANNNEUF=2 ou INIT:NBANNVIAGER=2</para>
+//// </remarks>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-08-06" author="damien.robert">Validation oK</update>
+//// <update date="2008-08-06" author="erick.barbant">Validation en attente</update>
+
+====================================================================
+$$END$$
+
+<div id="Annonces01">
+	<h3>$$LG:NOSDERNANN pcase$$</h3>
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVENTES:2:FR:QRY:IDP::::d_dt_maj:~LIMIT:VAL:NBANNVENTES$$	
+	$$BIF:ANNVENTES$$
+	<!-- ventes immobilieres -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNVENTES:IDPUBLICATION@@/@@ANNVENTES:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	<div class="ann_ctn idtt$$ANNVENTES:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNVENTES:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title="">
+			<em>
+				<span>$$ANNVENTES:DESCRIPTIF left 105$$ ...</span>
+			</em>
+			$$IF:ANNVENTES:PHOTOURL0$$<img class="thumb" src="$$ANNVENTES:PHOTOURL0$$" alt="" title="" />$$END:ANNVENTES:PHOTOURL0$$
+		</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNVENTES:LIBELLE$$</a>
+			<span>$$ANNVENTES:VILLE$$ ($$ANNVENTES:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNVENTES:PRIX$$ $$ANNVENTES:PRIX_UNITE htmlencode$$</a>
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title="$$LG:PLUSDINFOS$$ $$ANNVENTES:VILLE$$"><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNLOCS:1:FR:QRY:IDP::::d_dt_maj:~LIMIT:VAL:NBANNLOCS$$	
+	$$BIF:ANNLOCS$$
+	<!-- locations immobilieres -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLOCS:IDPUBLICATION@@/@@ANNLOCS:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	<div class="ann_ctn idtt$$ANNLOCS:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNLOCS:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNLOCS:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNLOCS:PHOTOURL0$$<img class="thumb" src="$$ANNLOCS:PHOTOURL0$$" alt="" title="" />$$END:ANNLOCS:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNLOCS:LIBELLE$$</a>
+			<span>$$ANNLOCS:VILLE$$ ($$ANNLOCS:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNLOCS:PRIX$$ $$ANNLOCS:PRIX_UNITE htmlencode$$</a>
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$	
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNNEUF:9:FR:QRY:IDP::::d_dt_maj:~LIMIT:VAL:NBANNNEUF$$	
+	$$BIF:ANNNEUF$$
+	<!-- programme neuf -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNNEUF:IDPUBLICATION@@/@@ANNNEUF:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	<div class="ann_ctn idtt$$ANNNEUF:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNNEUF:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNNEUF:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNNEUF:PHOTOURL0$$<img class="thumb" src="$$ANNNEUF:PHOTOURL0$$" alt="" title="" />$$END:ANNNEUF:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNNEUF:LIBELLE$$</a>
+			<span>$$ANNNEUF:VILLE$$ ($$ANNNEUF:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNNEUF:PRIX$$ $$ANNNEUF:PRIX_UNITE htmlencode$$</a>
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$B:IMMOBW:ANN:ALIAS:ANNVIAGER:5:FR:QRY:IDP::::d_dt_maj:~LIMIT:VAL:NBANNVIAGER$$	
+	$$BIF:ANNVIAGER$$
+	<!-- viager -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNVIAGER:IDPUBLICATION@@/@@ANNVIAGER:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	<div class="ann_ctn idtt$$ANNVIAGER:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNVIAGER:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNVIAGER:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNVIAGER:PHOTOURL0$$<img class="thumb" src="$$ANNVIAGER:PHOTOURL0$$" alt="" title="" />$$END:ANNVIAGER:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNVIAGER:LIBELLE$$</a>
+			<span>$$ANNVIAGER:VILLE$$ ($$ANNVIAGER:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNVIAGER:PRIX$$ $$ANNVIAGER:PRIX_UNITE htmlencode$$</a>
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$
+	
+	
+		$$B:IMMOBW:ANN:ALIAS:ANNINVEST:6:FR:QRY:IDP::::d_dt_maj:~LIMIT:VAL:NBANNINVEST$$	
+	$$BIF:ANNINVEST$$
+	<!-- produits invest -->
+	$$DO$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNINVEST:IDPUBLICATION@@/@@ANNINVEST:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	<div class="ann_ctn idtt$$ANNINVEST:IDTYPETRANSACTION$$">
+		<div class="ann_fd"><img src="$$-$$annonces/img/ann01_fd_01.png" alt="" title="" /></div>
+		<p class="ann_transac">$$ANNINVEST:IDTYPETRANSACTION gettypetransaction pcase$$</p>
+		<a class="ann_pht" href="$$LIENDETAIL$$" title=""><em><span>$$ANNINVEST:DESCRIPTIF left 105$$ ...</span></em>$$IF:ANNINVEST:PHOTOURL0$$<img class="thumb" src="$$ANNINVEST:PHOTOURL0$$" alt="" title="" />$$END:ANNINVEST:PHOTOURL0$$</a>
+		<p class="ann_descr">
+			<a href="$$LIENDETAIL$$" title="">$$ANNINVEST:LIBELLE$$</a>
+			<span>$$ANNINVEST:VILLE$$ ($$ANNINVEST:CP$$)</span>
+			<a href="$$LIENDETAIL$$" title="">$$ANNINVEST:PRIX$$ $$ANNINVEST:PRIX_UNITE htmlencode$$</a>
+		</p>		
+		<a class="ann_detail" href="$$LIENDETAIL$$" title=""><!-- --></a>
+	</div>
+	<!-- fin .ann_ctn -->
+	$$LOOP$$
+	$$BFIN$$
+	
+	<div class="clear"><!-- --></div>
+	
+</div>
+<!-- fin #Annonces01 -->

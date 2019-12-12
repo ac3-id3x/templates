@@ -1,0 +1,28 @@
+$$REM$$====================================================================
+//// <summary>Fichier servant à la carte de géolocalisation Microsoft</summary>
+//// <remarks>
+//// <para>Fichier appelé par : geoloc/js/BingMap.js</para>
+//// </remarks>
+//// <update date="2010-03-22" author="ext-karim.mekni">Création</update>
+====================================================================$$END$$
+
+
+$$B:IMMOBW:CARTO-ANNONCES-MARKERS:~latMin:QRY:LATMIN:~lonMin:QRY:LONMIN:~latMax:QRY:LATMAX:~lonMax:QRY:LONMAX:~width:QRY:WIDTH:~height:QRY:HEIGHT:~zoom:QRY:ZOOM:ALIAS:CARTO$$
+$$BIF:CARTO$$
+$$DO$$
+InsertMapPin({latlong:new VELatLong($$CARTO:LATITUDE replace , .$$,$$CARTO:LONGITUDE replace , .$$),TypeRecherche:'$$CARTO:TYPE$$',dansRecherche:'$$CARTO:DANSRECHERCHE$$',infos:{id:'$$CARTO:ID$$',localisation:'$$CARTO:LOCALISATION$$',codeInsee:'$$CARTO:CODEINSEE$$',libelle:'$$CARTO:NOM escape htmlencode$$',nbAnnonces:$$CARTO:NBANNONCES$$,idannonce:$$IF:CARTO:IDANNONCE$$$$CARTO:IDANNONCE$$$$END$$$$IF0:CARTO:IDANNONCE$$0$$END$$,idpublication:$$IF:CARTO:IDPUBLICATION$$$$CARTO:IDPUBLICATION$$$$END$$$$IF0:CARTO:IDPUBLICATION$$0$$END$$}}); 
+$$IF:CARTO:LIMITES$$
+AddPolygon('$$CARTO:LIMITES$$','$$CARTO:NOM escape htmlencode$$'); 
+$$END$$
+$$IF:CARTO:LATMIN$$
+$$REM$$
+$$IF=:vil:CARTO:LOCALISATION$$
+AddPolygonVille('$$CARTO:LATMIN replace , .$$','$$CARTO:LONMIN replace , .$$','$$CARTO:LATMAX replace , .$$','$$CARTO:LONMAX replace , .$$');
+$$END$$
+$$END$$
+$$END$$
+$$LOOP$$ 
+$$BFIN$$ 
+$$BIF0:CARTO$$
+ShowMessage('$$LG:DESOLE pcase$$. $$LG:AUCUNEANN pcase$$');
+$$BFIN$$ 

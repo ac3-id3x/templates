@@ -1,0 +1,60 @@
+$$REM$$====================================================================
+//// <summary>Eléments récurrants, partie haut du détail d'annonces</summary>
+//// <remarks>
+//// <para>Les données de l'annonces sont déclarées en premier</para>
+//// <para>S'il y a du réf, on adapte les balises méta, sinon ce sera les champs de la conf id3</para>
+//// </remarks>
+//// <update date="2009-07-22" author="lisbonne.siriphol">Corrections</update>
+//// <update date="2009-07-29" author="christophe.ledoux">Update opti ref</update>
+====================================================================$$END$$
+
+ $$SET:PAGE:IDT=DETAILANNONCE$$
+
+$$REM$$<!--// données de l'annonce //-->$$END$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2$$
+$$A:LIEN_ANNONCE=@@IMMOBW:ANNONCE:URLVIRTUELLE@@$$
+
+$$REM$$<!--// balise ref par defaut, si et seulement si réf en cours //-->$$END$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+	$$IF:IMMOBW:ANNONCE:NB_PIECES$$
+		$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+			@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ - 
+			@@IMMOBW:ANNONCE:NB_PIECES@@ @@LG:PIECES@@ -
+			@@IMMOBW:ANNONCE:SURFACE@@ m2 &agrave;
+			@@IMMOBW:ANNONCE:VILLE@@
+			(@@IMMOBW:ANNONCE:CP@@) -
+			@@IMMOBW:ANNONCE:PRIX@@ euros
+		$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:NB_PIECES$$
+		$$A:PAGE:TITR=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+			@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ - 
+			@@IMMOBW:ANNONCE:SURFACE@@ m2 &agrave;
+			@@IMMOBW:ANNONCE:VILLE@@
+			(@@IMMOBW:ANNONCE:CP@@) -
+			@@IMMOBW:ANNONCE:PRIX@@ euros
+		$$
+	$$END$$
+	$$A:PAGE:DESCREF=Annonce 
+		@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ -
+		@@IMMOBW:ANNONCE:VILLE@@ : 
+	   @@IMMOBW:ANNONCE:DESCRIPTIF smalltext 80 htmlencode@@
+		$$
+	$$A:PAGE:KEYWORDS= @@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@
+		@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@
+		@@NOM_AGENCE@@
+		@@IMMOBW:ANNONCE:VILLE@@ 
+	$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+$$REM$$<!-- paramétrage des alt et title dynamiques pour toutes les photos des détail d'annonces = type de trasaction + type de bien + ville + CP -->$$END$$
+$$A:REF_ALT_TITLE=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien lcase@@ @@IMMOBW:ANNONCE:VILLE@@ (@@IMMOBW:ANNONCE:CP@@)$$
+$$A:REF_ALT_TITLE_NO_REF=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase@@ @@IMMOBW:ANNONCE:LIBELLE lcase@@ @@IMMOBW:ANNONCE:VILLE@@ (@@IMMOBW:ANNONCE:CP@@)$$
+
+$$REM$$<!-- paramétrage carto geoloc V2 -->$$END$$
+<!--#include virtual="geoloc/incl_BingMap_param.htm" -->
+
+<!--#include virtual="incl_haut.htm" -->

@@ -1,0 +1,104 @@
+<!--#include virtual="/incl_haut.htm" -->	
+$$SET:PAGE:STYLE=<style type="text/css">@import url( "/styles,formulaire.css" );</style>$$
+
+<h1>Test formulaire Lisbonne</h1>
+
+<div id="Form_AgenceMail">
+	
+	<table>
+		<!-- titre formulaire -->
+		<tr>
+			<td class="choixAgenceTitre"><span>Envoyer ce message à</span></td>
+			<td class="choixAgence">
+				$$B:IMMOBW:AGENCES:ALIAS:AGMAIL$$
+				$$BIF:AGMAIL$$
+				$$DO$$
+				$$IF:AGMAIL:EMAIL$$$$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+				$$LOOP$$
+				$$BFIN$$
+				$$BIF:AGMAIL$$
+				<select name="idPublication">
+					<option value="" selected="selected">$$LG:TTSELEC pcase$$</option>	
+					$$DO$$
+					<option class="$$AGMAIL:I mod2 bg1 bg2$$ choixAgence$$AGMAIL:I$$" value="$$AGMAIL:IDPUBLICATION$$">
+					$$AGMAIL:NOM$$ - $$AGMAIL:VILLE$$ ($$AGMAIL:CP$$)
+					</option>
+					$$LOOP$$						
+				</select>
+				$$BFIN$$					
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="form_TitreForm">D&eacute;crivez le bien immobilier que vous recherchez</td>
+		</tr>
+		<tr>
+			<td>Type de transaction</td>
+			<td id="SelectTypeTrans">
+				
+				<select name="idtt">					
+					<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>					
+					
+					$$IF0:FORM:IDTT$$
+					<!-- liste types transactions agence -->
+					$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AG_IDTT::QRY:LANG$$
+					$$BIF:AG_IDTT$$			
+					$$DO$$					
+					<option value="$$AG_IDTT:IDAG_IDTTACTION$$" class="$$AG_IDTT:I mod2 bg1 bg2$$">$$AG_IDTT:DESCRIPTIONLG pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+					$$END:FORM:IDTT$$
+					
+					$$IF:FORM:IDTT$$
+					
+					$$B:IMMOBW:TYPESTRANSACTION:ALIAS:ALL_IDTT$$
+					$$BIF:ALL_IDTT$$			
+					$$DO$$					
+					<option value="$$ALL_IDTT:IDTYPETRANSACTION$$" class="$$ALL_IDTT:I mod2 bg1 bg2$$">$$ALL_IDTT:TYPETRANSACTION pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+					$$END:FORM:IDTT$$
+								
+
+				</select>				
+			</td>
+		</tr>
+		<tr>
+			<td>Type de bien</td>
+			<td>
+				<select name="idtt">		
+					<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>			
+					
+					$$IF0:FORM:IDTYPEBIEN$$
+					
+					$$B:IMMOBW:TYPESBIENS:ALL:ALIAS:AG_TB$$
+					$$BIF:AG_TB$$
+					<!-- type bien -->
+					$$DO$$
+					<option value="$$AG_TB:IDTYPEBIEN$$" class="$$AG_TB:I mod2 bg1 bg2$$ typebien_$$AG_TB:IDTYPEBIEN$$">$$AG_TB:DEF_LIBELLE pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+					
+					$$END:FORM:IDTYPEBIEN$$
+					
+					
+					
+					$$IF:FORM:IDTYPEBIEN$$
+					
+					$$B:IMMOBW:TYPESBIEN:ALL:ALIAS:ALL_TB$$
+					$$BIF:ALL_TB$$
+					<!-- type bien -->
+					$$DO$$
+					<option value="$$ALL_TB:IDTYPEBIEN$$" class="$$ALL_TB:I mod2 bg1 bg2$$ typebien_$$ALL_TB:IDTYPEBIEN$$">$$ALL_TB:DEF_LIBELLE pcase$$</option>
+					$$LOOP$$
+					$$BFIN$$
+					
+					$$END:FORM:IDTYPEBIEN$$
+				</select>
+			</td>
+		</tr>
+	</table>
+
+</div><!-- fin #Form_AgenceMail -->
+
+
+<!--#include virtual="/incl_bas.htm" -->	

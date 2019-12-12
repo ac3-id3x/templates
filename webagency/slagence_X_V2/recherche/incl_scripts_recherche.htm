@@ -1,0 +1,157 @@
+$$REM$$====================================================================
+
+//// <summary>scripts pages resultats d'annonces</summary>
+//// <remarks>
+//// <para>Contient scripts servant à ajouter des annonces, et à compter le nb d'annonces réelles dans le panier</para>
+//// <para>Contient scripts servant à supprimer des annonces, et à compter le nb d'annonces réelles dans le panier</para>
+//// <para>Contient scripts servant à trier les annonces</para>
+//// <para>2009-08-10 : correction du vidage du panier qui ne fonctionnait pas, ajout 100ms de délai</para>
+//// </remarks>
+//// <update date="2009-08-10" author="erick.barbant">Compilation</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Compilation</update>
+
+====================================================================$$END$$
+
+
+<script type="text/javascript">
+	<!--
+	
+	// ================================ tri des annonces ================================
+
+	function Trier( idname ) {
+		var obj = document.getElementById(idname);
+		if( obj ) {
+			var critereTri = obj.options[obj.selectedIndex].value;
+			location.href= '$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+		} else {
+			alert("Problème sur la page. Merci de contacter la hotline.");
+		}
+	}
+	
+	
+	// Page résultats : ajoute annonces dans panier
+	//============================================================================================================
+	
+	// nombre d'annonces déjà dans le panier
+	var nbAnnPanier = $$BIF:CHECKBASKET$$$$CHECKBASKET:NBR$$$$DO$$$$LOOP$$$$BFIN$$$$BIF0:CHECKBASKET$$0$$BFIN$$;
+			
+	function selectionAnnoncePanier(idpublication, idannonce, nbAnnPanier){
+		// on incrémente le nombre d'annonces dans le panier.
+		nbAnnPanier++;
+		
+		var myAjax = new Ajax.Updater(
+			'NbAnnPanier', 
+			'/'+idpublication+'/'+idannonce+'/ajax,selection_ajouter.htm',
+				{
+					method: 'get', 
+					parameters: 'nbannpanier='+nbAnnPanier
+				});				
+				
+		cacheLienPanier(idannonce);
+				
+	}
+						
+	// Page résultats : cache lien d'ajout,lorsque annonce ajoutée au panier
+	//============================================================================================================
+	
+	function cacheLienPanier(idannonce){
+		// div contenant le lien à cacher
+		var divAnnonce = document.getElementById('selection'+idannonce);
+		
+		// si le div existe
+		if (divAnnonce){
+			// on cache
+			divAnnonce.innerHTML='<span class="selectionOk">$$LG:ANNONCE pcase$$ $$LG:SELEC lcase$$</span>';
+		}							
+	}
+				
+	// Page résultats : nb annonces ajoutées au panier
+	//============================================================================================================
+			
+	function nbAnnoncePanier(nbAnnonce){
+		// div contenant le nb annonces du panier
+		var divAnnPanier = document.getElementById('NbAnnPanier');
+		if (divAnnPanier){
+			divAnnPanier.innerHTML='('+nbAnnonce+')';		
+		}						
+	}
+		
+	// Page selection : enlève l'annonce du panier, et cache le bloc supprimé
+	//============================================================================================================
+	
+	function deselectionAnnoncePanier(idpublication,idannonce){
+		// on décrémente le nombre d'annonces dans le panier.
+		nbAnnPanier--;
+	
+		var myAjax = new Ajax.Updater(
+			'NbAnnSelection', 			
+			'/'+idpublication+'/'+idannonce+'/ajax,selection_supprimer.htm',
+					{
+						method: 'get',
+						parameters: 'nbannpanier='+nbAnnPanier
+					}
+			);										
+							
+			// div contenant le bloc annonce à cacher
+			document.getElementById('Annonce'+idannonce).style.display='none';	
+			
+			if ( nbAnnPanier <= 0)
+			{
+				reloadPageVide();
+			}
+			
+		}
+		
+	// Page selection : actualise le nb annonces du panier
+	//============================================================================================================
+	
+	function nbAnnonceSelection(nbAnnonce){
+			// div contenant le nb annonces du panier		
+			var divAnnPanier = document.getElementById('NbAnnSelection');
+			// on verifie si le div existe
+			if(divAnnPanier){
+			if (nbAnnonce <= 1){
+			divAnnPanier.innerHTML=nbAnnonce+' $$LG:ANNONCE lcase$$ $$LG:DANSVOTRESELEC lcase$$';
+			}
+			else{
+				divAnnPanier.innerHTML=nbAnnonce+' $$LG:ANNONCES lcase$$ $$LG:DANSVOTRESELEC lcase$$';
+				}
+			}
+	}
+	
+	// Page selection : vide le panier		
+	//============================================================================================================
+	
+	function viderPanier(){
+		
+	//vide les annonces du panier
+	var myAjax = new Ajax.Updater(
+		'NbAnnSelection', 			
+		'/ajax,selection_vider.htm',
+				{
+					method: 'get',
+					parameters: null
+				}
+		);													
+					
+		// cache div contenant elements inutiles
+		if(document.getElementById('RechHautLiens')){document.getElementById('RechHautLiens').style.display='none';}
+		if(document.getElementById('RechPagesHaut')){document.getElementById('RechPagesHaut').style.display='none';}
+		if(document.getElementById('RechPagesBas')){document.getElementById('RechPagesBas').style.display='none';}
+		
+		reloadPageVide();
+	}
+	
+	function reloadPageVide() {
+		// a styliser
+		document.getElementById('RechResultat').innerHTML='<div id="Loading">$$LG:VEUILLEZPATIENTER$$...</div>';
+		// il faut attendre qu'il ai vraiment vidé le panier avant de recharger donc on met 100ms (merci Erick)
+		window.setTimeout( "window.location.reload();", 100 );
+	}
+	
+	
+	
+	
+
+	//-->
+</script>

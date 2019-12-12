@@ -1,0 +1,67 @@
+$$REM$$
+====================================================================
+
+//// <summary>Fichier servant à la carte de géolocalisation Microsoft</summary>
+//// <remarks>
+//// <para>Fichier fourni par Jean-Marie Rétif, Service Recherche et Dév. SeLoger.com</para>
+//// <para>Fichier appelé par : slagence_x_v2/map/js/maplive.js</para>
+//// <para>La commercialisation du produit doit être lancée rapidement, donc les buggs ne seront pas une surprise</para>
+//// </remarks>
+//// <update date="2007-11-12" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2007-11-12" author="isabelle.padrutt">Validation référencement en cours</update>
+//// <update date="2007-11-12" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=@@PAGE:CFG_LANGUAGE lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=fr$$$$END$$
+
+
+{#}html##dicho-path-libelle##
+$$B:IMMOBW:DICHOGETPATH:ALIAS:DPATH$$
+$$BIF:DPATH$$		
+$$DO$$
+$$IF:DPATH:PARAM$$<a href="#" onclick="clearParam('$$DPATH:PARAM$$');">$$END$$
+	$$DPATH:LIBELLE htmlencode$$
+	$$IF:DPATH:PARAM$$</a>$$END$$
+	$$IF!:DPATH_NBR:DPATH:I$$ &gt;$$END$$
+	$$LOOP$$
+$$BFIN$$
+
+{#}eval##
+dataWait(false,"");
+$$IF0:FORM:S2$$
+deleteMapInfo();
+{#}
+{#}eval##
+$$B:IMMOBW:ANNLATLON:ALIAS:CO$$
+$$BIF:CO$$
+doEcr('$$MAPI:QUERYGEO escape$$');
+$$IF:1_MAPI:LATZ$$
+//addDebugMarker(new GLatLng('$$1_MAPI:LATZ replace , .$$','$$1_MAPI:LONZ replace , .$$'),'Centre');
+//addDebugMarker(new GLatLng('$$1_MAPI:LATITUDE replace , .$$','$$1_MAPI:LONGITUDE replace , .$$'),'First match');
+$$END$$
+querySetGeo('$$MAPI:QUERYGEO escape$$');
+$$BFIN$$
+$$END$$
+$$BIF:CO$$
+$$DO$$
+addInfo({lat:$$CO:LATITUDE replace , .$$,lng:$$CO:LONGITUDE replace , .$$,i: {id:'$$CO:KEY$$=$$CO:ID$$',libelle:'$$CO:LIBELLE escape htmlencode$$',nb:'$$CO:NB$$'}});$$LOOP$$
+$$BFIN$$
+$$IF=:1:FORM:MODELATLNG$$
+$$IF0:CO:NBR$$ $$A:CO:NBR=0$$$$END$$
+$$IF<:10:CO:NBR$$
+			var surl="/map,ajaxmap,getmapmarkers.htm?$$REP:QRY removeqry modelatlng escape$$&modelatlng=2&s2=1&nbr=$$CO:NBR$$";
+			dataWait(true,"Chargement du nombre d'annonces. Merci de patienter.");
+			sndReq(surl);
+	$$A:SUBQUERY=1$$
+$$END$$
+$$END$$
+$$BIF0:CO$$
+$$IF0:FORM:NBR$$
+$$IF0:SUBQUERY$$
+dataWait(true,"<p>Aucune annonce ne répond aux critères.</p>");
+$$END$$
+$$END$$
+$$BFIN$$
+doEcr('sql: $$MAPI:SQLDISP escape$$');
+{#}

@@ -1,0 +1,78 @@
+$$DO:1:3$$
+$$IF!:REP_1:SIMILAIRE:IDANNONCE$$
+<div class="similaire_ctn">
+	<div class="similaire">
+		<p class="$$IF0:SIMILAIRE:PHOTO_URL$$similairePhoto$$END$$">
+			<a href="$$SIMILAIRE:URLVIRTUELLE$$?lang=$$LANGUE lcase$$"
+				id="SimilairePhoto$$SIMILAIRE:I$$" title="">$$IF:SIMILAIRE:PHOTO_URL$$<img src="$$SIMILAIRE:PHOTO_URL$$" style="width:175px;height:125px;" />$$END$$</a>
+		</p><!-- .similairePhoto -->	
+		<p>
+			<a href="$$SIMILAIRE:URLVIRTUELLE$$?lang=$$LANGUE lcase$$" title="">
+				
+				$$SIMILAIRE:VILLE$$ <span>($$SIMILAIRE:CP$$)</span></a></p>
+		<p>											
+			$$IF!:5:SIMILAIRE:IDTYPETRANSACTION$$
+				$$SIMILAIRE:IDTYPETRANSACTION gettypetransaction pcase$$
+			$$END$$
+			$$SIMILAIRE:IDTYPEBIEN gettypebien lcase$$
+		</p>									
+		<p>									
+			$$IF:SIMILAIRE:NB_PIECES$$
+			$$SIMILAIRE:NB_PIECES$$
+			$$IF=:1:SIMILAIRE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+			$$IF!:0$1:SIMILAIRE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$IF:SIMILAIRE:NB_CHAMBRES$$,
+				$$SIMILAIRE:NB_CHAMBRES$$
+				$$LG:CHAMBRE lcase$$$$SIMILAIRE:NB_CHAMBRES pluriel$$			
+			$$END$$
+			$$END:NB_PIECES$$
+				
+			$$IF=:5:SIMILAIRE:IDTYPETRANSACTION$$
+				$$IF=:TRUE:SIMILAIRE:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+				$$IF=:FALSE:SIMILAIRE:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+				$$IFNULL:SIMILAIRE:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+			$$END$$
+			
+			$$IF:SIMILAIRE:SURFACE$$
+				($$SIMILAIRE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / approx. $$SIMILAIRE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$$$IF:SIMILAIRE:SURF_TERRAIN$$ , $$LG:SURFT pcase$$$$SIMILAIRE:SURF_TERRAIN$$ $$LG:M2 lcase$$ $$IF=:EN:LANGUE$$/ approx. $$SIMILAIRE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$$$END:SIMILAIRE:SURF_TERRAIN$$)
+			$$END$$
+		</p>
+		<p>
+			<a href="$$SIMILAIRE:URLVIRTUELLE$$?lang=$$LANGUE lcase$$" title="">
+				$$SIMILAIRE:PRIX formatnumber 0$$
+				<span class="unite">		
+					$$IF!:1:SIMILAIRE:IDTYPETRANSACTION$$
+					$$SIMILAIRE:PRIX_UNITE$$
+					$$END$$
+							
+					$$IF=:1:SIMILAIRE:IDTYPETRANSACTION$$
+					&euro; CC
+					$$END$$
+				</span>		 
+				<span class="periodeVac">$$SIMILAIRE:PRIX_PERIODEVAC$$</span>
+			$$IF=:2$8:SIMILAIRE:IDTYPETRANSACTION$$
+				* 
+			$$END$$
+			$$IF=:2$8:SIMILAIRE:IDTYPETRANSACTION$$
+				$$IF=:False:SIMILAIRE:SI_HONORAIRES_ACQUEREUR$$
+					<span class="small"><sup>*</sup> : $$LG:PRIXHORSFRAIS$$</span>
+				$$END$$
+				$$IF=:True:SIMILAIRE:SI_HONORAIRES_ACQUEREUR$$
+					<span class="small"><sup>*</sup> : $$LG:DONT$$ $$SIMILAIRE:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC  $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$</span>
+				$$END$$
+				$$IF!:True$False:SIMILAIRE:SI_HONORAIRES_ACQUEREUR$$
+					<span class="small"><sup>*</sup> : $$LG:HONORAIRES$$ $$LG:NONRENSEIGNE$$</span>
+				$$END$$
+			$$END$$
+				$$IF=:1$3$7:SIMILAIRE:IDTYPETRANSACTION$$
+					$$IF:SIMILAIRE:SI_LOYER_CC$$<span class="sup1"><!-- &sup1; --></span><!-- loyer charges comprises-->$$END$$
+					$$IF0:SIMILAIRE:SI_LOYER_CC$$<span class="sup1">&sup1;</span><!-- loyer + charges -->$$END$$
+				$$END$$
+			</a>
+		</p>
+		<p class="similaireDetail">
+			<a href="$$SIMILAIRE:URLVIRTUELLE$$?lang=$$LANGUE lcase$$" title="">$$LG:DETAILS pcase$$</a>
+		</p>
+	</div><!-- .similaire -->
+</div><!-- .similaire_ctn -->
+$$END:IDANNONCE$$
+$$LOOP$$

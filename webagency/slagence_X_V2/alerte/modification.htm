@@ -1,0 +1,63 @@
+$$REM$$
+====================================================================
+
+//// <summary>Le mail Alerte Immo renvoie vers cette page qui switche la frequence d'envoi des email</summary>
+//// <remarks>
+//// <para>Utilise le meme fichier .css que tous : creer.css</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=MODIFALERTEIMMO$$
+<!--#include virtual="/alerte/incl_haut_alerteimmo.htm"-->
+$$E:IMMOBW:AI_SWP:REP:2:REP:1:REP:3$$
+
+<div id="AlerteConfirmation">
+	<img id="AlerteEmail" src="$$-$$alerte/img/alerte_modif.png" alt="" />
+	
+	$$IF:IMMOBW:AI_SWP:ERRE$$
+	<h6 class="err">
+		Erreur !<br />
+		Vous n'&ecirc;tes pas inscrit ou une erreur s'est produite.
+	</h6>
+	<h2><a href="/" title="">$$LG:RETOURACC pcase$$</a></h2>
+	$$END:ERRE$$	
+	
+	$$IF0:IMMOBW:AI_SWP:ERRE$$
+	<h2>
+		L'Alerte Immo
+		$$IF:IMMOBW:AI_SWP:EMAIL$$
+			cr&eacute;&eacute;e sous le pr&eacute;nom  $$IMMOBW:AI_SWP:NOM$$ ($$IMMOBW:AI_SWP:EMAIL encodemail javascript$$)
+			$$IF:IMMOBW:AI_SWP:TEXTE$$
+				qui portait sur les crit&egrave;res :<br />
+				$$IMMOBW:AI_SWP:TEXTE$$
+			$$END:TEXTE$$
+		$$END:EMAIL$$
+		a &eacute;t&eacute; correctement modifiée.
+	</h2>		
+	<h4>
+		D&eacute;sormais vous recevrez les nouvelles annonces<!-- $$REP:3$$ -->
+		$$IF=:1:REP:3$$dès leur mise en ligne.$$END$$
+		$$IF!:1:REP:3$$deux fois par semaine.$$END$$
+	</h4>	
+	
+	
+	$$IF=:FR:LANGUE$$
+	<p class="confirmation">Attention : si votre recherche est trop vague vous risquez de recevoir plusieurs dizaines d'emails par semaine. Vous pouvez stopper simplement les envois en cliquant sur le lien de désinscription présent dans chaque email.</p>
+	<p class="confirmation">Vous pourrez, bien sûr, vous désinscrire quand bon vous semble: il suffira de cliquer sur le lien en bas de chaque mail envoyé.</p>
+	$$END:LANGUE$$
+	$$IF!:FR:LANGUE$$	
+	<p class="confirmation">$$LG:AI12$$</p>	
+	$$END:LANGUE$$
+	
+	$$IF=:FR:LANGUE$$<h5>Le site $$SRV$$ vous remercie de votre confiance.</h5>$$END:LANGUE$$
+	$$IF!:FR:LANGUE$$<h5>Our website $$SRV$$ thanks you for your confidence.</h5>$$END:LANGUE$$
+	
+	$$END:ERRE$$
+</div>
+
+<!--#include virtual="/alerte/incl_bas_alerteimmo.htm"-->

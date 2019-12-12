@@ -1,0 +1,67 @@
+$$REM$$
+====================================================================
+
+//// <summary>Moteur de recherche renvoyant vers la carte de géolocalisation Miscrosoft sans tableau</summary>
+//// <remarks>
+//// <para>Le fichier sera amélioré ultérieurement.</para>
+//// </remarks>
+//// <update date="2008-03-11" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-03-11" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+<form method="get" id="searchEngineForm" name="searchEngineForm" action="$$IF:REP:1$$/$$REP:1$$$$END$$/recherche_immobiliere.htm">
+	<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/map,recherche.htm" />
+	<input type="hidden" name="euro" value="1" />
+
+	<div id="Geoloc">		
+		<!-- type de transaction -->
+		<p class="idtt_ctn">$$LG:TRANSACTION pcase$$</p>
+		<select name="idtt" class="idtt">		
+			$$B:IMMOBW:NBANN_VILLES:ALIAS:GEOLOC_IDTT:~tri:IDTYPETRANSACTION$$
+			$$BIF:GEOLOC_IDTT$$
+				$$DO$$
+					$$IFPREV:GEOLOC_IDTT:IDTYPETRANSACTION$$			
+						<option value="$$GEOLOC_IDTT:IDTYPETRANSACTION$$" class="geoloc_idtt$$GEOLOC_IDTT:IDTYPETRANSACTION$$"$$IF=:2:GEOLOC_IDTT:IDTYPETRANSACTION$$ selected="selected"$$END$$> $$GEOLOC_IDTT:TYPETRANSACTION pcase$$</option>
+					$$END:IFPREV$$
+				$$LOOP$$
+			$$BFIN$$								
+		</select>
+		
+		<!-- type de bien -->
+		<p class="idtypebien_ctn">$$LG:TYPEDEBIEN pcase$$</p>
+		<select name="idtypebien" class="typeBien">
+			<option value=""> -- $$LG:SELECTIONNEZ2 pcase$$ -- </option>
+			$$B:IMMOBW:TYPESBIENS:ALIAS:GEOLOC_TYPEBIEN:ALL$$
+			$$BIF:GEOLOC_TYPEBIEN$$
+				$$DO$$
+					$$IFPREV:GEOLOC_TYPEBIEN:IDTYPEBIEN$$
+						$$A:GEOLOCIDTB=@@GEOLOC_TYPEBIEN:IDTYPEBIEN@@$$
+						<option value="$$GEOLOCIDTB$$" class="geoloc_idtypebien$$GEOLOCIDTB$$"> $$GEOLOC_TYPEBIEN:DEF_LIBELLE pcase$$</option>
+					$$END:IFPREV$$
+				$$LOOP$$
+			$$BFIN$$	
+		</select>
+		
+		<!-- villes -->
+		<p class="villes_ctn">$$LG:VILLES3 pcase$$</p>
+		<select name="ci" class="villesAnn">
+			<option value=""> -- $$LG:SELECTIONNEZ2 pcase$$ -- </option>
+			$$B:IMMOBW:VILLESANNONCES:ALIAS:GEOLOC_VILLES$$
+			$$BIF:GEOLOC_VILLES$$
+				$$DO$$
+					$$IFPREV:GEOLOC_VILLES:CODEINSEE$$
+						$$A:GEOLOCINSEE=@@GEOLOC_VILLES:CODEINSEE@@$$
+						<option value="$$GEOLOCINSEE$$" class="geoloc_ci$$GEOLOCINSEE$$"> $$GEOLOC_VILLES:VILLEAFF pcase$$</option>
+					$$END:IFPREV$$
+				$$LOOP$$
+			$$BFIN$$		
+		</select>
+		
+		<!-- rechercher -->
+		<p class="bt_ctn">
+			<input type="image" src="img/geoloc_rechercher_$$LANGUE$$.gif" onclick="javascript:mapacces();" />
+		</p>		
+	</div>
+	
+</form>

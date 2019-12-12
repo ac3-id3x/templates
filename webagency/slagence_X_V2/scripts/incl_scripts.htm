@@ -1,0 +1,103 @@
+$$REM$$====================================================================
+//// <summary>Includes js par defaut utilisés par tous les sites agences</summary>
+//// <remarks>
+//// <para>Fichier à ne SURTOUT PAS démutualiser</para>
+//// <para>Si besoin d'ajouter d'autres .js, les placer dans incl_haut.htm juste après l'appel de ce fichier</para>
+//// <para>on met le chemin en dur pour ne pas recopier les scripts pour les franchises qui n'ont pas slagence_X_V2 en base rep</para>
+//// <para>Pour aider le réf, essayer de tasser les ligne de code</para>
+//// <para>prototype_1.6.js en doublon sur pages d'annonces et sur mini moteur v2</para>
+//// <para>2010-03-23 : Intégration script FANCY BOX</para>
+//// </remarks>
+//// <update date="2010-03-23" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+====================================================================$$END$$
+	<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/coord.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/immobilier.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/controls.js"></script>
+
+$$REM$$<!-- js de gestion des onLoad -->$$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/eventsManager-min.js"></script>
+
+$$IF=:RESULTATS$DETAILANNONCE:PAGE:IDT$$
+	$$IF!:1:PAGE:MINIMOTEUR$$
+	$$REM$$<!-- 24.06.2010 si le mini moteur n'est pas présent > on affiche prototype --> $$END:REM$$
+	$$REM$$<!-- prototype.js (ajout ann panier) -->$$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/prototype.js"></script>
+	$$END:PAGE:MINIMOTEUR$$	
+	$$REM$$<!-- affiche métro ou rer paris lyon --> $$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/metro.js"></script>
+$$END:PAGE:IDT$$
+
+$$IF=:RESULTATS:PAGE:IDT$$
+$$REM$$<!-- script pages resultats -->$$END:REM$$								<!--#include virtual="/recherche/incl_scripts_recherche.htm" -->
+$$END:RESULTATS:PAGE:IDT$$
+
+$$IF=:1:PAGE:MINIMOTEUR$$
+	$$REM$$<!-- scripts mini moteur -->$$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/prototype.js"></script>	
+$$END:PAGE:MINIMOTEUR$$
+
+$$REM$$<!-- ================================================= scripts detail annonce ================================================= -->$$END:REM$$
+$$IF=:DETAILANNONCE:PAGE:IDT$$
+	$$REM$$<!-- prototype.js (ajout ann panier) -->$$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/prototype.js"></script>
+	$$REM$$<!-- incl_script spécial détail -->$$END:REM$$<!--#include virtual="/detail/incl_scripts_detail.htm" -->
+	$$IF=:DETAIL,SENTO.HTM:REP:0$$
+		$$IF0:PAGE:WAG_WEBVISIUM$$
+		$$REM$$<!-- /////////////////////////////////////////////// detail SENTO only ! ///////////////////////////////////////////////////////////////////// -->$$END:REM$$
+		<!--#include virtual="/scripts/incl_jquery.htm" -->
+		<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/ad-gallery/jquery.ad-gallery.js?rand=995"></script>		
+		$$END:WAG_WEBVISIUM$$
+	$$END:SENTO$$
+
+	$$REM$$<!-- /////////////////////////////////////////////// fancybox ///////////////////////////////////////////////////////////////////// -->$$END:REM$$			
+	$$REM$$<!-- création collection image et appel de fancybox -->$$END:REM$$	<!--#include virtual="/scripts/fancybox-1_3_1/incl_fancybox_call.htm" -->
+  $$REM$$<!-- /////////////////////////////////////////////// fancybox ///////////////////////////////////////////////////////////////////// -->$$END:REM$$
+
+$$END:DETAILANNONCE:PAGE:IDT$$
+
+$$IF=:SUIVICLIENT:PAGE:IDT$$
+	<!--#include virtual="/scripts/incl_jquery.htm" -->
+$$REM$$<!-- suivi client pericles -->$$END:REM$$<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/suiviclient.js"></script>
+$$END:SUIVICLIENT$$
+
+
+$$REM$$<!-- ajout aux favoris -->$$END:REM$$<script type="text/javascript">function favoris() {if ( navigator.appName != 'Microsoft Internet Explorer' ) {window.sidebar.addPanel("$$SRV$$","http://$$SRV$$",""); } else { window.external.AddFavorite("http://$$SRV$$","$$SRV$$"); } }</script>
+$$REM$$<!--  js png special bug tout ie --> $$END:REM$$						<!--[if IE]><script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/pngfix.js"></script><![endif]-->
+
+$$REM$$<!-- ========================== fichiers script google=============== -->$$END:REM$$
+
+	<!--#include virtual="referencement/incl_script_google.htm" -->
+	<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+
+$$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+	<!--#include virtual="/scripts/incl_jquery.htm" -->
+$$END:GOOGLEKEY_ANALYTICS$$
+
+$$REM$$<!-- ========================== FIXING QUARTIER =============== -->$$END:REM$$
+	<style>
+		.quartier {display:none;}
+		#Quartier {display:none;}
+	</style>
+
+	$$REM$$<!-- JAVASCRIPT VARIABLES AND FUNCTIONS ACCESSIBLES FROM ANYWHERE WITHIN THE HTML PAGE -->$$END$$
+	<!--#include virtual="/scripts/incl_jquery.htm" -->
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/maps/all/css/maps-xv2.css" />
+	<script type="text/javascript" src="/z/webagency/slagence_X_V5/scripts/js/global.min.js"></script>
+	<script type="text/javascript">$$REM$$<!-- JAVASCRIPT GLOBAL VARIABLES INITIALIZATION -->$$END$$
+		id3xContent = new id3xContentConstructor({ $$REM$$/*debug: true,*/$$END$$
+			macro: { 
+				B: {AGENCES: {DATA: []}},
+				E: { 
+					AGENCE: {IDPUBLICATION: "$$CV:IDPUBLICATION$$", LATITUDE: "$$CV:LATITUDE$$", LONGITUDE: "$$CV:LONGITUDE$$", NOM: "$$CV:NOM$$"},
+					ANNONCE: {
+						AGLATITUDE: "$$ANNDETAIL:AGLATITUDE$$", AGLONGITUDE: "$$ANNDETAIL:AGLONGITUDE$$", LATITUDE: "$$ANNDETAIL:LATITUDE$$", LONGITUDE: "$$ANNDETAIL:LONGITUDE$$",
+						LATITUDE_CARTO: "$$ANNDETAIL:LATITUDE_CARTO$$", LONGITUDE_CARTO: "$$ANNDETAIL:LONGITUDE_CARTO$$", PUBLICLAT: "$$ANNDETAIL:PUBLICLAT$$", PUBLICLNG: "$$ANNDETAIL:PUBLICLNG$$",
+						VILLE: "$$ANNDETAIL:VILLE$$"
+					},
+					CARTO_ANNONCES_INIT: {LATITUDEMAX: "$$CARTO:LATITUDEMAX$$", LATITUDEMIN: "$$CARTO:LATITUDEMIN$$", LONGITUDEMAX: "$$CARTO:LONGITUDEMAX$$", LONGITUDEMIN: "$$CARTO:LONGITUDEMIN$$"},
+					PAGE: { 
+						MAP_CENTER_LATITUDE: "$$PAGE:MAP_CENTER_LATITUDE$$", MAP_CENTER_LONGITUDE: "$$PAGE:MAP_CENTER_LONGITUDE$$",WAG_STYLE_AGENCE: "$$PAGE:WAG_STYLE_AGENCE$$", WAG_STYLE_DETAIL: "$$PAGE:WAG_STYLE_DETAIL$$",
+						WAG_STYLE_RECHERCHE: "$$PAGE:WAG_STYLE_RECHERCHE$$", WAG_STYLE_RECHERCHE_DEFAULT: "$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$", WAG_TYPE_PACK: "$$PAGE:WAG_TYPE_PACK$$" 
+					} 
+				} 
+			},
+			texts: {clicAcquerir: "$$LG:TITLEACQUEREUR pcase$$ $$LG:AVEC lcase$$", clicEstimation: "$$LG:CLIQUERESTIMER pcase$$", clicMore: "$$LG:CLIQUEZPLUS pcase$$"},
+			values: {acquerirIdt: "$$ACQUERIR:IDT$$", colorMarker: "$$PINCARTO$$", estimationIdt: "$$ESTIMATION:IDT$$",poi: {jsPoi: "$$JS_POI$$", mapAnnonceHide: "$$MAP_ANNONCE_HIDE$$"}}
+		});
+	</script>

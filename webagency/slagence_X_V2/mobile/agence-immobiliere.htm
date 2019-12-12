@@ -1,0 +1,76 @@
+$$REM$$
+====================================================================
+
+//// <summary>Carte de visite agence contenant les coordonnées, le texte public et le portefeuille d'annonces</summary>
+//// <remarks>
+//// <para>slagence_X_V2/liste-agences-immobilieres.htm : affiche des liens vers le présent fichier</para>
+//// <para>Fichier qui n'existait pas dans slagence_X, cette page était fabriquée pour chaque site</para>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/agence-immobiliere.css</para>
+//// <para>Lien NOUS SITUER masqué tant qu'il est en panne</para>
+//// <para>Le portefeuille d'annonces (incl_portefeuille_01.htm) n'apparaît que si le site a souscrit à un contrat de référencement</para>
+//// <para>l'include des horaires ne fonctionne que si le paramètre HORAIRE = 1 a été rempli dans la conf</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Update noms responsables ventes + loc + vacances + communication</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Update include mentions legales</update>
+//// <update date="2008-09-11" author="lisbonne.siriphol">Update include horaires</update>
+//// <update date="2008-01-30" author="sophie.nataf">Validation Ref oK</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-14" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCEIMMOBILIERE$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agence-immobiliere.css?@@IF:FORM:IDP@@idp=@@FORM:IDP@@@@END@@" );
+	@import url( "/styles,portefeuille01.css" );
+	@import url( "/styles,portefeuille02.css" );
+	@import url( "/styles,annonces01.css" );
+	@import url( "/styles,horaires.css" );
+</style>$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!--#include virtual="incl_multi.htm" -->
+<div id="CV">
+<h1>$$LG:LIEN:AGEN ucase$$</h1>
+	<div id="Agence">
+		<div id="Img_Ctn">			
+			<p id="Vitrine"></p>
+		</div>
+		<div id="Coordonnees">
+			$$REM$$<h2>$$CV:NOM ucase$$</h2>$$END:REM$$
+			<p class="cv_adresse">
+				$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				<strong>$$CV:CP$$ $$CV:VILLE pcase$$</strong>
+			</p>
+             <p class="localiser"><a href="http://$$REP:RSRV$$/localiser.htm?adresse=$$CV:ADRESSE$$" target="_parent" title="">$$LG:LOCALISER pcase$$</a></p>
+
+	         <p>
+				<!-- tel standard-->
+				$$REM$$
+                $$IF:CV:TEL$$<label class="cv_tel"><span>$$LG:MINITEL$$ :</span> $$CV:TEL formattel$$</label>$$END:TEL$$			
+				<!-- fax standard -->
+				$$IF:CV:FAX$$<br /><label class="cv_fax"><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label>$$END:FAX$$
+                $$END:REM$$
+				$$IF:CV:RESPAG$$<br /><label class="cv_respag"><span>$$LG:NOMRESP$$</span> $$CV:RESPAG ncase$$</label>$$END:RESPAG$$
+			</p>
+               
+			<p class="mail">
+				$$IF:CV:EMAIL$$<label class="cv_email"><span>$$LG:EMAIL pcase$$ : <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></span></label>$$END:EMAIL$$
+			</p>	
+		</div>
+		
+		
+        
+   <!--#include virtual="/detail/incl_partager.htm" -->	
+	</div>
+	<div class="txt_presentation">
+		$$IF:CV:TXT_PUBLIC$$
+			$$REM$$<!-- ============================== txt public from selogerpro ============================== -->$$END:REM$$
+			<h4>$$LG:LIEN:PRES pcase$$</h4>
+			<p>$$CV:TXT_PUBLIC crlf2br$$</p>
+			$$END:TXT_PUBLIC$$
+	</div>
+</div>
+$$INCL:BAS.HTM$$

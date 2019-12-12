@@ -1,0 +1,149 @@
+$$INIT:IDT=ESTIM_ENLIGNE$$
+$$INIT:CSS_ESTIM_ENLIGNE=1$$
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:CVESTIMATION$$
+<!--#include virtual="incl_haut.htm" -->
+<div id="estim_enligne">
+
+	<div id="head_estim_enligne">
+		$$REM$$$$A:TITLEH1=@@LG:FAITESESTIMBIEN pcase@@$$$$END$$
+				$$IF:FORM:IDTYPEBIEN$$
+			$$A:TITLEH1=Faites estimer votre @@FORM:IDTYPEBIEN gettypebien lcase@@ à @@FORM:CI codeinsee2ville field 1@@$$
+		$$END$$
+		$$IF0:FORM:IDTYPEBIEN$$
+			$$A:TITLEH1=Faites estimer votre bien à @@FORM:CI codeinsee2ville field 1@@$$
+		$$END$$
+		
+		
+		<h1 class="color-titre-h1">$$TITLEH1$$</h1>
+		<p class="color-texte-1">$$LG:AIDEAGENCE pcase$$ <strong>$$FORM:CI codeinsee2ville field 1$$</strong> $$LG:ESTIMGRATUITEPROPOSER lcase$$ 
+		$$IF:FORM:IDTYPEBIEN$$	
+			<strong>$$FORM:IDTYPEBIEN gettypebien$$</strong>. 
+		$$END$$
+		$$IF0:FORM:IDTYPEBIEN$$
+			bien.
+		$$END$$
+		$$LG:FOURCHETTEPRIX pcase$$ 
+		$$IF:FORM:IDTYPEBIEN$$	
+			<strong>$$FORM:IDTYPEBIEN gettypebien$$</strong> 
+		$$END$$
+		$$IF0:FORM:IDTYPEBIEN$$
+			bien
+		$$END$$
+		à <strong>$$FORM:CI codeinsee2ville field 1$$</strong>.
+		
+		</p>		
+			
+		<span class="color-texte-1">$$LG:STARTESTIM pcase$$ $$FORM:CI codeinsee2ville field 1$$ : </span>
+		<a class="btn_estim degrad_btnestim color-bg-action" href="$$URLBASE$$/estimation,immobiliere.htm?idtypebien=2">$$LG:COMBIENVAUT pcase$$<strong>$$LG:MAMAISON ucase$$ ?</strong></a>
+		<a class="btn_estim degrad_btnestim color-bg-action" href="$$URLBASE$$/estimation,immobiliere.htm?idtypebien=1">$$LG:COMBIENVAUT pcase$$<strong>$$LG:MONAPPART ucase$$ ?</strong></a>	
+	</div>
+	
+	<div class="bloc_estim_enligne color-bg-bloc">
+		<div class="colbloc_estim_enligne">
+			<h2 class="color-titre-h2">$$LG:POURQUOIESTIMER pcase$$</h2>
+			<p class="color-texte-2">$$LG:EXPERTISEMARCHE pcase$$</p>
+			<p class="color-texte-2">$$LG:INFOSBIENS pcase$$</p>
+			<p class="color-texte-2">$$LG:AVANCERPROJET pcase$$</p>
+			$$IF=:1:MULTIAGENCES$$
+				<p><a href="/agences,liste.htm$$IF!:FR:LANGUE$$?lang=$$LANGUE$$$$END$$" class="linkpuce color-titre-h2">$$LG:CONTACTERAGENCES pcase$$</a></p>
+			$$END$$
+			$$IF=:0:MULTIAGENCES$$
+				<p><a href="$$AGENCE_URLVIRT$$$$IF!:FR:LANGUE$$?lang=$$LANGUE$$ $$END$$" class="linkpuce color-titre-h2">$$LG:CONTACTERAGENCEIMMO pcase$$</a></p>
+			$$END$$
+		</div>		
+		<div class="colbloc_estim_enligne">
+			<div id="bulle_estim_enligne" class="color-bg-action">
+				<div id="triangle_bulle_estim" class="color-titre-h2" ></div>
+				<p id="ttl_bulle_estim">NOTRE METHODE D’EVALUATION</p>
+				<ul>
+					<li><span class="ttl_list_bulle">$$LG:APPROCHECOMPARATIVE pcase$$ :</span>
+					$$LG:REALITEMARCHE pcase$$</li>
+					<li><span class="ttl_list_bulle">$$LG:APPROCHEQUALITATIVE pcase$$ :</span>
+					$$LG:VALEURBIEN pcase$$</li>
+					<li><span class="ttl_list_bulle">$$LG:APPROCHEREVENU pcase$$ :</span>
+					$$LG:VALEURBIENLOYER pcase$$</li>
+				</ul>			
+			</div>		
+		</div>	
+	</div>
+	
+	<div class="bloc_estim_enligne color-bg-bloc">
+		<div class="colbloc_estim_enligne">
+			<h2 class="color-titre-h2">$$LG:CONFIERMANDAT pcase$$ :</h2>
+			<ul>
+				<li class="color-texte-2"><strong>$$LG:VENDRERAPIDEMENT pcase$$</strong>, $$LG:GRACECLIENT lcase$$.</li>
+				<li class="color-texte-2"><strong>$$LG:BENEFICIEROPTIM pcase$$ :</strong> $$LG:DIFFUSIONANNONCE lcase$$</li>
+				<li class="color-texte-2"><strong>$$LG:DEGAGERCONTRAINTES pcase$$ :</strong> $$LG:REPOSERPRO lcase$$.</li>
+			</ul>
+		</div>		
+		<div class="colbloc_estim_enligne">
+			<!-- BOUCLE 3 DERNIERS BIENS VENDUS -->
+			$$B:IMMOBW:KA-BIENS-VENDUS:~tri:d_dt_maj:ALIAS:MODULEESTIM$$
+			$$BIF:MODULEESTIM$$
+			<div id="biensvendus_estim">
+				<p id="ttl_biensvendus" class="color-bg-action">$$LG:BIENVENDUAGENCE pcase$$</p>
+				<ul>
+					$$DO:1:3$$
+					<li>		
+						$$IF=:FR:LANGUE$$<img class="img_biensvendus" src="$$-$$images/estimation_enligne/vignette-vendu.png" alt="Bien vendu" />$$END$$
+						$$IF!:FR:LANGUE$$<img class="img_biensvendus" src="$$-$$images/estimation_enligne/vignette-vendu-EN.png" alt="Sold" />$$END$$	
+						<p class="infos_biensvendus">
+							<span class="ville_biensvendus">$$MODULEESTIM:VILLE ucase$$ $$IF:MODULEESTIM:PRIXVENTEFAI$$ - $$END$$</span>
+							<span class="prix_biensvendus color-titre-h2">$$MODULEESTIM:PRIXVENTEFAI formatnumber 0$$ &euro; FAI</span><br />
+							<span class="desc_biensvendus">
+								$$MODULEESTIM:IDTYPEBIENVENDU gettypebien replace Villa ¤ replace / ¤$$ $$MODULEESTIM:NBPIECES$$ 			
+								$$IF=:1:MODULEESTIM:NBPIECES$$$$LG:PIECE lcase$$$$END$$
+								$$IF+:2:MODULEESTIM:NBPIECES$$$$LG:PIECES2 lcase$$$$END$$
+
+								$$IF=:FR:LANGUE$$vendu$$IF=:2$6:MODULEESTIM:IDTYPEBIENVENDU$$e$$END$$ en$$END$$
+								$$IF!:FR:LANGUE$$sold in$$END$$
+								$$MODULEESTIM:DTSAISIEVENTE date MMMM_yyyy$$
+								
+								$$IF=:FR:LANGUE$$au prix de$$END$$
+								$$IF!:FR:LANGUE$$at a price of$$END$$
+								$$MODULEESTIM:PRIXVENTEFAI formatnumber 0$$ &euro; FAI
+									
+								$$IF=:FR:LANGUE$$sur la ville de$$END$$
+								$$IF!:FR:LANGUE$$in the city of$$END$$
+								$$MODULEESTIM:VILLE ucase$$
+									
+								$$IF:MODULEESTIM:SURFACEHABITABLE$$
+								$$IF=:FR:LANGUE$$pour une surface de$$END$$
+								$$IF!:FR:LANGUE$$for an area of$$END$$
+								$$MODULEESTIM:SURFACEHABITABLE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$MODULEESTIM:SURFACEHABITABLE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+								$$END:MODULEESTIM:SURFACEHABITABLE$$
+						  </span>			
+						</p>
+					</li>
+				$$LOOP$$
+				</ul>
+			</div>
+			$$BFIN$$						
+		</div>	
+	</div>
+	$$B:IMMOBW:ANN:2:~nostat:1:ALIAS:ANNAGENCE$$
+	$$BIF:ANNAGENCE$$	
+	<div class="bloc_estim_enligne module_derniersbiens color-bg-bloc">
+		<h2 class="color-titre-h2">$$LG:NOSDERANN pcase$$ à $$FORM:CI codeinsee2ville field 1$$ </h2>			
+		<ul id="derniersbiens_estim">
+		$$DO:1:4$$
+			<!--#include virtual="estimation/incl_annonces_estimation_enligne.htm" -->
+		$$LOOP$$
+		</ul>
+	</div>
+	$$BFIN$$
+	$$BIF0:ANNAGENCE$$
+		$$B:IMMOBW:ANN:2::::ADD:ci=FORM_CI&idtypebien=+FORM_IDTYPEBIEN+&rayon=20:~nostat:1:ALIAS:ANNAUTRES$$
+		$$BIF:ANNAUTRES$$
+	<div class="bloc_estim_enligne module_derniersbiens color-bg-bloc">
+		<h2 class="color-titre-h2">$$LG:NOSDERANN pcase$$ dans le secteur de $$FORM:CI codeinsee2ville field 1$$ </h2>			
+		<ul id="derniersbiens_estim">
+		$$DO:1:4$$
+			<!--#include virtual="estimation/incl_annonces_autre_estimation_enligne.htm" -->
+		$$LOOP$$
+		</ul>
+	</div>
+		$$BFIN$$
+	$$BFIN$$
+</div>
+<!--#include virtual="incl_bas.htm" -->

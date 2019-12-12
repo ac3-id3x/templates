@@ -1,0 +1,376 @@
+$$REM$$
+========================================================================================================================================
+
+//// <summary>Formulaire test avant mise en prod</summary>
+//// <remarks>
+//// <para>Pas de css par défaut, style à modifier directement dans commun.css</para>
+//// <para>Template email test dans slagence_x_v2/mailing</para>
+//// <para>Idtt à conditionner dans la QRY</para>
+//// <para>Utilisation macro P:IMMOBW:SEND-AGENCE-MAIL : macrodoc.id3x.com/IMMOBW.P.SEND-AGENCE-MAIL.html</para>
+//// </remarks>
+//// <update date="2008-11-18" author="lisbonne.siriphol">Test</update>
+//// <update date="2008-11-18" author="mustapha.ferhaoui">Validation Id3x en attente</update>
+
+========================================================================================================================================
+$$END$$
+
+$$INCL:HAUT.HTM$$
+
+
+$$REM$$
+>>>>>>> nouveau css
+========================================================================================================================================$$END$$
+$$SET:PAGE:STYLE=<style type="text/css">@import url( "/styles,formulaire.css" );</style>$$
+
+
+
+$$REM$$
+>>>>>>> Param a expliquer
+========================================================================================================================================$$END$$
+$$SET:PAGE:FORMIDTBCACHECONTACT=1,2,3,4,5,6$$
+$$SET:PAGE:IDT=@@FORM:TYPE@@$$
+$$SET:PAGE:INIT=init();$$
+
+
+
+$$REM$$
+>>>>>>> idtt dans la qry, pour éviter multiplication d'includes <!--#include virtual="/includes/incl_choix_idtbf_forms.htm" -->
+========================================================================================================================================$$END$$
+
+
+
+
+
+$$REM$$
+>>>>>>> TEST ERREUR EMAIL (hors idp) / Test : OK  / CSS : ok http://www.webagencyseloger.com.xdev/mailing,formulaire.htm?idtt=1,2&type=contact
+========================================================================================================================================$$END$$
+
+$$B:IMMOBW:AGENCES:ALIAS:AGMAIL$$
+$$BIF:AGMAIL$$
+$$DO$$
+$$IF:AGMAIL:EMAIL$$$$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$
+
+$$IF0:FORM:IDP$$
+$$IF0:MULTI_AGENCE:EMAIL$$
+<h1>Test no email</h1>
+<div id="Form_AgenceMailErreur">
+	<div id="NoMail">
+		<h4>Désolé !</h4>
+		<p>Cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.</p>
+		<p>L'adresse e-mail du destinataire n'est pas disponible.</p>
+	</div><!-- fin #NoMail -->
+</div><!-- fin #Form_AgenceMailErreur -->
+$$END:MULTI_AGENCE:EMAIL$$
+$$END:FORM:IDP$$
+
+
+
+
+
+$$REM$$
+>>>>>>> Test IDP dans qry + NO EMAIL http://www.webagencyseloger.com.xdev/mailing,formulaire.htm?idtt=1,2&type=contact&idp=123456
+========================================================================================================================================$$END$$
+$$IF:FORM:IDP$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:AG_AUTRE$$
+$$IF0:AG_AUTRE:EMAIL$$
+<h1>Test no email + idp</h1>
+<div id="Form_AgenceMailErreur">
+	<div id="NoMail">
+		<h4>Désolé !</h4>
+		<p>Cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.</p>
+		<p>L'adresse e-mail du destinataire n'est pas disponible.</p>
+	</div><!-- fin #NoMail -->
+</div><!-- fin #Form_AgenceMailErreur -->
+$$END:AG_AUTRE:EMAIL$$
+
+$$REM$$
+>>>>>>> à styliser http://www.webagencyseloger.com.xdev/mailing,formulaire.htm?idtt=1,2&type=contact&idp=330704
+========================================================================================================================================$$END$$
+$$IF:AG_AUTRE:EMAIL$$
+<h1>$$AG_AUTRE:NOM$$</h1>
+$$END:AG_AUTRE:EMAIL$$
+
+$$END:FORM:IDP$$
+
+
+
+
+
+<div id="Form_AgenceMail" 
+	$$IF0:FORM:IDP$$
+	$$IF0:MULTI_AGENCE:EMAIL$$style="display: none;"$$END$$
+	$$END$$
+	
+$$REM$$
+>>>>>>> Test IDP dans qry + EMAIL ok http://www.webagencyseloger.com.xdev/mailing,formulaire.htm?idtt=1,2&type=contact&idp=330704
+========================================================================================================================================$$END$$
+
+	$$IF:FORM:IDP$$
+	$$IF0:AG_AUTRE:EMAIL$$style="display: none;"$$END$$
+	$$END$$
+	>
+	<h1>Test formulaire Lisbonne</h1>
+	
+	
+$$REM$$
+>>>>>>> 2 types d'erreur
+========================================================================================================================================$$END$$
+	<h2>Test IMMOBW:SEND-AGENCE-MAIL:ERRE : $$IMMOBW:SEND-AGENCE-MAIL:ERRE$$</h2>
+	<h2>Test ERRE : $$ERRE$$</h2>
+
+
+
+$$REM$$
+>>>>>>> TEST EMAIL AVEC ET SANS IDP / à tester + styliser
+========================================================================================================================================$$END$$
+	$$IF:IMMOBW:SEND-AGENCE-MAIL:OK$$
+	<h1>Test ok</h1>
+	$$END$$	
+	
+	
+$$REM$$
+>>>>>>> on cache le formulaire si message ok
+========================================================================================================================================$$END$$	
+	<form method="post" action="/$$REP:PAGE$$" $$IF:IMMOBW:SEND-AGENCE-MAIL:OK$$style="display: none;"$$END$$>
+			<input type="hidden" name="u" value="immobw:send-agence-mail" /> $$REM$$<!--// [INPUT OBLIGATOIRE] : MACRO ID3X //-->$$END:REM$$
+	
+			<input type="hidden" name="idTypeVisu" value="$$IF=:MESSAGE:FORM:TYPE$$1$$END$$$$IF=:CONTACT:FORM:TYPE$$2$$END$$$$IF=:PROPRIETAIRE:FORM:TYPE$$3$$END$$$$IF=:ESTIMATION:FORM:TYPE$$8$$END$$" /> $$REM$$<!--// [INPUT OBLIGATOIRE] 1 = WebAg Message / 2 = WebAg Contact / 3 = WebAg Propriétaire / 8 = WebAg Estimation (anciennement E) //-->$$END:REM$$
+			
+			<input type="hidden" name="page_ok" value="$$REP:URI$$" /> $$REM$$<!--// [INPUT OBLIGATOIRE] : pas de page_ok.htm, resultat renvoyé dans la même page //-->$$END$$
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" /> $$REM$$<!-- // [input facultative] // : erreur affichée sur cette même page -->$$END:REM$$
+		
+
+$$REM$$
+>>>>>>> what is that input for ?
+========================================================================================================================================$$END$$
+			<input type="hidden" name="source" value="$$REP:SRV replace www. ""  pcase$$" />
+		
+
+$$REM$$
+>>>>>>> test template mail
+========================================================================================================================================$$END$$
+			<input type="hidden" name="emailTemplate" value="mailing/mail_agence.htm" /> $$REM$$<!--// [INPUT OBLIGATOIRE] : template HTML du mail envoyé à l'agence (démutualisable) //-->$$END:REM$$
+
+$$REM$$
+>>>>>>> test IDPUBLICATION si on ne veut pas utiliser la conf du site
+========================================================================================================================================$$END$$
+		$$IF:FORM:IDP$$
+		<input type="hidden" name="idPublication" value="$$FORM:IDP$$" /> $$REM$$<!--// [input facultative] : idPublication agence de son choix (si on ne veut pas utiliser la config du site)-->$$END:REM$$
+		$$END:FORM:IDP$$
+
+
+$$REM$$
+>>>>>>> pas de REP:1, on affiche directement les résultats
+========================================================================================================================================$$END$$
+		
+		
+					
+$$REM$$
+========================================================================================================================================
+//// test input
+<!-- 
+[INPUT OBLIGATOIRE]
+<input type="text" name="nomFamille" value="$$FORM:NOMFAMILLE$$" />
+<input type="text" name="prenom" value="$$FORM:PRENOM$$" />
+<input type="text" name="email" value="$$FORM:EMAIL$$" />
+-->
+========================================================================================================================================
+$$END$$
+
+$$REM$$
+>>>>>>> Test pour vérifier si les agences ont un mail + test IDP dans QRY
+========================================================================================================================================$$END$$
+		
+		
+		<table id="Form_AgenceMail_Tb">
+			$$IF0:FORM:IDP$$
+			<tr>
+				<td colspan="2">					
+					<p class="form_TitreForm">$$LG:LISTOUTES pcase$$ $$LG:OU lcase$$ $$LG:SELECTIONA lcase$$</p>
+					$$BIF:AGMAIL$$
+					<select name="idPublication">
+						<option value="" selected="selected">$$LG:TTSELEC pcase$$</option>	
+						$$DO$$
+						<option class="$$AGMAIL:I mod2 bg1 bg2$$ choixAgence$$AGMAIL:I$$" value="$$AGMAIL:IDPUBLICATION$$">
+						$$AGMAIL:NOM$$$$IF:AGMAIL:TEL$$ - $$LG:MINITEL pcase$$ : $$AGMAIL:TEL formattel$$$$END$$$$IF:AGMAIL:ADRESSE$$ - $$AGMAIL:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$AGMAIL:CP$$ $$AGMAIL:VILLE$$$$END$$
+						</option>
+						$$LOOP$$						
+					</select>
+					$$BFIN$$					
+				</td><!-- fin #SelectionAgence -->
+			</tr>
+			$$END:FORM:IDP$$
+
+
+
+$$REM$$
+>>>>>>> Tester le coup de l'include texte
+========================================================================================================================================$$END$$
+			<tr>
+				<td colspan="2"><!--#include virtual="/incl_text_forms.htm" --></td>
+			</tr>
+			
+			
+			<tr>
+					<td class="TabTitre" colspan="2">
+					$$IF=:ESTIMATION:FORM:TYPE$$ $$LG:VOUSPOSSEDEZ2$$&nbsp;$$LG:ESTIMER lcase$$ : $$END$$
+					$$IF=:CONTACT:FORM:TYPE$$ Vous recherchez un bien immobilier :$$END$$
+					$$IF=:PROPRIETAIRE:FORM:TYPE$$ $$LG:VOUSPOSSEDEZ$$ :$$END$$
+					$$IF=:MESSAGE:FORM:TYPE$$ $$LG:MESSAGE$$ : $$END$$
+					</td>
+				</tr>
+				$$IF!:MESSAGE:FORM:TYPE$$
+				$$IF=:CONTACT$PROPRIETAIRE:FORM:TYPE$$
+				<tr>
+					<td  class="ChoixIdtt" colspan="2">
+					$$SET:PAGE:FORMIDTTCACHE=1$$
+					$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPETRANS::QRY:LANG$$
+				$$BIF:TYPETRANS$$
+			
+					<select name="idtt">
+							<option value="" selected="selected">-- $$LG:SELECTIONNEZ2$$ la transaction --</option>
+							$$DO$$
+							$$IF):PAGE_WAG*FORMIDTTCACHE:TYPETRANS:IDTYPETRANSACTION$$
+							<option value="$$TYPETRANS:IDTYPETRANSACTION$$" $$IF=:PAGE_WAG*FORMIDTTDEFAUT:TYPETRANS:IDTYPETRANSACTION$$selected="selected"$$END$$>$$TYPETRANS:DESCRIPTIONLG pcase$$ </option>
+							$$END$$
+							$$LOOP$$
+					</select>
+				$$BFIN$$
+			
+					</td>
+				</tr>
+				$$END:CONTACT$PROPRIETAIRE$$
+				<tr>
+					<td colspan="2" class="TabTitre">$$LG:DESCRIPBIEN$$</td>
+				</tr>
+				<tr>
+						<td>$$IF!:CONTACT:FORM:TYPE$$$$LG:BIENPROP$$$$END$$$$IF=:CONTACT:FORM:TYPE$$$$LG:BIENRECH$$$$END$$ :*</td>
+						<td>
+					
+						
+						$$B:IMMOBW:TYPESBIEN:ALIAS:LISTEIDTB$$
+						$$BIF:LISTEIDTB$$
+						<select name="typebien" size="1">
+						<option value=""> -- -- </option>
+						$$DO$$
+						$$IF=:CONTACT:FORM:TYPE$$
+								$$IF):PAGE_WAG*FORMIDTBCACHECONTACT:LISTEIDTB:IDTYPEBIEN$$
+										<option value="$$LISTEIDTB:IDTYPEBIEN$$">$$LISTEIDTB:DEF_LIBELLE$$</option>
+								$$END$$
+						$$END$$
+						$$IF=:ESTIMATION:FORM:TYPE$$
+								$$IF):PAGE_WAG*FORMIDTBCACHEESTIMATION:LISTEIDTB:IDTYPEBIEN$$
+										<option value="$$LISTEIDTB:IDTYPEBIEN$$">$$LISTEIDTB:DEF_LIBELLE$$</option>
+								$$END$$
+						$$END$$
+						$$IF=:PROPRIETAIRE:FORM:TYPE$$
+								$$IF):PAGE_WAG*FORMIDTBCACHEPROPRIETAIRE:LISTEIDTB:IDTYPEBIEN$$
+										<option value="$$LISTEIDTB:IDTYPEBIEN$$">$$LISTEIDTB:DEF_LIBELLE$$</option>
+								$$END$$
+						$$END$$
+						$$IF=:GESTION:FORM:TYPE$$
+								$$IF):PAGE_WAG*FORMIDTBCACHEGESTION:LISTEIDTB:IDTYPEBIEN$$
+										<option value="$$LISTEIDTB:IDTYPEBIEN$$">$$LISTEIDTB:DEF_LIBELLE$$</option>
+								$$END$$
+						$$END$$
+						$$LOOP$$
+						 </select>
+						$$BFIN$$
+						
+						</td>
+					</tr>
+					<tr>
+						<td>$$LG:SURFH$$</td>
+						<td><input type="text" name="surface" size="10" value="$$FORM:SURFACE$$" /> m&sup2;</td>
+					</tr>
+					<tr>
+						<td>$$LG:SURFT$$</td>
+						<td><input type="text" name="terrain" size="10" value="$$FORM:TERRAIN$$" /> m&sup2;</td>
+					</tr>
+					<tr>
+						<td>$$LG:NBRP$$</td>
+						<td><input type="text" name="nombrepieces" size="10" value="$$FORM:NOMBREPIECES$$" /> $$LG:PIECES$$</td>
+					</tr>
+					<tr>
+						<td>$$LG:VILLE$$ : *</td>
+						<td><input type="text" name="villebien" size="25" value="$$FORM:VILLEBIEN$$" /></td>
+					</tr>
+					<tr>
+						<td>$$LG:CODEP$$ : *</td>
+						<td><input type="text" name="codepostalbien" size="25" value="$$FORM:CODEPOSTALBIEN$$" /></td>
+					</tr>
+					$$IF=:CONTACT:FORM:TYPE$$
+					<tr>
+						<td>$$LG:PRIXLOYER$$ (€) :</td>
+						<td><input class="imputForm" type="text" name="prix" size="25" value="$$FORM:PRIX$$" /> <font size="1">($$LG:SAISIE1$$)</font></td>
+					</tr>
+					$$END$$
+					<tr>
+						<td valign="top">$$LG:PRECIS$$ :</td>
+						<td><textarea name="message" cols="35" rows="4">$$FORM:MESSAGE$$</textarea></td>
+					</tr>
+			$$END:MESSAGE:FORM:TYPE$$
+			$$IF=:MESSAGE:FORM:TYPE$$
+			      <tr>
+					<td colspan="2"><textarea name="message" cols="42" rows="10">$$FORM:MESSAGE$$</textarea></td>
+				   </tr>
+			$$END:MESSAGE:FORM:TYPE$$
+				<tr>
+					<td colspan="2" class="TabTitre">$$LG:COORD$$</td>
+				</tr>
+				<tr>
+					<td width="30%">$$LG:AI5$$ * :</td>
+					<td width="70%"><input type="text" name="nomfamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+				</tr>
+				<tr>
+					<td >$$LG:PRENOM$$ * :</td>
+					<td ><input type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+				</tr>
+				<tr>
+					<td >$$LG:ADRESSE$$ :</td>
+					<td >$$IF=:FR:LANGUE$$<input type="text" name="adresse" size="25" value="$$FORM:ADRESSE$$" />$$END$$</td>
+				</tr>
+				<tr>
+					<td >$$LG:VILLE$$ :</td>
+					<td ><input type="text" name="ville" size="25" value="$$FORM:VILLE$$" /></td>
+				</tr>
+				<tr>
+					<td >$$LG:CODEP$$ :</td>
+					<td ><input type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+				</tr>
+				$$IF!:FR:LANGUE$$
+				<tr>
+					<td >$$LG:PAYS$$ :</td>
+					<td ><input type="text" name="pays" size="25" value="$$FORM:PAYS$$" /></td>
+				</tr>
+				$$END$$
+				<tr>
+					<td >$$LG:TEL pcase$$ * :</td>
+					<td ><input type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+				</tr>
+				<tr>
+					<td >$$LG:AI6$$ * :</td>
+					<td ><input type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="ChampsOblig">$$LG:OBLIGATOIRE$$</td>
+				</tr>
+				<tr>
+					<td colspan="2"  class="TabTitre">$$LG:VERIFINFOS$$</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="BoutonEnvoi"><input  type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+				</tr>
+			</table><!-- fin #TabForms -->
+		</form>
+
+
+	<!--#include virtual="incl_cgu_formulaire.htm" -->
+
+</div><!-- fin #GlobalPageForm -->
+
+
+
+$$INCL:BAS.HTM$$

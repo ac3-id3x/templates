@@ -1,0 +1,147 @@
+$$REM$$
+====================================================================
+
+//// <summary>Formulaire d'inscription alerte email et/ou SMS</summary>
+//// <remarks>
+//// <para>Utilise le style css : slagence_X_V2/styles/addalerte.css</para>
+//// <para>Page de confirmation de formulaire : slagence_X_V2/addalerte_ok.htm</para>
+//// </remarks>
+//// <update date="2008-01-10" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-10" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-11" author="erick.barbant">Validation Id3x.</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=ADDALERTE$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,addalerte.css" );
+</style>$$
+
+$$SET:CYBERMARK=AddAlerte$$
+$$E:ID3:NOCACHE$$
+<div id="AddAlerte">
+	<h5>$$LG:AITITRE ucase$$</h5>
+	
+	<form method="post" action="/addalerte_ok.htm" name="f">
+		<input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$" />
+		<input type="hidden" name="phrase" value="$$FORM:PHRASE htmlencode$$" />
+		<input type="hidden" name="si_realtime" value="1" />
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />
+		<input type="hidden" name="page_ok" value="addalerte_ok.htm" />
+		<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+		<input type="hidden" name="page_err" value="addalerte.htm" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		$$IF0:ERRE$$$$IF:FORM:EMAIL$$<input type="hidden" name="email" value="$$FORM:EMAIL$$" />$$END$$$$END$$
+	
+		<h4>$$LG:VOTRERECHERCHE pcase$$ :</h4>
+		<h3>$$FORM:PHRASE htmlencode$$</h3>
+	
+		$$IF:FORM:EMAIL$$
+		<p>
+			$$IF=:FR:LANGUE$$Pour confirmer la r&eacute;ception des nouvelles annonces, <strong>merci de compl&eacute;ter les champs suivants</strong> :$$END:FR$$
+			$$IF!:FR$CN:LANGUE$$To confirm the reception of the latest listing, please fill the following form :$$END:LANG$$
+			$$IF=:CN:LANGUE$$&#30830;&#35748;&#25509;&#25910;&#25151;&#20135;&#20449;&#24687; , &#35831;&#22635;&#20889;&#19979;&#21015;&#34920;&#26684; :$$END:CN$$
+		</p>
+		$$END$$
+		
+		$$IF0:FORM:EMAIL$$
+		<p>
+			$$IF=:FR:LANGUE$$Veuillez saisir ci-dessous l'email o&ugrave; nous vous ferons parvenir, en temps r&eacute;el, les nouvelles annonces correspondant &agrave; votre recherche :$$END:FR$$
+			$$IF!:FR$CN:LANGUE$$Enter the email below where we will forward to you, every 4 days, the new announces which math to your research :$$END:LANG$$
+			$$IF=:CN:LANGUE$$&#35831;&#22635;&#20889;&#25509;&#25910;&#30340;&#37038;&#20214;&#22320;&#22336; :$$END:CN$$
+		</p>
+		$$END$$
+		
+		<div>
+			$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<p style="font-weight:bold;" class="optinCheck">
+						<label style="font-weight:bold; font-size:12px;">$$IF=:FR:LANGUE$$J'accepte de recevoir des informations de la part de $$URLBASE$$$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>	
+					</p>
+					$$IF=:1:PAGE:OPTIN_CONTRAT$$
+						$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+						$$BIF:MENTIONS$$	
+							$$DO:1:1$$
+									<p style="font-size:9px;margin-bottom:5px;" class="infosLegalesEmail">
+										Les informations communiquées sont destinées à 
+										$$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ 
+										Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression 
+										de vos données personnelles (Loi du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés). 
+										Pour les exercer, adressez-vous à : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ - 
+										$$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$
+									</p>
+							$$LOOP$$
+						$$BFIN:MENTION$$		
+					$$END$$
+				$$END:OPTIN_CONTRAT$$
+		</div>
+		
+		<h2>$$ERRE$$</h2>
+		<table>
+			<tr>
+				<td>
+					$$LG:AI5 pcase$$ :
+				</td>
+				<td>
+					<input type="text" class="nom" name="nom" maxlength="50" value="$$FORM:NOM htmlencode$$" />
+				</td>
+			</tr>			
+			<tr>
+				<td>
+					$$LG:AI6 pcase$$ :
+				</td>
+				<td>
+					<input type="text" class="email" name="email" maxlength="50" value="$$FORM:EMAIL$$" />
+				</td>
+			</tr>
+			$$REM$$
+			<tr>
+				<td>
+					$$LG:AI7 pcase$$ :
+				</td>
+				<td>
+					<input type="text" class="nb_foyer" name="nb_foyer" maxlength="2" value="$$FORM:NB_FOYER$$" />
+				</td>
+			</tr>
+			$$END:REM$$
+			<tr>
+				<td>
+				</td>
+				<td>
+					<input type="submit" class="button" value="$$LG:AI16 pcase$$" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	$$IF=:FR:LANGUE$$
+	<h3>Vous recevrez les annonces dès leur mise en ligne.</h3>
+	<p>Attention : si votre recherche est trop vague vous risquez de recevoir plusieurs dizaines d'emails par semaine. Vous pouvez stopper simplement les envois en cliquant sur le lien de d&eacute;sinscription pr&eacute;sent dans chaque email.</p>
+	<p>Vous pourrez, bien s&ucirc;r, vous d&eacute;sinscrire quand bon vous semble: il suffira de cliquer sur le lien en bas de chaque mail envoy&eacute;.</p>
+	$$END:FR$$
+	
+	$$IF!:FR$CN:LANGUE$$
+	<h3>You will receive the annouces as they will setting on line.</h3>
+	<p> Attention : if your research is not precise you may receive several tens email per week. You can simply stop the sendings by clicking on the "Unsubscribe" link present in each email.</p>
+	<p>Of course, you will be able to unsubscribe when you want by clicking on the link in bottom of each email sent.</p>
+	$$END:LANG$$
+	
+	$$IF=:CN:LANGUE$$
+	<h3>&#24744;&#23558;&#21450;&#26102;&#25910;&#21040;&#26368;&#26032;&#20449;&#24687;.</h3>
+	<p>&#22914;&#26524;&#24744;&#30340;&#25628;&#32034;&#33539;&#22260;&#36807;&#24191;,&#24744;&#26377;&#21487;&#33021;&#27599;&#21608;&#25910;&#21040;&#20960;&#21313;&#23553;&#30005;&#23376;&#37038;&#20214;.&#24744;&#21487;&#20197;&#28857;&#20987;&#27599;&#23553;&#37038;&#20214;&#37324;&#30340;&#38142;&#25509;&#20197;&#21462;&#28040;&#27880;&#20876;</p>
+	<p>&#24744;&#21487;&#20197;&#38543;&#26102;&#21462;&#28040;&#30005;&#37038;&#36890;&#30693;.&#24744;&#21482;&#38656;&#28857;&#20987;&#20219;&#24847;&#19968;&#23553;&#37038;&#20214;&#37324;&#19979;&#26041;&#30340;&#21462;&#28040;&#38142;&#25509;&#21363;&#21487;.</p>
+	$$END:CN$$
+	
+	$$REM$$
+	<hr />
+	
+	<h5>SMS</h5>
+	<h6>(Short Message Service)</h6>
+	<p>
+		$$IF=:FR:LANGUE$$Le SMS vous permet de recevoir les annonces de votre Alerte Immo directement sur votre t&eacute;l&eacute;phone portable (France uniquement). Apr&egrave;s avoir communiqu&eacute; votre email, un code vous sera attribu&eacute; si vous souhaitez recevoir vos alertes par SMS.$$END:FR$$
+		$$IF!:FR$CN:LANGUE$$The SMS enables you to receive the listing of your Immo Alarm directly on your mobile phone (France only). After having communicate your email, a code will be alloted to you ; if you wish to receive your alarms by SMS.$$END:LANG$$
+		$$IF=:CN:LANGUE$$&#30701;&#20449;&#26381;&#21153;&#23558;&#20351;&#24744;&#30340;&#25163;&#26426;&#21487;&#20197;&#25509;&#25910;&#26368;&#26032;&#30340;&#25151;&#20135;&#20449;&#24687;&#65288;&#38480;&#20110;&#27861;&#22269;&#33539;&#22260;&#65289;. &#22914;&#26524;&#24744;&#24076;&#26395;&#25910;&#21040;&#37038;&#20214;&#36890;&#30693;&#65292;&#36755;&#20837;&#37038;&#20214;&#22320;&#22336;&#65292;&#23558;&#20250;&#33719;&#24471;&#19968;&#20010;&#27880;&#20876;&#30721;&#46;.$$END:CN$$
+	</p>
+	$$END:REM$$
+</div>
+$$INCL:BAS.HTM$$

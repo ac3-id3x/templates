@@ -1,0 +1,50 @@
+$$INIT:TOPVILLE=1$$
+
+<!--#include virtual="incl_haut.htm" -->
+$$E:ID3:URW-GETVALUES:~ressource:TypeTransaction:~values:typeTransaction,typeBien$$
+
+<div itemscope itemtype="http://schema.org/WebPage">
+	<div itemprop="breadcrumb">
+		<div id="bloc_ariane">
+					$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+					<a href="$$URWRACINE:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$" class="racine_immo">Immobilier</a>
+		</div>
+	</div>
+</div>
+
+<div id="col_gauche">
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~idTypeTransaction:QRY:idTypeTransaction:~nbAnnoncesMin:1$$
+$$BIF:TTTB$$
+<ul>
+$$DO$$
+	<li class="subListing">$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$END$$
+		$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$TTTB:TYPEBIEN pcase$$
+	$$IF:TTTB:NBANNONCES$$</a>$$END$$</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+
+$$BIF0:TTTB$$
+Pas de combinaison TT/TB
+$$BFIN$$
+</div>
+
+<div id="col_droite">
+$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150:~idTypeTransaction:QRY:idTypeTransaction:~nbAnnoncesMin:1$$
+$$BIF:TOP$$
+$$DO:3$$
+	<div class="info_bloc"><a href="$$TOP:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$ID3:URW-GETVALUES:TYPETRANSACTION ncase$$ $$TOP:VILLE$$</a><font size="1"> ($$TOP:NBANNONCES$$)</font></div>
+$$LOOP$$
+$$BFIN$$
+
+$$BIF0:TOP$$
+Pas de ville
+$$BFIN$$
+
+$$IF=:150:TOP:NBR$$
+			$$E:ID3:URW-GETURL:ALIAS:URWTTPAGES:~ressource:TypeTransactionPages$$
+			<div id="liens_autres"><a href="$$URWTTPAGES:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Autres villes</a></div>
+$$END:NBR$$
+</div>
+<div class="clear"></div>
+<!--#include virtual="incl_bas.htm" -->

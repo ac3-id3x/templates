@@ -1,0 +1,132 @@
+$$REM$$
+====================================================================
+
+//// <summary>Resultat recherche PANORAMA</summary>
+//// <remarks>
+//// <para>Appelle 4 feuilles de styles</para>
+//// </remarks>
+//// <update date="2008-10-03" author="lisbonne.siriphol">Correction sur exclu et cdc</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+
+====================================================================
+$$END$$
+
+<!--#include virtual="/recherche/incl_haut_annonces.htm" -->
+
+$$REM$$ Modif Muriel vu par Erick - Florian - Djam BIG UP @import url( "/styles,recherche_macros.css?lang=@@LANGUE@@@@IF:FORM:IDTT@@&amp;idtt=@@FORM:IDTT@@@@END@@" ); $$END$$
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,recherche_general.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+	@import url( "/styles,recherche_panorama.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+	@import url( "/styles,recherche.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+</style>$$
+
+$$DO:config:config$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+$$A:LIENDETAIL=@@IMMOBW:ANN:QRY:URLVIRTUELLE@@@@IF:FORM:LANG@@@@IF!:FR:FORM:LANG@@?lang=@@FORM:LANG@@@@END@@@@END@@$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+$$A:LIENDETAIL=@@URLBASE@@/@@IMMOBW:ANN:QRY:IDPUBLICATION@@/@@IMMOBW:ANN:QRY:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+		
+		<div class="blocAnnonce_wrap" id="Annonce$$IMMOBW:ANN:QRY:IDANNONCE$$">
+			
+			<div class="blocAnnonce">
+				<div class="photo">
+					<!--#include virtual="/recherche/incl_sipromo.htm" -->
+					<!--#include virtual="/recherche/incl_exclusif.htm" -->
+					<!--#include virtual="/recherche/incl_coupdecoeur.htm" -->
+					<a href="$$LIENDETAIL$$" title="">
+						
+						<!-- infobulle -->
+						<em>						
+							<span class="descriptif $$IF0:IMMOBW:ANN:QRY:DESCRIPTIF$$$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$descriptifNull$$END$$$$END$$">								
+								
+								<strong class="ref">$$LG:REFER pcase$$ : $$IMMOBW:ANN:QRY:REFANNONCE$$</strong>
+								
+								
+								$$IF:IMMOBW:ANN:QRY:DESCRIPTIF$$
+									$$IMMOBW:ANN:QRY:DESCRIPTIF left 150$$ ...
+								$$END$$
+								
+								$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF$$														
+									$$IF:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$
+										$$IMMOBW:ANN:QRY:DESCRIPTIF_FR left 150$$ ...
+									$$END$$									
+									$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$
+										$$LG:ANNSANSDESCR pcase$$.
+									$$END$$	
+								$$END$$	
+							</span>
+							<span class="pointer"><!-- --></span>
+						</em>					
+						$$IF:IMMOBW:ANN:QRY:IDPHOTO$$<img src="$$IMMOBW:ANN:QRY:PHOTOURL0$$" alt="" title="" />$$END$$					
+					</a>
+				</div>
+				<!-- fin .photo -->
+				
+				<div class="descr">
+					<!--#include virtual="/recherche/incl_typebien.htm" -->
+										
+					<a class="nbPhoto" href="$$LIENDETAIL$$" title="">$$IMMOBW:ANN:QRY:NBPHOTOS$$ <span>$$IF=:0$1:IMMOBW:ANN:QRY:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:IMMOBW:ANN:QRY:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span></a>
+					
+					<p class="libelle">
+					$$IF:IMMOBW:ANN:QRY:LIBELLE$$
+						$$IMMOBW:ANN:QRY:LIBELLE$$
+					$$END$$
+					$$IF0:IMMOBW:ANN:QRY:LIBELLE$$
+						$$IMMOBW:ANN:QRY:LIBELLE_FR$$
+					$$END$$
+					
+					$$IF:IMMOBW:ANN:QRY:SURFACE$$					
+						<span class="surface">($$IMMOBW:ANN:QRY:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / $$IMMOBW:ANN:QRY:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$)</span>
+					$$END:IMMOBW:ANN:QRY:SURFACE$$
+					
+					$$IF:IMMOBW:ANN:QRY:SURF_TERRAIN$$
+						<span class="terrain">
+								$$LG:TERRAIN$$
+								($$IMMOBW:ANN:QRY:SURF_TERRAIN$$ $$LG:M2 lcase$$
+								$$IF=:EN:LANGUE$$
+									/ approx. $$IMMOBW:ANN:QRY:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+									$$IMMOBW:ANN:QRY:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres
+								$$END:EN$$)
+						</span>
+					$$END:IMMOBW:ANN:QRY:SURF_TERRAIN$$
+					
+					</p>
+					<p class="ville">$$IMMOBW:ANN:QRY:VILLE$$ ($$IMMOBW:ANN:QRY:CP$$)</p>
+					<!--#include virtual="recherche/incl_prix.htm" -->
+				</div>
+				
+				$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+				<!-- selection annonce -->
+				<div class="ajoutSelection" id="selection$$IMMOBW:ANN:QRY:IDANNONCE$$">
+					<a href="javascript:selectionAnnoncePanier($$IMMOBW:ANN:QRY:IDPUBLICATION$$, $$IMMOBW:ANN:QRY:IDANNONCE$$);" title="">$$LG:AJOUTERSEL pcase$$</a>
+				</div>
+				$$END$$
+				
+				$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+				<!-- deselection annonce -->
+				<div class="supprimerSelection" id="deselection$$IMMOBW:ANN:QRY:IDANNONCE$$">
+					<a href="javascript:deselectionAnnoncePanier($$IMMOBW:ANN:QRY:IDPUBLICATION$$, $$IMMOBW:ANN:QRY:IDANNONCE$$);" title="">$$LG:SUPPRIMERSELEC pcase$$</a>
+				</div>
+				$$END$$
+								
+			</div>
+			<!-- fin .blocAnnonce -->
+			
+			<div class="detail">				
+				<!--#include virtual="recherche/incl_tel.htm" -->
+				<a class="lienDetail" href="$$LIENDETAIL$$" title="">$$LG:DETAILS pcase$$</a>
+				<div class="clear"><!-- --></div>
+				
+			</div>
+			<!-- fin .detail -->
+		
+		</div>
+		<!-- fin .blocAnnonce_wrap -->
+
+$$LOOP$$
+$$BFIN$$
+
+<!--#include virtual="/recherche/incl_bas_annonces.htm" -->

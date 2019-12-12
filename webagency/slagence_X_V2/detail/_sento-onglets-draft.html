@@ -1,0 +1,1473 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+<!-- BOUCLE d'appel des infos agence pour afficher NOM agence + VILLE agence de façon DYNAMIQUE (infos SAISS)  -->
+<!-- Définition de L'IDPUB de l'agence à afficher sur le site -->
+<!-- Définition du NOM de l'agence à afficher sur le site -->
+<!-- Définition de l'adresse à afficher sur le site  -->
+<!-- Définition de la ville à afficher sur le site  -->
+<!-- Définition du CP à afficher sur le site  -->
+<!-- Définition du DEPARTEMENT à afficher sur le site  -->
+<!-- Définition du tel à afficher sur le site  -->
+<!-- Définition du fax à afficher sur le site  -->
+
+<!-- EXPRESSIONS ALT + TITLE -->
+<!-- OBLIGATOIRE definition des expressions pour les alt et title (même si pas d'option de ref !) A modifier selon cahier des charges ou laisser en auto si pas de réf -->
+<title>Site démo de la Webagency SeLoger</title>
+<!-- t1 -->
+<meta name="description" content="   ." />
+<meta name="robots" content="index,follow,all" />
+<meta http-equiv="content-language" content="fr" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-script-type" content="text/javascript" />
+<meta http-equiv="content-style-type" content="text/css" />
+
+
+
+<style type="text/css">
+	@import url( "styles,detail_sento.css?lang=fr" );
+	@import url( "styles,detail_macros_sento.css?lang=fr" );
+	@import url( "styles,detail_macros_site.css?lang=fr" );
+</style>
+
+<script src="/z/webagency/slagence_X_V2/scripts/controls.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V2/scripts/immobilier.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V2/scripts/coord.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V2/scripts/eventsManager-min.js" type="text/javascript"></script>
+<script src="/z/webagency/slagence_X_V2/scripts/prototype_1.6.js" type="text/javascript"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/metro.js"></script>
+
+<script type="text/javascript">
+	function selectionAnnoncePanier(idpublication, idannonce){									
+		var myAjax = new Ajax.Updater(
+			'AjoutSelection', 
+			'/'+idpublication+'/'+idannonce+'/ajax,selection_ajouter.htm',
+				{
+					method: 'get', 
+					parameters: null,
+					onComplete: cacheLienPanier
+				}
+			);		
+		cacheLienPanier();
+	}
+	function cacheLienPanier(){
+		// div contenant le lien à cacher
+		var divAnnonce = document.getElementById('AjoutSelection');		
+		// si le div existe
+		if (divAnnonce){
+			// on cache
+			divAnnonce.innerHTML='<div id="Picto_Selection_Ok"></div><p class="selection_ok">Annonce sélectionnée</p>';
+		}				
+		else {
+			alert("erreur d\'origine inconnue.");
+		}			
+	}
+</script>
+
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/ad-gallery/jquery.min.js"></script>
+
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/ad-gallery/jquery.ad-gallery.js?rand=995"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/fancybox-1_3_1/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/fancybox-1_3_1/jquery.fancybox-1.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="/z/webagency/slagence_X_V2/scripts/fancybox-1_3_1/jquery.fancybox-1.3.1.css" media="screen" />
+<!-- onglets jQuery
+ <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+ <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+-->
+<script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
+<script type="text/javascript">
+/*Yetii - Yet (E)Another Tab Interface Implementation,version 1.6,http://www.kminek.pl/lab/yetii/,Copyright (c) Grzegorz Wojcik,Code licensed under the BSD License: http://www.kminek.pl/bsdlicense.txt*/function Yetii(){this.defaults={id:null,active:1,interval:null,wait:null,persist:null,tabclass:'tab',activeclass:'active',callback:null,leavecallback:null};this.activebackup=null;for(var n in arguments[0]){this.defaults[n]=arguments[0][n]};this.getTabs=function(){var a=[];var b=document.getElementById(this.defaults.id).getElementsByTagName('*');var c=new RegExp("(^|\\s)"+this.defaults.tabclass.replace(/\-/g,"\\-")+"(\\s|$)");for(var i=0;i<b.length;i++){if(c.test(b[i].className))a.push(b[i])}return a};this.links=document.getElementById(this.defaults.id+'-nav').getElementsByTagName('a');this.listitems=document.getElementById(this.defaults.id+'-nav').getElementsByTagName('li');this.show=function(a){for(var i=0;i<this.tabs.length;i++){this.tabs[i].style.display=((i+1)==a)?'block':'none';if((i+1)==a){this.addClass(this.links[i],this.defaults.activeclass);this.addClass(this.listitems[i],this.defaults.activeclass+'li')}else{this.removeClass(this.links[i],this.defaults.activeclass);this.removeClass(this.listitems[i],this.defaults.activeclass+'li')}}if(this.defaults.leavecallback&&(a!=this.activebackup))this.defaults.leavecallback(this.defaults.active);this.activebackup=a;this.defaults.active=a;if(this.defaults.callback)this.defaults.callback(a)};this.rotate=function(a){this.show(this.defaults.active);this.defaults.active++;if(this.defaults.active>this.tabs.length)this.defaults.active=1;var b=this;if(this.defaults.wait)clearTimeout(this.timer2);this.timer1=setTimeout(function(){b.rotate(a)},a*1000)};this.next=function(){var a=(this.defaults.active+1>this.tabs.length)?1:this.defaults.active+1;this.show(a);this.defaults.active=a};this.previous=function(){var a=((this.defaults.active-1)==0)?this.tabs.length:this.defaults.active-1;this.show(a);this.defaults.active=a};this.previous=function(){this.defaults.active--;if(!this.defaults.active)this.defaults.active=this.tabs.length;this.show(this.defaults.active)};this.gup=function(a){a=a.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var b="[\\?&]"+a+"=([^&#]*)";var c=new RegExp(b);var d=c.exec(window.location.href);if(d==null)return null;else return d[1]};this.parseurl=function(a){var b=this.gup(a);if(b==null)return null;if(parseInt(b))return parseInt(b);if(document.getElementById(b)){for(var i=0;i<this.tabs.length;i++){if(this.tabs[i].id==b)return(i+1)}}return null};this.createCookie=function(a,b,c){if(c){var d=new Date();d.setTime(d.getTime()+(c*24*60*60*1000));var e="; expires="+d.toGMTString()}else var e="";document.cookie=a+"="+b+e+"; path=/"};this.readCookie=function(a){var b=a+"=";var d=document.cookie.split(';');for(var i=0;i<d.length;i++){var c=d[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(b)==0)return c.substring(b.length,c.length)}return null};this.contains=function(a,b,c){return a.indexOf(b,c)!=-1};this.hasClass=function(a,b){return this.contains(a.className,b,' ')};this.addClass=function(a,b){if(!this.hasClass(a,b))a.className=(a.className+' '+b).replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/g,'')};this.removeClass=function(a,b){a.className=a.className.replace(new RegExp('(^|\\s)'+b+'(?:\\s|$)'),'$1');a.className.replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/g,'')};this.tabs=this.getTabs();this.defaults.active=(this.parseurl(this.defaults.id))?this.parseurl(this.defaults.id):this.defaults.active;if(this.defaults.persist&&this.readCookie(this.defaults.id))this.defaults.active=this.readCookie(this.defaults.id);this.activebackup=this.defaults.active;this.show(this.defaults.active);var f=this;for(var i=0;i<this.links.length;i++){this.links[i].customindex=i+1;this.links[i].onclick=function(){if(f.timer1)clearTimeout(f.timer1);if(f.timer2)clearTimeout(f.timer2);f.show(this.customindex);if(f.defaults.persist)f.createCookie(f.defaults.id,this.customindex,0);if(f.defaults.wait)f.timer2=setTimeout(function(){f.rotate(f.defaults.interval)},f.defaults.wait*1000);return false}}if(this.defaults.interval)this.rotate(this.defaults.interval)};
+</script>
+
+<script type="text/javascript">
+	jQuery.noConflict();
+    jQuery(document).ready(function() { 
+        jQuery("a[rel=photos_annonce]").fancybox({
+            'titleFormat' : function(title, currentArray, currentIndex, currentOpts) {
+            //return '<span id="fancybox-title-over">Photo ' + (currentIndex + 1) + '/' + currentArray.length + '<br /><strong>' + (title.length ? '' + title : '') + '</strong></span>';
+            return '<span id="fancybox-title-over"><strong>' + (title.length ? '' + title : '') + '</strong><br />Photo ' + (currentIndex + 1) + '/' + currentArray.length + '</span>';
+            }
+        });
+    });
+    /* onglets = Conflit de jQuery.
+    jQuery(document).ready(function() {
+        $("#container").tabs();
+    });
+    	    */    
+</script>
+
+<script type="text/javascript">function favoris() {if ( navigator.appName != 'Microsoft Internet Explorer' ) {window.sidebar.addPanel("demo.urlprovisoire.com","http://demo.urlprovisoire.com",""); } else { window.external.AddFavorite("http://demo.urlprovisoire.com","demo.urlprovisoire.com"); } }</script>
+<!--[if IE]><script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/pngfix.js"></script><![endif]-->
+
+<style type="text/css">
+	@import url( "styles,detail_sento.css?lang=fr" );
+	@import url( "styles,detail_macros_sento.css?lang=fr" );
+	@import url( "styles,detail_macros_site.css?lang=fr" );
+</style>
+
+
+<link rel="stylesheet" type="text/css"
+	href="/z/webagency/A_ID3X/webagency_demo/styles/mini_moteur_base2.css" />
+<link rel="stylesheet" type="text/css"
+	href="/z/webagency/A_ID3X/webagency_demo/styles/mini_moteur.css" />
+<link
+	href="/z/webagency/A_ID3X/webagency_demo/styles/commun.css?a=1&amp;idtt=2&amp;lang=fr"
+	rel="stylesheet" type="text/css" />
+</head>
+<body onload="ID3xDebugPopup();">
+<div id="Head">
+<div id="Anim"><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/head_fd_03.jpg" alt=""
+	title="" /></div>
+</div>
+<!-- fin #Head -->
+
+<div id="SubHead">
+
+<div id="SubHead_ctn"><a id="LienClient"
+	href="http://demo.urlprovisoire.com/wag/316499/47512675/detail,sento.htm?lang=fr"
+	title="Page sans menu gauche"
+	onclick="window.open(this.href); return false;"><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/picto_lien_client.gif"
+	alt="" title="" /></a>
+
+<div id="Lang"><a
+	href="/316499/47512675/detail,sento.htm?&amp;lang=fr" title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_fr.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=en"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_en.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=de"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_de.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=it"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_it.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=nl"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_nl.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=es"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_es.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=pt"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_pt.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=ru"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_ru.gif" alt=""
+	title="" /></a> <a href="/316499/47512675/detail,sento.htm?&amp;lang=cn"
+	title=""><img
+	src="/z/webagency/A_ID3X/webagency_demo/images/flag_cn.gif" alt=""
+	title="" /></a></div>
+
+<div id="Menu">
+<div id="Rub"><img id="Rubrique"
+	src="/z/webagency/A_ID3X/webagency_demo/images/menu_rub_00.png" alt=""
+	title="" /></div>
+<!-- fin #Rub --></div>
+<!-- fin #Menu --></div>
+<!-- fin #SubHead_ctn --></div>
+<!-- fin #SubHead -->
+
+<!-- debut contenu -->
+<div id="Ctn">
+
+<div id="Menu02_Ctn">
+<div id="Menu02"><!-- menu arborescence --> <script
+	type="text/javascript">
+  			//<![CDATA[
+			
+				
+				var folderTree='tree';
+				var cnFolder='folder';
+				var cnOpen='open';
+				var cnClose='close';
+				var refIntervals;
+				var refRollback;
+				
+				var switcher=[[cnClose, new RegExp(cnOpen, '')],[cnOpen, new RegExp(cnClose, '')]];
+				var reFolder=new RegExp(cnFolder,'');
+				
+				function IntervalHandler(name){
+					this.store=[];
+					this.name=name;
+					this.toDo=function(n){
+						this.store[n].fn(this.store[n].ele);
+					}
+					this.set=function(ele, fn, time){
+						var i=0;
+						while(this.store[i]) i++;
+						this.store[i]={};
+						this.store[i].ele=ele;
+						this.store[i].fn=fn;
+						this.store[i].time=setInterval(this.name+'.toDo('+i+')',time);
+						return i;
+					}
+					this.clear=function(index) {
+						clearInterval(this.store[index].time);
+						delete(this.store[index]);
+					}
+				}
+				
+				function createFolderTree(ele){
+					var lis=ele.getElementsByTagName('li'), li, i;
+					for(i=0; li=lis[i]; i++) 
+						if(li.getElementsByTagName('ul')[0]) addClass(li, cnFolder + ' ' + cnClose);
+				}
+				
+				function addClass(ele, string) {
+					if(!new RegExp(string,'').test(ele.className))
+						ele.className=(ele.className?ele.className+' ':'')+string;
+				}
+				
+				function removeClass(ele, string) {
+					ele.className=ele.className.replace(new RegExp(' ?'+string,''),'');
+				}
+				
+				function resetCN (ele, index) {
+					if(switcher[index][1].test(ele.className)) 
+						ele.className=ele.className.replace(switcher[index][1], switcher[index][0]);
+				}
+				
+				function closeMenus(ele,thisNot) {
+					var liArr=ele.getElementsByTagName('li'), liEle, i;
+					for (i=0; liEle=liArr[i]; i++) 
+						if(liEle!=thisNot && reFolder.test(ele.className)) resetCN (liEle, 0);
+				}
+				
+				function check() {
+					var tree=document.getElementById('tree');
+					var lis=tree.getElementsByTagName('li'), li, i, isSomethinOut=false;
+					for(i=0;li=lis[i];i++) if(switcher[0][1].test(li.className)) isSomethinOut=true;
+					if(isSomethinOut) resetCN(tree, 1);
+					else resetCN(tree, 0);
+				}
+				
+				
+				function prepareRollOut (ele, bol) {
+					refRollback.prepare(ele.parentNode, (bol?ele:0));
+					if(reFolder.test(ele.className) && bol) {
+						resetCN(ele, 1);
+						check();
+						ele=ele.getElementsByTagName('ul')[0];		
+						if(!ele.run && !ele.out) {
+							ele.out=true;
+							ele.storeHeight=ele.offsetHeight;
+							ele.storeWidth=ele.offsetWidth;
+							ele.style.height='0px';
+							scroll(ele,2,'height',0,ele.storeHeight,5,'px',10,5,'overflow','visible'/*,function(){check()}*/);
+						}
+					}		
+				}
+				
+				function RollbackHandler(){
+					this.store=[];
+					this.prepare=function(ele, thisNot) {
+						var uls=ele.getElementsByTagName('ul'), i, ul;
+						for (i=0; ul=uls[i]; i++) 
+							if(ul.parentNode!=thisNot && ul.out) this.set(ul);
+						this.check();
+					}
+					this.set=function(ele){
+						var i=0;
+						while(this.store[i]) i++;
+						this.store[i]=ele;
+					}
+					this.checkForChildOut=function(ele) {
+						var uls=ele.getElementsByTagName('ul'), child, run=true, i;
+						for(i=0; (child=uls[i]) && run; i++) if(child.out) run=false;
+						return run;
+					}
+					this.atRollEnd=function (){
+						resetCN (this.parentNode, 0);
+						closeMenus(this,0);
+						check();
+						giveKick();
+						refRollback.check();
+					}
+					this.check=function() {
+						var i;
+						for(i=0; i<this.store.length; i++) {
+							if(this.store[i]) {
+								if(this.checkForChildOut(this.store[i])) {
+									this.store[i].out=false;
+									this.store[i].removeAttribute('style');
+									scroll(this.store[i],2,'height',this.store[i].to,this.store[i].from,5,'px',10,5,0,0,this.atRollEnd);
+									delete(this.store[i]);
+								}
+							}
+						}
+					}
+				}
+				
+				function scroll(ele,start,property,from,to,iter,iterValue,iterTime,startRad,endProperty,valueEndProperty,fn){		
+					if(start) {	
+						if(start==2) ele.clearStyle=1;
+						else ele.clearStyle=0;
+						ele.from=from;
+						ele.to=to;		
+						ele.property=property;
+						ele.iterValue=iterValue;
+						ele.iterTime=iterTime;
+						if(endProperty) {
+							ele.endProperty=endProperty;
+							ele.valueEndProperty=valueEndProperty;
+						} else ele.endProperty=null;
+						if(fn) ele.fn=fn;
+						else ele.fn=null;
+						ele.curr=ele.from;
+						if(ele.from<ele.to) ele.how=1;
+						else ele.how=-1;
+						ele.distance=(ele.from-ele.to)*-1*ele.how;
+						ele.percent=0;
+						ele.iter=Math.ceil(defaultIter*ele.distance/100*Math.pow(defaultIter/ele.distance,.5));
+						ele.startRad=startRad;
+						ele.distanceRad=(180-2*ele.startRad);
+						ele.actIter;
+						ele.corrIter=0;
+						if(ele.run) return;
+						else ele.run=true;
+						ele.interval=refIntervals.set( ele, function(ele){scroll(ele)}, ele.iterTime);
+					}	
+					ele.percent=(ele.curr-ele.from)*ele.how/ele.distance;
+					ele.corrIter=scaleX*Math.sin(ele.percent*Math.PI);
+					if((ele.actIter=Math.ceil(ele.iter*Math.sin((ele.startRad+ele.percent*ele.distanceRad)/180*Math.PI+ele.corrIter)))<=0) ele.actIter=1;
+					ele.curr+=ele.how*ele.actIter;
+					if(ele.curr*ele.how<ele.to*ele.how) {
+						ele.style[ele.property]=ele.curr+ele.iterValue;
+					}
+					else {
+						ele.style[ele.property]=ele.to+ele.iterValue;
+						if(ele.clearStyle) ele.removeAttribute('style');
+						if(ele.endProperty) 
+							ele.style[ele.endProperty]=ele.valueEndProperty;
+						if(ele.fn) ele.fn();
+						refIntervals.clear(ele.interval);
+						ele.run=false;
+					}
+				}
+				
+				window.onload=function (e) {
+					if( document.getElementById && document.getElementsByTagName &&
+							((e && e.target) || (event && typeof event.srcElement=='object')) ){
+						refIntervals=new IntervalHandler('refIntervals');
+						refRollback=new RollbackHandler();
+						var tree=document.getElementById(folderTree);
+						addClass(tree, cnClose);
+						createFolderTree(tree);
+						tree.onclick=function (e) {
+							var ele=( ( e && e.target ) || ( event && event.srcElement ) ), i, toDo, liArr, liEle, i;
+							if(/h2/i.test(ele.nodeName)) {
+								while(ele.parentNode && !/li/i.test(ele.nodeName) ) ele=ele.parentNode;
+								if(/li/i.test(ele.nodeName) && reFolder.test(ele.className)) 
+									prepareRollOut(ele, switcher[1][1].test(ele.className));
+							}
+						}
+						tree.onmouseover=function (e) {
+							var ele=( ( e && e.target ) || ( event && event.srcElement ) ), i, toDo, liArr, liEle, i;
+							if(/h2/i.test(ele.nodeName) && 
+								ele.parentNode.parentNode.id=='tree' && 
+								switcher[1][1].test(ele.parentNode.className)) 
+									addClass(ele.parentNode, 'over');
+						}
+						tree.onmouseout=function (e) {
+							var ele=( ( e && e.target ) || ( event && event.srcElement ) ), i, toDo, liArr, liEle, i;
+							if(/h2/i.test(ele.nodeName) && 
+								ele.parentNode.parentNode.id=='tree') 
+									removeClass(ele.parentNode, 'over');
+						}
+						graphD=new GraphDesigner(200,100,0,180);
+						graphD.set(defaultSet);
+						giveKick();
+					}
+				}
+				
+				function giveKick() {if(window.opera) document.body.className=document.body.className;}
+				
+				
+				// settings
+				
+				var graphD;
+				var defaultIter=15;
+				var startRad=3;
+				var scaleX=-0.5;
+				var defaultSet='sin(('+startRad+'+x*(180-2*'+startRad+')/180)/180*PI+('+scaleX+')*sin(x/180*PI))';
+				
+				function newEle(type, content, toNode, attrs, before) {	
+					if(type) {		
+						var ele=toNode.ownerDocument.createElement(type), i;
+						if(attrs) for(i=0; i<attrs.length; i+=2) ele[attrs[i]]=attrs[i+1];
+						if(content) {
+							if(content=='empty') ele.appendChild(toNode.ownerDocument.createTextNode(' '));
+							else ele.appendChild(toNode.ownerDocument.createTextNode(content));
+						}
+						if(before) toNode.parentNode.insertBefore(ele, toNode);
+						else toNode.appendChild(ele);
+						return ele;
+						
+					} else {
+						toNode.appendChild(toNode.ownerDocument.createTextNode(content));
+					}
+				}
+				
+				function GraphDesigner(rangeXpx,rangeYpx,rangeXstart,rangeXend) {
+					this.rangeXpx=rangeXpx;
+					this.rangeYpx=rangeYpx;		
+					this.rangeXstart=rangeXstart;
+					this.rangeXend=rangeXend;
+					this.rangeX=this.rangeXend-this.rangeXstart;
+					this.fn=function(x){
+						var ret;
+						with(Math){ret=eval(this.stringFn)}
+						return ret;
+					}
+					this.set=function(stringFn){
+						var output=document.getElementById('graph'), i, previous=0, dot, previousDot, y, delta;
+						this.stringFn=stringFn;
+						this.results=[];
+						this.max=0;
+						this.min=0;
+						for(i=0; i<this.rangeXpx; i++) {
+							this.results.push(this.fn(this.rangeXstart+this.rangeX/this.rangeXpx*i));
+							if(this.results[i]>this.max) this.max=this.results[i];
+							if(this.results[i]<this.min) this.min=this.results[i];
+						}
+						this.rangeY=this.max-this.min;
+						for(i=0; i<this.rangeXpx; i++) {
+							dot=newEle('span', '\u00a0', output);
+							dot.style.left=i+'px';
+							y=Math.round(this.rangeYpx/this.rangeY*(-this.min+this.results[i]));
+							dot.style.bottom=y+'px';
+							if(previous) {
+								if((delta=Math.abs(y-previous))>=2) {
+									if(y>previous) previousDot.style.height=delta+'px';
+									else dot.style.height=delta+'px';
+								}
+							}
+							previousDot=dot;
+							previous=y;	
+						}
+						document.body.className=document.body.className;			
+					}
+					this.clear=function(){
+						var output=document.getElementById('graph'), parent=output.parentNode;
+						parent.removeChild(output);
+						newEle('div','',parent,['id','graph']);
+						document.body.className=document.body.className;
+				
+					}
+				}
+				
+				function setIt() {
+					defaultIter=(document.getElementById('defaultIterVal').value)-0;
+					startRad=(document.getElementById('startRadVal').value)-0;
+					scaleX=(document.getElementById('scaleXVal').value)-0;
+					defaultSet='sin(('+startRad+'+x*(180-2*'+startRad+')/180)/180*PI+('+scaleX+')*sin(x/180*PI))';
+					graphD.clear();
+					graphD.set(defaultSet);
+				}
+				
+				//]]>
+  </script>
+
+
+<div id="Liens">
+<ul id="tree">
+
+	<li class="rubrique">
+	<h2 class="main">Présentation PANORAMA</h2>
+	<ul>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+	<li class="rubrique">
+	<h2 class="main">Présentation PANORAMA LIGHT</h2>
+	<ul>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,panorama.htm?pres=light&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+
+
+	<li class="rubrique">
+	<h2 class="main">Présentation BASIC</h2>
+	<ul>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+	<li class="rubrique">
+	<h2 class="main">Présentation BASIC LIGHT</h2>
+	<ul>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,basic.htm?pres=light&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+
+
+
+	<li class="rubrique">
+	<h2 class="main">Présentation LINEA</h2>
+	<ul>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+	<li class="rubrique">
+	<h2 class="main">Présentation LINEA LIGHT</h2>
+	<ul>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=1&amp;lang=fr&amp;tri=d_px"
+			title="">Location</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=2&amp;lang=fr&amp;tri=d_px"
+			title="">Vente</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=3&amp;lang=fr&amp;tri=d_px"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=4&amp;lang=fr&amp;tri=d_px"
+			title="">Location vacances</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=5&amp;lang=fr&amp;tri=d_px"
+			title="">Viager</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=6&amp;lang=fr&amp;tri=d_px"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=7&amp;lang=fr&amp;tri=d_px"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=8&amp;lang=fr&amp;tri=d_px"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=9&amp;lang=fr&amp;tri=d_px"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=10&amp;lang=fr&amp;tri=d_px"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="/recherche,linea.htm?pres=light&amp;idtt=11&amp;lang=fr&amp;tri=d_px"
+			title="">Cession de bail</a></li>
+	</ul>
+	</li>
+
+
+
+	<li class="rubrique">
+	<h2 class="main">Détail CORNER</h2>
+	<ul>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/10223/51848169/detail,corner.htm?lang=fr"
+			title="">Location</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/275588/52107055/detail,corner.htm?lang=fr"
+			title="">Vente</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187261/52106557/detail,corner.htm?lang=fr"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/213299/49162825/detail,corner.htm?lang=fr"
+			title="">Location vacances</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/10224/52080165/detail,corner.htm?lang=fr"
+			title="">Viager</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/337035/49864687/detail,corner.htm?lang=fr"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/detail,corner.htm?lang=fr"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/360760/51236109/detail,corner.htm?lang=fr"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/307334/48934325/detail,corner.htm?lang=fr"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187262/30442293/detail,corner.htm?lang=fr"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/293645/46521729/detail,corner.htm?lang=fr"
+			title="">Cession de bail</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/307334/47542223/detail,corner.htm?lang=fr"
+			title="">Avec PDF</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/304128/52097321/detail,corner.htm?lang=fr"
+			title="">Avec Lien vidéo</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187261/47988401/detail,corner.htm?lang=fr"
+			title="">Avec visite virtuelle</a></li>
+	</ul>
+	</li>
+
+	<li class="rubrique">
+	<h2 class="main">Détail BASIC LIGHT</h2>
+	<ul>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/10223/51848169/detail,basic.htm?lang=fr"
+			title="">Location</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/275588/52107055/detail,basic.htm?lang=fr"
+			title="">Vente</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187261/52106557/detail,basic.htm?lang=fr"
+			title="">Location temporaire</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/213299/49162825/detail,basic.htm?lang=fr"
+			title="">Location vacances</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/10224/52080165/detail,basic.htm?lang=fr"
+			title="">Viager</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/337035/49864687/detail,basic.htm?lang=fr"
+			title="">Produit d'investissement</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/detail,basic.htm?lang=fr"
+			title="">Location de prestige</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/360760/51236109/detail,basic.htm?lang=fr"
+			title="">Vente de prestige</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/307334/48934325/detail,basic.htm?lang=fr"
+			title="">Programme neuf</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187262/30442293/detail,basic.htm?lang=fr"
+			title="">Fond de commerce</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/293645/46521729/detail,basic.htm?lang=fr"
+			title="">Cession de bail</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/307334/47542223/detail,basic.htm?lang=fr"
+			title="">Avec PDF</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/304128/52097321/detail,basic.htm?lang=fr"
+			title="">Avec Lien vidéo</a></li>
+		<li><a
+			href="http://demo.urlprovisoire.com.xdev.poliris.net/187261/47988401/detail,basic.htm?lang=fr"
+			title="">Avec visite virtuelle</a></li>
+	</ul>
+	</li>
+
+</ul>
+
+</div>
+<!-- fin #Liens --></div>
+<!-- fin #Menu02 --></div>
+<!-- fin #Menu02_Ctn -->
+
+<div id="Content" style="float: right; float: right; float: right;">
+
+<h1 class="titre">Détail de l'annonce</h1>
+
+<div id="DetailAnnonce">
+
+<div id="LiensRetour"><a class="prev"
+	href="javascript:window.history.go(-1);" title="">Page précédente</a>
+
+
+<a class="acc"
+	href="http://demo.urlprovisoire.com.xdev.poliris.net/index.htm?lang=fr"
+	title="">Retour à l'accueil</a></div>
+<!-- fin #LiensRetour -->
+
+<table id="Annonce_Ctn">
+
+	<tr>
+		<td class="arrondiHautGauche"><!-- --></td>
+		<td rowspan="3" class="spacer"><!-- spacer --></td>
+		<td class="arrondiHautDroite"><!-- --></td>
+	</tr>
+
+	<tr>
+		<td id="ColonneGauche">
+		<div id="InfosAnnonce">
+		<table class="infosannonce_ctn">
+			<tr>
+				<td class="col1">
+
+					<div id="container">
+									       
+				        <ul id="container-nav">
+                          <li><a href="#wv">webvisium</a></li>
+				          <li><a href="#img">photos</a></li>
+				        </ul>
+
+		                 <div id="wv" class="tab" >
+					         <div style="margin:auto;width:555px;height:400px;" id="wmContent">            
+					             <script language="JavaScript" type="text/javascript">
+					             var flashvars = {
+					                 idpublication: "316499",
+					                 idannonce: "47512675",
+					                 autostart: "true"
+					             };
+					             swfobject.embedSWF(
+					                 "/z/webagency/A_ID3X/pack_avantage_plus/diaporama.swf",
+					                 "wmContent", "555", "400", "9.0.0",
+					                 "expressInstall.swf", flashvars
+					             );
+					             </script>
+					
+					             <noscript>
+					                 <object
+					                     classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+					                     codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
+					                     width="555px" height="400px" id="diaporama" align="middle"
+					                     > 
+				                         <param name="movie" value="/z/webagency/A_ID3X/pack_avantage_plus/diaporama.swf?idpublication=316499&idannonce=47512675&autostart=true" />
+				                         <param name="allowScriptAccess" value="sameDomain" /> 
+				                         <param name="allowFullScreen" value="true" /> 
+				                         <param name="quality" value="high" />
+				                         <param name="bgcolor" value="#ffffff" />                            
+					                 </object>                     
+					             </noscript>
+					         </div>
+					    </div>
+                        
+				        <div id="img" class="tab" >				        
+					        
+	                        <div id="FancyBox_Ctn">
+	                            <!-- frabad: FancyBox_Ctn déplacé dans container -->
+	                            <a rel="photos_annonce"
+	                                class="fancyBox" id="FancyBox1"
+	                                href="http://a.visuels.poliris.com/bigs/a/0/b/9/a0b9ebcc-4ab1.jpg"
+	                                title="Chambre"> Afficher les photos en grand format </a>
+	                            <a rel="photos_annonce" class="fancyBox" id="FancyBox2"
+	                                href="http://8.visuels.poliris.com/bigs/8/b/a/7/8ba74e8b-44ad.jpg"
+	                                title="Salon"> Afficher les photos en grand format </a>
+	                            <a rel="photos_annonce" class="fancyBox" id="FancyBox3"
+	                                href="http://c.visuels.poliris.com/2d/c/5/3/2/c532ac16-6944.jpg"
+	                                title="Terrasse"> Afficher le diaporama </a>
+	                            <a rel="photos_annonce" class="fancyBox" id="FancyBox4"
+	                                href="http://0.visuels.poliris.com/2d/0/9/c/e/09cefe87-5b17.jpg"
+	                                title="Piscine"> Afficher le diaporama </a>
+	                            <a rel="photos_annonce" class="fancyBox" id="FancyBox5"
+	                                href="http://4.visuels.poliris.com/2d/4/4/9/b/449b9562-3f55.jpg"
+	                                title="Cuisine"> Afficher le diaporama </a>
+	        
+	                            <div class="clear"><!-- --></div>
+	                        </div><!-- #FancyBox_Ctn -->                    
+	                        
+	                        <script type="text/javascript">
+	                          $(function() {                    
+	                            $('img.image0').data('ad-desc', 'Chambre');
+	                            $('img.image0').data('ad-title', 'Photo 1/5');                  
+	                            $('img.image1').data('ad-desc', 'Salon');
+	                            $('img.image1').data('ad-title', 'Photo 2/5');                  
+	                            $('img.image2').data('ad-desc', 'Terrasse');
+	                            $('img.image2').data('ad-title', 'Photo 3/5');                  
+	                            $('img.image3').data('ad-desc', 'Piscine');
+	                            $('img.image3').data('ad-title', 'Photo 4/5');                  
+	                            $('img.image4').data('ad-desc', 'Cuisine');
+	                            $('img.image4').data('ad-title', 'Photo 5/5');                     
+	                            var galleries = $('.ad-gallery').adGallery();
+	                            $('#switch-effect').change(
+	                              function() {
+	                                galleries[0].settings.effect = $(this).val();
+	                                return false;
+	                              }
+	                            );
+	                            $('#toggle-slideshow').click(
+	                              function() {
+	                                galleries[0].slideshow.toggle();
+	                                return false;
+	                              }
+	                            );
+	                          });
+	                        </script>
+	                    
+	                        <div id="gallery" class="ad-gallery">
+	                            <div class="ad-image-wrapper"><!-- --></div>
+	                            <div class="ad-controls"><!-- --></div>
+	                                <div class="ad-nav">
+	                                    <div class="ad-thumbs">
+	                                        <ul class="ad-thumb-list"
+	                                            style="width: 370px; padding: 5px 20px 0 20px;">
+	                                            <li><a
+	                                                href="http://a.visuels.poliris.com/2d/a/0/b/9/a0b9ebcc-4ab1.jpg"
+	                                                style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url(/z/webagency/slagence_X_V2/detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;"
+	                                                title=""><img
+	                                                src="http://a.visuels.poliris.com/carre/a/0/b/9/a0b9ebcc-4ab1.jpg"
+	                                                class="image0" style="display: block; margin: auto;" alt=""
+	                                                title="" /></a></li>
+	                                            <li><a
+	                                                href="http://8.visuels.poliris.com/2d/8/b/a/7/8ba74e8b-44ad.jpg"
+	                                                style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url(/z/webagency/slagence_X_V2/detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;"
+	                                                title=""><img
+	                                                src="http://8.visuels.poliris.com/carre/8/b/a/7/8ba74e8b-44ad.jpg"
+	                                                class="image1" style="display: block; margin: auto;" alt=""
+	                                                title="" /></a></li>
+	                                            <li><a
+	                                                href="http://c.visuels.poliris.com/2d/c/5/3/2/c532ac16-6944.jpg"
+	                                                style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url(/z/webagency/slagence_X_V2/detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;"
+	                                                title=""><img
+	                                                src="http://c.visuels.poliris.com/carre/c/5/3/2/c532ac16-6944.jpg"
+	                                                class="image2" style="display: block; margin: auto;" alt=""
+	                                                title="" /></a></li>
+	                                            <li><a
+	                                                href="http://0.visuels.poliris.com/2d/0/9/c/e/09cefe87-5b17.jpg"
+	                                                style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url(/z/webagency/slagence_X_V2/detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;"
+	                                                title=""><img
+	                                                src="http://0.visuels.poliris.com/carre/0/9/c/e/09cefe87-5b17.jpg"
+	                                                class="image3" style="display: block; margin: auto;" alt=""
+	                                                title="" /></a>
+	                                            </li>
+	                                            <li><a
+	                                                href="http://4.visuels.poliris.com/2d/4/4/9/b/449b9562-3f55.jpg"
+	                                                style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url(/z/webagency/slagence_X_V2/detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;"
+	                                                title=""><img
+	                                                src="http://4.visuels.poliris.com/carre/4/4/9/b/449b9562-3f55.jpg"
+	                                                class="image4" style="display: block; margin: auto;" alt=""
+	                                                title="" /></a>
+	                                            </li>
+	                                        </ul><!-- fin .ad-thumb-list -->
+	                                  </div><!-- fin .ad-thumbs -->
+	                            </div><!-- fin .ad-nav -->
+	                        </div><!-- fin #gallery -->				        
+				        </div><!-- fin tab img -->
+				        
+				    </div><!-- fin container -->
+				    
+<script type="text/javascript">
+var tabber = new Yetii({ id: 'container' });
+</script>
+
+				    
+				    
+                <div id="AutresVisuels" style="display: none;">
+				<h5>Autres visuels</h5>
+
+				<!--// pas de document pdf attache a cette annonce //--></div>
+				<!-- fin #AutresVisuels -->
+
+				<div id="Descriptif">
+				<p class="titreDescriptif">Description de l'annonce</p>
+				<p class="txtDescriptif">Villa situ&#233;e au coeur de la
+				campagne, &#224; 20 km de Bordeaux. Superficie de 360 m&#178;, avec
+				terrain de 150 m&#178;. Beaucoup de charme, villa en pierres,
+				comprenant 5 pi&#232;ces tr&#232;s spacieuses et lumineuses, sur 2
+				&#233;tages. - Au 1er &#233;tage: salon avec salle &#224; manger,
+				cuisine &#233;quip&#233;e, 1 chambre, 1 salle de bains. - Au
+				2&#232;me &#233;tage: 2 chambres + 1 salle de bains.</p>
+				</div>
+				<!-- fin #Descriptif --></td>
+				<!-- fin .col1 -->
+
+				<td class="col2">
+
+				<div id="TransactionInfos">
+				<div id="InfosPrincipales">
+				<h5>À vendre</h5>
+				<h4 class="transaction_titre" id="Libelle">Villa 5 pièces</h4>
+				<p id="Transaction">Maison / villa 5 pièces, 3 chambres</p>
+				<p id="Surface">Surface : 360 m²</p>
+				<p id="SurfaceTerrain">Surface terrain : 150 m²</p>
+
+				<h4 class="transaction_titre" id="Ville">Bordeaux (31000)</h4>
+
+
+				<script type="text/javascript">dispMetro('');</script>
+				<div class="clear"><!-- --></div>
+
+				<h4 class="transaction_titre" id="Prix">515 000 <span
+					class="unite"> € </span> <span class="periodeVac"></span> <span
+					class="fai">FAI</span> <span class="sup1">&sup1;</span></h4>
+
+
+				<h4 class="transaction_titre" id="RefAnnonce">Réf. : 47512675</h4>
+
+				<div class="majAnn">Mise à jour : 16/06/2010</div>
+				</div>
+				<!-- fin #InfosPrincipales -->
+
+
+				<div id="InfosComp_Ctn">
+				<h5>Fiche signalétique</h5>
+				<div id="InfosComp">
+
+				<p>&nbsp;Surface&nbsp;:&nbsp;360&nbsp;m²</p>
+
+				<p>&nbsp;Etages&nbsp;:&nbsp;2</p>
+
+				<p>&nbsp;Pièces&nbsp;:&nbsp;5</p>
+
+				<p>&nbsp;Chambres&nbsp;:&nbsp;3</p>
+
+				<p>&nbsp;Salle de bain&nbsp;:&nbsp;1</p>
+
+				<p>&nbsp;Type de cuisine&nbsp;:&nbsp;équipée</p>
+
+				<p>&nbsp;Salle À Manger</p>
+
+				<p>&nbsp;Terrain&nbsp;:&nbsp;150&nbsp;m²</p>
+
+				<div class="clear"><!-- --></div>
+				</div>
+				<!-- fin #InfosComp --></div>
+				<!-- fin #InfosComp_Ctn -->
+
+
+				<div id="Outils">
+				<h6>Outils</h6>
+
+
+				<div id="AjoutSelection" class="outils_bg">
+				<div id="Picto_AjoutSelection"><!-- --></div>
+				<p><a
+					href="javascript:selectionAnnoncePanier(316499, 47512675);"
+					title="Ajouter à ma sélection">Ajouter à ma sélection</a></p>
+				</div>
+
+				<div id="VoirSelection" class="outils_bg">
+				<div id="Picto_VoirSelection"><!-- --></div>
+				<p><a href="/recherche,panorama.htm?lang=fr" title="">Voir
+				ma sélection</a></p>
+				</div>
+
+				<div id="Imprimer" class="outils_bg">
+				<div id="Picto_Imprimer"><!-- --></div>
+				<p><a
+					href="http://demo.urlprovisoire.com/316499/47512675/print_annonce.htm?lang=fr"
+					title="" onclick="window.open(this.href); return false;">Imprimer
+				fiche de visite</a></p>
+				</div>
+
+				<div id="EnvoiAmi" class="outils_bg">
+				<div id="Picto_EnvoiAmi"><!-- --></div>
+				<p><a
+					href="javascript:pop('http://demo.urlprovisoire.com.xdev.poliris.net/316499/47512675/envoi_ami.htm?lang=fr&amp;url=316499/47512675/detail,sento.htm&amp;style=corner&amp;idtt=',700,450,100,200);"
+					title="">Envoyer cette annonce à un ami</a></p>
+				</div>
+				</div>
+				<!-- fin #Outils -->
+
+				<div id="Bookmark_Ctn">
+				<h6>Partagez</h6>
+
+
+				<div id="Bookmark" class="outils_bg">
+				<div id="Picto_Bookmark"><!-- --></div>
+				<p><a id="Facebook"
+					href="http://www.facebook.com/share.php?u=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Facebook" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="Wikio"
+					href="http://www.wikio.fr/add?url=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Wikio" onclick="window.open(this.href); return false;"><!-- --></a>
+
+				<a id="Technorati"
+					href="http://www.technorati.com/faves?add=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Technorati" onclick="window.open(this.href); return false;"><!-- --></a>
+
+				<a id="Google"
+					href="http://www.google.com/bookmarks/mark?op=edit&amp;bkmk=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Google" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="MySpace"
+					href="http://www.myspace.com/modules/postto/pages/?u=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="MySpace" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="Yahoo"
+					href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Yahoo" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="Twitter"
+					href="http://twitter.com/home?status=add+this:+http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Twitter" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="Livespace"
+					href="http://spaces.live.com/blogit.aspx?status=add+this:+http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title="Livespace" onclick="window.open(this.href); return false;"><!-- --></a>
+				<a id="Scoopeo"
+					href="http://www.scoopeo.com/scoop/new?newurl=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr&amp;title=Immobilier+Bordeaux+(31000)+Vente+maison / villa"
+					title="Scoopeo" onclick="window.open(this.href); return false;"><!-- --></a>
+
+				<a id="Mailto"
+					href="mailto:?subject=Immobilier Bordeaux (31000) Vente maison / villa&amp;body=http://demo.urlprovisoire.com/316499/47512675/detail,sento.htm?lang=fr"
+					title=""></a> <span class="clear"><!-- --></span></p>
+				</div>
+
+				</div>
+				<!-- fin #Bookmark --></div>
+				<!-- fin #TransactionInfos --></td>
+				<!-- fin .col2 -->
+			</tr>
+
+			<tr>
+				<td colspan="2" id="AnnSimilaire">
+				<h6>Annonces similaires &agrave; : vente maison / villa de 5
+
+				pièces &agrave; Bordeaux (31000) et alentours</h6>
+
+				<div class="annSimilaire_ctn">
+				<div class="similaire"><a
+					href="/307334/48830897/detail,corner.htm?lang=fr"
+					class="similairePhoto" id="SimilairePhoto1" title=""> <span><!-- --></span>
+				</a><!-- fin .similairePhoto --> <a
+					href="/307334/48830897/detail,corner.htm?lang=fr" title="">Angerville
+				<span>(91670)</span></a>
+				<p>Vente maison / villa 5 pièces, 4 chambres (92 m² , Surface
+				terrain :406 m² )</p>
+				<a href="/307334/48830897/detail,corner.htm?lang=fr" title="">
+				230 000 <span class="unite"> € </span> <span class="periodeVac"></span>
+
+				<span class="fai">FAI</span> <span class="sup1">&sup1;</span> </a> <a
+					class="similaireDetail"
+					href="/307334/48830897/detail,corner.htm?lang=fr" title="">Détails</a>
+				<div class="clear"><!-- --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire_ctn -->
+
+				<div class="annSimilaire_ctn">
+				<div class="similaire"><a
+					href="/307334/51891739/detail,corner.htm?lang=fr"
+					class="similairePhoto" id="SimilairePhoto2" title=""> <span><!-- --></span>
+				</a><!-- fin .similairePhoto --> <a
+					href="/307334/51891739/detail,corner.htm?lang=fr" title="">Vigneux
+				sur Seine <span>(91270)</span></a>
+				<p>Vente maison / villa 5 pièces, 4 chambres (92 m² , Surface
+				terrain :364 m² )</p>
+				<a href="/307334/51891739/detail,corner.htm?lang=fr" title="">
+				304 000 <span class="unite"> € </span> <span class="periodeVac"></span>
+
+				<span class="fai">FAI</span> <span class="sup1">&sup1;</span> </a> <a
+					class="similaireDetail"
+					href="/307334/51891739/detail,corner.htm?lang=fr" title="">Détails</a>
+				<div class="clear"><!-- --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire_ctn -->
+
+				<div class="annSimilaire_ctn">
+				<div class="similaire"><a
+					href="/148281/51758537/detail,corner.htm?lang=fr"
+					class="similairePhoto" id="SimilairePhoto3" title=""> <span><!-- --></span>
+				</a><!-- fin .similairePhoto --> <a
+					href="/148281/51758537/detail,corner.htm?lang=fr" title="">Asnieres
+				sur Seine <span>(92600)</span></a>
+				<p>Vente maison / villa 5 pièces, 3 chambres (100 m² , Surface
+				terrain :164 m² )</p>
+				<a href="/148281/51758537/detail,corner.htm?lang=fr" title="">
+				650 000 <span class="unite"> € </span> <span class="periodeVac"></span>
+
+				<span class="fai">FAI</span> <span class="sup1">&sup1;</span> </a> <a
+					class="similaireDetail"
+					href="/148281/51758537/detail,corner.htm?lang=fr" title="">Détails</a>
+				<div class="clear"><!-- --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire_ctn -->
+
+
+
+				<div class="annSimilaire_ctn">
+				<div class="similaire"><a
+					href="/360760/51638839/detail,corner.htm?lang=fr"
+					class="similairePhoto" id="SimilairePhoto4" title=""> <span><!-- --></span>
+				</a><!-- fin .similairePhoto --> <a
+					href="/360760/51638839/detail,corner.htm?lang=fr" title="">Joinville
+				le Pont <span>(94340)</span></a>
+				<p>Vente maison / villa 5 pièces, 4 chambres (280 m² , Surface
+				terrain :250 m² )</p>
+				<a href="/360760/51638839/detail,corner.htm?lang=fr" title="">
+				1 140 000 <span class="unite"> € </span> <span
+					class="periodeVac"></span> <span class="fai">FAI</span> <span
+					class="sup1">&sup1;</span> </a> <a class="similaireDetail"
+					href="/360760/51638839/detail,corner.htm?lang=fr" title="">Détails</a>
+				<div class="clear"><!-- --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire --></div>
+				<!-- fin .annSimilaire_ctn -->
+
+
+
+				<div class="clear"><!-- --></div>
+				</td>
+			</tr>
+
+
+
+			<tr>
+				<td colspan="2">
+				<div id="Glossaire_Ctn">
+
+
+
+				<p class="fai glossaire">FAI : frais d'agence inclus</p>
+				<p class="prix glossaire">&sup1; : prix net, hors frais
+				notariés, d'enregistrement et de publicité foncière</p>
+
+				</div>
+				<!-- fin .glossaire_ctn --></td>
+			</tr>
+		</table>
+		</div>
+		<!-- fin #InfosAnnonce --></td>
+		<!-- fin #ColonneGauche -->
+
+		<td id="ColonneDroite">
+		<div id="InfosAgence">
+
+
+		<div id="AgenceContact">
+		<h5>Contacter l'agence</h5>
+
+
+
+		<p class="adresseAgence"><strong class="agenceNom">AGENCE
+		TEST WEBAGENCY</strong><br />
+
+		218 avenue Jean Jaurès <br />
+		75019 Paris</p>
+
+
+		<p class="telAgence"><strong> Tél. : <!-- tél entré dans l'annonce -->
+		05 83 68 95 32 </strong></p>
+
+
+
+
+		<p class="faxAgence">Fax : 0826 62 06 25</p>
+
+
+
+
+
+		<p class="emailAgence"><script type="text/javascript">eval(unescape('%64%6F%63%75%6D%65%6E%74%2E%77%72%69%74%65%28%22%3C%61%20%63%6C%61%73%73%3D%5C%22%65%6E%63%6F%64%65%6D%61%69%6C%5C%22%20%68%72%65%66%3D%5C%22%6D%61%69%6C%74%6F%3A%69%6E%66%6F%40%61%67%65%6E%63%65%64%65%6C%61%6D%61%69%72%69%65%2E%66%72%5C%22%3E%69%6E%66%6F%40%61%67%65%6E%63%65%64%65%6C%61%6D%61%69%72%69%65%2E%66%72%3C%2F%61%3E%22%29%3B'));</script></p>
+
+
+
+
+
+		<p class="urlAgence"><a href="http://www.webagencyseloger.com"
+			title="Immobilier Paris"
+			onclick="window.open(this.href); return false;">
+		klb.e-actu.net/ven </a></p>
+
+
+
+
+
+		<div id="CtcVentesAgence">
+		<p class="respSpecial"><span>Contact ventes :</span> Mme Vente</p>
+		<p class="telSpecial"><span>Tél ventes :</span> 0826 62 06 24</p>
+		<p class="faxSpecial"><span>Fax ventes :</span> 0826 62 06 25</p>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+		<div class="texte_agence">
+		<p><strong>Ici le texte de votre choix :</strong></p>
+		<p>Donec sit amet lorem malesuada velit feugiat dignissim. Aliquam
+		sagittis nibh vel diam malesuada volutpat.</p>
+		</div>
+		<!-- fin .texte_agence --></div>
+		<!-- fin #AgenceContact -->
+
+
+
+
+
+
+		<div id="FormContact">
+		<h5>Demande de renseignements</h5>
+
+
+
+
+
+
+		<!-- // formulaire de contact // --> <a name="form_contact"></a>
+		<form method="post" action="" onsubmit="return validate();">
+		<div id="Form_Ctn"><input type="hidden" name="u"
+			value="IMMOBW:AGENCEMAIL" /> <input type="hidden" name="page_ok"
+			value="/316499/47512675/detail,sento.htm" /> <input type="hidden"
+			name="page_err" value="/316499/47512675/detail,sento.htm" /> <input
+			type="hidden" name="PathTemplateMail"
+			value="/mailing,detail_formulaire_envoye.htm" /> <input
+			type="hidden" name="IDPUBLICATION" value="316499" /> <input
+			type="hidden" name="idannonce" value="47512675" />
+
+		<table>
+
+			<tr>
+				<td id="ChampsNom">
+				<p>Votre nom <span>&sup2;</span></p>
+				</td>
+				<td><input type="text" name="cnom" value="" /></td>
+			</tr>
+			<tr>
+				<td id="ChampsPrenom">
+				<p>Prénom <span>&sup2;</span></p>
+				</td>
+				<td><input type="text" name="cprenom" value="" /></td>
+			</tr>
+			<tr>
+				<td id="ChampsTelephone">
+				<p>Téléphone</p>
+				</td>
+				<td><input type="text" name="ctel" value="" /></td>
+			</tr>
+			<tr>
+				<td id="ChampsEmail">
+				<p>Email <span>&sup2;</span></p>
+				</td>
+				<td><input type="text" name="from" value="" /></td>
+			</tr>
+			<tr>
+				<td id="ChampsReference">
+				<p>Référence <span>&sup2;</span></p>
+				</td>
+				<td><input type="text" name="refann" value="47512675" /></td>
+			</tr>
+			<tr>
+				<td id="ChampsMessage">
+				<p>Message <span>&sup2;</span></p>
+				</td>
+				<td><textarea name="message" cols="1" rows="5"></textarea></td>
+			</tr>
+			<tr>
+				<td id="ChampsBouton" colspan="2"><input type="image"
+					src="/z/webagency/A_ID3X/webagency_demo/img/envoyer_fr.gif" />
+				<p id="ChampsObligatoires">&sup2; : Champs obligatoires</p>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<!-- fin #Form_Ctn -->
+		</form>
+
+
+
+
+
+		<div id="CguFormulaire">Les informations communiquées sont
+		destinées à l’Agence immobilière éditrice de ce site. Vous
+		bénéficiez d'un droit d'accès, de modification, de rectification et
+		de suppression de vos données personnelles (Loi n&deg;2004-575 du 21
+		juin 2004 pour la confiance dans l'&eacute;conomie num&eacute;rique).
+		Pour les exercer, adressez-vous à l’<a href="/mentions.htm?lang=fr"
+			title="">adresse de l’Editeur</a>.</div>
+
+		</div>
+		<!-- fin #FormContact -->
+
+
+
+		<div id="AgenceMentions">
+		<h6>Mentions légales</h6>
+		<p>Raison sociale : KLB | Siège social : | RCS : Paris c
+		482518057 00021 | RCS juridique : c | Forme sociale : SARL | Numero
+		TVA Intracommunautaire : FR00482518057 <!-- informations légales relatives à la carte pro transaction -->
+		Carte professionnelle transaction n&deg; 00001 | Pr&eacute;fecture de
+		d&eacute;livrance de la carte professionnelle transaction : Paris |
+		Capital transaction : 250 000 &euro; | Caisse garantie
+		financi&egrave;re transaction : MaCaisse | Montant garantie
+		financi&egrave;re transaction : 600 000 &euro; | <!-- informations légales relatives à la carte pro gestion -->
+		Carte professionnelle gestion n&deg; T131 | Pr&eacute;fecture de
+		d&eacute;livrance de la carte professionnelle gestion : Paris |
+		Capital gestion : 180 000 &euro; | Caisse garantie financi&egrave;re
+		gestion : FNAIM | Montant garantie financi&egrave;re gestion : 10 000
+		&euro; | * : informations non renseignées</p>
+		</div>
+		<!-- fin #AgenceMentions --></div>
+		<!-- fin #InfosAgence --></td>
+		<!-- fin #ColonneDroite -->
+	</tr>
+
+	<tr>
+		<td class="arrondiBasGauche"><!-- --></td>
+		<td class="arrondiBasDroite"><!-- --></td>
+	</tr>
+
+</table>
+<!-- fin #Annonce_Ctn -->
+
+
+
+
+
+
+<div class="RetourHaut"><a href="#" title="">Retour en haut de
+page</a></div>
+
+</div>
+<!-- fin #DetailAnnonce --></div>
+<!-- fin #Content -->
+<div class="clear"><!-- --></div>
+</div>
+<!-- fin #Ctn -->
+
+<div id="Foot">
+<p>&copy; Webagency SeLoger</p>
+</div>
+<!-- fin foot -->
+
+
+<script type="text/javascript" src="/cgi/debugwindow.js"></script>
+</body>
+</html>
+<!-- ID3x v4.60 - XDEV - 02.955.884 - none - 16/06/2010 17:27:56 - detail\sento.htm -->

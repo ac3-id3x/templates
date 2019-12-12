@@ -1,0 +1,375 @@
+<!--#include virtual="incl_haut.htm" -->
+$$INIT:SUIVICLIENT=1$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/suiviclient.js"></script>
+$$B:IMMOBW:PERICLES-SUIVI-CLIENT:ALIAS:PERICLES$$
+
+<div id="SuiviClient">
+$$REM$$<!-- ///////////////////////////////// LOGIN CLIENT ///////////////////////////////// -->$$END:REM$$
+	<form id="frmTest" method="post" action="">
+		<div id="Login" $$BIF:PERICLES$$$$DO$$$$LOOP$$style="display: none;"$$BFIN$$>
+			
+			<input type="hidden" name="u" value="IMMOBW:PERICLES-WSLOGIN" />
+			<input type="hidden" name="page_ok" value="$$REP:0$$" />
+			<input type="hidden" name="page_err" value="/suivi,error.htm" />
+			
+			<input name="nomClient" id="InputNom" class="inputLogin" type="text" maxlength="15" value="Utilisateur" onfocus="javascript:if(this.value=='Utilisateur')this.value='';" onblur="if(this.value=='')this.value='Utilisateur';" />
+			<input name="idClient" id="InputID" class="inputLogin" type="text" maxlength="9" value="ID Client" onfocus="javascript:if(this.value=='ID Client')this.value='';" onblur="if(this.value=='')this.value='ID Client';" />
+	   	<input type="submit" id="InputConnexion" value="" />
+			
+			<p id="LoginText">Notre agence vous met &agrave; disposition un service en ligne pour suivre la vente de votre bien.</p>
+		
+		</div><!-- #Login -->
+	</form>
+	
+	$$REM$$<!-- ////////////////// INFOS CLIENT ////////////////// -->$$END:REM$$
+
+			$$BIF:PERICLES$$
+			$$DO$$
+			$$IFPREV:PERICLES:IDCLIENT$$
+			$$REM$$<!-- ////////////////// GAUCHE ////////////////// -->$$END:REM$$
+			<div id="Gauche">
+				
+				<div id="iCoordonnees">					
+					<h3>Vos coordonn&eacute;es</h3>					
+					<p>$$PERICLES:CIVILITE$$ $$PERICLES:NOM$$ $$PERICLES:PRENOM$$</p>
+					<p>$$PERICLES:ADRESSE1$$</p>
+					<p>$$PERICLES:CP$$ $$PERICLES:VILLE$$</p>
+					$$IF:PERICLES:TELEPHONE$$<p>Tél. :  $$PERICLES:TELEPHONE$$</p>$$END$$
+					$$IF:PERICLES:FAX$$<p>Fax :  $$PERICLES:FAX$$</p>$$END$$					
+				</div><!-- #iCoordonnees -->
+			
+				<div id="iNegociateur_Ctn">					
+					<h3>Votre n&eacute;gociateur</h3>					
+					<div id="embPhoto_Ctn">
+			       <img id="embPhoto" src="" alt="" title="" onerror="this.src='/z/webagency/slagence_X_V2/suivi/images/sans_photo.png'" />
+			       <script type="text/javascript">
+			       	<!--                          	 	
+			        	document.getElementById('embPhoto').src = 'data:image/jpg;base64,$$PERICLES:DATAPHOTO$$';
+			       	//-->
+						</script>
+					</div><!-- #embPhoto_Ctn -->
+					
+					<div id="iNegociateur">
+						<p>$$PERICLES:LIBNEGO$$</p>
+						<p>@ : $$PERICLES:MAILNEGO$$</p>
+						<p>Tél. : $$PERICLES:TELNEGO$$</p>
+					</div><!-- #iNegociateur -->
+					
+					<div class="clear"><!-- --></div>					
+					
+				</div><!-- #iNegociateur_Ctn -->
+			</div><!-- #Gauche -->
+			$$END:PERICLES:IDCLIENT$$			
+			
+			
+			$$REM$$<!-- ////////////////// DROITE ////////////////// -->$$END:REM$$			
+			<div id="Droite">
+				
+				
+				$$IF:PERICLES:BIEN_IDBIEN$$
+				$$IFPREV:PERICLES:BIEN_IDBIEN$$
+				
+				$$REM$$<!-- //////// picto //////// -->$$END:REM$$
+				<div id="Picto_Liste"></div>				
+				
+     		<p class="iTitre_Tableau">Liste des mandats que vous nous avez confiés à ce jour</p>
+     		
+				<table class="iDossier">
+					<tr>
+						<td class="titre"></td>
+						<td class="titre">
+							N° Dossier
+						</td>
+						<td class="titre">
+							Type de bien
+						</td>
+						<td class="titre">
+							Prix
+						</td>
+						<td class="titre">
+							Adresse
+						</td>
+						<td class="titre">					
+						</td>
+					</tr>    	 
+					<tr>
+						<td class="iResume">
+						</td>
+						<td class="iResume">
+							$$PERICLES:BIEN_NUMDOSS$$
+						</td>
+						<td class="iResume">
+							$$PERICLES:BIEN_TYPE$$
+						</td>
+						<td class="iResume">
+							 $$PERICLES:BIEN_PRIX formatnumber 0$$ €
+						</td>
+						<td class="iResume">					
+							 $$PERICLES:BIEN_ADRESSE1$$<br />$$PERICLES:BIEN_CP$$&nbsp;$$PERICLES:BIEN_VILLE$$
+						</td>
+						<td class="iVoir_Ctn">
+							<div class="iVoir">
+								<!--<input type="button" value="+" onclick="javascript:ShowHideDiv('div_$$PERICLES:BIEN_IDBIEN$$');" />-->
+								<a href="#" title="" onclick="javascript:ShowHideDiv('div_$$PERICLES:BIEN_IDBIEN$$');" id="bouton">+</a> 
+							</div>
+						</td>
+					</tr>			
+				</table><!--- .iDossier -->
+				
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+		    <div id="div_$$PERICLES:BIEN_IDBIEN$$_0" style="display: none;">
+					
+					<table class="iDetail_Mandat">
+						<tr>
+							<td rowspan="8" class="iDetail_Mandat_Rubrique">
+								$$IF:PERICLES:BIEN_IDANNONCESELOGER$$
+								<iframe src="/$$PERICLES:BIEN_IDANNONCESELOGER$$/suivi,page_photo.htm" width="190" height="190" frameborder="0" scrolling="0"></iframe>
+								$$END$$
+							</td>
+							<td class="iDetail_Mandat_Rubrique">&nbsp;</td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;</td>
+						</tr>
+						<tr>
+						<td class="iDetail_Mandat_Rubrique">N° de dossier&nbsp;: </td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;$$PERICLES:BIEN_NUMDOSS$$</td>
+						</tr>
+						<tr>
+							<td class="iDetail_Mandat_Rubrique">Adresse&nbsp;: </td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;$$PERICLES:BIEN_ADRESSE1 htmlencode$$</td>
+						</tr>
+						<tr>
+							<td class="iDetail_Mandat_Rubrique">Code postal - Ville&nbsp;: </td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;$$PERICLES:BIEN_CP$$ $$PERICLES:BIEN_VILLE htmlencode$$</td>
+						</tr>
+						<tr>
+							<td class="iDetail_Mandat_Rubrique">Texte vitrine&nbsp;: </td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;$$PERICLES:BIEN_VITRINE htmlencode$$</td>
+						</tr>
+						<tr>
+							<td class="iDetail_Mandat_Rubrique">Mise en vente le&nbsp;: </td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;$$PERICLES:BIEN_DATE$$</td>
+						</tr>
+						<tr>
+							<td class="iDetail_Mandat_Rubrique">&nbsp;</td>
+							<td class="iDetail_Mandat_Rubrique_Pericles">&nbsp;</td>
+						</tr>		
+					</table>
+				
+				</div><!-- #div_$$PERICLES:BIEN_IDBIEN$$_0 -->
+				$$END:IF:PERICLES:BIEN_IDBIEN$$
+				$$END:PERICLES:BIEN_IDBIEN$$
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+				<div id="div_$$PERICLES:BIEN_IDBIEN$$_action_$$PERICLES:ACTION_COMPT$$" style="display: none;">
+					
+					$$IF:PERICLES:ACTION_COMPT$$
+					$$IF=:1:PERICLES:ACTION_COMPT$$
+					<div id="Picto_Actions"></div>
+					<br /><br />
+					<p class="iTitre_Tableau">Voir les actions menées</p>
+					<table class="iAction">				
+						<tr>
+							<td class="iTitre-Action">
+								Type d'action
+							</td>
+							<td class="iTitre-Action">
+								Objet
+							</td>
+							<!--
+							<td class="iTitre-Action">
+								Action effectuée
+							</td>
+							-->
+							<td class="iTitre-Action">
+								Date de l'action
+							</td>
+						</tr>				
+					</table>
+					$$END:1:PERICLES:ACTION_COMPT$$
+					$$IFPREV:PERICLES:ACTION_COMPT$$
+					<table class="iAction">					
+						<tr>
+							<td class="iResume_Action">
+								$$PERICLES:ACTION_TYPEACTION$$ 
+							</td>
+							<td class="iResume_Action">
+								$$PERICLES:ACTION_NOMJOURNALOBJET$$
+							</td>
+							<!--
+							<td class="iResume_Action">
+								 $$PERICLES:ACTIONEFFECTUE$$
+								 
+								 $$IF:PERICLES:ACTIONEFFECTUE$$
+								 $$REM$$<img src="$$-$$pericles/images/right.png" />$$END:REM$$
+								 Oui
+								 $$END$$
+								 $$IF0:PERICLES:ACTIONEFFECTUE$$
+									$$REM$$<img src="$$-$$pericles/images/false.png" />$$END:REM$$
+									Non
+								 $$END$$
+							</td>
+							-->
+							<td class="iResume_Action">					
+								 $$PERICLES:ACTION_DATEACTION$$
+							</td>
+						</tr>
+					</table><!-- #iAction -->			
+					$$END:ACTION_COMPT$$			
+					$$END:ACTION_COMPT$$					
+					
+				</div> <!-- div_$$PERICLES:BIEN_IDBIEN$$_action_$$PERICLES:ACTION_COMPT$$ -->
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+				$$IF:PERICLES:PROP_COMPT$$
+				<div id="div_$$PERICLES:BIEN_IDBIEN$$_prop_$$PERICLES:PROP_COMPT$$" style="display: none;">
+				
+					$$IF=:1:PERICLES:PROP_COMPT$$
+					<table class="iProposition">
+						
+						<p class="iTitre_Tableau">Voir les propositions</p>
+						<tr>
+							<td class="iTitre-Proposition">
+								Négociateur
+							</td>
+							<td class="iTitre-Proposition">
+								Prix proposé
+							</td>
+							<td class="iTitre-Proposition">
+								Nom du client
+							</td>
+							<td class="iTitre-Proposition">
+								Type de proposition
+							</td>
+							<td class="iTitre-Proposition">
+								Date de proposition
+							</td>
+						</tr>	
+					</table>
+					$$END:PERICLES:PROP_COMPT$$
+					
+					$$IFPREV:PERICLES:PROP_COMPT$$
+					<table class="iTitre-Proposition">					
+						<tr>
+							<td class="iResume_Proposition">
+								$$PERICLES:PROP_NEGOCIATEUR$$
+							</td>
+							<td class="iResume_Proposition">
+								$$PERICLES:PROP_PRIXPROPOSE$$
+							</td>
+							<td class="iResume_Proposition">
+								 $$PERICLES:PROP_NOMCLIENT$$
+							</td>
+							<td class="iResume_Proposition">					
+								 $$PERICLES:PROP_TYPEPROPOSITION$$
+							</td>
+							<td class="iResume_Proposition">					
+								 $$PERICLES:PROP_DATEPROPOSITION$$
+							</td>
+						</tr>
+									
+					</table><!-- #iPropostions -->
+					$$END:PROP_COMPT$$
+				
+				</div><!-- #$$PERICLES:BIEN_IDBIEN$$_prop_$$PERICLES:PROP_COMPT$$ -->
+				$$END:PROP_COMPT$$
+				
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+				$$IF:PERICLES:VISITE_COMPT$$
+				<div id="div_$$PERICLES:BIEN_IDBIEN$$_visite_$$PERICLES:VISITE_COMPT$$" style="display: none;">
+						$$IF=:1:PERICLES:VISITE_COMPT$$
+						<div id="Picto_Visites"></div>
+						<br /><br />
+						<p class="iTitre_Tableau">Voir les visites effectuées</p>
+						<table class="iVisite">
+							<tr>
+								<td class="iTitre_Visite">
+									Négociateur
+								</td>
+								<td class="iTitre_Visite">
+									Nom du client
+								</td>
+								<td class="iTitre_Visite">
+									Date de visite
+								</td>
+								<td class="iTitre_Visite">
+									Commentaires
+								</td>
+							</tr>			
+						</table>
+						$$END:PERICLES:VISITE_COMPT$$
+						$$IFPREV:PERICLES:VISITE_COMPT$$
+						<table class="iVisite">					
+						<tr>
+							<td class="iResume_Visite">
+								$$PERICLES:VISITE_NEGOCIATEUR$$ 
+							</td>
+							<td class="iResume_Visite">
+								$$PERICLES:VISITE_NOMCLIENT$$
+							</td>
+							<td class="iResume_Visite">
+								 $$PERICLES:VISITE_DATEVISITE$$
+							</td>
+							<td class="iResume_Visite">					
+								 $$PERICLES:VISITE_COMMENTAIRE$$
+								 $$IF0:PERICLES:VISITE_COMMENTAIRE$$-$$END$$
+							</td>
+						</tr>						
+					</table><!-- #iVisistes -->
+					$$END:IFPREV:PERICLES:VISITE_COMPT$$
+				</div> <!-- $$PERICLES:BIEN_IDBIEN$$_visite_$$PERICLES:VISITE_COMPT$$-->
+				$$END:PERICLES:VISITE_COMPT$$
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+		    <div id="div_$$PERICLES:BIEN_IDBIEN$$_vitrine_$$PERICLES:VITRINE_COMPT$$" style="display: none;">
+					$$IF:PERICLES:VITRINE_COMPT$$
+					$$IF=:1:PERICLES:VITRINE_COMPT$$
+					<table class="iVitrine">
+						<p class="iTitre_Tableau">Vitrines</p>
+						<tr>
+							<td class="iTitre-Vitrine">
+								Date enregistrement
+							</td>
+							<td class="iTitre-Vitrine">
+								Date action
+							</td>
+							<td class="iTitre-Vitrine">
+								Pose vitrine
+							</td>
+						</tr>
+					</table>
+						$$END:VITRINE_COMPT$$		
+						$$IFPREV:PERICLES:VITRINE_COMPT$$
+						<table class="iVitrine">
+						<tr>
+							<td class="iResume_Vitrine">
+								$$VITRINE_DATEENREGISTREMENT$$
+							</td>
+							<td class="iResume_Vitrine">
+								$$VITRINE_DATEACTION$$
+							</td>
+							<td class="iResume_Vitrine">					
+								 $$VITRINE_POSEVITRINE$$
+							</td>
+						</tr>			
+					</table><!-- iVitrines -->
+					$$END:VITRINE_COMPT$$			
+					$$END:VITRINE_COMPT$$
+				</div> <!-- #$$PERICLES:BIEN_IDBIEN$$_vitrine_$$PERICLES:VITRINE_COMPT$$ -->
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				
+			</div><!-- #Droite -->
+	
+	$$LOOP$$ 
+ 	$$BFIN$$
+ 	
+ 	<div class="clear"></div>
+</div><!-- #SuiviClient -->
+
+
+
+<!--#include virtual="incl_bas.htm" -->

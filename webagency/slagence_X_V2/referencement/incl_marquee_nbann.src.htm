@@ -1,0 +1,43 @@
+$$REM$$
+====================================================================
+
+//// <summary>Texte défilant affichant dans la limite de 70 : Immobilier VILLE + Types de transaction + Types de biens par transaction + Nbre d'annonces</summary>
+//// <remarks>
+//// <para>Fichier include appelé par : include virtual="/referencement/incl_marquee_nbann.gen.htm"</para>
+//// </remarks>
+//// <update date="2008-03-10" author="damien.robert">Création v1</update>
+//// <update date="2008-03-10" author="lisbonne.siriphol">Validation HTML/CSS Ok</update>
+//// <update date="2008-03-10" author="damien.robert">Validation référencement ok</update>
+//// <update date="2008-05-06" author="erick.barbant">Validation ID3X Ok</update>
+
+====================================================================
+$$END$$
+
+<!-- [ttl: 4d] -->
+££IF0:FORM:LANG££££A:FORM:LANG=FR££££END££
+<div id="AnnoncesDefilantes">
+<script type="text/javascript">
+<!--
+		document.write('<marquee scrolldelay="150" onmouseover="stop()" onmouseout="start()">');
+//-->
+</script>
+$$B:IMMOBW:NBANN_VILLES:ALIAS:FBI:~tri:CODEINSEE,IDTYPETRANSACTION$$
+$$BIF:FBI$$
+	$$DO:1:70$$
+	$$IFPREV:FBI:CODEINSEE$$
+		$$LG:IMMOBILIER pcase$$ $$FBI:VILLE$$
+	$$END$$
+	<strong>
+		<a href="££URLBASE££/recherche££WAGSTYLE:RECHERCHE:URL££.htm?idtt=$$FBI:IDTYPETRANSACTION$$&amp;idtypebien=$$FBI:IDTYPEBIEN$$&amp;ci=$$FBI:CODEINSEE$$$$IF=:1:PAGE:WAG_TRI_ANN_EXCLU$$&amp;tri=d_si_exclusif,a_px$$END$$&amp;lang=££LANGUE££" title="$$FBI:VILLE$$ $$FBI:TYPETRANSACTION lcase$$ $$FBI:TYPEBIEN lcase$$">
+			$$FBI:TYPETRANSACTION lcase$$ $$FBI:TYPEBIEN lcase$$ ($$FBI:NBANN$$ $$IF-:2:FBI:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:FBI:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)
+		</a>
+	</strong>,
+	$$LOOP$$
+	...
+$$BFIN$$	
+<script type="text/javascript">
+<!--
+	document.write('</marquee>');
+//-->
+</script>
+</div>

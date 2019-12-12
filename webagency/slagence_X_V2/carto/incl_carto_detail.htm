@@ -1,0 +1,124 @@
+<!-- http://dev.live.com/virtualearth/sdk/ -->
+	<script type="text/javascript" src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=fr-fr"></script>
+	<script type="text/javascript">
+		var map = null;
+
+		var address;
+		var zip;
+		var town;
+		var country;
+		var lat, lng;
+		
+		var numResults = 1;
+		var index = 0;
+		var results = null;
+    var icon = '<img src="$$CARTO_PICTO_MAISON$$" alt="" title="" />';     
+
+         function GetMap()
+         {
+         	
+            map = new VEMap('myMap');
+            map.SetDashboardSize(VEDashboardSize.Small);
+            var LA = new VELatLong(46.37725420510028, 3.164062500000014); //France
+            map.LoadMap(LA,5);
+            FindLoc();
+            
+         }
+
+		 function FindLoc()
+     {
+				
+				//addr = "$$IMMOBW:ANNONCE:ADRESSE crlf2br$$";
+				//tabaddress = addr.split('<br/>');/*recupere uniquement l'addresse*/
+				//address = tabaddress[0];
+				zip = "$$IMMOBW:ANNONCE:CP$$";
+				town = "$$IMMOBW:ANNONCE:VILLE$$";
+				country = "$$IMMOBW:ANNONCE:PAYS$$";
+				lat = "$$IMMOBW:ANNONCE:LATITUDE replace , .$$";
+				lng = "$$IMMOBW:ANNONCE:LONGITUDE replace , .$$";
+	
+				//var where = address + ',' + zip + ',' + town + ',' + country;
+				var where = zip + ',' + town + ',' + country;
+				
+				if (where == null)
+				{
+					document.getElementById("myMap").style.visibility = "visible";
+					return;
+				}
+					
+				try
+				{
+					 if ((lat != "") && (lng != ""))
+					 {
+						map.LoadMap(new VELatLong(lat, lng), 16 ,'s' ,false);	
+						AddPushpin(new VELatLong(lat, lng), "");
+					 }
+					 else
+					 {
+					   results = map.Find(null,
+										  where,
+										  null,
+										  null,
+										  index,
+										  numResults,
+										  true,
+										  true,
+										  true,
+										  true,
+										  MoreResults
+										  );
+							index = parseInt(index)+9;
+							
+						}
+				}
+				catch(e){
+				   alert(e.message);
+				}
+      }
+        
+     	function MoreResults(layer, resultsArray, places, hasMore, veErrorMessage)
+      {
+      	
+            if(hasMore)
+            {
+               var r = "<a href='#' onclick=\"javascript:FindLoc();\">" +
+                       "Cliquez pour + de résultats</a>";
+               document.getElementById('results').innerHTML = r;
+            }
+            else
+            {
+				var infos = "";
+				// Précision de la réponse
+				if (places[0].MatchConfidence != VEMatchConfidence.High)
+				{
+					//infos = "<span style='color: Red'>(La position sur la carte est approximative)<span><br />";
+				}else{
+					//infos = "<span style='color: Red'>(La position sur la carte est approximative)<span><br />";
+					map.SetZoomLevel(13);
+				}
+				
+				AddPushpin(places[0].LatLong, infos);
+				index=0;
+				number=Number(numResults); 
+				//document.getElementById('results').innerHTML = "Pas d'autres résultats disponibles.";
+				//document.getElementById("myMap").style.visibility = "visible";
+            }
+      }
+         
+      function AddPushpin(latlng, infos)
+      {
+     			
+          var shape = new VEShape(VEShapeType.Pushpin, latlng);
+          shape.SetCustomIcon(icon);
+		  		shape.SetTitle("<p style='text-align:left;font-size:10px;'>Localisation approximative du bien :</p>");
+          //shape.SetDescription(infos + ' ' + "<span style='color: Black;'>" + address + '<br/>' + zip + ' ' + town + '</span>');
+          shape.SetDescription(infos + ' ' + "<p style='color: Black;text-align:left;font-size:11px;'>" + zip + ' ' + town + '</p>');
+          map.AddShape(shape);
+      }         
+		window.onload=GetMap;
+	</script>
+	
+	
+	<div id="myMap" style="position:relative;width:100%;height:100%;"></div>
+	
+	<!--<div id="results"></div>-->

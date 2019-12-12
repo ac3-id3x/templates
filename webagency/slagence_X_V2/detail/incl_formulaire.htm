@@ -1,0 +1,68 @@
+$$REM$$====================================================================================
+//// <summary>Page detail annonce : formulaire de contact</summary>
+//// <remarks>
+//// <para>Conditions IF:CHECKMAIL + IF!:1:FORM:CTC</para>
+//// <para>Conditions pour faire apparaître le formulaire situé en dehors de ce fichier (ex: voir detail/corner.htm)</para>
+//// <para>Paramètres des balises input reprises d'après : macrodoc.id3x.com/IMMOBW.P.AGENCEMAIL.html</para>
+//// <para>Possibilité de designer la page reçue par le client, voir input "PathTemplateMail"</para>
+//// <para>Tous champs obligatoires sauf champ TELEPHONE</para>
+//// <para>Ancre nommée en tête de formulaire</para>
+//// <para>On passe le bouton dans une include pour plus de flexibilité, oui on est flex</para>
+//// </remarks>
+//// <update date="2009-04-16" author="lisbonne.siriphol">Modif sur le bouton input</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+====================================================================================$$END$$
+<a name="form_contact"></a>
+<form method="post" action="" onsubmit="return validate();">
+	<div id="Form_Ctn">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+		
+		<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+		<input type="hidden" name="page_ok" value="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+		<input type="hidden" name="page_err" value="/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur(s) renvoyee(s) sur page courante //-->$$END$$
+		<input type="hidden" name="PathTemplateMail" value="/mailing,detail_formulaire_envoye.htm" />$$REM$$<!--// [INPUT FACULTATIVE] chemin template mail reçu par client > demutualisable //-->$$END$$
+		<input type="hidden" name="IDPUBLICATION" value="$$IMMOBW:ANNONCE:IDPUBLICATION$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+		<input type="hidden" name="idannonce" value="$$IMMOBW:ANNONCE:IDANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+	<input type="hidden" value="http://$$REP:RSRV$$/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$" name="permalienForm" />$$REM$$<!--// [INPUT PERMALIEN]  //-->$$END$$
+		<table id="FormContact" >
+			$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+			<tr>							
+				<td id="Erre" colspan="2">					
+					$$REM$$<!--// message d'erreur  //-->$$END$$
+					$$IMMOBW:AGENCEMAIL:ERRE$$
+				</td>							
+			</tr>
+			$$END$$
+			<tr>
+				<td id="ChampsNom">
+					<p>$$LG:AI5 pcase$$ &sup2;</p>
+					<input type="text" name="cnom" value="$$FORM:CNOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>
+				<td id="ChampsPrenom">
+					<p>$$LG:VOTREPRENOM pcase$$</p>
+					<input type="text" name="cprenom" value="$$FORM:CPRENOM$$" />$$REM$$<!--// [input facultative]  //-->$$END$$
+				</td>		
+			</tr>
+			<tr>						
+				<td id="ChampsTelephone">
+					<p>$$LG:VOTRETEL pcase$$</p>
+					<input type="text" name="ctel" value="$$FORM:CTEL$$" />$$REM$$<!--// [input facultative] //-->$$END$$
+				</td>
+				<td id="ChampsEmail">
+					<p>$$LG:AI6 pcase$$ &sup2;</p>
+					<input type="text" name="from" value="$$FORM:FROM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>
+			</tr>
+			<tr>						
+				<td id="ChampsMessage" colspan="2">
+					<p>$$LG:MESSAGE pcase$$ &sup2;</p>
+					<textarea name="message" cols="40" rows="5">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+				</td>						
+			</tr>
+			<tr>						
+				<td id="ChampsBouton" colspan="2">
+					<!--#include virtual="detail/incl_formulaire_bouton.htm" -->
+				</td>						
+			</tr>					
+		</table>				
+	</div><!-- fin #Form_Ctn -->
+</form>

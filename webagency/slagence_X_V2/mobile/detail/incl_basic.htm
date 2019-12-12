@@ -1,0 +1,206 @@
+<div id="DetailAnnonce">
+	
+	$$IF0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce inexistante =============== -->$$END:REM$$
+	<!--#include virtual="/detail/incl_no_annonce.htm" -->
+	$$END:0:IMMOBW:ANNONCE:IDTYPETRANSACTION$$	
+	
+	
+	$$IF:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	$$REM$$<!-- =============== annonce existante =============== -->$$END:REM$$
+		<div id="Ref">
+		<p><!--#include virtual="/detail/incl_refannonce.htm" --></p>
+		</div>
+	<div id="Titre">
+
+			<div id="TypeTransaction">
+			<!--#include virtual="/detail/incl_type_transaction.htm" -->
+			</div>
+	</div>
+	<!-- fin #Titre -->
+	
+	<div id="Annonce_Wrap">
+		<div id="Annonce_Ctn">			
+							
+		
+			
+			$$REM$$
+			<!-- ///// vu le détail basic où tout est en bloc, si pas de photo, et ben on affiche rien ///// -->
+			<!--///////////////////////////////// sans photo /////////////////////////////////-->
+			$$IF0:IMMOBW:ANNONCE:IDPHOTO$$
+			<!-- // sans photo / dans CSS // -->					
+			<div id="SansPhoto_Ctn">
+				<div id="SansPhoto"><!-- --></div>
+				<p>$$LG:NOPHOTO pcase$$</p>
+			</div>
+			$$END:SANSPHOTO$$			
+			$$END:REM$$		
+
+			$$IF:IMMOBW:ANNONCE:IDPHOTO$$
+				$$IF!:LIGHT:PAGE:WAG_DETAIL_GALERIE$$
+				<!--#include virtual="/detail/incl_galerie_ascenseur.htm" -->
+				$$END$$
+				$$IF=:LIGHT:PAGE:WAG_DETAIL_GALERIE$$
+				<!--#include virtual="/detail/incl_galerie_light.htm" -->
+				$$END$$			
+			$$END:IMMOBW:ANNONCE:IDPHOTO$$			
+			
+			$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$		
+			$$IF:XDEV$$
+            <div id="AutresVisuels_Ctn"
+				$$IF0:IMMOBW:ANNONCE:IDLIEN$$
+				$$IF0:IMMOBW:ANNONCE:VIDEO_URL$$
+				$$IF0:IMMOBW:ANNONCE:ID360$$						
+				$$IF0:IMMOBW:ANNONCE:360_URL$$
+				$$BIF0:PDF$$
+				style="display: none;"
+				$$BFIN$$
+				$$END:360_URL$$
+				$$END:ID360$$
+				$$END:VIDEO_URL$$
+				$$END:IDLIEN$$
+				>
+				<h6>$$LG:AUTRESVISUELS pcase$$</h6>
+				<table id="AutresVisuels">				
+					<tr>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_pdf.htm" -->						
+						</td>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_360.htm" -->							
+						</td>
+						<td>
+							<!--#include virtual="/detail/incl_visuel_video_externe.htm" -->					
+						</td>
+						<td>
+$$REM$$<!-- ============ lien externe ajouté le 03.11.2009 [Lisbonne]============ -->$$END$$				
+							<!--#include virtual="/detail/incl_visuel_lien_externe.htm" -->
+						</td>			
+					</tr>
+				</table>
+				<div id="AutresVisuels_Fin"><!-- --></div>
+			</div><!-- fin #AutresVisuels -->
+            $$END$$
+			
+			
+		</div><!-- fin #Annonce_Ctn -->
+		
+		<div id="InfosAnnonce">
+			
+			<!--#include virtual="/detail/incl_neuf.htm" -->
+			
+			$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+			$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+			<div id="InfosPrix">				
+					
+					<div class="titre_ctn">
+						<h6 class="titre libelle">
+                        <!--//#include virtual="/detail/incl_libelle.htm" -->
+                          
+                           $$IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction pcase$$ - $$IMMOBW:ANNONCE:IDTYPEBIEN gettypebien pcase$$
+                       
+
+                        </h6>
+					</div>
+					<div class="titre_ctn">
+						<h6 class="ville" class="titre ville"><!--#include virtual="/detail/incl_ville.htm" --></h6>
+					</div>
+		
+				
+					<div class="infosPrix">
+						<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+						<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+					</div>
+					<div class="infosLibelle">
+						$$IF:IMMOBW:ANNONCE:SURFACE$$<p class="surface"><!--#include virtual="/detail/incl_surface.htm" --></p>$$END:IMMOBW:ANNONCE:SURFACE$$
+						$$REM$$ $$IF:IMMOBW:ANNONCE:SURF_TERRAIN$$<p class="surface"><!--#include virtual="/detail/incl_surface_terrain.htm" --></p>$$END:SURF_TERRAIN$$ $$END:REM$$							
+						
+						$$IF:IMMOBW:ANNONCE:NB_PIECES$$
+			    	<p class="nb_pieces"><!--#include virtual="/detail/incl_nb_pieces.htm" --></p>
+						$$END:NB_PIECES$$
+						<!--#include virtual="/detail/incl_dispo.htm" -->
+                        <br class="Clear" />
+					</div>
+                    <div class="titre_ctn">
+						$$IF!:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+						<h6 class="titre prix"><!--#include virtual="/detail/incl_prix.htm" --></h6>							
+						$$END$$
+						$$IF:ANNDETAIL:SI_COPROPRIETE$$
+							<p>$$LG:COPROPRIETE$$ ($$ANNDETAIL:NB_LOTS_COPROPRIETE$$ $$LG:LOTS$$)</p>
+						$$END$$
+		
+						$$IF:ANNDETAIL:CHARGES_ANNUELLES$$
+							<p>
+								$$LG:CHARGESANNUELLES$$ : $$ANNDETAIL:CHARGES_ANNUELLES$$ &euro;
+							</p>
+						$$END$$
+						$$IF:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+							<p>
+								$$LG:HONORAIRESACQUEREUR$$ : $$ANNDETAIL:HONORAIRE_POURCENTAGE_ACQUEREUR$$ %
+							</p>
+						$$END$$
+					</div>
+					<div class="infosVille">
+						<script type="text/javascript">dispMetro('$$IMMOBW:ANNONCE:IDANNONCE getlieux escape$$');</script>
+						$$IF:IMMOBW:ANNONCE:IDQUARTIER$$<p class="quartier"><!--#include virtual="/detail/incl_quartier.htm" --></p>$$END:IMMOBW:ANNONCE:IDQUARTIER$$
+						$$IF:IMMOBW:ANNONCE:PROX$$<p class="prox"><!--#include virtual="/detail/incl_prox.htm" --></p>$$END:IMMOBW:ANNONCE:PROX$$
+					</div>
+				
+	
+					</div>
+
+            <div id="InfosComp_Ctn">
+				<h6>$$LG:FICHESIGNALETIQUE pcase$$</h6>
+				<div id="InfosComp">
+					$$DO$$
+						<p><span class="puce">></span>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤$$</p>
+					$$LOOP$$		
+					<div class="clear"><!-- --></div>
+				</div><!-- fin #InfosComp -->
+			</div><!-- fin #InfosComp_Ctn -->		
+			$$BFIN$$		
+			
+      <!--#include virtual="/detail/incl_descriptif.htm" -->
+      $$IF:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+			<p class="txtDescriptif">$$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$</p>
+		$$END$$
+      	
+			<!--#include virtual="/detail/incl_dpe.htm" -->
+			
+		</div><!-- fin #InfosAnnonce -->
+         <!--#include virtual="/detail/incl_partager.htm" -->
+         					<div class="glossaire_ctn">
+							<!--#include virtual="/detail/incl_glossaire.htm" -->
+						</div>	
+	
+		<div id="Annonce_Bas">
+			$$REM$$
+			<div id="Outils_Ctn"><!-- -->
+					
+				<div id="Outils"><!-- -->
+					<!--#include virtual="/detail/incl_outil_ajout_selection.htm" -->				
+					<!--#include virtual="/detail/incl_outil_voir_selection.htm" -->
+					<!--#include virtual="/detail/incl_outil_imprimer.htm" -->
+					<!--#include virtual="/detail/incl_outil_envoi_ami.htm" -->	
+					<div class="clear"><!-- --></div>
+				</div><!-- fin #Outils -->
+				
+				<div id="Bookmark_Ctn"><!-- -->				
+					<h6>$$LG:PARTAGEZ pcase$$</h6>
+					<hr />
+					<!--#include virtual="/detail/incl_bookmarks.htm" -->
+				</div><!-- fin #Bookmarks_Ctn -->
+				
+			</div><!-- fin #Outils_Ctn -->
+			$$END:REM$$	
+			<!-- fin #AgenceContact_Wrap-->			
+			
+			
+		</div><!-- fin #Annonce_Bas -->
+		
+	</div><!-- fin #Annonce_Wrap -->
+	
+	$$REM$$<!-- fin si annonce existante -->$$END:REM$$
+	$$END:IMMOBW:ANNONCE:IDTYPETRANSACTION$$
+	
+</div><!-- fin #DetailAnnonce -->

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+"http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+$$SET:SELECTION_INDEX_NO_PICTO=1$$
+<head>
+<!--#include virtual="incl_dico-form.htm" -->
+<!--#include virtual="incl_multi.htm" -->
+<!--#include virtual="referencement/incl_ref.htm" -->
+<!--#include virtual="incl_titre.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+<!--#include virtual="scripts/incl_scripts.htm" -->
+
+<script language="Javascript">
+// La fonction qui affiche/masque l'élément 
+function bascule(elem)
+{
+// Quel est l'état actuel ?
+etat=document.getElementById(elem).style.display;
+if(etat=="none"){document.getElementById(elem).style.display="block";}
+else{document.getElementById(elem).style.display="none";}
+}
+</script>
+
+<script type="text/javascript" src="$$_$$scripts/Visionneuse.js"> </script>
+
+<!--#include virtual="scripts/incl_scripts_google.htm" -->
+
+</head>
+<body onload="Visionneuse();">
+<div id="global">
+  <div id="header">
+    $$IF=:DETAILANNONCE$AGENCEIMMOBILIERE:PAGE:IDT$$
+    <div class="btnRetour"><a href="javascript:history.go(-1)" title=""><img src="$$-$$images/btn_retour.gif" alt=""></a></div>
+    
+    $$END$$
+    <div class="logo">
+		    $$B:IMMOBW:AGENCES:ALIAS:LOGOMOBI$$
+		    $$BIF:LOGOMOBI$$
+		    $$DO:1:1$$
+			    $$IF:LOGOMOBI:URLLOGO$$
+			     <a href="$$RSRV$$/index.htm?lang=$$LANGUE$$" title=""><img src="$$LOGOMOBI:URLLOGO$$" alt="" /></a>
+			     $$END$$
+		    $$LOOP$$
+		    $$BFIN$$    
+    </div>
+    
+    <div class="tel">
+    $$BIF:LOGOMOBI$$
+    $$DO:1:1$$
+    $$IF=:0:MULTI$$ <a href="tel:$$LOGOMOBI:TEL formattel$$" title="">$$END$$ $$IF=:1:MULTI$$<a href="#" onclick="bascule('boite');" title="" >$$END$$<img src="$$-$$images/img_tel.gif" alt="" /></a>
+    $$LOOP$$
+    $$BFIN$$
+    </div>
+                <div class="listeVille" id="boite" style="display: none">
+            
+            $$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+            $$BIF:LISTEAG$$
+            <form>
+            <select class="MiniSelect" onchange="location.href='tel:'+this.options[this.selectedIndex].value">
+            $$DO$$
+            <option value="$$LISTEAG:TEL formattel$$">
+            $$LISTEAG:VILLE$$ ($$LISTEAG:TEL formattel$$)</a>
+            </option>
+            $$LOOP$$
+            </select>
+            </form>
+            $$BFIN$$
+            </div>
+    <h1>$$SRV$$</h1>
+  </div>
+<div id="cont">
+ $$IF=:MINIMOTEUR$INDEX:PAGE:IDT$$
+    <div class="contTop">
+      <h2><a href="http://$$REP:RSRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;tri=d_dt_crea&amp;lang=$$LANGUE$$" title="">$$LG:NOSNOUVEAUTES ucase$$ &gt;&gt;</a></h2>
+    </div>
+$$END$$

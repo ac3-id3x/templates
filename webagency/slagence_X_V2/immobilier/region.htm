@@ -1,0 +1,55 @@
+$$REM$$====================================================================
+//// <summary>Liste villes ayant des annonces dans la région en QRY</summary>
+//// <remarks>
+//// <para>Moins de fichiers imbriqués et meilleure présentation</para>
+//// <para>Moins de fichiers en .gen, on les remettra si ça rame trop mais il paraît qu'on peut maintenant</para>
+//// <para>Lien mène vers la page de recherche avec le CI en query</para>
+//// </remarks>
+//// <update date="2011-03-31" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=ANNONCIMMOS$$
+<!--#include virtual="incl_haut.htm" -->
+$$SET:PAGE:STYLE=<style type="text/css">
+		@import url( "/styles,immobilier_annonces.css" );
+</style>$$
+<div id="ImmoAnn">
+		
+	<h1>$$LG:IMMOBILIER pcase$$ $$FORM:REG$$</h1>
+
+	
+	
+	$$REM$$<!-- ////////////////////////////////////// VENTES //////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:NBANN_DEPARTEMENTS:~tri:departement:~iddivision:QRY:IDDIVISION:ALIAS:DEPANN$$
+	$$BIF:DEPANN$$
+	<ul class="listeVilles">			
+		$$DO$$
+		$$IFPREV:DEPANN:DEPARTEMENT$$
+			$$IF!:1$2$3$4$5$6$7$8$9:DEPANN:DEP$$
+			<li>			
+				<a href="http://$$REP:RSRV$$/immobilier,departement.htm?dep=$$DEPANN:DEP$$&amp;lang=$$LANGUE$$"
+					title="$$LG:IMMOBILIER pcase$$ $$DEPANN:DEPARTEMENT$$">
+					$$LG:IMMOBILIER pcase$$ $$DEPANN:DEPARTEMENT$$ ($$DEPANN:DEP$$)
+				</a>
+				<span class="clear"><!-- --></span>
+			</li>
+			$$END:DEPANN:DEP$$
+		$$END:IFPREV$$
+		$$IFPREV:DEPANN:DEPARTEMENT$$
+			$$IF=:1$2$3$4$5$6$7$8$9:DEPANN:DEP$$
+			<li>			
+				<a href="http://$$REP:RSRV$$/immobilier,departement.htm?dep=0$$DEPANN:DEP$$&amp;lang=$$LANGUE$$"
+					title="$$LG:IMMOBILIER pcase$$ $$DEPANN:DEPARTEMENT$$">
+					$$LG:IMMOBILIER pcase$$ $$DEPANN:DEPARTEMENT$$ (0$$DEPANN:DEP$$)
+				</a>
+				<span class="clear"><!-- --></span>
+			</li>
+			$$END:DEPANN:DEP$$
+		$$END:IFPREV$$
+		$$LOOP$$		
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	
+	
+	</div><!-- #ImmoAnn -->
+
+<!--#include virtual="incl_bas.htm" -->

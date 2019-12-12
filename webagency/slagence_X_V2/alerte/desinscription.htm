@@ -1,0 +1,53 @@
+$$REM$$====================================================================
+
+//// <summary>Le mail Alerte Immo renvoie vers cette page qui confirme la desinscription</summary>
+//// <remarks>
+//// <para>Utilise le meme fichier .css que tous : creer.css</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+
+====================================================================$$END$$
+
+$$SET:PAGE:IDT=DESINSALERTEIMMO$$
+<!--#include virtual="/alerte/incl_haut_alerteimmo.htm"-->
+$$E:IMMOBW:AI_DES:REP:2:REP:1$$
+
+<div id="AlerteConfirmation">
+	<img id="AlerteEmail" src="$$-$$alerte/img/alerte_desinscription.png" alt="" />
+	
+	$$IF:IMMOBW:AI_DES:ERRE$$
+	<h6 class="err">
+		Erreur !<br />
+		Vous n'&ecirc;tes pas inscrit ou une erreur s'est produite.
+	</h6>
+	<h2><a href="/" title="">$$LG:RETOURACC pcase$$</a></h2>
+	$$END:ERRE$$
+	
+	$$IF0:IMMOBW:AI_DES:ERRE$$
+	
+	<h2>
+		La recherche
+		$$IF:IMMOBW:AI_DES:EMAIL$$
+		cr&eacute;&eacute;e sous le pr&eacute;nom $$IMMOBW:AI_DES:NOM$$ ($$IMMOBW:AI_DES:EMAIL encodemail javascript$$)
+			$$IF:IMMOBW:AI_DES:TEXTE$$
+			qui portait sur les crit&egrave;res :<br />
+			$$IMMOBW:AI_DES:TEXTE$$
+			$$END:TEXTE$$
+		$$END:EMAIL$$
+		a &eacute;t&eacute;	correctement annul&eacute;e. Vous ne recevrez plus d'email Alerte Immo.
+	</h2>
+	
+	<p class="confirmation">Si vous avez souscrit à plusieurs Alerte Immo à la fois, vous devez vous désinscrire pour chacune d'elles afin de ne plus recevoir d'email.</p>	
+		
+	
+	$$IF=:FR:LANGUE$$<h5>Le site $$SRV$$ vous remercie de votre confiance.</h5>$$END:LANGUE$$
+	$$IF!:FR:LANGUE$$<h5>Our website $$SRV$$ thanks you for your confidence.</h5>$$END:LANGUE$$
+	
+	$$END:ERRE$$
+</div>
+
+<!--#include virtual="/alerte/incl_bas_alerteimmo.htm"-->
+

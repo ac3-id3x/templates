@@ -1,0 +1,257 @@
+$$REM$$
+/*
+====================================================================================
+
+//// <summary>Liste des annonces s諥ctionn褳 par l'internaute</summary>
+//// <remarks>
+//// <para>Remplace le fichier slagence_X/print_panier.htm</para>
+//// <para>S'ouvre en popup de 850 x 500 px par le lien "imprimer ma s諥ction" sur la page de s諥ction</para>
+//// <para>Aucune modification CSS possible</para>
+//// <para>Si le site poss磥 son fichier styles/recherche_macros_site.css les couleurs changeront d'elles m鬥s</para>
+//// <para>Si le site ne poss磥 pas de styles/recherche_macros_site.css, les couleurs par d襡ut serfont grises (jaunᳲes autrefois)</para>
+//// <para>Interdiction formelle de le d謵tualiser sous peine de chᳩment douloureux, car les updates ne pourront pas s'appliquer aux sites qui le feront</para>
+//// </remarks>
+//// <update date="2009-06-12" author="lisbonne.siriphol">Cr蠴ion</update>
+
+====================================================================================
+*/
+$$END$$
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--#include virtual="incl_dico-form.htm" -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$$LANGUE$$" lang="$$LANGUE$$">
+<head>
+	<title>$$LG:IMPRIMERSELEC pcase$$</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		
+<style type="text/css">
+	@import url( "/styles,imprimer_selection.css" );
+	@import url( "/styles,commun.css" );
+</style>
+
+	
+</head>
+<body>
+$$REM$$<!-- B:IMMOBW:ANN sans parametres va chercher directement les valeurs stockee localement cookies clients -->$$END:REM$$
+<div id="ImprimerSelection">
+	<div id="Imprimer">
+		<input type="button" name="imprimer" value="$$LG:IMPRIMERSELEC pcase$$" onclick="javascript:print();" />
+	</div>
+	
+	$$B:IMMOBW:ANN$$
+	$$BIF:IMMOBW:ANN$$
+	$$DO$$
+
+	<div class="blocAnnonce" id="Annonce$$IMMOBW:ANN:IDANNONCE$$">
+		
+		<div class="typeBien_Ctn">
+			<p class="typeBien">
+				$$IMMOBW:ANN:IDTYPETRANSACTION gettypetransaction pcase$$
+				$$IMMOBW:ANN:IDTYPEBIEN gettypebien lcase$$			
+				<span class="nbPieces">
+				$$IF=:1:IMMOBW:ANN:IDTYPEBIEN$$
+					$$IMMOBW:ANN:NB_PIECES$$
+					$$IF=:1:IMMOBW:ANN:NB_PIECES$$$$LG:PIECE$$$$END$$
+					$$IF!:0$1:IMMOBW:ANN:NB_PIECES$$$$LG:PIECES2$$$$END$$
+				$$END:1:IDTYPEBIEN$$
+				
+				$$IF=:2:IMMOBW:ANN:IDTYPEBIEN$$
+					$$IMMOBW:ANN:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$
+				$$END:2:IDTYPEBIEN$$
+				</span>
+			</p>
+		</div>
+		
+		<table class="detailsAnn">
+			<tr>
+				<td class="photo">
+					$$REM$$
+					<!-- on cache car le picto cache la photo lors de l'impression -->
+					$$IF=:1:PAGE:WAG_SI_PROMO$$$$IF:IMMOBW:ANN:SI_PROMO$$<div class="promo"><!-- --></div>$$END$$$$END:WAG_SI_PROMO$$
+					$$IF:IMMOBW:ANN:SI_EXCLUSIF$$<div class="exclusif"><!-- --></div>$$END$$
+					$$IF:IMMOBW:ANN:SI_COUPDECOEUR$$<div class="coupdecoeur"><!-- --></div>$$END$$			
+					$$END:REM$$
+					$$IF:IMMOBW:ANN:IDPHOTO$$<img src="$$IMMOBW:ANN:PHOTOURL0$$" alt="" title="" />$$END$$		
+				</td>			
+				<td class="descrAnn_Ctn">				
+					$$IF:IMMOBW:ANN:PRIX$$
+					$$IF!:9:FORM:IDTT$$
+					<p class="prix $$IF:IMMOBW:ANN:SI_PROMO$$prixSiPromo$$END$$">
+						$$IMMOBW:ANN:PRIX formatnumber 0$$ $$IMMOBW:ANN:PRIX_UNITE$$$$IMMOBW:ANN:PRIX_PERIODEVAC$$
+						
+						$$IF=:2$6$8$10:FORM:IDTT$$<sup>*</sup>$$END:2:FORM:IDTT$$
+						$$IF=:2$8:IMMOBW:ANN:IDTYPETRANSACTION$$
+							$$IF=:False:IMMOBW:ANN:SI_HONORAIRES_ACQUEREUR$$
+								<div class="small"><sup>*</sup> : $$LG:PRIXHORSFRAIS$$</div>
+							$$END$$
+							$$IF=:True:IMMOBW:ANN:SI_HONORAIRES_ACQUEREUR$$
+								<div class="small"><sup>*</sup> : $$LG:DONT$$ $$IMMOBW:ANN:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$</div>
+							$$END$$
+							$$IF!:True$False:IMMOBW:ANN:SI_HONORAIRES_ACQUEREUR$$
+								<div class="small"><sup>*</sup> : $$LG:HONORAIRES$$ $$LG:NONRENSEIGNE$$</div>
+							$$END$$
+						$$END$$
+						
+						
+						$$IF:IMMOBW:ANN:PX_RENTE$$<span class="rente">($$LG:RENTE lcase$$ : $$IMMOBW:ANN:PX_RENTE$$ $$LG:EUROMOIS$$)</span>$$END$$
+					
+						$$IF=:1:FORM:IDTT$$
+							<span class="prixCharges">
+								$$IF:IMMOBW:ANN:PX_CHARGES$$<span class="charges">/ $$LG:CHARGES pcase$$ : $$IMMOBW:ANN:PX_CHARGES formatnumber 0$$ &euro;</span>$$END$$
+								$$IF:IMMOBW:ANN:HONORAIRES$$<span class="honoraires">/ $$LG:HONORAIRES pcase$$ : $$IMMOBW:ANN:HONORAIRES formatnumber 0$$ &euro;</span>$$END$$
+								$$IF:IMMOBW:ANN:GARANTIE$$<span class="garantie">/ $$LG:GARANTIE pcase$$ : $$IMMOBW:ANN:GARANTIE$$</span>$$END$$	
+							</span>
+						$$END:1:FORM:IDTT$$
+					</p>					
+					$$END:9:FORM:IDTT$$
+					$$END:IMMOBW:ANN:PRIX$$
+					
+					<p class="maj">
+						$$LG:MAJ pcase$$ : $$IMMOBW:ANN:DT_FRAICHEUR date 2$$<br />
+						$$LG:REFER pcase$$ : $$IMMOBW:ANN:REFANNONCE$$
+					</p>
+					
+					<div class="descrAnn">						
+						<p class="libelle">					
+							$$IF:IMMOBW:ANN:LIBELLE$$
+								$$IMMOBW:ANN:LIBELLE$$
+							$$END$$
+							$$IF0:IMMOBW:ANN:LIBELLE$$
+								$$IMMOBW:ANN:LIBELLE_FR$$
+							$$END$$
+						
+							$$IF:IMMOBW:ANN:SURFACE$$
+								<span class="surface">($$IMMOBW:ANN:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / $$IMMOBW:ANN:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$)</span>
+							$$END:IMMOBW:ANN:SURFACE$$
+						</p>
+						<!-- fin .libelle -->
+							
+						$$IF:IMMOBW:ANN:SURF_TERRAIN$$
+						<p class="terrain">
+							$$LG:TERRAIN pcase$$
+							($$IMMOBW:ANN:SURF_TERRAIN$$ $$LG:M2 lcase$$
+							$$IF=:EN:LANGUE$$
+								/ approx. $$IMMOBW:ANN:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+								$$IMMOBW:ANN:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres
+							$$END:EN$$)							
+						</p>
+						<!-- fin .terrain -->
+						$$END:IMMOBW:ANN:SURF_TERRAIN$$
+						
+						<p class="ville">$$IMMOBW:ANN:VILLE$$ ($$IMMOBW:ANN:CP$$)</p>
+											
+						$$IF:IMMOBW:ANN:IDQUARTIER$$
+						<p class="quartier">						
+								$$LG:QUARTIER pcase$$ : $$IMMOBW:ANN:IDQUARTIER getquartier$$						
+						</p>
+						$$END:IMMOBW:ANN:IDQUARTIER$$
+						
+						<p class="descr">
+							$$IF:IMMOBW:ANN:DESCRIPTIF$$
+							$$IF!:1:PAGE:WAG_FULL_DESCR_ANN$$
+								$$IMMOBW:ANN:DESCRIPTIF left 180$$...
+							$$END:WAG_FULL_DESCR_ANN$$
+							$$IF=:1:PAGE:WAG_FULL_DESCR_ANN$$
+								$$IMMOBW:ANN:DESCRIPTIF$$
+							$$END:WAG_FULL_DESCR_ANN$$
+							$$END$$
+							
+							$$IF0:IMMOBW:ANN:DESCRIPTIF$$
+							
+								$$IF:IMMOBW:ANN:DESCRIPTIF_FR$$
+								$$IF!:1:PAGE:WAG_FULL_DESCR_ANN$$
+									$$IMMOBW:ANN:DESCRIPTIF_FR left 180$$...
+								$$END:WAG_FULL_DESCR_ANN$$
+								$$IF=:1:PAGE:WAG_FULL_DESCR_ANN$$
+									$$IMMOBW:ANN:DESCRIPTIF_FR$$
+								$$END:WAG_FULL_DESCR_ANN$$
+								$$END$$	
+																
+								$$IF0:IMMOBW:ANN:DESCRIPTIF_FR$$
+									$$LG:ANNSANSDESCR pcase$$.
+								$$END$$	
+							$$END$$	
+						</p>			
+						
+						$$IF:IMMOBW:ANN:PROX$$
+						<p class="prox">$$LG:PROXIMITE pcase$$ : $$IMMOBW:ANN:PROX$$</p>
+						$$END$$
+								
+						$$IF0:IMMOBW:ANN:PROX$$
+							$$IF:IMMOBW:ANN:PROX_FR$$
+							<p class="prox">$$LG:PROXIMITE pcase$$ : $$IMMOBW:ANN:PROX_FR$$</p>
+							$$END$$
+						$$END$$
+						
+						$$IF=:4:IMMOBW:ANN:IDTYPETRANSACTION$$
+				
+							$$IF:IMMOBW:ANN:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$IMMOBW:ANN:NB_PERSONNES$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$IMMOBW:ANN:PX_BS_SEMAINE$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$IMMOBW:ANN:PX_BS_QUINZ$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$IMMOBW:ANN:PX_BS_MOIS$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$IMMOBW:ANN:PX_HS_SEMAINE$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$IMMOBW:ANN:PX_HS_QUINZ$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:IMMOBW:ANN:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$IMMOBW:ANN:PX_HS_MOIS$$ $$IMMOBW:ANN:PRIX_UNITE htmlencode$$</p>$$END$$
+						
+						$$END:IDTYPETRANSACTION$$
+						
+						<script language="javascript" type="text/javascript">dispMetro('$$IMMOBW:ANN:IDANNONCE getlieux escape$$');</script>
+						<p class="clear"><!-- --></p>					
+						
+					</div>
+				</td>
+				<!-- fin .descrAnn -->	
+			</tr>
+		</table>
+		<!-- fin .detailsAnn -->
+		
+		<div class="contactAnn">
+			<p>
+				<span class="nom">
+					$$LG:CONTACT pcase$$ :
+					$$IF:IMMOBW:ANN:COOR-CONTACT$$		
+						$$IMMOBW:ANN:COOR-CONTACT ncase$$
+					$$END$$					
+					$$IF0:IMMOBW:ANN:COOR-CONTACT$$	
+						$$IF:IMMOBW:ANN:COOR-NOM$$		
+							$$IMMOBW:ANN:COOR-NOM  ncase$$
+						$$END$$
+					$$END$$
+				</span>			
+				<span class="tel">
+					$$LG:TEL pcase$$ :
+					$$IF:IMMOBW:ANN:TELEPHONE$$
+						$$IF=:FR:LANGUE$$$$IMMOBW:ANN:TELEPHONE formattel$$$$END$$
+						$$IF!:FR:LANGUE$$$$IMMOBW:ANN:TELEPHONE formattel tel2inter$$$$END$$
+					$$END:TELEPHONE$$
+					
+					$$IF0:IMMOBW:ANN:TELEPHONE$$
+						$$IF=:FR:LANGUE$$$$IMMOBW:ANN:TEL formattel$$$$END$$
+						$$IF!:FR:LANGUE$$$$IMMOBW:ANN:TEL formattel tel2inter$$$$END$$
+					$$END:TELEPHONE$$				
+				</span>
+				$$REM$$
+				<!--
+					2010.02.24 caché par Lisbonne
+					Car c'est l'url entrée dans SAISS qui apparaît, et non pas l'url du site en cours
+					Trop de remontées du Contrôle Qualité, et confusion du client (internaute on ne sait pas)				
+				-->
+				$$IF:IMMOBW:ANN:URL$$			
+				<span class="url">$$LG:SITEINTERNET pcase$$ : <a href="$$IMMOBW:ANN:URL$$" title="$$IMMOBW:ANN:URL$$" onclick="window.open(this.href); return false;">$$IMMOBW:ANN:URL$$</a></span>
+				$$END:URL$$			
+				$$END:REM$$			
+			</p>
+		</div>			
+		<!-- fin .contactAnn -->
+		
+	
+	</div>
+	<!-- fin .blocAnnonce -->
+
+	$$LOOP$$
+	$$BFIN$$
+
+</div><!-- fin #ImprimerSelection -->
+</body>
+</html>

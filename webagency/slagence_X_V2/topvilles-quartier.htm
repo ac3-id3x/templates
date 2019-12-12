@@ -1,0 +1,56 @@
+$$INIT:TOPVILLE=1$$
+<!--#include virtual="incl_haut.htm" -->
+
+$$E:ID3:URW-GETVALUES:~ressource:Quartier:~values:quartier,codeInsee,ville,departement,region$$
+$$E:ID3:URW-GETURL:ALIAS:URLVIL:~ressource:Ville$$
+$$E:ID3:URW-GETURL:ALIAS:URLDEP:~ressource:Departement$$
+$$E:ID3:URW-GETURL:ALIAS:URLREG:~ressource:Region$$
+
+<div itemscope itemtype="http://schema.org/WebPage">
+	<div itemprop="breadcrumb">
+		<div id="bloc_ariane">
+					$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+					<a href="$$URWRACINE:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$" class="racine_immo">Immobilier</a>&gt;
+					<a href="$$URLREG:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$ID3:URW-GETVALUES:REGION$$</a> &gt;
+					<a href="$$URLDEP:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$ID3:URW-GETVALUES:DEPARTEMENT$$</a> &gt;
+					<a href="$$URLVIL:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$ID3:URW-GETVALUES:VILLE$$</a> &gt;
+					$$ID3:URW-GETVALUES:QUARTIER$$ ($$TTTB:NBANNONCESTOTAL$$ annonce$$TTTB:NBANNONCESTOTAL pluriel$$)
+		</div>
+	</div>
+</div>
+
+<div id="col_gauche">
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~nbAnnoncesMin:1:~idQuartier:QRY:idQuartier$$
+$$BIF:TTTB$$
+<ul>
+$$DO$$
+	$$IFPREV:TTTB:IDTYPETRANSACTION$$
+		$$IF!:1:TTTB:I$$<br/>$$END$$
+		<li class="tileListing"><a href="$$TTTB:URLVIRTUELLETT$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$TTTB:TYPETRANSACTION pcase$$</a></li>
+	$$END:IFPREV$$
+	
+	<li class="subListing">$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$END$$
+		$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$TTTB:TYPEBIEN pcase$$
+	$$IF:TTTB:NBANNONCES$$</a>$$END$$<font size="1"> ($$TTTB:NBANNONCES$$)</font></li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+$$BIF0:TTTB$$
+Pas de combinaison TT/TB
+$$BFIN$$
+</div>
+
+<div id="col_droite">
+$$B:IMMOBW:ANN:ALIAS:ANN:2::::ADD:idtt=2&idTypeBien=1,2&idq=+FORM_IDQUARTIER+&ci=+ID3_URW-GETVALUES_CODEINSEE+&idqfix=1&tri=d_dt_crea$$
+$$BIF:ANN$$
+$$DO:1:20$$$$IF-:6:ANN:I$$<!-- On procède ainsi car quand il y a un tri par dt_crea desc, la desynchro entre les tiny et les data fait qu'on n'obtient pas forcemment le nb d'annonces spécifié dans le DO -->
+	<div class="annonce_bloc">
+		<a href="$$ANN:URLVIRTUELLE$$">$$ANN:TITRE$$, $$ANN:VILLE$$</a>,
+	$$ANN:DESCRIPTIF$$<br/>
+	</div>
+$$END:I$$$$LOOP$$
+$$BFIN$$
+</div>
+</div>
+
+<!--#include virtual="incl_bas.htm" -->

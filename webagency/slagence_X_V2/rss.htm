@@ -1,0 +1,199 @@
+$$REM$$
+====================================================================
+
+//// <summary>Flux RSS, avec liste dynamique des villes ayant au moins 1 annonce</summary>
+//// <remarks>
+//// <para>Utilisation principale : expliquer le RSS à l'internaute</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/rss.css</para>
+//// <para>Fichier en cache pendant 1440 minutes (soit 24 heures)</para>
+//// <para>Pour le moment juste affichage de 15 resultats sur les ventes et les locs</para>
+//// <para>Utilisation macro VILLESANNONCESREF : affichage aléatoire des villes ayant une annonce</para>
+//// </remarks>
+//// <update date="2008-11-18" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-11-18" author="lisbonne.siriphol">Validation HTML ok</update>
+//// <update date="2008-11-18" author="damien.robert">Validation référencement en cours</update>
+//// <update date="2008-11-18" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+
+$$SET:PAGE:IDT=RSS$$
+$$A:PAGE:TITRE=@@LG:FLUXRSS2@@ @@SRV@@$$
+<!--#include virtual="incl_haut.htm" -->
+$$TTL:1440$$
+$$SET:PAGE:STYLE=<style type="text/css">@import url( "/styles,rss.css" );</style>$$
+
+<div id="FluxRSS">
+	
+	<!-- //////////////////////////////////////// titre //////////////////////////////////////////////-->
+	<table id="FluxRSS_Titre">
+		<tr>
+			<td id="RssPicto_Ctn">
+				<div id="RssPicto"><!-- --></div>
+			</td>
+			<td>
+				<h1>
+					$$IF=:FR:LANGUE$$Les flux RSS de$$END:FR:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:FLUXRSS2 pcase$$$$END:FR:LANGUE$$
+					$$SRV$$					
+				</h1>
+				<h2>$$LG:RSSTXT$$</h2>
+			</td>
+		</tr>
+	</table><!-- fin #FluxRSS_Titre -->
+
+
+	<table id="FluxRSS_List">
+		<tr>
+			<!-- //////////////////////////////////////////////////////////////////////////////////////-->
+			<td id="FluxRSS_Liens">
+					
+				$$B:IMMOBW:VILLESANNONCESREF:::2:ALIAS:VILANN_VEN$$
+				$$BIF:VILANN_VEN$$				
+					
+				<div class="RSS_idtt">
+					$$IF=:FR:LANGUE$$Les flux RSS de ventes$$END:FR:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:FLUXRSS2 pcase$$ : $$LG:LIEN:VEN lcase$$$$END:FR:LANGUE$$
+				</div>
+				
+				$$DO:1:15$$
+				$$IFPREV:VILANN_VEN:CODEINSEE$$
+				$$A:LIEN_XML=http://@@SRV@@/rss.xml?idtt=2&amp;ci=@@VILANN_VEN:CODEINSEE@@&amp;lang=@@LANGUE@@$$
+				
+				<div class="rss_lien_ctn">$$LG:NOSDERVEN pcase$$ $$LG:SUR lcase$$ $$VILANN_VEN:VILLEAFF$$ ($$VILANN_VEN:CODEINSEE codeinsee2cp$$)<br />
+					<a class="voir_ann" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;ci=$$VILANN_VEN:CODEINSEE$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$VILANN_VEN:VILLEAFF$$">$$LG:VOIRANN pcase$$</a>
+					<a class="rss_xml" href="$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_netvibes rss_lien" href="http://www.netvibes.com/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_igoogle rss_lien" href="http://www.google.com/ig/adde?moduleurl=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_monyahoo rss_lien" href="http://add.my.yahoo.com/rss?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_wikio rss_lien" href="http://www.wikio.fr/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<div class="clear"><!-- --></div>
+				</div>
+				$$END:IFPREV$$
+				$$LOOP$$
+				$$BFIN$$	
+								
+				$$B:IMMOBW:VILLESANNONCESREF:::1:ALIAS:VILANN_LOC$$
+				$$BIF:VILANN_LOC$$				
+					
+				<div class="RSS_idtt">
+					$$IF=:FR:LANGUE$$Les flux RSS de locations$$END:FR:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:FLUXRSS2 pcase$$ : $$LG:LOCATIONS2 lcase$$$$END:FR:LANGUE$$					
+				</div>
+				
+				$$DO:1:15$$
+				
+				$$A:LIEN_XML=http://@@SRV@@/rss.xml?idtt=1&amp;ci=@@VILANN_LOC:CODEINSEE@@&amp;lang=@@LANGUE@@$$
+				
+				<div class="rss_lien_ctn">$$LG:NOSDERLOC pcase$$ $$LG:SUR lcase$$ $$VILANN_LOC:VILLEAFF$$ ($$VILANN_LOC:CODEINSEE codeinsee2cp$$)<br />
+					<a class="voir_ann" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;ci=$$VILANN_LOC:CODEINSEE$$&amp;lang=$$LANGUE$$" title="$$LG:LOCATIONS pcase$$ : $$VILANN_LOC:VILLEAFF$$">$$LG:VOIRANN pcase$$</a>
+					<a class="rss_xml" href="$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_netvibes rss_lien" href="http://www.netvibes.com/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_igoogle rss_lien" href="http://www.google.com/ig/adde?moduleurl=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_monyahoo rss_lien" href="http://add.my.yahoo.com/rss?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_wikio rss_lien" href="http://www.wikio.fr/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<div class="clear"><!-- --></div>
+				</div>
+				$$LOOP$$
+				$$BFIN$$
+				
+				$$B:IMMOBW:VILLESANNONCESREF:::5:ALIAS:VILANN_VIAG$$
+				$$BIF:VILANN_VIAG$$				
+					
+				<div class="RSS_idtt">
+					$$IF=:FR:LANGUE$$Les flux RSS de viager$$END:FR:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:FLUXRSS2 pcase$$ : $$LG:ANN:VIAGERS lcase$$$$END:FR:LANGUE$$					
+				</div>
+				
+				$$DO:1:15$$
+				
+				$$A:LIEN_XML=http://@@SRV@@/rss.xml?idtt=5&amp;ci=@@VILANN_VIAG:CODEINSEE@@&amp;lang=@@LANGUE@@$$
+				
+				<div class="rss_lien_ctn">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:SUR lcase$$ $$VILANN_VIAG:VILLEAFF$$ ($$VILANN_VIAG:CODEINSEE codeinsee2cp$$)<br />
+					<a class="voir_ann" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;ci=$$VILANN_VIAG:CODEINSEE$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:VIAGERS pcase$$ : $$VILANN_VIAG:VILLEAFF$$">$$LG:VOIRANN pcase$$</a>
+					<a class="rss_xml" href="$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_netvibes rss_lien" href="http://www.netvibes.com/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_igoogle rss_lien" href="http://www.google.com/ig/adde?moduleurl=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_monyahoo rss_lien" href="http://add.my.yahoo.com/rss?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_wikio rss_lien" href="http://www.wikio.fr/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<div class="clear"><!-- --></div>
+				</div>
+				$$LOOP$$
+				$$BFIN$$	
+				
+				$$B:IMMOBW:VILLESANNONCESREF:::4:ALIAS:VILANN_LOCVAC$$
+				$$BIF:VILANN_LOCVAC$$
+					
+				<div class="RSS_idtt">
+					$$IF=:FR:LANGUE$$Les flux RSS de locations vacances$$END:FR:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:FLUXRSS2 pcase$$ : $$LG:LOCVAC lcase$$$$END:FR:LANGUE$$					
+				</div>
+				
+				$$DO:1:15$$
+				
+				$$A:LIEN_XML=http://@@SRV@@/rss.xml?idtt=5&amp;ci=@@VILANN_LOCVAC:CODEINSEE@@&amp;lang=@@LANGUE@@$$
+				
+				<div class="rss_lien_ctn">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:SUR lcase$$ $$VILANN_LOCVAC:VILLEAFF$$ ($$VILANN_LOCVAC:CODEINSEE codeinsee2cp$$)<br />
+					<a class="voir_ann" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;ci=$$VILANN_LOCVAC:CODEINSEE$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:VIAGERS pcase$$ : $$VILANN_LOCVAC:VILLEAFF$$">$$LG:VOIRANN pcase$$</a>
+					<a class="rss_xml" href="$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_netvibes rss_lien" href="http://www.netvibes.com/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_igoogle rss_lien" href="http://www.google.com/ig/adde?moduleurl=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_monyahoo rss_lien" href="http://add.my.yahoo.com/rss?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<a class="rss_wikio rss_lien" href="http://www.wikio.fr/subscribe.php?url=$$LIEN_XML$$" title="" onclick="window.open(this.href); return false;"><!-- --></a>
+					<div class="clear"><!-- --></div>
+				</div>
+				$$LOOP$$
+				$$BFIN$$	
+								
+								
+			</td><!-- fin #FluxRSS_Liens -->
+			<!-- //////////////////////////////////////////////////////////////////////////////////////-->
+			<td id="FluxRSS_Def_Ctn1">
+									
+				<div id="FluxRSS_Aide">
+					<p>$$LG:AIDE pcase$$</p>
+				</div><!-- fin #FluxRSS_Aide -->
+				
+				<div id="FluxRSS_Def_Ctn2">
+								
+					<div id="FluxRSS_Def">
+						
+						<h4>$$LG:RSSTXT2$$</h4>
+						<p>$$LG:RSSTXT3$$</p>
+						
+						<p class="sep"><!-- --></p>
+						
+						<h4>$$LG:RSSTXT4$$</h4>
+						<p>$$LG:RSSTXT5$$</p>
+						
+						<p class="sep"><!-- --></p>
+						
+						<h4>$$LG:RSSTXT6$$</h4>
+						<p>$$LG:RSSTXT7$$</p>
+						<a class="netvibes agregateur" href="http://www.netvibes.com" title="" onclick="window.open(this.href); return false;">http://www.netvibes.com</a>
+						<a class="igoogle agregateur" href="http://www.google.fr/ig" title="" onclick="window.open(this.href); return false;">http://www.google.fr/ig</a>
+						<a class="monyahoo agregateur" href="http://fr.my.yahoo.com" title="" onclick="window.open(this.href); return false;">http://fr.my.yahoo.com</a>
+						<a class="wikio agregateur" href="http://www.wikio.fr" title="" onclick="window.open(this.href); return false;">http://www.wikio.fr</a>
+						
+						<p class="sep"><!-- --></p>
+						
+						<h4>$$LG:RSSTXT8$$</h4>
+						<p>$$LG:RSSTXT9$$</p>
+						<a class="ie7 navigateur" href="" title="" onclick="window.open(this.href); return false;">Internet Explorer 7</a>
+						<a class="firefox navigateur" href="" title="" onclick="window.open(this.href); return false;">Firefox Mozilla</a>
+						<a class="safari navigateur" href="" title="" onclick="window.open(this.href); return false;">Safari</a>
+						<a class="opera navigateur" href="" title="" onclick="window.open(this.href); return false;">Opera</a>
+						
+						<p class="si_nav"><strong>$$LG:RSSTXT10$$ :</strong></p>
+						<p class="lien_xml">$$LG:RSSTXT11$$</p>
+						
+					</div><!-- fin #FluxRSS_Def -->
+					
+				</div><!-- fin #FluxRSS_Def_Ctn2 -->			
+	
+			</td><!-- fin #FluxRSS_Def_Ctn1 -->
+		</tr>
+	</table>
+
+</div>
+<!--#include virtual="incl_bas.htm" -->

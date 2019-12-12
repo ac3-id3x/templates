@@ -1,0 +1,39 @@
+$$REM$$
+====================================================================
+//// <summary>Fichier include du div qui va contenir la BingMaps d'une annonce</summary>
+//// <update date="2010-04-12" author="ext-karim.mekni">Création v1</update>
+====================================================================
+$$END$$
+
+$$REM$$==========================================================================
+//// ce SET est destiné à associer le fichier geolocBing.css dans incl_styles.htm
+===========================================================================$$END$$
+$$SET:GEOLOC=1$$
+
+$$E:IMMOBW:ANNONCE:REP:1:REP:2$$
+
+$$IF0:MAPANNONCESHEIGHT$$
+	$$A:MAPANNONCESHEIGHT=300px$$
+$$END$$
+		
+<div id="MapMicrosoft" class="geolocDetailAnnonce">
+	<div id="MapHead">
+		<h3>
+			$$LG:LOCALISER pcase$$
+			$$IF:IMMOBW:ANNONCE:ADRESSE$$$$IMMOBW:ANNONCE:ADRESSE$$ $$LG:A lcase$$$$END$$
+			$$IMMOBW:ANNONCE:VILLE$$ ($$IMMOBW:ANNONCE:CP$$)
+		</h3>
+		$$IF:IMMOBW:ANNONCE:IDQUARTIER$$<p>$$LG:QUARTIER pcase$$ : $$IMMOBW:ANNONCE:IDQUARTIER getquartier$$</p>$$END:IMMOBW:ANNONCE:IDQUARTIER$$
+		
+	</div><!-- #MapHead -->
+	<div id="AnnonceBingMap" style="position:relative; width: 100%; z-index: 0; height:$$MAPANNONCESHEIGHT$$;"></div>	
+</div><!-- #MapMicrosoft -->
+
+$$E:IMMOBW:CARTO-ANNONCE-MARKER:~idAnnonce:REP:1:~idPublication:REP:2:ALIAS:CARTOANN$$
+$$IF:CARTOANN:LATLNGTYPE$$
+	<script type="text/javascript">
+		<!--
+		addOnLoadEvent("GetAnnonceMap($$CARTOANN:PUBLICLAT replace , .$$,$$CARTOANN:PUBLICLNG replace , .$$,$$IF:MAPDASHBOARDSIZE$$$$MAPDASHBOARDSIZE$$$$END$$$$IF0:MAPDASHBOARDSIZE$$VEDashboardSize.Small$$END$$);");	
+		//-->
+	</script>
+$$END:LATLNGTYPE$$

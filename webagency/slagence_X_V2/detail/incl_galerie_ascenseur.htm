@@ -1,0 +1,109 @@
+$$REM$$<!--///////////////////////////////// galerie photo /////////////////////////////////-->$$END:REM$$
+			
+			$$REM$$<!-- // === // script galerie qui bugge si on le deplace // === // -->$$END:REM$$
+			<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/detail_galerie_basic.js"></script>	
+			
+			<div id="Galerie">
+				
+				$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+				
+<!--///////////////////////////////// grande photo /////////////////////////////////-->
+								
+				<div id="previewPane" $$BIF:GALERIE$$$$DO$$$$LOOP$$style="display: block;"$$BFIN$$$$BIF0:GALERIE$$style="display: none;"$$BFIN$$>
+					<div id="FancyBox_Ctn2">
+						<table id="FancyBox">
+							<tr>
+								<td id="FancyBox_Col1">
+									<!--#include virtual="/detail/incl_fancybox.htm" -->
+								</td>						
+								<td id="FancyBox_Col2"><!-- --></td>
+							</tr>
+						</table>
+					</div>
+					<div id="grandeimage">						
+						<!--#include virtual="/detail/incl_coupdecoeur.htm" -->	
+						<!--#include virtual="/detail/incl_sipromo.htm" -->
+						<!--#include virtual="/detail/incl_exclusif.htm" -->
+						$$BIF:GALERIE$$
+						$$DO$$
+						<table>							
+							<tr>
+								<td>
+								<!--///////////////////////////////// grande image /////////////////////////////////-->									
+									<img src="$$GALERIE:URL$$" id="GrandePhoto$$GALERIE:IDVISUEL$$" alt="$$REF_ALT_TITLE$$" title="$$REF_ALT_TITLE$$" />									
+																		
+									<div id="largeImageCaption">										
+$$REM$$<!-- ============ 28.12.2009 ajout du descriptif de la photo [Lisbonne] ============ -->$$END$$	
+										$$IF:1_GALERIE:DESCRIPTIF_FR$$$$1_GALERIE:DESCRIPTIF_FR$$ $$END:GALERIE:DESCRIPTIF_FR$$
+										$$IF0:1_GALERIE:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$$$END:GALERIE:DESCRIPTIF_FR$$
+										<br />
+										<!-- n photo / nb photo -->
+										$$LG:PHOT pcase$$ 1/$$GALERIE:NBR$$
+									</div><!-- fin #largeImageCaption -->													
+								</td>								
+							</tr>
+						</table>
+						$$LOOP$$
+						$$BFIN$$
+						<div id="waitMessage">$$LG:LOADING lcase$$...</div><!-- fin #waitMessage -->										
+					</div><!-- fin #grandeimage -->
+				</div><!-- fin #previewPane -->				
+				
+				
+				$$BIF:GALERIE$$
+				$$IF+:2:GALERIE:NBR$$
+				<!--///////////////////////////////// thumbs /////////////////////////////////-->
+					<div id="galleryContainer">
+						
+						$$IF+:5:GALERIE:NBR$$
+						<div id="arrow_up"><img src="/detail/img_basic/arrow_up.gif" onerror="this.src='$$-$$detail/img_basic/arrow_up.png'" id="arrow_up_image" alt="" title="" /></div>
+						$$END:GALERIE:NBR$$
+						
+						<div id="theImages">
+							$$DO$$
+							<a href="" id="Vignette$$GALERIE:N$$" onclick="showPreview('$$GALERIE:URL$$','$$GALERIE:I$$','$$GALERIE:BIG_URL$$'); return false;" title="$$REF_ALT_TITLE$$"><!-- --></a>		
+							$$LOOP$$
+							<div class="clear"><!-- --></div>
+							$$DO$$
+							$$IFPREV:GALERIE:I$$
+							<div class="imageCaption">
+
+
+    <!-- ============ 2009-12-28 ajout du descriptif de la photo [Lisbonne] ============ -->
+    <!-- ============ 2010-06-24 mise en apparté de la macro boguée d'appel de descriptifs [François] ============ -->
+
+								$$IF0:GALERIE:I$$
+									$$IF:1_GALERIE:DESCRIPTIF_FR$$$$1_GALERIE:DESCRIPTIF_FR$$ $$END:GALERIE:DESCRIPTIF_FR$$
+									$$IF0:1_GALERIE:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$ $$END:GALERIE:DESCRIPTIF_FR$$
+								$$END:GALERIE:I$$
+									
+								$$IF:GALERIE:I$$
+									$$IF:GALERIE:DESCRIPTIF_FR$$$$GALERIE:DESCRIPTIF_FR$$ $$END:GALERIE:DESCRIPTIF_FR$$
+									$$IF0:GALERIE:DESCRIPTIF_FR$$$$REF_ALT_TITLE_NO_REF$$ $$END:GALERIE:DESCRIPTIF_FR$$
+								$$END:GALERIE:I$$
+
+								<br />
+
+    <!-- ============ fin de la macro boguée ============ -->
+
+								$$LG:PHOT pcase$$ $$IF0:GALERIE:I$$1$$END$$$$IF:GALERIE:I$$$$GALERIE:I$$$$END$$/$$GALERIE:NBR$$
+							
+							</div><!-- fin #imageCaption -->
+                            $$END$$
+							
+							$$LOOP$$
+							
+							<div id="slideEnd"></div>
+							
+						</div><!-- fin #theImages -->
+						
+						$$IF+:5:GALERIE:NBR$$
+						<!--fleche bas-->
+						<div id="arrow_down"><img src="/detail/img_basic/arrow_down.gif" onerror="this.src='$$-$$detail/img_basic/arrow_down.png'" id="arrow_down_image" alt="" title="" /></div>
+						$$END:GALERIE:NBR$$
+						
+					</div><!-- fin #galleryContainer -->				
+				$$END:GALERIE:NBR$$
+				$$BFIN$$								
+				<div class="clear"><!-- --></div>
+			</div><!-- fin #Galerie -->

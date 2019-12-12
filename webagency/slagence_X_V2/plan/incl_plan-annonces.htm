@@ -1,0 +1,33 @@
+$$REM$$====================================================================
+//// <summary>Liste d'annonces immobilières classées par idtt + type de bien + ville + nbann</summary>
+//// <remarks>
+//// <para>Fichier include  appelé par : slagence_X_V2/plan.htm</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/plan.css</para>
+//// <para>La liste des annonces n'apparaît que si le site a souscrit à un contrat de réf et/ou TDL</para>
+//// <para>Les liens des annonces  : type de transac + type de bien + ville</para>
+//// <para>Liens classés par ordre décroissanr de nombre d'annonces</para>
+//// <para>Mêmes macros utilisées dans immobilier,annonces.htm</para>
+//// </remarks>
+//// <update date="2009-08-27" author="lisbonne.siriphol">Création v2</update>
+//// <update date="2008-05-30" author="lisbonne.siriphol">Updates et corrections</update>
+//// <update date="2007-11-23" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2007-11-23" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2007-11-23" author="isabelle.padrutt">Validation référencement</update>
+//// <update date="2007-11-28" author="erick.barbant">Validation ID3X ok</update>
+====================================================================$$END$$
+
+$$REM$$<!-- //////////////////////////////////////VENTES//////////////////////////////////////////////////-->$$END:REM$$
+$$B:IMMOBW:NBANN_VILLES:ALIAS:PLANANN:~tri:ville,idtypetransaction$$
+$$BIF:PLANANN$$
+	<h1 class="planPortefeuille">$$LG:NOTREPORTEFEUILLEIMMO pcase$$</h1>
+	$$DO:3:999$$
+	<div class="planAnnVilles">
+		$$IFPREV:PLANANN:VILLE$$<h2>$$PLANANN:VILLE$$ ($$PLANANN:CODEINSEE codeinsee2cp$$)</h2>$$END:IFPREV$$
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$PLANANN:IDTYPETRANSACTION$$&amp;idtypebien=$$PLANANN:IDTYPEBIEN$$&amp;ci=$$PLANANN:CODEINSEE$$&amp;lang=$$LANGUE lcase$$" title="$$PLANANN:IDTYPETRANSACTION gettypetransaction pcase$$ $$PLANANN:TYPEBIEN lcase$$ $$PLANANN:VILLE$$">
+			$$PLANANN:IDTYPETRANSACTION gettypetransaction pcase$$ $$PLANANN:TYPEBIEN lcase$$
+			<span class="nbAnn">($$PLANANN:NBANN$$ $$IF-:2:PLANANN:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:PLANANN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+		</a><br />
+	</div><!-- .planAnnVilles -->
+	$$LOOP$$
+$$BFIN$$
+

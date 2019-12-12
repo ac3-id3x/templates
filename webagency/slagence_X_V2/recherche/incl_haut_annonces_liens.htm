@@ -1,0 +1,68 @@
+$$REM$$====================================================================
+//// <summary>Liens récurrants en haut des pages de recherche</summary>
+//// <remarks>
+//// <para>Liens "voir ma sélection" etc.</para>
+//// <para>Include appelée toutes pages recherche + vendu.htm</para>
+//// </remarks>
+//// <update date="2011-03-21" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<div id="RechHautLiens">
+								
+	$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		$$REM$$<!-- ===========================================================================
+				> 16.10.2009 - modif par Lisbonne
+				> on remplace les termes "modifier votre recherche" par "nouvelle recherche"
+				> car lien retourne vers moteur de recherche, et réinitialise toute la recherche
+		=========================================================================== -->$$END:REM$$
+		$$IF!:1:PAGE:WAG_FRANCHISE_LAFORET$$
+		<a class="modifier" href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?$$REP:QRY removeqry IMMOBW_ANN_QRYpg htmlencode$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+		$$END$$
+		
+		$$IF=:1:PAGE:WAG_FRANCHISE_LAFORET$$
+			$$IF=:2:FORM:IDTT$$
+			<a class="modifier" href="$$URLBASE$$/acheter.htm?lang=$$LANGUE$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+			$$END:FORM:IDTT$$
+			$$IF=:1:FORM:IDTT$$
+			<a class="modifier" href="$$URLBASE$$/louer.htm?lang=$$LANGUE$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+			$$END:FORM:IDTT$$
+		$$END:WAG_FRANCHISE_LAFORET$$
+	
+	<a class="selection" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$" title="" onclick="javascript:Stock('$$REP:QRY htmlencode$$');">$$LG:MASELECT pcase$$ <span id="NbAnnPanier"></span></a>
+	
+	<a class="alerte" href="#creerAlerteEmail" title="">$$LG:CREERALERTEMAIL pcase$$</a>
+	
+	$$IF!:1$3$4$7$9$10$11:FORM:IDTT$$
+	$$REM$$<!-- =============================
+		> ajouté le 21.03.2011 c/o Lisbonne		
+	===========================-->$$END:REM$$
+	<a class="selection" href="$$URLBASE$$$$IF:REP:1$$/$$REP:1$$$$END$$/recherche,vendu.htm?lang=$$LANGUE$$" title="">$$LG:BIENVENDUS pcase$$</a>
+	$$END:FORM:IDTT$$
+	
+	<a class="rss" href="$$URLBASE$$/rss.xml?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" title="" onclick="window.open(this.href); return false;">$$LG:FLUXRSS$$</a>
+		
+	$$END:IMMOBW:ANN:QRY:SIPANIER$$
+	
+	$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+	
+		$$IF:IMMOBW:ANN:QRY:NBR$$
+		<a class="print" href="javascript:go('recherche,imprimer.htm?lang=$$LANGUE$$','panierv',850,500);" title="">$$LG:IMPRIMERSELEC pcase$$</a>
+		<a class="vider" href="javascript:viderPanier();" title="">$$LG:VIDERSELEC pcase$$</a>
+		<a class="retour" href="javascript:history.go(-1);" title="">$$LG:RETOURNER pcase$$</a><!--javascript:history.go(-1);-->
+		$$END:IMMOBW:ANN:QRY:NBR$$
+	
+		$$IF0:IMMOBW:ANN:QRY:NBR$$									
+							
+			$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSACSDISPOS$$
+			$$BIF:TRANSACSDISPOS$$	
+			$$DO$$
+			<a class="transacDispo" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TRANSACSDISPOS:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="">$$TRANSACSDISPOS:DESCRIPTIONLG pcase$$</a>
+			$$LOOP$$
+			$$BFIN$$
+													
+		$$END$$
+							
+	$$END:IMMOBW:ANN:QRY:SIPANIER$$
+	
+	<div class="clear"><!-- --></div>
+</div><!-- fin #RechHautLiens -->

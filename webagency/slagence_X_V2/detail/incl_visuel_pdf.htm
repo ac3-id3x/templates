@@ -1,0 +1,49 @@
+$$REM$$
+====================================================================================
+
+//// <summary>Page detail annonce : listes pdf annonce</summary>
+//// <remarks>
+//// <para>Picto PDF en .png fans CSS</para>
+//// <para>Liens vers PDF qui s'ouvre dans une popup</para>
+//// <para>Si l'agence ne donne pas de titre à son PDF, on écrit : Document PDF n+1 (parce que ça commence à 0)</para>
+//// <para>13.07.2010 On crée 2 liens différents sur le même fichier, pour les besoins du design sur le détail sento</para>
+//// </remarks>
+//// <update date="2010-07-13" author="lisbonne.siriphol">Update pour sento 2</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+
+====================================================================================
+$$END$$
+
+
+$$BIF:PDF$$
+	$$IF!:detail,sento.htm$detail,sento2.htm$detail,sento3.htm:REP:0$$
+		<div id="Pdf" class="autresVisuels_bg">							
+			<div id="Picto_Pdf"><!-- --></div>
+			<p>
+				$$PDF:NBR$$ document$$PDF:NBR pluriel$$ PDF disponible$$PDF:NBR pluriel$$<br />
+				$$DO$$
+				<a href="javascript:pop('$$PDF:URL$$',800,600,50,200);" title="">$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$Document PDF $$PDF:ORDRE exec XX+1$$$$END$$</a>
+				$$LOOP$$
+				<p class="clear"><!-- --></p>
+			</p>
+		</div>
+	$$END$$	
+	
+	$$IF=:detail,sento.htm$detail,sento2.htm$detail,sento3.htm:REP:0$$
+		<div id="Pdf" class="autresVisuels_bg">
+			$$PDF:NBR$$ document$$PDF:NBR pluriel$$ PDF disponible$$PDF:NBR pluriel$$<br />
+			$$DO$$
+			<a href="javascript:pop('$$PDF:URL$$',800,600,50,200);" title="">
+				<em class="picto_Pdf"><!-- --></em>
+				$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$Document PDF $$PDF:ORDRE exec XX+1$$$$END$$
+			</a>
+			$$LOOP$$
+			<div class="clear"><!-- --></div>
+		</div>
+	$$END$$
+
+$$BFIN$$
+
+$$BIF0:PDF$$
+<!--// pas de document pdf attache a cette annonce //-->
+$$BFIN$$

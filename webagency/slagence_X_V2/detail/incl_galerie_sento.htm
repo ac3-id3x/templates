@@ -1,0 +1,67 @@
+$$REM$$====================================================================
+//// <summary>Script galerie photo</summary>
+//// <remarks>
+//// <para>Source : http://www.coffeescripter.com/code/ad-gallery/</para>
+//// <para>CSS intégré dans styles/detail_sento.css </para>
+//// <para>2 fichiers js appelés dans incl_scripts.htm</para>
+//// <para>2010-03-23 : Intégration script FANCY BOX</para>
+//// </remarks>
+//// <update date="2010-03-23" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+====================================================================$$END$$
+
+
+$$IF0:IMMOBW:ANNONCE:IDPHOTO$$
+<div id="SansPhoto"><!-- --></div>
+$$END:SANSPHOTO$$
+
+<!--#include virtual="/detail/incl_fancybox.htm" -->
+		
+$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+$$BIF:GALERIE$$
+
+<script type="text/javascript">
+<!--
+  $(function() {
+   	$$DO$$
+   	$('img.image$$GALERIE:I exec XX-1$$').data('ad-desc', '$$GALERIE:DESCRIPTIF_FR$$');
+   	$('img.image$$GALERIE:I exec XX-1$$').data('ad-title', '$$LG:PHOT pcase$$ $$GALERIE:I$$/$$GALERIE:NBR$$');
+    $$LOOP$$   
+    var galleries = $('.ad-gallery').adGallery();
+    $('#switch-effect').change(
+      function() {
+        galleries[0].settings.effect = $(this).val();
+        return false;
+      }
+    );
+    $('#toggle-slideshow').click(
+      function() {
+        galleries[0].slideshow.toggle();
+        return false;
+      }
+    );
+  });
+//-->
+</script>
+$$BFIN$$
+
+$$BIF:GALERIE$$
+<div id="container">
+	<!--#include virtual="/detail/incl_coupdecoeur.htm" -->
+	<!--#include virtual="/detail/incl_sipromo.htm" -->
+	<!--#include virtual="/detail/incl_exclusif.htm" -->	
+	<div id="gallery" class="ad-gallery">
+		<div class="ad-image-wrapper"><!-- --></div>
+		<div class="ad-controls"><!-- --></div>
+		<div class="ad-nav">
+			<div class="ad-thumbs">
+				<ul class="ad-thumb-list" style="width: 370px; padding: 5px 20px 0 20px;">
+				  $$DO$$
+				  <li><a href="$$GALERIE:URL$$" style="display: block; width: 118px; padding: 10px 0; margin: 0 1px; background: url($$-$$detail/img_sento/galerie/thumb_bg.gif) 50% 50% no-repeat;" title=""><img src="$$GALERIE:CARRE_URL$$" class="image$$GALERIE:I exec XX-1$$" style="display: block; margin: auto;" alt="" title="" /></a></li>
+				  $$LOOP$$            
+				</ul><!-- fin .ad-thumb-list -->
+			</div><!-- fin .ad-thumbs -->
+		</div><!-- fin .ad-nav -->
+	</div><!-- fin #gallery -->
+</div><!-- fin #container -->
+$$BFIN$$

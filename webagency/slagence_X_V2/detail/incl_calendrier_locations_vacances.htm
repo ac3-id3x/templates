@@ -1,0 +1,91 @@
+$$REM$$ <!-- ====================================================================
+//// <summary>Calendrier locations vacances</summary>
+//// <remarks>
+//// <para>N'est pas le même fichier que celui de slagence_x/detail/corner.htm</para>
+//// </remarks>
+//// <update date="2011-02-17" author="lisbonne.siriphol">Update</update>
+==================================================================== -->$$END$$
+
+$$E:IMMOBW:DISPOVAC:REP:1$$
+$$IF=:1:IMMOBW:DISPOVAC:OK$$
+
+$$B:IMMOBW:CALENDRIERVAC:REP:1:9:ALIAS:CAL$$
+$$BIF:CAL$$
+<div id="CalendrierLocationsVacances">
+	<h6>$$LG:CALENDRIERDISPO pcase$$</h6>
+	
+	$$IF=:DETAIL,BASIC.HTM:REP:0$$
+	$$REM$$<!-- ===========================================================================
+	18.02.2011 c/o Lisbonne
+	script jquery : infobulle qui affiche "dispo" ou "non dispo" quand on survole une date
+	le jquery fait bugger les scripts des autres pages détail, donc on s'en sert que sur basic
+	======================================================================== -->$$END:REM$$
+	<link rel="stylesheet" type="text/css" media="screen" href="/z/webagency/slagence_X_V2/scripts/tinytips/styles/tinyTips.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/tinytips/js/jquery.tinyTips.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('td.dispo').tinyTips('$$IF=:FR:LANGUE$$Disponible$$END$$$$IF!:FR:LANGUE$$$$LG:DISPO2 pcase$$$$END$$');
+			$('td.nonDispo').tinyTips('$$LG:MININONDISPO pcase$$');
+		});
+	</script>
+	$$END:DETAIL,BASIC.HTM:REP:0$$
+	
+	$$IF!:DETAIL,BASIC.HTM:REP:0$$
+	$$REM$$<!-- ===========================================================================
+	18.02.2011 c/o Lisbonne
+	sur les autres pages que basic on met une légende
+	======================================================================== -->$$END:REM$$
+	<div id="CalendrierLegende">
+		<p class="dispo"><!-- --></p>
+		<p>$$LG:DISPO2 pcase$$</p>
+		<p class="nonDispo"><!-- --></p>
+		<p>$$LG:MININONDISPO pcase$$</p>
+		<div class="clear"><!-- --></div>
+	</div><!-- #CalendrierLegende -->
+	$$END:DETAIL,BASIC.HTM:REP:0$$
+	
+	$$DO$$	
+	$$IFNOTNULL:CAL:DEBUTMOIS$$
+		<div class="calendrierMois">
+		<h4>$$CAL:DATE date MMM_yyyy pcase $$</h4>
+		<table>
+			<tr>
+				<td><strong>$$LG:SAMEDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:DIMANCHE left 1 pcase$$</strong></td>
+				<td><strong>$$LG:LUNDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:MARDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:MERCREDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:JEUDI left 1 pcase$$</strong></td>
+				<td><strong>$$LG:VENDREDI left 1 pcase$$</strong></td>
+			</tr>
+			<tr>
+				$$CAL:DEBUTMOIS repeatcode <td></td>$$
+	$$END$$
+	$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:6:CAL:WEEKDAY$$<tr>$$END$$ $$END$$
+			<!-- //////////////////////////////////////////////// -->
+				<td class="$$IF:CAL:DISPO$$dispo$$END$$$$IF0:CAL:DISPO$$nonDispo$$END$$$$IF:CAL:FINRESA$$ debutResa$$END$$$$IF:CAL:DEBUTRESA$$ finResa$$END$$">
+					$$CAL:DATE day$$
+				</td>
+			<!-- //////////////////////////////////////////////// -->				
+	$$IFNULL:CAL:DEBUTMOIS$$ $$IF=:5:CAL:WEEKDAY$$</tr>$$END$$ $$END$$
+								
+	$$IFNOTNULL:CAL:FINMOIS$$
+		$$CAL:FINMOIS repeatcode <td></td>$$
+			</tr>
+		</table>
+	</div><!-- .calendrierMois -->		
+	$$END:CAL:DEBUTMOIS$$
+	$$LOOP$$
+	<div class="clear"><!-- --></div>
+</div><!-- #CalendrierLocationsVacances -->
+$$BFIN$$
+
+
+
+		
+					
+				
+		
+
+$$END:1:IMMOBW:DISPOVAC:OK$$

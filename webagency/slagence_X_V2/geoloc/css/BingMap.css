@@ -1,0 +1,230 @@
+$$REM$$====================================================================
+//// <summary>Fichier css par défaut pour cartes géoloc</summary>
+//// <remarks>
+//// <para>Fichier à ne pas démutualiser, appelé par styles/incl_styles.htm</para>
+//// <para>Marche sur les 3 géolocs : resultats annonces, détail annonce, carte agence</para>
+//// <para>Le fichier se stylise ainsi tout seul, mais possibilité de le customiser par commun.css</para>
+//// <para>CSS externe chez BING : http://ecn.dev.virtualearth.net/mapcontrol/v6.2/css/bin/6.2.2008082210001.41/en/mapcontrol.css</para>
+//// </remarks>
+//// <update date="2010-05-05" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<!--#include virtual="/geoloc/incl_BingMap_param.htm" -->
+
+$$REM$$ <!--==============================>> CARTE GEOLOC ANNONCES, DETAIL, AGENCE <<================================--> $$END$$
+$$REM$$ <!-- design outils carte --> $$END$$												$$INIT:MAPDASHBOARDSIZE=VEDashboardSize.Small$$ 	$$REM$$<!-- Valeurs possibles : VEDashboardSize.Tiny, VEDashboardSize.Small, VEDashboardSize.Normal -->$$END:REM$$
+
+$$REM$$ <!-- hauteur carte recherche --> $$END$$										$$A:BINGMAPRECHERCHEHEIGHT=500px$$
+$$REM$$ <!-- hauteur carte détail --> $$END$$												$$A:BINGMAPDETAILHEIGHT=300px$$
+$$REM$$ <!-- hauteur carte agences --> $$END$$											$$A:BINGMAPAGENCESHEIGHT=300px$$
+$$REM$$ <!-- niveau zoom agences --> $$END$$												$$A:ZOOMAGENCESDEFAUT=$$	$$REM$$<!-- à 15 par défaut si on n rempli pas cette valeur -->$$END:REM$$
+$$REM$$ <!-- pin's agence --> $$END$$																$$A:BINGMAPLOGOAGENCES=/z/webagency/slagence_X_V2/geoloc/img/@@GEOLOCCOLOR@@_pin_agence.png$$
+$$REM$$ <!-- resultat annonces : fleche grise --> $$END$$						$$A:GEOLOC_PICTO_FLECHE=/z/webagency/slagence_X_V2/geoloc/img/0_picto_fleche_grise.gif$$
+
+
+
+$$REM$$ /* === conteneur general === */ $$END:REM$$
+#MapMicrosoft{float: none; display: block; background: #fff; padding: 10px; border: 1px solid #ccc; margin: 0 0 20px 0;}
+#MapMicrosoft *{text-decoration: none; list-style: none;}
+#MapMicrosoft .clear{clear: both; height:0;}
+
+$$REM$$ /* ==== texte avant carte ==== */ $$END:REM$$
+#MapMicrosoft #MapHead{color: #666; padding: 0 0 10px 0;}
+#MapMicrosoft #MapHead *{color: #666;}
+#MapMicrosoft #MapHead h3{*position: relative; /* << debugg IE */ color: $$TXT_TITRE_RUBRIQUE$$; padding: 5px 0 0 0; font-weight: bold; font-size: 1.4em; background: none; border: none;}
+.geolocAnnonces h3{font-size: 20px;}
+#MapMicrosoft #MapHead p.criteres{padding: 5px 0 0 0; margin: 0; font-size: 1.2em;}
+#MapMicrosoft #MapHead ul{float: left; padding: 0; margin: 0; list-style: none;}
+#MapMicrosoft #MapHead ul *{font-weight: bold; color: $$TXT_TITRE_RUBRIQUE$$; font-size: 1.5em; list-style: none;}
+#MapMicrosoft #MapHead ul li{float: left; background: url('$$GEOLOC_PICTO_FLECHE$$') left no-repeat; padding: 0 0 0 8px; margin: 0 15px 0 0;}
+
+
+$$REM$$ /* ==== texte après carte ==== */ $$END:REM$$
+#MapMicrosoft .geolocInfo{margin: 5px 0; padding: 5px 0 7px 30px; background: url('z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_info.gif') 0 1px no-repeat; color: #666;}
+
+
+$$REM$$ /* ==== conteneur carte ==== */ $$END:REM$$
+#MapMicrosoft #MapContent{position:relative; vertical-align: middle; overflow: hidden; border: 1px solid #ccc;}
+#MapMicrosoft #MapContent *{font-size: 11px;}
+#MapMicrosoft #MapContent #TheBingMap{position:relative; margin: 0 0 0 80px;}/* correspond au decalage de la legende */
+
+
+$$REM$$ /* ==== légende " Niveau de Zoom " ==== */ $$END:REM$$
+#MapContent #MapNiveauZoom{position:absolute; left: 0; z-index: 2; width: 145px; height: 100%; background: url('z/webagency/slagence_X_V2/geoloc/img/0_titre_bg.gif') left bottom repeat-x #fff; border-right: 1px solid #aaa;}
+/**/
+#MapContent #MapNiveauZoom h4{text-align: center; padding: 10px 0; margin: 0 0 12px 0; color: $$TXT_TITRE_RUBRIQUE$$; font-size: 14px; background: url('z/webagency/slagence_X_V2/geoloc/img/0_titre_bg.gif') left bottom repeat-x #fff; border-bottom: 1px solid #ccc;}
+#MapContent #MapNiveauZoom p{color: $$TXT_TITRE_RUBRIQUE$$; padding: 15px 0 17px 65px; margin: 0;}
+#MapContent #MapNiveauZoom p span{display: block; margin: 0 0 -2px 0; color: #666; font-size: 10px;}
+/* conteneur pins legende */
+#MapContent #MapNiveauZoom .niveauZoom{position:absolute; cursor: default;}
+#MapContent #MapNiveauZoom .pinPays{margin: 295px 0 0 0;}
+#MapContent #MapNiveauZoom .pinReg{margin: 240px 0 0 8px;}
+#MapContent #MapNiveauZoom .pinDep{margin: 180px 0 0 8px;}
+#MapContent #MapNiveauZoom .pinVil{margin: 119px 0 0 8px;}
+#MapContent #MapNiveauZoom .pinQrt{margin: 64px 0 0 11px;}
+#MapContent #MapNiveauZoom .pinAnn{margin: 9px 0 0 11px;}
+/**/
+
+
+/* CSS BING > conteneur zoom + - (seulement sur carto annonces et detail annonce) */
+.geolocAnnonces #MSVE_dashboardContainer{left: 65px; z-index: 0;}/* toolbar Small + Tiny > correspond au decalage de la legende */
+.geolocAnnonces #MSVE_navAction_container{left: 65px;}/* toolbar Normal > correspond au decalage de la legende */
+/* CSS BING > conteneur logo  + - (seulement sur carto annonces et detail annonce) */
+.geolocAnnonces #MSVE_PoweredByLogo{margin: 0 0 0 85px;}/* correspond au decalage de la legende */
+/* CSS BING > echelle distances */
+.MSVE_ScaleBar{right: 100px;}/* correspond au decalage de la legende */
+/* CSS BING > copyright cache */
+.MSVE_Copyright{display: none;}
+/* CSS BING > echelle km cachee */
+.MSVE_ScaleBar{display: none;}
+/* message erreur zero annonce */
+#TheBingMap_vemessagepanel_body{text-align: center;}
+
+
+$$REM$$
+/* ==== spécial détail annonce ==== */$$END:REM$$
+.geolocDetailAnnonce{width: 250px;}
+.geolocDetailAnnonce h3{font-size: 1.1em; color: $$TXT_TITRE_RUBRIQUE$$;}
+/* border Map */
+#AnnonceBingMap{}
+
+$$REM$$
+/* ================= pin's ================= */$$END:REM$$
+.pinPays{width:68px; height: 32px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_pays.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_pays.png', sizingMethod='scale');}
+.pinReg{width:52px; height: 30px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_region.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_region.png', sizingMethod='scale');}
+.pinDep{width:52px; height: 31px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_departement.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_departement.png', sizingMethod='scale');}
+.pinVil{width:52px; height: 36px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_ville.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_ville.png', sizingMethod='scale');}
+.pinQrt{width:44px; height: 35px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_quartier.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_quartier.png', sizingMethod='scale');}
+.pinAnn{width:44px; height: 34px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_annonce.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_annonce.png', sizingMethod='scale');}
+$$REM$$ Classe pin agence generale 			$$END$$ .pinAgn{width:44px; height: 34px; background:url('$$BINGMAPLOGOAGENCES$$') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$$BINGMAPLOGOAGENCES$$', sizingMethod='scale');}
+$$REM$$ Classe pin agence personnalisée $$END$$ /*.pinAgn{width:44px; height: 34px; background:url('/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_agence_perso.png') no-repeat 0 0 !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_pin_agence_perso.png', sizingMethod='scale');}*/
+/* commun à tous les pins */
+.pinPays,.pinReg,.pinDep,.pinVil,.pinQrt,.pinAnn,.pinAgn{margin: -16px 0 0 -5px; padding: 0 0 0 1px; overflow: hidden; text-align:center; font: bold 12px arial; cursor: pointer;}
+.pinPays *,.pinReg *,.pinDep *,.pinVil *,.pinQrt *,.pinAnn *,.pinAgn *{color: #fff;}
+/* pin text */
+.pinPays .text,
+.pinReg .text,
+.pinDep .text,
+.pinVil .text,
+.pinQrt .text,
+.pinAgn .text,
+.pinAnn .text{padding: 5px 0 0 0;}
+/* on force le hover */
+.pinPays .text a:hover,
+.pinReg .text a:hover,
+.pinDep .text a:hover,
+.pinVil .text a:hover,
+.pinQrt .text a:hover,
+.pinAgn .text a:hover,
+.pinAnn .text a:hover{color: #fff;}
+
+$$REM$$
+/* ================= conteneur message "chargement des annonces, merci de patienter" ================= */$$END:REM$$
+#LoadingDiv{position:absolute; top: 0; margin: auto; z-index: 1;}
+#LoadingDiv table{width: 100%; height: 100%; margin: 0 0 0 80px;}/* correspond au decalage de la legende */
+#LoadingDiv table#LoaderBg{position: absolute; top: 0; background: url('z/webagency/slagence_X_V2/geoloc/img/0_loading.gif') 50% 25% no-repeat #000; filter:alpha(opacity=50);	-moz-opacity:0.5;	-khtml-opacity: 0.5; opacity: 0.5;}
+#LoadingDiv table#LoaderMsg{position: absolute; top: 0;}
+#LoadingDiv table#LoaderMsg td{text-align: center; vertical-align: middle; font-size: 16px; font-weight: bold; color: #fff;}
+
+
+
+
+$$REM$$
+/*====================================================================
+//// POPUP CONTENEUR ANNONCES
+			> css externe made in Bings : http://ecn.dev.virtualearth.net/mapcontrol/v6.2/css/bin/6.2.2008082210001.41/en/mapcontrol.css
+			> reprendre seulement les styles qu'on veut modifier
+====================================================================*/
+$$END$$
+
+$$REM$$
+/* ================= popup ================= 
+			> repositionnement du popup qui était trop bas par rapport au pin
+			> restyling titres et textes
+*/$$END:REM$$
+.ero-leftBeak{margin: -8px 0 0 -15px;}
+
+
+$$REM$$
+/* ================= popup liste annonces ================= */$$END:REM$$
+/* CSS BING > alignement contenu des popup */
+.ero-body,
+.ero-body *{padding: 0; margin: 0;}
+.ero-previewArea{text-align: left;}
+.ero-previewArea *{text-decoration: none;}
+.VE_Pushpin_Popup_Title{font-weight: bold; font-size: 16px; color: $$TXT_TITRE_RUBRIQUE$$; padding: 0; margin: 0;}
+.VE_Pushpin_Popup_Body *{color: #666;}
+.VE_Pushpin_Popup_Body a{display: inline; color: $$TXT_TITRE_RUBRIQUE$$;}
+/* lien nb annonces */
+.VE_Pushpin_Popup_Body p.nbAnnBingMap{color: #666; background: url($$GEOLOC_PICTO_FLECHE$$) left no-repeat; padding: 3px 8px;}
+/* lien zoomer sur ces annonces */
+.VE_Pushpin_Popup_Body .zoomAnnBingMap{padding: 3px 0;}
+.VE_Pushpin_Popup_Body .zoomAnnBingMap a{font-weight: bold; text-decoration: underline; background: url($$GEOLOC_PICTO_FLECHE$$) left no-repeat; padding: 0 8px;}
+.VE_Pushpin_Popup_Body .zoomAnnBingMap a:hover{text-decoration: none;}
+/* ============= conteneur annonce ============= */
+#listeann{}
+#listeann .clear{clear: both;}
+/* si 1 ann > on ne conditionne pas la largeur ni la hauteur */
+#listeann #ListeAnn_Ctn{height: 180px; overflow: auto;}
+#listeann #ListeAnn_CtnSolo{}
+#listeann #ListeAnn_Ctn .ad{width: 205px;}
+#listeann #ListeAnn_CtnSolo .ad{width: 225px;}
+/**/
+#listeann .ad{margin: 1px 0 5px 0; border: 1px solid #eee; background: url(z/webagency/slagence_X_V2/geoloc/img/0_popup_ann_bg.gif) bottom left repeat-x #fff;}
+#listeann .ad table{margin: 2px; border-collapse: collapse;}
+#listeann .ad table td{border-collapse: collapse;}
+#listeann .ad table .photogeoloc{width: 70px; background: url(z/webagency/slagence_X_V2/geoloc/img/0_popup_photo_bg.gif) 50% 50% no-repeat #eee;}
+#listeann .ad table .photogeoloc a{display: block; height: 100px; border: 1px solid #fff;}
+/**/
+#listeann .ad table .descGeoloc{padding: 0 0 0 3px;}
+#listeann .ad table .descGeoloc *{margin: 0; padding: 0; font-weight: bold; font-size: 11px; color: #aaa;}
+#listeann .ad table .descGeoloc span{font-weight: normal;}
+
+#listeann .ad table .descGeoloc .prixGeoloc{font-size: 16px; color: $$TXT_TITRE_RUBRIQUE$$;}
+#listeann .ad table .descGeoloc .villeGeoloc{}
+#listeann .ad table .descGeoloc .libelleGeoloc{color: $$TXT_TITRE_RUBRIQUE$$;}
+#listeann .ad table .descGeoloc .surfaceGeoloc{}
+#listeann .ad table .descGeoloc .nbPiecesGeoloc{}
+#listeann .ad table .descGeoloc .lienGeoloc{padding: 5px 0 0 0;}
+#listeann .ad table .descGeoloc .lienGeoloc a{font-size: 10px; text-decoration: underline; font-weight: normal; color: $$TXT_TITRE_RUBRIQUE$$;}
+#listeann .ad table .descGeoloc .lienGeoloc a:hover{text-decoration: none;}
+/* lien : voir la liste des annonces */
+#listeann .lienlisteGeoloc{padding: 15px 0 0 0;}
+#listeann .lienlisteGeoloc a{font-weight: bold; text-decoration: underline; background: url($$GEOLOC_PICTO_FLECHE$$) left no-repeat; padding: 0 8px;}
+#listeann .lienlisteGeoloc a:hover{text-decoration: none;}
+
+
+$$REM$$
+/* ================= popup adresses agence ================= */$$END:REM$$
+.descGeolocAdresse{padding: 0 0 5px 0;}
+.descGeolocTel,
+.descGeolocEmail,
+.descGeolocUrl{padding: 1px 0 1px 22px;}
+.descGeolocTel{font-weight: bold; color: $$TXT_TITRE_RUBRIQUE$$; background: url('z/webagency/slagence_X_V2/geoloc/img/0_picto_tel.gif') left no-repeat;}
+/**/
+.descGeolocEmail{font-weight: bold; font-size: 1.2em; color: $$TXT_TITRE_RUBRIQUE$$; background: url('z/webagency/slagence_X_V2/geoloc/img/0_picto_email.gif') left no-repeat;}
+.descGeolocEmail a{}
+.descGeolocEmail a:hover{color: #666;}
+/**/
+.descGeolocUrl{background: url('z/webagency/slagence_X_V2/geoloc/img/0_picto_url.gif') left no-repeat;}
+.descGeolocUrl a{color: #666;}
+.descGeolocUrl a:hover{color: $$TXT_TITRE_RUBRIQUE$$;}
+/**/
+.descGeolocDetail{text-align: right; font-size: 10px; padding: 10px 0 0 0;}
+.descGeolocDetail a{text-decoration: underline;}
+.descGeolocDetail a:hover{text-decoration: none;}
+
+
+$$REM$$
+/* ================= picto .gif de chargement ================= */$$END:REM$$
+#flyoutloading{display: block; margin: auto;}
+
+
+$$REM$$
+/* ================= carto agences ================= */$$END:REM$$
+#TheBingMap_vemessagepanel{border: none; background: none;}
+.VE_Message_Title{display: none;}
+.VE_Message_Close{display: none;}
+.VE_Message_Body{float: left; padding: 0; height: auto; padding: 16px 0 15px 0; color: #fff; font-size: 14px; font-weight: bold; background: url('z/webagency/slagence_X_V2/geoloc/img/$$GEOLOCCOLOR$$_erreur_bg.gif') 50% 50% no-repeat;}
+    
+    

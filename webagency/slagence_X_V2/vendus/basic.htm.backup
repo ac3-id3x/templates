@@ -1,0 +1,162 @@
+$$INCL:HAUT.HTM$$      
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,recherche.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+	@import url( "/styles,recherche_macros_light.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+	@import url( "/styles,recherche_generallight.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+		@import url( "/styles,recherche_basiclight.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+    @import url( "/styles,vendus_basiclight.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+</style>$$
+
+
+
+
+
+
+<!-- multi pages ----------------------------------------- -->
+	$$IF:BCLANN:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/vendus/incl_nb_pages.htm" -->
+	</div>
+	<!-- fin #RechPagesHaut -->
+	$$END:BCLANN:NBRPAGES$$
+	$$REM$$
+	<!--#include virtual="/vendus/incl_tri.htm" -->
+	$$END$$
+
+
+
+
+
+
+
+
+
+$$B:IMMOBW:KA-BIENS-VENDUS:~idPublication:QRY:IDPUBLICATION:~ci:QRY:CI:~cp:QRY:CP:~div:QRY:DIV:~idTypeBien:QRY:IDTYPEBIEN:~tri:QRY:TRI:~forceDiffusion:QRY:FORCEDIFFUSION:ALIAS:BCLANN$$
+$$BIF:BCLANN$$
+$$DO:1:7$$
+$$IF:BCLANN:IDPUBLICATIONORIGINAL$$
+	$$A:IDPUBLICATIONANN=@@BCLANN:IDPUBLICATIONORIGINAL@@$$
+$$END$$
+
+$$IF0:BCLANN:IDPUBLICATIONORIGINAL$$
+	$$A:IDPUBLICATIONANN=@@BCLANN:IDPUBLICATION@@$$
+$$END$$	
+$$A:IDS=/@@IDPUBLICATIONANN@@/@@BCLANN:IDANNONCE@@/$$
+
+$$REM$$ <!-- include contenu ------------------------------ --> $$INCL:RECHERCHE_CNT.HTM$$ $$END$$	
+
+<div id="RechResultat">
+<div class="blocAnnonce" id="Annonce$$IMMOBW:ANN:QRY:IDANNONCE$$">	
+  	<div class="typeBien_Ctn">		
+  			  	<p class="typeBien">$$BCLANN:TITRE pcase htmlencode$$&nbsp;
+  	  			$$IF=:4:BCLANN:IDTYPEBIENVENDU$$
+  	  				$$IF:BCLANN:SURFACETERRAIN$$$$BCLANN:SURFACETERRAIN$$ m&sup2; $$END$$
+  	  			$$END$$
+  	  			$$IF!:4:BCLANN:IDTYPEBIENVENDU$$
+  	  				$$IF:BCLANN:SURFACECARREZ$$$$BCLANN:SURFACECARREZ$$ m&sup2; $$END$$
+  	  				$$IF0:BCLANN:SURFACECARREZ$$
+  	  					$$IF:BCLANN:SURFACEHABITABLE$$( $$BCLANN:SURFACEHABITABLE$$ m&sup2; )$$END$$
+  	  				$$END$$
+  	  			$$END$$
+  	  			</p>
+  	  			
+      	  	<p class="prixBien">
+      				Prix vendu : $$BCLANN:PRIXVENTEFAI formatnumber 0$$&euro; <span class="fai">(FAI*)</span>
+      			</p>
+      			<p class="clear"></p>
+  	</div>
+	
+<div class="infosBien">	
+  $$REM$$ <!-- include ville ----------------------------- -->	$$INCL:RECHERCHE_CNT_VILLE.HTM$$ $$END$$						
+  	<p class="ville">
+      $$IF!:3:TT$$
+  	    $$BCLANN:VILLE htmlencode$$ ($$BCLANN:CP$$)  
+          $$IF=:97:BCLANN:CP left 2$$($$IF=:973:BCLANN:CP left 3$$$$LG:GUYANE pcase$$$$END$$
+          $$IF=:974:BCLANN:CP left 3$$$$LG:REUNION pcase$$$$END$$
+          $$IF=:971:BCLANN:CP left 3$$$$LG:GUADELOUPE pcase$$$$END$$
+          $$IF=:972:BCLANN:CP left 3$$$$LG:MARTINIQUE pcase$$$$END$$)$$END$$
+  			  $$IF!:250:BCLANN:IDPAYS$$ $$BCLANN:IDPAYS getpays$$$$END$$
+    $$END$$
+    </p>
+   <!-- end infosville //-->	   
+   	<p class="dateVente">
+  			Vendu en : $$BCLANN:DTMUTATION date MMMM_yyyy$$
+  	</p>  	
+  	<p class="clear"></p>	
+</div>
+	
+	
+	
+<div class="infosAgence">			
+$$REM$$ <!-- include contact ----------------------- -->	$$INCL:RECHERCHE_CNT_CONTACT.HTM$$ $$END$$
+
+
+    $$IF:BCLANN:COOR-NOM$$
+        <p class="nomAgence">$$BCLANN:COOR-NOM htmlencode$$</p>
+    $$END$$
+    $$IF0:BCLANN:COOR-NOM$$
+        <p>Nous n'avons actuellement pas d'informations concernant l'agence immobilière qui a vendu ce bien</p>
+    $$END$$
+
+    <p class="telAgence">        
+            $$IF!:1:PAGE:CFG_OPT_INTER$$$$IF:BCLANN:COOR-TELEPHONE$$$$BCLANN:COOR-TELEPHONE formattel replace / <br/> replace ¤ &nbsp;$$$$END$$$$END$$
+            $$IF=:1:PAGE:CFG_OPT_INTER$$$$IF:BCLANN:COOR-TELEPHONE$$;$$BCLANN:COOR-TELEPHONE tel2inter replace / <br/> replace ¤ &nbsp;$$$$END$$$$END$$
+    </p>  
+
+    $$IF:BCLANN:COOR-EMAIL$$
+        <p class="mailAgence">$$BCLANN:COOR-EMAIL  encodemail javascript full$$</p>
+    $$END$$    
+    
+    
+      <div class="liens">
+      $$IF:BCLANN:COOR-IDPUBLICATION$$
+      <a href="$$URLBASE$$/agence-immobiliere.htm?idp=$$BCLANN:COOR-IDPUBLICATION$$$$IF:FORM:TRI$$&amp;tri=$$FORM:TRI$$$$END$$&amp;lang=$$LANGUE lcase$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:PLUSDINFOS pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LG:LIEN:AGEN pcase$$</a>
+      $$IF:1:MULTI$$
+	      $$IF:BCLANN:NBRESULT$$      
+	      	<a href="/$$BCLANN:COOR-IDPUBLICATION$$/vendus,test.htm">$$LG:BIENVENDUS pcase$$</a>
+	      $$END$$
+      $$END$$
+      $$END$$
+      </div>
+         
+    
+$$REM$$  <!-- url site -->
+            $$IF:BCLANN:COOR-URL$$
+            <span class="link_ext"><a href="$$BCLANN:COOR-URL$$" onclick="window.open(this.href, '_blank'); return false;" class="red_link">$$LG:SITEWEB pcase$$</a></span>
+            $$END$$
+$$END:REM$$
+
+</div><!-- end infosagence//-->
+
+
+
+<!-- end infoscontenu //-->	
+</div>
+</div>
+
+$$LOOP$$
+$$BFIN$$
+
+<!-- si pas d annonces vendus -->
+$$BIF0:BCLANN$$
+    $$A:ROBOTS=<meta name="robots" content="noindex" />$$
+    <div class="ann_ann">
+        Aucun bien vendu ne correspond à votre recherche
+    </div>
+$$BFIN$$
+
+
+Ces informations proviennent des agences immobili&egrave;res clientes de SeLoger.com et sont donn&eacute;es &agrave; titre indicatif<br />
+( * ) Prix net, hors frais notari&eacute;s, d'enregistrement et de publicit&eacute; fonci&egrave;re
+
+
+<!-- multi pages ----------------------------------------- -->
+	$$IF:BCLANN:NBRPAGES$$
+	<div id="RechPagesBas">
+		<!--#include virtual="/vendus/incl_nb_pages.htm" -->
+	</div>
+	<!-- fin #RechPagesBas -->	
+	$$END:BCLANN:NBRPAGES$$	
+
+$$INCL:BAS.HTM$$

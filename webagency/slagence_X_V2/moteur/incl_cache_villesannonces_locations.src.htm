@@ -1,0 +1,38 @@
+<!-- [ttl: 1d] -->
+££REM££
+=====================================================================================
+//// <summary>Liste des villes ayant des annonces de location</summary>
+//// <remarks>
+//// <para>Ce bloc de code est caché en cache 'GEN' pendant 1 jour</para>
+//// <para>Fichier appelé par moteur, pour l'instant seulement sites laforêt</para>
+//// <para>Evolution sur sites agences en attente</para>
+//// </remarks>
+//// <update date="2010-06-30" author="lisbonne.siriphol">Correction fichier</update>
+//// <update date="2009-06-29" author="lisbonne.siriphol">Déplacement fichier</update>
+=====================================================================================
+££END:REM££
+
+$$B:IMMOBW:VILLESANNONCES:::1$$
+$$BIF:IMMOBW:VILLESANNONCES:$$
+
+	££IF=:1:PAGE:LISTEDEROULANT££	
+		<select name="ci">
+			<option value="">££LG:SELECVILLE££</option>
+			$$DO$$
+			<option value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$">$$IMMOBW:VILLESANNONCES::VILLEAFF$$ ££IF0:PAGE:LISTEVILLE:SANSCP££($$IMMOBW:VILLESANNONCES::CODEINSEE codeinsee2cps$$)££END:PAGE:LISTEVILLE:SANSCP££</option>
+			$$LOOP$$
+		</select>	
+	££END:PAGE:LISTEDEROULANT££
+	
+	££IF!:1:PAGE:LISTEDEROULANT££
+	$$DO$$
+	$$IF:IMMOBW:VILLESANNONCES::CODEINSEE$$
+	<label class="formInputCheckboxVilles" id="ci_$$IMMOBW:VILLESANNONCES::CODEINSEE$$">
+			<input type="checkbox" name="ci" value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$" />
+			$$IMMOBW:VILLESANNONCES::VILLEAFF$$££IF0:PAGE:LISTEVILLE:SANSCP££ ($$IMMOBW:VILLESANNONCES::CODEINSEE codeinsee2cps$$)££END:PAGE:LISTEVILLE:SANSCP££
+			££IF0:PAGE:LISTEVILLE:SANSNBANN££<em>($$IMMOBW:VILLESANNONCES::NBANN$$ annonce$$IMMOBW:VILLESANNONCES::NBANN pluriel$$)</em>££END:PAGE:LISTEVILLE:SANSNBANN££
+	</label>
+	$$END:IMMOBW:VILLESANNONCES::CODEINSEE$$
+	$$LOOP$$	
+	££END:PAGE:LISTEDEROULANT££
+$$BFIN$$

@@ -1,0 +1,153 @@
+<script type="text/javascript" src="/z/webagency/slagence_X_V2/scripts/prototype.js"></script>
+<script type="text/javascript">
+	<!--
+/* ============================================ */
+	function hasOptions(obj)
+		{
+	    if (obj!=null && obj.options!=null) { return true; }
+	    return false;
+		}
+/* ============================================ */
+	function sortSelect(obj)
+		{
+	    var o = new Array();
+	    if (!hasOptions(obj)) { return; }
+	    for (var i=0; i<obj.options.length; i++)
+	    {
+		    o[o.length] = new Option( obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected) ;
+		}
+	    if (o.length==0) { return; }
+	    o = o.sort( 
+		    function(a,b)
+		    { 
+			    if ((a.text+"") < (b.text+"")) { return -1; }
+			    if ((a.text+"") > (b.text+"")) { return 1; }
+			    return 0;
+			});
+		
+	    for (var i=0; i<o.length; i++)
+	    {
+		    obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
+	    }
+		}
+/* ============================================ */
+	function moveSelectedOptions(from,to)
+		{
+	    // Unselect options from the source if the destination already contains the maximum number of option (third argument)
+	    if (arguments.length>2)
+	    {
+		    var destinationMaxLength = arguments[2];
+		    var overload = false;
+		}
+	    // Move them over
+	    if (!hasOptions(from)) { return; }
+	    for (var i=0; i<from.options.length; i++)
+	    {
+		    var o = from.options[i];
+		    if (o.selected)
+		    {
+			    if (!hasOptions(to))
+			    {
+			        var index = 0;
+			    }
+			    else
+			    {
+			        var index=to.options.length;
+	                if (destinationMaxLength)
+	                {
+			            if (index>=destinationMaxLength)
+			            {
+			                overload = true;
+			                o.selected = false;
+			                continue;
+			            }
+			        }
+			    }
+			    to.options[index] = new Option( o.text, o.value, false, false);
+			}
+	    }
+	    // Delete them from original
+	    for (var i=(from.options.length-1); i>=0; i--)
+	    {
+		    var o = from.options[i];
+		    if (o.selected)
+		    {
+			    from.options[i] = null;
+		    }
+	    }
+		
+	    sortSelect(from);
+	    sortSelect(to);
+		
+	    from.selectedIndex = -1;
+	    to.selectedIndex = -1;
+		
+		if(overload)
+			alert('Vous ne pouvez sélectionner que ' + destinationMaxLength + ' villes au maximum');
+		}
+/* ============================================ */
+	function Ajouter()
+       {
+       	choixMax = 5;
+           moveSelectedOptions(document.getElementById('Liste1'), document.getElementById('ci'), choixMax);
+       }
+/* ============================================ */
+	function Effacer()
+       {
+           moveSelectedOptions(document.getElementById('ci'), document.getElementById('Liste1'));
+       }
+/* ============================================ */   
+/* FA - le 25/11/2010 - Ancienne fonction checkTheFlo avec usurpation de mon nom !!! */ 
+//	function checkTheFlo()
+//       {
+//       	var elt_list = document.getElementById('Liste2');
+//       	var elt_ci = document.getElementsByName('ci');
+//       	
+//
+//       	for(var i=0; i<elt_list.length;i++)
+//       	{
+//       			elt_ci.value += elt_list.options[i].value+',';
+//       		
+//       		alert(elt_ci.value);
+//       	}
+//       }
+/* ============================================ */
+/* FA - le 25/11/2010 - Nouvelle fonction checkTheFlo avec usurpation de mon nom !!! */
+function checkTheFlo()
+{
+ 	var elt_list = document.getElementById('ci');
+ 	var listeCI = '';
+ 	
+ 	if(elt_list)
+ 	{
+   	for(var i=0; i<elt_list.length;i++)
+   	{
+   		elt_list.options[i].selected = true;
+   		listeCI += elt_list.options[i].value+',';
+   		
+
+   	}
+   	document.getElementById('ci').value=listeCI;
+	}
+}
+/* ============================================ */  
+	function affiche_listevilles( monurl, mesparametres, elt ) {
+					mesparametres = "lang=$$LANGUE$$&idtt=$$FORM:IDTT$$&dep=" + elt.value;
+					var liste = document.getElementById("listevil");
+					if(elt.value == ""){
+						liste.style.display = "none";
+					}else{
+						liste.style.display = "inline";
+						}
+					new Insertion.Top('listevil', '<span class="patientez">Patientez, chargement en cours...<br/></span>');
+					
+					var myAjax = new Ajax.Updater(
+					'listevil', 
+					monurl, 
+							{
+								method: 'get', 
+								parameters: mesparametres
+							});	
+				}
+	//-->
+</script>

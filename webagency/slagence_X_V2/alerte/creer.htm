@@ -1,0 +1,351 @@
+$$REM$$====================================================================
+//// <summary>Page 1/4 et 2/4 de creation d'Alerte Immo</summary>
+//// <remarks>
+//// <para>Lien obligatoirement et exclusivement sur cette premiere page : alerte,creer.htm?step=1</para>
+//// <para>Utilise le meme fichier .css que tous : creer.css</para>
+//// <para>Pages includes : incl_haut_alerteimmo.htm + incl_bas_alerteimmo.htm + incl_scripts_alerteimmo.htm</para>
+//// <para>Pages reliees : creer.htm + validation.htm + validation_ok.htm</para>
+//// <para>Page template envoyee par mail apres validation : inscription.htm</para>
+//// <para>Liens contenus dans l'Alerte Immo  : correspondance.htm + modification.htm + desinscription.htm</para>
+//// <para>A la difference de la precedente version, cette alerte peut etre creee directement sans passer par la page des resultats de recherche</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = choix IDTT, 2 = choix autres criteres, 3 = envoi coordonnees perso</para>
+//// </remarks>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation V1</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+====================================================================$$END$$
+$$SET:PAGE:IDT=ALERTEIMMO$$
+<!--#include virtual="/alerte/incl_haut_alerteimmo.htm"-->
+
+$$IF=:1:FORM:STEP$$
+<table>
+	<tr>			
+		<td id="Etape01">				
+			<h3>$$LG:PARAMALERTEIMMO$$</h3>				
+			<h2 id="Step01">$$LG:CHOIXTYPERECHERCHE pcase$$</h2>
+			
+			<form name="form" action="/$$REP:0$$" method="get" >
+				<input type="hidden" name="step" value="2" />				
+				
+				$$IF:FORM:LANG$$<input type="hidden" name="lang" value="$$FORM:LANG$$" />$$END:FORM:LANG$$
+				$$B:IMMOBW:NBANN_VILLES:ALIAS:ALERTEIDTT:~tri:IDTYPETRANSACTION$$
+					$$BIF:ALERTEIDTT$$
+						$$DO$$
+							$$IFPREV:ALERTEIDTT:IDTYPETRANSACTION$$			
+								<label id="AlerteIdtt$$ALERTEIDTT:IDTYPETRANSACTION$$" class="alerteIdtt"><input type="radio" name="idtt" value="$$ALERTEIDTT:IDTYPETRANSACTION$$"$$IF=:2:ALERTEIDTT:IDTYPETRANSACTION$$ checked="checked"$$END$$ /> $$ALERTEIDTT:TYPETRANSACTION pcase$$</label>
+							$$END:IFPREV$$
+					$$LOOP$$
+				$$BFIN$$					
+				<input type="submit" class="alerteBtValid" value="$$LG:ETAPESUIVANTE pcase$$" />
+			</form>
+		</td>
+		<td class="alerteInfo_wrap">
+			<div class="alerteInfo">
+				<div class="alerteInfo_ctn">
+					<h4>
+						$$IF=:FR:LANGUE$$L'Alerte Immo, qu'est-ce que c'est ?$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$Immo Alert : how does it work ?$$END:LANGUE$$						
+					</h4>
+					<div class="alerteInfo_txt">
+						$$IF=:FR:LANGUE$$L'Alerte Immo vous permet d'être prévenu(e) par courrier électronique dès qu'une nouvelle annonce correspondant à vos critères de recherche est diffusée sur le site <strong>$$SRV$$</strong>. 
+						<br /><br />
+						<strong>L'inscription est gratuite et rapide.</strong> Vous pourrez stopper les envois d'annonces en cliquant sur un simple lien situé au bas des emails Alerte Immo.
+						$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$The Immo Alert informs you via email whenever a new announce matching your search criteria is published on our present website : <strong>$$SRV$$</strong>. 
+						<br /><br />
+						<strong>Registering is simple and fast.</strong> You can easily unsubscribe by clicking on the unsubscritpion link you will find at the end of each e-mail.
+						$$END:LANGUE$$
+					</div>
+				</div>				
+				<div class="alerteInfo_foot"><!-- --></div>
+			</div>
+		</td>
+	</tr>
+</table>
+$$END:1:FORM:STEP$$
+	
+
+$$IF=:2:FORM:STEP$$
+<table>
+	<tr>			
+		<td id="Etape01">
+			<!-- choix idtt -->
+			<h3>$$IF0:FORM:MODIF$$$$LG:PARAMALERTEIMMO$$$$END$$$$IF=:1:FORM:MODIF$$$$LG:MODIFALERTEIMMO$$$$END$$</h3>				
+			<h2 id="Step01">
+				$$IF=:FR:LANGUE$$Vous souhaitez créer une Alerte Immo sur les annonces immobilières de$$END:LANGUE$$
+				$$IF!:FR:LANGUE$$Your Immo Alert is going to be set on real estate listing of$$END:LANGUE$$
+				$$FORM:IDTT gettypetransaction$$.
+			</h2>				
+			<a class="alerteBtModif" href="javascript:history.go(-1)" title="">$$LG:MODIFIER pcase$$</a>
+		</td>
+		<td class="alerteInfo_wrap">
+			<div class="alerteInfo">
+				<div class="alerteInfo_ctn">
+					<h4>
+						$$IF=:FR:LANGUE$$Précisez les critères de votre alerte$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$Precise your search criteria for this Immo Alert$$END:LANGUE$$						
+					</h4>
+					<div class="alerteInfo_txt">
+						$$IF=:FR:LANGUE$$Nous vous recommandons par souci d'efficacité de préciser tous vos critères de recherche, en renseignant par exemple le prix minimum et maximum ou en vous limitant à 2 codes postaux pour une recherche en Zone Urbaine.$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$We recommend for full effectiveness to specify all your search criteria, by informing for example the minimum and maximum price or by limiting up to 2 postal codes a search in Urban area.$$END:LANGUE$$
+					</div>
+				</div>				
+				<div class="alerteInfo_foot"><!-- --></div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<form name="form" action="/alerte,prevalidation.htm" method="get">
+	$$IF=:1:FORM:MODIF$$<input type="hidden" name="modif" value="1" />$$END$$
+	<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+	<input type="hidden" name="step" value="3" />
+	$$IF:FORM:LANG$$<input type="hidden" name="lang" value="$$FORM:LANG$$" />$$END:FORM:LANG$$	
+	
+	<!-- choix idtb -->	
+	<h2 id="Step02">$$LG:TYPEDEBIEN pcase$$<span>($$LG:UNOUPLUSIEURS lcase$$)</span></h2>
+	<div id="Etape02">			
+		<table id="TypeBien">
+			$$IF=:1$2$3$4$5$6$7$8$9:FORM:IDTT$$
+			<tr>
+				<td id="IdTypeBien_2">
+					<p class="idtb"><input type="checkbox" name="idtypebien" value="2" $$IF(:FORM_IDTYPEBIEN:2$$ checked="checked"$$END$$ /> $$LG:MAISON ncase$$</p>
+				</td>
+				<td id="IdTypeBien_1">
+					<p class="idtb"><input type="checkbox" name="idtypebien"  value="1" $$IF(:FORM_IDTYPEBIEN:1$$ checked="checked"$$END$$ />&nbsp;$$LG:APPARTEMENT ncase$$</p>
+				</td>
+			</tr>
+			<tr>
+				<td id="NbPieces_1">
+					<p class="nbPieces">
+						$$IF=:FR:LANGUE$$Nombre de chambres pour les maisons / villas$$END:LANGUE$$$$IF!:FR:LANGUE$$$$LG:NBCHAMBRES pcase$$$$END:LANGUE$$ ($$LG:FACULTATIF lcase$$) :<br />
+						<input type="checkbox" name="nb_chambres" value="1"$$IF(:FORM_NB*CHAMBRES:1$$ checked="checked" $$END$$/> 1 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_chambres" value="2"$$IF(:FORM_NB*CHAMBRES:2$$ checked="checked" $$END$$/> 2 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_chambres" value="3"$$IF(:FORM_NB*CHAMBRES:3$$ checked="checked" $$END$$/> 3 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_chambres" value="4"$$IF(:FORM_NB*CHAMBRES:4$$ checked="checked" $$END$$/> 4 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_chambres" value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ checked="checked" $$END$$/> 5 et +	
+					</p>
+				</td>
+				<td id="NbPieces_2">
+					<p class="nbPieces">
+						$$LG:NOMBREDEPIECES pcase$$ ($$LG:FACULTATIF lcase$$) :<br />
+						<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*PIECES:1$$ checked="checked" $$END$$/> 1&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*PIECES:2$$ checked="checked" $$END$$/> 2 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*PIECES:3$$ checked="checked" $$END$$/> 3 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*PIECES:4$$ checked="checked" $$END$$/> 4 &nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*PIECES:+4$$ checked="checked" $$END$$/> 5 et +
+					</p>
+				</td>
+			</tr>
+			$$END:FORM:IDTT$$
+			<tr>
+				<td>
+					$$IF=:2$5$6$9:FORM:IDTT$$
+					<p id="IdTypeBien_4" class="idtb"><input type="checkbox" name="idtypebien" value="4" $$IF(:FORM_IDTYPEBIEN:4$$ checked="checked"$$END$$ />&nbsp;$$LG:TERRAIN ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:1$2$3$4$5$6$7$8$9$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_9" class="idtb"><input type="checkbox" name="idtypebien" value="9" $$IF(:FORM_IDTYPEBIEN:9$$ checked="checked"$$END$$ />&nbsp;$$LG:LOFT3 ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:1$2$3$6$9$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_8" class="idtb"><input type="checkbox" name="idtypebien" value="8" $$IF(:FORM_IDTYPEBIEN:8$$ checked="checked"$$END$$ />&nbsp;$$LG:BUREAUX ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+						
+					
+					$$IF=:2$5$6$7$8$9:FORM:IDTT$$
+					<p id="IdTypeBien_14" class="idtb"><input type="checkbox" name="idtypebien" value="14" $$IF(:FORM_IDTYPEBIEN:14$$ checked="checked"$$END$$ />&nbsp;$$LG:HOTEL ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:2$6$7$8:FORM:IDTT$$
+					<p id="IdTypeBien_13" class="idtb"><input type="checkbox" name="idtypebien" value="13" $$IF(:FORM_IDTYPEBIEN:13$$ checked="checked"$$END$$ />&nbsp;$$LG:CHATEAU ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:1$2$3$4$5$6$7$8$9$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_10" class="idtb"><input type="checkbox" name="idtypebien" value="10" $$IF(:FORM_IDTYPEBIEN:10$$ checked="checked"$$END$$ />&nbsp;$$LG:DIVERS ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+				</td>
+				<td>
+					$$IF=:1$2$3$4$5$6$9:FORM:IDTT$$
+					<p id="IdTypeBien_3" class="idtb"><input type="checkbox" name="idtypebien" value="3" $$IF(:FORM_IDTYPEBIEN:3$$ checked="checked"$$END$$ />&nbsp;$$LG:PARKING ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:1$2$3$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_6" class="idtb"><input type="checkbox" name="idtypebien" value="6" $$IF(:FORM_IDTYPEBIEN:6$$ checked="checked"$$END$$ />&nbsp;$$LG:BOUTIQUE ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:1$2$3$6$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_7" class="idtb"><input type="checkbox" name="idtypebien" value="7" $$IF(:FORM_IDTYPEBIEN:7$$ checked="checked"$$END$$ />&nbsp;$$LG:LOCALCOM pcase$$</p>
+					$$END:FORM:IDTT$$		
+										
+					$$IF=:2$5$6$8$9:FORM:IDTT$$
+					<p id="IdTypeBien_11" class="idtb"><input type="checkbox" name="idtypebien" value="11" $$IF(:FORM_IDTYPEBIEN:11$$ checked="checked"$$END$$ />&nbsp;$$LG:IMMEUBLE ncase$$</p>
+					$$END:FORM:IDTT$$
+					
+					$$IF=:2$5$6$9$10$11:FORM:IDTT$$
+					<p id="IdTypeBien_12" class="idtb"><input type="checkbox" name="idtypebien" value="12" $$IF(:FORM_IDTYPEBIEN:12$$ checked="checked"$$END$$ />&nbsp;$$LG:BATIMENT ncase$$</p>
+					$$END:FORM:IDTT$$
+				</td>
+			</tr>			
+		</table>
+	</div>
+	
+	
+	<div id="Etape03">
+		<h2 id="Step03">$$IF!:1:FORM:IDTT$$$$LG:BUDGET pcase$$$$END:FORM:IDTT$$$$IF=:4:FORM:IDTT$$$$LG:BUDGETVAC pcase$$$$END:FORM:IDTT$$$$IF=:1:FORM:IDTT$$$$LG:LOYERMENSUEL pcase$$$$END:FORM:IDTT$$ $$LG:ENEURO lcase$$<span>($$LG:FACULTATIF lcase$$)</span></h2>
+		<p>
+			<span class="mini">$$LG:MINI pcase$$ : <input class="budget" type="text" name="pxmin" value="$$FORM:PXMIN$$" /></span>
+			<span class="maxi">$$LG:MAXI pcase$$ : <input class="budget" type="text" name="pxmax" value="$$FORM:PXMAX$$" /></span>
+		</p>
+	</div>
+	
+	<div id="Etape04">
+		<h2 id="Step04">$$LG:SURFACE pcase$$ $$LG:EN lcase$$ m<sup>2</sup><span>($$LG:FACULTATIF lcase$$)</span></h2>
+		<p>
+			<span class="mini">$$LG:MINI pcase$$ : <input class="surface" type="text" name="surfacemin" value="$$FORM:SURFACEMIN$$" /></span>
+			<span class="maxi">$$LG:MAXI pcase$$ : <input class="surface" type="text" name="surfacemax" value="$$FORM:SURFACEMAX$$" /></span>
+		</p>
+	</div>
+	
+	<div class="clear"><!-- --></div>
+
+	
+$$IF:ALERTEPROX$$
+	<h2 id="Step05">
+		$$LG:VILLES pcase$$
+	</h2>
+	<script type="text/javascript">
+		<!--
+		function openCodes_Postaux() {
+			window.open('/cp_frame.htm?lang=$$LANGUE$$', 'cdp', ',height=330, width=360, scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+		}
+		//-->
+	</script>
+	
+	<div class="prox_ctn">				
+		<input class="prox" type="text" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 1$$$$END$$" />
+		<input class="prox" type="text" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 2$$$$END$$" />
+		<br />
+		<input class="prox" type="text" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 3$$$$END$$" />
+		<input class="prox" type="text" name="cp" value="$$IF:FORM:CP$$$$FORM:CP field 4$$$$END$$" />
+		<div class="clear"><!-- --></div>
+		<a href="javascript:openCodes_Postaux();">$$LG:RETROUVER pcase$$</a>
+	</div>
+$$END:ALERTEPROX$$
+
+
+$$IF0:ALERTEPROX$$
+<!-- c/o Lisbonne -->
+<!--#include virtual="/alerte/incl_scripts_alerteimmo.htm"-->
+<h2 id="Step05">
+		$$IF=:FR:LANGUE$$Sélectionnez une ou plusieurs villes$$END:LANGUE$$
+		$$IF!:FR:LANGUE$$Select one or more cities$$END:LANGUE$$		
+	</h2>
+	
+	<table id="Etape05">		
+		<tr>
+			<td class="listeVilles">	
+				$$B:IMMOBW:DEPARTEMENTSANNONCES:ALIAS:ALERTEIMMO_DEP$$$$BIF:ALERTEIMMO_DEP$$$$DO$$$$LOOP$$$$BFIN$$
+				
+				$$IF+:5:ALERTEIMMO_DEP:NBR$$
+				<p>
+					$$IF=:FR:LANGUE$$S&eacute;lectionnez un d&eacute;partement$$END:LANGUE$$
+					$$IF!:FR:LANGUE$$Select one department$$END:LANGUE$$	
+				</p>
+				<select id="Liste0" onchange="javascript:affiche_listevilles('/alerte,incl_listevilles.htm','',this);">
+					<option value="" class="dep_$$SECTEUR:DEP$$"> -- --</option>					
+					$$BIF:ALERTEIMMO_DEP$$
+						$$DO$$
+							<option value="$$ALERTEIMMO_DEP:DEP$$" id="AlerteDep_$$ALERTEIMMO_DEP:DEP$$"> $$ALERTEIMMO_DEP:DEP$$ - $$ALERTEIMMO_DEP:DEPARTEMENTAFF$$</option>
+						$$LOOP$$					
+					$$BFIN$$
+				</select>								
+				<div id="listevil"><!-- --></div>
+				$$END$$				
+				
+				$$IF-:5:ALERTEIMMO_DEP:NBR$$
+				<!--#include virtual="/alerte/incl_phrase_max.htm"-->
+				<select id="Liste1" class="liste1_ville" multiple="multiple" ondblclick="javascript:Ajouter();">
+					$$B:IMMOBW:VILLESANNONCES:ALIAS:ALERTEIMMO_VILLES$$
+					$$BIF:ALERTEIMMO_VILLES$$
+						$$DO$$
+							<option value="$$ALERTEIMMO_VILLES:CODEINSEE$$" id="AlerteVille_$$ALERTEIMMO_VILLES:CODEINSEE$$"> $$ALERTEIMMO_VILLES:VILLEAFF pcase$$ ($$ALERTEIMMO_VILLES:CODEINSEE codeinsee2cp$$)</option>
+						$$LOOP$$
+					$$BFIN$$
+				</select>
+				$$END$$
+				
+			</td>
+			<td class="selecVilles">				
+				<a class="ajouter" href="javascript:Ajouter();">$$IF=:FR:LANGUE$$Ajouter$$END:LANGUE$$$$IF!:FR:LANGUE$$Add$$END:LANGUE$$</a>
+				<a class="effacer" href="javascript:Effacer();">$$IF=:FR:LANGUE$$Effacer$$END:LANGUE$$$$IF!:FR:LANGUE$$Clear$$END:LANGUE$$</a>	
+			</td>
+			<td class="listeVilles">
+				<p>Votre sélection</p>
+				 <select id="ci" name="ci" multiple="multiple" ondblclick="javascript:Effacer();"><!-- --></select>
+			</td>
+		</tr>
+	</table>	
+$$END:ALERTEPROX$$
+
+
+	<h2 id="Step06">$$LG:CRITERESSUP pcase$$<span>($$LG:FACULTATIF lcase$$)</span></h2>
+	<table id="AlerteCritSupp">
+		<tr>
+			<td>	
+				$$IF=:1:FORM:IDTT$$			
+				<p class="critSupp crit_meuble">
+					<input type="radio" name="si_meuble" value="0"$$IF=:0:FORM:SI_MEUBLE$$ checked="checked"$$END$$ /> $$IF=:FR:LANGUE$$Location vide$$END:LANGUE$$$$IF!:FR:LANGUE$$Unfurnished rental$$END:LANGUE$$&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="si_meuble" value="1"$$IF=:1:FORM:SI_MEUBLE$$checked="checked"$$END$$ /> $$IF=:FR:LANGUE$$Location meubl&eacute;e$$END:LANGUE$$$$IF!:FR:LANGUE$$Furnished rental$$END:LANGUE$$
+				</p>
+				$$END:FORM:IDTT$$
+				
+				<p class="critSupp crit_photo"><input type="checkbox" name="photo" value="1"$$IF=:1:FORM:PHOTO$$ checked="checked"$$END$$ />&nbsp;$$LG:PHOTO$$</p>
+												
+				<p class="critSupp crit_avois"><input type="checkbox" name="prox" value="1" /> $$LG:AVOIS pcase$$</p>
+				
+			</td>
+			<td>
+				<p class="critSupp crit_360"><input type="checkbox" name="360" value="1" $$IF=:1:FORM:360$$ checked="checked"$$END$$ /> $$LG:VISITEVIRT pcase$$</p>
+				
+				$$IF!:4$9:FORM:IDTT$$
+				<p class="critSupp crit_nouveaute"><input type="checkbox" name="fraicheur" value="15" $$IF=:15:FORM:FRAICHEUR$$ checked="checked"$$END$$ />&nbsp;$$LG:NOUV$$</p>
+				$$END:FORM:IDTT$$
+				
+				$$IF=:9:FORM:IDTT$$
+				<p class="critSupp crit_fraicheur"><input type="checkbox" name="fraicheur" value="30"$$IF=:30:FORM:FRAICHEUR$$ checked="checked"$$END$$ /> $$IF=:FR:LANGUE$$Uniquement les nouveautés de moins d'un mois$$END:LANGUE$$$$IF!:FR:LANGUE$$Only classifieds of last month$$END:LANGUE$$</p>
+				$$END:FORM:IDTT$$
+				
+				$$REM$$
+				<!-- criteres retires car n'apparaissent pas dans la phrase de recap, bien que le moteur les prenne en compte -->
+				<p class="critSupp crit_handicap"><input type="checkbox" name="si_handicape" value="1" />&nbsp;$$LG:SIHANDICAPE$$</p>
+				$$IF=:2$5$6$9:FORM:IDTT$$
+				<p class="critSupp crit_constructible"><input type="checkbox" name="si_constructible" value="1"$$IF=:1:FORM:SI_CONSTRUCTIBLE$$ checked="checked"$$END$$ /> Terrains constructibles de préférence</p>
+				$$END$$
+				$$END:REM$$
+			</td>
+		</tr>
+		$$IF=:1:PAGE:RAYON$$
+		<tr>
+			<td>
+				<p class="critSupp crit_rayon"> $$LG:ELERGIR pcase$$
+					<input type="radio" name="rayon" value="10" /> 10km
+					<input type="radio" name="rayon" value="15" /> 15km
+					<input type="radio" name="rayon" value="20" /> 20km 
+					<input type="radio" name="rayon" value="30" /> 30km
+					<input type="radio" name="rayon" value="40" /> 40km  
+					</p>
+			</td>
+		</tr>
+		$$END:PAGE:RAYON$$				
+	</table>
+	
+	
+	<input type="submit" class="alerteBtValid rightFloat" value="$$IF=:FR:LANGUE$$Etape finale$$END:LANGUE$$$$IF!:FR:LANGUE$$Final step$$END:LANGUE$$" onclick="javascript:checkTheFlo();" />
+	<div class="clear"><!-- --></div>
+
+</form>
+$$END:2:FORM:STEP$$
+	
+<!--#include virtual="/alerte/incl_bas_alerteimmo.htm"-->

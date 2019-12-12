@@ -1,0 +1,27 @@
+$$REM$$====================================================================
+//// <summary>Includes feuille de style par defaut</summary>
+//// <remarks>
+//// <para>Fichier à ne SURTOUT PAS démutualiser</para>
+//// <para>Si besoin d'ajouter des feuilles de style, les placer dans incl_haut.htm juste après l'appel de ce fichier</para>
+//// <para>On met tout sur une ligne pour aider le réf</para>
+//// </remarks>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+====================================================================$$END$$
+$$REM$$<!-- pour les pages de contenus avec style prédefinis -->$$END:REM$$								$$IF:PAGE:STYLE$$$$PAGE:STYLE$$$$END:PAGE:STYLE$$
+$$REM$$<!-- 11.03.2010 ajout PAGE:STYLE2 pourstyle prédéfini mutualisé -->$$END:REM$$			$$IF:PAGE:STYLE2$$$$PAGE:STYLE2$$$$END:PAGE:STYLE2$$
+$$REM$$<!-- pour détecter les pages ayant un flux rss (demande de ravi) -->$$END:REM$$		$$IF=:RESULTATS$RSS$PUDIMMOBILIER$PUDAGENCE$PUDESTIMATION:PAGE:IDT$$<link rel="alternate" type="application/rss+xml" href="http://$$REP:RSRV$$/rss.xml?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" title="$$1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction pcase$$	$$IF:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$$$1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN getsoustypesbien lcase$$$$END$$	$$IF0:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$$$1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien$$$$END$$	$$1_IMMOBW:ANN:QRY:VILLE$$ ($$1_IMMOBW:ANN:QRY:CP$$)" />$$END:RESULTATS:PAGE:IDT$$
+$$REM$$<!-- css par défaut du mini moteur 2 -->$$END:REM$$																<link rel="stylesheet" type="text/css" href="$$_$$styles/mini_moteur_base2.css" /><link rel="stylesheet" type="text/css" href="/styles,mini_moteur.css" />
+
+
+$$REM$$<!-- 29.03.2010 / Lisbonne / reprise des pictos " cdc/exclus/promo " de la page " recherche " sur les annonces de la page d'accueil
+			> on crée un identifiant SET:SELECTION_INDEX=1
+			> on identifie la page "recherche" (parmi : basic/linea/panorama) + si le css est LIGHT ou pas = PAGE:WAG_STYLE_RECHERCHE + PAGE:WAG_STYLE_RECHERCHE_CSS
+			> on utilise les fichiers css de MACROS pour appeler les pictos			
+====== -->$$END:REM$$
+$$IF=:1:SELECTION_INDEX$$
+	$$IF!:1:SELECTION_INDEX_NO_PICTO$$
+		<style type="text/css">@import url( "/styles,selection_index.css?wagstyle=$$PAGE:WAG_STYLE_RECHERCHE$$$$PAGE:WAG_STYLE_RECHERCHE_CSS$$&lang=$$LANGUE$$" );</style>
+	$$END:SELECTION_INDEX_NO_PICTO$$
+$$END:SELECTION_INDEX$$
+
+$$REM$$<!-- css par défaut du site -->$$END:REM$$																					<link href="/styles,commun.css?a=1$$IF:FORM:IDTT$$&amp;idtt=$$FORM:IDTT$$$$END$$$$IF0:FORM:IDTT$$$$IF:IMMOBW:ANNONCE:IDTYPETRANSACTION$$&amp;idtt=$$IMMOBW:ANNONCE:IDTYPETRANSACTION$$$$END$$$$END$$&amp;lang=$$FORM:LANG$$" rel="stylesheet" type="text/css" />

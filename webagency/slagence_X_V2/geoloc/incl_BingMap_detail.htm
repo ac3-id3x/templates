@@ -1,0 +1,46 @@
+$$REM$$====================================================================
+//// <summary>Fichier include du div qui va contenir la BingMaps d'une annonce</summary>
+//// <remarks>
+//// <para>Fichier dépendant de : geoloc/js/BingMap.js</para>
+//// <para>INIT destiné à associer le fichier geoloc,css,BingMap.css dans incl_styles.htm</para>
+//// <para>INIT destiné à appeler les scripts dans scripts/incl_scripts.htm</para>
+//// <para>Fichier appelé par : geoloc/js/BingMap.js</para>
+//// <para>Utilise la macro E:IMMOBW:ANNONCE:REP:1:REP:2 déclarée dans pages détail</para>
+//// <para>2011.02.18 : on sort les scripts de incl_scripts.htm</para>
+//// </remarks>
+//// <update date="2010-04-12" author="ext-karim.mekni">Création v1</update>
+//// <update date="2010-08-31" author="lisbonne.siriphol">Update</update>
+//// <update date="2010-11-15" author="charles.sauthier">Nouvelle macro CARTO-ANNONCE-MARKER qui tient compte du choix de l'agence + simplification JS</update>
+====================================================================$$END$$
+$$INIT:GEOLOC=1$$
+<!--#include virtual="/geoloc/incl_BingMap_appel_scripts.htm" -->
+$$IF0:BINGMAPDETAILHEIGHT$$
+	$$A:BINGMAPDETAILHEIGHT=300px$$
+$$END$$
+	<div id="MapMicrosoft" class="geolocDetailAnnonce">
+		<div id="MapHead">
+			<h4>
+				$$LG:LOCALISER pcase$$
+				$$IF=:adr:CARTOANN:LATLNGTYPE$$
+					$$IMMOBW:ANNONCE:ADRESSE$$ $$LG:A lcase$$
+				$$END:adr:CARTOANN:LATLNGTYPE$$
+				$$IMMOBW:ANNONCE:VILLE$$ ($$IMMOBW:ANNONCE:CP$$)
+			</h4>
+			$$IF:IMMOBW:ANNONCE:IDQUARTIER$$<p>$$LG:QUARTIER pcase$$ : $$IMMOBW:ANNONCE:IDQUARTIER getquartier$$</p>$$END:IMMOBW:ANNONCE:IDQUARTIER$$
+		</div>
+		<div id="geo-map-poi-xv2" style="position:relative; width: 100%; z-index: 0; height: $$BINGMAPDETAILHEIGHT$$;"></div>
+		<script type="text/javascript">
+			id3xContent.addMap({ container: { id: 'geo-map-poi-xv2' },
+				mapData: [{ mapDataType: 'SINGLE_REALESTATE', marker: { icon: null } }]
+			});
+		</script>
+	</div>
+
+$$E:IMMOBW:CARTO-ANNONCE-MARKER:~idAnnonce:REP:1:~idPublication:VAL:IMMOBW_ANNONCE_IDPUBLICATION:ALIAS:CARTOANN$$
+$$IF:CARTOANN:LATLNGTYPE$$
+	<script type="text/javascript">
+		<!--
+		//addOnLoadEvent("GetAnnonceMap($$CARTOANN:PUBLICLAT replace , .$$,$$CARTOANN:PUBLICLNG replace , .$$,$$IF:MAPDASHBOARDSIZE$$$$MAPDASHBOARDSIZE$$$$END$$$$IF0:MAPDASHBOARDSIZE$$VEDashboardSize.Small$$END$$);");	
+		//-->
+	</script>
+$$END:LATLNGTYPE$$

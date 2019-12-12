@@ -1,0 +1,157 @@
+$$REM$$
+====================================================================
+
+//// <summary>Page 3/4 de creation d'Alerte Immo</summary>
+//// <remarks>
+//// <para>Cette page succede aux criteres de recherche</para>
+//// <para>Utilise le meme fichier .css que tous : creer.css</para>
+//// <para>Pages includes : incl_haut_alerteimmo.htm + incl_bas_alerteimmo.htm + incl_scripts_alerteimmo.htm</para>
+//// <para>Pages reliees : creer.htm + validation.htm + validation_ok.htm</para>
+//// <para>Page template envoyee par mail apres validation : inscription.htm</para>
+//// <para>Liens contenus dans l'Alerte Immo  : correspondance.htm + modification.htm + desinscription.htm</para>
+//// <para>A la difference de la precedente version, cette alerte peut etre creee directement sans passer par la page des resultats de recherche</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = choix IDTT, 2 = choix autres criteres, 3 = envoi coordonnees perso</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation V1</update>
+//// <update date="2008-06-04" author="erick.barbant">Validation ID3X ok</update>
+
+====================================================================
+$$END$$
+$$SET:PAGE:IDT=ALERTEIMMO$$
+<!--#include virtual="/alerte/incl_haut_alerteimmo.htm"-->
+$$DYN:ID3:NOCACHE:FULL$$	$$REM$$<!-- charles ? FILE -->$$END:REM$$
+<form method="post" action="/alerte,validation.htm" name="f">
+	<input type="hidden" name="qry" value="$$REP:QRY$$" />
+	<input type="hidden" name="phrase" value="$$RECH:PHRASESTRI$$" />
+	<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+	<input type="hidden" name="page_err" value="/alerte,validation.htm" />
+	<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />	
+	<input type="hidden" name="srv" value="$$SRV$$" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	$$IF0:ERRE$$		
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />
+		$$IF:FORM:NOM$$<input type="hidden" name="nom" value="$$FORM:NOM$$" />$$END$$
+		$$IF:FORM:EMAIL$$<input type="hidden" name="email" value="$$FORM:EMAIL$$" />$$END$$
+		$$REM$$<!-- envoi du mail de confirmation -->$$END:REM$$
+		<input type="hidden" name="email_info" value="/alerte,inscription.htm" />
+		<input type="hidden" name="step" value="4" />
+	$$END$$
+	
+	$$B:IMMOBW:ANN:ALIAS:RECH:QRY:IDTT:::NOVISU:~NOSTAT:1$$$$BIF:RECH$$$$DO$$$$LOOP$$$$BFIN$$
+	<table>
+		<tr>			
+			<td>				
+				<h3>$$IF=:FR:LANGUE$$Vos critères$$END:LANGUE$$$$IF!:FR:LANGUE$$Your criteria$$END:LANGUE$$</h3>
+				<!-- nbr resultats = $$RECH:NBRESULT formatnumber 0$$ annonce$$RECH:NBR pluriel$$ -->
+				
+				<h2 id="$$IF-:150:RECH:NBRESULT$$Step07$$END$$$$IF+:150:RECH:NBRESULT$$Step08$$END$$">$$RECH:PHRASE pcase$$</h2>
+				$$IF+:150:RECH:NBRESULT$$
+				<h4 id="NbAnn">
+					$$IF=:FR:LANGUE$$Nous avons actuellement $$RECH:NBRESULT formatnumber 0$$ annonce$$RECH:NBR pluriel$$ correspondant à ces critères.$$END:LANGUE$$
+					$$IF!:FR:LANGUE$$We actually have $$RECH:NBRESULT formatnumber 0$$ announce$$RECH:NBR pluriel$$ matching these criteria.$$END:LANGUE$$					
+				</h4>
+				<a class="alerteBtModif" href="javascript:history.go(-1)" title="">$$LG:MODIFIER pcase$$</a>
+				$$END$$
+			</td>
+			
+			<td class="alerteInfo_wrap">
+				<div class="alerteInfo">
+					<div class="alerteInfo_ctn">
+						<h4>
+							$$IF=:FR:LANGUE$$Optimisez votre Alerte Immo$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$Optimize your<br />Immo Alert$$END:LANGUE$$							
+						</h4>
+						<div class="alerteInfo_txt">
+							$$IF=:FR:LANGUE$$
+							Si votre recherche est trop vague vous risquez de recevoir un grand nombre d'Alertes Immo par jour.
+							<br /><br />
+							Affiner vos critères (ex: nombre de pièces, surface, préférences de prix) afin de ne recevoir que l'essentiel !
+							$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$
+							If your search criteria are too vague, you might receive dozens of emails per day.
+							<br /><br />
+							Refine your information (by ex: number of rooms, living space, price preferences) in order to receive the right listing !
+							$$END:LANGUE$$
+						</div>
+					</div>				
+					<div class="alerteInfo_foot"><!-- --></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+	<div id="AlerteFinal">
+		
+		<!-- formulaire part 1 -->
+		<div id="FondBloc1">
+			<h1>$$IF=:FR:LANGUE$$Finalisez votre Alerte Immo !$$END:LANGUE$$$$IF!:FR:LANGUE$$Finalize your Immo Alert !$$END:LANGUE$$</h1>
+			<div id="FondBloc1_ctn">	
+				<p class="txtTop">
+					$$IF=:FR:LANGUE$$
+					Veuillez remplir les informations suivantes :	
+					$$END:LANGUE$$
+					$$IF!:FR:LANGUE$$
+					To automatically receive by e-mail the new anounces which match these search criteria, please fill following information:
+					$$END:LANGUE$$				
+				</p>				
+				$$IF:IMMOBW:ALERTEIMMO:ERRE$$<h2 class="err">$$IMMOBW:ALERTEIMMO:ERRE$$</h2>$$END$$
+				<table>					
+					<tr>
+					    <td><h6>$$LG:VOTREPRENOM pcase$$</h6></td>
+					    <td><input type="text" class="alerteFinal" name="nom" maxlength="50" value="$$FORM:NOM htmlencode$$" /></td>				    
+				  </tr>
+				  <tr>
+					    <td><h6>$$LG:AI6 pcase$$</h6></td>
+					    <td><input type="text" class="alerteFinal" name="email" maxlength="50" value="$$FORM:EMAIL$$" /></td>
+				  </tr>				  
+				</table>
+				<!--#include virtual="incl_cgu_formulaire.htm"-->		
+			</div>
+			<!-- fin #FondBloc1_ctn -->
+		</div>
+		<!-- fin #FondBloc1 -->
+		
+		
+		<!-- formulaire part 2 -->
+		<div id="AlerteFinal_ctn">
+			<h6>$$LG:FORMATRECEPTION pcase$$</h6>
+			<label><input type="radio" name="si_txt" value="0" checked="checked" /> $$LG:AI9$$ $$IF=:FR:LANGUE$$(couleurs et photos, recommandé)$$END:LANGUE$$$$IF!:FR:LANGUE$$(colors and pictures, recommended)$$END:LANGUE$$</label>
+			<label><input type="radio" name="si_txt" value="1" /> $$LG:AI10$$</label>			
+			<h6>Fréquence d'envoi des annonces</h6>
+			<label><input type="radio" name="idFrequenceAlerte" value="1" checked="checked" /> $$LG:AI19$$ $$IF=:FR:LANGUE$$(couleurs et photos, recommandé)$$END:LANGUE$$$$IF!:FR:LANGUE$$(colors and pictures, recommended)$$END:LANGUE$$</label>
+			$$REM$$<label><input type="radio" name="idFrequenceAlerte" value="2" /> $$LG:TOUSLESJOURS pcase$$</label>$$END$$
+			<label><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI8 pcase$$</label>
+			<input type="submit" class="alerteBtValid" value="$$LG:VALIDER pcase$$" />	
+			$$IF=:1:PAGE:OPTIN_CONTRAT$$
+			<div style="width:485px;">
+				<p style="font-weight:bold;" class="optinCheck">
+					<label style="font-weight:bold; font-size:12px;">$$IF=:FR:LANGUE$$J'accepte de recevoir des informations de la part de $$URLBASE$$$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>	
+				</p>
+				$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					$$B:IMMOBW:CARTESPRO:ALIAS:MENTIONS$$
+					$$BIF:MENTIONS$$	
+						$$DO:1:1$$
+								<p style="font-size:9px;margin-bottom:5px;" class="infosLegalesEmail">
+									Les informations communiquées sont destinées à 
+									$$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ 
+									Vous bénéficiez d'un droit d'accès, de modification, de rectification et de suppression 
+									de vos données personnelles (Loi du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés). 
+									Pour les exercer, adressez-vous à : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$ - 
+									$$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$
+								</p>
+						$$LOOP$$
+					$$BFIN:MENTION$$		
+				$$END$$
+			</div>
+			$$END:OPTIN_CONTRAT$$	
+		</div>
+		<!-- fin #AlerteFinal_ctn -->
+	
+		<div class="clear"><!-- --></div>
+	</div>
+
+</form>	
+<!--#include virtual="/alerte/incl_bas_alerteimmo.htm"-->

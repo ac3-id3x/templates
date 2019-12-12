@@ -1,0 +1,56 @@
+$$REM$$
+====================================================================
+//// <summary>Fichier include du div qui va contenir la BingMaps des agences</summary>
+//// <update date="2010-04-12" author="ext-karim.mekni">Création v1</update>
+//// <update date="2010-05-21" author="lisbonne.siriphol">Update CSS</update>
+====================================================================
+$$END$$
+
+$$REM$$==========================================================================
+//// ce SET est destiné à associer le fichier geolocBing.css dans incl_styles.htm
+===========================================================================$$END$$
+$$SET:GEOLOC=1$$
+
+$$IF0:MAPAGENCESWIDTH$$
+	$$A:MAPAGENCESWIDTH=100%$$
+$$END$$
+
+$$IF0:MAPAGENCESHEIGHT$$
+	$$A:MAPAGENCESHEIGHT=400px$$
+$$END$$
+	<script type="text/javascript">
+	  langue = '$$FORM:LANG$$';
+	  var linkPlusDetails = '$$LG:PLUSDETAILS pcase$$';
+	  var baesUrl = '$$-$$';
+	</script>
+	<div id="MapMicrosoft">
+		<div id="MapHead">
+			<h3>$$LG:NOUSSITUER pcase$$</h3>
+		</div>
+		$$IF0:CV:IDPUBLICATION$$
+		<div id="geo-map-agences-xv2" style="width: 100%; height:278px; z-index:1500;"></div>
+		<script type="text/javascript">
+			id3xContent.addMap({
+				container: {id: 'geo-map-agences-xv2'},
+				mapData: [{
+					 mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}} }
+				}],
+				options: { listing: true }
+			});
+		</script>
+		$$END$$
+		$$IF:CV:IDPUBLICATION$$
+		<div id="geo-map-agence-$$CV:IDPUBLICATION$$-xv2" style="width: 100%; height:278px; z-index:1500;"></div>
+		<script type="text/javascript">
+			id3xContent.addMap({
+				container: {id: 'geo-map-agence-$$CV:IDPUBLICATION$$-xv2'},
+				mapData: [{
+					 mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}} }
+					,filters: [ {action: 'single', key: 'idPublication', value: '$$CV:IDPUBLICATION$$'} ]
+				}],
+				options: { listing: true }
+			});
+		</script>
+		$$END$$
+		<p class="geolocInfo">$$LG:GEOLOCNOTICE$$</p>
+	</div>

@@ -1,0 +1,32 @@
+$$REM$$
+====================================================================
+//// <summary>Afficher les annonces correspondant à un marker sur une carte de géolocalisation microsoft.</summary>
+//// <remarks>
+//// <para>Fichier appelé par : slagence_x_v2/map/js/BingMap.js</para>
+//// </remarks>
+//// <update date="2010-03-27" author="ext-karim.mekni">Création</update>
+====================================================================
+$$END$$
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=@@PAGE:CFG_LANGUAGE lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=fr$$$$END$$
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANN$$
+$$BIF:ANN$$
+$$DO:1:10$$
+<div class="ad">
+	
+		<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$" style="color: red;">$$ANN:LIBELLE htmlencode$$ $$ANN:PRIX formatnumber 0 htmlencode$$$$ANN:PRIX_UNITE htmlencode$$$$ANN:PRIX_PERIODEVAC$$</a>
+	
+	$$IF:ANN:CARRE_URL$$
+	<div class="photogeoloc">
+		<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$">
+			<img src="$$ANN:CARRE_URL$$" onerror="this.style.display = \'none\';" />
+		</a>
+	</div>
+	$$END$$
+	<div class="descGeoloc$$IF0:ANN:CARRE_URL$$SansPhoto$$END$$">
+		$$IF:ANN:SURFACE$$ Surface: $$ANN:SURFACE$$ m<sup>2</sup>$$END$$
+		$$IF:ANN:NB_PIECES$$ $$ANN:NB_PIECES$$ piece$$ANN:NB_PIECES pluriel$$$$END$$
+		$$ANN:DESCRIPTIF smalltext 100 htmlencode$$
+	</div>
+</div><!-- .ad -->
+$$LOOP$$
+$$BFIN$$

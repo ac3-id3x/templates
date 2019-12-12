@@ -1,0 +1,35 @@
+$$REM$$====================================================================
+//// <summary>Biens vendus : Nombre de page de résultats + liens vers autres pages</summary>
+//// <remarks>
+//// <para>Fichier appelé par /recherche/incl_haut_annonces.htm + /recherche/incl_bas_annonces.htm</para>
+//// <para>Code passé en JS car ne passait pas la validation w3c</para>
+//// </remarks>
+//// <update date="2011-03-03" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+<div class="rechNbPages">$$LG:PAG pcase$$ $$VENDU:PAGE$$ $$LG:SUR lcase$$ $$VENDU:NBRPAGES$$</div>
+
+<div class="rechLiensPages">
+	
+	$$IF!:1$2:VENDU:PAGE$$
+	<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry vendupg $$&amp;vendupg=1" title="$$LG:PREMIEREPAGE pcase$$"><!-- --><span>&lt;&lt;</span></a>
+	$$END$$
+	
+	$$IF:VENDU:LIENARRIERE$$
+	<a class="prev" href="$$VENDU:LIENARRIERE removeqry alierr $$" title="$$LG:PAGEPRECEDENTE pcase$$"><!-- --><span>&lt;</span></a>
+	$$END$$
+
+	$$VENDU:MULTIPAGE removeqry alierr$$
+
+	$$IF:VENDU:LIENAVANT$$
+	<a class="next" href="$$VENDU:LIENAVANT removeqry alierr $$" title="$$LG:PAGESUIVANTE pcase$$"><!-- --><span>&gt;</span></a>
+	$$END$$
+	
+	$$IF!:VENDU_NBRPAGES$VENDU_NBRPAGES exec (XX-1):VENDU:PAGE$$
+	<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry vendupg $$&amp;vendupg=$$VENDU:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$"><!-- --><span>&gt;&gt;</span></a>
+	$$END$$
+	
+	<div class="clear"><!-- --></div>
+</div>
+
+
