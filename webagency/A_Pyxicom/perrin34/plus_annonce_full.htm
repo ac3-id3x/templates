@@ -1,0 +1,370 @@
+$$INCL:HAUT.HTM$$
+$$E:IMMOBW:AGENCE:REP:2$$
+$$SET:RUB:IDT=DET$$
+$$SET:PAGE:IDT=DETAIL$$
+$$INCL:DICO-FORM.HTM$$
+
+<script language="javascript">
+<!--
+
+function go(url,n,w,h) {
+	window.open(url,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width='+w+',height='+h);
+}
+
+function validate(){
+	var errmsg = "";
+	if (document.forms['f']['nom'].value == "")
+		errmsg += '$$LG:AI5$$ !\n';
+	if (document.forms['f']['prenom'].value == "")
+		errmsg += '$$LG:PRENOM$$ !\n';
+	if ((document.forms['f']['telephone'].value == "") && (document.forms['f']['email'].value == ""))
+		errmsg += '$$LG:SAISIEERRSEND$$ !\n';
+	if (document.forms['f']['email'].value != "") {
+		if (!(document.forms['f']['email'].value.split('@')[1] && !document.forms['f']['email'].value.split('@')[2] && document.forms['f']['email'].value.split('@')[1].split('.')[1] && !document.forms['f']['email'].value.split('@')[1].split('.')[2]))
+			errmsg += 'Entrez un Email correct !\n';
+	}
+	if (errmsg != "")
+		alert (errmsg);
+	else
+		document.forms['f'].submit();
+}
+
+function changeImgAnnonce(srcImg) {
+	document.images['big'].src = srcImg;
+}
+
+-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<!-- $$FORM:LANG$$ -->
+<!-- $$REP:1$$ $$REP:2$$ -->
+$$SET:TITRE:TRANSACTION=@@IMMOBW:ANNONCE:IDTYPETRANSACTION gettypetransaction@@$$
+$$SET:TITRE:BIEN=@@IMMOBW:ANNONCE:IDTYPEBIEN gettypebien@@$$
+$$SET:TITRE:VILLE=@@IMMOBW:ANNONCE:VILLE@@$$
+$$SET:TITRE:CP=@@IMMOBW:ANNONCE:CP@@$$
+$$IF:IMMOBW:ANNONCE:PROX$$
+	$$SET:TITRE:PROXIMITE=@@IMMOBW:ANNONCE:PROX@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:PROX$$
+	$$SET:TITRE:PROXIMITE=@@IMMOBW:ANNONCE:PROX_FR@@$$
+$$END$$
+$$IF:IMMOBW:ANNONCE:LIBELLE$$
+	$$A:TITRE:LIBELLE=@@IMMOBW:ANNONCE:LIBELLE@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+	$$A:TITRE:LIBELLE=@@IMMOBW:ANNONCE:LIBELLE_FR@@$$
+$$END$$
+$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$SET:TITRE:DESCRIPTIF=@@IMMOBW:ANNONCE:DESCRIPTIF htmlencode@@$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$SET:TITRE:DESCRIPTIF=@@IMMOBW:ANNONCE:DESCRIPTIF_FR htmlencode@@$$
+$$END$$
+
+$$IF:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+$$IF0:IMMOBW:ANNONCE:DESCRIPTIF$$
+	$$IF:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+	$$IF0:IMMOBW:ANNONCE:LIBELLE$$
+		$$IF:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+		$$IF0:IMMOBW:ANNONCE:PROX$$
+			$$A:PAGE:TITR=@@FORM:DESC@@ @@IMMOBW:ANNONCE:LIBELLE_FR htmlencode@@ @@IMMOBW:ANNONCE:SURFACE@@m2 à @@IMMOBW:ANNONCE:VILLE htmlencode@@ @@IMMOBW:ANNONCE:PROX_FR@@ @@IMMOBW:ANNONCE:DESCRIPTIF_FR left 60 htmlencode@@$$
+		$$END$$
+	$$END$$
+$$END$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:QRY:LANG$$
+<!-- données de l'annonce -->
+<!-- Stats annonces listing -->	$$INCL:STATD.HTM$$
+$$IF:ERRE$$ Erreur : $$ERRE$$ $$END$$
+<br />
+<table width="95%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr><td align="right"><a href="/$$IF=:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$locations$$END$$$$IF=:2:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$vacances$$END$$$$IF=:5:IMMOBW:ANNONCE:IDTYPETRANSACTION$$viager$$END$$$$IF=:6:IMMOBW:ANNONCE:IDTYPETRANSACTION$$prod_inves$$END$$$$IF=:8:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes_prestige$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$neufs$$END$$$$IF=:10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$commerce$$END$$$$IF!:1$2$4$5$6$8$9$10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$index$$END$$.htm?lang=$$LANGUE$$">$$LG:NVELLERECH$$</a> - <a href="javascript:window.history.go(-1);">$$LG:RETOURNER$$</a></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+	<td>
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td>
+		<table width="100%" cellpadding="2" cellspacing="0" border="0">
+		<tr>
+			<td valign="top" class="tabTitre">
+			<strong>
+			$$IF=:FR:LANGUE$$ $$FORM:DESC$$ $$END$$
+			$$IF:IMMOBW:ANNONCE:LIBELLE htmlencode$$
+				$$IMMOBW:ANNONCE:LIBELLE htmlencode$$
+			$$END$$
+			$$IF0:IMMOBW:ANNONCE:LIBELLE htmlencode$$
+				$$IMMOBW:ANNONCE:LIBELLE_FR htmlencode$$
+			$$END$$
+			$$IF:IMMOBW:ANNONCE:SURFACE$$($$IMMOBW:ANNONCE:SURFACE$$ m²)$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_EXCLUSIF$$&nbsp;<font class="exclu">$$LG:EXCLU ucase$$</font>$$END$$<br />
+			</strong>
+			</td>
+			<td width="90px" align="right" valign="top">
+			$$IF!:0:PAGE:FILTRE_PRESTIGE$$
+			<strong>$$IMMOBW:ANNONCE:PRIX$$ $$IMMOBW:ANNONCE:PRIX_UNITE htmlencode$$$$IMMOBW:ANNONCE:PRIX_PERIODEVAC$$</strong>
+			$$END$$&nbsp;</td>
+			<td width="20px" class="tabTitre"></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+
+			$$IMMOBW:ANNONCE:DESCRIPTIF htmlencode$$
+			$$IF!:FR:LANGUE$$
+			<br /><br />
+			<i>$$LG:COMMENTFRANCAIS$$</i> : $$IMMOBW:ANNONCE:DESCRIPTIF_FR$$
+			$$END$$
+			<br /><br />
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr><td valign="top">
+			$$IF!:0:PAGE:FILTRE_PRESTIGE$$$$LG:SITUEA$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$ ($$IMMOBW:ANNONCE:CP$$)
+				$$IF:IMMOBW:ANNONCE:PROX$$<br /><strong>$$LG:PROXIMITE$$&nbsp;:</strong>&nbsp;$$IMMOBW:ANNONCE:PROX htmlencode$$$$END$$
+				$$IF0:IMMOBW:ANNONCE:PROX$$$$IF:IMMOBW:ANNONCE:PROX_FR$$<br /><$$LG:PROXIMITE$$&nbsp;:&nbsp;$$IMMOBW:ANNONCE:PROX_FR htmlencode$$$$END$$$$END$$
+			$$END$$
+			$$IMMOBW:ANNONCE:SITUATION_FR htmlencode$$<br />
+
+			</td>
+			<td align="right">
+			<strong>$$IF!:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$$$LG:MAJ$$&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:DT_FRAICHEUR date 2$$$$END$$ - <strong>REF&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:REFANNONCE$$<br />
+			<!-- debut des infos textes de l'annonce -->
+			$$IF:IMMOBW:ANNONCE:HONORAIRES$$<strong>$$LG:HONORAIRES$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:HONORAIRES$$&nbsp;&euro;<br />$$END$$
+			$$IF:IMMOBW:ANNONCE:PX_CHARGES$$<strong>$$LG:CHARGES$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:PX_CHARGES$$&nbsp;&euro;<br />$$END$$
+			$$IF:IMMOBW:ANNONCE:DT_DISPO$$<strong>$$LG:DISPOLE$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:DT_DISPO date 2$$<br />$$END:IMMOBW:ANNONCE:DT_DISPO$$
+			$$IF:IMMOBW:ANNONCE:PX_RENTE$$<br />
+			<strong>$$LG:RENTE$$ :</strong>&nbsp;$$IMMOBW:ANNONCE:PX_RENTE$$ Euros/mois&nbsp;&nbsp;$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_VIDEO$$ [$$LG:TELEVISEUR$$]$$END:SI_VIDEO$$ $$IF:IMMOBW:ANNONCE:SI_ANIMAUX$$
+			[$$LG:ANIMAUX$$]$$END:SI_ANIMAUX$$ $$IF:IMMOBW:ANNONCE:SI_BEBE$$
+			[$$LG:BEBE$$]$$END:SI_BEBE$$ $$IF:IMMOBW:ANNONCE:SI_TELEPHONE$$
+			[$$LG:TEL$$]$$END:SI_TELEPHONE$$<br />
+			$$IF:IMMOBW:ANNONCE:AGE_H$$<strong>$$LG:AGEH$$ :</strong> $$IMMOBW:ANNONCE:AGE_H$$$$END$$
+			$$IF:IMMOBW:ANNONCE:AGE_F$$<strong>$$LG:AGEF$$ :</strong> $$IMMOBW:ANNONCE:AGE_F$$$$END$$
+			$$IF:IMMOBW:ANNONCE:SI_LIBRE$$ <strong>$$LG:LIBRE$$</strong>$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_SEMAINE$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:SEMAINE$$ : $$IMMOBW:ANNONCE:PX_BS_SEMAINE$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_BS_SEMAINE
+			tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_QUINZ$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:QUINZAINE$$ : $$IMMOBW:ANNONCE:PX_BS_QUINZ$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_BS_QUINZ tofrancs
+			0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_BS_MOIS$$<br />
+			$$LG:PRIXBASSESAIS$$ / $$LG:MOIS$$ : $$IMMOBW:ANNONCE:PX_BS_MOIS$$ $$IMMOBW:ANNONCE:PRIX_UNITE$$
+			($$IMMOBW:ANNONCE:PX_BS_MOIS tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_SEMAINE$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:SEMAINE$$ : $$IMMOBW:ANNONCE:PX_HS_SEMAINE$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_HS_SEMAINE
+			tofrancs 0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_QUINZ$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:QUINZAINE$$ : $$IMMOBW:ANNONCE:PX_HS_QUINZ$$
+			$$IMMOBW:ANNONCE:PRIX_UNITE$$ ($$IMMOBW:ANNONCE:PX_HS_QUINZ tofrancs
+			0$$ FF)$$END$$ $$IF:IMMOBW:ANNONCE:PX_HS_MOIS$$<br />
+			$$LG:PRIXHAUTESAIS$$ / $$LG:MOIS$$ : $$IMMOBW:ANNONCE:PX_HS_MOIS$$ $$IMMOBW:ANNONCE:PRIX_UNITE$$
+			($$IMMOBW:ANNONCE:PX_HS_MOIS tofrancs 0$$ FF)$$END$$
+			<!-- fin données de l'annonce -->
+			</td></tr>
+			<tr><td>$$IF:IMMOBW:ANNONCE:360_URL$$
+			<A HREF="javascript:go('$$IMMOBW:ANNONCE:360_URL$$','360',500,400)" class=bt>
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a></A>$$CHEVRON$$$$END$$
+
+			$$IF:IMMOBW:ANNONCE:ID360$$
+			<A HREF="javascript:go('/$$IMMOBW:ANNONCE:IDPUBLICATION$$/$$IMMOBW:ANNONCE:IDANNONCE$$/visuel_$$IF=:3:IMMOBW:ANNONCE:IDTYPEVISUEL360$$3dzoom.htm','360',520,400$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPEVISUEL360$$360previsite.htm','360',520,460$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPEVISUEL360$$egg.htm','360',500,400$$END$$)" class=bt>
+			$$SUP$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a></A>$$CHEVRON$$$$END:ID360$$
+
+			$$IF0:IMMOBW:ANNONCE:SI_ABRITEL$$
+				$$IF!:ODALYS:IMMOBW:ANNONCE:REF$$
+					$$IF:IMMOBW:ANNONCE:IDLIEN$$
+					<A HREF="javascript:go('$$IMMOBW:ANNONCE:LIEN_URL$$','visuel',590,500)" class=bt>
+					$$IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR pcase$$$$IF0:IMMOBW:ANNONCE:LIEN_DESCRIPTIF_FR$$<img src="$$-$$i_v3/360.gif" width="28" height="22" border="0" ALT="visiter en 360 degrés" title="visiter en 360 degrés" /> [$$LG:VISITEVIRT pcase$$]</a>$$END$$</A>$$CHEVRON$$
+
+					$$END$$
+				$$END$$
+			$$END$$
+		    </td></tr>
+			</table>
+
+
+
+			$$B:IMMOBW:ANNONCEVISUELS:ALIAS:MINITOF:1:REP:1$$
+			$$BIF:MINITOF$$
+			$$IF+:2:MINITOF:NBR$$
+			<table border="0" cellpadding="2" cellspacing="0" align="center">
+			<tr>
+			$$DO:1:12$$
+			$$IF=:5$9$13:MINITOF:I$$</tr><tr>$$END$$
+			<td>
+			$$MINITOF:VAL:I$$
+			<a href="javascript:changeImgAnnonce('$$MINITOF:URL$$');"><img src="$$MINITOF:THUMB_URL$$" border="0" hspace="3" vspace="3" alt="$$IMMOBW:ANNONCE:LIBELLE htmlencode$$ $$IMMOBW:ANNONCE:VILLE htmlencode$$" /></a>
+			</td>
+			$$LOOP$$
+			</tr>
+			</table>
+			$$END$$
+			$$BFIN$$
+
+			<!-- affichage grand format -->
+			$$B:IMMOBW:PHOTOS:REP:1$$
+			$$BIF:IMMOBW:PHOTOS:REP$$
+			<table width="95%" cellspacing="0" cellpadding="2" border="0" align="center">
+			<tr>
+				<td align="center">
+				$$DO:1:1$$ $$LOOP$$
+					<img src="$$1_IMMOBW:PHOTOS:REP:URL$$" id="big" name="big" border="0" hspace="3" vspace="3" alt="$$1_IMMOBW:PHOTOS:REP:LIBELLE htmlencode$$ $$1_IMMOBW:PHOTOS:REP:VILLE htmlencode$$" title="$$1_IMMOBW:PHOTOS:REP:LIBELLE htmlencode$$ $$1_IMMOBW:PHOTOS:REP:VILLE htmlencode$$"/><br />
+
+				</td>
+			</tr>
+			</table>
+			$$BFIN$$
+			<br />
+
+			<div align="center"><a href="/$$REP:2$$/$$REP:1$$/print_annonce.htm?lang=$$LANGUE$$">$$LG:IMPRIMERANN$$</a></div>
+			<br /><br />
+			<!-- infos complémentaires -->
+			$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+			$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+			<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+			<tr>
+				<td class="tabTitre" colspan="2">$$LG:INFOSCOMPLEMENTAIRES$$</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+				$$DO:3:999$$
+				$$IMMOBW:AFFICHANNONCES:REP:VALEUR$$
+				$$LOOP$$
+				</td>
+			</tr>
+			</table>
+			$$BFIN$$
+		    <!-- infos complémentaires - fin -->
+			<br /><br />
+			<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+			<tr>
+				<td class="tabTitre">$$LG:CONTACT$$</td>
+			</tr>
+			<tr>
+				<td valign="top">
+							<font bgcolor="#F3F3F3">
+							$$IF0:IMMOBW:ANNONCE:SI_PARTICULIER$$ $$IF:IMMOBW:ANNONCE:SI_AFFURL$$
+							$$IF:IMMOBW:ANNONCE:URL$$
+							<font color="#bd1010">&#149;&#149;&#149;<strong>$$LG:ENUNCLIC$$&nbsp;:</strong><br /></font><a href="$$IMMOBW:ANNONCE:URL$$" target="_blank"><strong>$$IMMOBW:ANNONCE:NOM$$</strong></a>
+							<font color="#bd1010"> &#149;&#149;&#149;</font>
+							$$END:URL$$
+							$$END:SI_AFFURL$$
+							$$IF0:IMMOBW:ANNONCE:SI_AFFURL$$ <strong>$$LG:AGENCE$$&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:NOM$$ $$END:!SI_AFFURL$$ <br />
+							$$END:SI_PARTICULIER$$ <br />
+							$$IF:IMMOBW:AGENCE:ADRESSE$$<strong>$$LG:ADRESSE$$&nbsp;:&nbsp;</strong>$$IMMOBW:AGENCE:ADRESSE$$<br />$$END$$
+							$$IF:IMMOBW:ANNONCE:EMAIL$$<strong>Email&nbsp;:&nbsp;</strong><a href="mailto:$$IMMOBW:ANNONCE:EMAIL encodemail hex$$?subject=A%20propos%20de%20l%27annonce%20$$IMMOBW:ANNONCE:REFANNONCE urlencode20$$%20&body=%0D%0A%0D%0A%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%2D%0D%0AAnnonce%20$$IMMOBW:ANNONCE:REFANNONCE urlencode20$$%20%28$$IMMOBW:ANNONCE:LIBELLE_FR urlencode20$$%2C%20$$IMMOBW:ANNONCE:PROX_FR urlencode20$$%2C%20$$IMMOBW:ANNONCE:PRIX urlencode20$$%20FF%29%0D%0ACe%20message%20vous%20est%20adress%E9%20%E0%20partir%20de%20votre%20site%20merci%20de%20lui%20r%E9server%20votre%20meilleur%20accueil%2E">$$IMMOBW:ANNONCE:EMAIL encodemail javascript$$</a><br />
+							$$END:EMAIL$$
+
+							$$IF:IMMOBW:ANNONCE:COOR-CONTACT$$<br />
+								<strong>Contact&nbsp;:&nbsp;</strong>$$IMMOBW:ANNONCE:COOR-CONTACT$$<br />
+							$$END:CONTACT$$
+
+				 			<strong>$$LG:TEL$$&nbsp;:</strong> $$IF0:IMMOBW:ANNONCE:TELEPHONE$$
+							$$IF=:FR:LANGUE$$ $$IMMOBW:ANNONCE:TEL formattel$$ $$END$$ $$IF!:FR:LANGUE$$
+							$$IMMOBW:ANNONCE:TEL formattel tel2inter$$ $$END$$ $$END:TELEPHONE$$
+							$$IF=:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel$$ $$END$$
+							$$IF!:FR:LANGUE$$$$IMMOBW:ANNONCE:TELEPHONE formattel tel2inter$$
+							$$END$$ $$IF:IMMOBW:ANNONCE:SI_AUDIOTEL$$$$END$$<br />
+							$$IF=:SELOGERNEUF:IMMOBW:ANNONCE:REF$$<a href="http://www.selogerneuf.com/neuf_doc.htm?ref=$$IMMOBW:ANNONCE:REFANNONCE left 8$$" target="_blank">$$LG:DEMANDEDEDOC$$</a><br />
+							$$END:NEUF$$ $$IF:IMMOBW:ANNONCE:IDPHOTO$$<br />
+							$$END$$
+				</td>
+			</tr>
+			</table>
+
+$$IF:IMMOBW:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+		<!-- debut du formulaire --><br /><br />
+		<div align="center" class="veuillez">$$LG:SAVOIR$$<br />$$LG:FORMSENDEMAIL$$</div>
+		<form name="agencemail"  method="post" onsubmit="return validate();">
+			<input type="hidden" name="idtt" value="$$IMMOBW:ANNONCE:IDTT$$">
+			<input type="hidden" name="idannonce" value="$$IMMOBW:ANNONCE:IDANNONCE$$" />
+			<input type="hidden" name="IDPUBLICATION" value="$$IMMOBW:ANNONCE:IDPUBLICATION$$">
+			<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL">
+			$$IF:FORM:QRY$$
+			<input type="hidden" name="qry" value="$$FORM:QRY$$">
+			$$END$$
+			$$IF0:FORM:QRY$$
+			<input type="hidden" name="qry" value="$$REP:PAGE$$">
+			$$END$$
+			<input type="hidden" name="page_ok" value="plus_annonce_ok.htm" />
+			<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+			<input type="hidden" name="SRV" value="$$SRV$$" />
+			<input type="hidden" name="refannonce" value="$$IMMOBW:ANNONCE:REFANNONCE$$" />
+			<input type="hidden" name="prixannonce" value="$$IMMOBW:ANNONCE:PRIX$$" />
+			<input type="hidden" name="libelleannonce" value="$$IMMOBW:ANNONCE:LIBELLE htmlencode$$" />
+		<table width="95%" cellspacing="0" cellpadding="5" border="0" align="center">
+		<tr>
+			<td align="center">
+			<table width="95%" border="0" cellspacing="2" cellpadding="2">
+			<tr>
+				<td COLSPAN="4" align="center" align="center" class="tabTitre">$$LG:COORD3$$</td>
+			</tr>
+			<tr>
+				<td align=right><strong>$$LG:AI5$$</strong></td>
+				<td><input type="text" name="cnom" value="$$FORM:CNOM$$$$IF0:FORM:CNOM$$$$SESSION:CNOM$$$$END$$"></td>
+				<td align=right><strong>$$LG:PRENOM$$</strong></td>
+				<td><input type="text" name="cprenom" value="$$FORM:CPRENOM$$$$IF0:FORM:CPRENOM$$$$SESSION:CPRENOM$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td align=right><strong>$$LG:TEL$$</strong></td>
+				<td><input type="text" name="ctel" value="$$FORM:CTEL$$$$IF0:FORM:CTEL$$$$SESSION:CTEL$$$$END$$"></td>
+				<td align=right>$$LG:OU$$&nbsp;<strong>Email</strong></td>
+				<td><input type="text" name="from" value="$$FORM:FROM$$$$IF0:FORM:EMAIL$$$$SESSION:FROM$$$$END$$"></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center" class="tabTitre">$$LG:PRECIS$$</td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center"><textarea name="message" cols="40" rows="5">$$$FORM:MESSAGE$$$$IF0:FORM:MESSAGE$$Annonce : Réf : $$IMMOBW:ANNONCE:REFANNONCE$$$$END$$</textarea></td>
+			</tr>
+			<tr>
+				<td COLSPAN="4" align="center" class="tabTitre">$$LG:VERIFINFOS$$</td>
+			</tr>
+			<tr>
+				<td align="right" COLSPAN="4"><input type="submit" value="$$LG:ENVOYER2$$" id="BoutonForm" /></td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+		</form>
+		<!-- fin du formulaire -->
+		$$END$$
+		</div>
+		<!-- affichage des vignettes et descriptif et infos agences -->
+		<!-- fin des vignettes et descriptif et infos agences -->
+		<!-- fin d'affichage grande format -->
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr><td align="right"><a href="/$$IF=:1:IMMOBW:ANNONCE:IDTYPETRANSACTION$$locations$$END$$$$IF=:2:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes$$END$$$$IF=:4:IMMOBW:ANNONCE:IDTYPETRANSACTION$$vacances$$END$$$$IF=:5:IMMOBW:ANNONCE:IDTYPETRANSACTION$$viager$$END$$$$IF=:6:IMMOBW:ANNONCE:IDTYPETRANSACTION$$prod_inves$$END$$$$IF=:8:IMMOBW:ANNONCE:IDTYPETRANSACTION$$ventes_prestige$$END$$$$IF=:9:IMMOBW:ANNONCE:IDTYPETRANSACTION$$neufs$$END$$$$IF=:10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$commerce$$END$$$$IF!:1$2$4$5$6$8$9$10$11:IMMOBW:ANNONCE:IDTYPETRANSACTION$$index$$END$$.htm?lang=$$LANGUE$$">$$LG:NVELLERECH$$</a> - <a href="javascript:window.history.go(-1);">$$LG:RETOURNER$$</a></td></tr>
+</table>
+<br />
+$$INCL:BAS.HTM$$
