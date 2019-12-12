@@ -1,0 +1,31 @@
+$$REM$$====================================================================
+//// <summary>Liens récurrants en haut des pages de recherche</summary>
+//// <remarks>
+//// <para>Liens "voir ma sélection" etc.</para>
+//// <para>Include appelée par incl_basic.htm, vendu.htm</para>
+//// <para>18.03.2011 aliasage des macros IMMOBW:ANN:QRY</para>
+//// </remarks>
+//// <update date="2011-03-18" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+
+			$$REM$$
+				<!-- ================================================================================
+						> 16.10.2009 - modif c/o Lisbonne
+						> on remplace les termes "modifier votre recherche" par "nouvelle recherche"
+						> car lien retourne vers moteur de recherche, et réinitialise toute la recherche
+				================================================================================ -->
+			<!-- 23.06.2010 : ON CACHE CE LIEN CAR PAGE MOTEUR PAS PRETE !!! -->
+			<a class="nouvelle" href="$$URLBASE$$/moteur,$$PAGE:WAG_STYLE_MOTEUR$$.htm?idtt=$$FORM:IDTT$$&amp;lang=$$FORM:LANG$$" title="$$LG:NVELLERECH pcase$$">$$LG:NVELLERECH pcase$$</a>
+			$$END:REM$$
+			
+			$$IF=:RESULTATS$BIENSVENDUS:IDT$$
+				<a class="selection" href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?lang=$$LANGUE$$" title="" onclick="javascript:Stock('$$REP:QRY htmlencode$$');">$$LG:MASELECT pcase$$ <span id="NbAnnPanier"></span></a>
+			$$END:RESULTATS:IDT$$
+			
+			$$IF0:ANNLISTE:SIPANIER$$
+$$REM$$<!-- on cache le lien ancre 'alerte' s'il n'y a pas d'annonces, puisque le bloc 'alerte email' sera juste à côté -->$$END:REM$$
+			<a class="alerte" href="#creerAlerteEmail" title="">$$LG:CREERALERTEMAIL pcase$$</a>
+			$$END:$$
+			
+			<a class="rss" href="$$URLBASE$$/rss.xml?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email htmlencode$$" title="" onclick="window.open(this.href); return false;">$$LG:FLUXRSS$$</a>

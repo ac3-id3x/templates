@@ -1,0 +1,75 @@
+$$REM$$
+====================================================================
+//// <summary>Coups de coeur mutualises</summary>
+//// <remarks>
+//// <para>Les coups de coeur ne doivent etre demutualises que dans cas extreme et avec la validation d'un resp. webfactory ou chef de projet</para>
+//// <para>Utilise le style mutualisé (donc pas touche) styles/selection_index.css</para>
+//// </remarks>
+//// <update date="2010-09-27" author="lisbonne.siriphol">Intégration lien "plus de détails"</update>
+//// <update date="2010-05-06" author="lisbonne.siriphol">Intégration pictos Nouveau</update>
+//// <update date="2010-03-29" author="lisbonne.siriphol">Intégration pictos CDC/exclu/promo</update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fonction de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-07-08" author=christophe.ledoux">Updates</update>
+====================================================================
+$$END$$
+
+$$SET:SELECTION_INDEX=1$$
+$$B:IMMOBW:ANN:2:~limit:VAL:MAXCC:ALIAS:SELECTION:VAL:IDTTCC:QRY:LANG::photo=10&tri=d_dt_crea::d_dt_maj:~NOSTAT:1$$
+$$BIF:SELECTION$$
+<h2>$$LG:NOSDERVEN ucase$$</h2>
+$$DO:1:3$$
+<div id="tabc2c$$SELECTION:I$$" class="div-cdc-f" $$IF=:1:DEFILE$$style="display:none;"$$END$$>
+	<div class="global-cdc">
+		<div class="photo-cdc">
+			<!-- fraicheur = $$SELECTION:DT_MAJ datediff now timespan days$$ -->
+				$$IF!:1:SELECTION_INDEX_NO_PICTO$$
+					$$IF:SELECTION:SI_EXCLUSIF$$<div class="selectionIndexExclusif"><!-- --></div>$$END:SI_EXCLUSIF$$
+					$$IF:SELECTION:SI_COUPDECOEUR$$<div class="selectionIndexCDC"><!-- --></div>$$END:SI_COUPDECOEUR$$
+					$$IF=:1:PAGE:WAG_SI_PROMO$$$$IF:SELECTION:SI_PROMO$$<div class="selectionIndexPromo"><!-- --></div>$$END:SI_PROMO$$$$END:PAGE:WAG_SI_PROMO$$
+					$$IF!:1:SELECTION_INDEX_NO_PICTO_NOUVEAU$$
+						$$IF+:SELECTIONFRAICHEUR:SELECTION:DT_CREA datediff now timespan days$$<div class="selectionNouveau"><!-- --></div>$$END$$
+					$$END$$
+				$$END:SELECTION_INDEX_NO_PICTO$$
+				
+			<a href="$$URLBASE replace fb. www.$$/$$SELECTION:IDPUBLICATION$$/$$SELECTION:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?idtt=$$SELECTION:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$SELECTION:IDTYPETRANSACTION gettypetransaction$$ $$SELECTION:IDTYPEBIEN gettypebien$$ $$SELECTION:VILLE pcase$$" target="_blank">
+				$$IF:SELECTION:PHOTOURL0$$<img src="$$SELECTION:PHOTOURL0$$" alt="$$SELECTION:IDTYPETRANSACTION gettypetransaction$$ $$SELECTION:IDTYPEBIEN gettypebien$$ $$SELECTION:VILLE pcase$$" />$$END:IDPHOTO$$
+				$$IF0:SELECTION:PHOTOURL0$$<img src="$$_$$img/sans_photo_index.gif
+" alt="$$SELECTION:IDTYPETRANSACTION gettypetransaction$$ $$SELECTION:IDTYPEBIEN gettypebien$$ $$SELECTION:VILLE pcase$$" />$$END:IDPHOTO$$
+			</a>
+		</div>
+		<div class="contenu-cdc">
+			<a href="$$URLBASE replace fb. www.$$/$$SELECTION:IDPUBLICATION$$/$$SELECTION:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?idtt=$$SELECTION:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title="$$SELECTION:IDTYPETRANSACTION gettypetransaction$$ $$SELECTION:IDTYPEBIEN gettypebien$$ $$SELECTION:VILLE pcase$$" target="blank">
+				<span class="typetransaction-cdc">$$SELECTION:IDTYPETRANSACTION gettypetransaction pcase$$</span>
+				<span class="typebien-cdc"> $$SELECTION:IDTYPEBIEN gettypebien pcase$$</span> <span class="ville-cdc" >$$SELECTION:VILLE$$</span>			
+			</a>					
+			<p class="espace-cdc-f">
+				$$IF:SELECTION:NB_PIECES$$<span class="nbpiece-cdc">$$SELECTION:NB_PIECES$$ $$LG:PIECES$$</span>$$END$$
+				<span class="surface-cdc">$$SELECTION:SURFACE pcase$$ m&sup2;</span>
+			</p>
+			<p class="descriptif-cdc">$$SELECTION:DESCRIPTIF smalltextv2 80 htmlencode$$</p>
+			<p class="prix-cdc-f $$IF:SELECTION:SI_PROMO$$prix-cdcPromo$$END$$">$$SELECTION:PRIX$$ $$SELECTION:PRIX_UNITE htmlencode$$</p>
+			$$REM$$<!-- ==========================================================
+									> 27.09.2010 c/o Lisbonne // 
+									> lien en display:none par défaut dans styles/selection_index.css
+									> merci de ne pas démutualiser ce css et de faire modifs dans commun.css
+			======================================================== -->$$END:REM$$
+			<p class="cdc_detail"><a href="$$URLBASE replace fb. www.$$/$$SELECTION:IDPUBLICATION$$/$$SELECTION:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?idtt=$$SELECTION:IDTYPETRANSACTION$$&amp;lang=$$LANGUE$$" title=""><span>$$LG:PLUSDETAILS pcase$$</span></a></p>
+		</div>
+	</div>	
+</div>
+$$LOOP$$
+<p class="tout_annonces">
+	<a href="http://$$REP:RSRV replace fb. www.$$/moteur,recherche.htm?idtt=2&amp;lang=$$LANGUE$$" title="" target="_blank" class="tout">$$LG:TOUTESOFFRVENTE ucase$$</a>
+</p>
+$$IF=:1:DEFILE$$
+<script type="text/javascript" src="$$-$$scripts/C2C.js"></script>
+$$IF0:SELECTION_VITESSE_DEFIL$$
+	$$A:SELECTION_VITESSE_DEFIL=4000$$
+$$END$$
+<script type="text/javascript">
+	<!--
+    C2C_install( /*ID C2C*/ "div_C2C", /*Prefixe C2C*/ "tabc2c", /*Nombre affiches*/ $$NBAFFICHDEFILE$$, /*Nombre total*/$$IF+:20:SELECTION:NBR$$20$$END$$$$IF-:20:SELECTION:NBR$$ $$SELECTION:NBR$$$$END$$, /*Vitesse*/ $$SELECTION_VITESSE_DEFIL$$, /*Mode*/ "normal", /*Si souris*/ true );
+	//-->
+</script>
+$$END$$
+$$BFIN$$

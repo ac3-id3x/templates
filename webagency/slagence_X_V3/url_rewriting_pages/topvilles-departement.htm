@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Test</title>
+</head>
+<body>
+$$E:ID3:URW-GETVALUES:~ressource:Departement:~values:departement,region$$
+$$E:ID3:URW-GETURL:ALIAS:URLREG:~ressource:Region$$
+
+<table border="1">
+	<tr>
+		<td colspan="2">
+			<a href="$$URLREG:URLVIRTUELLE$$">$$ID3:URW-GETVALUES:REGION$$</a> &gt;
+			$$ID3:URW-GETVALUES:DEPARTEMENT$$ ($$TTTB:NBANNONCESTOTAL$$ annonce$$TTTB:NBANNONCESTOTAL pluriel$$)
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+<a href="$$URWRACINE:URLVIRTUELLE$$">Immobilier</a><br/>
+<br/>
+
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~codeDepartement:QRY:codeDepartement:~nbAnnoncesMin:1$$
+
+$$BIF:TTTB$$
+$$DO$$
+	$$IFPREV:TTTB:IDTYPETRANSACTION$$
+		$$IF!:1:TTTB:I$$<br/>$$END$$
+		<b>$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLETT$$">$$END$$
+			$$TTTB:TYPETRANSACTION$$ $$ID3:URW-GETVALUES:DEPARTEMENT$$
+		$$IF:TTTB:NBANNONCES$$</a>$$END$$</b><br/>
+	$$END:IFPREV$$
+
+	$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLE$$">$$END$$
+		$$TTTB:TYPETRANSACTION$$&nbsp;$$TTTB:TYPEBIEN$$
+	$$IF:TTTB:NBANNONCES$$</a>$$END$$<font size="1"> ($$TTTB:NBANNONCES$$)</font>
+	<br/>
+$$LOOP$$
+$$BFIN$$
+
+$$BIF0:TTTB$$
+Pas de combinaison TT/TB
+$$BFIN$$
+		</td>
+		<td valign="top">
+$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150:~codeDepartement:QRY:codeDepartement$$
+
+$$BIF:TOP$$
+$$DO:3$$
+	<a href="$$TOP:URLVIRTUELLE$$">Immobilier $$TOP:VILLE$$</a><font size="1"> ($$TOP:NBANNONCES$$)</font><br/>
+$$LOOP$$
+$$BFIN$$
+
+$$BIF0:TOP$$
+Pas de ville
+$$BFIN$$
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+<font color="red">Annuaire [REPORTÉ : cf alex+erick]</font>
+		</td>
+		<td valign="top">
+$$B:IMMOBW:ANN:ALIAS:ANN:2::::ADD:idtt=2&idTypeBien=1,2&cp=+FORM_CODEDEPARTEMENT+&tri=d_dt_crea$$
+$$BIF:ANN$$
+$$DO:1:20$$$$IF-:6:ANN:I$$<!-- On procède ainsi car quand il y a un tri par dt_crea desc, la desynchro entre les tiny et les data fait qu'on n'obtient pas forcemment le nb d'annonces spécifié dans le DO -->
+	<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail.htm?p=$$ANN:BASICPARAMETERS$$">$$ANN:TITRE$$, $$ANN:VILLE$$</a>,
+	$$ANN:DESCRIPTIF$$<br/>
+$$END:I$$$$LOOP$$
+$$BFIN$$
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

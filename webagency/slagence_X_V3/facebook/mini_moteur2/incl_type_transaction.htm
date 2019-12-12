@@ -1,0 +1,50 @@
+$$REM$$================================================================================================
+//// <summary>Type de transaction du mini moteur dynamique</summary>
+//// <remarks>
+//// <para>2 possibilités : on affiche tous les types de transac dispos, ou bien on affiche un seul type de transac de son choix</para>
+//// <para>Possibilité de masquer le nb d'annonces dispos avec MINIMOTEUR_NBANNVISIBLE </para>
+//// </remarks>
+//// <update date="2010-02-22" author="lisbonne.siriphol">Adaptation pour x_v3</update>
+================================================================================================$$END$$
+
+<div class="miniDiv" id="MiniTypeTransaction">
+	
+	<div class="miniTitre">$$LG:TYPEDETRANSACTION pcase$$ :</div>
+	
+	<div class="miniDivSelect miniSelectTypeTransaction">
+		$$IF0:MINIMOTEUR_IDTTUNIQUE$$
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+		$$BIF:TYPE_TRANSACTION$$		
+			<select name="idtt" class="miniSelect" onchange="javascript:ListeTypeBien(this.value);ListePays(this.value, '');Change(this.value);">
+				$$IF0:MINIMOTEUR_IDTTDEFAUT$$<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>$$END:MINIMOTEUR_IDTTDEFAUT$$
+				$$DO$$
+				$$IF):MINIMOTEUR*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+					<option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF=:MINIMOTEUR*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+						$$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+						$$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+						$$IF=:1:MINIMOTEUR_NBANNVISIBLE$$($$TYPE_TRANSACTION:NBANN$$)$$END$$</option>
+				$$END:MINIMOTEUR_IDTBCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+				$$LOOP$$				
+			</select>	
+		$$BFIN$$
+		$$END:0:MINIMOTEUR_IDTTUNIQUE$$	
+		
+		$$IF:MINIMOTEUR_IDTTUNIQUE$$
+			<input type="hidden" name="idtt" value="$$MINIMOTEUR_IDTTUNIQUE$$" />	
+			$$IF=:1:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:LOC pcase$$$$END$$
+			$$IF=:2:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:VEN pcase$$$$END$$
+			$$IF=:3:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:LOCTMP pcase$$$$END$$
+			$$IF=:4:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:LOCVAC pcase$$$$END$$
+			$$IF=:5:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+			$$IF=:6:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:PRODINVEST pcase$$$$END$$
+			$$IF=:7:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:LOCPST pcase$$$$END$$
+			$$IF=:8:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:VENPST pcase$$$$END$$
+			$$IF=:9:MINIMOTEUR_IDTTUNIQUE$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+			$$IF=:10:MINIMOTEUR_IDTTUNIQUE$$$$LG:MINIFONDSCOM pcase$$$$END$$
+			$$IF=:11:MINIMOTEUR_IDTTUNIQUE$$$$LG:MINIBAIL pcase$$$$END$$
+		$$END:MINIMOTEUR_IDTTUNIQUE$$
+	</div><!-- .miniDivSelect .miniSelectTypeTransaction -->
+	
+	<div class="clear"><!-- --></div>
+	
+</div><!-- #MiniTypeTransaction -->

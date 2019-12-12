@@ -1,0 +1,148 @@
+$$REM$$<!-- ====================================================================
+//// <summary>Includes js par defaut utilisés par tous les sites agences</summary>
+//// <remarks>
+//// <para>Fichier à ne SURTOUT PAS démutualiser</para>
+//// <para>Si besoin d'ajouter d'autres .js, les placer dans incl_haut.htm juste après l'appel de ce fichier</para>
+//// <para>on met le chemin des fichiers en dynamique pour ne pas recopier les scripts pour les franchises qui n'ont pas slagence_X_V3 en base rep</para>
+//// <para>Pour aider le réf, essayer de tasser les ligne de code</para>
+//// </remarks>
+//// <update date="2011-01-26" author="lisbonne.siriphol">Update dernière version prototype_1.7.js</update>
+//// <update date="2010-02-15" author="lisbonne.siriphol">Même logique que version x_v2</update>
+//// <update date="2008-08-25" author="lisbonne.siriphol">Creation v1</update>
+==================================================================== -->$$END$$
+
+	<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/jquery.js"></script>
+	$$REM$$<!-- JAVASCRIPT VARIABLES AND FUNCTIONS ACCESSIBLES FROM ANYWHERE WITHIN THE HTML PAGE -->$$END$$
+	<link rel="stylesheet" href="/z/webagency/slagence_X_V5/maps/all/css/maps-xv4.css" />
+	<script type="text/javascript" src="/z/webagency/slagence_X_V5/scripts/js/global.min.js"></script>
+	<script type="text/javascript">$$REM$$<!-- JAVASCRIPT GLOBAL VARIABLES INITIALIZATION -->$$END$$
+		id3xContent = new id3xContentConstructor({ $$REM$$/*debug: true,*/$$END$$
+			macro: { 
+				B: {AGENCES: {DATA: []}},
+				E: { 
+					AGENCE: {IDPUBLICATION: "$$CV:IDPUBLICATION$$", LATITUDE: "$$CV:LATITUDE$$", LONGITUDE: "$$CV:LONGITUDE$$", NOM: "$$CV:NOM$$"},
+					ANNONCE: {
+						AGLATITUDE: "$$ANNDETAIL:AGLATITUDE$$", AGLONGITUDE: "$$ANNDETAIL:AGLONGITUDE$$", LATITUDE: "$$ANNDETAIL:LATITUDE$$", LONGITUDE: "$$ANNDETAIL:LONGITUDE$$",
+						LATITUDE_CARTO: "$$ANNDETAIL:LATITUDE_CARTO$$", LONGITUDE_CARTO: "$$ANNDETAIL:LONGITUDE_CARTO$$", PUBLICLAT: "$$ANNDETAIL:PUBLICLAT$$", PUBLICLNG: "$$ANNDETAIL:PUBLICLNG$$",
+						VILLE: "$$ANNDETAIL:VILLE$$"
+					},
+					CARTO_ANNONCES_INIT: {LATITUDEMAX: "$$CARTO:LATITUDEMAX$$", LATITUDEMIN: "$$CARTO:LATITUDEMIN$$", LONGITUDEMAX: "$$CARTO:LONGITUDEMAX$$", LONGITUDEMIN: "$$CARTO:LONGITUDEMIN$$"},
+					PAGE: { 
+						MAP_CENTER_LATITUDE: "$$PAGE:MAP_CENTER_LATITUDE$$", MAP_CENTER_LONGITUDE: "$$PAGE:MAP_CENTER_LONGITUDE$$",WAG_STYLE_AGENCE: "$$PAGE:WAG_STYLE_AGENCE$$", WAG_STYLE_DETAIL: "$$PAGE:WAG_STYLE_DETAIL$$",
+						WAG_STYLE_RECHERCHE: "$$PAGE:WAG_STYLE_RECHERCHE$$", WAG_STYLE_RECHERCHE_DEFAULT: "$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$", WAG_TYPE_PACK: "$$PAGE:WAG_TYPE_PACK$$" 
+					} 
+				} 
+			},
+			texts: {clicAcquerir: "$$LG:TITLEACQUEREUR pcase$$ $$LG:AVEC lcase$$", clicEstimation: "$$LG:CLIQUERESTIMER pcase$$", clicMore: "$$LG:CLIQUEZPLUS pcase$$"},
+			values: {acquerirIdt: "$$ACQUERIR:IDT$$", colorMarker: "$$PINCARTO$$", estimationIdt: "$$ESTIMATION:IDT$$",poi: {jsPoi: "$$JS_POI$$", mapAnnonceHide: "$$MAP_ANNONCE_HIDE$$"}}
+		});
+	</script>
+
+$$REM$$<!-- ///////////////////////// OBLIGATION D'APPELER LES SCRIPTS EN DUR SELON LES CAS ! ///////////////////////// -->$$END:REM$$
+
+$$REM$$<!-- compil de tout le necessaire -->$$END:REM$$										<script src="/z/webagency/slagence_X_V3/scripts/all.js" type="text/javascript"></script>
+$$REM$$<!-- js de gestion des onLoad --> 																	<script src="scripts,eventsManager-min.js" type="text/javascript"></script>$$END:REM$$
+$$REM$$<!-- defilement des agences --> 																		<script src="scripts,coord.js" type="text/javascript"></script>$$END:REM$$
+
+$$REM$$<!-- prototype js only mini moteur, attention conflit avec jquery -->$$END:REM$$
+$$IF=:1:MINIMOTEUR$$		
+	<script src="/z/webagency/slagence_X_V3/scripts/prototype_1.7.js" type="text/javascript"></script>
+$$END:MINIMOTEUR$$
+
+$$REM$$<!-- script page moteur et alerte immo -->$$END:REM$$
+$$IF=:MOTEUR$ALERTEIMMO:IDT$$	
+	<script src="/z/webagency/slagence_X_V3/scripts/prototype_1.7.js" type="text/javascript"></script>
+	<script src="/z/webagency/slagence_X_V3/scripts/moteur.js?lang=$$FORM:LANG$$" type="text/javascript"></script>
+$$END:MINIMOTEUR$$
+
+$$IF=:RESULTATS$DETAILANNONCE:IDT$$	
+	$$REM$$<!-- affiche métro ou rer paris lyon --> $$END:REM$$							<script src="scripts,metro.js" type="text/javascript"></script>
+$$END:IDT$$
+
+
+$$IF=:RESULTATS:IDT$$
+$$REM$$<!-- prototype_1.6.js (ajout ann panier) -->$$END:REM$$						<script src="/z/webagency/slagence_X_V3/scripts/prototype_1.7.js" type="text/javascript"></script>
+$$REM$$<!-- script pages resultats -->$$END:REM$$													<script src="scripts,recherche,resultats.js" type="text/javascript"></script>
+$$END:RESULTATS:IDT$$
+
+
+$$IF=:DETAILANNONCE:IDT$$	
+	$$REM$$<!-- prototype_1.6.js (ajout ann panier) -->$$END:REM$$					<script src="/z/webagency/slagence_X_V3/scripts/prototype_1.7.js" type="text/javascript"></script>
+	$$REM$$<!-- Google + 1 -->$$END:REM$$																		<script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'fr'}</script>
+	<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/jquery.js"></script>
+	$$IF=:DETAIL,SENTO.HTM:REP:0$$		
+		$$REM$$<!-- /////////////////////////////////////////////// detail SENTO only ! ///////////////////////////////////////////////////////////////////// -->$$END:REM$$			
+		<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/ad-gallery/jquery.ad-gallery.js?rand=995"></script>
+		<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/jquery.gallery.js?rand=995"></script>
+$$REM$$
+		$$IF:PAGE:MAP_GOOGLEKEY$$
+		 $$IF!:ABQIAAAATvGIAAZ0ge4GmsDE2mjzJRTdvOH-Un-nPJSFBlUnUl1-1zJf9hSkyMu-j9Dsfo5O7gs2zSG-iZks4w:PAGE:MAP_GOOGLEKEY$$
+    	<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/detail/default_map.js"></script>
+    	<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/detail/poi.js"></script>
+     $$END:PAGE:MAP_GOOGLEKEY$$
+    $$END:PAGE:MAP_GOOGLEKEY$$
+$$END$$
+	$$END:SENTO.HTM$$
+	
+	
+	$$REM$$<!-- /////////////////////////////////////////////// scripts fancybox ///////////////////////////////////////////////////////////////////// -->$$END:REM$$
+		<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/fancybox-1_3_1/jquery.fancybox-1.3.1.js"></script>
+		<link rel="stylesheet" type="text/css" href="/z/webagency/slagence_X_V3/scripts/fancybox-1_3_1/jquery.fancybox-1.3.1.css" media="screen" />
+			<script type="text/javascript">
+				var $j = jQuery.noConflict(); 
+				$j(document).ready(function() {	
+					$j("a[rel=photos_annonce]").fancybox({
+						'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+						//return '<span id="fancybox-title-over">$$LG:PHOT pcase$$ ' + (currentIndex + 1) + '/' + currentArray.length + '<br /><strong>' + (title.length ? '' + title : '') + '</strong></span>';
+						return '<span id="fancybox-title-over"><strong>' + (title.length ? '' + title : '') + '</strong><br />$$LG:PHOT pcase$$ ' + (currentIndex + 1) + '/' + currentArray.length + '</span>';
+						}
+					});					
+				});
+			</script>			
+			
+	$$REM$$<!-- ajout sélection panier -->$$END:REM$$												<!--#include virtual="/scripts/detail/incl_scripts_detail.htm" -->
+
+$$REM$$<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END:REM$$
+$$END:DETAILANNONCE:IDT$$
+
+$$REM$$<!-- ========================== blog =============== -->$$END:REM$$
+$$IF=:ARTICLES$ARTICLE:IDT$$
+$$REM$$<!-- Google + 1 -->$$END:REM$$																		<script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'fr'}</script>
+$$END:ARTICLES$$
+
+$$IF=:SUIVICLIENT:IDT$$
+$$REM$$<!-- suivi client pericles -->$$END:REM$$													<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/suivi_client.js"></script>
+$$END:SUIVICLIENT$$
+
+$$REM$$<!-- ajout aux favoris -->$$END:REM$$															<script type="text/javascript">function favoris() {if ( navigator.appName != 'Microsoft Internet Explorer' ) {window.sidebar.addPanel("$$SRV$$","http://$$SRV$$",""); } else { window.external.AddFavorite("http://$$SRV$$","$$SRV$$"); } }</script>
+$$REM$$<!--  js png special bug tout ie --> $$END:REM$$										<!--[if lte IE 6]><script type="text/javascript" src="scripts,pngfix.js"></script><![endif]-->
+
+$$REM$$<!-- ========================== fichiers script google=============== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+
+$$REM$$<!-- ========================== fichier jquery =============== -->$$END:REM$$
+$$IF!:DETAIL,SENTO.HTM:REP:0$$
+	<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/jquery.js"></script>
+$$END$$
+<script type="text/javascript" language="javascript">var $j = jQuery.noConflict();</script>
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+$$IF:PAGE:GOOGLEKEY_ANALYTICS$$
+$$REM$$<!-- SCRIPT TRACKING GOOGLE -->$$END:REM$$													<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/eventgoogle.js"></script>
+$$END$$
+$$END$$
+<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/moteur/tailleselect.js"></script>
+<script type="text/javascript" src="/z/webagency/slagence_X_V3/scripts/minbudget.js"></script>
+$$REM$$<!-- ========================== FIXING QUARTIER =============== -->$$END:REM$$
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery('.quartier').hide();
+		jQuery('#Quartier').hide();
+	});	
+
+
+function go(url,n,w,h) {
+	window.open(url,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width='+w+',height='+h);
+}
+
+</script>

@@ -1,0 +1,924 @@
+$$REM$$
+====================================================================
+//// <summary>Include comportant les variables liées au résultat de recherche d'annonces</summary>
+//// <remarks>
+//// <para> !!! ATTENTION !!! Il faut absolument mettre se fichier entre les balises <script> ... </script></para>
+//// <para>Projet Web Analytic avec la solution Omniture</para>
+//// </remarks>
+//// <update date="2009-08-26" author="florian.adam"></update>
+//// <update date="2009-09-23" author="florian.adam">Ajout du type de recherche</update>
+====================================================================
+$$END:REM$$
+
+<script type="text/javascript">	
+
+$$REM$$	
+$$IF=:CONTACTAGENCE:IDT$$
+	s.eVar7="Formulaire de contact agence";
+$$END:IDT$$
+$$END:REM$$
+	
+	/****************************************************************************************************/
+	/* 																		Variables communes 																						*/
+	/*																		(titres événement, recherche avancée, etc ...)								*/
+	/****************************************************************************************************/
+	
+	// Recherche d'annonce
+	s.events = s.apl(s.events, "event6", ",",1);
+	
+		// Mode d'accès aux annonces
+	$$IF:FORM:TYPERECHERCHE$$
+		$$IF=:1:FORM:TYPERECHERCHE$$
+			s.products = s.apl(s.products, "evar3=$$FORM:TYPERECHERCHE$$", "|",1);
+		$$END$$
+	$$END$$
+	
+	// Recherche avancée
+	$$IF=:1:FORM:AV$$
+		s.events = s.apl(s.events, "event7", ",",1);
+	$$END:AV$$
+	
+	// Recherche par idannonce
+	$$IF:FORM:REFANNONCE$$
+		s.events = s.apl(s.events, "event8", ",",1);
+	$$END:REFANNONCE$$
+$$REM$$
+	/****************************************************************************************************/
+	/* 																		Criteres les plus consultés	(prop13)													*/
+	/* 																		Prix (prop18)																									*/
+	/* 																		Surface (prop19)																							*/
+	/****************************************************************************************************/
+	
+	// Type de bien
+	$$IF:FORM:IDTYPEBIEN$$
+		s.prop13 = s.apl(s.prop13, "type de bien", "|",1);
+	$$END:IDTYPEBIEN$$
+$$REM$$	
+	$$IF0:FORM:IDTYPEBIEN$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:IDTYPEBIEN$$
+$$END:REM$$
+	// Nombre de pièce
+	$$IF:FORM:NB_PIECES$$
+		s.prop13 = s.apl(s.prop13, "nb pieces", "|",1);
+	$$END:NB_PIECES$$
+	
+	$$IF0:FORM:NB_PIECES$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:NB_PIECES$$
+	
+	// Nombre de chambre
+	$$IF:FORM:NB_CHAMBRES$$
+		s.prop13 = s.apl(s.prop13, "nb chambres", "|",1);
+	$$END:NB_CHAMBRES$$
+	
+	$$IF0:FORM:NB_CHAMBRES$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:NB_CHAMBRES$$
+	
+	// Prix mini
+	$$IF:FORM:PXMIN$$
+		s.prop13 = s.apl(s.prop13, "prix min", "|",1);
+	$$END:PXMIN$$
+	
+	$$IF0:FORM:PXMIN$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:PXMIN$$
+	
+	// Prix maxi
+	$$IF:FORM:PXMAX$$
+		s.prop13 = s.apl(s.prop13, "prix max", "|",1);
+	$$END:PXMAX$$
+	
+	$$IF0:FORM:PXMAX$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:PXMAX$$
+	
+	// Surface mini
+	$$IF:FORM:SURFACEMIN$$
+		s.prop13 = s.apl(s.prop13, "surface min", "|",1);
+	$$END:SURFACEMIN$$
+	
+	$$IF0:FORM:SURFACEMIN$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:SURFACEMIN$$
+	
+	// Surface maxi
+	$$IF:FORM:SURFACEMAX$$
+		s.prop13 = s.apl(s.prop13, "surface max", "|",1);
+	$$END:SURFACEMAX$$
+	
+	$$IF0:FORM:SURFACEMAX$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:SURFACEMAX$$
+	
+	// Code postal
+	$$IF:FORM:CP$$
+		s.prop13 = s.apl(s.prop13, "code postal", "|",1);
+	$$END:CP$$
+	
+	$$IF0:FORM:CP$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:CP$$
+	
+	// Loyer mini
+	$$IF:FORM:PX_LOYERMIN$$
+		s.prop13 = s.apl(s.prop13, "px loyermin", "|",1);
+	$$END:PX_LOYERMIN$$
+	
+	$$IF0:FORM:PX_LOYERMIN$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:PX_LOYERMIN$$
+	
+	// Loyer maxi
+	$$IF:FORM:PX_LOYERMAX$$
+		s.prop13 = s.apl(s.prop13, "px loyermax", "|",1);
+	$$END:PX_LOYERMAX$$
+	
+	$$IF0:FORM:PX_LOYERMAX$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:PX_LOYERMAX$$
+	
+$$REM$$	<!-- Inutile car déjà récupéré dans la prop20. -->	
+	// Type de transaction
+	$$IF:FORM:IDTT$$
+		s.prop13 = s.apl(s.prop13, "type de transaction", "|",1);
+	$$END:IDTT$$
+
+	$$IF0:FORM:IDTT$$
+		s.prop13 = s.apl(s.prop13, "", "|",1);
+	$$END:IDTT$$
+$$END:REM$$
+	
+	/****************************************************************************************************/
+	/* 																		Criteres avancées	les plus consultés (prop14)									*/
+	/****************************************************************************************************/
+	
+	/******************************************/
+	/* Situation du logement dans l'immeuble	*/
+	/******************************************/
+	
+	// Etages
+	$$IF:FORM:ETAGEMIN$$
+		s.prop14 = s.apl(s.prop14, "etage min", "|",1);
+	$$END:ETAGEMIN$$
+	
+	$$IF0:FORM:ETAGEMIN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:ETAGEMIN$$
+	
+	$$IF:FORM:ETAGEMAX$$
+		s.prop14 = s.apl(s.prop14, "etage max", "|",1);
+	$$END:ETAGEMAX$$
+	
+	$$IF0:FORM:ETAGEMAX$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:ETAGEMAX$$
+	
+	$$IF:FORM:SI_DERNIERETAGE$$
+		s.prop14 = s.apl(s.prop14, "dernier etage", "|",1);
+	$$END:SI_DERNIERETAGE$$
+	
+	$$IF0:FORM:SI_DERNIERETAGE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_DERNIERETAGE$$
+
+	/**********************/
+	/* Surface du terrain	*/
+	/**********************/
+	$$IF:FORM:SURF_TERRAIN_MIN$$
+		s.prop14 = s.apl(s.prop14, "surface terrain min", "|",1);
+	$$END:SURF_TERRAIN_MIN$$
+	
+	$$IF0:FORM:SURF_TERRAIN_MIN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SURF_TERRAIN_MIN$$
+	
+	$$IF:FORM:SURF_TERRAIN_MAX$$
+		s.prop14 = s.apl(s.prop14, "surface terrain max", "|",1);
+	$$END:SURF_TERRAIN_MAX$$
+	
+	$$IF0:FORM:SURF_TERRAIN_MAX$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SURF_TERRAIN_MAX$$
+	
+	/******************************/
+	/* A propos de l'appartement	*/
+	/******************************/
+	$$IF:FORM:IDTYPECHAUFFAGE$$
+		s.prop14 = s.apl(s.prop14, "type de chauffage", "|",1);
+	$$END:IDTYPECHAUFFAGE$$
+	
+	$$IF0:FORM:IDTYPECHAUFFAGE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:IDTYPECHAUFFAGE$$
+	
+	$$IF:FORM:IDTYPECUISINE$$
+		s.prop14 = s.apl(s.prop14, "type de cuisine", "|",1);
+	$$END:IDTYPECUISINE$$
+	
+	$$IF0:FORM:IDTYPECUISINE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:IDTYPECUISINE$$
+	
+	$$IF=:1:FORM:SI_DUPLEX$$
+		s.prop14 = s.apl(s.prop14, "duplex", "|",1);
+	$$END:SI_DUPLEX$$
+	
+	$$IF0:FORM:SI_DUPLEX$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_DUPLEX$$
+	
+	
+	/******************************/
+	/* A propos de l'immeuble			*/
+	/******************************/
+	
+	// Existe-t-il un ascenseur ?
+	$$IF=:1:FORM:SI_ASCENSEUR$$
+		s.prop14 = s.apl(s.prop14, "ascenseur", "|",1);
+	$$END:SI_ASCENSEUR$$
+	
+	$$IF0:FORM:SI_ASCENSEUR$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_ASCENSEUR$$
+	
+	// Existe-t-il un digicode ?
+	$$IF=:1:FORM:SI_DIGICODE$$
+		s.prop14 = s.apl(s.prop14, "digicode", "|",1);
+	$$END:SI_DIGICODE$$
+	
+	$$IF0:FORM:SI_DIGICODE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_DIGICODE$$
+	
+	// Y-a-t-il un gardien ?
+	$$IF=:1:FORM:SI_GARDIEN$$
+		s.prop14 = s.apl(s.prop14, "gardien", "|",1);
+	$$END:SI_GARDIEN$$
+	
+	$$IF0:FORM:SI_GARDIEN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_GARDIEN$$
+
+	// Existe-t-il un interphone ?
+	$$IF=:1:FORM:SI_INTERPHONE$$
+		s.prop14 = s.apl(s.prop14, "interphone", "|",1);
+	$$END:SI_INTERPHONE$$
+
+	$$IF0:FORM:SI_INTERPHONE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_INTERPHONE$$
+
+	/******************************/
+	/* 				Commodités 					*/
+	/******************************/
+	
+	// Avec alarme
+	$$IF=:1:FORM:SI_ALARME$$
+		s.prop14 = s.apl(s.prop14, "alarme", "|",1);
+	$$END:SI_ALARME$$
+	
+	$$IF0:FORM:SI_ALARME$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_ALARME$$
+	
+	// Avec climatisation
+	$$IF=:1:FORM:SI_CLIMATISATION$$
+		s.prop14 = s.apl(s.prop14, "climatisation", "|",1);
+	$$END:SI_CLIMATISATION$$
+	
+	$$IF0:FORM:SI_CLIMATISATION$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_CLIMATISATION$$
+	
+	// Avec cheminée
+	$$IF=:1:FORM:SI_CHEMINEE$$
+		s.prop14 = s.apl(s.prop14, "cheminée", "|",1);
+	$$END:SI_CHEMINEE$$
+	
+	$$IF0:FORM:SI_CHEMINEE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_CHEMINEE$$
+	
+	// Avec parquet
+	$$IF=:1:FORM:SI_PARQUET$$
+		s.prop14 = s.apl(s.prop14, "parquet", "|",1);
+	$$END:SI_PARQUET$$
+	
+	$$IF0:FORM:SI_PARQUET$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_PARQUET$$
+	
+	// Avec terrasse(s)
+	$$IF=:1:FORM:SI_TERRASSE$$
+		s.prop14 = s.apl(s.prop14, "terrasse", "|",1);
+	$$END:SI_TERRASSE$$
+	
+	$$IF0:FORM:SI_TERRASSE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_TERRASSE$$
+	
+	// Nombre de balcon(s) 
+	$$IF:FORM:NB_BALCONSMIN$$
+		s.prop14 = s.apl(s.prop14, "nb balcons", "|",1);
+	$$END:NB_BALCONSMIN$$
+	
+	$$IF0:FORM:NB_BALCONSMIN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:NB_BALCONSMIN$$
+	
+	/******************************/
+	/* 					Pièces		 				*/
+	/******************************/
+	
+	// Nombre de salle de bains minimum
+	$$IF:FORM:NB_SALLES_DE_BAINSMIN$$
+		s.prop14 = s.apl(s.prop14, "salles de bains", "|",1);
+	$$END:NB_SALLES_DE_BAINSMIN$$
+	
+	$$IF0:FORM:NB_SALLES_DE_BAINSMIN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:NB_SALLES_DE_BAINSMIN$$
+	
+	// Nombre de salle d'eau minimum
+	$$IF:FORM:NB_SALLES_DEAUMIN$$
+		s.prop14 = s.apl(s.prop14, "salles d'eau", "|",1);
+	$$END:NB_SALLES_DEAUMIN$$
+	
+	$$IF0:FORM:NB_SALLES_DEAUMIN$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:NB_SALLES_DEAUMIN$$
+	
+	// Y-a-t-il un entrée ?
+	$$IF=:1:FORM:SI_ENTREE$$
+		s.prop14 = s.apl(s.prop14, "entrée", "|",1);
+	$$END:SI_ENTREE$$
+	
+	$$IF0:FORM:SI_ENTREE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_ENTREE$$
+	
+	// Y-a-t-il une salle à manger ?
+	$$IF=:1:FORM:SI_SALLE_A_MANGER$$
+		s.prop14 = s.apl(s.prop14, "salle à manger", "|",1);
+	$$END:SI_SALLE_A_MANGER$$
+	
+	$$IF0:FORM:SI_SALLE_A_MANGER$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_SALLE_A_MANGER$$
+	
+	// Y-a-t-il un séjour
+	$$IF=:1:FORM:SI_SEJOUR$$
+		s.prop14 = s.apl(s.prop14, "séjour", "|",1);
+	$$END:SI_SEJOUR$$
+	
+	$$IF0:FORM:SI_SEJOUR$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_SEJOUR$$
+	
+	// Y-a-t-il des toilettes séparées
+	$$IF=:1:FORM:SI_TOILETTES_SEPAREES$$
+		s.prop14 = s.apl(s.prop14, "toilettes séparées", "|",1);
+	$$END:SI_TOILETTES_SEPAREES$$
+
+	$$IF0:FORM:SI_TOILETTES_SEPAREES$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_TOILETTES_SEPAREES$$
+
+	/******************************/
+	/* 				Rangements		 			*/
+	/******************************/
+	
+	// Y-a-t-il un boxe ?
+	$$IF=:1:FORM:SI_BOXES$$
+		s.prop14 = s.apl(s.prop14, "boxes", "|",1);
+	$$END:SI_BOXES$$
+	
+	$$IF0:FORM:SI_BOXES$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_BOXES$$
+	
+	// Y-a-t-il une cave ?
+	$$IF=:1:FORM:SI_CAVE$$
+		s.prop14 = s.apl(s.prop14, "cave", "|",1);
+	$$END:SI_CAVE$$
+	
+	$$IF0:FORM:SI_CAVE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_CAVE$$
+	
+	// Y-a-t-il un parking ?
+	$$IF=:1:FORM:SI_PARKINGS$$
+		s.prop14 = s.apl(s.prop14, "parkings", "|",1);
+	$$END:SI_PARKINGS$$
+	
+	$$IF0:FORM:SI_PARKINGS$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_PARKINGS$$
+	
+	// Y-a-t-il un placard ?
+	$$IF=:1:FORM:SI_PLACARDS$$
+		s.prop14 = s.apl(s.prop14, "placards", "|",1);
+	$$END:SI_PLACARDS$$
+	
+	$$IF0:FORM:SI_PLACARDS$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_PLACARDS$$
+	
+	/******************************/
+	/* 				Orientation		 			*/
+	/******************************/
+	
+	// Orienté sud ?
+	$$IF=:1:FORM:SI_SUD$$
+		s.prop14 = s.apl(s.prop14, "sud", "|",1);
+	$$END:SI_SUD$$
+	
+	$$IF0:FORM:SI_SUD$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_SUD$$
+	
+	// Orienté Est ?
+	$$IF=:1:FORM:SI_EST$$
+		s.prop14 = s.apl(s.prop14, "est", "|",1);
+	$$END:SI_EST$$
+	
+	$$IF0:FORM:SI_EST$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_EST$$
+	
+	// Orienté Nord ?
+	$$IF=:1:FORM:SI_NORD$$
+		s.prop14 = s.apl(s.prop14, "nord", "|",1);
+	$$END:SI_NORD$$
+	
+	$$IF0:FORM:SI_NORD$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_NORD$$
+	
+	// Orienté Ouest ?
+	$$IF=:1:FORM:SI_OUEST$$
+		s.prop14 = s.apl(s.prop14, "ouest", "|",1);
+	$$END:SI_OUEST$$
+	
+	$$IF0:FORM:SI_OUEST$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_OUEST$$
+	
+	// Avec une belle vue ?
+	$$IF=:1:FORM:SI_VUE$$
+		s.prop14 = s.apl(s.prop14, "vue", "|",1);
+	$$END:SI_VUE$$
+	
+	$$IF0:FORM:SI_VUE$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_VUE$$
+	
+	// Sans vis à vis ?
+	$$IF=:1:FORM:SI_VISAVIS$$
+		s.prop14 = s.apl(s.prop14, "vis à vis", "|",1);
+	$$END:SI_VISAVIS$$
+	
+	$$IF0:FORM:SI_VISAVIS$$
+		s.prop14 = s.apl(s.prop14, "", "|",1);
+	$$END:SI_VISAVIS$$
+
+	
+
+	
+	
+	/****************************************************************************************************/
+	/* 																		Localités																											*/
+	/****************************************************************************************************/
+	$$IF:FORM:CI$$
+		s.prop15 = s.apl(s.prop15, "$$FORM:CI replace , |$$", "|",1);
+	$$END:CI$$
+	
+	/****************************************************************************************************/
+	/* 																		Pays																													*/
+	/****************************************************************************************************/
+	$$IF:FORM:IDPAYS$$
+		s.prop17 = s.apl(s.prop17, "$$FORM:IDPAYS$$", "|",1);
+	$$END:IDPAYS$$
+
+	/****************************************************************************************************/
+	/* 																		Prix																													*/
+	/****************************************************************************************************/
+	// Prix mini
+	$$IF:FORM:PXMIN$$
+		s.prop18 = s.apl(s.prop18, "$$FORM:PXMIN$$", "|",1);
+	$$END:PXMIN$$
+	
+$$REM$$	
+	// Pas de prix mini, il faut quand même le | (pipe)
+	$$IF0:FORM:PXMIN$$
+		s.prop18 = s.apl(s.prop18, " ", "|",1);
+	$$END:PXMIN$$
+$$END:REM$$
+	// Prix maxi
+	$$IF:FORM:PXMAX$$
+		s.prop18 = s.apl(s.prop18, "$$FORM:PXMAX$$", "|",1);
+	$$END:PXMAX$$
+
+$$REM$$	
+	// Pas de prix maxi, il faut quand même le | (pipe)
+	$$IF0:FORM:PXMAX$$
+		s.prop18 = s.apl(s.prop18, " ", "|",1);
+	$$END:PXMAX$$
+$$END:REM$$
+	/****************************************************************************************************/
+	/* 																		Surface																												*/
+	/****************************************************************************************************/
+	// Surface mini
+	$$IF:FORM:SURFACEMIN$$
+		s.prop19 = s.apl(s.prop19, "$$FORM:SURFACEMIN$$", "|",1);
+	$$END:SURFACEMIN$$
+	
+	// Surface maxi
+	$$IF:FORM:SURFACEMAX$$
+		s.prop19 = s.apl(s.prop19, "$$FORM:SURFACEMAX$$", "|",1);
+	$$END:SURFACEMAX$$
+	
+	// Surface between
+	$$IF:FORM:SURFACEBTW$$
+		s.prop19 = s.apl(s.prop19, "$$FORM:SURFACEBTW replace / |$$", "|",1);
+	$$END:SURFACEMAX$$
+$$END:REM$$
+	/****************************************************************************************************/
+	/* 																		Type de transaction																						*/
+	/****************************************************************************************************/
+	s.prop20="$$FORM:IDTT$$";
+	
+	/****************************************************************************************************/
+	/* 																		Type de bien																									*/
+	/****************************************************************************************************/
+	s.prop21="$$FORM:IDTYPEBIEN replace , |$$";
+
+$$REM$$	
+	/****************************************************************************************************/
+	/* 																		Nombre de pièce																								*/
+	/****************************************************************************************************/
+	$$IF:FORM:NB_PIECES$$
+		s.prop22 = s.apl(s.prop22, "$$FORM:NB_PIECES$$", "|",1);
+	$$END:NB_PIECES$$
+	
+	/****************************************************************************************************/
+	/* 																		Nombre de chambre																							*/
+	/****************************************************************************************************/
+	$$IF:FORM:NB_CHAMBRES$$
+		s.prop23 = s.apl(s.prop23, "$$FORM:NB_CHAMBRES$$", "|",1);
+	$$END:NB_CHAMBRES$$
+
+	/****************************************************************************************************/
+	/* 																		Critère supplémentaires 																			*/
+	/****************************************************************************************************/
+	
+	// De préférence avec photo ...
+	$$IF:FORM:PHOTO$$
+		s.prop24 = s.apl(s.prop24, "avec_photo", "|",1);
+	$$END:PHOTO$$
+	
+	$$IF0:FORM:PHOTO$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:PHOTO$$
+	
+	// Coup de coeur uniquement
+	$$IF:FORM:SI_COUPDECOEUR$$
+		s.prop24 = s.apl(s.prop24, "coup_de_coeur", "|",1);
+	$$END:SI_COUPDECOEUR$$
+	
+	$$IF0:FORM:SI_COUPDECOEUR$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:SI_COUPDECOEUR$$
+
+	// Exclusivités uniquement
+	$$IF:FORM:SI_EXCLUSIF$$
+		s.prop24 = s.apl(s.prop24, "si_exclusif", "|",1);
+	$$END:SI_EXCLUSIF$$
+	
+	$$IF0:FORM:SI_EXCLUSIF$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:SI_EXCLUSIF$$
+	
+	// Nouveauté de moins de 2 semaines.
+	$$IF:FORM:FRAICHEUR$$
+		s.prop24 = s.apl(s.prop24, "annonces_récentes", "|",1);
+	$$END:FRAICHEUR$$
+	
+	$$IF0:FORM:FRAICHEUR$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:FRAICHEUR$$
+	
+	// Mobilité réduite
+	$$IF:FORM:SI_HANDICAPE$$
+		s.prop24 = s.apl(s.prop24, "mobilité_réduite", "|",1);
+	$$END:SI_HANDICAPE$$
+	
+	$$IF0:FORM:SI_HANDICAPE$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:SI_HANDICAPE$$
+	
+	// Recherche dans les communes avoisinantes
+	$$IF:FORM:PROX$$
+		s.prop24 = s.apl(s.prop24, "communes avoisinantes", "|",1);
+	$$END:PROX$$
+	
+	$$IF0:FORM:PROX$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:PROX$$
+	
+	// Pays
+	$$IF:FORM:IDPAYS$$
+		s.prop24 = s.apl(s.prop24, "pays", "|",1);
+	$$END:IDPAYS$$
+	
+	$$IF0:FORM:IDPAYS$$
+		s.prop24 = s.apl(s.prop24, "", "|",1);
+	$$END:IDPAYS$$
+	
+	// Si meublé
+	$$IF=:1:IDTT$$
+		$$IF=:1:FORM:SI_MEUBLE$$
+			s.prop24 = s.apl(s.prop24, "bien meublé", "|",1);
+		$$END$$
+	
+		$$IF0:FORM:SI_MEUBLE$$
+			s.prop24 = s.apl(s.prop24, "bien vide", "|",1);
+		$$END$$
+	$$END:IDTT$$
+
+
+	/****************************************************************************************************/
+	/* 																		Situation du logement dans l'immeuble													*/
+	/****************************************************************************************************/
+	
+	// Etages
+	$$IF:FORM:ETAGEMIN$$
+		s.prop25 = s.apl(s.prop25, "$$FORM:ETAGEMIN$$", "|",1);
+	$$END:ETAGEMIN$$
+	
+	$$IF:FORM:ETAGEMAX$$
+		s.prop25 = s.apl(s.prop25, "$$FORM:ETAGEMAX$$", "|",1);
+	$$END:ETAGEMAX$$
+	
+	$$IF:FORM:SI_DERNIERETAGE$$
+		s.prop25 = s.apl(s.prop25, "dernier etage", "|",1);
+	$$END:SI_DERNIERETAGE$$
+
+	/****************************************************************************************************/
+	/* 																		Surface du terrain																						*/
+	/****************************************************************************************************/
+	$$IF:FORM:SURF_TERRAIN_MIN$$
+		s.prop26 = s.apl(s.prop26, "$$FORM:SURF_TERRAINMIN$$", "|",1);
+	$$END:SURF_TERRAIN_MIN$$
+	
+	$$REM$$
+	$$IF0:FORM:SURF_TERRAIN_MIN$$
+		s.prop26 = s.apl(s.prop26, " ", "|",1);
+	$$END:SURF_TERRAIN_MIN$$
+	$$END:REM$$
+	
+	$$IF:FORM:SURF_TERRAIN_MAX$$
+		s.prop26 = s.apl(s.prop26, "$$FORM:SURF_TERRAINMAX$$", "|",1);
+	$$END:SURF_TERRAIN_MAX$$
+	
+	$$REM$$
+	$$IF0:FORM:SURF_TERRAIN_MAX$$
+		s.prop26 = s.apl(s.prop26, " ", "|",1);
+	$$END:SURF_TERRAIN_MAX$$
+	$$END:REM$$
+	/****************************************************************************************************/
+	/* 																		A propos de l'appartement																			*/
+	/****************************************************************************************************/
+	$$IF:FORM:IDTYPECHAUFFAGE$$
+		s.prop27 = s.apl(s.prop27, "$$FORM:IDTYPECHAUFFAGE$$", "|",1);
+	$$END:IDTYPECHAUFFAGE$$
+	
+	$$IF0:FORM:IDTYPECHAUFFAGE$$
+		s.prop27 = s.apl(s.prop27, "", "|",1);
+	$$END:IDTYPECHAUFFAGE$$
+	
+	$$IF:FORM:IDTYPECUISINE$$
+		s.prop27 = s.apl(s.prop27, "$$FORM:IDTYPECUISINE$$", "|",1);
+	$$END:IDTYPECUISINE$$
+	
+	$$IF0:FORM:IDTYPECUISINE$$
+		s.prop27 = s.apl(s.prop27, "", "|",1);
+	$$END:IDTYPECUISINE$$
+	
+	$$IF:FORM:SI_DUPLEX$$
+		s.prop27 = s.apl(s.prop27, "$$FORM:SI_DUPLEX$$", "|",1);
+	$$END:SI_DUPLEX$$
+	
+	$$IF0:FORM:SI_DUPLEX$$
+		s.prop27 = s.apl(s.prop27, "", "|",1);
+	$$END:SI_DUPLEX$$
+	
+	/****************************************************************************************************/
+	/* 																		A propos de l'immeuble																				*/
+	/****************************************************************************************************/
+	
+	// Existe-t-il un ascenseur ?
+	$$IF=:1:FORM:SI_ASCENSEUR$$
+		s.prop28 = s.apl(s.prop28, "ascenseur", "|",1);
+	$$END:SI_ASCENSEUR$$
+	
+	$$IF0:FORM:SI_ASCENSEUR$$
+		s.prop28 = s.apl(s.prop28, "", "|",1);
+	$$END:SI_ASCENSEUR$$	
+	
+	// Existe-t-il un digicode ?
+	$$IF=:1:FORM:SI_DIGICODE$$
+		s.prop28 = s.apl(s.prop28, "digicode", "|",1);
+	$$END:SI_DIGICODE$$
+	
+	$$IF0:FORM:SI_DIGICODE$$
+		s.prop28 = s.apl(s.prop28, "", "|",1);
+	$$END:SI_DIGICODE$$
+	
+	// Y-a-t-il un gardien ?
+	$$IF=:1:FORM:SI_GARDIEN$$
+		s.prop28 = s.apl(s.prop28, "gardien", "|",1);
+	$$END:SI_GARDIEN$$
+	
+	$$IF0:FORM:SI_GARDIEN$$
+		s.prop28 = s.apl(s.prop28, "", "|",1);
+	$$END:SI_GARDIEN$$
+
+	// Existe-t-il un interphone ?
+	$$IF=:1:FORM:SI_INTERPHONE$$
+		s.prop28 = s.apl(s.prop28, "interphone", "|",1);
+	$$END:SI_INTERPHONE$$
+	
+	$$IF0:FORM:SI_INTERPHONE$$
+		s.prop28 = s.apl(s.prop28, "", "|",1);
+	$$END:SI_INTERPHONE$$
+
+	/****************************************************************************************************/
+	/* 																		Commodités 																										*/
+	/****************************************************************************************************/
+	
+	// Avec alarme
+	$$IF=:1:FORM:SI_ALARME$$
+		s.prop29 = s.apl(s.prop29, "alarme", "|",1);
+	$$END:SI_ALARME$$
+	
+	// Avec climatisation
+	$$IF=:1:FORM:SI_CLIMATISATION$$
+		s.prop29 = s.apl(s.prop29, "climatisation", "|",1);
+	$$END:SI_CLIMATISATION$$
+	
+	// Avec cheminée
+	$$IF=:1:FORM:SI_CHEMINEE$$
+		s.prop29 = s.apl(s.prop29, "cheminée", "|",1);
+	$$END:SI_CHEMINEE$$
+	
+	// Avec parquet
+	$$IF=:1:FORM:SI_PARQUET$$
+		s.prop29 = s.apl(s.prop29, "parquet", "|",1);
+	$$END:SI_PARQUET$$
+	
+	// Avec terrasse(s)
+	$$IF=:1:FORM:SI_TERRASSE$$
+		s.prop29 = s.apl(s.prop29, "terrasse", "|",1);
+	$$END:SI_TERRASSE$$
+	
+	// Nombre de balcon(s) 
+	$$IF:FORM:NB_BALCONSMIN$$
+		s.prop29 = s.apl(s.prop29, "balcons", "|",1);
+	$$END:NB_BALCONSMIN$$
+	
+	$$IF0:FORM:NB_BALCONSMIN$$
+		s.prop29 = s.apl(s.prop29, "", "|",1);
+	$$END:NB_BALCONSMIN$$
+	
+	/****************************************************************************************************/
+	/* 																		Pièces		 																										*/
+	/****************************************************************************************************/
+	
+		// Nombre de salle de bains minimum
+	$$IF:FORM:NB_SALLES_DE_BAINSMIN$$
+		s.prop30 = s.apl(s.prop30, "salles de bains", "|",1);
+	$$END:NB_SALLES_DE_BAINSMIN$$
+	
+	$$IF0:FORM:NB_SALLES_DE_BAINSMIN$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:NB_SALLES_DE_BAINSMIN$$
+	
+	// Nombre de salle d'eau minimum
+	$$IF:FORM:NB_SALLES_DEAUMIN$$
+		s.prop30 = s.apl(s.prop30, "salles d'eau", "|",1);
+	$$END:NB_SALLES_DEAUMIN$$
+	
+	$$IF0:FORM:NB_SALLES_DEAUMIN$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:NB_SALLES_DEAUMIN$$
+	
+	// Y-a-t-il un entrée ?
+	$$IF=:1:FORM:SI_ENTREE$$
+		s.prop30 = s.apl(s.prop30, "entrée", "|",1);
+	$$END:SI_ENTREE$$
+	
+	$$IF0:FORM:SI_ENTREE$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:SI_ENTREE$$
+	
+	// Y-a-t-il une salle à manger ?
+	$$IF=:1:FORM:SI_SALLE_A_MANGER$$
+		s.prop30 = s.apl(s.prop30, "salle à manger", "|",1);
+	$$END:SI_SALLE_A_MANGER$$
+	
+	$$IF0:FORM:SI_SALLE_A_MANGER$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:SI_SALLE_A_MANGER$$
+	
+	// Y-a-t-il un séjour
+	$$IF=:1:FORM:SI_SEJOUR$$
+		s.prop30 = s.apl(s.prop30, "séjour", "|",1);
+	$$END:SI_SEJOUR$$
+	
+	$$IF0:FORM:SI_SEJOUR$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:SI_SEJOUR$$
+	
+	// Y-a-t-il des toilettes séparées
+	$$IF=:1:FORM:SI_TOILETTES_SEPAREES$$
+		s.prop30 = s.apl(s.prop30, "toilettes séparées", "|",1);
+	$$END:SI_TOILETTES_SEPAREES$$
+
+	$$IF0:FORM:SI_TOILETTES_SEPAREES$$
+		s.prop30 = s.apl(s.prop30, "", "|",1);
+	$$END:SI_TOILETTES_SEPAREES$$
+
+	/****************************************************************************************************/
+	/* 																		Rangements		 																								*/
+	/****************************************************************************************************/
+	
+	// Y-a-t-il un boxe ?
+	$$IF=:1:FORM:SI_BOXES$$
+		s.prop31 = s.apl(s.prop31, "boxes", "|",1);
+	$$END:SI_BOXES$$
+	
+	// Y-a-t-il une cave ?
+	$$IF=:1:FORM:SI_CAVE$$
+		s.prop31 = s.apl(s.prop31, "cave", "|",1);
+	$$END:SI_CAVE$$
+	
+	// Y-a-t-il un parking ?
+	$$IF=:1:FORM:SI_PARKINGS$$
+		s.prop31 = s.apl(s.prop31, "parkings", "|",1);
+	$$END:SI_PARKINGS$$
+	
+	// Y-a-t-il un placard ?
+	$$IF=:1:FORM:SI_PLACARDS$$
+		s.prop31 = s.apl(s.prop31, "placards", "|",1);
+	$$END:SI_PLACARDS$$
+	
+	/****************************************************************************************************/
+	/* 																		Orientation		 																								*/
+	/****************************************************************************************************/
+	
+	// Orienté sud ?
+	$$IF=:1:FORM:SI_SUD$$
+		s.prop32 = s.apl(s.prop32, "sud", "|",1);
+	$$END:SI_SUD$$
+	
+	// Orienté Est ?
+	$$IF=:1:FORM:SI_EST$$
+		s.prop32 = s.apl(s.prop32, "est", "|",1);
+	$$END:SI_EST$$
+	
+	// Orienté Nord ?
+	$$IF=:1:FORM:SI_NORD$$
+		s.prop32 = s.apl(s.prop32, "nord", "|",1);
+	$$END:SI_NORD$$
+	
+	// Orienté Ouest ?
+	$$IF=:1:FORM:SI_OUEST$$
+		s.prop32 = s.apl(s.prop32, "ouest", "|",1);
+	$$END:SI_OUEST$$
+	
+	// Avec une belle vue ?
+	$$IF=:1:FORM:SI_VUE$$
+		s.prop32 = s.apl(s.prop32, "vue", "|",1);
+	$$END:SI_VUE$$
+	
+	// Sans vis à vis ?
+	$$IF=:1:FORM:SI_VISAVIS$$
+		s.prop32 = s.apl(s.prop32, "vis à vis", "|",1);
+	$$END:SI_VISAVIS$$
+	
+	/****************************************************************************************************/
+	/* 																		Critère de tri			 																					*/
+	/****************************************************************************************************/
+	$$IF:FORM:TRI$$
+		s.prop33 = "$$FORM:TRI$$"
+	$$END:TRI$$
+	
+	/****************************************************************************************************/
+	/* 																		Nombre d'annonce		 																					*/
+	/****************************************************************************************************/
+	s.prop34="$$ANNLISTE:NBR$$"
+$$END:REM$$
+</script>

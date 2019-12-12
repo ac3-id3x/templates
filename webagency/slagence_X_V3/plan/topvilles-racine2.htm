@@ -1,0 +1,52 @@
+﻿$$REM$$<!--#include virtual="header/incl_haut.htm" -->$$END$$
+
+$$INIT:TOPVILLE=1$$
+
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<div id="col_gauche">
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~nbAnnoncesMin:1$$
+$$BIF:TTTB$$
+<ul>
+$$DO$$
+	$$IFPREV:TTTB:IDTYPETRANSACTION$$
+		$$IF!:1:TTTB:I$$<br/>$$END$$
+		<li class="titleListing"><a href="$$TTTB:URLVIRTUELLETT$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$TTTB:TYPETRANSACTION pcase$$</a></li>
+	$$END:IFPREV$$
+	<li class="subListing"><a href="$$TTTB:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$TTTB:TYPEBIEN pcase$$</a></li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+
+$$BIF0:TTTB$$
+	Pas de combinaison TT/TB
+$$BFIN$$
+</div>
+<div id="col_droite">
+	$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150$$
+	$$BIF:TOP$$
+	$$DO:3$$
+		<div class="info_bloc"><a href="$$TOP:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Immobilier $$TOP:VILLE$$</a>&nbsp;<span style="infos_count">($$TOP:NBANNONCES$$)</span></div>
+	$$LOOP$$
+	$$BFIN$$
+	$$BIF0:TOP$$
+		Pas de ville
+	$$BFIN$$
+	<div id="bloc_autres">
+	$$IF=:150:TOP:NBR$$
+				$$E:ID3:URW-GETURL:ALIAS:URLVIL:~ressource:Villes$$
+				<a href="$$URLVIL:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Autres villes</a>
+	$$END:NBR$$
+	</div>
+	<div id="bloc_liens">
+				$$E:ID3:URW-GETURL:ALIAS:URLPYS:~ressource:Countries$$
+				<a href="$$URLPYS:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Top Pays</a> |
+				$$E:ID3:URW-GETURL:ALIAS:URLREG:~ressource:Regions$$
+				<a href="$$URLREG:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Top Régions</a> |
+				$$E:ID3:URW-GETURL:ALIAS:URLDEP:~ressource:Departements$$
+				<a href="$$URLDEP:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$">Top Départements</a>
+	</div>
+</div>
+<div class="clear"></div>
+$$END$$
+$$REM$$<!--#include virtual="footer/incl_bas.htm" -->$$END$$

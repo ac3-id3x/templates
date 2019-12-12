@@ -1,0 +1,50 @@
+$$REM$$====================================================================
+//// <summary>Afficher les annonces correspondant à un marker sur une carte de géolocalisation microsoft.</summary>
+//// <remarks>
+//// <para>Fichier appelé par : slagence_x_v3/carto/js/BingMap.js</para>
+//// </remarks>
+//// <update date="2010-03-27" author="ext-karim.mekni">Création</update>
+====================================================================$$END$$
+
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=@@PAGE:CFG_LANGUAGE lcase@@$$$$END$$$$IF0:LANGUE$$$$A:LANGUE=fr$$$$END$$
+
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANN$$
+$$BIF:ANN$$
+$$IF-:30:ANN:NBR$$
+<div id="ListeAnn_Ctn$$IF=:1:ANN:NBR$$Solo$$END$$">
+	$$DO:1:10$$
+	<div class="ad">
+		<table>
+			<tr>
+				<td class="photogeoloc" $$IF:ANN:CARRE_URL$$style="background: none;"$$END$$>
+					<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$"
+						$$IF:ANN:CARRE_URL$$style="background: url($$ANN:CARRE_URL$$) 50% 50% no-repeat;"$$END$$><!-- --></a>
+				</td>
+				<td class="descGeoloc">
+					<p class="villeGeoloc">$$ANN:VILLE$$</p>
+					<p class="prixGeoloc">$$ANN:PRIX formatnumber 0 htmlencode$$ $$ANN:PRIX_UNITE htmlencode$$</p>
+					<p class="libelleGeoloc">$$ANN:LIBELLE htmlencode$$</p>
+					<p class="surfaceGeoloc">$$ANN:SURFACE$$ $$LG:M2 lcase$$ <span>$$LG:ENVIRON lcase$$</span></p>
+					<p class="nbPiecesGeoloc">
+						$$ANN:NB_PIECES$$
+						$$IF=:1:ANN:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF!:0$1:ANN:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+						$$IF:ANN:NB_CHAMBRES$$
+							<span>($$ANN:NB_CHAMBRES$$
+								$$IF=:1:ANN:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$
+								$$IF!:0$1:ANN:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)</span>
+						$$END$$
+					</p>
+					<p class="lienGeoloc"><a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$" title="">$$LG:DETAILANNONCE pcase$$</a></p>
+				</td>
+			</tr>
+		</table>	
+	</div><!-- .ad -->
+
+	$$LOOP$$
+</div><!-- #ListeAnn_Ctn -->
+$$END$$
+$$IF!:1:ANN:NBR$$
+<p class="lienlisteGeoloc"><a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?$$REP:QRY$$" title="">$$LG:VOIRLISTEANN pcase$$</a></p>
+$$END$$
+$$BFIN$$

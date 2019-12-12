@@ -1,0 +1,43 @@
+$$REM$$====================================================================
+//// <summary>Liste villes page moteur</summary>
+//// <remarks>
+//// <para>On démutualise car include aussi utilisée sur moteur alerte immo</para>
+//// <para>Ainsi on reprend les memes conditionnements</para>
+//// </remarks>
+//// <update date="2010-04-26" author="lisbonne.siriphol">Creation XV3</update>
+====================================================================$$END$$
+
+
+
+
+$$IF=:1:MINIMOTEUR_ETRANGER_VILLES$$
+$$B:IMMOBW:ANN:2:QRY:LANG:::idpays=504&tri=a_ville:ALIAS:VILLESANNONCESALPHA$$
+
+$$BIF:VILLESANNONCESALPHA$$
+
+ <input type="hidden" name="idpays" value="504" />
+ <select name="ci" class="inputSelect">
+  <option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+  $$DO$$
+  $$IFPREV:VILLESANNONCESALPHA:AVILLE$$
+  <option value="$$VILLESANNONCESALPHA:AVILLE pcase$$">$$VILLESANNONCESALPHA:AVILLE pcase$$</option>
+  $$END$$
+  $$LOOP$$
+ </select>
+</span>
+$$BFIN$$
+$$END:MINIMOTEUR_ETRANGER_VILLES$$
+
+$$IF!:1:MINIMOTEUR_ETRANGER_VILLES$$
+	$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCESALPHA::QRY:CP:QRY:IDTT$$
+		$$BIF:VILLESANNONCESALPHA$$
+			<select name="ci" class="inputSelect">
+			<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>
+			$$DO$$
+			$$IF:VILLESANNONCESALPHA:CODEINSEE$$
+			<option value="$$VILLESANNONCESALPHA:CODEINSEE$$">$$VILLESANNONCESALPHA:VILLEAFF$$ $$IF:MINIMOTEUR_VILLES_CP$$($$VILLESANNONCESALPHA:CODEINSEE codeinsee2cps$$)$$END:MINIMOTEUR_VILLES_CP$$</option>
+			$$END:VILLESANNONCESALPHA:CODEINSEE$$
+			$$LOOP$$
+			</select>
+		$$BFIN$$
+$$END:MINIMOTEUR_ETRANGER_VILLES$$

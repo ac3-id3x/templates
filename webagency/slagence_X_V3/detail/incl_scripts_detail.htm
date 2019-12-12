@@ -1,0 +1,57 @@
+$$REM$$====================================================================
+//// <summary>scripts pages resultats d'annonces</summary>
+//// <remarks>
+//// <para>Contient scripts servant à ajouter des annonces, et à compter le nb d'annonces réelles dans le panier</para>
+//// <para>Contient scripts servant à supprimer des annonces, et à compter le nb d'annonces réelles dans le panier</para>
+//// <para>Contient scripts servant à trier les annonces</para>
+//// </remarks>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Compilation</update>
+====================================================================$$END$$
+
+
+<script type="text/javascript">
+	<!--	
+	$$REM$$// Page detail : ajoute annonce dans panier
+	//============================================================================================================
+	$$END:REM$$
+	function selectionAnnoncePanier(idpublication, idannonce){
+									
+		var myAjax = new Ajax.Updater(
+			'AjoutSelection', 
+			'/'+idpublication+'/'+idannonce+'/recherche,ajax,selection_ajouter.htm',
+				{
+					method: 'get', 
+					parameters: null,
+					onComplete: cacheLienPanier
+				}
+			);
+		$$REM$$
+		// 19.10.2009 : modif par Lisbonne > on force la fonction "cacheLienPanier"
+		// car le script de la nouvelle galerie SENTO bugge qq part
+		// la fonction "selectionAnnoncePanier" ne semble pas atteindre le "onComplete"
+		// est-ce sa bibliothèque ajax ? trop long à explorer, et je ne suis pas trop qualifiée
+		// est-ce un doublon sur Ajax.Updater ? Non, il n'existe pas dans les autres bibliothèques
+		// bémol : si la fonction "selectionAnnoncePanier" bugge on ne pourra pas le savoir, puisqu'on force
+		$$END:REM$$
+		cacheLienPanier();
+	}
+	
+	$$REM$$// Page résultats : cache lien d'ajout,lorsque annonce ajoutée au panier
+	//============================================================================================================
+	$$END:REM$$
+	function cacheLienPanier(){
+		// div contenant le lien à cacher
+		var divAnnonce = document.getElementById('AjoutSelection');
+		// <em id="Picto_AjoutSelection"><!-- --></em>
+		// si le div existe
+		if (divAnnonce){
+			// on cache
+			divAnnonce.innerHTML='<div class="selection_ok"><div id="Picto_Selection_Ok"><!-- --></div><p>$$LG:ANNONCE pcase$$ $$LG:SELEC lcase$$</p><div class="clear"><!-- --></div></div>';
+		}				
+		else {
+			alert("erreur d\'origine inconnue.");
+		}			
+	}
+	
+	//-->
+</script>

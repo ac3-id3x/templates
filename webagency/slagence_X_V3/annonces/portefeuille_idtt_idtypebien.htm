@@ -1,0 +1,406 @@
+$$REM$$====================================================================
+//// <summary>Liste des annonces du site classées par type de transaction, puis type de biens</summary>
+//// <remarks>
+//// <para>Pour les packs avantage on exclut les idtt = 3,4,6,7,8,9,11</para>
+//// <para>Utilisation de IMMOBW:AGENCETRANSACTIONS</para>
+//// <para>Nécessité d'utiliser script js pour effectuer comptage des annonces avant leur affichage, car le total des ventes n'est jamais le bon</para>
+//// <para>Les ventes additionnent les IDDT 2 (ventes) + 6 (prod. invest) + 8 (prestige) ; ainsi on tombe enfin juste</para>
+//// <para>Les locations additionnent les IDDT 1 (loc) + 7 (loc de prestige)</para>
+//// <para>Erick avait recommandé la macro "B:IMMOBW:NBANN_PAYS:~tri:pays,idtypetransaction,idtypebien", qui raccourci le code, mais le chiffre ne tombe pas juste</para>
+//// </remarks>
+//// <update date="2010-02-17" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$	
+	
+$$E:ID3:DATE:2$$
+<h6><span>$$LG:AUJOURDHUI pcase$$</span>$$IF!:EN:LANGUE$$  $$ID3:DATE:VAL date dd/MM/yyyy pcase$$ $$END$$
+$$IF=:EN:LANGUE$$ $$ID3:DATE:VAL date MM/dd/yyyy pcase$$ $$END$$</h6>	
+	
+$$REM$$<!-- //// comptage initial nb annonces par type de transaction //// -->$$END$$
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSAC_DISPOS$$
+			
+$$A:TOT_1_LOC=0$$ 
+$$A:TOT_2_VEN=0$$
+$$A:TOT_3_LOCTEMP=0$$
+$$A:TOT_4_LOCVAC=0$$
+$$A:TOT_5_VIAGER=0$$
+$$A:TOT_6_PROD=0$$
+$$A:TOT_7_LOCPRES=0$$
+$$A:TOT_8_VENPRES=0$$
+$$A:TOT_9_NEUF=0$$
+$$A:TOT_10_FONDCOM=0$$
+$$A:TOT_11_CESSIONB=0$$
+
+$$REM$$<!-- //// on compte //// -->$$END$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$						
+$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_1_LOC=@@TOT_1_LOC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_2_VEN=@@TOT_2_VEN@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_3_LOCTEMP=@@TOT_3_LOCTEMP@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_4_LOCVAC=@@TOT_4_LOCVAC@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_5_VIAGER=@@TOT_5_VIAGER@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_6_PROD=@@TOT_6_PROD@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_7_LOCPRES=@@TOT_7_LOCPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_8_VENPRES=@@TOT_8_VENPRES@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_9_NEUF=@@TOT_9_NEUF@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_10_FONDCOM=@@TOT_10_FONDCOM@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_11_CESSIONB=@@TOT_11_CESSIONB@@+@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$LOOP$$
+$$BFIN$$
+		
+$$REM$$<!-- ////////////////////////////////////////////vente////////////////////////////////////////////////// -->$$END$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$		
+$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt2">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+	$$REM$$<!-- addition incorrecte --><script type="text/javascript">document.write(eval($$TOT_2_VEN$$+$$TOT_6_PROD$$+$$TOT_8_VENPRES$$))</script>&nbsp;$$END:REM$$
+	$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+	$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>
+$$END$$  
+$$LOOP$$		
+$$BFIN$$
+		
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VENTES:2$$
+$$BIF:TYPEBIEN_VENTES$$
+<ul class="pfa_idtt2">
+$$DO$$
+<li class="subList">
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VENTES:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:VENTES pcase$$ $$TYPEBIEN_VENTES:DEF_LIBELLE lcase$$">
+	$$TYPEBIEN_VENTES:DEF_LIBELLE pcase$$ : 
+	$$TYPEBIEN_VENTES:NBANN$$
+	$$IF-:2:TYPEBIEN_VENTES:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+	$$IF+:2:TYPEBIEN_VENTES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+
+
+$$REM$$<!-- ///////////////////////////////////////////vente prestige/////////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt8">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=8&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>
+$$END$$
+$$LOOP$$
+$$BFIN$$
+
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_PRESTIGE:8$$
+$$BIF:TYPEBIEN_PRESTIGE$$
+<ul class="pfa_idtt8">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=8&amp;idtypebien=$$TYPEBIEN_PRESTIGE:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:PRESTIGE pcase$$ $$TYPEBIEN_PRESTIGE:DEF_LIBELLE lcase$$">
+	$$TYPEBIEN_PRESTIGE:DEF_LIBELLE pcase$$ : 
+	$$TYPEBIEN_PRESTIGE:NBANN$$
+	$$IF-:2:TYPEBIEN_PRESTIGE:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+	$$IF+:2:TYPEBIEN_PRESTIGE:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$
+
+$$REM$$<!-- /////////////////////////////////////////////location///////////////////////////////////////////////// -->$$END$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$	
+<h4 class="pfa_idtt1">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$REM$$<!-- on cache car addition ventes incorrecte (10.01.2011) --><script type="text/javascript">document.write(eval($$TOT_1_LOC$$+$$TOT_7_LOCPRES$$+$$TOT_11_CESSIONB$$))</script>&nbsp;$$END:REM$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>			
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCS:1$$
+$$BIF:TYPEBIEN_LOCS$$
+<ul class="pfa_idtt1">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOCS:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ $$TYPEBIEN_LOCS:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_LOCS:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_LOCS:NBANN$$
+$$IF-:2:TYPEBIEN_LOCS:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_LOCS:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+
+$$REM$$<!-- ///////////////////////////////////////////////locations temporaires/////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+
+<h4 class="pfa_idtt3">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCTEMP:3$$
+$$BIF:TYPEBIEN_LOCTEMP$$
+<ul class="pfa_idtt3">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;idtypebien=$$TYPEBIEN_LOCTEMP:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCTMP pcase$$ $$TYPEBIEN_LOCTEMP:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_LOCTEMP:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_LOCTEMP:NBANN$$
+$$IF-:2:TYPEBIEN_LOCTEMP:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_LOCTEMP:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>	
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$
+
+$$REM$$<!-- //////////////////////////////////////////////locations vacances//////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt4">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=4&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>
+$$END$$
+$$LOOP$$
+$$BFIN$$
+
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCVAC:4$$
+$$BIF:TYPEBIEN_LOCVAC$$
+<ul class="pfa_idtt4">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=4&amp;idtypebien=$$TYPEBIEN_LOCVAC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCVAC pcase$$ $$TYPEBIEN_LOCVAC:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_LOCVAC:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_LOCVAC:NBANN$$
+$$IF-:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_LOCVAC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>	
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$
+
+$$REM$$<!-- //////////////////////////////////////////viager//////////////////////////////////////////////////// -->$$END:REM$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt5">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$REM$$<!-- on cache car addition ventes incorrecte (10.01.2011) -->$$TRANSAC_DISPOS:NBANN$$ $$END:REM$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VIAGER:5$$
+$$BIF:TYPEBIEN_VIAGER$$
+<ul class="pfa_idtt5">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;idtypebien=$$TYPEBIEN_VIAGER:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:VIAGERS pcase$$ $$TYPEBIEN_VIAGER:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_VIAGER:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_VIAGER:NBANN$$
+$$IF-:2:TYPEBIEN_VIAGER:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_VIAGER:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>	
+$$LOOP$$
+</ul>
+$$BFIN$$
+	
+$$REM$$<!-- //////////////////////////////////////////produits d'investissement//////////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt6">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=6&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_PRODINVES:6$$
+$$BIF:TYPEBIEN_PRODINVES$$
+<ul class="pfa_idtt6">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=6&amp;idtypebien=$$TYPEBIEN_PRODINVES:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:INVESTISSEMENT pcase$$ $$TYPEBIEN_PRODINVES:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_PRODINVES:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_PRODINVES:NBANN$$
+$$IF-:2:TYPEBIEN_PRODINVES:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_PRODINVES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>	
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$
+
+$$REM$$<!-- //////////////////////////////////////////////loc prest//////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt7">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=7&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCPRESTIGE:7$$
+$$BIF:TYPEBIEN_LOCPRESTIGE$$		
+<ul class="pfa_idtt7">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=7&amp;idtypebien=$$TYPEBIEN_LOCPRESTIGE:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOCPST pcase$$ $$TYPEBIEN_LOCPRESTIGE:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_LOCPRESTIGE:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_LOCPRESTIGE:NBANN$$
+$$IF-:2:TYPEBIEN_LOCPRESTIGE:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_LOCPRESTIGE:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$
+
+
+$$IF:RESULTATS_NEUF$$
+$$REM$$<!-- ///////////////////////////////////////////programmes neufs (option à activer) /////////////////////////////////////////////////// -->$$END:REM$$
+	$$BIF:TRANSAC_DISPOS$$
+	$$DO$$
+	$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+	<h4 class="pfa_idtt9">
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+			$$REM$$<!-- on cache car addition ventes incorrecte (10.01.2011) -->$$TRANSAC_DISPOS:NBANN$$ $$END:REM$$
+			$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+			$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+		</a>
+	</h4>		
+	$$END$$
+	$$LOOP$$
+	$$BFIN$$
+		
+	$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_NEUF:9$$
+	$$BIF:TYPEBIEN_NEUF$$
+	<ul class="pfa_idtt9">
+	$$DO$$
+	<li>
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&amp;idtypebien=$$TYPEBIEN_NEUF:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:PGRNEUF pcase$$ $$TYPEBIEN_NEUF:DEF_LIBELLE lcase$$">
+	$$TYPEBIEN_NEUF:DEF_LIBELLE pcase$$ : 
+	$$TYPEBIEN_NEUF:NBANN$$
+	$$IF-:2:TYPEBIEN_NEUF:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+	$$IF+:2:TYPEBIEN_NEUF:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+	</a>
+	</li>
+	$$LOOP$$
+	</ul>
+	$$BFIN$$
+$$END:RESULTATS_NEUF$$
+
+$$REM$$<!-- //////////////////////////////////////////fond de commerce//////////////////////////////////////////////////// -->$$END:REM$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt10">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=10&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$REM$$<!-- on cache car addition ventes incorrecte (10.01.2011) -->$$TRANSAC_DISPOS:NBANN$$ $$END:REM$$
+		$$LG:LIEN:FCOMMERCE pcase$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_FONDCOMM:10$$
+$$BIF:TYPEBIEN_FONDCOMM$$
+<ul class="pfa_idtt10">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=10&amp;idtypebien=$$TYPEBIEN_FONDCOMM:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:FCOMMERCE pcase$$ $$TYPEBIEN_FONDCOMM:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_FONDCOMM:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_FONDCOMM:NBANN$$
+$$IF-:2:TYPEBIEN_FONDCOMM:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_FONDCOMM:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+
+$$REM$$<!-- //////////////////////////////////////////////cession de bail//////////////////////////////////////////////// -->$$END:REM$$
+$$REM$$<!--
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$
+$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$
+<h4 class="pfa_idtt11">
+	<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=11&amp;lang=$$LANGUE$$" title="$$TRANSAC_DISPOS:DESCRIPTIONLGP pcase$$">
+		$$TRANSAC_DISPOS:NBANN$$
+		$$IF-:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLG$$$$END$$		
+		$$IF+:2:TRANSAC_DISPOS:NBANN$$$$TRANSAC_DISPOS:DESCRIPTIONLGP$$$$END$$
+	</a>
+</h4>		
+$$END$$
+$$LOOP$$
+$$BFIN$$
+	
+$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_CESSIONBAIL:11$$
+$$BIF:TYPEBIEN_CESSIONBAIL$$
+<ul class="pfa_idtt11">
+$$DO$$
+<li>
+<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=11&amp;idtypebien=$$TYPEBIEN_CESSIONBAIL:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:ANN:CESSIONBAILS pcase$$ $$TYPEBIEN_CESSIONBAIL:DEF_LIBELLE lcase$$">
+$$TYPEBIEN_CESSIONBAIL:DEF_LIBELLE pcase$$ : 
+$$TYPEBIEN_CESSIONBAIL:NBANN$$
+$$IF-:2:TYPEBIEN_CESSIONBAIL:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+$$IF+:2:TYPEBIEN_CESSIONBAIL:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+</a>
+</li>
+$$LOOP$$
+</ul>
+$$BFIN$$
+-->$$END:REM$$

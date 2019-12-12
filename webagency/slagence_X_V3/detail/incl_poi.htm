@@ -1,0 +1,139 @@
+$$A:HOSTSTATIC=http://@@REP:SRV@@/$$
+<div id="partenariat_qype">
+    <span>Points d'int&eacute;r&ecirc;t<br /> et avis avec</span>
+    <a href="http://www.qype.fr/" rel="nofollow" target="_blank"><img src="$$~$$images/poi/logo_qype.png" alt="Qype.fr - Trouvez, Partagez" /></a>
+</div>
+<div id="default_map" style="border: 1px solid #CACACA; height: 300px; width: 100%;"></div>
+<div style="clear: both;"></div>
+
+<div id="POI_NoResults" class="mess_info">nous n'avons pas trouv&eacute; de r&eacute;sultat pour le point d'int&eacute;r&ecirc;t s&eacute;lectionn&eacute;</div>
+<div id="POI_NoBoundMarkers" class="mess_info">Des r&eacute;sultats sont disponibles hors du cadre de la carte : d&eacute;zoomez pour les faire appara&icirc;tre</div>
+<div id="POI">
+    <ul class="poi_col">
+        <li>
+            <input type="checkbox" value="sante" id="poi_master_sante" name="poi_master_type" /><strong>Sant&eacute;</strong>
+            <ul class="poi_sub_list">
+                <li class="pharmacies"><input type="checkbox" value="pharmacies" name="poi_type" />Pharmacies</li>
+                <li class="hopitaux"><input type="checkbox" value="hopitaux" name="poi_type" />H&ocirc;pitaux</li>
+                <li class="medecins"><input type="checkbox" value="medecins" name="poi_type" />M&eacute;decins</li>
+                <li class="cliniques"><input type="checkbox" value="cliniques" name="poi_type" />Cliniques</li>
+            </ul>
+        </li>
+        <li>
+            <input type="checkbox" value="commerces" id="poi_master_commerce" name="poi_master_type" /><strong>Commerces</strong>
+            <ul class="poi_sub_list">
+                <li class="boucheries"><input type="checkbox" value="boucheries" name="poi_type" />Boucheries</li>
+                <li class="boulangeries"><input type="checkbox" value="boulangeries" name="poi_type" />Boulangeries</li>
+                <li class="supermarches"><input type="checkbox" value="supermarches" name="poi_type" />Super/Hyper march&eacute;s</li>
+                <li class="superettes"><input type="checkbox" value="superettes" name="poi_type" />Superettes</li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="poi_col">
+        <li>
+            <input type="checkbox" value="education" id="poi_master_education" name="poi_master_type" /><strong>&Eacute;ducation et enfance</strong>
+            <ul class="poi_sub_list">
+                <li class="creches"><input type="checkbox" value="creches" name="poi_type" />Cr&egrave;ches</li>
+                <li class="maternelles"><input type="checkbox" value="maternelles" name="poi_type" />Maternelles</li>
+                <li class="ecoles"><input type="checkbox" value="ecoles" name="poi_type" />&Eacute;coles primaires</li>
+                <li class="colleges"><input type="checkbox" value="colleges" name="poi_type" />Coll&egrave;ges</li>
+                <li class="lycees"><input type="checkbox" value="lycees" name="poi_type" />Lyc&eacute;es</li>
+                <li class="universites"><input type="checkbox" value="universit&eacute;s" name="poi_type" />Universit&eacute;s</li>
+            </ul>
+        </li>
+        <li>
+            <input type="checkbox" value="bienetre" id="poi_master_bienetre" name="poi_master_type" /><strong>Bien-&ecirc;tre</strong>
+            <ul class="poi_sub_list">
+                <li class="saunas"><input type="checkbox" value="saunas" name="poi_type" />Saunas / Spas</li>
+                <li class="coiffeurs"><input type="checkbox" value="coiffeurs" name="poi_type" />Coiffeurs</li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="poi_col">
+        <li>
+            <input type="checkbox" value="sorties" id="poi_master_sorties" name="poi_master_type" /><strong>Divertissements</strong>
+            <ul class="poi_sub_list">
+                <li class="culturel"><input type="checkbox" value="culturel" name="poi_type" />Lieux culturels</li>
+                <li class="restaurants"><input type="checkbox" value="restaurants" name="poi_type" />Restaurants</li>
+                <li class="sports"><input type="checkbox" value="sports" name="poi_type" />Sports</li>
+                <li class="bars"><input type="checkbox" value="bars" name="poi_type" />Bars, Pubs</li>
+                <li class="discotheques"><input type="checkbox" value="discotheques" name="poi_type" />Discoth&egrave;ques</li>
+            </ul>
+        </li>
+        <li>
+            <input type="checkbox" value="services" id="poi_master_services" name="poi_master_type" /><strong>Services</strong>
+            <ul class="poi_sub_list">
+                <li class="parkings"><input type="checkbox" value="parkings" name="poi_type" />Parkings</li>
+                <li class="police"><input type="checkbox" value="police" name="poi_type" />Postes de police</li>
+                <li class="services"><input type="checkbox" value="services" name="poi_type" />Services publics</li>
+            </ul>
+        </li>
+    </ul>
+    <div class="clear"></div>
+    <div id="poi_loader">
+        <div class="poi_loader_bg"></div>
+        <div class="poi_loader_content_bg"></div>
+        <div class="poi_loader_content">
+            <h3>Chargement en cours</h3>
+            <div class="info">
+                Veuillez patienter, nous mettons &agrave; jour<br />les donn&eacute;es sur la carte...<br /><br />&nbsp;
+                <img src="$$~$$/carto/img/a_loading.gif" alt="title" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            Map.Init({
+                container_id: 'default_map',
+                server: 'http://$$REP:RSRV$$',
+                $$IF=:adr:ANNDETAIL:LATLNGTYPE$$
+                marker_ok: true,
+                $$END$$
+                $$IF:ANNDETAIL:ENCODEDPOLY$$
+                poly: '$$ANNGEO:ENCODEDPOLY escape$$',
+                $$END$$
+                latitude: $$ANNDETAIL:PUBLICLAT replace , .$$,
+                longitude: $$ANNDETAIL:PUBLICLNG replace , .$$,
+                marker: {
+                    latitude: $$ANNDETAIL:PUBLICLAT replace , .$$,
+                    longitude: $$ANNDETAIL:PUBLICLNG replace , .$$
+                }
+            });
+
+            $j('#det_box_situation a').not('#partenariat_qype a').click(function () {
+                var rel = $j(this).attr('rel').split('_');
+                Map.SetIcon({
+                    image: 'http://static.poliris.com/z/portail/svx/portals/sv6_annonces/images/picto_prox.png',
+                    iconSize: new GSize(29, 36),
+                    iconAnchor: new GPoint(15, 36)
+                });
+                Map.SetMarker({
+                    latitude: rel[1],
+                    longitude: rel[2]
+                });
+                return false;
+            });
+
+            /* Pass the map object to the POI object */
+            if (POI !== undefined) {
+                POI.setDomain('http://$$REP:RSRV$$');
+                POI.setMap(Map.GetMap());
+            }
+
+            $j('#POI input:checkbox').change(function () {
+                // differentiate between master poi and regular pois
+                if ($j(this).attr('name') == 'poi_type') {
+                    POI.getPOI($j(this).val(), $j(this).is(':checked'), $j(this).parent('li').text(), true);
+
+                    // uncheck the master category attached if there's one
+                    if ((! $j(this).is(':checked')) && $j(this).parent('li').parent('ul').attr('class') == "poi_sub_list") {
+                        $j(this).parent('li').parent('ul').parent('li').children('input:checkbox').attr('checked', '');
+                    }
+                } else {
+                    POI.getPOIFromMaster($j(this));
+                }
+            });
+        });
+    </script>
+</div>

@@ -1,0 +1,53 @@
+$$REM$$====================================================================
+//// <summary>Le mail Alerte Immo renvoie vers cette page qui switche la frequence d'envoi des emails</summary>
+//// <remarks>
+//// <para>Utilise le meme fichier .css que tous les fichiers d'alerte email : styles/alerte.css</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2010-06-23" author="lisbonne.siriphol">Creation XV3</update>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+====================================================================$$END$$
+$$INIT:IDT=MODIFALERTEIMMO$$
+$$A:STYLE=@import url( "/styles,alerte.css" );$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+$$E:IMMOBW:AI_SWP:REP:2:REP:1:REP:3$$
+
+<div id="AlerteImmo">
+	
+	<h1>Modification de votre Alerte Immo</h1>
+	
+	$$IF:IMMOBW:AI_SWP:ERRE$$
+	<!--#include virtual="alerte/incl_erreur.htm" -->
+	$$END:IMMOBW:AI_SWP:ERRE$$
+	
+	$$IF0:IMMOBW:AI_SWP:ERRE$$
+	<div class="modif_ok_ctn">
+		<div class="modif_ok">
+			<p>L'Alerte Immo a &eacute;t&eacute; modifi&eacute;e.</p>
+			$$IF:IMMOBW:AI_SWP:EMAIL$$
+			<p>Pr&eacute;nom : <strong>$$IMMOBW:AI_SWP:NOM$$</strong></p>				
+			<p>Email : <strong>$$IMMOBW:AI_SWP:EMAIL encodemail javascript$$</strong></p>
+			$$END:EMAIL$$
+			$$IF:IMMOBW:AI_SWP:TEXTE$$
+			<p>Crit&egrave;res : <strong>$$IMMOBW:AI_SWP:TEXTE$$</strong></p>
+			$$END:TEXTE$$
+			<p>
+				D&eacute;sormais vous recevrez les nouvelles annonces<!-- $$REP:3$$ -->				
+				$$IF=:1:REP:3$$<strong>dès leur mise en ligne</strong>.$$END$$
+				$$IF!:1:REP:3$$<strong>deux fois par semaine</strong>.$$END$$
+			</p>				
+		</div><!-- .modif_ok -->
+	</div><!-- .modif_ok_ctn -->
+	
+	<!--#include virtual="alerte/incl_confirmation.htm" -->
+	<!--#include virtual="alerte/incl_confiance.htm" -->
+	
+	$$END:IMMOBW:AI_SWP:ERRE$$
+	
+
+</div><!-- #AlerteImmo -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

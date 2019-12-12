@@ -1,0 +1,64 @@
+$$REM$$====================================================================================
+//// <summary>Page detail annonce : téléphone de l'agence</summary>
+//// <remarks>
+//// <para>alias utilisée : AG</para>
+//// <para>2009-08-31 : ajout tel vente + tel loc</para>
+//// <para>2009-12-08 : ajout des coordonnées spéciales annonce (qui par défaut étaient celles de l'agence)</para>
+//// <para>2010-08-13 : attention la fiche de visite reprend ce fichier</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2009-12-08" author="lisbonne.siriphol">Update URGENTE</update>
+//// <update date="2009-08-31" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+====================================================================================$$END$$
+
+ $$IF!:455624:ANNDETAIL:IDPUBLICATION$$
+<p class="telAgence">
+	<strong $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="telephone"$$END$$>
+		$$LG:MINITEL pcase$$. :
+		$$IF:ANNDETAIL:TELEPHONE$$
+			<!-- tél entré dans l'annonce -->
+			$$ANNDETAIL:TELEPHONE formattel$$
+		$$END:ANNDETAIL:TELEPHONE$$
+		
+		$$IF0:ANNDETAIL:TELEPHONE$$
+		
+			$$IF=:9$10$11:ANNDETAIL:IDTYPETRANSACTION$$
+				<!-- tél standard agence (neuf + fond de commerce + cession bail) -->
+				$$IF:AG:TEL$$
+					$$AG:TEL formattel$$
+				$$END:TEL$$
+			$$END:9$10$11:IDTYPETRANSACTION$$
+			
+			$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+				<!-- tél spécial vente -->
+				$$IF:AG:TELVEN$$
+					$$AG:TELVEN formattel$$
+				$$END:AG:TELVEN$$
+				
+				$$IF0:AG:TELVEN$$
+					$$AG:TEL formattel$$
+				$$END:0:AG:TELVEN$$
+				
+			$$END:2$5$6$8:IDTYPETRANSACTION$$
+
+			$$IF=:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+				<!-- tél spécial loc -->
+				$$IF:AG:TELLOC$$
+					$$AG:TELLOC formattel$$
+				$$END:AG:TELLOC$$
+				
+				$$IF0:AG:TELLOC$$
+					$$AG:TEL formattel$$
+				$$END:0:AG:TELLOC$$
+				
+			$$END:2$5$6$8:IDTYPETRANSACTION$$			
+			
+		$$END:0:ANNDETAIL:TELEPHONE$$
+	</strong>
+</p>
+$$END$$
+
+ $$IF=:455624:ANNDETAIL:IDPUBLICATION$$
+	<p><strong>Tél. : 05 49 90 75 75</strong></p>
+$$END$$

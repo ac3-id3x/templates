@@ -1,0 +1,209 @@
+$$REM$$<!-- ====================================================================================
+//// <summary>Liste des annonces séctionnées par l'internaute</summary>
+//// <remarks>
+//// <para>Remplace le fichier slagence_X/print_panier.htm</para>
+//// <para>S'ouvre en popup de 850 x 500 px par le lien "imprimer ma séléction" sur la page de séléction</para>
+//// <para>Ne pas modifier le css</para>
+//// <para>Ne pas démutualiser</para>
+//// <para>18.03.2011 aliasage des macros IMMOBW:ANN:QRY</para>
+//// </remarks>
+//// <update date="2010-09-03" author="lisbonne.siriphol">Création</update>
+====================================================================================-->$$END$$
+
+$$INIT:IDT=IMPRIMER$$
+$$A:TITLE=@@LG:IMPRIMERSELEC pcase@@$$
+$$A:DESCRIPTION=@@LG:IMPRIMERSELEC pcase@@$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>	
+	$$REM$$<!-- ================= FICHIER DE MACROS QUI CONDITIONNE LES OPTIONS À FAIRE APPARAÎTRE OU NON ================= -->$$END:REM$$
+	$$REM$$<!-- macros css par défaut -->$$END:REM$$																					<!--#include virtual="styles/all_global_macros.htm" -->
+	$$REM$$<!-- macros special page recherche -->$$END:REM$$																	<!--#include virtual="styles/macros_pictos.htm" -->
+	$$REM$$<!-- macros paramétrage options site -->$$END:REM$$																<!--#include virtual="header/incl_param.htm" -->
+	
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$<!--#include virtual="referencement/incl_expressions_defaut.htm" -->$$END:REF$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$<!--#include virtual="referencement/incl_expressions_ref.htm" -->$$END:REF$$
+	<!--#include virtual="header/incl_titre.htm" -->
+	
+	<link href="styles,recherche_imprimer.css?lang=$$LANGUE$$" rel="stylesheet" type="text/css" />
+	<link href="styles,commun.css?lang=$$LANGUE$$" rel="stylesheet" type="text/css" />
+	<script src="scripts,metro.js" type="text/javascript"></script>
+	
+</head>
+<body $$REM$$onload="javascript:window.print();"$$END:REM$$>
+
+<div id="Wrap">
+	<div id="Imprimer">		
+		<input type="submit" name="imprimer" value="$$LG:IMPRIMERSELEC pcase$$" onclick="javascript:print();" />
+	</div><!-- #Imprimer -->
+
+	$$REM$$<!-- B:IMMOBW:ANN sans parametres va chercher directement les valeurs stockee localement cookies clients -->$$END:REM$$
+	$$B:IMMOBW:ANN:QRY:LANG:ALIAS:ANNLISTE$$
+	$$BIF:ANNLISTE$$
+	$$DO$$
+	<div class="blocAnnonce" id="Annonce$$ANNLISTE:IDANNONCE$$">
+		<table class="detailsAnn">
+			<tr>
+				<td class="photo_wrap">				
+					<div class="photo_ctn">
+						
+						<!--#include virtual="/recherche/incl_bandeau_sipromo.htm" -->
+						<!--#include virtual="/recherche/incl_bandeau_exclusif.htm" -->
+						<!--#include virtual="/recherche/incl_bandeau_nouveau.htm" -->
+						<!--#include virtual="/recherche/incl_bandeau_coupdecoeur.htm" -->					
+	
+						<a class="photo"
+							$$IF!:FALSE:ANNLISTE:SI_LOGO$$
+							style="background: url('$ANNLISTE:URLLOGO$') 50% 40% no-repeat #fff;"
+							$$END$$
+							href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+							$$IF:ANNLISTE:IDPHOTO$$										
+								$$REM$$<!-- update 05.03.2009 : agrandissement rollover sur vignette -->$$END:REM$$
+								<em><img src="$$ANNLISTE:PHOTOURL0$$" style="width: $$ANNLISTE:PHOTOW0$$px; height: $$ANNLISTE:PHOTOH0$$px;" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" /></em>						
+								<img src="$$ANNLISTE:C175URL0$$" style="z-index: 10;" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+							$$END:ANNLISTE:IDPHOTO$$					
+						</a><!-- .photo -->
+						
+					</div><!-- .photo_ctn -->
+				</td><!-- .photo_wrap -->
+				
+				<td class="descrAnn_Ctn">
+					
+					<div class="majAnn">
+						$$IF:ANNLISTE:DT_DISPO$$<p class="dispo">$$LG:DISPOLE pcase$$ : $$ANNLISTE:DT_DISPO date 2$$</p>$$END$$
+						<p class="fraicheur">$$LG:MAJ pcase$$ : $$ANNLISTE:DT_FRAICHEUR date 2$$</p>
+						<p class="reference">$$LG:REFER pcase$$ : $$ANNLISTE:REFANNONCE$$</p>
+					</div><!-- .maj -->
+					
+					<div class="ctc">						
+						<img src="$$PICTO_MAISON$$" alt="" title="" />
+						<p>
+							$$IF:ANNLISTE:COOR-CONTACT$$		
+								$$ANNLISTE:COOR-CONTACT$$
+							$$END$$
+								
+							$$IF0:ANNLISTE:COOR-CONTACT$$	
+								$$IF:ANNLISTE:COOR-NOM$$		
+									$$ANNLISTE:COOR-NOM$$
+								$$END$$
+							$$END$$
+						</p>						
+						
+						<img src="$$PICTO_TELEPHONE$$" alt="" title="" />
+						<p>
+							$$IF:ANNLISTE:TELEPHONE$$
+								$$IF=:FR:LANGUE$$$$ANNLISTE:TELEPHONE formattel$$$$END$$
+								$$IF!:FR:LANGUE$$$$ANNLISTE:TELEPHONE formattel tel2inter$$$$END$$
+							$$END:TELEPHONE$$
+							
+							$$IF0:ANNLISTE:TELEPHONE$$
+								$$IF=:FR:LANGUE$$$$ANNLISTE:TEL formattel$$$$END$$
+								$$IF!:FR:LANGUE$$$$ANNLISTE:TEL formattel tel2inter$$$$END$$
+							$$END:TELEPHONE$$
+						</p>
+						
+						<div class="clear"><!-- --></div>
+					</div>
+					
+					<p class="ville">$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE:VILLE$$ ($$ANNLISTE:CP$$)</p>
+					
+					<p class="libelle">
+						$$IF:ANNLISTE:LIBELLE$$
+							$$ANNLISTE:LIBELLE$$
+						$$END$$
+						$$IF0:ANNLISTE:LIBELLE$$
+							$$ANNLISTE:LIBELLE_FR$$
+						$$END$$
+					</p><!-- fin .libelle -->
+					
+					<!--#include virtual="recherche/incl_prix.htm" -->					
+					
+					<p class="surface">
+						$$IF:ANNLISTE:SURFACE$$
+							$$LG:SURFACE pcase$$ : $$ANNLISTE:SURFACE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$$$END:ANNLISTE:SURFACE$$$$IF:ANNLISTE:NB_PIECES$$,
+							$$ANNLISTE:NB_PIECES$$						
+								$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+								$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+								
+								$$IF:ANNLISTE:NB_CHAMBRES$$
+									($$ANNLISTE:NB_CHAMBRES$$
+									$$IF=:1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$)$$END$$
+									$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$)$$END$$
+								$$END:QRY:NB_CHAMBRES$$						
+							$$END:ANNLISTE:NB_PIECES$$
+					</p><!-- .surface -->					
+					
+					$$IF:ANNLISTE:SURF_TERRAIN$$
+					<p class="terrain">
+						$$LG:SURFT pcase$$
+						$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$
+						$$IF=:EN:LANGUE$$
+							(approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+							$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+						$$END:EN$$						
+					</p><!-- .terrain -->
+					
+					$$END:ANNLISTE:SURF_TERRAIN$$
+					<div class="descrAnn">
+						
+						$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$			
+							$$IF:ANNLISTE:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$
+							$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:ANNLISTE:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:ANNLISTE:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:ANNLISTE:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$IF:ANNLISTE:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+						$$END:IDTYPETRANSACTION$$
+						
+						<p class="descr">
+							$$IF:ANNLISTE:DESCRIPTIF$$
+								$$ANNLISTE:DESCRIPTIF smalltextv2 250$$
+							$$END$$
+										
+							$$IF0:ANNLISTE:DESCRIPTIF$$
+							
+								$$IF:ANNLISTE:DESCRIPTIF_FR$$
+									$$ANNLISTE:DESCRIPTIF_FR smalltextv2 250$$
+								$$END$$
+															
+								$$IF0:ANNLISTE:DESCRIPTIF_FR$$
+									$$LG:ANNSANSDESCR pcase$$.
+								$$END$$
+										
+							$$END$$	
+						</p>
+						
+						<div class="prox_ctn">					
+							$$IF:ANNLISTE:IDQUARTIER$$
+							<p class="quartier">$$LG:QUARTIER pcase$$ : $$ANNLISTE:IDQUARTIER getquartier$$</p>
+							$$END:ANNLISTE:IDQUARTIER$$
+							
+							$$IF:ANNLISTE:PROX$$
+							<p class="prox">$$LG:PROXIMITE pcase$$ : $$ANNLISTE:PROX$$</p>
+							$$END$$
+									
+							$$IF0:ANNLISTE:PROX$$
+							$$IF:ANNLISTE:PROX_FR$$
+							<p class="prox">$$LG:PROXIMITE pcase$$ : $$ANNLISTE:PROX_FR$$</p>
+							$$END$$
+							$$END$$
+						</div><!-- .prox_ctn -->
+						
+					</div><!-- .descrAnn -->
+					
+					<script type="text/javascript">dispMetro('$$ANNLISTE:IDANNONCE getlieux escape$$');</script>
+					<div class="clear"><!-- --></div>
+
+				</td>
+				
+			</tr>
+		</table><!-- .detailsAnn -->
+	</div><!-- .blocAnnonce -->
+
+	$$LOOP$$
+	$$BFIN$$
+
+</div><!-- #Wrap -->
+
+</body>
+</html>

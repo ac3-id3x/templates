@@ -1,0 +1,34 @@
+$$REM$$
+====================================================================================
+
+//// <summary>Page detail annonce : nom et adresse de l'agence</summary>
+//// <remarks>
+//// <para>alias utilisée : AG</para>
+//// </remarks>
+//// <update date="2011-03-25" author="lisbonne.siriphol">Remplacement macro coordonnées agence</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+
+====================================================================================
+$$END$$
+
+<p class="adresseAgence">
+	<span id="AgImmo_Ctn" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemscope itemtype="http://schema.org/Organization" itemid="http://schema.org/RealEstateAgent" $$END$$>
+<strong class="agenceNom" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="name"$$END$$>
+		$$IF:ANNDETAIL:COOR-CONTACT$$		
+			$$ANNDETAIL:COOR-CONTACT$$
+		$$END$$
+			
+		$$IF0:ANNDETAIL:COOR-CONTACT$$	
+			$$IF:ANNDETAIL:COOR-NOM$$		
+				$$ANNDETAIL:COOR-NOM ucase$$
+			$$END$$
+		$$END$$
+</strong><br />
+</span>
+ <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/PostalAddress" itemid="http://schema.org/RealEstateAgent" itemprop="streetAddress" $$END$$>
+ $$IF:ANNDETAIL:COOR-ADRESSE$$
+   <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="streetAddress"$$END$$>$$ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br /></span>
+ <span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="postalCode"$$END$$>$$ANNDETAIL:AGCP$$</span><span $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="addressLocality"$$END$$> $$ANNDETAIL:AGVILLE$$</span>
+ $$END:ANNDETAIL:COOR-ADRESSE$$
+</span>
+</p>

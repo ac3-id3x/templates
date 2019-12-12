@@ -1,0 +1,25 @@
+$$REM$$================================================================================================
+//// <summary>Type de transaction du mini moteur dynamique</summary>
+//// <remarks>
+//// <para>2 possibilités : on affiche tous les types de transac dispos, ou bien on affiche un seul type de transac de son choix</para>
+//// <para>Possibilité de masquer le nb d'annonces dispos avec MINIMOTEUR_NBANNVISIBLE </para>
+//// </remarks>
+//// <update date="2010-02-22" author="lisbonne.siriphol">Adaptation pour x_v3</update>
+================================================================================================$$END$$
+<span class="miniBlocTitre">$$LG:TYPEDETRANSACTION$$ :</span>
+<span class="miniBlocSelection">
+			$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+			$$BIF:TYPE_TRANSACTION$$		
+				<select id="idtt" name="idtt" class="miniForm" onchange="javascript:ajaxGet(this.id,'$$LANGUE$$','recherche_bien','type_bien');$$IF=:1:MINI_REGION$$ajaxGet(this.id,'$$LANGUE$$','recherche_region','region');contentEmpty('0','recherche_departement|recherche_villes|recherche_quartiers|recherche_rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','recherche_departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet(this.id,'$$FORM:LANG$$','recherche_villes','villes');$$END$$testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');">
+					$$IF=:0:MINI_IDTTDEFAUT$$<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>$$END:MINI_IDTTDEFAUT$$
+					$$DO$$
+					$$IF):MINIMOTEUR*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+						<option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF=:MINI*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+							$$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+							$$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+							$$IF=:1:MINI_NBVISIBLES$$($$TYPE_TRANSACTION:NBANN$$)$$END$$</option>
+					$$END:MINIMOTEUR_IDTBCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+					$$LOOP$$				
+				</select>	
+			$$BFIN$$
+</span>

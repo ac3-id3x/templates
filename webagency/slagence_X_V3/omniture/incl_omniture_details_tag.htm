@@ -1,0 +1,133 @@
+$$REM$$
+====================================================================
+//// <summary>Include comportant les variables liées au détails d'annonce</summary>
+//// <remarks>
+//// <para>Projet Web Analytic avec la solution Omniture</para>
+//// </remarks>
+//// <update date="2009-08-26" author="florian.adam"></update>
+//// <update date="2009-09-23" author="florian.adam">Ajout du département, Ajout du type de recherche</update>
+====================================================================
+$$END:REM$$
+<script type="text/javascript">
+	
+	// Consultation d'annonce
+	s.events = s.apl(s.events, "event1", ',',1);
+	
+	// Idannonce
+	s.prop12="$$ANNDETAIL:IDANNONCE$$";
+	s.products = s.apl(s.products, ";$$ANNDETAIL:IDANNONCE$$;;;", ';',1);
+	
+	// Idconfig
+	$$IF:REP:IDCONFIG$$
+	s.eVar37="conf_$$REP:IDCONFIG$$";
+	$$END$$
+
+$$REM$$
+	// Idconfig
+	$$IF:REP:IDCONFIG$$
+			s.products = s.apl(s.products, "evar37=conf_$$REP:IDCONFIG$$", '|',1);
+	$$END$$
+$$END:REM$$
+
+		// Type de transaction
+	$$IF:ANNDETAIL:IDTYPETRANSACTION$$
+		s.products = s.apl(s.products, "evar42=$$ANNDETAIL:IDTYPETRANSACTION$$", '|',1);
+	$$END:IDTYPETRANSACTION$$
+	
+	// Mode d'accès aux annonces
+	// Il faut encore ajouter le champs dans les query string qui permettent d'afficher la page plus_annonce_full.htm
+
+	$$IF:FORM:TYPERECHERCHE$$
+		$$IF=:1:FORM:TYPERECHERCHE$$
+			s.products = s.apl(s.products, "evar3=$$FORM:TYPERECHERCHE$$", '|',1);
+		$$END$$
+	$$END$$
+
+	// Idagence
+	//s.evar39="$$ANNDETAIL:IDAGENCE$$";
+	s.products = s.apl(s.products, "evar39=$$ANNDETAIL:IDAGENCE$$", ';',1);
+	
+	/****************************************/
+	/* 		Variables liés à une annonce			*/
+	/****************************************/
+	
+	// idtiers
+	$$IF:ANNDETAIL:IDTIERS$$
+		s.products = s.apl(s.products, "evar38=$$ANNDETAIL:IDTIERS$$", '|',1);
+	$$END:IDTIERS$$
+
+$$REM$$
+	// Département
+	$$IF:ANNDETAIL:DEP$$
+		s.products = s.apl(s.products, "evar26=$$ANNDETAIL:DEP$$", '|',1);
+	$$END:DEP$$
+$$END:REM$$
+
+$$REM$$
+	// Syndicat
+	$$IF:ANNDETAIL:IDSYNDICAT$$
+	//		s.eVar40 = "$$ANNDETAIL:IDSYNDICAT$$";
+		s.products = s.apl(s.products, "evar40=$$ANNDETAIL:IDSYNDICAT$$", '|',1);
+	$$END:IDSYNDICAT$$
+$$END:REM$$
+
+	// Type de bien
+	$$IF:ANNDETAIL:IDTYPEBIEN$$
+	//		s.eVar41 = "$$ANNDETAIL:IDTYPEBIEN$$";
+		s.products = s.apl(s.products, "evar41=$$ANNDETAIL:IDTYPEBIEN$$", '|',1);
+	$$END:IDTYPEBIEN$$
+
+$$REM$$
+	// Type de transaction
+	$$IF:FORM:IDTT$$
+		s.eVar42 = "$$FORM:IDTT$$";
+		//s.products = s.apl(s.products, "evar42=$$ANNDETAIL:IDTT$$", '|',1);
+	$$END:IDTT$$
+$$END:REM$$
+	
+	// Code postal
+	$$IF:ANNDETAIL:CP$$
+	//		s.eVar43 = "$$ANNDETAIL:CP$$";
+		s.products = s.apl(s.products, "evar43=$$ANNDETAIL:CP$$", '|',1);
+	$$END:CP$$
+
+$$REM$$
+	// Nombre de pièces et chambres
+	//	s.eVar44 = "$$ANNDETAIL:NB_PIECES$$#$$ANNDETAIL:NB_CHAMBRES$$";
+	if( s.eVar44 != "") s.products = s.apl(s.products, "evar44=$$ANNDETAIL:NB_PIECES$$#$$ANNDETAIL:NB_CHAMBRES$$", '|',1);
+$$END:REM$$
+
+$$REM$$
+	// Prix
+	$$IF:ANNDETAIL:PRIX$$
+		//		s.eVar45 = "$$ANNDETAIL:PRIX$$";
+		s.products = s.apl(s.products, "evar45=$$ANNDETAIL:PRIXRAW$$", '|',1);
+	$$END:PRIX$$
+$$END:REM$$
+
+$$REM$$
+	// Nombre de photos + visite virtuelle
+	//	s.eVar46 = "$$ANNDETAIL:NB_PHOTOS$$#$$ANNDETAIL:NB_360$$";
+	if( s.eVar46 != "") s.products = s.apl(s.products, "evar46=$$ANNDETAIL:NB_PHOTOS$$#$$ANNDETAIL:NB_360$$", '|',1);
+$$END:REM$$
+
+$$REM$$
+	// Etages
+	$$IF:ANNDETAIL:ETAGE$$
+	//		s.eVar47 = "$$ANNDETAIL:ETAGE$$";
+		s.products = s.apl(s.products, "evar47=$$ANNDETAIL:ETAGE$$", '|',1);
+	$$END:ETAGE$$
+$$END:REM$$
+
+$$REM$$
+	// Type de cuisine et chauffage
+	//	s.eVar48 = "$$ANNDETAIL:IDTYPECUISINE$$#$$ANNDETAIL:IDTYPECHAUFFAGE$$";
+	if( s.eVar48 != "") s.products = s.apl(s.products, "evar48=$$ANNDETAIL:IDTYPECUISINE$$#$$ANNDETAIL:IDTYPECHAUFFAGE$$", '|',1);
+$$END:REM$$
+
+$$REM$$
+	// Etat d'avancement - Variable spécifique à Selogerpro.com
+	//s.eVar49 = "$$ANNDETAIL:IDETAT$$";
+	if( s.eVar49 != "") s.products = s.apl(s.products, "evar49=$$ANNDETAIL:IDETAT$$", '|',1);
+$$END:REM$$
+</script>

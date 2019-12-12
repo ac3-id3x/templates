@@ -1,0 +1,37 @@
+$$REM$$====================================================================
+//// <summary>Pour sites monoagences : redirection vers page de contact avec ID PUBLICATION</summary>
+//// <remarks>
+//// <para>Fichier à ne PAS démutualiser</para>
+//// <para>Si multiagences = 0, on vérifie que l'email existe puis on redirige vers page de formulaire en ajoutan l'ID PUBLICATION en REP:1</para>
+//// <para>Utilisation macro MULTIAGENCES créée dans fichier mutualisé header/incl_variables.htm</para>
+//// <para>Si pas d'email on affiche cette include : contact/incl_email_non_disponible.htm</para>
+//// </remarks>
+//// <update date="2010-06-14" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+
+$$REM$$<!--// s'il n'y a qu'une agence sur le site //-->$$END:REM$$
+$$IF0:MULTIAGENCES$$
+	$$REM$$<!--// s'il n'y a pas de REP:1 //-->$$END:REM$$
+	$$IF0:REP:1$$
+		$$REM$$<!--// on vérifie que l'email existe //-->$$END:REM$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$IF:COMPTE_AGENCES:EMAIL$$$$A:CHECK_EMAIL=1$$$$A:CHECK_IDPUBLICATION=@@COMPTE_AGENCES:IDPUBLICATION@@$$$$END$$
+				$$IF0:COMPTE_AGENCES:EMAIL$$$$A:CHECK_EMAIL=0$$$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		$$REM$$<!--// si le mail existe donc CHECK_EMAIL = 1 //-->$$END:REM$$
+		$$IF:CHECK_EMAIL$$
+			$$REM$$<!--// si CHECK_EMAIL = 1 on va directement sur la page de formulaire //-->$$END:REM$$
+			<script type="text/javascript">
+				<!--			
+					document.location.href='/'+$$CHECK_IDPUBLICATION$$+'/$$REP:0$$?$$REP:QRY$$';
+				// -->
+			</script>
+		$$END:CHECK_EMAIL$$
+		$$REM$$<!--// si le mail n'existe pas donc CHECK_EMAIL = 0 //-->$$END:REM$$
+		$$IF0:CHECK_EMAIL$$
+		<!--#include virtual="contact/incl_email_non_disponible.htm" -->
+		$$END:CHECK_EMAIL$$
+	$$END:REP:1$$
+$$END:MULTIAGENCES$$

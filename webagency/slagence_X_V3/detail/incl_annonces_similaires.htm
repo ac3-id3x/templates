@@ -1,0 +1,102 @@
+$$DO:1:3$$
+$$IF!:REP_1:ANNLISTE:IDANNONCE$$
+<div class="similaire_ctn">
+	<div class="similaire">
+		$$IF:PAGE:URLREWRITINGENABLED$$
+			$$IF:FORM:LANG$$
+			$$IF!:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF=:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+			$$END$$
+			$$END$$
+			$$IF0:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:PAGE:URLREWRITINGENABLED$$
+			$$A:LIEN_SIMILAIRE=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE lcase@@$$
+		$$END$$
+		<div class="nbPhotos_ctn">
+			<div class="nbPhotosBg"><!-- --></div>
+				<a class="nbPhotos" href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SELECTION_INDEX$$">
+					$$IF:ANNLISTE:C175URL0$$
+					<img src="$$ANNLISTE:C175URL0$$" height="116px" width="175px" />
+					$$END$$
+
+				<em><!-- --></em>
+				<span><strong>$$ANNLISTE:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+				<span class="clear"><!-- --></span>
+			</a>
+		</div><!-- .nbPhotos_ctn -->
+			
+		<p class="similairePhoto">		
+				<a href="$$LIEN_SIMILAIRE$$" id="SimilairePhoto$$ANNLISTE:I$$" title=""></a>
+		</p><!-- .similairePhoto -->	
+		<p><a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SELECTION_INDEX$$">
+		$$ANNLISTE:VILLE$$ <span>($$ANNLISTE:CP$$)</span></a></p>
+		<p>											
+			$$IF!:5:ANNLISTE:IDTYPETRANSACTION$$
+				$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$
+			$$END$$
+			$$ANNLISTE:IDTYPEBIEN gettypebien lcase$$
+		</p>									
+		<p>									
+			$$IF:ANNLISTE:NB_PIECES$$
+			$$ANNLISTE:NB_PIECES$$
+			$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+			$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$IF:ANNLISTE:NB_CHAMBRES$$,
+				$$ANNLISTE:NB_CHAMBRES$$
+				$$LG:CHAMBRE lcase$$$$ANNLISTE:NB_CHAMBRES pluriel$$			
+			$$END$$
+			$$END:NB_PIECES$$
+				
+			$$IF=:5:ANNLISTE:IDTYPETRANSACTION$$
+				$$IF=:TRUE:ANNLISTE:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+				$$IF=:FALSE:ANNLISTE:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+				$$IFNULL:ANNLISTE:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+			$$END$$
+			
+			$$IF:ANNLISTE:SURFACE$$
+				($$ANNLISTE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / approx. $$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$$$IF:ANNLISTE:SURF_TERRAIN$$ , $$LG:SURFT pcase$$$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$ $$IF=:EN:LANGUE$$/ approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$$$END:ANNLISTE:SURF_TERRAIN$$)
+			$$END$$
+		</p>
+		<p>
+				<a href="$$LIEN_SIMILAIRE$$" title="">
+				$$ANNLISTE:PRIX formatnumber 0$$
+				<span class="unite">		
+					$$IF!:1:ANNLISTE:IDTYPETRANSACTION$$
+					$$ANNLISTE:PRIX_UNITE$$
+					$$END$$
+							
+					$$IF=:1:ANNLISTE:IDTYPETRANSACTION$$
+					&euro; CC
+					$$END$$
+				</span>		 
+				<span class="periodeVac">$$ANNLISTE:PRIX_PERIODEVAC$$</span>
+				$$IF=:1$3$7:ANNLISTE:IDTYPETRANSACTION$$
+					$$IF:ANNLISTE:SI_LOYER_CC$$<span class="sup1"><!-- &sup1; --></span><!-- loyer charges comprises-->$$END$$
+					$$IF0:ANNLISTE:SI_LOYER_CC$$<span class="sup1">&sup1;</span><!-- loyer + charges -->$$END$$
+				$$END$$
+			</a>
+			$$IF=:2$8:ANNLISTE:IDTYPETRANSACTION$$
+					*
+					$$IF=:False:ANNLISTE:SI_HONORAIRES_ACQUEREUR$$
+						<div class="prix glossaire"><sup>*</sup> :$$LG:PRIXHORSFRAIS$$</div>
+					$$END$$
+					$$IF=:True:ANNLISTE:SI_HONORAIRES_ACQUEREUR$$
+						<div class="prix glossaire"><sup>*</sup> : $$LG:DONT$$ $$ANNLISTE:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$</div>
+					$$END$$
+					$$IF!:True$False:ANNLISTE:SI_HONORAIRES_ACQUEREUR$$
+						<div class="prix glossaire"><sup>*</sup> : $$LG:HONORAIRES$$ $$LG:NONRENSEIGNE$$</div>
+					$$END$$
+				$$END$$
+		</p>
+		<p class="similaireDetail">
+				<a href="$$LIEN_SIMILAIRE$$" title="">$$LG:DETAILS pcase$$</a>
+		</p>
+	</div><!-- .similaire -->
+</div><!-- .similaire_ctn -->
+$$END:IDANNONCE$$
+$$LOOP$$

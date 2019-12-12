@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Test</title>
+</head>
+<body>
+$$E:ID3:URW-GETVALUES:~ressource:TypeTransaction:~values:typeTransaction,typeBien$$
+
+<table border="1">
+	<tr>
+		<td valign="top">
+			$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+			<a href="$$URWRACINE:URLVIRTUELLE$$">Immobilier</a><br/>
+			<font color="red">Raccourcis</font>
+		</td>
+		<td valign="top" rowspan="2">
+$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150:~idTypeTransaction:QRY:idTypeTransaction$$
+
+$$BIF:TOP$$
+$$DO:3$$
+	<a href="$$TOP:URLVIRTUELLE$$">$$ID3:URW-GETVALUES:TYPETRANSACTION ncase$$ $$TOP:VILLE$$</a><font size="1"> ($$TOP:NBANNONCES$$)</font><br/>
+$$LOOP$$
+$$BFIN$$
+
+$$BIF0:TOP$$
+Pas de ville
+$$BFIN$$
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~idTypeTransaction:QRY:idTypeTransaction:~nbAnnoncesMin:1$$
+
+$$BIF:TTTB$$
+$$DO$$
+	$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLE$$">$$END$$
+		$$TTTB:TYPETRANSACTION$$&nbsp;$$TTTB:TYPEBIEN$$
+	$$IF:TTTB:NBANNONCES$$</a>$$END$$
+	<br/>
+$$LOOP$$
+$$BFIN$$
+
+$$BIF0:TTTB$$
+Pas de combinaison TT/TB
+$$BFIN$$
+		</td>
+	</tr>
+$$IF=:150:TOP:NBR$$
+	<tr>
+		<td colspan="2">
+			$$E:ID3:URW-GETURL:ALIAS:URWTTPAGES:~ressource:TypeTransactionPages$$
+			<a href="$$URWTTPAGES:URLVIRTUELLE$$">Autres villes</a>
+		</td>
+	</tr>
+$$END:NBR$$
+</table>
+
+</body>
+</html>
