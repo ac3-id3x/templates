@@ -1,0 +1,286 @@
+$$REM$$====================================================================
+//// <summary>Resultat BIENS VENDUS</summary>
+//// <remarks>
+//// <para>Lien accessible depuis le haut de la page de resultats</para>
+//// <para>Infos affichees limitees par rapport à une recherche d'annonces de vente, il faudrait un mini moteur pour filtrer</para>
+//// <para>Utilise le même css que les pages : recherche,basic.htm</para>
+//// </remarks>
+//// <update date="2011-03-03" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+
+$$SET:PAGE:IDT=BIENSVENDUS$$
+<!--#include virtual="/recherche/incl_style_vendu.htm" -->
+
+$$INCL:HAUT.HTM$$
+
+<!--#include virtual="/recherche/incl_scripts_recherche.htm" -->
+
+<!--// =========================== haut recherche =========================== //-->
+<div id="RechercheWrap">
+	<div id="RechercheContainer">
+		<div id="RechHaut">
+			
+			<div id="RechHautCtn" class="results_null">
+				<div id="RechHautPictoResult">
+					<p class="results_null"></p>
+				</div>
+				
+				<h1>
+					$$IF:FORM:IDTYPEBIEN$$
+						$$VENDU:NBR formatnumber 0$$
+						$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$
+						$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$
+					$$END$$
+				</h1>
+				
+				<div class="clear"><!-- --></div>				
+				
+				<script type="text/javascript">
+					<!--
+					function Trier( idname ) {
+						var obj = document.getElementById(idname);
+						if( obj ) {
+							var critereTri = obj.options[obj.selectedIndex].value;
+							location.href= '$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+					//-->
+				</script>
+				
+				<form id="Tri" action="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+					<div id="Tri_Ctn">							
+						$$LG:TRIER pcase$$ :	
+						<select name="tri" id="TriAnn" class="triBiensVendus" onchange="Trier(this.id);">
+				      <option value="a_px"$$IF=:a_px:FORM:TRI$$ selected="selected"$$END$$> $$LG:PRIX pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+							<option value="d_px"$$IF=:d_px:FORM:TRI$$ selected="selected"$$END$$> $$LG:PRIX pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+							<option value="a_surface"$$IF=:a_surface:FORM:TRI$$ selected="selected"$$END$$> $$LG:SURFACE pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+							<option value="d_surface"$$IF=:d_surface:FORM:TRI$$ selected="selected"$$END$$> $$LG:SURFACE pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+				      <option value="a_dtmutation"$$IF=:a_dtmutation:FORM:TRI$$ selected="selected"$$END$$> $$LG:DATEVENTE pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+				      <option value="d_dtmutation"$$IF0:FORM:TRI$$ selected="selected"$$END$$$$IF=:d_dtmutation:FORM:TRI$$ selected="selected"$$END$$> $$LG:DATEVENTE pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+						</select>		
+					</div>
+				</form><!-- fin #Tri -->
+							
+				<!--#include virtual="/recherche/incl_haut_annonces_liens.htm" -->
+				
+			</div><!-- fin #RechHautCtn -->		
+			<div id="RechHautEnd"><!-- --></div>
+		</div><!-- fin #RechHaut -->
+		
+		$$IF:VENDU:NBRPAGES$$
+		<div id="RechPagesHaut">
+			<!--#include virtual="/recherche/incl_nb_pages_biensvendus.htm" -->		
+		</div><!-- fin #RechPagesHaut -->
+		$$END:VENDU:NBRPAGES$$
+		
+	<!--// =========================== //resultats annonces // =========================== //-->
+		$$B:IMMOBW:KA-BIENS-VENDUS:~idPublication:QRY:IDPUBLICATION:~ci:QRY:CI:~cp:QRY:CP:~div:QRY:DIV:~idTypeBien:QRY:IDTYPEBIEN:~tri:QRY:TRI:~forceDiffusion:QRY:FORCEDIFFUSION:ALIAS:VENDU$$
+		$$BIF:VENDU$$	
+		<div id="RechResultat">
+			
+			$$DO:1:10$$
+		
+			<div class="blocAnnonce" id="Annonce$$VENDU:IDVENTE$$">
+				
+				<table class="detailsAnn">
+					<tr>
+						<td class="logo_wrap">
+							$$REM$$<!-- include nécessaire pour afficher image bien vendu -->$$END$$
+							<div class="venduBandeau"><!-- --></div>
+							<div class="logo_ctn"$$IF:VENDU:SILOGO$$ style="background: url($$VENDU:URLLOGO$$) 50% 50% no-repeat #fff;"$$END$$><!-- --></div><!-- .logo_ctn -->
+						</td><!-- .photo_wrap -->
+						<td class="descrAnn_Ctn">
+							<!-- ////////// -->
+							<p class="prix">$$VENDU:TITRE pcase$$ $$LG:VENDUA  left 5 lcase$$ </p><!-- .prix -->
+							<p class="ville">$$VENDU:VILLE$$ ($$VENDU:CP$$)</p>
+							<!--
+							<p class="libelle">$$VENDU:IDTYPEBIENVENDU gettypebien$$</p>
+							-->
+							$$REM$$
+							<!-- =========================================
+							16.03.2011 on cache c/o Lisbonne
+								> car descriptif permet de retrouver l'annonce dans la liste des ventes
+								> car souvent annonce encore en vente même si déjà dans biens vendus
+								> c'est le parti de SeLoger, voir ce qu'on décide pour les sites agences
+							========================================= -->
+							$$IF:VENDU:DESCRIPTIF$$				
+							<div class="descrAnn">
+								<p class="descr">
+									$$VENDU:DESCRIPTIF$$
+								</p>						
+							</div><!-- .descrAnn -->					
+							$$END:VENDU:DESCRIPTIF$$	
+							$$END:REM$$
+							
+							<!-- /////////////////////////////////////////////////////////////////////////////////// -->
+							<p class="fraicheur bienvenduCheck">
+								<strong>
+									$$IF=:FR:LANGUE$$Vendu en$$END$$
+									$$IF!:FR:LANGUE$$$$LG:VENDUDEPUIS pcase$$$$END$$
+									: $$VENDU:DTMUTATION date MMMM_yyyy$$
+								</strong>
+							</p>
+							
+							$$IF:VENDU:SURFACEHABITABLE$$
+							<p class="surface bienvenduCheck">
+								$$LG:SURFH2 pcase$$ : $$VENDU:SURFACEHABITABLE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEHABITABLE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+								$$IF:VENDU:SURFACECARREZ$$
+									($$LG:LOICARREZ ncase$$ : $$VENDU:SURFACECARREZ replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACECARREZ exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$)
+								$$END:VENDU:SURFACEHABITABLE$$
+							</p><!-- .surface -->
+							$$END:VENDU:SURFACEHABITABLE$$
+							
+							$$IF:VENDU:SURFACETERRAIN$$
+							<p class="terrain bienvenduCheck">
+								$$LG:SURFT pcase$$
+								$$VENDU:SURFACETERRAIN formatnumber 0$$ $$LG:M2 lcase$$
+								$$IF=:EN:LANGUE$$
+									(approx. $$VENDU:SURFACETERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+									$$VENDU:SURFACETERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+								$$END:EN$$			
+							</p><!-- .terrain -->					
+							$$END:VENDU:SURFACETERRAIN$$
+									
+								
+							$$IF:VENDU:NBPIECES$$
+							<p class="surface bienvenduCheck">
+								$$VENDU:NBPIECES$$
+									$$IF=:1:VENDU:NBPIECES$$$$LG:PIECE lcase$$$$END$$
+									$$IF+:2:VENDU:NBPIECES$$$$LG:PIECES2 lcase$$$$END$$						
+							</p><!-- .surface -->
+							$$END:VENDU:NBPIECES$$
+							
+							$$IF:VENDU:ETAGE$$
+							<p class="bienvenduCheck">
+								$$LG:ETAGE pcase$$ : $$VENDU:ETAGE$$ $$IF:VENDU:NBETAGES$$($$LG:SUR lcase$$ $$VENDU:NBETAGES$$ $$LG:ETAGES lcase$$)$$END:VENDU:NBETAGES$$
+							</p><!-- .surface -->
+							$$END:VENDU:NBPIECES$$
+		
+							
+							$$IF:VENDU:NBBOX$$<p class="bienvenduCheck">$$IF=:FR:LANGUE$$Box$$END$$$$IF!:FR:LANGUE$$$$LG:BOXES2 pcase$$$$END$$ : $$VENDU:NBBOX$$</p>$$END$$
+							$$IF:VENDU:NBPARKEXT$$<p class="bienvenduCheck">$$LG:PARKINGSOUV pcase$$ : $$VENDU:NBPARKEXT$$</p>$$END$$
+							$$IF:VENDU:NBPARKINT$$<p class="bienvenduCheck">Parkings interieurs : $$VENDU:NBPARKINT$$</p>$$END$$
+							$$IF:VENDU:SICAVE$$<p class="bienvenduCheck">$$LG:CAVE1 pcase$$</p>$$END$$
+							$$IF:VENDU:ANNEECONSTRUCTION$$<p class="bienvenduCheck">$$LG:DATECONSTRUC pcase$$ : $$VENDU:ANNEECONSTRUCTION$$</p>$$END$$
+							$$IF:VENDU:SIASCENSEUR$$<p class="bienvenduCheck">$$LG:ASCENC1 pcase$$</p>$$END$$
+							$$IF:VENDU:SURFACEJARDIN$$<p class="bienvenduCheck">Jardin : $$VENDU:SURFACEJARDIN formatnumber 0$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEJARDIN exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$</p>$$END$$
+							$$IF:VENDU:NBTERRASSES$$
+							<p class="bienvenduCheck">
+								$$VENDU:NBTERRASSES$$ $$LG:TERRASSE pcase$$$$VENDU:NBTERRASSES pluriel$$
+								$$IF:VENDU:SURFACETERRASSES$$
+									$$VENDU:SURFACETERRASSES$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACETERRASSES exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+								$$END:SURFACETERRASSES$$
+							</p>
+							$$END$$
+							$$IF:VENDU:NBBALCONS$$
+							<p class="bienvenduCheck">
+								$$VENDU:NBBALCONS$$ $$LG:BALCON pcase$$$$VENDU:NBBALCONS pluriel$$
+								$$IF:VENDU:SURFACEBALCONS$$
+									$$VENDU:SURFACEBALCONS$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEBALCONS exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+								$$END:SURFACEBALCONS$$
+							</p>
+							$$END$$
+							$$IF:VENDU:SURFACEANNEXES$$<p class="bienvenduCheck">Surfaces annexes : $$VENDU:SURFACEANNEXES$$</p>$$END$$
+							$$IF=:true:VENDU:SITERRAINVIABILISE$$<p class="bienvenduCheck">Terrain viabilis&eacute;</p>$$END$$
+							$$IF=:true:VENDU:SITERRAINCONSTRUCTIBLE$$<p class="bienvenduCheck">Terrain constructible</p>$$END$$
+							$$IF=:true:VENDU:SIPISCINE$$<p class="bienvenduCheck">Piscine </p>$$END$$
+							$$REM$$<!-- 11.03.2011 c/o Lisbonne = voir ce que la macro renvoit car ça a pas l'air de marcher rohhh -->$$END:REM$$
+							<!--
+							$$IF:VENDU:IDETATINTERIEUR$$<p class="bienvenduCheck">$$VENDU:IDETATINTERIEUR$$</p>$$END$$
+							$$IF:VENDU:IDETATEXTERIEUR$$<p class="bienvenduCheck">$$VENDU:IDETATEXTERIEUR$$</p>$$END$$
+							-->
+							$$IF:VENDU:IDTYPECHAUFFAGE$$<p class="bienvenduCheck">Type de chauffage : $$VENDU:IDTYPECHAUFFAGE gettypechauffage lcase$$</p>$$END$$
+							$$IF=:true:VENDU:SIOCCUPE$$<p class="bienvenduCheck">Bien vendu occup&eacute;$$IF:VENDU:LOYER$$, $$LG:LOYERMENSUEL lcase$$ : $$VENDU:LOYER formatnumber 0$$$$END$$</p>$$END$$
+		
+							<!-- /////////////////////////////////////////////////////////////////////////////////// -->
+							<div id="Dpe">
+								$$IF:VENDU:CODEBILANCONSOENERGIE$$
+								<div id="DiagConso">
+									<h5>$$LG:CONSOENERGIE pcase$$ :</h5>							
+									<img src="/z/webagency/slagence_X_V3/recherche/img_commun/dpe/diag_dpe_$$VENDU:CODEBILANCONSOENERGIE$$.png" alt="" title="" />
+									$$IF:VENDU:CONSOENERGIE$$<p class="bienvenduCheck"><strong>$$VENDU:CONSOENERGIE$$ kWhep/m&sup2;/an</strong></p>$$END$$
+								</div><!-- #DiagConso -->
+								$$END$$
+								$$IF:VENDU:CODEBILANEMISSIONSGES$$
+								<div id="DiagGes">
+									<h5>$$LG:EMISSIONGAZ pcase$$ :</h5></p>
+									<img src="/z/webagency/slagence_X_V3/recherche/img_commun/dpe/diag_ges_$$VENDU:CODEBILANEMISSIONSGES$$.png" alt="" title="" />
+									$$IF:VENDU:EMISSIONSGES$$<p class="bienvenduCheck"><strong>$$VENDU:EMISSIONSGES$$ kgeqCO&sup2;/m&sup2;/an</strong></p>$$END$$
+								</div><!-- #DiagGes -->
+								$$END$$
+								<div class="clear"><!-- --></div>
+							</div><!-- #Dpe -->
+						</td><!-- .descrAnn_Ctn -->			
+					
+						<td class="descrAnn_Ctn" style="width: 200px;">
+							<div class="contactAnn">
+								<p>$$LG:CONTACT pcase$$</p>
+								$$IF:VENDU:COOR-NOM$$<p class="nom">$$VENDU:COOR-NOM$$ $$VENDU:IDPUBLICATION$$</p>$$END$$
+								<!--$$IF:VENDU:COOR-NBBIENSVENDUS$$<p class="nom">$$VENDU:COOR-NBBIENSVENDUS$$ $$LG:BIENVENDUS lcase$$</p>$$END$$-->						
+								$$IF:VENDU:COOR-TELEPHONE$$
+								<div class="tel">
+									<em class="pictoTelephone"><!-- --></em>
+									<span>$$LG:MINITEL pcase$$ :</span>							
+									$$VENDU:COOR-TELEPHONE formattel$$
+									<div class="clear"><!-- --></div>					
+								</div>						
+								$$END:COOR-TELEPHONE$$						
+								$$IF:VENDU:COOR-EMAIL$$
+								<div class="mail">						
+									<a href="mailto:$$VENDU:COOR-EMAIL$$" title="">
+										<em class="pictoContact"><!-- --></em>
+										$$LG:NOUSCTC pcase$$
+									</a>
+									<div class="clear"><!-- --></div>
+								</div>					
+								$$END:COOR-EMAIL$$					
+							</div><!-- .contactAnn -->
+						</td><!-- .descrAnn_Ctn -->
+					</tr>
+				</table><!-- .detailsAnn -->
+		
+			</div>
+			$$LOOP$$
+		</div><!-- #RechResultat -->
+		$$BFIN$$
+		
+		$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+		$$BIF:CHECKBASKET$$
+		<script type="text/javascript">
+			<!--			
+			// actualise le nb annonce du panier
+			nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+					
+			//  actualise le nb annonce page selection
+			nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		
+			$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// cache annonce du panier
+			$$LOOP$$
+			//-->
+		</script>
+		$$BFIN$$
+		
+	<!--// =========================== //bas recherche // =========================== //-->
+		
+		$$IF:VENDU:NBRPAGES$$
+		<div id="RechPagesBas">
+			<!--#include virtual="/recherche/incl_nb_pages_biensvendus.htm" -->		
+		</div><!-- fin #RechPagesBas -->
+		$$END:VENDU:NBRPAGES$$	
+			
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$	
+		<!--#include virtual="/referencement/incl_liste_villes_recherche.gen.htm" -->	
+		$$END:PAGE:WAGREF_IDDOSSIER_SITE$$	
+	
+		
+		$$IF:VENDU:NBRPAGES$$
+		<div class="RetourHaut">
+			<a href="#" title="">$$LG:TOP pcase$$</a>
+		</div>
+		$$END:VENDU:NBRPAGES$$	
+		
+	</div><!-- fin #RechercheContainer -->
+</div><!-- fin #RechercheWrap -->
+
+$$INCL:BAS.HTM$$
