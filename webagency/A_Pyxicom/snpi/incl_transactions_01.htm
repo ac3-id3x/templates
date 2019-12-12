@@ -1,0 +1,177 @@
+	$$REM$$
+====================================================================
+//// <summary>Liste d'annonces d'une ou plusieurs agences classées par type de transaction, puis type de biens par transaction</summary>
+//// <update date="2009-03-21" author="christophe.ledoux"></update>
+====================================================================
+$$END$$	
+		<h3>$$LG:AUJOURDHUI pcase$$ $$IF!:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date dd/MM/yyyy pcase$$ $$END$$
+		$$IF=:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date MM/dd/yyyy pcase$$ $$END$$</h3>
+		<!-- Nombre de ventes -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCEST2$$
+		$$BIF:AGENCEANNONCEST2$$
+			$$DO$$
+				$$IF=:2:AGENCEANNONCEST2:IDTYPETRANSACTION$$
+					<h4>
+						$$AGENCEANNONCEST2:DESCRIPTIONLG pcase$$ : 
+						$$AGENCEANNONCEST2:NBANN$$ 
+						$$IF-:2:AGENCEANNONCEST2:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:AGENCEANNONCEST2:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+					
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de vente + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VEN:2$$
+		$$BIF:TYPEBIEN_VEN$$
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VEN:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_VEN:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_VEN:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_VEN:NBANN$$
+					$$IF-:2:TYPEBIEN_VEN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_VEN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+			</ul>
+		$$BFIN$$
+		
+		<!-- Nombre de locations -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCEST1$$
+		$$BIF:AGENCEANNONCEST1$$
+			$$DO$$
+				$$IF=:1:AGENCEANNONCEST1:IDTYPETRANSACTION$$
+					<h4>
+						$$AGENCEANNONCEST1:DESCRIPTIONLG pcase$$ : 
+						$$AGENCEANNONCEST1:NBANN$$ 
+						$$IF-:2:AGENCEANNONCEST1:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:AGENCEANNONCEST1:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de location + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOC:1$$
+		$$BIF:TYPEBIEN_LOC$$	
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ : $$TYPEBIEN_LOC:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_LOC:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_LOC:NBANN$$
+					$$IF-:2:TYPEBIEN_LOC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_LOC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+				<!-- fin locations triees par type de bien -->
+			</ul>
+		$$BFIN$$
+		
+		<!-- Nombre de locations vacances -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCEST4$$
+		$$BIF:AGENCEANNONCEST4$$
+			$$DO$$
+				$$IF=:1:AGENCEANNONCEST4:IDTYPETRANSACTION$$
+					<h4>
+						$$AGENCEANNONCEST4:DESCRIPTIONLG pcase$$ : 
+						$$AGENCEANNONCEST4:NBANN$$ 
+						$$IF-:2:AGENCEANNONCEST4:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:AGENCEANNONCEST4:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de location vacances+ nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOCVAC:4$$
+		$$BIF:TYPEBIEN_LOC$$	
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ : $$TYPEBIEN_LOC:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_LOC:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_LOC:NBANN$$
+					$$IF-:2:TYPEBIEN_LOC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_LOC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+				<!-- fin locations triees par type de bien -->
+			</ul>
+		$$BFIN$$
+		
+		
+		
+			<!-- Nombre de Viager -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCEST5$$
+		$$BIF:AGENCEANNONCEST5$$
+			$$DO$$
+				$$IF=:5:AGENCEANNONCEST5:IDTYPETRANSACTION$$
+					<h4>
+						$$AGENCEANNONCEST5:DESCRIPTIONLG pcase$$ : 
+						$$AGENCEANNONCEST5:NBANN$$ 
+						$$IF-:2:AGENCEANNONCEST5:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:AGENCEANNONCEST5:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de Viager + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VIAG:5$$
+		$$BIF:TYPEBIEN_VIAG$$	
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=5&amp;idtypebien=$$TYPEBIEN_VIAG:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VIAG pcase$$ : $$TYPEBIEN_VIAG:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_VIAG:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_VIAG:NBANN$$
+					$$IF-:2:TYPEBIEN_VIAG:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_VIAG:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+				<!-- fin Viager trie par type de bien -->
+			</ul>
+		$$BFIN$$
+		
+		
+			<!-- Nombre de Produits invest -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCESB3$$
+		$$BIF:AGENCEANNONCESB3$$
+			$$DO:0:99$$
+				$$IF=:6:AGENCEANNONCESB3:IDTYPETRANSACTION$$
+					<h4>
+						$$AGENCEANNONCESB3:DESCRIPTIONLG pcase$$ : 
+						$$AGENCEANNONCESB3:NBANN$$ 
+						$$IF-:2:AGENCEANNONCESB3:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:AGENCEANNONCESB3:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de Viager + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VIAG:5$$
+		$$BIF:TYPEBIEN_VIAG$$	
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=5&amp;idtypebien=$$TYPEBIEN_VIAG:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VIAG pcase$$ : $$TYPEBIEN_VIAG:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_VIAG:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_VIAG:NBANN$$
+					$$IF-:2:TYPEBIEN_VIAG:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_VIAG:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+				<!-- fin Viager trie par type de bien -->
+			</ul>
+		$$BFIN$$
+		
+		

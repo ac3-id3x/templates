@@ -1,0 +1,275 @@
+$$IF0:FORM:TYPE$$
+	$$IF!:0:PAGE:TYPEDEBIEN$$
+		$$A:PAGE:TITRE=Immobilier d'habitation : vente : appartements, maisons, villas, immeubles$$
+	$$END$$
+$$END:ventes habitation$$
+$$IF=:IMMO_ENTREPRISE:FORM:TYPE$$
+        $$A:PAGE:TITRE=Immobilier d'entreprise : vente : bureaux, locaux, commerces, boutiques$$
+$$END:immo entreprise$$
+$$IF=:PARKING:FORM:TYPE$$
+		$$A:PAGE:TITRE=Immobilier d'habitation : vente : parking$$
+$$END:parking$$
+$$IF=:VENTES_PRESTIGE:FORM:TYPE$$
+		$$A:PAGE:TITRE=Immobilier de prestige : vente : appartement, villa, maison, hôtel particulier$$
+$$END:prestige$$
+$$IF=:VIAGER:FORM:TYPE$$
+        $$A:PAGE:TITRE=Vente en viager : appartement, maison, villa$$
+$$END:viager$$
+$$IF=:PROD_INVES:FORM:TYPE$$
+	$$A:PAGE:TITRE=Immobilier d'investissemnt : vente : appartements, maisons, villas, terrains, immeubles$$
+$$END:prod inves$$
+$$IF=:COMMERCE:FORM:TYPE$$
+		$$A:PAGE:TITRE=Commerce : vente : fond de commerce$$
+$$END:commerce$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=VEN$$
+$$SET:PAGE:REF=1$$
+$$SET:PAGE:TYPEDEBIEN=1$$
+$$SET:PAGE:BUDGET=1$$
+$$SET:PAGE:SURFACE=1$$
+$$SET:PAGE:LISTEDEROULANT=1$$
+$$SET:PAGE:LISTEVILLES=0$$
+$$SET:PAGE:CARTE=0$$
+$$SET:PAGE:AFFICHEPAYS=0$$
+$$SET:PAGE:PHOTO=0$$
+$$SET:PAGE:FRAICHEUR=0$$
+$$SET:PAGE:PROXIMITE=1$$
+<script language="javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$', 'cdp', ',height=330, width=360, scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+
+function setdp (dp) {
+	var cps;
+	var acps;
+	var i;
+	cps = document.annonces.cp[0].value;
+	if(cps){
+		document.annonces.cp[0].value="";
+		acps = cps.split(',');
+		for (i=0; i<acps.length;i++) {
+			if (document.annonces.cp[0].value.indexOf(acps[i]+",")==-1) document.annonces.cp[0].value+= acps[i]+",";
+		}
+		acps = dp.split(',');
+		for (i=0; i<acps.length;i++) {
+			if (document.annonces.cp[0].value.indexOf(acps[i]+",")==-1) document.annonces.cp[0].value+= acps[i]+",";
+		}
+		i=document.annonces.cp[0].value.length;
+		if (i>0) document.annonces.cp[0].value = document.annonces.cp[0].value.substring(0,i-1);
+	}
+	else{document.annonces.cp[0].value=dp;}
+}
+
+function change_carte( oldidcarte, newidcarte ) {
+	var elt_oldcarte = document.getElementById( oldidcarte );
+	var elt_newcarte = document.getElementById( newidcarte );
+	if( elt_oldcarte && elt_newcarte ) {
+		elt_oldcarte.style.visibility="hidden";
+		elt_oldcarte.style.display="none";
+		elt_newcarte.style.visibility="visible";
+		elt_newcarte.style.display="";
+	}
+}
+//-->
+</script>
+$$IF:FORM:ERR$$
+	<table border="0" cellpadding="4" cellspacing="4" width="80%">
+	<tr><td><img src="img/ah.gif" border="0" /></td><td class="errmsg">$$FORM:ERR crlf2br$$</td></tr></table><br />
+$$END:FORM:ERR$$
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" id="annonces" name="annonces" style="display:inline">
+<table class="tabbasic">
+<tr>
+	<td align="center">
+	$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+	<input type="hidden" name="URLONERROR" value="$$REP:URI$$" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="type" value="$$FORM:TYPE$$" />
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<!-- TYPE DE BIEN -->
+	<tr><td class="ssrub">
+	$$IF0:FORM:TYPE$$ $$IF!:0:PAGE:TYPEDEBIEN$$	$$LG:LIEN:IMMOHAB pcase$$ $$END$$ $$END:ventes habitation$$
+	$$IF=:IMMO_ENTREPRISE:FORM:TYPE$$ $$LG:LIEN:IMMOEN pcase$$ $$END:immo entreprise$$
+	$$IF=:PARKING:FORM:TYPE$$ $$LG:PARKINGS pcase$$ $$END:parking$$
+	$$IF=:VENTES_PRESTIGE:FORM:TYPE$$ $$LG:LIEN:IMMOPRES pcase$$ $$END:prestige$$
+	$$IF=:VIAGER:FORM:TYPE$$ $$LG:LIEN:VIAGER pcase$$ $$END:viager$$
+	$$IF=:PROD_INVES:FORM:TYPE$$ $$LG:INVESTISSEMENT pcase$$ $$END:prod inves$$
+	$$IF=:COMMERCE:FORM:TYPE$$ $$LG:COMMERCE ncase$$ $$END:commerce$$
+	$$IF=:NEUFS:FORM:TYPE$$ $$LG:BIENSDEFISCAL pcase$$ $$END$$
+
+	</td></tr>
+	<tr><td><br />$$LG:SELECTIONNEZ$$</td></tr>
+	<tr>
+		<td><br />
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				$$IF=:NEUFS:FORM:TYPE$$
+					<input type="hidden" name="idtt" value="9" />
+					$$INCL:VENTES_NEUF.GEN.HTM$$
+				$$END:neufs$$
+				$$IF=:PARKING:FORM:TYPE$$
+					<input type="hidden" name="idtt" value="2" />
+					<input type="hidden" name="idtypebien" value="3" />
+				$$END:parking$$
+				$$IF=:TERRAIN:FORM:TYPE$$
+					<input type="hidden" name="idtt" value="2" />
+					<input type="hidden" name="idtypebien" value="4" />
+				$$END:ventes terrain$$
+				$$IF!:PARKING$TERRAIN:FORM:TYPE$$
+				<td width="55%" valign="top">
+				$$IF0:FORM:TYPE$$ $$IF!:0:PAGE:TYPEDEBIEN$$
+					<input type="hidden" name="idtt" value="2" />
+					$$INCL:VENTES.GEN.HTM$$ $$END$$
+				$$END:ventes habitation$$
+				$$IF=:IMMO_ENTREPRISE:FORM:TYPE$$
+					$$INCL:VENTES_IMMO_ENTREPRISE.GEN.HTM$$
+					<input type="hidden" name="idtt" value="2" />
+				$$END:immo entreprise$$
+				$$IF=:VENTES_PRESTIGE:FORM:TYPE$$
+					$$INCL:VENTES_PRESTIGE.GEN.HTM$$
+					<input type="hidden" name="idtt" value="8" />
+				$$END:prestige$$
+				$$IF=:VIAGER:FORM:TYPE$$
+					$$INCL:VENTES_VIAGER.GEN.HTM$$
+					<br />
+					<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+					<td class="tabTitre1">$$LG:TYPEVIAGER$$</td>
+					</tr>
+					<tr>
+					<td align="center"><input type="radio" name="si_libre" value="1" />$$LG:LIBRE lcase$$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="si_libre" value="0" />$$LG:OCCUPE$$<br /><br />
+					</tr>
+					</table>
+					<input type="hidden" name="idtt" value="5" />
+				$$END:viager$$
+				$$IF=:PROD_INVES:FORM:TYPE$$
+					$$INCL:VENTES_PROD_INVES.GEN.HTM$$
+					<input type="hidden" name="idtt" value="6" />
+				$$END:prod inves$$
+				$$IF=:COMMERCE:FORM:TYPE$$
+					$$INCL:VENTES_COMMERCE.HTM$$
+				$$END:commerce$$
+				</td>
+				$$END$$
+				<td width="45%" valign="top">
+					<table border="0" width="100%" cellpadding="0" cellspacing="0">
+						<!-- Budget -->
+						$$IF=:1:PAGE:BUDGET$$
+						<tr>
+							<td class="tabTitre1">$$LG:BUDGET$$</td>
+						</tr>
+						<tr>
+							<td valign="top" align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr>
+								<td class="simple" width="25%">$$LG:MINI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="pxmin" size="8" value="$$FORM:PXMIN$$" /></td>
+							</tr>
+							<tr>
+								<td class="simple">$$LG:MAXI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="pxmax" size="8" value="$$FORM:PXMAX$$" />
+							<select name="euro">
+								<option value="1"$$IF=:1:FORM:EURO$$ selected="selected"$$END$$>&euro;</option>
+								<option value="0"$$IF=:0:FORM:EURO$$ selected="selected"$$END$$>ff</option>
+							</select></td>
+							</tr></table>
+							</td>
+						</tr>
+						$$END$$
+						<!-- Surface -->
+						$$IF=:1:PAGE:SURFACE$$
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td class="tabTitre1">$$LG:SURFACE$$</td>
+						</tr>
+						<tr>
+							<td valign="top" align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr>
+								<td class="simple" width="25%">$$LG:MINI$$&nbsp;:</td>
+								<td><input class="imputForm" type="text" name="surfacemin" size="8" value="$$FORM:SURFACEMIN$$" />
+							m&sup2;</td>
+							</tr>
+							<tr><td class="simple">$$LG:MAXI$$&nbsp;:</td>
+							<td><input class="imputForm" type="text" name="surfacemax" size="8" value="$$FORM:SURFACEMAX$$" /> m&sup2;
+								</td>
+							</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						$$END$$
+						<!-- RECHERCHE PAR REFERENCE -->
+						$$IF=:1:PAGE:REF$$
+						<tr>
+							<td class="tabTitre1">$$LG:RECHREF$$</td>
+						</tr>
+						<tr>
+							<td align="center">
+							<table border="0" width="95%" cellpadding="0" cellspacing="2">
+							<tr><td class="simple" width="25%"></td>
+							<td><input class="imputForm" type="text" name="refannonce" size="8" id="ref_ann" value="$$FORM:REF$$" /></td></tr></table>
+							</td>
+						</tr>
+						$$END$$
+					</table>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+
+	<!-- Proximité -->
+	$$IF=:1:PAGE:PROXIMITE$$
+	$$INCL:PROXIMITE.GEN.HTM$$
+	$$END$$
+	<!-- Pays -->
+	$$IF=:1:PAGE:AFFICHEPAYS$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>$$INCL:PAYS.HTM$$</td>
+	</tr>
+	$$END$$
+	<!-- Annonces fraicheur -->
+	$$IF!:0:PAGE:FRAICHEUR$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />&nbsp;$$LG:NOUV$$</td>
+	</tr>
+	$$END$$
+	<!-- Photos -->
+	$$IF=:1:PAGE:PHOTO$$
+	<tr>
+		<td valign="top"><input type="checkbox" name="photo" value="1" />&nbsp;$$LG:PHOTO$$</td>
+	</tr>
+	$$END:PHOTO$$
+	<!-- Préliste -->
+	$$IF=:1:PAGE:PRELISTE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top">$$LG:DETAILANN$$&nbsp;
+		<input type="radio" name="preliste" value="/recherche.htm" checked="checked" onclick="javascript:document.forms['annonces'].action = '/prerecherche.htm';" /><br />
+		$$LG:PRELISTE$$&nbsp;
+		<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = '/prerecherche_liste.htm';" />
+		</td>
+	</tr>
+	$$END$$
+	</table>
+	</td>
+</tr>
+<tr><td align="right"><a href="javascript:document.annonces.submit();" class="bt" onmouseover="MM_swapImage('bt1','','$$_$$images/bt_all_over.gif');" onmouseout="MM_swapImgRestore();"><img src="images/bt_all.gif" border="0" name="bt1" />&nbsp;$$LG:RECHERCHER$$</a></td></tr>
+</table>
+
+
+</form>
+$$INCL:BAS.HTM$$

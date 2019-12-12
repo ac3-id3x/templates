@@ -1,0 +1,70 @@
+$$REM$$
+====================================================================
+
+//// <summary>Mentions légales affichées sur la carte de visite de chaque agence</summary>
+//// <remarks>
+//// <para>Fichier appelé par agence-immobiliere.htm</para>
+//// <para>Fichier appelé par pages de détail d'annonces</para>
+//// <para>CSS par défaut : slagence_x_v2/styles/agence-immobiliere-mention.css</para>
+//// <para>Ces informations légales sont modifiables par le client dans SeLogerPro</para>
+//// <para>alias ML (comme Mentions Légales quoi)</para>
+//// </remarks>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Update pour utilisation etendue</update>
+//// <update date="2008-08-06" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-08-06" author="erick.barbant">Validation Id3x en attente</update>
+
+====================================================================
+$$END$$
+
+
+
+
+	Affichage des informations légales, en accord avec les textes de la DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes) :
+	
+		$$LG:RAISONSOC pcase$$ : $$IF0:ML:RAISONSOCIALE$$*$$END:ML:RAISONSOCIALE$$$$IF:ML:RAISONSOCIALE$$$$ML:RAISONSOCIALE$$$$END:ML:RAISONSOCIALE$$ | 
+	
+		$$LG:SIEGESOCIAL pcase$$ :
+		$$IF0:ML:ADRESSESIEGE$$*$$END:ML:ADRESSESIEGE$$
+		$$IF:ML:ADRESSESIEGE$$
+			$$IF:ML:CPSIEGE$$
+				$$IF:ML:VILLESIEGE$$
+					$$ML:ADRESSESIEGE$$ $$ML:ADRESSESIEGE2$$ $$ML:CPSIEGE$$ $$ML:VILLESIEGE$$ $$ML:PAYSSIEGE$$
+				$$END:ML:VILLESIEGE$$
+			$$END:ML:CPSIEGE$$
+		$$END:ML:ADRESSESIEGE$$ |
+	
+		$$IF:ML:RCS_SIREN$$
+			$$IF:ML:RCS_NIC$$
+				$$LG:RCS$$ : $$ML:RCS_SIREN$$$$ML:RCS_NIC$$
+			$$END:ML:RCS_NIC$$
+			$$IF0:ML:RCS_NIC$$
+				N&deg; Siren : $$ML:RCS_SIREN$$
+			$$END:ML:RCS_NIC$$
+			|
+		$$END:ML:RCS_SIREN$$
+		
+		$$IF0:ML:RCS_SIREN$$$$LG:RCS$$ : * |$$END:ML:RCS_SIREN$$
+		
+		Commune d'enregistrement : $$IF0:ML:RCS_COMMUNE$$*$$END:ML:RCS_COMMUNE$$$$IF:ML:RCS_COMMUNE$$$$ML:RCS_COMMUNE$$$$END:ML:RCS_COMMUNE$$ |
+		
+		Forme juridique : $$IF0:ML:FORMEJURIDIQUE$$*$$END:ML:FORMEJURIDIQUE$$$$IF:ML:FORMEJURIDIQUE$$$$ML:FORMEJURIDIQUE$$$$END:ML:FORMEJURIDIQUE$$ |
+		
+		Capital social : $$IF0:ML:CAPITALSOCIAL$$*$$END:ML:CAPITALSOCIAL$$$$IF:ML:CAPITALSOCIAL$$$$ML:CAPITALSOCIAL formatnumber 0$$ &euro;$$END:ML:CAPITALSOCIAL$$ |
+		
+		Carte professionnelle n&deg; : $$IF0:ML:NUMEROCARTEPRO$$*$$END:ML:NUMEROCARTEPRO$$$$IF:ML:NUMEROCARTEPRO$$$$ML:NUMEROCARTEPRO$$$$END:ML:NUMEROCARTEPRO$$ |
+		
+		Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle : $$IF0:ML:PREFECTURECARTEPRO$$*$$END:ML:PREFECTURECARTEPRO$$$$IF:ML:PREFECTURECARTEPRO$$$$ML:PREFECTURECARTEPRO$$$$END:ML:PREFECTURECARTEPRO$$ |
+			
+		Caisse garantie financi&egrave;re : $$IF0:ML:GARANTIEFINANCIERECAISSE$$*$$END$$$$IF:ML:GARANTIEFINANCIERECAISSE$$$$ML:GARANTIEFINANCIERECAISSE$$$$END$$ |
+		
+		Montant garantie financi&egrave;re : $$IF0:ML:GARANTIEFINANCIEREMONTANT$$*$$END:ML:GARANTIEFINANCIEREMONTANT$$$$IF:ML:GARANTIEFINANCIEREMONTANT$$$$ML:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END:ML:GARANTIEFINANCIEREMONTANT$$ | Numero TVA Intracommunautaire : $$ML:NOTVA$$$$IF0:ML:NOTVA$$*$$END$$
+	
+		| 
+		$$IF=:307207:FORM:IDP$$
+			Titre professionnel : Agent Immobilier | Carte professionnelle n° : T1624 - G0638 | Activité(s) : transaction, location, gestion
+		$$END$$
+		$$IF=:311827:FORM:IDP$$
+			N° de TVA : FR4949815405300017 | Titre professionnel : Agent Immobilier | Activité(s) : transaction, location
+		$$END$$
+		
+		<br />* : informations non renseignées

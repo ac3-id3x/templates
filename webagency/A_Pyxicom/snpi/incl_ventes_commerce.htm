@@ -1,0 +1,123 @@
+<script language="javascript" type="text/javascript">
+<!--
+function checkPrices() {
+	for (i = 0; i < document.forms["annonces"].idtt.length; i++) {
+		o = document.forms["annonces"].idtt[i];
+		if (o.checked) {
+			idt = o.value;
+			if (idt == "10") {
+				if (document.getElementById("typecommerce") && document.getElementById("typebien")) {
+					document.getElementById("typecommerce").style.display = "inline";
+					document.getElementById("typebien").style.display = "none";
+				}
+				$$IF=:1:PAGE:LISTEVILLE$$
+				if (document.getElementById("fondscom") && document.getElementById("bails")) {
+					document.getElementById("fondscom").style.display = "";
+					document.getElementById("bails").style.display = "none";
+				}
+				$$END$$
+				idt="2";
+			} else {
+				$$IF=:1:PAGE:LISTEVILLE$$
+				if (idt == "11") {
+					if (document.getElementById("fondscom") && document.getElementById("bails")) {
+						document.getElementById("fondscom").style.display = "none";
+						document.getElementById("bails").style.display = "";
+					}
+				}
+				$$END$$
+				if (document.getElementById("typecommerce") && document.getElementById("typebien") ) {
+					document.getElementById("typecommerce").style.display = "none";
+					document.getElementById("typebien").style.display = "inline";
+				}
+			}
+		}
+	}
+}
+
+function dispacti( id ) {
+	var o = document.getElementById( id );
+	acti( o );
+}
+
+function reacti () {
+	for( i=0; i<document.forms["annonces"].idtypecommerce.length; i++ ) {
+		o = document.forms["annonces"].idtypecommerce[i];
+		if (o.checked) {
+			acti(o);
+		}
+	}
+}
+
+function acti (o) {
+	var elt;
+	if( o ) {
+		elt = document.getElementById("idta"+o.value)
+		if( elt ) {
+			if( o.checked ) {
+				elt.style.display="inline";
+			} else {
+				elt.style.display="none";
+			}
+		}
+	}
+}
+setTimeout('reacti()',10);
+// -->
+</script>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr><td class="tabTitre1">$$LG:TYPEDETRANSACTION$$</td></tr>
+<tr><td>
+ <input id="idtt10" type="radio" name="idtt" value="10" onchange="checkPrices();" onclick="checkPrices();" checked>
+ <label for="idtt10">$$LG:ANN:FONDSCOM$$</label><br />
+ <input id="idtt11" type="radio" name="idtt" value="11" onchange="checkPrices();" onclick="checkPrices();">
+ <label for="idtt11">$$LG:MINIBAIL$$</label><br />
+ $$IF:COM:LOCS$$<input id="idtt1" type="radio" name="idtt" value="1" onchange="checkPrices();" onclick="checkPrices();">
+ <label for="idtt1">$$LG:LOCATION$$</label><br />$$END$$
+ $$IF0:COM:VENS$$<input id="idtt2" type="radio" name="idtt" value="2" onchange="checkPrices();" onclick="checkPrices();">
+ <label for="idtt2">$$LG:VENTE$$</label>$$END$$</td></tr>
+
+<tr>
+<td>
+<br />
+<div id="typebien" style="display:none;">
+			$$B:IMMOBW:TYPESBIENS:2:QRY:LANG:TTRET$$
+			$$BIF:IMMOBW:TYPESBIENS:2$$
+			<font class="tabTitre1">$$LG:TYPEDEBIEN$$</font><br />
+			$$DO$$
+			$$IF=:1$2:IMMOBW:TYPESBIENS:2:IDTYPETRANSACTION$$
+			$$IF!:1$2:IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$
+			$$A:CHECK:AFFICHAGE=1$$
+			<input $$IF=:4:IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$ onclick="showTerrain();" onchange="showTerrain();" $$END$$ type="checkbox" name="idtypebien" value="$$IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$" id="idtypebien$$IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$"$$IF(:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$ checked="checked"$$END$$ />&nbsp;<label for="idtypebien$$IMMOBW:TYPESBIENS:2:IDTYPEBIEN$$">$$IMMOBW:TYPESBIENS:2:DEF_LIBELLE sp2nbsp$$</label><br />
+			$$END$$
+			$$END$$
+
+			$$LOOP$$
+			$$IF0:CHECK:AFFICHAGE$$
+			<p>$$LG:NOBIENDISPO$$</p>
+			$$END$$
+			$$BFIN$$
+		</div>
+		<div id="typecommerce" $$IF:FORM:IDTT$$$$IF!:10:FORM:IDTT$$style="display:none;"$$END$$$$END$$>
+			$$B:IMMOBW:SOUSTYPESCOMMERCES$$
+			$$BIF:IMMOBW:SOUSTYPESCOMMERCES$$
+			<font class="tabTitre1">$$LG:TYPEDECOM$$</font><br />
+			$$LG:COCHERCOMMERCE$$<br />
+			$$DO:1:999$$
+				$$IFPREV:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$
+				<input type="checkbox" onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');" id="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" name="idtypecommerce" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" $$IF(:FORM_IDTYPECOMMERCE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$ checked="checked"$$END$$ />
+				&nbsp;<label for="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');" >$$IMMOBW:SOUSTYPESCOMMERCES:TYPECOMMERCE sp2nbsp$$</label><br />
+				<div id="idta$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" style="display:none;" class="coactiv">
+				$$END$$
+				&nbsp;&nbsp;<input type="checkbox" id="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" name="idtypeactivite" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" $$IF(:FORM_IDTYPEACTIVITE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$checked="checked"$$END$$ />
+				&nbsp;<label for="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$"><em>$$IMMOBW:SOUSTYPESCOMMERCES:LIBELLE pcase sp2nbsp$$</em></label>
+				<br />
+				$$IFNEXT:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$
+				<br />
+				</div>
+				$$END$$
+			$$LOOP$$
+			$$BFIN$$
+		</div>
+		</td>
+	</tr></table>

@@ -1,0 +1,73 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTAGIM$$
+	
+	<div id="Contenu">
+			
+		<h1 style="font-size:18px;">Nos agences immobili&egrave;res : $$IF:FORM:REGION $$ $$FORM:REGION pcase $$ $$END$$ $$IF0:FORM:VILLE$$ $$IF:FORM:CP$$ $$FORM:CP cp2dep pcase $$ $$END$$ $$END$$ $$IF:FORM:VILLE$$ $$FORM:VILLE pcase $$ $$END$$</h1>
+		
+		<div id="listevilles"><p>$$IF:FORM:CP$$&nbsp;&nbsp;&nbsp;Affinez par villes <script language="javascript" type="text/javascript" src="/listevilles_ag.js?lang=$$LANGUE$$&cp=$$FORM:CP left 2$$&cp2=$$FORM:CP$$"></script>
+		$$END$$</p></div><br />
+<script type="text/javascript">	
+	<!--
+	function ListeAg(elt){
+	if(elt.value.length > 2){
+		document.location.href = "/liste-agences-immobilieres.htm?lang=$$LANGUE$$&cp=" + elt.value + "&ville=" + elt[elt.selectedIndex].text;
+}else{
+document.location.href = "/liste-agences-immobilieres.htm?lang=$$LANGUE$$&cp=" + elt.value;
+}
+		}
+		
+		function RecupDep(){
+			var cp = '$$FORM:CP$$';
+			var dep = cp.substring(0,2);
+			var seldep = document.getElementById("cpdep");
+			//if(cp.length == 5){
+				//l'option qui a la valeur de $$FORM:CP left 2$$ est selectionnée.
+				for(var i=0; i< seldep.length; i++){
+						if(seldep.options[i].value == dep){
+							seldep.options[i].selected = true;
+						}
+					}
+			//}
+		}
+	window.onload = RecupDep();
+	-->
+</script>
+</div>
+	<div id="ListeAgencesImmobilieres">
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:VILLECP:QRY:CP::WITHDEP::ALL::::QRY:REGION$$
+	$$BIF:LISTEAG$$
+	$$DO$$
+	<h2 style="font-size:18px;">$$LISTEAG:NOM$$ $$IF=:311824$311781$311389$311655$312713:LISTEAG:IDPUBLICATION$$Angers $$END$$$$LISTEAG:VILLE$$$$IF=:311826:LISTEAG:IDPUBLICATION$$ La Doutre$$END$$</h2>
+
+		
+			<h5>Coordonn&eacute;es</h5>
+			<p>
+				$$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				$$LISTEAG:CP$$ $$LISTEAG:VILLE$$
+			</p>
+			<p>
+				$$IF:LISTEAG:TEL$$<span>$$LG:MINITEL pcase$$ : $$LISTEAG:TEL formattel$$</span><br />$$END:LISTEAG:TEL$$
+				$$IF:LISTEAG:TELLOC$$<span>$$LG:MINITEL pcase$$ ($$LG:LIEN:LOC lcase$$) : $$LISTEAG:TELLOC formattel$$</span><br />$$END:LISTEAG:TELLOC$$
+				$$IF:LISTEAG:FAX$$$$LG:FAX pcase$$ : $$LISTEAG:FAX formattel$$<br />$$END:LISTEAG:FAX$$
+				$$IF:LISTEAG:RESPAG$$ $$LG:NOMRESP pcase$$ $$LISTEAG:RESPAG$$$$END:LISTEAG:RESPAG$$
+			</p>
+			<p>
+				$$IF:LISTEAG:EMAIL$$<span>$$LG:EMAIL pcase$$ : </span> $$LISTEAG:EMAIL encodemail javascript full$$<br />$$END$$				
+				$$IF:LISTEAG:URL$$<span>$$LG:SITE pcase$$ :</span> <a href="$$LISTEAG:URL$$" target="_blank" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:SITE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LISTEAG:URL$$</a>$$END:URL$$
+			</p>
+			<p>$$IF:LISTEAG:TXT_PUBLIC$$$$LISTEAG:TXT_PUBLIC left 300$$$$END$$</p>
+	
+	<p>
+		<script language="javascript" type="text/javascript" src="/$$LISTEAG:IDPUBLICATION$$/bienagences.js?lang=$$LANGUE$$"></script>
+		</p>
+<p>
+			<a class="plus" href="$$URLBASE$$/agence-immobiliere.htm?idp=$$LISTEAG:IDPUBLICATION$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$&ville=$$LISTEAG:VILLE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:PLUSDINFOS pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$LISTEAG:NOM ncase$$ $$LISTEAG:VILLE ncase$$$$END$$">$$LG:LIEN:PLUSDINFOS pcase$$ sur cette agence</a>
+	</p>
+		
+	</div>
+	$$LOOP$$
+	$$BFIN$$
+
+	</div>
+$$INCL:BAS.HTM$$

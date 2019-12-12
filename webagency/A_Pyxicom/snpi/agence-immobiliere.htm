@@ -1,0 +1,94 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCEIMMOBILIERE$$
+
+$$REM$$<!-- ** CONTENU ** -->$$END:REM$$
+	<!--#include virtual="includes/edito_texte_reseau.htm" -->
+	
+<!-- /////// -->	
+	<div id="TopContenuNavig">&nbsp;</div>
+	<!--#include virtual="includes/incl_colonne_gauche.htm" -->
+	<!-- ** COLONNE CENTRE ** -->
+	<div id="BlocCentreNavig">
+<!-- /////// -->
+
+	<div id="Contenu">
+			<h3>Informations agence</h3>
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agence-immobiliere.css?@@IF:FORM:IDP@@idp=@@FORM:IDP@@@@END@@" );
+	@import url( "/styles,portefeuille01.css" );
+		@import url( "/styles,annonces01.css" );
+</style>$$
+<style>
+.linkOut{text-align:left;}
+.linkOut a{font-size:11px;}
+</style>
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!--#include virtual="incl_multi.htm" -->
+<div id="CV" >
+	
+	<div class="linkOut"><a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$">Ecrire &agrave; cette agence</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:pop('http://$$REP:RSRV$$/$$DETAILAGENCE:IDPUBLICATION$$/$$DETAIL:IDANNONCE$$/wcb.htm?lang=$$LANGUE$$',350,510,300,300);" title="Web Call Back">Vous souhaitez vous faire rappeler </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/estimer.htm?lang=$$LANGUE$$">Estimation de votre bien</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:history.go(-1);">$$LG:RETOURNER$$</a></div>
+	<br />
+
+	<div id="AgenceGauche">
+	<h1>$$CV:NOM ucase$$</h1>
+		<div id="Img_Ctn">
+			<p id="Vitrine"></p>
+		</div>
+		<div id="Coordonnees">
+			<p>
+				$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				<strong>$$CV:CP$$ $$CV:VILLE$$</strong>
+			</p>
+			<p>
+				$$IF:CV:TEL$$<span>$$LG:MINITEL$$ :</span> $$CV:TEL formattel$$<br />$$END:TEL$$
+				$$IF:CV:FAX$$<span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$<br />$$END:FAX$$
+				$$IF:CV:RESPAG$$<span>$$LG:NOMRESP$$</span> $$CV:RESPAG$$<br />$$END:RESPAG$$
+			</p>
+			<p>
+				$$IF:CV:EMAIL$$	<span>$$LG:EMAIL pcase$$ : $$CV:EMAIL encodemail javascript full$$</span>$$END:EMAIL$$
+				$$IF!:311724:CV:IDPUBLICATION$$
+					$$IF:CV:URL$$<br /><span>Visitez le site de l'agence :<br /><a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'">$$CV:URL$$</a></span>$$END:URL$$
+				$$END$$
+			</p>
+		</div><p class="clear"><!-- --></p><br />
+	
+		<!--#include virtual="/incl_portefeuille_01.htm" -->
+		</div>
+		
+	</div>
+	
+
+		
+		
+
+		<div id="AutreBienDetail">
+				<!--#include virtual="/annonces/incl_annonces_01.htm"-->
+		</div>
+	
+	</div>
+		
+		<p class="clear"><!-- --></p>	
+	
+</div>
+<div id="CvFoot" class="clear">
+		<p id="Links">
+			<a class="message" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+			<a class="estimation" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/estimer.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:ESTIMATION pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:ESTIMATION pcase$$</span></a>
+			$$REM$$$$A:CARTE:CP=@@CV:CP alphanum +@@$$$$A:CARTE:VILLE=@@CV:VILLE alphanum +@@$$$$A:CARTE:ADRESSE=@@CV:ADRESSE alphanum +@@$$$$INCL:LOCALISATION_AGENCE.HTM$$$$END:REM$$
+		</p>
+		<p class="clear"><!-- --></p>		
+	</div>
+	</div>
+	<div id="MentionCV">
+		$$REM$$<!-- on utilise un autre ALIAS pour pouvoir utiliser cette include ailleurs -->$$END$$
+		$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+		<!--#include virtual="agence-immobiliere-mentions.htm" -->
+	</div>
+	<!-- /////// -->
+	</div>
+	<!-- ** FIN COLONNE CENTRE ** -->
+	<!-- /////// -->
+	
+$$INCL:BAS.HTM$$
+

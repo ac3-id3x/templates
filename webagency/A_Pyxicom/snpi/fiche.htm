@@ -1,0 +1,268 @@
+$$INCL:HAUT.HTM$$ 
+$$SET:PAGE:IDT=CTC$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0" align="center" class="tabFond1">
+<tr>
+<td align="center">
+<form method="post" action="page_fiche_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_fiche_ok.htm" />
+	<input type="hidden" name="page_err" value="fiche.htm" />
+	<input type="hidden" name="cfg_form" value="fiche$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="fiche" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<strong>$$ERRE$$</strong><br />
+	<!-- $$FORM:CONTACT$$ -->
+	<table width="100%" border="0" cellspacing="2" cellpadding="2" class="TableCoord">
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Coordonn&eacute;es personnelles</strong></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">Titre (M, Mme, Mlle)</td>
+		<td align="left" valign="bottom">$$LG:PRENOM pcase$$</td>
+		<td align="left" valign="bottom">$$LG:AI5 pcase$$</td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="titre" size="25" value="$$FORM:TITRE$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="nomFamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">Nationalit&eacute;</td>
+		<td align="left" valign="bottom">Date de naissance</td>
+		<td align="left" valign="bottom"></td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="nationalite" size="25" value="$$FORM:NATIONALITE$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="dateNaissance" size="25" value="$$FORM:DATENAISSANCE$$" maxlength="30" /></td>
+		<td align="left"></td>
+	</tr>
+	<tr>
+		<td colspan="3" valign="bottom" align="center">Adresse personnelle</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center"><input class="longImputFormFiche" type="text" name="adressePerso" size="25" value="$$FORM:ADRESSEPERSO$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">Code postal</td>
+		<td align="left" valign="bottom">Commune</td>
+		<td align="left" valign="bottom">Pays</td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="cpPerso" size="25" value="$$FORM:CPPERSO$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="communePerso" size="25" value="$$FORM:COMMUNEPERSO$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="paysPerso" size="25" value="$$FORM:PAYSPERSO$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">$$LG:TEL pcase$$</td>
+		<td align="left" valign="bottom">Mobile</td>
+		<td align="left" valign="bottom">$$LG:AI6 pcase$$</td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="mobile" size="15" value="$$FORM:MOBILE$$" maxlength="20" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Renseignements professionnels</strong></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" valign="bottom">Soci&eacute;t&eacute;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center"><input class="longImputFormFiche" type="text" name="societe" size="25" value="$$FORM:SOCIETE$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" colspan="2" valign="bottom">Fonction</td>
+		<td align="left" valign="bottom">Profession</td>
+	</tr>
+	<tr> 
+		<td align="left" colspan="2"><input class="imputFormFiche" type="text" name="fonction" size="25" value="$$FORM:FONCTION$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="profession" size="25" value="$$FORM:PROFESSION$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" valign="bottom">Domaines d'intervention</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center"><input class="longImputFormFiche" type="text" name="domainesInterv" size="25" value="$$FORM:DOMAINESINTERV$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" valign="bottom">Adresse professionnelle</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center"><input class="longImputFormFiche" type="text" name="adressePerso" size="25" value="$$FORM:ADRESSEPERSO$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">Code postal</td>
+		<td align="left" valign="bottom">Commune</td>
+		<td align="left" valign="bottom">Pays</td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="cpPro" size="25" value="$$FORM:CPPRO$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="communePro" size="25" value="$$FORM:COMMUNEPRO$$" maxlength="30" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="paysPro" size="25" value="$$FORM:PAYSPRO$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="bottom">$$LG:TEL pcase$$</td>
+		<td align="left" valign="bottom">Fax</td>
+		<td align="left" valign="bottom">$$LG:AI6 pcase$$</td>
+	</tr>
+	<tr>
+		<td align="left"><input class="imputFormFiche" type="text" name="telephonePro" size="15" value="$$FORM:TELEPHONEPRO$$" maxlength="20" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="faxPro" size="15" value="$$FORM:FAXPRO$$" maxlength="20" /></td>
+		<td align="left"><input class="imputFormFiche" type="text" name="emailPro" size="25" value="$$FORM:EMAILPRO$$" /></td>
+	</tr>
+	<tr> 
+		<td style="text-align:left;">Adresse pour correspondance</td>
+		<td align="left" colspan="2">
+			<input type="radio" name="adresseCorresp" value="Professionnelle" /> Professionnelle
+			<input type="radio" name="adresseCorresp" value="Personnelle" /> Personnelle
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Dipl&ocirc;mes</strong></td>
+	</tr>
+	<tr> 
+		<td align="left" colspan="2" valign="bottom">Nature et sp&eacute;cialit&eacute;</td>
+		<td align="left" valign="bottom">Ann&eacute;e d'obtention</td>
+	</tr>
+	<tr> 
+		<td align="left" colspan="2">
+			<input class="imputFormFiche2" type="text" name="specialite1" size="15" value="$$FORM:SPECIALITE1$$" maxlength="20" /><br />
+		</td>
+		<td align="left">
+			<input class="imputFormFiche" type="text" name="annee1" size="15" value="$$FORM:ANNEE1$$" maxlength="20" /><br />
+		</td>
+	</tr>
+	<tr>
+		<td align="left" colspan="2">
+			<input class="imputFormFiche2" type="text" name="specialite2" size="15" value="$$FORM:SPECIALITE2$$" maxlength="20" /><br />
+		</td>
+		<td align="left">
+			<input class="imputFormFiche" type="text" name="annee2" size="15" value="$$FORM:ANNEE2$$" maxlength="20" /><br />
+		</td>
+	</tr>
+		<td align="left" colspan="2">
+			<input class="imputFormFiche2" type="text" name="specialite3" size="15" value="$$FORM:SPECIALITE3$$" maxlength="20" />
+		</td>
+		<td align="left">
+			<input class="imputFormFiche" type="text" name="annee3" size="15" value="$$FORM:ANNEE3$$" maxlength="20" />
+		</td>
+	</tr>
+	</tr>
+		<td align="left" colspan="2">
+			<input class="imputFormFiche2" type="text" name="specialite4" size="15" value="$$FORM:SPECIALITE4$$" maxlength="20" />
+		</td>
+		<td align="left">
+			<input class="imputFormFiche" type="text" name="annee4" size="15" value="$$FORM:ANNEE4$$" maxlength="20" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Exp&eacute;rience</strong></td>
+	</tr>
+	<tr> 
+		<td align="left"><input class="imputFormFiche" type="text" name="nbrAnnee" size="25" value="$$FORM:NBRANNEE$$" maxlength="30" /></td>
+		<td align="left" colspan="2">Nombres d'ann&eacute;es d'exp&eacute;rience en expertise immobili&egrave;re</td>
+	</tr>
+	<tr> 
+		<td align="left"><input class="imputFormFiche" type="text" name="nbrRapp" size="25" value="$$FORM:NBRRAPP$$" maxlength="30" /></td>
+		<td align="left" colspan="2">Nombre de rapports d'expertise r&eacute;dig&eacute;s dans les 12 derniers mois</td>
+	</tr>
+	<tr> 
+		<td align="left"><input class="imputFormFiche" type="text" name="nbrHeures" size="25" value="$$FORM:NBRHEURES$$" maxlength="30" /></td>
+		<td align="left" colspan="2">Nombre d'heures de formation suivies dans les 12 derniers mois</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Divers</strong></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="left">Autres associations ou organisations professionnelles</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="left"><input class="longImputFormFiche" type="text" name="associations" size="25" value="$$FORM:ASSOCIATIONS$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="left">Langues</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="left"><input class="longImputFormFiche" type="text" name="langues" size="25" value="$$FORM:LANGUES$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center" class="tabTitre"><strong>Pi&egrave;ces &agrave; joindre au dossier de candidature</strong></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center">
+			<table cellpadding="3" cellspacing="5" border="0">
+				<tr>
+					<td valign="top">
+						* Attestation d'une assurance civile professionnelle<br />
+						* CV (indiquant l'exp&eacute;rience en expertise)<br />
+						* Liste des formations suivies au cours des 12 derniers mois<br />
+						* Liste des 20 rapports r&eacute;dig&eacute;s dans les 12 derniers mois<br />
+						* D&eacute;claration sur l'honneur de non-condamnation judiciaire et de non exclusion d'une organisation professionnelle<br />
+					</td>
+					<td valign="top">
+						* Photocopie des dipl&ocirc;mes<br />
+						* Copie de 2 rapports d'expertise r&eacute;cents<br />
+						* Adh&eacute;sion au code d'&eacute;thique professionnel<br />
+						* Une photo d'indentit&eacute;<br />
+						* Le ch&egrave;que d'inscription de 400 Euros &agrave; l'ordre du SNPI<br />
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="text-align:right;"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" width="98" height="29"/></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$INCL:BAS.HTM$$	

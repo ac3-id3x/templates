@@ -1,0 +1,200 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=QSN$$
+
+$$IF=:RR:FORM:TYPE$$ $$A:PERSON=CAURETTE$$ $$END$$
+$$IF!:RR:FORM:TYPE$$ $$A:PERSON=$$ $$END$$
+
+<table class="tabbasiclass"  border="0">
+$$IF=:RR:FORM:TYPE$$
+	<tr>
+		<td class="ssrub">$$LG:REPRESLOC pcase$$</td>
+	</tr>
+$$END:RR:FORM:TYPE$$
+
+$$IF!:RR:FORM:TYPE$$
+	<tr>
+		<td class="ssrub">$$LG:ANNUAGENCES pcase$$</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+$$END:RR:FORM:TYPE$$
+
+	<tr>
+		<td>
+			$$B:SNPI:ANNUAIRE:ALIAS:LISTEAG:QRY:CP:QRY:VILLE:QRY:ARR:QRY:TYPE:10$$
+			$$IF!:RR:FORM:TYPE$$
+			$$IF+:10:LISTEAG:NBR$$
+			<form action="/$$REP:0$$" method="get" name="filtre" id="filtre">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td>
+						<input type="hidden" name="dpt" value="$$FORM:DPT$$" />
+						<select name="type">
+							<option value="">$$LG:CHOIXACTIVITE$$</option>
+							<option value="ai">Agent immobilier</option>
+							<option value="ab">Administrateur de biens</option>
+							<option value="sc">Syndic. de copropriété</option>
+							<option value="mb">Marchand de biens</option>
+							<option value="ex">Expert</option>
+						</select>
+						$$IF:FORM:VILLE$$
+						<input type="hidden" name="ville" value="$$FORM:VILLE$$" />
+						$$END$$
+					</td>
+					<td rowspan="3" valign="bottom">
+						&nbsp;<a href="javascript:document.filtre.submit();" class="bt" onmouseover="MM_swapImage('bt1','','$$_$$images/bt_all_over.gif');" onmouseout="MM_swapImgRestore();"><img src="images/bt_all.gif" border="0" name="bt1" />&nbsp;$$LG:RECHERCHER$$</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<br />
+						$$B:IMMOBW:DEPARTEMENTS:ALIAS:DEPT:D$$
+						$$BIF:DEPT$$
+						<select name="cp">
+							<option value="">$$LG:DEPART pcase$$</option>
+							$$DO$$
+							<option value="$$DEPT:DEP$$">$$DEPT:DEPARTEMENTAFF$$ ($$DEPT:DEP$$)</option>
+							$$LOOP$$
+						</select>&nbsp;&nbsp;
+						$$BFIN$$
+						<br />
+						$$B:SNPI:ANNUAIRE_VILLES:QRY:CP$$
+						$$BIF:SNPI:ANNUAIRE_VILLES:QRY$$
+						<br />
+						<select name="ville" id="$$FORM:VILLE$$">
+							<option value="">$$LG:CHOIXVILLES$$</option>
+							$$DO$$
+							<option value="$$SNPI:ANNUAIRE_VILLES:QRY:ADRVILLE htmlencode$$">$$SNPI:ANNUAIRE_VILLES:QRY:ADRVILLE pcase$$</option>
+							$$LOOP$$
+						</select>
+						$$BFIN$$
+					</td>
+				</tr>
+				<tr>
+				<td>
+					$$B:SNPI:ANNUAIRE_ARR:QRY:CP$$
+					$$BIF:SNPI:ANNUAIRE_ARR:QRY$$
+					<br />
+					<select name="arr" id="$$FORM:ARR$$">
+					<option value="">$$LG:ARRONDISSEMENT pcase$$</option>
+					$$DO$$
+					<option value="$$SNPI:ANNUAIRE_ARR:QRY:ADRARRDT$$">$$SNPI:ANNUAIRE_ARR:QRY:ADRARRDT$$</option>
+					$$LOOP$$
+					</select>
+					$$BFIN$$
+				</td>
+			</tr>
+		</table>
+	</form>
+	$$END:10:LISTEAG:NBR$$
+	$$END:RR:FORM:TYPE$$
+
+	$$BIF:LISTEAG$$
+	$$IF!:RR:FORM:TYPE$$
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+				<a href="/annuaire.htm?lang=$$LANGUE$$">$$LG:NVELLERECH pcase$$</a>
+			</td>
+			$$IF:LISTEAG:NBRPAGES$$
+			<td>
+				<div align="right">$$LISTEAG:MULTIPAGE$$</div>
+			</td>
+			$$END:LISTEAG:NBRPAGES$$
+		</tr>
+	</table>
+	$$END:RR:FORM:TYPE$$
+	
+	$$DO:1:25$$
+	$$IF!:PERSON:LISTEAG:NOM$$
+	<br />
+	<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+		<tr>
+			<td colspan="5">
+				<table class="tabFond2" width="100%">
+					<tr>
+						<td valign="top" class="liste_agences_nom">
+							$$IF!:RR:FORM:TYPE$$
+								$$LISTEAG:ENSEIGNE$$
+							$$END$$
+							$$IF=:RR:FORM:TYPE$$
+								$$A:TEMP:CP=@@LISTEAG:CP left 2@@$$$$IF!:97:TEMP:CP$$$$LISTEAG:CP left 2$$$$END$$$$IF=:97:TEMP:CP$$$$LISTEAG:CP left 3$$$$END$$&nbsp;-&nbsp;$$LISTEAG:LIB_DEPT$$
+							$$END$$
+						</td>
+						<td valign="top">
+							<!--
+							<div align="right">
+								<a href="javascript:go2('http://v4.seloger.com/carte.htm?Zip=$$LISTEAG:CP$$&Town=$$LISTEAG:ADRVILLE$$&Adress=$$LISTEAG:ADR1 crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp htmlencode$$&amp;COUNTRYCODE=$$LISTEAG:PAYSMAP%20escape%20urlencode$$&amp;COUNTRYLIB=$$LISTEAG:PAYSLIB%20escape%20urlencode$$')" class="liste_agences_lien">$$LG:NOUSSITUER$$</a>
+							</div>
+							-->
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" width="150">
+				$$IF:LISTEAG:NOM$$
+					<em><strong>$$LISTEAG:TITRE ncase$$&nbsp;$$LISTEAG:PRENOM$$&nbsp;$$LISTEAG:NOM$$</strong></em>
+				$$END$$
+				<br />
+ 				$$LISTEAG:ADR1$$ $$LISTEAG:ADR2$$ $$LISTEAG:ADR3$$ $$LISTEAG:ADR4$$ $$LISTEAG:ADRESSE$$<br />$$LISTEAG:CP$$ $$LISTEAG:ADRVILLE$$
+ 			</td>
+			<td></td>
+			<td valign="top" width="160">
+				<div align="right">
+					$$IF:LISTEAG:TEL$$$$LG:MINITEL$$: $$LISTEAG:TEL tel2inter$$<br />$$END$$
+			 		$$IF:LISTEAG:FAX$$$$LG:FAX$$: $$LISTEAG:FAX tel2inter$$<br />$$END$$
+				</div>
+			</td>
+			$$IF!:RR:FORM:TYPE$$
+			<td></td>
+			<td rowspan="2" width="140" valign="top">
+				<div align="right">
+					$$IF=:T:LISTEAG:AGENT$$Agent&nbsp;immobilier<br />$$END$$
+					$$IF=:T:LISTEAG:ADMIN$$Administrateur de biens<br />$$END$$
+					$$IF=:T:LISTEAG:SYNDIC$$Syndic de copropriété<br />$$END$$
+					$$IF=:T:LISTEAG:MARCHAND$$Marchand de biens<br />$$END$$
+					$$IF=:T:LISTEAG:EXPERT$$Expert immobilier<br />$$END$$
+				</div>
+			</td>
+			$$END:RR:FORM:TYPE$$
+		</tr>
+		<tr>
+			<td colspan="4" valign="top">
+				$$IF:LISTEAG:EMAIL$$$$LG:EMAIL pcase$$ : <a href="mailto:$$LISTEAG:EMAIL$$">$$LISTEAG:EMAIL$$</a><br />$$END$$
+				$$IF!:RR:FORM:TYPE$$
+					$$IF:LISTEAG:SITEINTERNET$$
+						$$LG:SITE pcase$$ : <a href="$$LISTEAG:SITEINTERNET$$" target="_blank">$$LISTEAG:SITEINTERNET$$</a>
+					$$END$$
+				$$END$$
+			</td>
+		</tr>
+	</table>
+	$$END$$
+	
+	$$LOOP$$
+	$$BFIN$$
+
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+						<br />
+						$$IF!:RR:FORM:TYPE$$
+						<a href="/annuaire.htm?lang=$$LANGUE$$">$$LG:NVELLERECH pcase$$</a>
+						$$END$$
+					</td>
+					$$IF:LISTEAG:NBRPAGES$$
+					<td>
+						<div align="right">$$LISTEAG:MULTIPAGE$$</div>
+					</td>
+					$$END:LISTEAG:NBRPAGES$$
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+<!-- end page -->
+$$INCL:BAS.HTM$$
