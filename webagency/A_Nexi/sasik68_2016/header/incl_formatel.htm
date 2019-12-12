@@ -1,0 +1,83 @@
+$$REM$$<!--PAGE AGENCE replace du / par un br si deux tel rentrés-->$$END$$
+$$IF=:NOTREAGENCE:IDT$$
+	$$CV:TEL formattelus replace / <br>$$
+$$END$$
+$$REM$$<!--PAGE AGENCES-->$$END$$
+$$IF=:AJAXAGENCE:IDT$$
+	$$AGENCE:TEL formattelus$$
+$$END$$
+$$IF=:NOSAGENCES$ESTIMATION:IDT$$
+	$$LISTEAG:TEL formattelus$$
+$$END$$
+$$REM$$<!--FICHE VISITE-->$$END$$
+$$IF=:FICHEVISITE:IDT$$
+	$$CV:TEL formattelus$$
+$$END$$
+$$REM$$<!--DETAIL-->$$END$$
+$$IF=:DETAILANNONCE:IDT$$
+	$$IF:ANNDETAIL:TELEPHONE$$
+		<!-- tél entré dans l'annonce -->
+		$$ANNDETAIL:TELEPHONE formattelus$$
+	$$END:ANNDETAIL:TELEPHONE$$
+
+	$$IF0:ANNDETAIL:TELEPHONE$$
+
+		$$IF=:9$10$11:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél standard agence (neuf + fond de commerce + cession bail) -->
+			$$IF:AG:TEL$$
+				$$AG:TEL formattelus$$
+			$$END:TEL$$
+		$$END:9$10$11:IDTYPETRANSACTION$$
+
+		$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél spécial vente -->
+			$$IF:AG:TELVEN$$
+				$$AG:TELVEN formattelus$$
+			$$END:AG:TELVEN$$
+
+			$$IF0:AG:TELVEN$$
+				$$AG:TEL formattelus$$
+			$$END:0:AG:TELVEN$$
+
+		$$END:2$5$6$8:IDTYPETRANSACTION$$
+
+		$$IF=:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+			<!-- tél spécial loc -->
+			$$IF:AG:TELLOC$$
+				$$AG:TELLOC formattelus$$
+			$$END:AG:TELLOC$$
+
+			$$IF0:AG:TELLOC$$
+				$$AG:TEL formattelus$$
+			$$END:0:AG:TELLOC$$
+
+		$$END:2$5$6$8:IDTYPETRANSACTION$$
+
+	$$END:0:ANNDETAIL:TELEPHONE$$
+$$END$$
+$$REM$$<!--FACEBOOK-->$$END$$
+$$IF=:FACEBOOK:IDT$$
+	$$CV:TEL formattelus$$
+$$END$$
+$$REM$$<!--FACEBOOK-->$$END$$
+$$IF=:MENTIONS:IDT$$
+	$$ML:TEL formattelus$$
+$$END$$
+
+$$IF!:NOTREAGENCE:IDT$$
+	$$IF!:AJAXAGENCE:IDT$$
+		$$IF!:NOSAGENCES:IDT$$
+			$$IF!:FICHEVISITE:IDT$$
+				$$IF!:DETAILANNONCE:IDT$$
+					$$IF!:FACEBOOK:IDT$$
+						$$IF!:MENTIONS:IDT$$
+							$$IF!:ESTIMATION:IDT$$
+								$$AGENCE_TEL$$
+							$$END$$
+						$$END$$
+					$$END$$
+				$$END$$
+			$$END$$
+		$$END$$
+	$$END$$
+$$END$$				
