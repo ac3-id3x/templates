@@ -1,0 +1,409 @@
+$$REM$$
+====================================================================
+
+//// <summary>Carte de visite agence contenant les coordonnées, le texte public et le portefeuille d'annonces</summary>
+//// <remarks>
+//// <para>slagence_X_V2/liste-agences-immobilieres.htm : affiche des liens vers le présent fichier</para>
+//// <para>Fichier qui n'existait pas dans slagence_X, cette page était fabriquée pour chaque site</para>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/agence-immobiliere.css</para>
+//// <para>Lien NOUS SITUER masqué tant qu'il est en panne</para>
+//// <para>Le portefeuille d'annonces (incl_portefeuille_01.htm) n'apparaît que si le site a souscrit à un contrat de référencement</para>
+//// <para>l'include des horaires ne fonctionne que si le paramètre " horaires = 1 " a été rempli dans la conf</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Update noms responsables ventes + loc + vacances + communication</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Update include mentions legales</update>
+//// <update date="2008-09-11" author="lisbonne.siriphol">Update include horaires</update>
+//// <update date="2008-01-30" author="sophie.nataf">Validation Ref oK</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-14" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCEIMMOBILIERE$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agence-immobiliere.css?@@IF:FORM:IDP@@idp=@@FORM:IDP@@@@END@@" );
+	@import url( "/styles,portefeuille01.css" );
+	@import url( "/styles,portefeuille02.css" );
+	@import url( "/styles,annonces01.css" );
+	@import url( "/styles,horaires.css" );
+</style>$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!--#include virtual="incl_multi.htm" -->
+<div id="CV">
+	$$IF=:1:MULTI$$
+	<div class="linkOut"><a href="$$URLBASE$$/liste-agences-immobilieres.htm?lang=$$LANGUE$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:LISTEAG pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:LIEN:LISTEAG pcase$$</a></div>
+	$$END:MULTI$$
+	<h1>
+		$$IF!:01:FORM:NUMAGENCE$$
+			$$CV:NOM ucase$$ ($$CV:VILLE ncase$$)
+		$$END$$
+		$$IF=:01:FORM:NUMAGENCE$$
+			ATLANTIC VIAGER – AGENCE BRETAGNE SUD-EST (56 - 35) (Josselin)
+		$$END$$	
+	</h1>	
+	<div id="Agence">
+		<div id="Img_Ctn">			
+			<p id="Vitrine">
+				$$IF=:01:FORM:NUMAGENCE$$
+					<img src="$$_$$images/agences/photo_josselin.jpg" />
+				$$END$$
+			</p>
+		</div>
+		<div id="Coordonnees">
+			<h2>
+				$$IF!:01:FORM:NUMAGENCE$$
+					$$CV:NOM ucase$$
+				$$END$$
+				$$IF=:01:FORM:NUMAGENCE$$					
+					ATLANTIC VIAGER – Agence BRETAGNE SUD-EST (56 - 35)
+				$$END$$	
+			</h2>
+			<p class="cv_adresse">
+				$$IF!:01:FORM:NUMAGENCE$$
+					$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+					<strong>$$CV:CP$$ $$CV:VILLE ucase$$</strong>
+				$$END$$
+				$$IF=:01:FORM:NUMAGENCE$$
+					27, Rue Sainte-Croix<br />
+					<strong>56120 JOSSELIN</strong>
+				$$END$$			
+			</p>
+			<p>
+				<!-- tel standard-->
+				$$IF!:01:FORM:NUMAGENCE$$
+					$$IF:CV:TEL$$<label class="cv_tel"><span>$$LG:MINITEL$$ :</span> $$CV:TEL formattel$$</label>$$END:TEL$$				
+					<!-- fax standard -->
+					$$IF:CV:FAX$$<br /><label class="cv_fax"><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label>$$END:FAX$$
+					$$IF:CV:RESPAG$$<br /><label class="cv_respag"><span>$$LG:NOMRESP$$</span> $$CV:RESPAG ncase$$</label>$$END:RESPAG$$
+				$$END$$
+				$$IF=:01:FORM:NUMAGENCE$$
+					<label class="cv_tel"><span>$$LG:MINITEL$$ :</span> 02 97 70 60 00 / 06 72 73 96 85</label><br />
+					<br /><label class="cv_respag"><span>$$LG:NOMRESP$$</span> Mr Michel Moulin</label>
+				$$END$$		
+			</p>
+			
+			
+
+			<p>		
+				$$IF!:01:FORM:NUMAGENCE$$			
+					$$IF:CV:EMAIL$$<label class="cv_email"><span>$$LG:EMAIL pcase$$ : <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></span></label>$$END:EMAIL$$
+					$$IF:CV:URL$$<br /><label class="cv_url"><span>$$LG:SITE pcase$$ : <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'">$$CV:URL$$</a></span></label>$$END:URL$$
+				$$END$$
+				$$IF=:01:FORM:NUMAGENCE$$
+					<label class="cv_email"><span>$$LG:EMAIL pcase$$ : <a href="mailto:josselin@atlanticviager.fr">josselin@atlanticviager.fr</a></span></label>					
+				$$END$$	
+			</p>
+			
+			$$IF:CV:TELVEN$$
+			<p>
+				$$IF:CV:RESPVEN$$<br /><label class="cv_respagven"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELVEN$$<br /><label class="cv_telven"><span>$$LG:MINITEL$$ $$LG:VENTES lcase$$ :</span> $$CV:TELVEN formattel$$</label>$$END:TELVEN$$
+				$$IF:CV:FAXVEN$$<br /><label class="cv_faxven"><span>$$LG:FAX$$ $$LG:VENTES lcase$$ :</span> $$CV:FAXVEN formattel$$</label>$$END:FAXVEN$$
+			</p>
+			$$END:TELVEN$$
+			
+			$$IF:CV:TELLOC$$
+			<p>
+				$$IF:CV:RESPLOC$$<br /><label class="cv_respagloc"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELLOC$$<br /><label class="cv_telloc"><span>$$LG:MINITEL$$ $$LG:LOCATION lcase$$ :</span> $$CV:TELLOC formattel$$</label>$$END:TELLOC$$
+				$$IF:CV:FAXLOC$$<br /><label class="cv_faxloc"><span>$$LG:FAX$$ $$LG:LOCATION lcase$$ :</span> $$CV:FAXLOC formattel$$</label>$$END:FAXLOC$$
+			</p>
+			$$END:TELLOC$$
+			
+			$$IF:CV:TELVAC$$
+			<p>
+				$$IF:CV:RESPVAC$$<br /><label class="cv_respag"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELVAC$$<br /><label class="cv_telvac"><span>$$LG:MINITEL$$ $$LG:LOCVAC lcase$$ :</span> $$CV:TELVAC formattel$$</label>$$END:TELVAC$$
+				$$IF:CV:FAXVAC$$<br /><label class="cv_faxvac"><span>$$LG:FAX$$ $$LG:LOCVAC lcase$$ :</span> $$CV:FAXVAC formattel$$</label>$$END:FAXVAC$$
+			</p>
+			$$END:TELVAC$$
+			
+			$$IF:CV:TELCOM$$
+			<p>
+				$$IF:CV:RESPCOM$$<br /><label class="cv_respag"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELCOM$$<br /><label class="cv_telcom"><span>$$LG:MINITEL$$ $$LG:COMEETENT lcase$$ :</span> $$CV:TELCOM formattel$$</label>$$END:TELCOM$$
+				$$IF:CV:FAXCOM$$<br /><label class="cv_faxcom"><span>$$LG:FAX$$ $$LG:COMEETENT lcase$$ :</span> $$CV:FAXCOM formattel$$</label>$$END:FAXCOM$$
+			</p>
+			$$END:TELCOM$$
+			<br />
+		</div>
+		
+		$$IF=:354361:FORM:IDP$$
+		<div id="corAgence">
+			<h2>Territoire :</h2>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=17&amp;lang=$$LANGUE$$">Charente Maritime (17)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=33&amp;lang=$$LANGUE$$">Gironde (33)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=40&amp;lang=$$LANGUE$$">Landes (40)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=64&amp;lang=$$LANGUE$$">Pyr&eacute;n&eacute;es-Atlantiques (64)</a></h3>
+			$$REM$$<br /><img src="images/fnaim.png" alt="FNAIM" class="fnaimAgence" />$$END$$
+		</div>
+		$$END$$
+		$$IF=:284624:FORM:IDP$$
+		<div id="corAgence">
+			<h2>Territoire :</h2>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=44&amp;lang=$$LANGUE$$">Loire-Atlantique (44)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=85&amp;lang=$$LANGUE$$">Vend&eacute;e (85)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=49&amp;lang=$$LANGUE$$">Maine et Loire (49)</a></h3>
+			<br />
+		</div>
+		$$END$$
+		$$IF=:01:FORM:NUMAGENCE$$
+		<div id="corAgence">
+			<h2>Territoire :</h2>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=56&amp;lang=$$LANGUE$$">Morbihan (56)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=35&amp;lang=$$LANGUE$$">Ile et Vilaine (35)</a></h3>
+			<br />
+		</div>
+		$$END$$
+		$$IF=:484948:FORM:IDP$$
+		<div id="corAgence">
+			<h2>Territoire :</h2>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=29&amp;lang=$$LANGUE$$">Finistère (29)</a></h3>
+			<h3><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;cp=22&amp;lang=$$LANGUE$$">Côtes d’Armor (22)</a></h3>
+			<br />
+		</div>
+		$$END$$
+$$IF:FORM:IDP$$		
+		<!--#include virtual="/agence/barre_contact_agence.htm" -->
+$$END$$		
+		<br style="clear:both;" />
+
+		
+		<!--#include virtual="/agence/incl_txt_presentation.htm" -->
+
+		$$IF=:284624:FORM:IDP$$
+		<div id="txt_agc">
+		<h3>Présentation</h3>
+		<p><em>Le viager est une solution  d&rsquo;investissement qui permet de se constituer un patrimoine immobilier. Le bien  acquis en décote (diminué de la valeur d&rsquo;occupation par le vendeur), pourra  être votre future résidence principale, secondaire ou répondre à un objectif de  rendement locatif à long ou moyen terme.</em><br />
+		<em>Vous êtes à la retraite et en pleine  possession du bien soumis à la vente&nbsp;? Vous pouvez réaliser une vente en  viager et obtenir ainsi un complément de revenu à vie (la rente viagère). Vous  conservez cependant le droit d&rsquo;usage de votre bien. Si vous allez vous  installer dans une maison de retraite par exemple, une rente complémentaire  sera ajoutée à la rente principale qui vous est versée mensuellement.</em><br />
+		<em>Vous percevez également lors de la  transaction un «bouquet» (somme déterminée lors de l&rsquo;évaluation viagère). Cette  somme pourra constituer un apport pour un projet personnel ou pour une  donation.</em></p><br />
+		<p>Atlantic <strong>Viager</strong>, votre  spécialiste sur la <strong>côte ouest</strong>.</p><br />
+		<p>La vente en <strong>viager</strong> se développe très fortement  sur toute la <strong>côte atlantique</strong>, tout  comme sur Paris et région parisienne, ainsi qu&rsquo;en région PACA. Des marchés  immobiliers prisés, dont la cote reste stable et qui offrent, outre de bonnes  perspectives de revente, un rendement locatif satisfaisant.<br />
+		  Atlantic <strong>Viager</strong> est présent sur la <strong>côte ouest</strong>, en <strong>Bretagne</strong>, <strong>Pays de la Loire</strong>, <strong>Poitou-Charentes</strong> et <strong>Aquitaine</strong> et met à votre service des  professionnels expérimentés, régulièrement formés. <br />
+		  Notre  solide expérience dans le domaine de l&rsquo;immobilier et des techniques du viager,  (libre ou occupé), notre assistance et nos conseils à chaque étape du projet,  notre suivi tout au long du contrat de viager et surtout notre proximité sur le  terrain nous permettent de proposer une solution adaptée et personnalisée pour  chacun de nos vendeurs et chacun de nos acquéreurs.</p><br />
+		<p>N&rsquo;hésitez  pas à nous demander de plus amples informations sur les différentes formes de  viager&nbsp;: </p><br />
+		<ul>
+		  <li>Le  viager occupé </li>
+		</ul><br />
+		<p>Le vendeur  se réserve le droit d&rsquo;occupation durant toute sa vie et assure les charges  locatives. L&rsquo;acquéreur n&rsquo;aura que la jouissance du bien à l'extinction du droit  d'usage et d'habitation, suite à la libération du bien par le vendeur, suite à  un déménagement ou au décès du vendeur. L&rsquo;acquéreur verse un bouquet puis une  rente mensuelle jusqu&rsquo;au décès du vendeur.</p><br />
+		<ul>
+		  <li>Le  viager libre </li>
+		</ul><br />
+		<p>Le vendeur  n&rsquo;a pas l'usage du bien et l'acquéreur en a tout de suite la disposition pour  l&rsquo;habiter ou le louer. L&rsquo;acquéreur verse un bouquet puis une rente mensuelle  jusqu&rsquo;au décès du vendeur.</p><br />
+		<ul>
+		  <li>La  vente à terme </li>
+		</ul><br />
+		<p>C&rsquo;est un  crédit-vendeur dont le prix est déterminé au départ avec un règlement qui peut  s'effectuer au comptant avec en plus, le paiement de mensualités réparties sur  un certain nombre d'années. Ceci déterminant le prix total à payer, lequel  correspond à la valeur vénale du bien. Un abattement sera évalué sur le prix  lorsqu'il y a une réserve de jouissance momentanée du vendeur.</p><br />
+		<p><em>Atlantic <strong>Viager</strong></em><em>&nbsp;: l&rsquo;assurance  d&rsquo;un service professionnel et personnalisé, pour la vente en <strong>viager</strong> sur les régions de l&rsquo;ouest <strong>Bretagne</strong>, <strong>Pays de la Loire</strong>, <strong>Poitou  Charente</strong> et <strong>Aquitaine&nbsp;!</strong></em></p>
+		</div>
+		$$END$$
+
+				
+		$$IF:CV:LANGUESPARLEES$$
+		<div class="cv_langues">
+			<h4>$$LG:LANGUESPARLEES pcase$$</h4>
+				<p>
+					$$IF=:FR:LANGUE$$
+					$$CV:LANGUESPARLEESFR ncase$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+					$$CV:LANGUESPARLEESEN ncase$$
+					$$END$$
+				</p>
+		</div><!-- .cv_langues -->
+		$$END:LANGUESPARLEES$$
+	
+$$IF:FORM:IDP$$		
+		<!--#include virtual="/incl_portefeuille_01.htm" -->
+$$END$$
+		
+		<!--#include virtual="/annonces/incl_annonces_02.htm" -->
+		
+		
+			
+			
+		
+		$$E:IMMOBW:HORAIRE_OUVERTURE_AGENCE:~IDAGENCE:VAL:CV_IDAGENCE:ALIAS:HEURE$$
+		$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$
+		<div id="Horaires">
+			<h4>$$LG:HORAIRESOUVERT pcase$$</h4>
+				<table>
+					<tr>			
+						<td class="lundi jour">$$LG:LUNDI pcase$$</td>			
+						<td class="lundi heuresAM">
+							$$IF:HEURE:LUNDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:LUNDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:LUNDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="lundi heuresPM">
+							$$IF:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:LUNDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:LUNDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:LUNDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:LUNDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+					<tr>			
+						<td class="jour">$$LG:MARDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:MARDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MARDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MARDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">
+							$$IF:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MARDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MARDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MARDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MARDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+					<tr>			
+						<td class="jour">$$LG:MERCREDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:MERCREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:MERCREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:MERCREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:MERCREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:MERCREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:MERCREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+					<tr>			
+						<td class="jour">$$LG:JEUDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:JEUDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:JEUDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:JEUDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:JEUDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:JEUDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:JEUDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:JEUDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+					<tr>			
+						<td class="jour">$$LG:VENDREDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:VENDREDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:VENDREDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:VENDREDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:VENDREDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:VENDREDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:VENDREDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+					<tr>			
+						<td class="jour">$$LG:SAMEDI pcase$$</td>			
+						<td class="heuresAM">
+							$$IF:HEURE:SAMEDIMATINHEUREOUVERTURE$$<span class="am1">$$HEURE:SAMEDIMATINHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIMATINHEUREFERMETURE$$<span class="am2">- $$HEURE:SAMEDIMATINHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIMATINHEUREOUVERTURE$$-$$END$$
+						</td>
+						<td class="heuresPM">	
+							$$IF:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$<span class="pm1">$$HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE lcase$$</span>$$END$$$$IF:HEURE:SAMEDIAPRESMIDIHEUREFERMETURE$$<span class="pm2">- $$HEURE:SAMEDIAPRESMIDIHEUREFERMETURE lcase$$</span>$$END$$
+							$$IF0:HEURE:SAMEDIAPRESMIDIHEUREOUVERTURE$$-$$END$$
+						</td>		
+					</tr>					
+				</table>				
+				$$IF:HEURE:COMMENTAIRES$$<p class="comments">$$HEURE:COMMENTAIRES$$</p>$$END$$				
+		</div><!-- #Horaires -->
+		$$END:LUNDIMATINHEUREOUVERTURE$$
+		
+		$$IF=:01:FORM:NUMAGENCE$$
+		<div id="Horaires">
+			<h4>Horaires d'ouverture</h4>
+				<table>
+					<tr>
+						<td class="lundi jour">Lundi</td>
+						<td class="lundi heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="lundi heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="jour">Mardi</td>
+						<td class="heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="jour">Mercredi</td>
+						<td class="heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="jour">Jeudi</td>
+						<td class="heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="jour">Vendredi</td>
+						<td class="heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="jour">Samedi</td>
+						<td class="heuresAM">
+							<span class="am1">09h00</span><span class="am2">- 12h00</span>
+						</td>
+						<td class="heuresPM">
+							<span class="pm1">14h00</span><span class="pm2">- 19h00</span>
+						</td>
+					</tr>
+				</table>
+				<p class="comments">A votre disposition du lundi au samedi de 9 h à 12h et de 14h à 19h</p>
+		</div><!-- #Horaires -->
+
+		$$END$$
+		
+	</div>
+	<div class="linkOut clear retour"><a href="javascript:history.go(-1)" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:RETOURNER pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:RETOURNER pcase$$</a></div>
+	
+	$$IF!:01:FORM:NUMAGENCE$$
+	<div id="MentionCV">
+		$$REM$$<!-- on utilise l'ALIAS "ML" car cette include est aussi utilisée ailleurs -->$$END$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:ML$$
+		<!--#include virtual="agence-immobiliere-mentions.htm" -->
+		
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+		$$IF=:1:CARTEPROT:IDTYPECARTEPRO$$
+		<!--#include virtual="/agence-immobiliere-carteprot.htm" -->
+		$$END:1:IDTYPECARTEPRO$$
+		
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+		$$IF=:2:CARTEPROG:IDTYPECARTEPRO$$
+		<!--#include virtual="/agence-immobiliere-carteprog.htm" -->
+		$$END:2:IDTYPECARTEPRO$$		
+		* : informations non renseignées		
+	</div>
+$$END$$
+$$IF=:01:FORM:NUMAGENCE$$
+		
+		<div id="MentionCV">
+	Raison sociale : ATLANTIC VIAGER - TRILOGIS |
+	Siège social : 67, Avenue Carnot  44500 LA BAULE-ESCOUBLAC FRANCE |
+	RCS : SAINT-NAZAIRE   439708488 00044 |
+	RCS juridique : * |
+	Forme sociale : SARL |
+	Numero TVA Intracommunautaire : FR69439708488 |
+<!-- informations légales relatives à la carte pro transaction -->
+Carte professionnelle transaction n&deg; 1367 |
+Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle transaction : Loire Atlantique |
+Capital transaction : 8 000 &euro; |
+Caisse garantie financi&egrave;re transaction : CGAIM |
+Montant garantie financi&egrave;re transaction : 120 000 &euro; |
+		* : informations non renseignées
+	</div>
+$$END$$
+</div>
+$$INCL:BAS.HTM$$

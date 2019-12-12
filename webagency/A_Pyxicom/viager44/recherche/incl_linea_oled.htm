@@ -1,0 +1,179 @@
+$$REM$$
+====================================================================
+
+//// <summary>Resultat recherche LINEA</summary>
+//// <remarks>
+//// <para>Fichier appelé par présentation LINE et LINEA LIGHT</para>
+//// <para>Appelle des feuilles de styles dans autres fichiers includes</para>
+//// </remarks>
+//// <update date="2009-02-27" author="lisbonne.siriphol">Séparation du fichier en include</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+
+====================================================================
+$$END$$
+
+
+$$DO:config:config$$
+$$A:LIENDETAIL=@@URLBASE@@/@@IMMOBW:ANN:QRY:IDPUBLICATION@@/@@IMMOBW:ANN:QRY:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+
+<div class="blocAnnonce_wrap" id="Annonce$$IMMOBW:ANN:QRY:IDANNONCE$$">
+	<div class="blocAnnonce">
+		<table>
+			<tr>
+				<!-- colonne gauche -->
+				<td class="colGauche">
+					<!--#include virtual="/recherche/incl_typebien.htm" -->
+					<div class="photo_ctn">
+						<!--#include virtual="/recherche/incl_sipromo.htm" -->
+						<!--#include virtual="/recherche/incl_exclusif.htm" -->
+						<!--#include virtual="/recherche/incl_coupdecoeur.htm" -->
+						<a class="photo" href="$$LIENDETAIL$$" title="">
+							$$IF:IMMOBW:ANN:QRY:SI_PROMO$$
+								<img src="images/viagerVendu.png" alt="" class="pictoViager" />
+							$$END$$
+							$$IF0:IMMOBW:ANN:QRY:SI_PROMO$$
+							$$IF:IMMOBW:ANN:QRY:SI_LIBRE$$
+								<img src="images/viagerLibre.png" alt="" class="pictoViager" />
+							$$END$$							
+							$$IF0:IMMOBW:ANN:QRY:SI_LIBRE$$
+								<img src="images/viagerOccupe.png" alt="" class="pictoViager" />
+							$$END$$
+							$$END$$
+							<!-- infobulle -->
+							<em>						
+								<span class="descriptif $$IF0:IMMOBW:ANN:QRY:DESCRIPTIF$$$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$descriptifNull$$END$$$$END$$">								
+									$$IF:IMMOBW:ANN:QRY:DESCRIPTIF$$
+										$$IMMOBW:ANN:QRY:DESCRIPTIF left 150$$ ...
+									$$END$$
+									
+									$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF$$														
+										$$IF:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$
+											$$IMMOBW:ANN:QRY:DESCRIPTIF_FR left 150$$ ...
+										$$END$$									
+										$$IF0:IMMOBW:ANN:QRY:DESCRIPTIF_FR$$
+											$$LG:ANNSANSDESCR pcase$$.
+										$$END$$	
+									$$END$$	
+								</span>
+								<span class="pointer"><!-- --></span>
+							</em>					
+												
+							$$IF:IMMOBW:ANN:QRY:IDPHOTO$$<img src="$$IMMOBW:ANN:QRY:PHOTOURL0$$" alt="" title="" />$$END$$				
+						</a>						
+						<!-- fin .photo -->
+					</div>
+					<!-- fin .photo_ctn -->
+					
+					<div class="visuelsDispos">
+						
+						<a class="nbVisuels" href="$$LIENDETAIL$$" title="">$$IMMOBW:ANN:QRY:NBPHOTOS$$ <span>$$IF=:0$1:IMMOBW:ANN:QRY:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:IMMOBW:ANN:QRY:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span></a>
+						
+						$$IF:IMMOBW:ANN:QRY:IDVIDEO$$
+						<a class="nbVisuels" href="$$LIENDETAIL$$" title="">$$IMMOBW:ANN:QRY:NBVIDEOS$$ <span>$$LG:LIENVIDEO lcase$$</span></a>
+						$$END$$
+						
+						$$IF:IMMOBW:ANN:QRY:360_URL$$
+						<a class="nbVisuels" href="$$LIENDETAIL$$" title="">1 <span>$$LG:VISITEVIRT lcase$$</span></a>
+						$$END:360_URL$$						
+				
+						$$IF:IMMOBW:ANN:QRY:NBPDF$$						
+						<a class="nbVisuels" href="$$LIENDETAIL$$" title="">$$IMMOBW:ANN:QRY:NBPDF$$ <span>pdf</span></a>						
+						$$END:NBPDF$$
+						
+					</div>
+					<!-- fin .visuelsDispos -->
+					
+				</td>				
+				<!-- colonne droite -->
+				<td class="colDroite">
+					
+					<p class="ref">$$LG:REFER pcase$$ : $$IMMOBW:ANN:QRY:REFANNONCE$$</p>
+					
+					<div class="descr">
+						<p class="libelle">
+							$$IF:IMMOBW:ANN:QRY:LIBELLE$$
+								$$IMMOBW:ANN:QRY:LIBELLE$$
+							$$END$$
+							$$IF0:IMMOBW:ANN:QRY:LIBELLE$$
+								$$IMMOBW:ANN:QRY:LIBELLE_FR$$
+							$$END$$
+							
+							$$IF:IMMOBW:ANN:QRY:SURFACE$$					
+								<span class="surface">($$IMMOBW:ANN:QRY:SURFACE formatnumber 0$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / $$IMMOBW:ANN:QRY:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$)</span>
+							$$END:IMMOBW:ANN:QRY:SURFACE$$
+							
+							$$IF:IMMOBW:ANN:QRY:SURF_TERRAIN$$
+								<span class="terrain">
+										$$LG:TERRAIN$$
+										($$IMMOBW:ANN:QRY:SURF_TERRAIN formatnumber 0$$ $$LG:M2 lcase$$
+										$$IF=:EN:LANGUE$$
+											/ approx. $$IMMOBW:ANN:QRY:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+											$$IMMOBW:ANN:QRY:SURF_TERRAIN exec XX*0.0002471054 formatnumber 0$$ acres
+										$$END:EN$$)
+								</span>
+							$$END:IMMOBW:ANN:QRY:SURF_TERRAIN$$						
+						</p>
+						<!-- fin .libelle -->
+						
+						<p class="ville">$$IMMOBW:ANN:QRY:VILLE$$ ($$IMMOBW:ANN:QRY:CP$$)</p>
+						<!--#include virtual="recherche/incl_prix.htm" -->
+						
+					</div>
+					<!-- fin .descr -->
+					
+					<div class="ctc">
+						<p class="nom">							
+							$$IF:IMMOBW:ANN:QRY:COOR-CONTACT$$		
+								$$IMMOBW:ANN:QRY:COOR-CONTACT$$
+							$$END$$
+							
+							$$IF0:IMMOBW:ANN:QRY:COOR-CONTACT$$	
+								$$IF:IMMOBW:ANN:QRY:COOR-NOM$$		
+									$$IMMOBW:ANN:QRY:COOR-NOM$$
+								$$END$$
+							$$END$$
+						</p>						
+						
+						<!--#include virtual="recherche/incl_tel.htm" -->
+						
+						$$IF:IMMOBW:ANN:QRY:EMAIL$$			
+						<p class="mail"><a href="$$LIENDETAIL$$#form_contact" title="">$$LG:NOUSCTC pcase$$</a></p>
+						$$END:EMAIL$$
+						
+					</div>
+					<!-- fin .ctc -->
+					
+				</td>
+			</tr> 			
+ 		</table>
+ 		<!-- fin table --> 		
+	</div>
+	<!-- fin .blocAnnonce -->
+	
+	<div class="detailAnn">
+ 			
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		<!-- selection annonce -->
+		<div class="ajoutSelection" id="selection$$IMMOBW:ANN:QRY:IDANNONCE$$">
+			<a href="javascript:selectionAnnoncePanier($$IMMOBW:ANN:QRY:IDPUBLICATION$$, $$IMMOBW:ANN:QRY:IDANNONCE$$);" title="">$$LG:AJOUTERSEL pcase$$</a>
+		</div>
+		$$END$$
+		
+		$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+		<!-- deselection annonce -->
+		<div class="supprimerSelection" id="deselection$$IMMOBW:ANN:QRY:IDANNONCE$$">
+			<a href="javascript:deselectionAnnoncePanier($$IMMOBW:ANN:QRY:IDPUBLICATION$$, $$IMMOBW:ANN:QRY:IDANNONCE$$);" title="">$$LG:SUPPRIMERSELEC pcase$$</a>
+		</div>
+		$$END$$
+		
+		<a class="lienDetail" href="$$LIENDETAIL$$" title="">$$LG:DETAILS pcase$$</a>
+			
+			<div class="clear"><!-- --></div>
+		</div>
+		<!-- fin .detailsAnn -->
+ 		
+</div>
+<!-- fin .blocAnnonce_wrap -->
+
+$$LOOP$$
+$$BFIN$$

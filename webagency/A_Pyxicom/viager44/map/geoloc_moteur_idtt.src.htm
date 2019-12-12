@@ -1,0 +1,30 @@
+$$REM$$
+====================================================================
+
+//// <summary>Liste dynamique des types de transaction du site</summary>
+//// <remarks>
+//// <para>Bloc de code en cache .GEN dans le repertoire du site</para>
+//// <para>Fichier appelé par les fichiers slagence_X_V2/map/geoloc_moteur_dyn01.htm et slagence_X_V2/map/geoloc_moteur_dyn02.htm</para>
+//// </remarks>
+//// <update date="2008-03-12" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-03-12" author="erick.barbant">Validation ID3X en attente</update>
+
+====================================================================
+$$END$$
+
+<!-- [ttl: 1d] -->
+<input type="hidden" name="idtt" value="5" />
+<input type="hidden" name="si_promo" id="si_promoGeo" value="" />
+<select name="si_libre" class="idtt" >
+	$$B:IMMOBW:NBANN_VILLES:ALIAS:GEOLOC_IDTT:~tri:IDTYPETRANSACTION$$
+	$$BIF:GEOLOC_IDTT$$
+		$$DO$$
+			$$IFPREV:GEOLOC_IDTT:IDTYPETRANSACTION$$			
+				$$REM$$<option value="$$GEOLOC_IDTT:IDTYPETRANSACTION$$" class="geoloc_idtt$$GEOLOC_IDTT:IDTYPETRANSACTION$$"$$IF=:2:GEOLOC_IDTT:IDTYPETRANSACTION$$ selected="selected"$$END$$> $$GEOLOC_IDTT:TYPETRANSACTION pcase$$</option>$$END$$
+					<option value="" $$IF:FORM:SI_LIBRE$$selected="selected"$$END$$ onclick="document.getElementById('si_promoGeo').value=''">Indiff&eacute;rent</option>
+					 <option value="1" $$IF=:1:FORM:SI_LIBRE$$selected="selected"$$END$$ onclick="document.getElementById('si_promoGeo').value='0'">Viager libre</option>
+					 <option value="0" $$IF=:0:FORM:SI_LIBRE$$selected="selected"$$END$$ onclick="document.getElementById('si_promoGeo').value='0'">Viager occup&eacute;</option>
+			$$END:IFPREV$$
+		$$LOOP$$
+	$$BFIN$$								
+</select>

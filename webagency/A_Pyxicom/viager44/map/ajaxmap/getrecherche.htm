@@ -1,0 +1,70 @@
+$$REM$$
+====================================================================
+
+//// <summary>Fichier servant à la carte de géolocalisation Microsoft, et contrôlant l'affichage du nombre d'annonces par secteur.</summary>
+//// <remarks>
+//// <para>Fichier fourni par Jean-Marie Rétif, Service Recherche et Dév. SeLoger.com</para>
+//// <para>Fichier appelé par : slagence_x_v2/map/js/maplive.js</para>
+//// <para>La commercialisation du produit doit être lancée rapidement, donc les buggs ne seront pas une surprise</para>
+//// </remarks>
+//// <update date="2007-11-12" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2007-11-12" author="isabelle.padrutt">Validation référencement en cours</update>
+//// <update date="2007-11-12" author="erick.barbant">Validation ID3X en cours</update>
+
+====================================================================
+$$END$$
+
+$$BIF0:ANN$$
+{#}eval##
+doEcr('erreur');
+{#}
+$$BFIN$$
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANN$$
+$$BIF:ANN$$
+{#}html##listeann##
+$$DO:1:10$$
+
+<div class="ad">
+	<div class="lib">
+		<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm">$$ANN:LIBELLE htmlencode$$ $$ANN:PRIX formatnumber 0 htmlencode$$$$ANN:PRIX_UNITE htmlencode$$$$ANN:PRIX_PERIODEVAC$$</a>
+	</div>
+	$$IF:ANN:CARRE_URL$$
+	<div class="photogeoloc">
+		$$IF:ANN:SI_PROMO$$
+			<img src="$$_$$map/img/vendu.png" class="typeViager" alt="" />
+		$$END$$
+		$$IF0:ANN:SI_PROMO$$
+			$$IF:ANN:SI_LIBRE$$
+				<img src="$$_$$map/img/libre.png" class="typeViager" alt="" />
+			$$END$$							
+			$$IF0:ANN:SI_LIBRE$$
+				<img src="$$_$$map/img/occupe.png" class="typeViager" alt="" />
+			$$END$$
+		$$END$$
+		<a href="/$$ANN:IDPUBLICATION$$/$$ANN:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm">
+			<img src="$$ANN:CARRE_URL$$" />
+		</a>
+	</div>
+	$$END$$
+	<div class="descGeoloc$$IF0:ANN:CARRE_URL$$SansPhoto$$END$$">
+		$$IF:ANN:SURFACE$$ Surface: $$ANN:SURFACE$$ m<sup>2</sup>$$END$$
+		$$IF:ANN:NB_PIECES$$ $$ANN:NB_PIECES$$ piece$$ANN:NB_PIECES pluriel$$$$END$$
+		$$ANN:DESCRIPTIF smalltext 100 htmlencode$$
+	</div>
+</div>
+$$REM$$
+flyoutDispAd({
+	idannonce:$$ANN:IDANNONCE$$,
+	idpublication:$$ANN:IDPUBLICATION$$,
+	markerinfosid:'$$FORM:MARKERINFOSID replace _ =$$',
+	libelle:'$$ANN:LIBELLE escape htmlencode$$',
+	prix:'$$ANN:PRIX formatnumber 0 htmlencode$$$$ANN:PRIX_UNITE htmlencode$$$$ANN:PRIX_PERIODEVAC$$',
+	descriptif:'$$ANN:DESCRIPTIF smalltext 50 escape htmlencode$$...',
+	nbPieces:'$$ANN:NB_PIECES$$',
+	nbChambres:'$$ANN:NB_CHAMBRES$$'
+	$$IF:ANN:SURFACE$$,surface:'$$ANN:SURFACE$$ m<sup>2</sup>'$$END$$
+	$$IF:ANN:THUMB_URL$$,photo:'$$ANN:THUMB_URL$$'$$END$$
+});$$END$$
+$$LOOP$$
+{#}
+$$BFIN$$
