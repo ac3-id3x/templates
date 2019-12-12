@@ -1,0 +1,66 @@
+		<h3>$$LG:AUJOURDHUI pcase$$ $$IF!:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date dd/MM/yyyy pcase$$ $$END$$
+		$$IF=:EN:LANGUE$$ $$E:ID3:DATE:2$$ $$ID3:DATE:VAL date MM/dd/yyyy pcase$$ $$END$$</h3>
+		<!-- Nombre de ventes -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:REP:0$$
+		$$BIF:IMMOBW:AGENCETRANSACTIONS:REP$$
+			$$DO:0:99$$
+				$$IF=:2:IMMOBW:AGENCETRANSACTIONS:REP:IDTYPETRANSACTION$$
+					<h4>
+						$$LG:VENTE pcase$$ : 
+						$$IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$ 
+						$$IF-:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de vente + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_VEN:2$$
+		$$BIF:TYPEBIEN_VEN$$
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=2&amp;idtypebien=$$TYPEBIEN_VEN:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:VEN pcase$$ : $$TYPEBIEN_VEN:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_VEN:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_VEN:NBANN$$
+					$$IF-:2:TYPEBIEN_VEN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_VEN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+			</ul>
+		$$BFIN$$
+		
+		<!-- Nombre de locations -->
+		$$B:IMMOBW:AGENCETRANSACTIONS:REP:0$$
+		$$BIF:IMMOBW:AGENCETRANSACTIONS:REP$$
+			$$DO:0:99$$
+				$$IF=:1:IMMOBW:AGENCETRANSACTIONS:REP:IDTYPETRANSACTION$$
+					<h4>
+						$$LG:LOCATION pcase$$ : 
+						$$IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$ 
+						$$IF-:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+						$$IF+:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</h4>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<!--- Types de bien de location + nombre d'annonce de chaque bien -->
+		$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_LOC:1$$
+		$$BIF:TYPEBIEN_LOC$$	
+			<ul>
+				$$DO$$
+				<li class="subList">
+					<a href="$$URLBASE$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=1&amp;idtypebien=$$TYPEBIEN_LOC:IDTYPEBIEN$$&amp;lang=$$LANGUE$$" title="$$LG:LIEN:LOC pcase$$ : $$TYPEBIEN_LOC:DEF_LIBELLE lcase$$">
+					$$TYPEBIEN_LOC:DEF_LIBELLE pcase$$ : 
+					$$TYPEBIEN_LOC:NBANN$$
+					$$IF-:2:TYPEBIEN_LOC:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:TYPEBIEN_LOC:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$
+					</a>
+				</li>
+				$$LOOP$$
+				<!-- fin locations triees par type de bien -->
+			</ul>
+		$$BFIN$$
