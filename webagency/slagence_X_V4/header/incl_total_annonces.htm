@@ -1,0 +1,36 @@
+$$REM$$====================================================================
+//// <summary>Script Calcul Total Annonces</summary>
+//// <remarks>
+//// <para>A demut si besoin d'afficher autre chose</para>
+//// <para>Par défaut = VENTE = 2</para>
+//// </remarks>
+//// <update date="2011-07-05" author="yoann.delpierre">Creation sur X_V4</update>$$END$$
+$$INIT:JS_RESULTATS=1$$
+
+$$B:IMMOBW:ANN:2:fr:ALIAS:TOTAL:~NOSTAT:1$$
+$$BIF:TOTAL$$
+	$$TOTAL:NBRESULT$$ $$LG:ANNONCESLIGNE lcase$$
+	$$DO:1:2$$$$LOOP$$
+$$BFIN$$
+
+$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+</script>
+$$BFIN$$
+$$BIF0:CHECKBASKET$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		nbAnnoncePanier(0);	
+	});
+</script>
+$$BFIN$$

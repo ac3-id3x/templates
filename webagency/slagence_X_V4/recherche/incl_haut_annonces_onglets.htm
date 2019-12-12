@@ -1,0 +1,35 @@
+$$REM$$<!--====================================================================
+//// <summary>Onglets liste + carte + biens vendus en haut des pages de recherche</summary>
+//// <remarks>
+//// <para>Lien vers la carte s'active avec macro A:OPTION_GEOLOC=1 dans header/incl_param.htm</para>
+//// <para>Lien biens vendus s'active s'il y en a</para>
+//// </remarks>
+//// <update date="2011-03-18" author="lisbonne.siriphol">Création</update>
+====================================================================-->$$END$$
+
+<div id="RechAffichage_Ctn"$$IF0:OPTION_GEOLOC$$ style="display: none;"$$END$$>
+	<div id="RechAffichage">			
+		<div class="ongletRechercheAccueil">$$LG:AFFICHER1 pcase$$</div>
+		<div id="RechAffichageListe" class="$$IF=:RESULTATS:IDT$$ongletRechercheOn$$END$$$$IF!:RESULTATS:IDT$$ongletRechercheOff$$END$$">
+			$$IF!:RESULTATS:IDT$$<a href="$$URLBASE$$$$IF:FORM:IDPUBLICATION$$/$$FORM:IDPUBLICATION$$$$END$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?$$REP:QRY removeqry idpublication htmlencode$$" title="">$$LG:LISTE2 pcase$$</a>$$END:GEOLOC$$
+			$$IF=:RESULTATS:IDT$$<p>$$LG:LISTE2 pcase$$</p>$$END:GEOLOC$$
+		</div><!-- #RechAffichageListe -->
+		$$REM$$<!-- ===================================
+					> 08.07.2010 c/o Lisbonne
+					> sur le lien vers la carte, l'idpublication est passé en qry pour filtrer seulement les annonces de l'agence en question				
+		=================================== -->$$END:REM$$
+		$$IF=:1:OPTION_GEOLOC$$
+		<div id="RechAffichageCarte" class="$$IF=:RESULTATSCARTE:IDT$$ongletRechercheOn$$END$$$$IF!:RESULTATSCARTE:IDT$$ongletRechercheOff$$END$$">
+			$$IF!:RESULTATSCARTE:IDT$$<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_CARTE$$.htm?$$IF:REP:1$$idpublication=$$REP:1$$&amp;$$END$$$$REP:QRY htmlencode$$" title="">$$LG:CARTE pcase$$</a>$$END:GEOLOC$$
+			$$IF=:RESULTATSCARTE:IDT$$<p>$$LG:CARTE pcase$$</p>$$END:GEOLOC$$
+		</div><!-- #RechAffichageCarte -->
+		$$END:OPTION_GEOLOC$$
+		$$IF!:1:FORM:IDTT$$
+		<div id="BiensVendus" class="$$IF=:BIENSVENDUS:IDT$$ongletRechercheOn$$END$$$$IF!:BIENSVENDUS:IDT$$ongletRechercheOff$$END$$">
+			$$IF!:BIENSVENDUS:IDT$$<a href="$$URLBASE$$/recherche,vendu.htm?$$REP:QRY removeqry tri htmlencode$$&tri=d_dtmutation" title="">$$LG:BIENVENDUS pcase$$</a>$$END:IDT$$
+			$$IF=:BIENSVENDUS:IDT$$<p>$$LG:BIENVENDUS pcase$$</p>$$END:IDT$$
+		</div><!-- #BiensVendus -->
+		$$END$$
+		<div class="clear"></div>
+	</div><!-- #RechAffichage -->
+</div><!-- #RechAffichage_Ctn -->		

@@ -1,0 +1,78 @@
+$$REM$$====================================================================
+//// <summary>Le mail Alerte Immo renvoie vers cette page qui confirme la desinscription</summary>
+//// <remarks>
+//// <para>Utilise le meme fichier .css que tous : creer.css</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2010-06-23" author="lisbonne.siriphol">Creation XV3</update>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+====================================================================$$END$$
+
+$$INIT:IDT=DESINSALERTEIMMO$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:CSS_ALERTE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+$$E:IMMOBW:AI_DES:REP:2:REP:1$$
+
+<div id="AlerteImmo">	
+	$$IF=:FR:LANGUE$$
+		<h1>D&eacute;sinscription de l'Alerte Immo</h1>
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		<h1>Unsubscribe from email alert</h1>
+	$$END$$
+	$$IF:IMMOBW:AI_DES:ERRE$$
+		<!--#include virtual="alerte/incl_erreur.htm" -->
+	$$END:IMMOBW:AI_DES:ERRE$$
+		
+	$$IF0:IMMOBW:AI_DES:ERRE$$
+	
+	<div class="modif_ok_ctn">
+		<div class="modif_ok">
+			<p>
+				$$IF=:FR:LANGUE$$
+					<strong>D&eacute;sinscription effectu&eacute;e !</strong>
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					<strong>Unsubscribe done !</strong>
+				$$END$$
+			</p>
+			
+			
+			$$IF:IMMOBW:AI_DES:EMAIL$$
+			
+				<p>Vous ne recevrez plus d'email Alerte Immo sur ces crit&egrave;res :</p>
+				<p>$$IF=:FR:LANGUE$$Pr&eacute;nom :$$END$$$$IF!:FR:LANGUE$$First name :$$END$$ <strong>$$IMMOBW:AI_DES:NOM$$</strong></p>				
+				<p>Email : <strong>$$IMMOBW:AI_DES:EMAIL encodemail javascript$$</strong></p>
+				$$IF:IMMOBW:AI_DES:TEXTE$$
+				<p>Crit&egrave;res : <strong>$$IMMOBW:AI_DES:TEXTE$$</strong></p>
+				$$END:TEXTE$$
+			$$END:IMMOBW:AI_DES:EMAIL$$
+			
+			$$IF0:IMMOBW:AI_DES:EMAIL$$
+			$$IF=:FR:LANGUE$$
+				<p>Si vous avez souscrit à plusieurs Alerte Immo à la fois, vous devez vous désinscrire pour chacune d'elles afin de ne plus recevoir d'email.</p>
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				<p>If you have subscribed to several Email Alert at a time, you should opt for each of them to stop receiving email.</p>
+			$$END$$
+			$$END:IMMOBW:AI_DES:EMAIL$$
+			
+		</div><!-- .modif_ok -->
+	</div><!-- .modif_ok_ctn -->
+	
+	<!--#include virtual="alerte/incl_confiance.htm" -->
+	
+	
+	
+	$$END:IMMOBW:AI_DES:ERRE$$
+	
+
+
+</div><!-- #AlerteImmo -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

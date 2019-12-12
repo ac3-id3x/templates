@@ -1,0 +1,65 @@
+<div id="infosAnnoncesBig">
+	<h2>$$LG:LIEN:TOUTES ucase$$</h2>
+</div>
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1::d_dt_maj:~limit:VAL:MAXRECHERCHEAJAX:~NOSTAT:1:ALIAS:RECHERCHEAJAX$$
+$$BIF:RECHERCHEAJAX$$
+	<p class="results">$$RECHERCHEAJAX:NBR$$ $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR lcase$$ $$LG:VOTRERECHERCHE lcase$$ $$RECHERCHEAJAX:PHRASE$$</p>
+	<div id="zoneResultats">
+	$$DO$$
+		$$A:TITLE_SELECTION_INDEX=$$
+		$$IF:PAGE:URLREWRITINGENABLED$$
+			$$IF:FORM:LANG$$
+				$$IF!:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@RECHERCHEAJAX:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+				$$END$$
+				$$IF=:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@RECHERCHEAJAX:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:FORM:LANG$$
+				$$A:LIEN_SELECTION_INDEX=@@RECHERCHEAJAX:URLVIRTUELLE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:PAGE:URLREWRITINGENABLED$$
+			$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@RECHERCHEAJAX:IDPUBLICATION@@/@@RECHERCHEAJAX:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			$$A:TITLE_SELECTION_INDEX=@@RECHERCHEAJAX:IDTYPETRANSACTION gettypetransaction pcase@@ @@RECHERCHEAJAX:IDTYPEBIEN gettypebien lcase@@ @@RECHERCHEAJAX:AVILLE ncase@@$$
+		$$END:WAGREF_IDDOSSIER_SITE$$
+		<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+			<div class="blocModule borderModule shadow" id="annonce$$RECHERCHEAJAX:IDANNONCE$$">
+					<div class="infoModule">
+						<ul>
+							<li>$$RECHERCHEAJAX:IDTYPEBIEN gettypebien$$</li>
+							<li>
+							$$IF:RECHERCHEAJAX:NB_PIECES$$
+							$$RECHERCHEAJAX:NB_PIECES$$
+								$$IF=:1:RECHERCHEAJAX:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+								$$IF!:0$1:RECHERCHEAJAX:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$			
+							$$END$$	
+							</li>
+							<li>$$RECHERCHEAJAX:AVILLE$$</li>
+							<li>$$RECHERCHEAJAX:PRIX$$ $$RECHERCHEAJAX:PRIX_UNITE$$ </li>
+						</ul>			
+					</div>
+					$$IF:RECHERCHEAJAX:C175_URL$$
+						<img src="$$RECHERCHEAJAX:C175_URL$$" width="175" height="175" />
+					$$END$$
+					$$IF0:RECHERCHEAJAX:C175_URL$$
+						<img src="$$_$$images/global/sans_photo.jpg" width="175" height="175" />
+					$$END$$
+			</div>
+		</a>
+	$$LOOP$$
+		<div class="clear"></div>
+	</div>
+$$BFIN$$
+$$IF0:RECHERCHEAJAX:NBR$$
+	<p class="results">0 $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR$$ $$RECHERCHEAJAX:PHRASE$$</p>
+$$END$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		resize();
+		gestionAnnonce('blocModule');
+	});
+</script>

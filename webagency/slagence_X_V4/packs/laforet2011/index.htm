@@ -1,0 +1,426 @@
+$$INIT:IDT=INDEX$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div id="boitAnnonces">
+					<div class="bg-onglet">
+						<div class="btn">
+							<ul>
+								<li><a title=""  href="javascript:void(0)" id="menu-cdc" onclick="miniAffiche('cdc')"></a></li>
+								<li><a title=""  href="javascript:void(0)" id="menu-new" onclick="miniAffiche('new')"></a></li>
+								<li><a title=""  href="javascript:void(0)" id="menu-exclu" onclick="miniAffiche('exclu')"></a></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div id="bloc-cdc">
+						<div id="cdc">
+                            $$INIT:CSS_ANNONCES=1$$
+                            $$INIT:JS_ANNONCES=1$$
+                            $$B:IMMOBW:ANN:VAL:IDTTCC:QRY:LANG:::VAL:TYPEANN::d_dt_maj:~limit:VAL:MAXCC:~NOSTAT:1:ALIAS:ANNLISTE$$
+                            $$BIF:ANNLISTE$$
+                            <div id="selectionAnnonces_1">
+                            $$DO$$
+                            $$REM$$<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->$$END$$
+                            $$IF:PAGE:URLREWRITINGENABLED$$
+                            	$$IF:FORM:LANG$$
+                            		$$IF!:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+                            		$$END$$
+                            		$$IF=:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+                            		$$END$$
+                            	$$END$$
+                            	$$IF0:FORM:LANG$$
+                            		$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+                            	$$END$$
+                            $$END$$
+                            $$IF0:PAGE:URLREWRITINGENABLED$$
+                            	$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+                            $$END$$
+                            $$A:TITLE_SELECTION_INDEX=$$
+                            $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            	$$A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+                            $$END:WAGREF_IDDOSSIER_SITE$$
+                            $$REM$$<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END$$
+                            $$REM$$<!-- DEBUT CONSTRUCTION ANNONCE -->$$END$$
+                            	<div class="detailAnnonces" id="annoncesBloc$$ANNLISTE:I$$">
+                            			<div class="blocContentEffet">
+                            				$$IF:ANNLISTE:SI_COUPDECOEUR$$<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->$$END$$
+                            				$$IF:ANNLISTE:SI_EXCLUSIF$$<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->$$END$$
+                            				$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->$$END$$
+                            				$$IF:ANNLISTE:SI_PROMO$$<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->$$END$$
+                            				$$IF:ANNLISTE:360_URL$$<!--#include virtual="recherche/incl_bandeau_360.htm" -->$$END:360_URL$$
+                            				<div class="blocPhoto$$IF0:ANNLISTE:IDPHOTO$$$$IF=:FALSE:ANNLISTE:SI_LOGO$$ blocNoPhoto$$END$$$$END$$">
+                            					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            					$$IF:ANNLISTE:IDPHOTO$$
+                            						<img src="$$ANNLISTE:C175URL0$$" alt="$$TITLE_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" />
+                            					$$END:ANNLISTE:IDPHOTO$$
+                            					$$IF0:ANNLISTE:IDPHOTO$$
+                            						$$IF=:TRUE:ANNLISTE:SI_LOGO$$
+                            						<div class="siLogo" style="background:url('$$ANNLISTE:URLLOGO$$') 50% 50% no-repeat #fff;"></div>
+                            						$$END:ANNLISTE:SI_LOGO$$
+                            					$$END:ANNLISTE:IDPHOTO$$
+                            					</a>
+                            				</div>
+                            			</div>
+                            		$$IF:ANNLISTE:IDPHOTO$$
+                            		<div class="blocNumPhotoBg"></div>
+                            		<div class="blocNumPhoto">
+                            			<span class="picto">
+                            				<img src="$$~$$images/selection/rech_picto_photo.png" />
+                            			</span>
+                            			<span class="libelle"><strong>$$ANNLISTE:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+                            			<div class="clear"></div>
+                            		</div>
+                            		$$END$$
+                            		<div class="blocTypeBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            				$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE:IDTYPEBIEN gettypebien lcase$$
+                            			$$END:WAGREF_IDDOSSIER_SITE$$
+                            			$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            					$$ANNLISTE:LIBELLE$$
+                            				$$END:WAGREF_IDDOSSIER_SITE$$
+                            			</a>
+                            		</div>
+                            		<div class="blocVilleBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$ANNLISTE:AVILLE ncase$$ <span>($$ANNLISTE:ACP$$)</span></a>
+                            		</div>
+                            		$$IF:ANNLISTE:SURFACE$$
+                            			<div class="blocSurfaceBien">
+                            				$$ANNLISTE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+                            				$$LG:ENVIRON lcase$$
+                            			</div>
+                            		$$END:ANNLISTE:SURFACE$$
+                            		$$IF:ANNLISTE:NB_PIECES$$
+                            			<div class="blocPiecesBien">
+                            				$$ANNLISTE:NB_PIECES$$
+                            				$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                            				$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                            				$$IF:ANNLISTE:NB_CHAMBRES$$
+                            					($$ANNLISTE:NB_CHAMBRES$$
+                            					$$IF=:1:ANNLISTE:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+                            				$$END:ANNLISTE:NB_CHAMBRES$$
+                            			</div>
+                            		$$END:ANNLISTE:NB_PIECES$$
+                            		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocTxtRefBien">
+                            				$$ANNLISTE:DESCRIPTIF smalltextv2 60 vireaccents$$
+                            			</div>
+                            		$$END:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocPrixBien">
+                            				$$ANNLISTE:PRIX formatnumber 0$$ $$ANNLISTE:PRIX_UNITE htmlencode$$
+                            			</div>
+                            			<div class="blocDetailBien">
+                            				<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a>
+                            			</div>
+                            	</div>
+                            $$REM$$<!-- FIN CONSTRUCTION ANNONCE -->$$END$$
+                            $$LOOP$$
+                            <div class="clear"></div>
+                            </div>
+                            $$IF=:1:DEFILE$$
+                            	$$IF0:SELECTION_VITESSE_DEFIL$$
+                            		$$A:SELECTION_VITESSE_DEFIL=4000$$
+                            	$$END$$
+                            	<script type="text/javascript">
+                            		$(document).ready(function() {
+                            			C2C_install(/* id c2c*/"div_C2C",/* prefixe c2c*/"tabc2c",/*nb affiches*/$$NBAFFICHDEFILE$$,/*nb total*/$$IF+:21:ANNLISTE:NBR$$24$$END$$$$IF-:21:ANNLISTE:NBR$$$$ANNLISTE:NBR$$$$END$$,/* vitesse */$$SELECTION_VITESSE_DEFIL$$,/* Mode */"random",/* si souris */true);
+                            		});
+                            	</script>
+                            $$END:DEFILE$$
+                            $$BFIN$$
+                            $$REM$$
+							   <!--#include virtual="/annonces/incl_selection_index.gen.htm" -->
+                            $$END$$
+							<div class="clear1"></div>
+						</div>
+						<div id="new">
+                            $$INIT:CSS_ANNONCES=1$$
+                            $$INIT:JS_ANNONCES=1$$
+                            $$B:IMMOBW:ANN:VAL:IDTTCC2:QRY:LANG:::VAL:TYPEANN2::d_dt_maj:~limit:VAL:MAXCC2:~NOSTAT:1:ALIAS:ANNLISTE2$$
+                            $$BIF:ANNLISTE2$$
+                            <div id="selectionAnnonces_2">
+                            $$DO$$
+                            $$REM$$<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->$$END$$
+                            $$IF:PAGE:URLREWRITINGENABLED$$
+                            	$$IF:FORM:LANG$$
+                            		$$IF!:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+                            		$$END$$
+                            		$$IF=:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@$$
+                            		$$END$$
+                            	$$END$$
+                            	$$IF0:FORM:LANG$$
+                            		$$A:LIEN_SELECTION_INDEX=@@ANNLISTE2:URLVIRTUELLE@@$$
+                            	$$END$$
+                            $$END$$
+                            $$IF0:PAGE:URLREWRITINGENABLED$$
+                            	$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE2:IDPUBLICATION@@/@@ANNLISTE2:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+                            $$END$$
+                            $$A:TITLE_SELECTION_INDEX=$$
+                            $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            	$$A:TITLE_SELECTION_INDEX=@@ANNLISTE2:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE2:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE2:AVILLE ncase@@$$
+                            $$END:WAGREF_IDDOSSIER_SITE$$
+                            $$REM$$<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END$$
+                            $$REM$$<!-- DEBUT CONSTRUCTION ANNONCE -->$$END$$
+                            	<div class="detailAnnonces" id="annoncesBloc$$ANNLISTE2:I$$">
+                            			<div class="blocContentEffet">
+                            				$$IF:ANNLISTE2:SI_COUPDECOEUR$$<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->$$END$$
+                            				$$IF:ANNLISTE2:SI_EXCLUSIF$$<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->$$END$$
+                            				$$IF+:SELECTIONFRAICHEUR:ANNLISTE2:DT_CREA datediff now timespan days$$<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->$$END$$
+                            				$$IF:ANNLISTE2:SI_PROMO$$<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->$$END$$
+                            				<div class="blocPhoto$$IF0:ANNLISTE2:IDPHOTO$$$$IF=:FALSE:ANNLISTE2:SI_LOGO$$ blocNoPhoto$$END$$$$END$$">
+                            					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            					$$IF:ANNLISTE2:IDPHOTO$$
+                            						<img src="$$ANNLISTE2:C175URL0$$" alt="$$TITLE_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" />
+                            					$$END:ANNLISTE2:IDPHOTO$$
+                            					$$IF0:ANNLISTE2:IDPHOTO$$
+                            						$$IF=:TRUE:ANNLISTE2:SI_LOGO$$
+                            						<div class="siLogo" style="background:url('$$ANNLISTE2:URLLOGO$$') 50% 50% no-repeat #fff;"></div>
+                            						$$END:ANNLISTE2:SI_LOGO$$
+                            					$$END:ANNLISTE2:IDPHOTO$$
+                            					</a>
+                            				</div>
+                            			</div>
+                            		$$IF:ANNLISTE2:IDPHOTO$$
+                            		<div class="blocNumPhotoBg"></div>
+                            		<div class="blocNumPhoto">
+                            			<span class="picto">
+                            				<img src="$$~$$images/selection/rech_picto_photo.png" />
+                            			</span>
+                            			<span class="libelle"><strong>$$ANNLISTE2:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE2:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE2:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+                            			<div class="clear"></div>
+                            		</div>
+                            		$$END$$
+                            		<div class="blocTypeBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            				$$ANNLISTE2:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE2:IDTYPEBIEN gettypebien lcase$$
+                            			$$END:WAGREF_IDDOSSIER_SITE$$
+                            			$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            					$$ANNLISTE2:LIBELLE$$
+                            				$$END:WAGREF_IDDOSSIER_SITE$$
+                            			</a>
+                            		</div>
+                            		<div class="blocVilleBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$ANNLISTE2:AVILLE ncase$$ <span>($$ANNLISTE2:ACP$$)</span></a>
+                            		</div>
+                            		$$IF:ANNLISTE2:SURFACE$$
+                            			<div class="blocSurfaceBien">
+                            				$$ANNLISTE2:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE2:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+                            				$$LG:ENVIRON lcase$$
+                            			</div>
+                            		$$END:ANNLISTE2:SURFACE$$
+                            		$$IF:ANNLISTE2:NB_PIECES$$
+                            			<div class="blocPiecesBien">
+                            				$$ANNLISTE2:NB_PIECES$$
+                            				$$IF=:1:ANNLISTE2:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                            				$$IF!:0$1:ANNLISTE2:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                            				$$IF:ANNLISTE2:NB_CHAMBRES$$
+                            					($$ANNLISTE2:NB_CHAMBRES$$
+                            					$$IF=:1:ANNLISTE2:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE2:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+                            				$$END:ANNLISTE2:NB_CHAMBRES$$
+                            			</div>
+                            		$$END:ANNLISTE2:NB_PIECES$$
+                            		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocTxtRefBien">
+                            				$$ANNLISTE2:DESCRIPTIF smalltextv2 60 vireaccents$$
+                            			</div>
+                            		$$END:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocPrixBien">
+                            				$$ANNLISTE2:PRIX formatnumber 0$$ $$ANNLISTE2:PRIX_UNITE htmlencode$$
+                            			</div>
+                            			<div class="blocDetailBien">
+                            				<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a>
+                            			</div>
+                            	</div>
+                            $$REM$$<!-- FIN CONSTRUCTION ANNONCE -->$$END$$
+                            $$LOOP$$
+                            <div class="clear"></div>
+                            </div>
+                            $$IF=:1:DEFILE2$$
+                            	$$IF0:SELECTION_VITESSE_DEFIL2$$
+                            		$$A:SELECTION_VITESSE_DEFIL2=4000$$
+                            	$$END$$
+                            	<script type="text/javascript">
+                            		$(document).ready(function() {
+                            			C2C_install(/* id c2c*/"div_C2C",/* prefixe c2c*/"tabc2c",/*nb affiches*/$$NBAFFICHDEFILE$$,/*nb total*/$$IF+:21:ANNLISTE:NBR$$24$$END$$$$IF-:21:ANNLISTE:NBR$$$$ANNLISTE:NBR$$$$END$$,/* vitesse */$$SELECTION_VITESSE_DEFIL$$,/* Mode */"random",/* si souris */true);
+                            		});
+                            	</script>
+                            $$END:DEFILE2$$
+                            $$BFIN$$
+							<div class="clear1"></div>
+						</div>
+						<div id="exclu">
+                            $$INIT:CSS_ANNONCES=1$$
+                            $$INIT:JS_ANNONCES=1$$
+                            $$B:IMMOBW:ANN:VAL:IDTTCC3:QRY:LANG:::VAL:TYPEANN3::d_dt_maj:~limit:VAL:MAXCC3:~NOSTAT:1:ALIAS:ANNLISTE3$$
+                            $$BIF:ANNLISTE3$$
+                            <div id="selectionAnnonces_3">
+                            $$DO$$
+                            $$REM$$<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->$$END$$
+                            $$IF:PAGE:URLREWRITINGENABLED$$
+                            	$$IF:FORM:LANG$$
+                            		$$IF!:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+                            		$$END$$
+                            		$$IF=:FR:FORM:LANG$$
+                            			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@$$
+                            		$$END$$
+                            	$$END$$
+                            	$$IF0:FORM:LANG$$
+                            		$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@$$
+                            	$$END$$
+                            $$END$$
+                            $$IF0:PAGE:URLREWRITINGENABLED$$
+                            	$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE3:IDPUBLICATION@@/@@ANNLISTE3:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+                            $$END$$
+                            $$A:TITLE_SELECTION_INDEX=$$
+                            $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            	$$A:TITLE_SELECTION_INDEX=@@ANNLISTE3:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE3:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE3:AVILLE ncase@@$$
+                            $$END:WAGREF_IDDOSSIER_SITE$$
+                            $$REM$$<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END$$
+                            $$REM$$<!-- DEBUT CONSTRUCTION ANNONCE -->$$END$$
+                            	<div class="detailAnnonces" id="annoncesBloc$$ANNLISTE3:I$$">
+                            			<div class="blocContentEffet">
+                            				$$IF:ANNLISTE3:SI_COUPDECOEUR$$<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->$$END$$
+                            				$$IF:ANNLISTE3:SI_EXCLUSIF$$<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->$$END$$
+                            				$$IF+:SELECTIONFRAICHEUR:ANNLISTE3:DT_CREA datediff now timespan days$$<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->$$END$$
+                            				$$IF:ANNLISTE3:SI_PROMO$$<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->$$END$$
+                            				<div class="blocPhoto$$IF0:ANNLISTE3:IDPHOTO$$$$IF=:FALSE:ANNLISTE3:SI_LOGO$$ blocNoPhoto$$END$$$$END$$">
+                            					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            					$$IF:ANNLISTE3:IDPHOTO$$
+                            						<img src="$$ANNLISTE3:C175URL0$$" alt="$$TITLE_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" />
+                            					$$END:ANNLISTE3:IDPHOTO$$
+                            					$$IF0:ANNLISTE3:IDPHOTO$$
+                            						$$IF=:TRUE:ANNLISTE3:SI_LOGO$$
+                            						<div class="siLogo" style="background:url('$$ANNLISTE3:URLLOGO$$') 50% 50% no-repeat #fff;"></div>
+                            						$$END:ANNLISTE3:SI_LOGO$$
+                            					$$END:ANNLISTE3:IDPHOTO$$
+                            					</a>
+                            				</div>
+                            			</div>
+                            		$$IF:ANNLISTE3:IDPHOTO$$
+                            		<div class="blocNumPhotoBg"></div>
+                            		<div class="blocNumPhoto">
+                            			<span class="picto">
+                            				<img src="$$~$$images/selection/rech_picto_photo.png" />
+                            			</span>
+                            			<span class="libelle"><strong>$$ANNLISTE3:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE3:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE3:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+                            			<div class="clear"></div>
+                            		</div>
+                            		$$END$$
+                            		<div class="blocTypeBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+                            			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            				$$ANNLISTE3:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE3:IDTYPEBIEN gettypebien lcase$$
+                            			$$END:WAGREF_IDDOSSIER_SITE$$
+                            			$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            					$$ANNLISTE3:LIBELLE$$
+                            				$$END:WAGREF_IDDOSSIER_SITE$$
+                            			</a>
+                            		</div>
+                            		<div class="blocVilleBien">
+                            			<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$ANNLISTE3:AVILLE ncase$$ <span>($$ANNLISTE3:ACP$$)</span></a>
+                            		</div>
+                            		$$IF:ANNLISTE3:SURFACE$$
+                            			<div class="blocSurfaceBien">
+                            				$$ANNLISTE3:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE3:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+                            				$$LG:ENVIRON lcase$$
+                            			</div>
+                            		$$END:ANNLISTE3:SURFACE$$
+                            		$$IF:ANNLISTE3:NB_PIECES$$
+                            			<div class="blocPiecesBien">
+                            				$$ANNLISTE3:NB_PIECES$$
+                            				$$IF=:1:ANNLISTE3:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                            				$$IF!:0$1:ANNLISTE3:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                            				$$IF:ANNLISTE3:NB_CHAMBRES$$
+                            					($$ANNLISTE3:NB_CHAMBRES$$
+                            					$$IF=:1:ANNLISTE3:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE3:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+                            				$$END:ANNLISTE3:NB_CHAMBRES$$
+                            			</div>
+                            		$$END:ANNLISTE3:NB_PIECES$$
+                            		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocTxtRefBien">
+                            				$$ANNLISTE3:DESCRIPTIF smalltextv2 60 vireaccents$$
+                            			</div>
+                            		$$END:WAGREF_IDDOSSIER_SITE$$
+                            			<div class="blocPrixBien">
+                            				$$ANNLISTE3:PRIX formatnumber 0$$ $$ANNLISTE3:PRIX_UNITE htmlencode$$
+                            			</div>
+                            			<div class="blocDetailBien">
+                            				<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a>
+                            			</div>
+                            	</div>
+                            $$REM$$<!-- FIN CONSTRUCTION ANNONCE -->$$END$$
+                            $$LOOP$$
+                            <div class="clear"></div>
+                            </div>
+                            $$IF=:1:DEFILE3$$
+                            	$$IF0:SELECTION_VITESSE_DEFIL3$$
+                            		$$A:SELECTION_VITESSE_DEFIL3=4000$$
+                            	$$END$$
+                            	<script type="text/javascript">
+                            		$(document).ready(function() {
+                            			C2C_install(/* id c2c*/"div_C2C",/* prefixe c2c*/"tabc2c",/*nb affiches*/$$NBAFFICHDEFILE$$,/*nb total*/$$IF+:21:ANNLISTE:NBR$$24$$END$$$$IF-:21:ANNLISTE:NBR$$$$ANNLISTE:NBR$$$$END$$,/* vitesse */$$SELECTION_VITESSE_DEFIL$$,/* Mode */"random",/* si souris */true);
+                            		});
+                            	</script>
+                            $$END:DEFILE3$$
+                            $$BFIN$$
+							<div class="clear1"></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<!--Affichage bandeau "Estimation en ligne" -->
+				$$IF=:1:BANDEAUESTIMATION$$
+						<div id="EstimationEnLigne">
+							<p>
+							<a href="$$URLBASE$$/estimation,immobiliere.htm?idtypebien=2" class="Maison">$$LG:ESTIMERMAISON pcase$$</a>
+							<a href="$$URLBASE$$/estimation,immobiliere.htm?idtypebien=1" class="Appartement">$$LG:ESTIMERAPPARTEMENT pcase$$</a>
+							</p>
+						</div>
+				$$END$$
+
+
+
+				<div id="presentation">
+					<div id="txtAccueil">
+						<div id="contentText">
+
+							<!--#include virtual="/immo/incl_text_accueil.htm" -->
+						</div>
+						<p class="link">
+							<!--#include virtual="header/incl_en_savoir_plus.htm" -->
+						</p>
+					</div><!-- div#txtAccueil -->
+
+					<div id="vignettes">
+
+						<a href="http://www.laforet-prestige.com" title="" target="_blank" class="encart laforet">
+							<p>
+								$$IF=:FR:LANGUE$$Lafor&ecirc;t Prestige <br />Biens d'exception<br />$$END$$
+								$$IF=:EN:LANGUE$$Lafor&ecirc;t Luxury<br />Exceptional properties<br />$$END$$
+								<span>www.laforet-prestige.com</span>
+							</p>
+						</a><!-- a.laforet -->
+						<a href="$$PAGE:URL_FACEBOOK$$" title="" target="_blank" class="encart facebook">
+							<p>
+							$$IF=:FR:LANGUE$$RETROUVEZ NOS AGENCES SUR <strong>FACEBOOK</strong> ET LES RESEAUX SOCIAUX$$END$$
+							$$IF=:EN:LANGUE$$FIND OUR AGENCIES ON <strong>FACEBOOK</strong> AND SOCIAL NETWORKS$$END$$
+							</p>
+						</a><!-- a.facebook -->
+						<div class="encart engagement">
+							<p>
+							$$IF=:FR:LANGUE$$D&eacute;couvrez nos engagements <br /> pour la vente de <br />votre bien.$$END$$
+							$$IF=:EN:LANGUE$$discover our engagements <br /> For the sale of <br /> your real$$END$$
+							</p>
+							<a href="$$URLBASE$$/immo,nos-services.htm?lang=$$LANGUE$$" title="">À découvrir ici</a>
+						</div><!-- div.engagement -->
+					</div><!-- div#vignettes -->
+
+				</div><!-- div#presentation -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

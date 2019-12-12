@@ -1,0 +1,92 @@
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:::REP:1:::ALIAS:ANNLISTE$$
+<!--#include virtual="recherche/incl_haut_annonces.htm" -->
+$$BIF:ANNLISTE$$
+	<div id="zoneResultats">
+	$$DO:config:config$$
+		$$A:TITLE_SELECTION_INDEX=$$
+		$$IF:PAGE:URLREWRITINGENABLED$$
+			$$IF:FORM:LANG$$
+				$$IF!:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+				$$END$$
+				$$IF=:FR:FORM:LANG$$
+					$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+				$$END$$
+			$$END$$
+			$$IF0:FORM:LANG$$
+				$$A:LIEN_SELECTION_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:PAGE:URLREWRITINGENABLED$$
+			$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			$$A:TITLE_SELECTION_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+		$$END:WAGREF_IDDOSSIER_SITE$$
+		<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+			<div class="blocModule borderModule shadow" id="annonce$$ANNLISTE:IDANNONCE$$">
+					$$IF:ANNLISTE:SI_COUPDECOEUR$$
+						<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+					$$END:COUPDECOEUR$$
+					$$IF:ANNLISTE:SI_EXCLUSIF$$
+						<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+					$$END:SI_EXCLUSIF$$
+					$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+						<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+					$$END$$
+					$$IF:ANNLISTE:SI_PROMO$$
+						<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+					$$END:SI_PROMO$$
+					<div class="infoModule">
+						<ul>
+							<li class="typeBienCarre">$$ANNLISTE:IDTYPEBIEN gettypebien$$</li>
+							<li class="nbPiecesCarre">
+							$$IF:ANNLISTE:NB_PIECES$$
+							$$ANNLISTE:NB_PIECES$$
+								$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+								$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$			
+							$$END$$	
+							</li>
+							<li class="villeCarre">$$ANNLISTE:AVILLE$$</li>
+							<li class="prixCarre">$$ANNLISTE:PRIX$$ $$ANNLISTE:PRIX_UNITE$$ </li>
+						</ul>			
+					</div>
+					$$IF:ANNLISTE:C175_URL$$
+						<img src="$$ANNLISTE:C175_URL$$" width="175" height="175" alt="$$TITLE_SELECTION_INDEX$$"/>
+					$$END$$
+					$$IF0:ANNLISTE:C175_URL$$
+						<div class="blocCarreNoPhoto"></div>
+					$$END$$
+			</div>
+		</a>
+	$$LOOP$$
+		<div class="clear"></div>
+	</div>
+$$BFIN$$
+$$IF0:ANNLISTE:NBR$$
+	<p class="results">0 $$LG:LIEN:RESULTATS lcase$$ $$LG:POUR$$ $$ANNLISTE:PHRASE$$</p>
+$$END$$
+<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		gestionAnnonce('blocModule');
+	});
+</script>
+$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	<!--			
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+	//-->
+</script>
+$$BFIN$$

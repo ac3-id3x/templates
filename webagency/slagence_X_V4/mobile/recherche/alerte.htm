@@ -1,0 +1,134 @@
+$$INIT:IDT=ALERTE$$ 
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG::::REP:1:~nostat:1:ALIAS:ANNLISTE$$
+$$BIF:ANNLISTE$$$$DO:1:2$$$$LOOP$$$$BFIN$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div data-role="content" id="alerte_annonce">
+	$$IF!:-780158,-780646,-920012,-920012,-920033,-920044,-920047,-920051,-920063,-920064,-920072,-920073,-920076,-920077:FORM:CI$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:LIEN:RECH pcase$$ : <span>$$ANNLISTE:PHRASE$$</span></h2>
+	$$END$$
+	$$IF=:-780158,-780646,-920012,-920012,-920033,-920044,-920047,-920051,-920063,-920064,-920072,-920073,-920076,-920077:FORM:CI$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:LIEN:RECH pcase$$ : <span>$$FORM:IDTYPEBIEN gettypebien$$ situées dans le 78 et le 92(sauf Neuilly, Levallois Perret, Boulogne, Saint-Cloud, Garches, Le Chesnay, Marnes la Coquette, Rueil Malmaison, Sèvres, Suresnes, Vaucresson, Versailles et Ville d’Avray)</span></h2>
+	$$END$$
+		<div class="pageMobi">
+			<p>
+				$$IF!:FR:LANGUE$$
+					We will send you an email each time we post a property that might interest you on our website.
+				$$END$$
+				$$IF=:FR:LANGUE$$
+					Nous vous adresserons un email à chaque fois que nous publierons sur notre site une annonce correspondant à un produit immobilier susceptible de correspondre à vos critères de recherche.
+				$$END$$
+			</p>
+			<form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email  htmlencode$$" method="post" data-ajax="false">
+				<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+				<input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
+				<input type="hidden" name="phrase" value="$$ANNLISTE:PHRASE$$" />
+				<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+				<input type="hidden" name="page_base" value="http://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry alierr htmlencode$$" />	
+				<input type="hidden" name="page_err" value="alerte,redirect.htm" />	
+				<input type="hidden" name="langue" value="$$LANGUE$$" />
+				$$IF=:1:FORM:SI_MEUBLE$$
+					<input type="hidden" value="1" name="si_meuble" />
+				$$END$$
+				$$IF=:0:FORM:SI_MEUBLE$$
+					<input type="hidden" value="0" name="si_meuble" />
+				$$END$$
+				$$IF!:1$0:FORM:SI_MEUBLE$$
+					<input type="hidden" value="" name="si_meuble" />
+				$$END$$
+				$$IF=:1:EXPORTXML$$
+					<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO-AGENCE" />
+					$$IF:FORM:NB_PIECES$$
+						<input type="hidden" name="nb_pieces" value="$$FORM:NB_PIECES replace 1+ 2 replace 2+ 3 replace 3+ 4 replace 4+ 5$$" />
+					$$END$$
+					$$IF:FORM:PXBTW$$
+						<input type="hidden" name="pxbtw" value="$$FORM:PXBTW$$" />
+					$$END$$
+					$$IF0:FORM:PXBTW$$
+						$$IF:FORM:PXMIN$$
+							$$IF:FORM:PXMAX$$
+								<input type="hidden" name="pxbtw" value="$$FORM:PXMIN$$/$$FORM:PXMAX$$" />
+							$$END$$
+						$$END$$
+					$$END$$
+					$$IF:FORM:SURFACEBTW$$
+						<input type="hidden" name="surfacebtw" value="$$FORM:SURFACEBTW$$" />
+					$$END$$
+					$$IF0:FORM:SURFACEBTW$$
+						$$IF:FORM:SURFACEMIN$$
+							$$IF:FORM:SURFACEMAX$$
+								<input type="hidden" name="surfacebtw" value="$$FORM:SURFACEMIN$$/$$FORM:SURFACEMAX$$" />
+							$$END$$
+						$$END$$
+					$$END$$
+				$$END$$
+				$$IF0:EXPORTXML$$
+					<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+				$$END$$
+				<input type="hidden" name="srv" value="$$SRV$$" />
+				<input type="hidden" name="lang" value="$$LANGUE$$" />
+				<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$"/>
+				$$IF=:1:FORMALERTECIVILITE$$
+					<select name="civ" id="civ"  data-placeholder="true" placeholder="$$LG:CIVILITE pcase$$" data-icon="AB-custom">
+						<option value="">$$LG:CIVILITE pcase$$</option>
+						<option value="Melle">$$LG:MADEMOISELLE pcase$$</option>
+						<option value="Mme">$$LG:MADAME pcase$$</option>
+						<option value="Mr">$$LG:MONSIEUR pcase$$</option>
+					</select>
+				$$END$$
+				<input type="text" name="nom" placeholder="$$LG:NOM pcase$$" />
+				$$IF=:1:FORMALERTEPRENOM$$
+					<input type="text" name="prenom" placeholder="$$LG:PRENOM pcase$$" />
+				$$END$$
+				<input name="email" type="email" placeholder="$$LG:EMAIL pcase$$" id="mailadresse" />
+				$$IF=:1:FORMALERTEPIECES$$
+					$$IF:FORM:NB_PIECES$$
+						$$IF:FEAU$$
+							<input type="text" $$IF:FORM:NB_PIECES$$disabled="disabled"$$END$$ $$IF:FORM:NB_PIECES$$name="nb_pieces_info"$$END$$ $$IF0:FORM:NB_PIECES$$name="nb_pieces"$$END$$value="$$FORM:NB_PIECES replace 1+ 2 replace 2+ 3 replace 3+ 4 replace 4+ 5$$$$IF:FORM:NB_PIECES$$ $$LG:PIECES lcase$$$$END$$" placeholder="$$LG:NBRP pcase$$" />
+						$$END$$
+						$$IF0:FEAU$$
+							<input type="text" $$IF:FORM:NB_PIECES$$disabled="disabled"$$END$$ name="nb_pieces_info" value="$$FORM:NB_PIECES$$$$IF:FORM:NB_PIECES$$ $$LG:PIECES lcase$$$$END$$" placeholder="$$LG:NBRP pcase$$" />
+						$$END$$
+					$$END$$
+				$$END$$
+				$$IF=:1:FORMALERTESURFACE$$
+					$$IF:FORM:SURFACEBTW$$
+						<input type="number" $$IF:FORM:SURFACEBTW$$disabled="disabled"$$END$$ name="surfacemin" value="$$IF:FORM:SURFACEBTW$$$$FORM:SURFACEBTW$$$$END$$$$IF0:FORM:SURFACEBTW$$$$IF:FORM:SURFACEMIN$$$$FORM:SURFACEMIN$$$$END$$$$IF0:FORM:SURFACEMIN$$$$FORM:SURFACEMAX$$$$END$$$$END$$" placeholder="$$LG:SURFACE pcase$$" />
+					$$END$$
+				$$END$$
+				$$IF:FORM:PXMIN$$
+					$$IF=:1:FORMALERTEBUDGETMIN$$
+						$$IF:FORM:PXMIN$$
+							<input type="number" $$IF:FORM:PXMIN$$disabled="disabled"$$END$$ name="pxmin" value="$$FORM:PXMIN$$" placeholder="$$LG:BUDGET pcase$$ $$LG:MINI lcase$$" />
+						$$END$$
+						$$IF0:FORM:PXMIN$$
+							<input type="number" $$IF:FORM:PXBTW$$disabled="disabled"$$END$$ name="pxmin" value="$$FORM:PXBTW splitpart / 1$$" placeholder="$$LG:BUDGET pcase$$ $$LG:MINI lcase$$" />
+						$$END$$
+					$$END$$
+				$$END$$
+				$$IF:FORM:PXMAX$$
+					$$IF=:1:FORMALERTEBUDGETMAX$$
+						$$IF:FORM:PXMAX$$
+							<input type="number" $$IF:FORM:PXMAX$$disabled="disabled"$$END$$ name="pxmax" value="$$FORM:PXMAX$$" placeholder="$$LG:BUDGET pcase$$ $$LG:MINI lcase$$" />
+						$$END$$
+						$$IF0:FORM:PXMAX$$
+							<input type="number" $$IF:FORM:PXBTW$$disabled="disabled"$$END$$ name="pxmax" value="$$FORM:PXBTW splitpart / 2$$" placeholder="$$LG:BUDGET pcase$$ $$LG:MAXI lcase$$" />
+						$$END$$
+					$$END$$
+				$$END$$
+				$$IF=:1:FORMALERTELOCALISATION$$
+					<input id="localisationAlerte" name="localisation" type="hidden" />
+					<input type="text" id="localisationAlerteAffichage" name="localisationAffichage" placeholder="$$LG:LOCALIS pcase$$" />
+				$$END$$
+				$$IF=:1:PAGE:OPTIN_CONTRAT$$
+					<label>$$IF=:FR:LANGUE$$Je d&eacute;sire &ecirc;tre contact&eacute; par une agence$$END$$$$IF!:FR:LANGUE$$I would like to be contact by a real estate agency$$END$$ <input type="checkbox" name="siOptinPoliris" value="1" /></label>
+				$$END$$
+				$$IF:FEAU$$
+					<p id="emailvalide">$$LG:EMAILVALIDE pcase$$</p>
+					<p id="civilitevalide">$$LG:CIVILITEOBLIGATOIRE pcase$$</p>
+				$$END$$
+				<input type="submit" value="$$LG:ENVOYER2 pcase$$" id="boutonForm" disabled="disabled" />
+			</form>
+		</div>
+</div>
+<!--#include virtual="scripts/incl_alerte.htm" -->
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,37 @@
+$$DYN:ID3:CONTENTTYPE:application/json$$$$DYN:ID3:NOCNXWEB$$$$DYN:ID3:NOFOOTER$$
+$$B:IMMOBW:CARTO-ANNONCES-MARKERS:~latMin:QRY:LATMIN:~lonMin:QRY:LONMIN:~latMax:QRY:LATMAX:~lonMax:QRY:LONMAX:~width:QRY:WIDTH:~height:QRY:HEIGHT:ALIAS:DESSIN$$
+$$BIF:DESSIN$$
+	$$A:MAXDESSIN=@@DESSIN:NBR@@$$
+	{
+	"qry":"$$REP:QRY$$",
+	"nbr":"$$MAXDESSIN$$",
+	"idtt":$$IF0:FORM:IDTT$$""$$END$$$$IF:FORM:IDTT$$$$FORM:IDTT$$$$END$$,
+	"list": [
+		$$DO$$
+			{	
+				$$IF=:ANN:DESSIN:TYPE$$
+					"type":"qrt",
+				$$END$$
+				$$IF!:ANN:DESSIN:TYPE$$
+					"type":"$$DESSIN:TYPE$$",
+				$$END$$
+				"region":"$$IF:DESSIN:IDDIVISION$$$$DESSIN:IDDIVISION$$$$END$$$$IF0:DESSIN:IDDIVISION$$0$$END$$",
+				"departement":"$$IF:DESSIN:CODEDEPARTEMENT$$$$DESSIN:CODEDEPARTEMENT$$$$END$$$$IF0:DESSIN:CODEDEPARTEMENT$$0$$END$$",
+				"idquartier":"$$IF:DESSIN:IDQUARTIER$$$$DESSIN:IDQUARTIER$$$$END$$$$IF0:DESSIN:IDQUARTIER$$0$$END$$",
+				"ci":"$$IF:DESSIN:CODEINSEE$$$$DESSIN:CODEINSEE$$$$END$$$$IF0:DESSIN:CODEINSEE$$0$$END$$",
+				"valuenb":"$$DESSIN:NBANNONCES$$",
+				"nb": "$$DESSIN:NBANNONCES$$ $$IF=:0$1:DESSIN:NBANNONCES$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:DESSIN:NBANNONCES$$$$LG:ANNONCES lcase$$$$END$$",
+				"nom":"$$IF:DESSIN:IDQUARTIER$$$$DESSIN:IDQUARTIER getquartier htmlencode$$$$END$$$$IF0:DESSIN:IDQUARTIER$$$$IF:DESSINCODEINSEE$$$$DESSIN:CODEINSEE codeinsee2ville ncase$$$$END$$$$IF0:DESSINCODEINSEE$$$$DESSIN:NOM$$$$END$$$$END$$",
+				"latitude":"$$DESSIN:LATITUDE replace , .$$",
+				"longitude":"$$DESSIN:LONGITUDE replace , .$$"
+				$$REM$$"poly":"$$DESSIN:POLYHIGHWKT replace POLYGON¤(( ¤ replace )) ¤$$"$$END$$
+			}$$IF!:DESSIN_I:MAXDESSIN$$,$$END$$
+		$$LOOP$$
+		]
+	}
+$$BFIN$$
+$$BIF0:DESSIN$$
+	{
+		"results":"0"
+	}
+$$BFIN$$

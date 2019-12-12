@@ -1,0 +1,79 @@
+$$INIT:IDT=DETAILCONTACT$$
+$$E:IMMOBW:ANNONCE:QRY:IDANNONCE:QRY:IDPUBLICATION:ALIAS:ANNDETAIL$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$IF=:1:FORM:CTC$$
+$$REM$$<!-- // confirmation formulaire envoye // -->	$$END:REM$$
+<!--#include virtual="detail/incl_formulaire_ok.htm" -->
+$$END:FORM:CTC$$
+$$IF0:FORM:CTC$$
+<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:NOUSCTC pcase$$ $$IF:ANNDETAIL:COOR-NOM$$- $$ANNDETAIL:COOR-NOM$$$$END$$</h2>
+	<div data-role="content" class="pageMobi">
+		$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+			<p>$$IMMOBW:AGENCEMAIL:ERRE$$</p>
+		$$END$$	
+		
+		$$IF:ANNDETAIL:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:IMMOBW:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+		$$IF:CHECKMAIL$$
+			$$IF=:1:IMMOBW:AGENCEMAIL:OK$$
+			$$REM$$<!-- // si message envoye // -->$$END:REM$$
+			<script type="text/javascript">
+			<!--
+			document.location= '/$$ANNDETAIL:IDPUBLICATION$$/$$REP:1$$/$$REP:0$$?ctc=1&lang=$$LANGUE$$';
+			//-->
+			</script>
+			$$END:AGENCEMAIL:OK$$
+			$$IF!:1:FORM:CTC$$
+				<form method="post" action="" name="form_contact" data-ajax="false">	
+					<input type="hidden" name="langue" value="$$LANGUE$$" />
+					<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+					<input type="hidden" name="page_ok" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,contact.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+					<input type="hidden" name="page_err" value="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,contact.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+					<input type="hidden" name="PathTemplateMail" value="/mobile,contact,detail_formulaire_envoi.htm" />$$REM$$<!--// [INPUT FACULTATIVE] chemin template mail reçu par client > demutualisable //-->$$END$$
+					<!--#include virtual="detail/incl_input_idpublication.htm" -->
+					<input type="hidden" name="idannonce" value="$$ANNDETAIL:IDANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+					<input type="hidden" value="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm" name="permalienForm" />
+					$$IF=:1:FORMCONTACTCIVILITE$$
+						<select name="civ" id="civ" data-placeholder="true" placeholder="$$LG:CIVILITE pcase$$" data-icon="AB-custom">
+							<option value="">$$LG:CIVILITE pcase$$</option>
+							<option value="Melle" $$IF=:MELLE:FORM:CIV$$selected$$END$$>$$LG:MADEMOISELLE pcase$$</option>
+							<option value="Mme" $$IF=:MME:FORM:CIV$$selected$$END$$>$$LG:MADAME pcase$$</option>
+							<option value="Mr" $$IF=:MR:FORM:CIV$$selected$$END$$>$$LG:MONSIEUR pcase$$</option>
+						</select>
+					$$END$$
+					<input type="text" name="cnom" id="cnom" placeholder="$$LG:NOM pcase$$" value="$$FORM:CNOM$$"/>
+					$$IF=:1:FORMCONTACTPRENOM$$
+						<input type="text" name="cprenom" id="cprenom" placeholder="$$LG:PRENOM pcase$$" value="$$FORM:CPRENOM$$"/>
+					$$END$$
+					<input placeholder="$$LG:EMAIL pcase$$" type="email" name="from" id="from" value="$$FORM:FROM$$" />
+					<input type="tel" placeholder="$$LG:TEL pcase$$" name="ctel" id="ctel" value="$$FORM:CTEL$$" />
+					$$IF=:1:FORMCONTACTTELEPHONE2$$
+						 	<input type="tel" placeholder="$$LG:TEL pcase$$ 2" name="telephone2" id="telephone2" value="$$FORM:TELEPHONE2$$" />
+						 $$END$$
+					$$IF=:1:FORMCONTACTTELEPHONE3$$
+						 <input type="tel" placeholder="$$LG:TEL pcase$$ 3" name="telephone3" id="telephone3" value="$$FORM:TELEPHONE3$$" />
+					$$END$$
+					$$IF=:1:FORMCONTACTADRESSE$$
+						 <input type="text" placeholder="$$LG:ADRESSE pcase$$" name="adresse" id="adresse" value="$$FORM:ADRESSE$$" />
+					$$END$$
+					$$IF=:1:FORMCONTACTCP$$
+						 <input type="number" placeholder="$$LG:CODEP pcase$$" name="cp" id="cp" value="$$FORM:CP$$" />
+					$$END$$
+					$$IF=:1:FORMCONTACTVILLE$$
+						 	<input type="text" placeholder="$$LG:VILLE pcase$$" name="ville" id="ville" value="$$FORM:VILLE$$" />
+					$$END$$
+					$$IF=:1:FORMCONTACTPAYS$$
+						<input type="text" placeholder="$$LG:PAYS pcase$$" name="pays" id="pays" value="$$FORM:PAYS$$" />
+					$$END$$
+						<input type="text" placeholder="$$LG:MINIRECHREF pcase$$" name="reference_bien" id="reference_bien" disabled="disabled" value="$$IF:FORM:REFERENCE_BIEN$$$$FORM:REFERENCE_BIEN$$$$END$$$$IF0:FORM:REFERENCE_BIEN$$$$ANNDETAIL:REFANNONCE$$$$END$$"/>
+					$$IF=:1:FORMCONTACTDETAILBIEN$$
+						<textarea name="detail_bien" id="detail_bien">$$IF:FORM:DETAIL_BIEN$$$$FORM:DETAIL_BIEN$$$$END$$$$IF0:FORM:DETAIL_BIEN$$$$ANNDETAIL:DESCRIPTIF$$$$END$$</textarea>
+					$$END$$
+					<textarea placeholder="$$LG:MESSAGE pcase$$" name="message" id="message">$$FORM:MESSAGE$$</textarea>
+					<input type="submit" id="boutonForm" value="$$LG:ENVOYER2 pcase$$" />
+				</form>
+			$$END:FORM:CTC$$	
+		$$END:CHECKMAIL$$
+	</div>
+$$END$$
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,124 @@
+$$REM$$====================================================================
+//// <summary>Fichier include du div qui va contenir la BingMaps des agences</summary>
+//// <remarks>
+//// <para>Fichier dépendant de : carto/js/BingMap.js</para>
+//// <para>INIT destiné à associer le fichier styles,BingMap.css dans incl_styles.htm</para>
+//// <para>INIT destiné à appeler les scripts dans scripts/incl_scripts.htm</para>
+//// <para>Fichier appelé par : carto/js/BingMap.js</para>
+//// </remarks>
+//// <update date="2010-04-12" author="ext-karim.mekni">Création v1</update>
+//// <update date="2010-05-21" author="lisbonne.siriphol">Update CSS</update>
+//// <update date="2010-08-31" author="lisbonne.siriphol">Update</update>
+====================================================================$$END$$
+$$INIT:GEOLOC=1$$ 
+
+<script type="text/javascript">
+	<!--
+	var urlRecherche = '/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm';
+	var queryRecherche ='$$REP:QRY removeqry localisation removeqry kw removeqry gclid removeqry immobw_ann_qrypg removeqry ci removeqry cp removeqry div removeqry sdiv removeqry sdiv1 removeqry sdiv2 escape$$';
+  	var langue = '$$LANGUE$$';
+  	var annSingulier = '$$LG:ANNONCE lcase$$';
+  	var annPluriel = '$$LG:ANNONCES lcase$$';
+  	var cetteAnnonce = '$$LG:CETTEANNONCE lcase$$';
+  	var cesAnnonces = '$$LG:CESANNONCES lcase$$';
+  	var linkPlusDetails = '$$LG:PLUSDETAILS pcase$$';
+	//-->
+</script>
+<div id="MapMicrosoft" class="geolocAnnonces">
+	<div id="MapHead">
+		<p class="criteres">$$LG:VOTRERECHERCHE pcase$$ :</p>
+		<ul>
+			<li>$$FORM:IDTT gettypetransaction lcase$$</li>			
+			$$IF:FORM:IDTYPEBIEN$$<li>$$FORM:IDTYPEBIEN gettypebien lcase$$</li>$$END$$
+			$$IF:FORM:CI$$<li>$$FORM:CI codeinsee2ville$$ ($$FORM:CI left 2 cp2dep$$)</li>$$END$$
+			$$IF:FORM:CP$$<li>$$FORM:CP cp2dep$$</li>$$END$$
+			$$IF:FORM:NB_PIECES$$
+				<li>$$FORM:NB_PIECES$$
+				$$IF=:1:FORM:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:1:FORM:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$</li>
+			$$END$$
+			$$IF:FORM:NB_CHAMBRES$$
+				<li>$$FORM:NB_CHAMBRES$$
+				$$IF=:1:FORM:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$
+				$$IF!:1:FORM:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$</li>
+			$$END$$
+			<!-- -->
+			$$IF:FORM:PX_BS_SEMAINEMIN$$
+			$$IF!:MIN$0:FORM:PX_BS_SEMAINEMIN$$
+				<li>$$LG:PRIXBASSESAIS lcase$$ $$LG:MINI lcase$$. : $$FORM:PX_BS_SEMAINEMIN$$ &euro;</li>			
+			$$END$$
+			$$END$$
+			$$IF:FORM:PX_BS_SEMAINEMAX$$
+			$$IF!:MAX$0:FORM:PX_BS_SEMAINEMAX$$
+				<li>$$LG:PRIXBASSESAIS lcase$$ $$LG:MAXI lcase$$. : $$FORM:PX_BS_SEMAINEMAX$$ &euro;</li>		
+			$$END$$
+			$$END$$
+			<!-- -->
+			$$IF:FORM:PX_BOUQUETMIN$$
+			$$IF!:MIN$0:FORM:PX_BOUQUETMIN$$
+				<li>$$LG:BOUQUET lcase$$ $$LG:MINI lcase$$. : $$FORM:PX_BOUQUETMIN$$ &euro;</li>
+			$$END$$
+			$$END$$
+			$$IF:FORM:PX_BOUQUETMAX$$
+			$$IF!:MAX$0:FORM:PX_BOUQUETMAX$$
+				<li>$$LG:BOUQUET lcase$$ $$LG:MAXI lcase$$. : $$FORM:PX_BOUQUETMAX$$ &euro;</li>
+			$$END$$
+			$$END$$
+			<!-- -->
+			$$IF:FORM:PX_RENTEMIN$$
+			$$IF!:MIN$0:FORM:PX_RENTEMIN$$
+				<li>$$LG:RENTE lcase$$ $$LG:MINI lcase$$. : $$FORM:PX_RENTEMIN$$ &euro;</li>
+			$$END$$
+			$$END$$
+			$$IF:FORM:PX_RENTEMAX$$
+			$$IF!:MAX$0:FORM:PX_RENTEMAX$$
+				<li>$$LG:RENTE lcase$$ $$LG:MAXI lcase$$. : $$FORM:PX_RENTEMAX$$ &euro;</li>
+			$$END$$
+			$$END$$
+			<!-- -->
+			$$IF:FORM:SURF_TERRAIN_MIN$$
+			$$IF!:MIN$0:FORM:SURF_TERRAIN_MIN$$
+				<li>$$LG:SURFTER lcase$$ $$LG:MINI lcase$$. : $$FORM:SURF_TERRAIN_MIN$$ $$LG:M2 lcase$$</li>
+			$$END$$
+			$$END$$
+			$$IF:FORM:SURF_TERRAIN_MAX$$
+			$$IF!:MAX$0:FORM:SURF_TERRAIN_MAX$$
+				<li>$$LG:SURFTER lcase$$ $$LG:MAXI lcase$$. : $$FORM:SURF_TERRAIN_MAX$$ $$LG:M2 lcase$$</li>
+			$$END$$
+			$$END$$
+			$$IF:FORM:RAYON$$
+				<li>rayon : $$FORM:RAYON$$ $$LG:KM lcase$$</li>
+			$$END$$
+		</ul>
+		<div class="clear"><!-- --></div>
+	</div><!-- #MapHead -->
+	<div id="AgencesBingMap" style="position:relative; width: 100%; height:$$BINGMAPAGENCESHEIGHT$$;"></div>
+	<p class="geolocInfo">$$LG:GEOLOCNOTICE$$</p>
+</div><!-- #MapMicrosoft -->
+
+$$B:IMMOBW:ANNONCES-SMARTPHONE:ALIAS:SEARCH:~idtt:QRY:IDTT:~idpublication:QRY:IDPUBLICATION:~idtypepublication:QRY:IDTYPEPUBLICATION:~idtypebien:QRY:IDTYPEBIEN:~localisation:ville:~codedep:QRY:CODEDEP$$
+
+<script type="text/javascript">
+	<!--
+	$(document).ready(function() {
+		addOnLoadEvent("makeMap();");
+	});
+	function makeMap()
+		{
+			var arrayOfCities = new Array();	
+			try
+			{
+				$$BIF:SEARCH$$
+				$$DO$$
+						arrayOfCities.push({ville:'$$SEARCH:LIBELLE escape htmlencode$$',ci:'$$SEARCH:ID$$',nombre:$$SEARCH:NB$$,latitude:'$$SEARCH:LATITUDE replace , .$$',longitude:'$$SEARCH:LONGITUDE replace , .$$'});
+				$$LOOP$$
+				$$BFIN$$
+				GetCitiesMap(arrayOfCities,$$IF:MAPDASHBOARDSIZE$$$$MAPDASHBOARDSIZE$$$$END$$$$IF0:MAPDASHBOARDSIZE$$VEDashboardSize.Small$$END$$);
+			}
+			catch(err)
+			{
+				//alert(err.description);
+			}	
+		}	
+	//-->
+</script>

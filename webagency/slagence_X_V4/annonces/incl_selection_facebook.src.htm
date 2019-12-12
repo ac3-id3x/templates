@@ -1,0 +1,98 @@
+<!-- [ttl: 4h] -->
+££REM££====================================================================
+//// <summary>Sélection d'annonces affichée (souvent des cdc) sur l'index</summary>
+//// <remarks>
+//// <para>Paramétrage avec macros qui se trouvent dans incl_param.htm du site</para>
+//// <para>Paramétrages possible = fraicheur, défilant ou pas, type transac et nb annonces affichées</para>
+//// <para>Packs avantage = par défaut NOUVEAUTÉS. CDC, exclus et autres à vérifier si on a droit</para>
+//// <para>On ne démutualise pas ce fichier !</para>
+//// <para>La date de fraicheur du bien est affichée en commentaire: info utile pour chefs de projets</para>
+//// <para>On enlève ces valeurs de la qry, ça ne sert que pour le neuf : idtt= IMMOBW:ANN:~limit:IDTYPETRANSACTION IF:IMMOBW:ANN:~limit:IDANNONCEPARENT &amp;idap= IMMOBW:ANN:~limit:IDANNONCEPARENT END</para>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Reprise de x_v2 et adaptation pour x_v3</update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-07-08" author=christophe.ledoux">Updates</update>
+=====================================================================££END££
+££INIT:JS_ANNONCES=1££
+££B:IMMOBW:ANN:VAL:IDTTCC:FR:QRY:IDP::photo=10::d_dt_maj:ALIAS:ANNLISTE££
+££BIF:ANNLISTE££
+<div id="Annliste">
+££DO:1:4££
+££REM££<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->££END££
+££IF:PAGE:URLREWRITINGENABLED££
+	££IF:FORM:LANG££
+		££IF!:FR:FORM:LANG££
+			££A:LIEN_ANNLISTE_INDEX=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@££
+		££END££
+		££IF=:FR:FORM:LANG££
+			££A:LIEN_ANNLISTE_INDEX=@@ANNLISTE:URLVIRTUELLE@@££
+		££END££
+	££END££
+	££IF0:FORM:LANG££
+		££A:LIEN_ANNLISTE_INDEX=@@ANNLISTE:URLVIRTUELLE@@££
+	££END££
+££END££
+££IF0:PAGE:URLREWRITINGENABLED££
+	££A:LIEN_ANNLISTE_INDEX=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@££
+££END££
+££A:TITLE_ANNLISTE_INDEX=££
+££IF:PAGE:WAGREF_IDDOSSIER_SITE££
+	££A:TITLE_ANNLISTE_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@££
+££END:WAGREF_IDDOSSIER_SITE££
+££REM££<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->££END££
+££REM££<!-- DEBUT CONSTRUCTION ANNONCE -->££END££
+	<div class="blocInterneFacebook" id="annoncesBloc££ANNLISTE:I££">
+		<a href="££LIEN_ANNLISTE_INDEX££" title="££TITLE_ANNLISTE_INDEX££" target="_blank">
+			<div class="blocContentEffet">
+				££IF:ANNLISTE:SI_COUPDECOEUR££
+					<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+				££END:COUPDECOEUR££
+				££IF:ANNLISTE:SI_EXCLUSIF££
+					<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+				££END:SI_EXCLUSIF££
+				££IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days££
+					<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+				££END££
+				££IF:SI_PROMO££
+					££IF:ANNLISTE:SI_PROMO££
+					<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+					££END:SI_PROMO££
+				££END:SI_PROMO££
+				<div class="blocPhoto££IF0:ANNLISTE:IDPHOTO££££IF=:FALSE:ANNLISTE:SI_LOGO££ blocNoPhoto££END££££END££">
+					<a href="££LIEN_ANNLISTE_INDEX££" title="££TITLE_ANNLISTE_INDEX££" target="_blank">
+					££IF:ANNLISTE:IDPHOTO££
+						<img src="££ANNLISTE:CARRE_URL££" alt="££TITLE_ANNLISTE_INDEX££" title="££TITLE_ANNLISTE_INDEX££"  />
+					££END:ANNLISTE:IDPHOTO££
+					££IF0:ANNLISTE:IDPHOTO££
+						££IF=:TRUE:ANNLISTE:SI_LOGO££
+						<div class="siLogo" style="background:url('££ANNLISTE:URLLOGO££') 50% 50% no-repeat #fff;"></div>
+						££END:ANNLISTE:SI_LOGO££
+					££END:ANNLISTE:IDPHOTO££
+					</a>
+				</div>
+			</div>
+		</a>
+		££IF:ANNLISTE:IDPHOTO££
+		<div class="blocNumPhotoBg"></div>
+		<div class="blocNumPhoto">
+				££ANNLISTE:IDTYPEBIEN gettypebien pcase££
+		</div>
+		££END££
+		<div class="blocVilleBien">
+			<a href="££LIEN_ANNLISTE_INDEX££" target="_blank" title="££TITLE_ANNLISTE_INDEX££">££ANNLISTE:AVILLE ncase££</a>
+		</div>
+		££IF:ANNLISTE:NB_PIECES££
+			<div class="blocPiecesBien">
+				££ANNLISTE:NB_PIECES££
+				££IF=:1:ANNLISTE:NB_PIECES££££LG:PIECE lcase££££END££
+				££IF!:0$1:ANNLISTE:NB_PIECES££££LG:PIECES2 lcase££££END££					
+				££IF:ANNLISTE:SURFACE££
+						- ££ANNLISTE:SURFACE££ ££LG:M2 lcase££££IF=:EN:LANGUE££ (££ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0££ Sq Ft)££END:EN££
+				££END:ANNLISTE:SURFACE££
+			</div>
+		££END:ANNLISTE:NB_PIECES££
+	</div>
+££REM££<!-- FIN CONSTRUCTION ANNONCE -->££END££
+££LOOP££
+<div class="clear"></div>
+</div>
+££BFIN££

@@ -1,0 +1,237 @@
+$$INIT:CSS_FACEBOOK=1$$
+$$INIT:CSS_AGENCE=1$$
+$$INIT:JS_BING=1$$
+$$INIT:JS_FACEBOOK=1$$
+$$REM$$<!-- ======================== FICHIER A NE PAS DEMUTUALISER ======================== -->$$END:REM$$
+$$REM$$<!-- ======================== VARIABLES ET PARAMS AGENCE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_var_params.htm" -->	
+$$REM$$<!-- ======================== DOCTYPE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+<!--#include virtual="header/incl_titre.htm" -->
+$$REM$$<!-- ========================== JS ========================== -->$$END:REM$$
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+$$REM$$<!-- ========================== CSS ========================== -->$$END:REM$$
+<!--#include virtual="styles/incl_styles.htm" -->
+$$REM$$<!-- ========================== ICON NAVIGATEUR ================= -->$$END:REM$$
+$$IF:FAVICON$$
+	<link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico" />
+$$END$$	
+</head>
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<body>
+	<div id="Fcb_global">
+		<div id="Fcb_header">
+			$$IF=:1:MULTIAGENCES$$
+			$$IF:FORM:IDP$$ $$CV:NOM$$, $$CV:VILLE$$ $$END$$
+			$$IF0:FORM:IDP$$$$AGENCE_NOM$$, $$LG:IMMOBILIER ucase$$$$END$$
+			$$REM$$
+			<h2>$$AGENCE_NOM$$, $$LG:IMMOBILIER ucase$$<br /></h2>
+			$$END$$
+			$$END:MULTIAGENCES$$
+			$$IF!:1:MULTIAGENCES$$
+			<h2>$$AGENCE_NOM$$, $$LG:IMMOBILIER ucase$$ $$LG:AA ucase$$ $$AGENCE_VILLE$$</h2>
+			$$END:MULTIAGENCES$$
+		</div>
+		<div id="Fcb_bloc1" class="blocFacebook">
+			<div class="logoFacebook">
+				<img src="$$_$$images/logo.png" alt="" title="" />
+			</div>
+			<div class="cartoFacebook">
+				$$INIT:BINGMAPAGENCESHEIGHT=300px$$
+				<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_bloc2" class="blocFacebook">
+			<div class="top">
+				<h2>Nos dernières annonces immobilières de vente</h2>
+			</div>
+			$$INIT:IDTTCC=2$$
+			<!--#include virtual="annonces/incl_selection_facebook.gen.htm" -->
+			<div class="clear"></div>
+		</div>
+		$$IF0:FORM:IDP$$
+			$$IF=:1:MULTIAGENCES$$
+			<div id="Fcb_bloc3" class="blocFacebook">
+				<div class="agence">
+					<div class="Fcb_btn_multi"><a href="http://$$REP:RSRV replace fb. www.$$/agences,liste.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:NOSAGS ucase$$</a></div>	
+				</div>
+				<div class="estimation">
+					<div class="Fcb_btn_multi"><a href="http://$$REP:RSRV replace fb. www.$$$$IF=:0:MULTI$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,estimation.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:LIEN:ESTIM ucase$$</a></div>
+				</div>
+				<div class="contact">
+					<div class="Fcb_btn_multi"><a href="http://$$REP:RSRV replace fb. www.$$$$IF=:0:MULTI$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:NOUSCTC ucase$$</a></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			$$END:MULTIAGENCES$$
+		$$END$$
+		$$IF:FORM:IDP$$
+		<div id="Fcb_bloc3" class="blocFacebook">
+			<div class="agence">
+				<div class="Fcb_btn"><a $$IF:PAGE:URLREWRITINGENABLED$$href="$$AGENCE_URLVIRT$$"$$END$$ $$IF0:PAGE:URLREWRITINGENABLED$$href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$&idp=$$FORM:IDP$$"$$END$$title="" target="_blank">$$LG:LIEN:AGEN ucase$$</a></div>
+			</div>
+			<div class="estimation">
+				<div class="Fcb_btn"><a href="http://$$REP:RSRV replace fb. www.$$/$$FORM:IDP$$/contact,estimation.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:LIEN:ESTIM ucase$$</a></div>
+			</div>
+			<div class="contact">
+				<div class="Fcb_btn"><a href="http://$$REP:RSRV replace fb. www.$$/$$FORM:IDP$$/contact,agence.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:NOUSCTC ucase$$</a></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_bloc4" class="blocFacebook">
+			<div class="presentation">
+				<div class="top"><h2>Présentation de l'agence</h2></div>
+					$$IF:CV:TXT_PUBLIC$$
+						<p>$$CV:TXT_PUBLIC crlf2br left 200$$...</p>
+					$$END$$
+					$$IF0:CV:TXT_PUBLIC$$
+						<!--#include virtual="immo/incl_accueil_texte.htm" -->
+					$$END:CV:TXT_PUBLIC$$
+					<div class="link">
+						<a $$IF:PAGE:URLREWRITINGENABLED$$href="$$AGENCE_URLVIRT$$"$$END$$ $$IF0:PAGE:URLREWRITINGENABLED$$href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$&idp=$$FORM:IDP$$"$$END$$ title="" target="_blank">$$LG:SAVOIR pcase$$</a>
+						<!--<a href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$" title="" target="_blank"></a>-->
+					</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_bloc5" class="blocFacebook">
+			<div class="coordonnees">
+				<div class="top"><h2>Notre agence</h2></div>
+				<div class="adresse">
+					<p>
+						$$CV:ADRESSE$$<br />
+						$$CV:CP$$ $$CV:VILLE$$<br />
+						$$LG:TELABREGE pcase$$ : <strong>$$CV:TEL formattel$$</strong><br />
+						$$LG:FAX pcase$$ : $$CV:FAX formattel$$<br />
+						<span class="email"><a href="http://$$REP:RSRV replace fb. www.$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="" target="_blank">$$CV:EMAIL$$</a></span>
+					</p>
+				</div>
+				$$IF:CV:IDPUBLICATION$$
+					<div class="photo">
+						<img src="$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg" />
+					</div>
+				$$END$$
+			</div>
+			<div class="horaires">
+				<div class="top"><h2>Horaires</h2></div>
+				<!--#include virtual="agence/horaires.htm" -->
+			</div>
+			<div class="clear"></div>
+		</div>
+		$$END$$
+		$$IF!:1:MULTIAGENCES$$
+		<div id="Fcb_bloc3" class="blocFacebook">
+			<div class="agence">
+				<div class="Fcb_btn"><a $$IF:PAGE:URLREWRITINGENABLED$$href="$$AGENCE_URLVIRT$$"$$END$$ $$IF0:PAGE:URLREWRITINGENABLED$$href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$"$$END$$title="" target="_blank">$$LG:LIEN:AGEN ucase$$</a></div>
+			</div>
+			<div class="estimation">
+				<div class="Fcb_btn"><a href="http://$$REP:RSRV replace fb. www.$$/$$AGENCE_IDPUBLICATION$$/contact,estimation.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:LIEN:ESTIM ucase$$</a></div>
+			</div>
+			<div class="contact">
+				<div class="Fcb_btn"><a href="http://$$REP:RSRV replace fb. www.$$/$$AGENCE_IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="" target="_blank">$$LG:NOUSCTC ucase$$</a></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_bloc4" class="blocFacebook">
+			<div class="presentation">
+				<div class="top"><h2>Présentation de l'agence</h2></div>
+					$$IF:CV:TXT_PUBLIC$$
+						<p>$$CV:TXT_PUBLIC crlf2br left 200$$...</p>
+					$$END$$
+					$$IF0:CV:TXT_PUBLIC$$
+						<!--#include virtual="immo/incl_accueil_texte.htm" -->
+					$$END:CV:TXT_PUBLIC$$
+					<div class="link">
+						<a $$IF:PAGE:URLREWRITINGENABLED$$href="$$AGENCE_URLVIRT$$"$$END$$ $$IF0:PAGE:URLREWRITINGENABLED$$href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$"$$END$$ title="" target="_blank">$$LG:SAVOIR pcase$$</a>
+						<!--<a href="http://$$REP:RSRV replace fb. www.$$/agence,immobiliere.htm?lang=$$LANGUE$$&idp=$$AGENCE_IDPUBLICATION$$" title="" target="_blank"></a>-->
+					</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_bloc5" class="blocFacebook">
+			<div class="coordonnees">
+				<div class="top"><h2>Notre agence</h2></div>
+				<div class="adresse">
+					<p>
+						$$AGENCE_ADRESSE$$<br />
+						$$AGENCE_CP$$ $$AGENCE_VILLE$$<br />
+						$$LG:TELABREGE pcase$$ : <strong>$$AGENCE_TEL formattel$$</strong><br />
+						$$LG:FAX pcase$$ : $$AGENCE_FAX formattel$$<br />
+						<span class="email"><a href="http://$$REP:RSRV replace fb. www.$$$$IF=:0:MULTI$$/$$AGENCE_IDPUBLICATION$$$$END$$/contact,agence.htm?lang=$$LANGUE$$" title="" target="_blank">$$AGENCE_EMAIL$$</a></span>
+					</p>
+				</div>
+				$$IF:CV:IDPUBLICATION$$
+					<div class="photo">
+						<img src="$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg" />
+					</div>
+				$$END$$
+			</div>
+			<div class="horaires">
+				<div class="top"><h2>Horaires</h2></div>
+				<!--#include virtual="agence/horaires.htm" -->
+			</div>
+			<div class="clear"></div>
+		</div>
+		$$END:MULTIAGENCES$$
+		<div class="clear"></div>
+		<div id="Fcb_bloc6" class="blocFacebook">
+			<form method="get" action="/moteur,mini,prevalidation.htm" id="Mini_Moteur" target="_blank">
+				<div class="moteur">
+					<div class="top"><h2>$$LG:LIEN:RECH ucase$$</h2></div>
+					<div id="recherche_transac">
+						<!--#include virtual="facebook/moteur/incl_type_transaction.htm" -->
+					</div>
+					<div class="clear"></div>
+						
+					<div id="recherche_bien">
+						<!--#include virtual="facebook/moteur/incl_type_bien.htm" -->
+					</div>
+					<script language="javascript" type="text/javascript">
+						$(document).ready(function() {
+							ajaxGet('idtt','$$LANGUE$$','recherche_bien','type_bien');
+						});
+					</script>
+					<div class="clear"></div>
+					<div id="recherche_region"></div>
+					<script language="javascript" type="text/javascript">
+						$(document).ready(function() {
+							ajaxGet('idtt','$$LANGUE$$','recherche_region','region');
+						});
+					</script>
+					<div class="clear"></div>
+					<div id="recherche_departement"></div>
+					<div class="clear"></div>
+					<div id="recherche_villes"></div>
+					<div class="clear"></div>
+					<div id="recherche_quartier"></div>
+					<div class="clear"></div>
+					<input type="button" id="Mini_Bouton" value="Rechercher">
+					<script language="javascript" type="text/javascript">
+						$(document).ready(function() {
+							loadingSearch('Mini_Bouton','$$LG:LOADING pcase$$');
+						});
+					</script>
+				</div>
+				
+			</form>
+			<div class="porteFeuille">
+				<div class="top"><h2>$$LG:PORTEFEUILLE ucase$$</h2></div>
+				<div class="body">
+					<!--#include virtual="facebook/portefeuille_idtt_idtypebien.htm" -->
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div id="Fcb_footer"></div>
+	</div>
+$$REM$$<!-- ========================== JS ========================== -->$$END:REM$$
+<!--#include virtual="scripts/incl_scripts.htm" -->
+</body>
+</html>

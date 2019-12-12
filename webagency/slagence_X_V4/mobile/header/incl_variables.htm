@@ -1,0 +1,51 @@
+$$REM$$<!-- conditionnant le langage affiché ou langage par défaut -->$$END:REM$$
+$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$
+$$IF0:FORM:LANG$$$$A:LANGUE=fr$$$$END$$
+$$A:URLBASE=http://@@REP:RSRV@@$$
+$$A:URLSHARE=@@PAGE:URL_PARTAGE@@$$
+$$A:URLREEL=http://@@REP:SRV replace m. www.@@$$
+$$A:URLSRVREEL=http://@@PAGE:URL_REAL_SERVER@@$$
+
+$$A:LIMITEPRIXVENTE=@@PAGE:LIMITE_AFFICHAGE_PRIX_VENTE@@$$
+$$A:LIMITEPRIXLOCATION=@@PAGE:LIMITE_AFFICHAGE_PRIX_LOCATION@@$$
+
+$$REM$$<!-- nouvelle macro MULTIAGENCES : determine si le site est multi ou non, avec des noms de macros improbables car on ne sait jamais -->$$END:REM$$
+$$A:MULTIAGENCES=0$$
+	$$B:IMMOBW:AGENCES:ALIAS:COMPTE_AGENCES$$
+		$$BIF:COMPTE_AGENCES$$
+			$$DO$$
+				$$IF+:2:COMPTE_AGENCES:NBR$$
+					$$A:MULTIAGENCES=1$$
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+
+		$$BIF:COMPTE_AGENCES$$
+			$$DO:1:1$$
+				$$A:AGENCE_NOM=@@COMPTE_AGENCES:NOM@@$$
+				$$A:AGENCE_ADRESSE=@@COMPTE_AGENCES:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+				$$A:AGENCE_CP=@@COMPTE_AGENCES:CP@@$$
+				$$A:AGENCE_VILLE=@@COMPTE_AGENCES:VILLE@@$$
+				$$A:AGENCE_TEL=@@COMPTE_AGENCES:TEL formattel@@$$
+				$$A:AGENCE_FAX=@@COMPTE_AGENCES:FAX formattel@@$$
+				$$A:AGENCE_EMAIL=@@COMPTE_AGENCES:EMAIL@@$$
+				$$A:AGENCE_IDPUBLICATION=@@COMPTE_AGENCES:IDPUBLICATION@@$$
+				$$A:AGENCE_ID=@@COMPTE_AGENCES:IDAGENCE@@$$
+			$$LOOP$$
+		$$BFIN$$
+
+
+
+$$A:URLBASE=http://@@REP:RSRV@@$$
+$$REM$$<!-- variables si NO contrat de réf en cours -->$$END:REM$$
+$$A:LIENACCUEIL=/index.htm?lang=@@LANGUE@@$$
+$$REM$$<!-- variables si contrat de réf en cours -->$$END:REM$$
+$$IF:WAGREF_IDDOSSIER_SITE$$$$A:LIENACCUEIL=http://@@REP:RSRV@@/?lang=@@LANGUE@@$$$$END$$
+
+$$REM$$<!-- bandeau "nouveau" sur annonces de -15 jours par défaut -->$$END:REM$$
+$$IF0:SELECTIONFRAICHEUR$$
+	$$A:SELECTIONFRAICHEUR=-15$$
+$$END$$
+
+$$REM$$<!-- DETAIL ANNONCE : GALERIE PHOTO LIGHT / 1 = changement de la grande photo au onclick sur la vignette / 0 = onmousover sur la vignette  -->$$END:REM$$
+$$A:GALERIE_VIGNETTE_CLICK=0$$

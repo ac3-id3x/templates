@@ -1,0 +1,126 @@
+$$INIT:IDT=FAVORIS$$ 
+<!--#include virtual="header/incl_haut.htm" -->
+<div data-role="content" id="favoris">
+	$$B:IMMOBW:ANN:0:QRY:LANG:ALIAS:FAVORIS$$
+	$$BIF:FAVORIS$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$FAVORIS:NBR$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$FAVORIS:NBR pluriel$$$$END:FR$$ $$LG:DANSVOTRESELEC lcase$$</h2>
+			$$IF+:2:FAVORIS:NBRPAGES$$
+				<h3>$$LG:PAG pcase$$ $$FAVORIS:PAGE$$ $$LG:SUR lcase$$ $$FAVORIS:NBRPAGES$$</h3>
+			$$END$$
+		<div data-role="controlgroup" data-type="horizontal" id="multi">
+		$$IF:FAVORIS:NBRPAGES$$
+			$$IF!:1$2:FAVORIS:PAGE$$
+				<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry FAVORISpg$$&amp;FAVORISpg=1" title="$$LG:PREMIEREPAGE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="back-custom" data-iconpos="notext">
+				</a>
+			$$END$$
+		$$END$$
+		$$IF+:1:FAVORIS:NBRPAGES$$
+			$$IF:FAVORIS:LIENARRIERE$$
+				<a class="prev" href="$$FAVORIS:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$" rel="external" data-ajax="false" data-role="button" data-icon="AL-custom" data-iconpos="notext">
+				</a>
+			$$END$$
+			$$IF:FAVORIS:LIENAVANT$$
+				<a class="next" href="$$FAVORIS:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="AR-custom" data-iconpos="notext">
+				</a>
+			$$END$$
+			$$IF!:FAVORIS_NBRPAGES$FAVORIS_NBRPAGES exec (XX-1):FAVORIS:PAGE$$
+				<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry FAVORISpg$$&amp;FAVORISpg=$$FAVORIS:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="forward-custom" data-iconpos="notext">
+				</a>
+			$$END$$
+		$$END$$
+	</div>
+	$$DO:1:10$$
+	<div class="content_liste ui-bar-$$THEMEMOBILE$$" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/Product"$$END$$>
+		$$IF=:1:FORMAT43$$
+			<div class="img_liste format43">
+		$$END$$
+		$$IF!:1:FORMAT43$$
+			<div class="img_liste">
+		$$END$$
+			<a $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="url"$$END$$ 
+				$$IF:PAGE:URLREWRITINGENABLED$$
+					href="$$FAVORIS:URLVIRTUELLE$$?lang=$$LANGUE$$"
+				$$END$$
+				$$IF0:PAGE:URLREWRITINGENABLED$$
+					href="$$URLBASE$$/$$FAVORIS:IDPUBLICATION$$/$$FAVORIS:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$"
+				$$END$$ data-ajax="false">
+			$$IF=:1:FORMAT43$$
+				$$IF:FAVORIS:PHOTO_URL$$
+				<img width="150" height="112" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ src="$$FAVORIS:PHOTO_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				$$END$$
+			$$END$$
+			$$IF!:1:FORMAT43$$
+				$$IF:FAVORIS:CARRE_URL$$
+				<img $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ src="$$FAVORIS:CARRE_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				$$END$$
+			$$END$$
+			</a>
+		</div>
+		<div class="detail_liste">
+			<a $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="url"$$END$$ 
+				$$IF:PAGE:URLREWRITINGENABLED$$
+					href="$$FAVORIS:URLVIRTUELLE$$?lang=$$LANGUE$$"
+				$$END$$
+				$$IF0:PAGE:URLREWRITINGENABLED$$
+					href="$$URLBASE$$/$$FAVORIS:IDPUBLICATION$$/$$FAVORIS:IDANNONCE$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$"
+				$$END$$ data-ajax="false" data-role="button" data-inline="true" data-iconpos="notext" data-icon="plus-custom" style="margin-right:45px;" class="annonceMarker">$$LG:SAVOIR pcase$$</a>
+			<a href="#" data-role="button" data-inline="true" data-iconpos="notext" data-icon="delete-custom" class="annonceMarker" id="$$FAVORIS:IDANNONCE$$_$$FAVORIS:IDPUBLICATION$$">$$LG:SUPPRIMERSELEC pcase$$</a>
+			$$IF0:FAVORIS:LIBELLE$$
+				<h1 $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="name"$$END$$>$$FAVORIS:IDTYPEBIEN gettypebien pcase$$</h1>
+			$$END$$
+			$$IF:FAVORIS:LIBELLE$$
+				<p>$$FAVORIS:LIBELLE$$ </p>
+			$$END$$
+			$$IF:FAVORIS:SURFACE$$
+			<p>
+				$$FAVORIS:SURFACE$$ $$LG:M2 lcase$$
+				$$IF=:EN:LANGUE$$ / approx. $$FAVORIS:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+			</p>
+			$$END$$
+			$$IF:FAVORIS:ACP$$
+				<p $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="location"$$END$$>$$FAVORIS:AVILLE ncase$$ ($$FAVORIS:ACP$$)</p>
+			$$END$$
+			$$IF:FAVORIS:NB_PIECES$$
+			<p>
+				$$FAVORIS:NB_PIECES$$						
+				$$IF=:1:FAVORIS:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+					$$IF+:2:FAVORIS:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+			</p>
+			$$END:FAVORIS:NB_PIECES$$
+			<!--#include virtual="recherche/incl_prix.htm" -->
+		</div>
+		<div class="clear"></div>
+	</div>
+	$$LOOP$$
+		$$IF+:2:FAVORIS:NBRPAGES$$
+			<h3>$$LG:PAG pcase$$ $$FAVORIS:PAGE$$ $$LG:SUR lcase$$ $$FAVORIS:NBRPAGES$$</h3>
+		$$END$$
+		<div data-role="controlgroup" data-type="horizontal" id="multi">
+			$$IF:FAVORIS:NBRPAGES$$
+				$$IF!:1$2:FAVORIS:PAGE$$
+					<a class="first" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry FAVORISpg$$&amp;FAVORISpg=1" title="$$LG:PREMIEREPAGE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="back-custom" data-iconpos="notext">
+					</a>
+				$$END$$
+			$$END$$
+			$$IF+:1:FAVORIS:NBRPAGES$$
+				$$IF:FAVORIS:LIENARRIERE$$
+					<a class="prev" href="$$FAVORIS:LIENARRIERE removeqry alierr$$" title="$$LG:PAGEPRECEDENTE pcase$$" rel="external" data-ajax="false" data-role="button" data-icon="AL-custom" data-iconpos="notext">
+					</a>
+				$$END$$
+				$$IF:FAVORIS:LIENAVANT$$
+					<a class="next" href="$$FAVORIS:LIENAVANT removeqry alierr$$" title="$$LG:PAGESUIVANTE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="AR-custom" data-iconpos="notext">
+					</a>
+				$$END$$
+				$$IF!:FAVORIS_NBRPAGES$FAVORIS_NBRPAGES exec (XX-1):FAVORIS:PAGE$$
+					<a class="last" href="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry FAVORISpg$$&amp;FAVORISpg=$$FAVORIS:NBRPAGES$$" title="$$LG:DERNIEREPAGE pcase$$" rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="forward-custom" data-iconpos="notext">
+					</a>
+				$$END$$
+			$$END$$
+	$$BFIN$$
+	$$BIF0:FAVORIS$$
+		<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:SELECTANNONCEVIDE pcase$$</h2>
+	$$BFIN$$
+	</div>
+<script src="$$-$$scripts/js/favoris_annonce.js"></script>
+<!--#include virtual="footer/incl_bas.htm" -->
+</div>

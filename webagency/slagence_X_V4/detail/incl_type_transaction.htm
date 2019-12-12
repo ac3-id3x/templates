@@ -1,0 +1,42 @@
+$$REM$$====================================================================================
+//// <summary>Page detail annonce : type transaction</summary>
+//// <remarks>
+//// <para>Affiché en titre, au dessus du prix et descriptif de l'annonce</para>
+//// <para>Si ref : type transac + type bien + nb chambres et pieces + ville</para>
+//// <para>No ref : type bien + nb chambres et pieces</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2009-09-21" author="lisbonne.siriphol">Updates</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Création</update>
+====================================================================================$$END$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+		$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+	$$END$$	
+	$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+	$$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+			$$IF:ANNDETAIL:SI_APPARTEMENT$$ avec Appartement $$END$$
+			$$IF:ANNDETAIL:SI_TERRAIN$$ avec Terrain $$END$$
+			$$IF:ANNDETAIL:SI_MAISON$$ avec Maison $$END$$
+	$$END$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+
+$$IF:ANNDETAIL:NB_PIECES$$<!--#include virtual="/detail/incl_nb_pieces.htm" -->$$END:NB_PIECES$$
+
+$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+	$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+	$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+	$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+$$END$$
+
+<!--$$REM$$
+	$$IF!:detail,corner.htm:REP:0$$
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			$$ANNDETAIL:VILLE$$
+		$$END:WAGREF_IDDOSSIER_SITE$$
+	$$END:REP:0$$
+$$END$$-->

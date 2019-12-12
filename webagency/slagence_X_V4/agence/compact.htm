@@ -1,0 +1,138 @@
+$$INIT:IDT=NOTREAGENCE$$
+$$INIT:CSS_CARTO=1$$
+$$INIT:CSS_AGENCE_COMPACT=1$$
+$$INIT:JS_BING=1$$
+$$INIT:JS_AGENCE_COMPACT=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+
+<div id="WrapAgence">
+
+	<h1><span class="txtcolor2">$$CV:NOM ncase$$</span>, $$LG:VOTREAGENCEIMMO$$ $$CV:VILLE pcase$$ $$LG:ETSAREGION$$</h1>
+	
+	<div id="MapAgence">
+		<div id="MapContent">
+			$$INIT:BINGMAPAGENCESHEIGHT=233px$$
+			<!--#include virtual="carto/incl_BingMap_agences.htm" -->
+		</div>
+		$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+		<div id="AgImmoVitrine_Ctn">
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<img src="$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg" itemprop="image" style="display:none;">		
+		$$END$$
+		$$IF:CV:SI_LOGO$$
+		<img src="$$CV:URLLOGO$$"/>
+			<div style="background:url('$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg') 50% 50% no-repeat;width:280px; height:200px;position:absolute;top:0;left:0;"></div>
+		$$END$$
+		$$IF0:CV:SI_LOGO$$
+		$$REM$$<img src="$$~$$images/agences/sans_photo.png" class="snsphotos"/>$$END$$
+			<div style="background:url('$$_$$images/agences/$$CV:IDPUBLICATION$$.jpg') 50% 50% no-repeat;width:300px; height:200px;position:absolute;top:0;left:0;"></div>
+		$$END$$
+		</div><!-- #AgImmoVitrine_Ctn -->	
+	</div><!-- #MapAgence -->	
+	
+	
+	<div id="ColGaucheAgence">
+	
+		<div id="AgenceCoord">
+			<!--#include virtual="agence/incl_coord_agence_compact.htm" -->			
+		</div> <!-- #AgenceCoord -->
+			
+		<div id="Bookmarks">
+			<!--#include virtual="/agence/incl_bookmarks_agence_compact.htm" -->	
+		</div> <!-- #Bookmarks -->
+		<div class="clear"></div>
+		
+		$$REM$$<div id="Agence_mail_url">
+			<p>					
+				$$IF:CV:EMAIL$$<label class="cntmail"><span>$$LG:EMAIL pcase$$ :</span> <a class="txtcolor2" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></label><br />$$END:EMAIL$$
+				$$IF:CV:URL$$<label class="cnturl"><span>$$LG:SITE pcase$$ :</span> <a class="txtcolor2" href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$ itemprop="url"$$END$$>$$CV:URL$$</a></label><br />$$END:URL$$
+			</p>
+		</div>$$END$$
+		
+		<div id="TexteAgence">
+			<h2>$$LG:LIEN:AGEN pcase$$</h2>
+			<!--#include virtual="agence/incl_txt_public.htm" -->
+		</div>	<!-- #TexteAgence -->			
+	
+		$$B:IMMOBW:ACTIVITE_AGENCE:~idagence:VAL:CV_IDAGENCE:ALIAS:TA$$
+		$$BIF:TA$$						
+		<div id="ServicesAgence">
+			<h2>$$LG:LIEN:SERV pcase$$</h2>									
+				<ul>
+					$$DO$$
+					<li>$$TA:DESCRIPTION pcase$$</li>
+					$$LOOP$$
+				</ul>			
+		</div> <!-- #ServicesAgence -->
+		$$BFIN$$			
+		
+		<div id="PortAgence">
+			<!--#include virtual="/agence/incl_portefeuille_agence_compact.htm" -->				
+		</div>	 <!-- #PortAgence -->
+		
+		
+		$$IF:CV:LANGUESPARLEES$$
+		<h2>$$LG:LANGUESPARLEES pcase$$</h2>
+		<p>
+			$$IF=:FR:LANGUE$$
+			$$CV:LANGUESPARLEESFR ncase$$
+			$$END$$
+			$$IF!:FR:LANGUE$$
+			$$CV:LANGUESPARLEESEN ncase$$
+			$$END$$
+		</p>
+		$$END:LANGUESPARLEES$$
+				
+	</div><!-- #ColGaucheAgence -->
+	
+	
+	<div id="ColDroiteAgence">
+	
+		<div id="ContactAgence">
+			<div class="ResponsablesAgence bgcolor1">
+				$$REM$$<!-- tous les responsables -->$$END$$
+				$$IF:CV:RESPAG$$<label class="respAgence"><span>$$LG:RESPAGENCE pcase$$ :</span> $$CV:RESPAG ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:RESPVEN$$<label class="cntvente"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label>$$END$$
+				$$IF:CV:RESPLOC$$<label class="cntloc"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label>$$END$$
+				$$IF:CV:RESPVAC$$<label class="cntvac"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label>$$END$$
+				$$IF:CV:RESPCOM$$<label class="cntrespcom"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label>$$END$$	
+			</div>
+	
+			<div id="BlocSouhaite">
+				<span>$$LG:JESOUHAITE$$ :</span>
+				<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,agence.htm?lang=$$LANGUE$$" class="BtnSouhaite bgcolor1" title=""><div class="triangle"></div>$$LG:LIEN:PLUSDINFOS pcase$$</a>
+				<a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/contact,estimation.htm?lang=$$LANGUE$$" class="BtnSouhaite bgcolor1" title=""><div class="triangle"></div>$$LG:ESTIMERBIEN pcase$$</a>
+			</div>
+			
+			<div id="BlocBtnTel" class="bgcolor1">
+				<div class="BtnTel"><a href="#AffichTel" class="FancyBox bgcolor2">$$LG:TELEPHONEZNOUS pcase$$<span></span></a></div>
+				<div id="WrapAffichTel">
+					<div id="AffichTel">
+						<!--#include virtual="/agence/incl_telephonez_nous_compact.htm" -->							
+					</div>
+				</div>
+			</div>
+		</div> <!-- #ContactAgence -->
+	
+		
+		<div id="Horaires">
+			<!--#include virtual="/agence/incl_horaires_agence_compact.htm" -->		
+		</div><!-- #Horaires -->
+
+	</div> <!-- #ColDroiteAgence -->
+	
+	<div class="clear"></div>
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+	<div id="AgImmoMentions">
+		$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+		<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->					
+	</div><!-- #AgImmoMentions -->
+				
+				
+</div> <!-- #WrapAgence -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

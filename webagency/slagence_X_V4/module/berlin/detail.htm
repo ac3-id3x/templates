@@ -1,0 +1,70 @@
+$$E:IMMOBW:ANNONCE:QRY:IDANNONCE:ALIAS:DETAILANNONCE$$
+<div id="infosAnnonces">
+	<h2>$$LG:PHRASEDETAIL ucase$$</h2>
+</div>
+	$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:QRY:IDANNONCE$$
+	$$BIF:GALERIE$$
+	<div class="test">
+		<ul id="galeriePhoto">
+				$$DO$$
+					<li><img src="$$GALERIE:CARRE_URL$$" class="borderModule" />
+						<div><img src="$$IF:GALERIE:BIG_URL$$$$GALERIE:BIG_URL$$$$END$$$$IF0:GALERIE:BIG_URL$$$$GALERIE:PHOTO_URL$$$$END$$" /></div>
+					</li>
+				$$LOOP$$
+			<div class="clear"></div>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	$$BFIN$$
+<div class="detailAnnonce">
+		<div class="ctn_detail">
+			<div class="eye"></div>
+			<img src="$$DETAILANNONCE:PHOTOURL0$$" width="$$DETAILANNONCE:PHOTOW0 exec XX*0.90$$" height="$$DETAILANNONCE:PHOTOH0 exec XX*0.90$$" class="photoAnnonce shadow"/>
+			<div class="clear"></div>
+			<div class="rechercheIdemAnnonce">Voir vos résultats de recherche</div>
+			<div class="clear"></div>
+		</div>
+	<div class="listeDetail">
+		<ul>
+			<li>$$DETAILANNONCE:IDTYPETRANSACTION gettypetransaction pcase$$ - $$DETAILANNONCE:IDTYPEBIEN gettypebien$$</li>
+			<li>$$DETAILANNONCE:AVILLE$$, $$DETAILANNONCE:CP$$</li>
+			$$IF:DETAILANNONCE:SURFACE$$<li>$$DETAILANNONCE:SURFACE$$ $$DETAILANNONCE:SURF_UNITE$$</li>$$END$$
+			$$IF:DETAILANNONCE:NB_PIECES$$<li>
+				$$DETAILANNONCE:NB_PIECES$$
+					$$IF=:1:DETAILANNONCE:NB_PIECES$$
+					$$LG:PIECE lcase$$
+						$$END$$
+					$$IF!:0$1:DETAILANNONCE:NB_PIECES$$
+						$$LG:PIECES2 lcase$$
+					$$END$$
+			$$END$$
+			$$IF:DETAILANNONCE:NB_CHAMBRES$$
+			 - 
+				$$DETAILANNONCE:NB_CHAMBRES$$ 
+					$$IF=:1:DETAILANNONCE:NB_CHAMBRES$$
+						$$LG:CHAMBRE lcase$$
+					$$END$$
+					$$IF!:0$1:DETAILANNONCE:NB_CHAMBRES$$
+						$$LG:CHAMBRES lcase$$
+					$$END$$
+			$$END$$
+			$$IF:DETAILANNONCE:SURF_TERRAIN$$<li>$$DETAILANNONCE:SURF_TERRAIN$$ $$DETAILANNONCE:SURF_UNITE$$</li>$$END$$
+			$$IF:DETAILANNONCE:IDQUARTIER$$<li>$$LG:QUARTIER pcase$$ : $$DETAILANNONCE:IDQUARTIER getquartier$$</li>$$END$$
+			$$IF:DETAILANNONCE:PROX$$<li>$$LG:APROXIMITEDE pcase$$ $$DETAILANNONCE:PROX$$</li>$$END$$
+			$$IF:DETAILANNONCE:PRIX$$<li><div class="prixLi">$$DETAILANNONCE:PRIX$$ $$DETAILANNONCE:PRIX_UNITE$$</div><div class="clear"></div></li>$$END$$
+			$$IF:DETAILANNONCE:REFANNONCE$$<li>$$LG:REFER pcase$$ : $$DETAILANNONCE:REFANNONCE$$</li>$$END$$
+			$$IF:DETAILANNONCE:DT_FRAICHEUR$$<li>$$LG:MAJ pcase$$ : $$DETAILANNONCE:DT_FRAICHEUR date 2$$</li>$$END$$
+		</ul>
+	$$IF:DETAILANNONCE:DESCRIPTIF$$
+		<p>$$DETAILANNONCE:DESCRIPTIF htmlencode$$</p>
+	$$END$$
+	<div class="clear"></div>
+	</div>
+</div>
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		resize();
+		rechercherIdem('rechercheIdemAnnonce','blocCentral');
+		detailPage();
+	});
+</script>

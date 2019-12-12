@@ -1,0 +1,50 @@
+$$SET:CSS_FANCY=1$$
+$$SET:CSS_COMPARER=1$$
+<h3><span><!--#include virtual="immo/incl_retour_page_precedente.htm" --></span></h3>
+<input type="hidden" name="langHidden" class="langHidden" value="$$LANGUE$$"/>
+<div class="clear"></div>
+$$IF:ANNLISTE:NBR$$
+<a class="boutonTout" href="#">$$LG:TOUTCOCHER pcase$$</a>
+<a class="boutonComparaison" href="recherche,comparaison.htm">$$LG:COMPARERANNONCES pcase$$</a>
+<a class="boutonTout boutonDelete" href="#">$$LG:VIDERSELEC pcase$$</a>
+<div class="clear"></div>
+<script type="text/javascript" src="$$~$$scripts/fancybox.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.boutonComparaison').fancybox({
+		'onStart':function() {
+			var idAnnonces = 'idAnnonce=';
+			var lengthC = $(".choixComparer:checked").length;
+			var cptValid = 0;
+			$(".choixComparer").each(function() {
+					if(this.checked) {
+						idAnnonces += $(this).val()+',';
+					}
+			});
+			if(idAnnonces.length>10){
+				$(this).attr('href','recherche,comparaison.htm?lang='+$('.langHidden').val()+'&'+idAnnonces);		
+			}
+		},
+		'width':'90%',
+		'height':'75%',
+		'type':'iframe',
+		'centerOnScroll':'true'
+	});
+	$('.boutonTout').click(function(e) {
+		e.preventDefault();
+		if($(this).hasClass('boutonDelete')) {
+			var container = $("RechResultat");
+			$.ajax({
+				type: "GET",
+				url: '/scripts,panier,selection_vider.htm',
+				success: function(data) {
+					window.location.reload(true);
+		 	 	}
+			});
+		} else {
+			$('.choixComparer').attr('checked', true);
+		}
+	});
+});	
+</script>
+$$END$$

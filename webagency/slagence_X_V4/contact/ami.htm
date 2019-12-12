@@ -1,0 +1,114 @@
+$$REM$$====================================================================
+//// <summary>Formulaire de contact simple vers particuliers</summary>
+//// <remarks>
+//// <para>Utilise le fichier css : slagence_X_V3/styles/contact_ami.css</para>
+//// <para>Utilise macro ID3:FORMMAIL ; Voir : http://macrodoc.id3x.com/ID3.P.FORMMAIL.html</para>
+//// <para>Mémorise infos internaute avec macro E:IMMOBW:LOAD-INFOS-FORM:ALIAS:LOADINFOS ; Voir : http://macrodoc.id3x.com/IMMOBW.E.LOAD-INFOS-FORM.html</para>
+//// </remarks>
+//// <update date="2010-08-18" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-01-07" author="kamel.malek">Page non optimisée par les référenceurs (ça date donc à redemander)</update>
+====================================================================$$END$$
+$$A:CSS_POPUP=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+
+<!--#include virtual="contact/ami_haut.htm"-->
+
+<div id="CtnPopup">
+	<h1>$$LG:ENVOYERANN pcase$$</h1>
+	<form method="post" id="EnvoiAmi_Ctn" action="/$$REP:2$$/$$REP:1$$/$$REP:0$$">
+		<div id="EnvoiAmi">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			<input type="hidden" name="u" value="ID3:FORMMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+			<input type="hidden" name="path" value="contact" />			
+			<input type="hidden" name="page_ok" value="/contact,ami_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] template à charger si la macro ne renvoie pas de message d'erreur //-->$$END$$
+      <input type="hidden" name="page_err" value="/$$REP:2$$/$$REP:1$$/$$REP:0$$" />$$REM$$<!--// [input non obligatoire] template à charger si la macro renvoie un message d'erreur.  //-->$$END$$
+      <input type="hidden" name="cfg_form" value="ami" />$$REM$$<!--// [INPUT OBLIGATOIRE] Nom du fichier de config, sans l'extension .cfg et sans le préfixe formmail_ //-->$$END$$
+			<input type="hidden" name="cfg_emails" value="ami" />$$REM$$<!--// [INPUT OBLIGATOIRE] Liste des templates d'email (séparateur virgule ou point-virgule). //-->$$END$$
+			$$REM$$<!--// infos pour lien annonce //-->$$END$$
+			<input type="hidden" name="srv" value="$$SRV$$" />$$REM$$<!--// url site envoyé dans message par SRV //-->$$END$$
+			<input type="hidden" name="rep" value="$$REP:2$$/$$REP:1$$" />$$REM$$<!--// idpublication + idannonce envoyés dans message par FORM:REP //-->$$END$$
+			<input type="hidden" name="style" value="$$PAGE:WAG_STYLE_DETAIL$$" />$$REM$$<!--// nom de la page détail envoyé dans message par FORM:STYLE //-->$$END$$
+			<input type="hidden" name="lang" value="$$LANGUE$$" /> $$REM$$<!--// lang courante envoyé dans message par FORM:LANG //-->$$END$$
+			$$REM$$<!--// infos pour descriptif annonce //-->$$END$$
+			<input type="hidden" name="idtt" value="$$ANN:IDTYPETRANSACTION gettypetransaction pcase$$" />
+			<input type="hidden" name="libelle" value="$$ANN:LIBELLE$$" />
+			$$IF=:1:FORM:POPUP$$
+				<input type="hidden" name="popup" value="1"/>
+			$$END$$
+			$$IF:ANN:SURFACE$$ 
+      <input type="hidden" name="surface" value="($$ANN:SURFACE$$ m2)" />
+      $$END$$ 
+      <input type="hidden" name="ref" value="$$ANN:REFANNONCE$$" />
+      <input type="hidden" name="ville" value="$$ANN:VILLE$$" /> 
+      <input type="hidden" name="cp" value="$$ANN:CP$$" /> 
+      <input type="hidden" name="prix" value="$$ANN:PRIX$$" /> 
+			<input type="hidden" name="descriptif" value="$$ANN:DESCRIPTIF_FR format 70 replace " '$$" />
+			$$IF:ERRE$$
+			<div class="rowForm">
+				<span class="label">$$LG:ATTENTION pcase$$</span>
+				<span class="field">$$ERRE$$</span>
+			</div>
+			$$END:ERRE$$
+			$$E:IMMOBW:LOAD-INFOS-FORM:ALIAS:LOADINFOS$$
+			<div class="rowForm">
+				<span class="label">
+					$$LG:SONNOM pcase$$ <span class="obligatoire">*</span> :	
+				</span>
+				<span class="field">
+					<input type="text" class="inputText inputNom" maxlength="30" name="tonom" value="$$FORM:TONOM htmlencode$$" />	
+				</span>
+			</div>
+			<div class="rowForm">
+				<span class="label">
+					$$LG:SONEMAIL pcase$$ <span class="obligatoire">*</span> :	
+				</span>
+				<span class="field">
+					<input type="text" class="inputText inputEmail" maxlength="100" name="toemail" value="$$IF:FORM:TOEMAIL$$$$FORM:TOEMAIL htmlencode$$$$END$$" />
+				</span>
+			</div>
+			<div class="rowForm">
+				<span class="label">
+					$$LG:VOTRENOM pcase$$ <span class="obligatoire">*</span> :	
+				</span>
+				<span class="field">
+					<input type="text" class="inputText inputNom" maxlength="30" name="nom_from" value="$$FORM:NOM_FROM$$$$IF0:FORM:NOM_FROM$$$$IF:LOADINFOS:NOM$$$$LOADINFOS:NOM$$$$END$$$$END$$" />
+				</span>
+			</div>
+			<div class="rowForm">
+				<span class="label">
+					$$LG:VOTREMAIL pcase$$ <span class="obligatoire">*</span> :
+				</span>
+				<span class="field">
+					<input type="text" class="inputText inputEmail" maxlength="100" name="email_from" value="$$FORM:EMAIL_FROM$$$$IF0:FORM:EMAIL_FROM htmlencode$$$$IF:LOADINFOS:EMAIL$$$$LOADINFOS:EMAIL$$$$END$$$$END$$" />
+				</span>
+			</div>
+			<div class="rowForm">
+				<span class="label">
+					$$LG:MESSAGE pcase$$ <span class="obligatoire">*</span> :
+						<br />
+					($$LG:MODIFIABLE lcase$$)
+				</span>
+				<span class="field">
+					$$IF:PAGE:URLREWRITINGENABLED$$
+						<textarea class="inputTextarea inputMessage" name="msg" cols="40" rows="8" onkeyup="limite(this,350);" onkeydown="limite(this,350);">Voici une annonce immobilière int&eacute;ressante que je viens de d&eacute;couvrir sur $$ANN:URLVIRTUELLE$$</textarea>
+					$$END$$
+					$$IF0:PAGE:URLREWRITINGENABLED$$
+						<textarea class="inputTextarea inputMessage" name="msg" cols="40" rows="8" onkeyup="limite(this,350);" onkeydown="limite(this,350);">Voici une annonce immobilière int&eacute;ressante que je viens de d&eacute;couvrir sur http://$$REP:SRV$$/$$REP:2$$/$$REP:1$$/detail,$$PAGE:WAG_STYLE_DETAIL$$.htm?lang=$$LANGUE$$</textarea>
+					$$END$$
+				</span>
+			</div>
+			<div class="rowForm">				
+				<input type="checkbox" name="memoriser" $$IF=:true:LOADINFOS:MEMO$$checked="checked"$$END$$ /> $$LG:MEMORISERINFO pcase$$
+			</div>
+			<div class="rowForm">				
+				<span class="label">
+					<span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span>
+				</span>
+				<span class="field">
+					<input type="submit" id="boutonEnvoiAmi" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+				</span>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</form>
+</div>
+<!--#include virtual="contact/ami_bas.htm"-->

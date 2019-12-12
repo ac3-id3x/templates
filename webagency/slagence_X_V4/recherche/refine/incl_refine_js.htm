@@ -1,0 +1,124 @@
+$$DYN:ID3:CONTENTTYPE:application/json$$$$DYN:ID3:NOCNXWEB$$$$DYN:ID3:NOFOOTER$$
+<!--#include virtual="header/incl_var_params.htm" -->
+$$INIT:IDT=RESULTATS$$
+$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG:::::d_dt_maj:ALIAS:ANNLISTE$$
+	$$BIF:ANNLISTE$$
+	$$A:MAXANN=@@ANNLISTE:NBR@@$$
+		{"phrase":"$$IF=:437:FORM:IDVPA$$Spécial étudiants : $$END$$$$IF=:446:FORM:IDVPA$$Neufs : $$END$$$$IF=:439:FORM:IDVPA$$Prestige : $$END$$$$IF=:441:FORM:IDVPA$$Sélection investisseurs : $$END$$$$IF=:480:FORM:IDVPA$$Neufs : $$END$$$$IF=:440:FORM:IDVPA$$Espace privilège : $$END$$$$IF=:479:FORM:IDVPA$$Logements conventionnés : $$END$$$$IF=:RESULTATSCARTE:IDT$$$$LG:CARTEGEOLOC pcase$$$$END:RESULTATSCARTE:IDT$$$$IF=:RESULTATS:IDT$$$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$$$ANNLISTE:PHRASE pcase$$$$IF:FORM:IDSOUSTYPEBIEN$$$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$<br />$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$$$END:FORM:IDSOUSTYPEBIEN$$$$END:FORM:IDSOUSTYPEBIEN$$$$END:RESULTATS:IDT$$$$IF:FORM:IDTYPEBIEN$$$$IF=:BIENSVENDUS:IDT$$$$VENDU:NBR formatnumber 0$$$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$$$END$$$$END$$$$IF=:BIENSVENDUS:IDT$$$$IF0:FORM:IDTYPEBIEN$$$$END$$$$END$$$$IF0:VENDU:NBR$$<br /><br /><span>$$IF0:ANNLISTE:SIPANIER$$$$ANNLISTE:NBRESULT formatnumber 0$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBRESULT pluriel$$$$END:FR$$ Trouvées$$END$$$$IF=:RESULTATS:IDT$$$$IF+:200:ANNLISTE:NBRESULT$$$$IF=:FR:LANGUE$$<sup>* 200 premières affichées</sup>$$END$$$$IF!:FR:LANGUE$$<sup>* First 200 displayed</sup>$$END$$$$END$$$$END$$</span>$$END$$",
+			"qry":"$$REP:QRY$$",
+			"page":"$$ANNLISTE:PAGE$$",
+			"annonces":[$$DO:config:config$$
+			
+			$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+			
+				{"color":"$$IF=:1:ANNLISTE:I exec XX%2$$color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$color2$$END$$",
+				
+				"idannonce":"$$ANNLISTE:IDANNONCE$$",
+				
+				"coupdecoeur":"$$IF:ANNLISTE:SI_COUPDECOEUR$$$$IF!:1:PICTO_COEUR$$<div class=\"blocPhotoCoupCoeur\"></div>$$END$$$$END$$",
+				
+				"exclusif":"$$IF:ANNLISTE:SI_EXCLUSIF$$<div class=\"blocPhotoExclusif\"></div>$$END$$",
+				
+				"fraicheur":"$$IF+:-15:FRAICHEUR:ANNLISTE:DT_ARRIVEE datediff now timespan days$$<div class=\"blocPhotoNouveau\"></div>$$END$$",
+				
+				"promo":"$$IF:ANNLISTE:SI_PROMO$$<div class=\"blocPhotoPromo\"></div>$$END$$",
+				
+				"photo":"$$IF=:488:ANNLISTE:IDVALEURPERSO$$<div class="blocPhotoLoue"></div>$$END$$$$IF:ANNLISTE:IDPHOTO$$<div class=\"blocBigPhoto\"><img src=$$ANNLISTE:PHOTOURL0$$ /></div>$$END$$<div class=\"blocPhoto2$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$\">$$IF:ANNLISTE:C175URL0$$<a href=\"$$LIENDETAIL$$\" title=\"$$ANNLISTE:LIBELLE pcase$$\"><img src=$$ANNLISTE:PHOTO_URL$$ alt=\"$$ANNLISTE:LIBELLE pcase$$ title=\"$$ANNLISTE:LIBELLE pcase$$\" /></a>$$END:ANNLISTE:C175URL0$$$$IF0:ANNLISTE:C175URL0$$$$IF:ANNLISTE:SI_LOGO$$<a href=\"$$LIENDETAIL$$\" title=\"$$ANNLISTE:LIBELLE pcase$$\"><div class=\"noPhotoLogo\"><img src=$$ANNLISTE:URLLOGO$$ alt=\"$$ANNLISTE:LIBELLE pcase$$\" title=\"$$ANNLISTE:LIBELLE pcase$$\" /></div></a>$$END$$$$END$$</div></div>",
+				
+				"descriptif":"<div class=\"blocVilleDetails\">$$ANNLISTE:AVILLE$$ <!--($$ANNLISTE:ACP$$)--></div><div class=\"blocLibelleDetails\">$$IF:ANNLISTE:LIBELLE$$$$ANNLISTE:LIBELLE$$$$END$$$$IF0:ANNLISTE:LIBELLE$$$$ANNLISTE:LIBELLE_FR$$$$END$$</div><div class=\"blocSurfaceDetails\">$$IF:ANNLISTE:NB_PIECES$$$$ANNLISTE:NB_PIECES$$$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$IF:ANNLISTE:SURFACE$$ - $$END:ANNLISTE:SURFACE$$ $$END:ANNLISTE:NB_PIECES$$$$IF:ANNLISTE:SURFACE$$$$ANNLISTE:SURFACE field 1$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$$$END:ANNLISTE:SURFACE$$</div>$$IF:ANNLISTE:SURF_TERRAIN$$<div class=\"blocSurfaceDetails\">$$LG:SURFT pcase$$$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$(approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)$$END:EN$$</div>$$END:ANNLISTE:SURF_TERRAIN$$",
+				
+				"descriptif2":"<div class=\"blocDescAnnDetails\">$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$$$IF:ANNLISTE:NB_PERSONNES$$<p class=\"vac nbPersonnes\">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class=\"vac pxBasseSais\">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$IF:ANNLISTE:PX_BS_QUINZ$$<p class=\"vac pxBasseSais\">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$IF:ANNLISTE:PX_BS_MOIS$$<p class=\"vac pxBasseSais\">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class=\"vac pxHauteSais\">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$IF:ANNLISTE:PX_HS_QUINZ$$<p class=\"vac pxHauteSais\">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$IF:ANNLISTE:PX_HS_MOIS$$<p class=\"vac pxHauteSais\">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$$$END:IDTYPETRANSACTION$$<p>$$IF:ANNLISTE:DESCRIPTIF$$$$ANNLISTE:DESCRIPTIF left 125 leftuntil crlf replace " '$$$$END$$$$IF0:ANNLISTE:DESCRIPTIF$$$$IF:ANNLISTE:DESCRIPTIF_FR$$$$ANNLISTE:DESCRIPTIF_FR left 125 leftuntil crlf replace " '$$$$END$$$$IF0:ANNLISTE:DESCRIPTIF_FR$$$$LG:ANNSANSDESCR pcase$$.$$END$$$$END$$</p></div>",
+				
+				"filtres":"$$IF=:2:FORM:IDTT$$<div id=\"Filtres\">$$IF=:439:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/439.png');\"><span>Prestige</span></div>$$END$$$$IF=:480:ANNLISTE:IDVALEURPERSO$$<div class="UnFiltre" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/480.png');\"><span>Neuf</span></div>$$END$$$$IF=:446:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/446.png');\"><span>Neuf</span></div>$$END$$$$IF=:441:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/441.png');\"><span>Investisseur</span></div>$$END$$$$IF=:440:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/440.png');\"><span>VIP</span></div>$$END$$$$IF=:437:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/437.png');\"><span>Étudiant</span></div>$$END$$$$IF=:479:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/479.png');\"><span>Logement conventionné</span></div>$$END$$$$IF:ANNLISTE:SI_EXCLUSIF$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/exclu.png');\"><span>Exclusivité</span></div>$$END$$$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/481.png');\"><span>Nouveauté</span></div>$$END$$$$IF:ANNLISTE:SI_COUPDECOEUR$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/cdc.png');\"><span>Sélection</span></div>$$END$$$$IF:ANNLISTE:XML xml DISPONIBILITE_IMMEDIATE$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/dispo.png');\"><span>Disponibilité immédiate</span></div>$$END$$$$IF=:481:ANNLISTE:IDVALEURPERSO$$<div class=\"UnFiltre\" style=\"background-image:url('$$_$$images/filtres/25/$$ANNLISTE:IDTYPETRANSACTION$$/dispo.png');\"><span>Disponibilité immédiate</span></div>$$END$$</div>",
+				
+				$$IF:ANNLISTE:PRIX$$$$IF!:9:FORM:IDTT$$"prix":"<div class=\"prixDetailAnnonce$$IF:ANNLISTE:SI_PROMO$$ prixPromoDetailAnnonce$$END$$\">$$ANNLISTE:PRIX formatnumber 0$$$$IF=:2:FORM:IDTT$$€$$END$$$$IF=:1:FORM:IDTT$$$$IF=:€CC:ANNLISTE:PRIX_UNITE$$€ <sup>Charges comprises</sup>$$END$$ $$IF=:€+CH:ANNLISTE:PRIX_UNITE$$€ <sup>+ Charges</sup>$$END$$ $$ANNLISTE:PRIX_PERIODEVAC$$$$END$$$$IF=:2$6$8$10:FORM:IDTT$$<sup>*</sup>$$END:2:FORM:IDTT$$$$IF!:1:SELECTION_INDEX_NO_PICTO$$$$IF!:1:MASQUE_BAISSE_PRIX$$$$IF:ANNLISTE:SIBAISSEPRIX$$<img src=$$~$$images/bandeaux/baisseprix_$$LANGUE$$.png alt=\"\" title=\"\" />$$END$$$$END$$$$END:SELECTION_INDEX_NO_PICTO$$$$IF:ANNLISTE:PX_RENTE$$<span class=\"rente\">($$LG:RENTE lcase$$ : $$ANNLISTE:PX_RENTE$$ $$LG:EUROMOIS$$)</span>$$END$$$$IF=:1:FORM:IDTT$$<br /><span class=\"prixCharges\">$$IF:ANNLISTE:PX_CHARGES$$<span class=\"charges\">$$LG:CHARGES pcase$$ : $$ANNLISTE:PX_CHARGES formatnumber 0$$ &euro;</span> - $$END$$$$IF:ANNLISTE:HONORAIRES$$<span class=\"honoraires\">$$LG:HONORAIRES pcase$$ : $$ANNLISTE:HONORAIRES formatnumber 0$$ &euro;</span>$$END$$$$IF:ANNLISTE:GARANTIE$$<span class=\"garantie\">- $$IF!:FR:LANGUE$$ $$LG:GARANTIE pcase$$ $$END$$$$IF=:FR:LANGUE$$ Dépot de garantie $$END$$ : $$ANNLISTE:GARANTIE$$</span>$$END$$</span>$$END:1:FORM:IDTT$$</div>",$$END:9:FORM:IDTT$$
+				$$IF=:9:FORM:IDTT$$"prix":"",$$END:9:FORM:IDTT$$$$END:ANNLISTE:PRIX$$
+				$$IF0:ANNLISTE:PRIX$$"prix":"",$$END$$
+				
+				"rechdetail":"<div id=\"detail$$ANNLISTE:IDANNONCE$$\" class=\"BtnDetailRech\"><a href=\"$$LIENDETAIL$$\" title=\"\"><div class=\"pictoDetail\"></div><div class=\"textePicto texte-det\">$$LG:PLUSDETAILS pcase$$</div></a></div><div class=\"clear\"></div>",
+				
+				"contactannonce":"<div class=\"refAnnonces\">$$IF:ANNLISTE:DT_DISPO$$<p>$$LG:DISPOLE pcase$$ : $$ANNLISTE:DT_DISPO date 2$$</p>$$END$$<p>$$LG:MAJ pcase$$ : $$ANNLISTE:DT_FRAICHEUR date 2$$</p><p>$$LG:REFER pcase$$ : $$ANNLISTE:REFANNONCE$$</p></div><div class=\"contactAnnoncesMaj\"><div class=\"liensAnn\">",
+				
+				"contactannonce2":"$$IF:ANNLISTE:EMAIL$$<div id=\"email$$ANNLISTE:IDANNONCE$$\" class=\"BtnContactRech\"><a href=\"$$LIENDETAIL$$#form_contact\" ><div class=\"pictoContact\"></div><div class=\"textePicto texte-select\"><font>Contacter</font><br /> l&rsquo;agence</div></a></div>$$END:EMAIL$$",
+				
+				"contactannonce3":"$$IF:URL_AGENCE$$$$IF:ANNLISTE:URL$$<p><a href=\"$$ANNLISTE:URL$$\" onclick=\"window.open(this.href)\; return false\;\">$$LG:SITEINTERNET pcase$$</a></p>$$END:URL$$$$END:URL_AGENCE$$</div></div>",
+				
+				"sipanier":"$$IF0:ANNLISTE:SIPANIER$$<div id=\"selection$$ANNLISTE:IDANNONCE$$\" class=\"BtnSelectRech\"><a href=\"javascript:selectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);\" title=\"\"><div class=\"pictoAjoutSelection\"></div><div class=\"textePicto texte-select\">$$IF=:FR:LANGUE$$<font>Ajouter à</font><br />ma sélection$$END$$$$IF!:FR:LANGUE$$<font>Add to</font><br /> my selection$$END$$</div></a></div>$$END$$$$IF:ANNLISTE:SIPANIER$$<div id=\"deselection$$ANNLISTE:IDANNONCE$$\" class=\"BtnSelectRech\"><a href=\"javascript:deselectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);\" title=\"\"><div class=\"pictoSupprimer\"></div><div class=\"textePicto texte-select\">$$LG:SUPPRIMERSELEC pcase$$</div></a></div>$$END$$",
+				
+				"miniphoto":"$$IF:ANNLISTE:THUMBURL1$$<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL1$$></div>$$END$$$$IF:ANNLISTE:THUMBURL2$$<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL2$$></div>$$END$$$$IF:ANNLISTE:THUMBURL3$$<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL3$$></div>$$END$$$$IF:ANNLISTE:THUMBURL4$$<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL4$$></div>$$END$$$$IF:ANNLISTE:THUMBURL5$$<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL5$$></div>$$END$$"
+				}
+				
+			$$IF!:PAGE_ID3*LINES*PER*PAGE$MAXANN:ANNLISTE:N$$$$IF!:PAGE_ID3*LINES*PER*PAGE$MAXANN:ANNLISTE:I$$,$$END$$$$END$$$$LOOP$$]
+			,"pagination":"$$IF:ANNLISTE:MULTIPAGE$$<div class=\"pageCourante\">$$LG:PAG pcase$$ $$ANNLISTE:PAGE$$ / $$ANNLISTE:NBRPAGES$$</div><div class=\"rechLiensPages\">$$IF!:1$2:ANNLISTE:PAGE$$<a class=\"first\" href=\"$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=1\" title=\"$$LG:PREMIEREPAGE pcase$$\"><span>&lt;&lt;</span></a>$$END$$$$IF:ANNLISTE:LIENARRIERE$$<a class=\"prev\" href=\"$$ANNLISTE:LIENARRIERE removeqry alierr$$\" title=\"$$LG:PAGEPRECEDENTE pcase$$\"><span>&lt;</span></a>$$END$$$$ANNLISTE:MULTIPAGE removeqry alierr replace " \"$$$$IF:ANNLISTE:LIENAVANT$$<a class=\"next\" href=\"$$ANNLISTE:LIENAVANT removeqry alierr$$\" title=\"$$LG:PAGESUIVANTE pcase$$\"><span>&gt;</span></a>$$END$$$$IF!:ANNLISTE_NBRPAGES$ANNLISTE_NBRPAGES exec (XX-1):ANNLISTE:PAGE$$<a class=\"last\" href=\"$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry alierr removeqry ANNLISTEpg$$&amp;ANNLISTEpg=$$ANNLISTE:NBRPAGES$$\" title=\"$$LG:DERNIEREPAGE pcase$$\"><span>&gt;&gt;</span></a>$$END$$<div class=\"clear\"></div></div>$$END$$",
+			"maxpage":"$$ANNLISTE:NBRPAGES$$"
+	$$BFIN$$	
+	$$BIF0:ANNLISTE$$
+	{"phrase":"$$IF=:437:FORM:IDVPA$$Spécial étudiants : $$END$$$$IF=:446:FORM:IDVPA$$Neufs : $$END$$$$IF=:439:FORM:IDVPA$$Prestige : $$END$$$$IF=:441:FORM:IDVPA$$Sélection investisseurs : $$END$$$$IF=:480:FORM:IDVPA$$Neufs : $$END$$$$IF=:440:FORM:IDVPA$$Espace privilège : $$END$$$$IF=:479:FORM:IDVPA$$Logements conventionnés : $$END$$$$IF=:RESULTATSCARTE:IDT$$$$LG:CARTEGEOLOC pcase$$$$END:RESULTATSCARTE:IDT$$$$IF=:RESULTATS:IDT$$$$IF=:1:FORM:SI_EXCLUSIF$$$$LG:NOSEXCLUSIVITES pcase$$ : $$END$$$$IF=:1:FORM:SI_COUPDECOEUR$$$$LG:TITRECOEUR pcase$$$$END$$$$ANNLISTE:PHRASE pcase$$$$IF:FORM:IDSOUSTYPEBIEN$$$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$<br />$$FORM:IDSOUSTYPEBIEN getsoustypesbien$$$$END:FORM:IDSOUSTYPEBIEN$$$$END:FORM:IDSOUSTYPEBIEN$$$$END:RESULTATS:IDT$$$$IF:FORM:IDTYPEBIEN$$$$IF=:BIENSVENDUS:IDT$$$$VENDU:NBR formatnumber 0$$$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$$$END$$$$END$$$$IF=:BIENSVENDUS:IDT$$$$IF0:FORM:IDTYPEBIEN$$$$END$$$$END$$$$IF0:VENDU:NBR$$<br /><br /><span>$$IF0:ANNLISTE:SIPANIER$$$$ANNLISTE:NBRESULT formatnumber 0$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBRESULT pluriel$$$$END:FR$$ Trouvées$$END$$$$IF=:RESULTATS:IDT$$$$IF+:200:ANNLISTE:NBRESULT$$$$IF=:FR:LANGUE$$<sup>* 200 premières affichées</sup>$$END$$$$IF!:FR:LANGUE$$<sup>* First 200 displayed</sup>$$END$$$$END$$$$END$$</span>$$END$$",
+			"qry":"$$REP:QRY$$",
+			"page":"",
+			"annonces":[
+				{"color":"",
+				"idannonce":"",
+				"coupdecoeur":"",
+				"exclusif":"",
+				"fraicheur":"",
+				"promo":"",
+				"photo":"",
+				"descriptif":"",
+				"descriptif2":"",
+				"filtres":"",
+				"prix":"",
+				"rechdetail":"",
+				"contactannonce":"",
+				"contactannonce2":"",
+				"contactannonce3":"",
+				"sipanier":"",
+				"miniphoto":""
+				}],"pagination":"",
+					"maxpage":""
+	$$BFIN$$
+	$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VALADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+		$$BIF:REFINER$$
+		$$A:MAXREFINE=@@REFINER:NBR@@$$
+		,"moteur":[
+			$$DO$$
+				$$IF!:all:REFINER:QUERYVALUE$$
+				{"idkey":"$$REFINER:IDKEY$$",
+				"keyname":"$$REFINER:KEYNAME$$",
+				"queryvalue":"$$REFINER:QUERYVALUE$$",
+				"valuename":"$$REFINER:VALUENAME$$",
+				"nb":"$$REFINER:NB$$",
+				"querykey":"$$REFINER:QUERYKEY$$",
+				"selecte":"$$REFINER:SELECTED$$"}
+				$$IF!:REFINER_I:MAXREFINE$$,$$END$$
+				$$END$$
+			$$LOOP$$
+			],"zeroquery":"$$REFINER:ZEROQUERY removeqry pxmax removeqry pxmin removeqry surfacebtw removeqry pxbtw removeqry ANNLISTEpg$$"
+		$$BFIN$$
+		$$BIF0:REFINER$$
+			,"moteur":[
+				{"idkey":"ERROR",
+				"keyname":"ERROR",
+				"queryvalue":"ERROR",
+				"valuename":"ERROR",
+				"nb":"ERROR",
+				"querykey":"ERROR",
+				"selecte":"ERROR"}
+			],"zeroquery":"ERROR"
+		$$BFIN$$
+		}

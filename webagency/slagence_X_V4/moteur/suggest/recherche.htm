@@ -1,0 +1,78 @@
+<!--#include virtual="moteur/suggest/incl_exclude.htm" -->	
+$$B:IMMOBW:SUGGEST-LOCALISATION:~texte:QRY:CP:ALIAS:LISTING$$
+$$BIF:LISTING$$
+	$$DO$$
+		$$IF!:50$31$40:LISTING:TYPEHEADER$$
+			$$IFPREV:LISTING:TYPEHEADER$$
+			<ul style="display:block"><h2>$$LISTING:HEADER htmlencode$$</h2>
+			$$END$$
+			$$IF):EXCLUDECISUGGEST:LISTING:VALUE$$
+			<li id="$$LISTING:LIBELLE htmlencode$$$$IF:LISTING:CODE$$|$$LISTING:CODE$$$$END$$$$IF:LISTING:NAME$$|$$LISTING:NAME$$$$END$$$$IF:LISTING:VALUE$$|$$LISTING:VALUE$$$$END$$$$IF:LISTING:NAMESUP$$|$$LISTING:NAMESUP$$$$END$$$$IF:LISTING:VALUESUP$$|$$LISTING:VALUESUP$$$$END$$" $$IF=:1:LISTING:I$$class="firstLi"$$END$$>
+				<br />
+				$$LISTING:LIBELLE htmlencode$$$$IF:LISTING:CODE$$ - $$LISTING:CODE$$$$END$$
+			</li>
+			$$END$$
+			$$IFNEXT:LISTING:TYPEHEADER$$
+			</ul>
+			$$END$$
+		$$END$$
+	$$LOOP$$
+$$BFIN$$
+$$BIF0:LISTING$$
+	$$IF:FORM:CP$$
+		<div class="noSugg">Pas de suggestion pour votre recherche <span>$$FORM:CP$$</span>.</div>
+	$$END$$
+$$BFIN$$
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		$('#suggestionsBox li').each(function() {
+			$(this).mouseover(function(e) {
+				$(this).addClass('onSugg');
+			});
+			$(this).mouseout(function(e) {
+				$(this).removeClass('onSugg');
+			});
+			$(this).click(function(e) {
+				// DEFIX BOUTON
+				changeValue(e,'Mini_Bouton');
+				$('.blocSearch').removeClass('wait');
+				$('.blocSearch').css('overflow-y','auto');
+				// CREATE NEW LI
+				var valueLi = $(this).attr('id').split('|');
+				var valueLiLength = valueLi.length;
+				var objectLi = '<li class="selectLi" id="'+$(this).attr('id')+'">';
+				objectLi += '<div class="textLi">';
+				if(valueLiLength == 3) {
+					objectLi += valueLi[0];
+				} else {
+					objectLi += valueLi[0]+' - '+valueLi[1];
+				}
+				objectLi += '</div>';
+				objectLi += '<div class="closeLi">X</div>';
+				objectLi += '<div class="clear"></div>';
+				objectLi += '</li>';
+				// INSERT LI
+				//$('.blocSearch').insertAfter('#cpSearch');
+				$(objectLi).insertAfter('#cpSearch');
+				// HIDE SUGGESTIONS
+				$(this).parent().parent().hide();
+				// DELETE CP SEARCH
+				$('#cpSearch').val('');
+				$('#cpSearch').focus();
+				// IF CLICK > DESTROY
+				$('.closeLi').mouseover(function() {
+					$(this).parent().addClass("onClose");
+				});
+				$('.closeLi').mouseout(function() {
+					$(this).parent().removeClass("onClose");
+				});
+				$('.closeLi').click(function() {
+					$(this).parent().remove();
+					buildSearch();
+				});
+				// BUILD SEARCH
+				buildSearch();
+			});
+		});
+	});
+</script>

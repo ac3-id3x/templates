@@ -1,0 +1,328 @@
+$$INIT:IDT=DETAIL$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:ALIAS:ANNDETAIL$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div data-role="content" id="pagecontent" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/Product"$$END$$>
+		<ul class="carouselbig"  style="margin-left:0px;" id="mobiGallery">
+				$$B:IMMOBW:PHOTOS:ALIAS:GALERIE:REP:1$$
+				$$BIF:GALERIE$$
+					$$DO$$
+						<li>
+							<a class="linkGalerie" href="$$IF:GALERIE:BIG_URL$$$$GALERIE:BIG_URL$$$$END$$$$IF0:GALERIE:BIG_URL$$$$GALERIE:URL$$$$END$$" rel="external">
+							  $$IF:FEAU$$
+							    $$IF=:8:ANNDETAIL:IDTYPETRANSACTION$$
+							        <img $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ src="$$GALERIE:URL$$" alt="$$LG:VENTE pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" title="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" class="img-carousel" />    
+							    $$END$$
+							    $$IF!:8:ANNDETAIL:IDTYPETRANSACTION$$
+							        <img $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ src="$$GALERIE:URL$$" alt="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" title="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" class="img-carousel" />     
+							    $$END$$
+							  $$END$$
+							  $$IF0:FEAU$$
+							        <img $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="image"$$END$$ src="$$GALERIE:URL$$" alt="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" title="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)" class="img-carousel" />
+							  $$END$$
+							</a>
+						</li>
+					$$LOOP$$
+				$$BFIN$$
+				<div class="clear"></div>
+		</ul>
+		<div class="ui-grid-a" id="boutons">
+			<div class="ui-block-a">
+				<a  id="telDetail" href="tel:$$ANNDETAIL:TELEPHONE$$" data-role="button" data-shadow="false" data-corners="false" data-icon="phone" data-iconpos="left" data-iconpos="top">$$LG:TELABREGE pcase$$</a>
+			</div>
+			<div class="ui-block-b">
+				<a href="detail,contact.htm?idannonce=$$ANNDETAIL:IDANNONCE$$&idp=$$ANNDETAIL:IDPUBLICATION$$" data-role="button" data-shadow="false" data-corners="false" data-icon="mail" data-iconpos="left" data-iconpos="top">$$LG:EMAIL pcase$$</a>
+			</div>
+		</div>
+		<div class="pageMobi">
+			$$IF=:1:NEGOAFF$$
+				<!--#include virtual="detail/incl_nego.htm" -->
+			$$END$$
+			$$IF:FEAU$$			
+				$$IF=:0:URLAFF$$
+					<!--#include virtual="detail/incl_agence_url.htm" -->
+				$$END$$
+				<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+				<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+				<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+			$$END$$
+			<div id="descr_bien">
+				<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="name"$$END$$>
+					$$IF=:8:ANNDETAIL:IDTYPETRANSACTION$$
+						$$LG:VENTE pcase$$
+					$$END$$
+					$$IF!:8:ANNDETAIL:IDTYPETRANSACTION$$
+						$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+					$$END$$					
+					 - $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+				</h2>
+				<p $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="location"$$END$$>
+				$$IF0:FEAU$$
+					$$ANNDETAIL:VILLE$$
+				$$END$$
+				$$IF:FEAU$$
+					$$IF!:FR:LANGUE$$
+						$$ANNDETAIL:VILLE replace 1er 1st replace 2ème 2nd replace 3ème 3rd replace 4ème 4th replace 5ème 5th replace 6ème 6th replace 7ème 7th replace 8ème 8th replace 9ème 9th replace 10ème 10th replace 11ème 11th replace 12ème 12th replace 13ème 13th replace 14ème 14th replace 15ème 15th replace 16ème 16th replace 17ème 17th replace 18ème 18th replace 19ème 19th replace 20ème 20th$$
+					$$END$$
+					$$IF=:FR:LANGUE$$
+						$$ANNDETAIL:VILLE$$
+					$$END$$
+				$$END$$
+				 ($$ANNDETAIL:CP$$)
+				</p>
+				$$IF:ANNDETAIL:SURFACE$$
+					<p>$$ANNDETAIL:SURFACE$$$$LG:M2 lcase$$
+					$$IF=:EN:LANGUE$$ / approx. $$ANNDETAIL:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$</p>	
+				$$END$$
+				$$IF:ANNDETAIL:NB_PIECES$$
+					<p>$$ANNDETAIL:NB_PIECES$$
+					$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+					$$IF!:0$1:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$IF:ANNDETAIL:NB_CHAMBRES$$,
+					$$ANNDETAIL:NB_CHAMBRES$$
+					$$LG:CHAMBRE lcase$$$$ANNDETAIL:NB_CHAMBRES pluriel$$		
+					$$END$$
+					</p>
+				$$END$$
+				<!--#include virtual="detail/incl_prix.htm" -->
+				$$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+					<p>
+					$$IF:ANNDETAIL:SI_LOYER_CC$$<span class="sup1"><!-- &sup1; --></span><!-- loyer charges comprises-->$$END$$
+					$$IF0:ANNDETAIL:SI_LOYER_CC$$<span class="sup1">&sup1;</span><!-- loyer + charges -->$$END$$
+					</p>
+				$$END$$
+				$$IF:ANNDETAIL:REFANNONCE$$
+					<p>$$LG:MINIRECHREF pcase$$ : $$ANNDETAIL:REFANNONCE$$</p>
+				$$END$$
+				$$IF:ANNDETAIL:SI_COPROPRIETE$$
+					<p>$$LG:COPROPRIETE$$ ($$ANNDETAIL:NB_LOTS_COPROPRIETE$$ $$LG:LOTS$$)</p>
+				$$END$$
+
+				$$IF:ANNDETAIL:CHARGES_ANNUELLES$$
+					<p>
+						$$LG:CHARGESANNUELLES$$ : $$ANNDETAIL:CHARGES_ANNUELLES$$ &euro;
+					</p>
+				$$END$$
+				$$IF:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+					<p>
+						$$LG:HONORAIRESACQUEREUR$$ : $$ANNDETAIL:HONORAIRE_POURCENTAGE_ACQUEREUR$$ %
+					</p>
+				$$END$$
+			</div>
+			$$IF:FEAU$$
+			$$B:IMMOBC:AGENCES-EXTERNES:ALIAS:AEXTERNE$$
+			<!--#include virtual="detail/incl_url_social.htm" -->	
+			<div id="zone_social">
+				<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:PARTAGEZ pcase$$ $$LG:CETTEANNONCE lcase$$</h2>
+				<p>
+					<a href="https://www.facebook.com/sharer/sharer.php?u=$$LIENSOCIAL$$" target="_blank"><img class="margin-right-10" src="$$-$$images/feau/facebook.png" alt="Facebook"></a>
+					$$IF0:FEAU$$
+					  <a href="https://twitter.com/share?url=$$LIENSOCIAL$$" target="_blank"><img class="margin-right-10" src="$$-$$images/feau/twitter.png" alt="Twitter"></a>
+					$$END$$
+					<a href="http://pinterest.com/pin/create/button/?url=$$LIENSOCIAL$$&media=$$ANNDETAIL:BIG_URL$$&description=$$ANNDETAIL:LIBELLE$$" target="_blank"><img class="margin-right-10" src="$$-$$images/feau/pinterest.png" alt="Pinterest"></a>
+					<a href="https://plus.google.com/share?url=$$LIENSOCIAL$$" target="_blank"><img class="margin-right-10" src="$$-$$images/feau/google-plus.png" alt="Google+"></a>
+				</p>
+			</div>
+			$$END$$
+			<div id="descr_txt">
+				<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:DESCRIPTIF pcase$$</h2>
+				<div class="$$IF0:FEAU$$ui-body-$$THEMEMOBILE$$$$END$$ borderDesc" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemprop="description"$$END$$>
+					<p>$$ANNDETAIL:DESCRIPTIF$$</p>
+
+					$$IF:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+						<br /><p>$$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$</p>
+					$$END$$
+				</div>
+			</div>
+			$$IF:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+				<p>$$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$</p>
+			$$END$$
+		$$B:IMMOBW:AFFICHANNONCES:REP:1$$
+			$$BIF:IMMOBW:AFFICHANNONCES:REP$$
+			<div id="descr_fiche">
+			<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:FICHESIGNALETIQUE pcase$$</h2>
+				$$DO$$
+					$$IF=:FR:LANGUE$$
+						$$IF=:2$8:ANNDETAIL:IDTYPETRANSACTION$$
+							<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤ replace Etages Nombre¤d'étages¤de¤l'immeuble replace Etage Etage¤de¤l'appartement replace Pièces Pièce(s) replace Chambres Chambre(s) replace Salle¤de¤bain Salle(s)¤de¤bains replace Salles¤de¤bain Salle(s)¤de¤bains replace Salle¤d'eau Salle(s)¤d'eau replace Salle¤À¤Manger Salle¤à¤manger replace Salles¤d'eau Salle(s)¤d'eau replace Ascenseur Ascenseur¤:¤Oui replace Cave Cave¤:¤Oui$$</p>
+						$$END$$
+						$$!:2$8:ANNDETAIL:IDTYPETRANSACTION$$
+							<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤ replace Etages Nombre¤d'étages¤de¤l'immeuble replace Pièces Pièce(s) replace Chambres Chambre(s) replace Salle¤de¤bain Salle(s)¤de¤bains replace Salle¤d'eau Salle(s)¤d'eau replace Salle¤À¤Manger Salle¤à¤manger replace Salles¤de¤bain Salle(s)¤de¤bains replace Salles¤d'eau Salle(s)¤d'eau replace Ascenseur Ascenseur¤:¤Oui replace Cave Cave¤:¤Oui$$</p>
+						$$END$$
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						<p>$$IMMOBW:AFFICHANNONCES:REP:VALEUR replace &bull; ¤ replace <br/> ¤ replace Rooms Room(s) replace Shower¤rooms Shower¤room(s) replace Bedrooms Bedroom(s) replace Bathrooms Bathroom(s) replace Toilets¤: Toilet(s)¤: replace Balconies Balconie(s) replace Parking¤places Parking¤place(s)$$</p>
+					$$END$$
+				$$LOOP$$
+			</div>
+		$$BFIN$$
+		<!-- SHARE -->
+		$$IF:URLSHARE$$
+			<!--#include virtual="detail/url_share_creation.htm" -->	
+			<a id="share_bouton" href="detail,share.htm?lang=$$LANGUE$$&urlshare=$$URLTOSHARE$$&idannonce=$$ANNDETAIL:IDANNONCE$$&idp=$$ANNDETAIL:IDPUBLICATION$$" data-role="button" data-shadow="false" data-corners="false" data-icon="share-custom" data-iconpos="left" data-iconpos="top">$$LG:PARTAGEZ pcase$$ $$LG:CETTEANNONCE lcase$$</a>
+		$$END$$
+		$$IF0:URLSHARE$$
+			$$IF:FEAU$$
+				<a id="share_bouton" href="detail,share.htm?lang=$$LANGUE$$&idannonce=$$ANNDETAIL:IDANNONCE$$&idp=$$ANNDETAIL:IDPUBLICATION$$" data-role="button" data-shadow="false" data-corners="false" data-icon="share-custom" data-iconpos="left" data-iconpos="top">$$LG:ENVOYEZAMI pcase$$ $$LG:CETTEANNONCE lcase$$</a>
+			$$END$$
+			$$IF0:FEAU$$
+				<a id="share_bouton" href="detail,share.htm?lang=$$LANGUE$$&idannonce=$$ANNDETAIL:IDANNONCE$$&idp=$$ANNDETAIL:IDPUBLICATION$$" data-role="button" data-shadow="false" data-corners="false" data-icon="share-custom" data-iconpos="left" data-iconpos="top">$$LG:PARTAGEZ pcase$$ $$LG:CETTEANNONCE lcase$$</a>
+			$$END$$
+		$$END$$
+		<!-- AGENCE -->
+		<div id="descr_agence">
+				<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->						
+				<!--#include virtual="detail/incl_agence_tel.htm" -->
+				<!--#include virtual="detail/incl_agence_fax.htm" -->
+				<!--#include virtual="detail/incl_agence_email.htm" -->
+				$$IF=:0:URLAFF$$
+					<!--#include virtual="detail/incl_agence_url.htm" -->
+				$$END$$
+				<!--#include virtual="detail/incl_agence_tel_ventes.htm" -->
+				<!--#include virtual="detail/incl_agence_tel_locs.htm" -->
+				<!--#include virtual="detail/incl_agence_tel_locs_vacances.htm" -->
+		</div>
+		<!-- DPE -->
+		$$IF=:1:DPEAUTRE$$
+		<div data-role="collapsible">
+		   <h3>
+		   	$$IF:FEAU$$
+		   		$$IF=:FR:LANGUE$$
+		   			DPE
+		   		$$END$$
+		   		$$IF!:FR:LANGUE$$
+		   			$$LG:DPE pcase$$
+		   		$$END$$
+		   	$$END$$
+		   	$$IF0:FEAU$$
+		  	 	DPE
+		   	$$END$$
+		   </h3>
+		  <div id="descr_DPE">
+			$$IF:ANNDETAIL:BILANCONSOENERGIE$$
+					$$IF:ANNDETAIL:BILANCONSOENERGIE$$	
+						<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:CONSOENERGIE pcase$$</h2>					
+						<div class="diagramme">
+							<img src="/z/webagency/slagence_X_V3/detail/img_commun/diag_dpe_$$IF=:HAB:ANNDETAIL:TYPEDPE$$hab$$END:TYPEDPE$$$$IF!:HAB:ANNDETAIL:TYPEDPE$$loccom$$END:TYPEDPE$$.png" alt="" title="" />
+							<p class="diagLettre diag$$ANNDETAIL:BILANCONSOENERGIE$$" style="color:#fff;">$$ANNDETAIL:BILANCONSOENERGIE$$</p>
+						</div>
+						<p class="bilanConso">$$ANNDETAIL:CONSOENERGIE formatnumber 0$$ kWhEP/m&sup2;/$$IF=:FR:LANGUE$$an$$END$$$$IF!:FR:LANGUE$$year$$END$$</p>
+						$$IF=:FR:LANGUE$$
+						<p class="notes">Consommations &eacute;nerg&eacute;tiques (en &eacute;nergie primaire) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>
+						$$END$$
+						$$IF!:FR:LANGUE$$
+						<p class="notes">Energy consumption (primary energy) for heating, hot water and cooling.</p>
+						$$END$$
+					$$END$$		
+					$$IF:ANNDETAIL:BILANEMISSIONGES$$		
+						<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:EMISSIONGAZ pcase$$</h2>
+						<div class="diagramme">
+							<img src="/z/webagency/slagence_X_V3/detail/img_commun/diag_ges_$$IF=:HAB:ANNDETAIL:TYPEDPE$$hab$$END:TYPEDPE$$$$IF!:HAB:ANNDETAIL:TYPEDPE$$loccom$$END:TYPEDPE$$.png" alt="" title="" />
+							<p class="diagLettre diag$$ANNDETAIL:BILANEMISSIONGES$$" style="color:#fff;">$$ANNDETAIL:BILANEMISSIONGES$$</p>
+						</div>
+						<p class="bilanConso">$$ANNDETAIL:EMISSIONGES formatnumber 0$$ kgeqCO2/m&sup2;/$$IF=:FR:LANGUE$$an$$END$$$$IF!:FR:LANGUE$$year$$END$$</p>
+						$$IF=:FR:LANGUE$$
+						<p class="notes">&Eacute;missions de gaz &agrave; effet de serre (GES) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>	
+						$$END$$
+						$$IF!:FR:LANGUE$$
+						<p class="notes">Emissions of greenhouse gas (GHG) emissions for heating, hot water and cooling.</p>
+						$$END$$
+					$$END$$		
+				$$END:BILANCONSOENERGIE$$
+				$$IF0:ANNDETAIL:BILANCONSOENERGIE$$
+					$$IF=:true:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+							<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:DPENONAPPLIQUABLE$$</h2>	
+					$$END$$
+					$$IF=:false:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+							<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:DPEVIERGE$$</h2>
+					$$END$$
+					$$IF!:true$false:ANNDETAIL:SI_DPE_NON_RENSEIGNE$$
+						$$IF=:FR:LANGUE$$
+							<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">Aucun bilan DPE n'est disponible actuellement.</h2>
+						$$END$$
+						$$IF!:FR:LANGUE$$
+							<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">No diagnosis of energy performance currently</h2>
+						$$END$$
+					$$END$$
+				$$END:BILANCONSOENERGIE$$
+			</div>
+		</div>
+		$$END$$
+		$$IF0:DPEAUTRE$$
+		<div id="descr_DPE">
+			$$IF:ANNDETAIL:BILANCONSOENERGIE$$
+					$$IF:ANNDETAIL:BILANCONSOENERGIE$$	
+						<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:CONSOENERGIE pcase$$</h2>					
+						<div class="diagramme">
+							<img src="/z/webagency/slagence_X_V3/detail/img_commun/diag_dpe_$$IF=:HAB:ANNDETAIL:TYPEDPE$$hab$$END:TYPEDPE$$$$IF!:HAB:ANNDETAIL:TYPEDPE$$loccom$$END:TYPEDPE$$.png" alt="" title="" />
+							<p class="diagLettre diag$$ANNDETAIL:BILANCONSOENERGIE$$" style="color:#fff;">$$ANNDETAIL:BILANCONSOENERGIE$$</p>
+						</div>
+						<p class="bilanConso">$$ANNDETAIL:CONSOENERGIE formatnumber 0$$ kWhEP/m&sup2;/an</p>
+						<p class="notes">Consommations &eacute;nerg&eacute;tiques (en &eacute;nergie primaire) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>
+					$$END$$		
+					$$IF:ANNDETAIL:BILANEMISSIONGES$$		
+						<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:EMISSIONGAZ pcase$$</h2>
+						<div class="diagramme">
+							<img src="/z/webagency/slagence_X_V3/detail/img_commun/diag_ges_$$IF=:HAB:ANNDETAIL:TYPEDPE$$hab$$END:TYPEDPE$$$$IF!:HAB:ANNDETAIL:TYPEDPE$$loccom$$END:TYPEDPE$$.png" alt="" title="" />
+							<p class="diagLettre diag$$ANNDETAIL:BILANEMISSIONGES$$" style="color:#fff;">$$ANNDETAIL:BILANEMISSIONGES$$</p>
+						</div>
+						<p class="bilanConso">$$ANNDETAIL:EMISSIONGES formatnumber 0$$ kgeqCO2/m&sup2;/an</p>
+						<p class="notes">&Eacute;missions de gaz &agrave; effet de serre (GES) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>	
+					$$END$$		
+				$$END:BILANCONSOENERGIE$$
+				$$IF0:ANNDETAIL:BILANCONSOENERGIE$$
+				$$IF=:FR:LANGUE$$
+					<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">Aucun bilan DPE n'est disponible actuellement.</h2>
+				$$END$$
+				$$IF!:FR:LANGUE$$
+					<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">No diagnosis of energy performance currently</h2>
+				$$END$$
+			$$END:BILANCONSOENERGIE$$
+			</div>
+		$$END$$
+		
+		<!-- GLOSSAIRE -->
+		$$IF!:1:GLOSSAIREAFF$$
+			<div id="descr_glossaire">
+				<h2 class="ui-bar ui-bar-$$THEMEMOBILE$$">$$LG:GLOSSAIRE pcase$$</h2>
+				$$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+					$$IF:ANNDETAIL:SI_LOYER_CC$$<p>cc : $$LG:LOYERCC2 lcase$$</p><!-- loyer charges comprises-->$$END$$
+					$$IF0:ANNDETAIL:SI_LOYER_CC$$<p>&sup1; : loyer hors charges</p>$$END$$
+				$$END:IDTYPETRANSACTION$$
+				$$IF=:2$8:ANNDETAIL:IDTYPETRANSACTION$$
+					$$IF=:False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+						<p class="cc glossaire"><sup>**</sup> : $$LG:PRIXHORSFRAIS$$</p>
+					$$END$$
+					$$IF=:True:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+						<p class="cc glossaire"><sup>**</sup> : $$LG:DONT$$ $$ANNDETAIL:HONORAIRES_POURCENTAGE_ACQUEREUR$$ % TTC $$LG:HONORAIRESACQUEREUR$$ $$LG:PRIXHORSFRAIS$$</p>
+					$$END$$
+					$$IF!:True$False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+						<p class="cc glossaire"><sup>**</sup> : $$LG:HONORAIRES$$ $$LG:NONRENSEIGNE$$</p>
+					$$END$$
+				$$END:IDTYPETRANSACTION$$
+			</div>
+		$$END$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:ML$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:CARTEPROT$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:2:ALIAS:CARTEPROG$$
+		$$IF=:1:LEGALAUTRE$$
+		<div data-role="collapsible">
+				<h3>$$LG:INFOSLEG pcase$$</h3>
+				<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->
+		</div>
+		$$END$$
+		$$IF0:LEGALAUTRE$$
+			<div id="descr_legal">
+				<!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->
+			</div>
+		$$END$$
+	</div>
+</div>
+<div class="message ui-bar ui-bar-$$THEMEMOBILE$$">
+	$$IF=:FR:LANGUE$$
+		Annonce ajoutée à votre sélection
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		Add pushed to your selection
+	$$END$$
+</div>
+<!--#include virtual="scripts/incl_detail_mobi.htm" -->
+<!--#include virtual="footer/incl_bas.htm" -->

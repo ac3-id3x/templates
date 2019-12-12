@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		$$IF:WIDTHQR$$
+			var widthQR = $$WIDTHQR$$;	
+		$$END$$
+		$$IF:HEIGHTQR$$
+			var heightQR = $$HEIGHTQR$$;
+		$$END$$
+		$$IF=:PHRASE:TYPEQR$$
+			$$IF=:ACCUEIL:IDT$$
+				var url = '$$URLBASE$$';
+				$('#qrCodeImg').append('<a href="javascript:pop(\'$$URLBASE$$/detail,qr_code.htm?lang=$$LANGUE$$&urlQR='+encodeURIComponent(url)+'\',700,500,50,200);" title="$$LG:QRCODE pcase$$">QR Code</a>');
+			$$END$$
+		$$END$$
+		$$IF=:SIMPLE:TYPEQR$$
+			var url = '$$URLBASE$$/$$REP:PAGE$$';
+			var urlQR = 'http://chart.googleapis.com/chart?chs='+widthQR+'x'+heightQR+'&cht=qr&chl='+url+'&chld=L|2';
+			$('#qrCodeImg').append('<a href="javascript:pop(\'$$URLBASE$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,qr_code.htm?lang=$$LANGUE$$&urlQR='+encodeURIComponent(url)+'\',700,500,50,200);"><img src="'+urlQR+'" title="$$LG:QRCODE pcase$$" alt="$$LG:QRCODE pcase$$" /></a>');
+		$$END$$
+		$$IF=:POPUP:TYPEQR$$
+			var url = decodeURIComponent('$$FORM:URLQR$$');
+			var urlQR = 'http://chart.googleapis.com/chart?chs='+widthQR+'x'+heightQR+'&cht=qr&chl='+url+'&chld=L|1';
+			$('#qrCodeImg').append('<img src="'+urlQR+'" title="$$LG:IMPRIMER$$ QR Code" alt="$$LG:QRCODE pcase$$" />');
+		$$END$$
+	});
+</script>
+$$IF!:PHRASE:TYPEQR$$
+<div style="text-align:center;" id="qrCodeImg"></div>
+$$END$$
+$$IF=:PHRASE:TYPEQR$$
+	$$IF=:ACCUEIL:IDT$$
+		<span style="text-align:center;" id="qrCodeImg"></span>
+	$$END$$
+$$END$$

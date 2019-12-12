@@ -1,0 +1,64 @@
+					<ul id="idtypeperso" data-role="listview" class="ss-moteur">
+						<li data-role="fieldcontain">
+							<fieldset data-role="controlgroup">
+									<input type="checkbox" value="1" name="si_meuble" id="idperso-1">
+									<label for="idperso-1">
+											$$LG:MEUBLE pcase$$
+									</label>
+									<input type="checkbox" value="0" name="si_meuble" id="idperso-2">
+									<label for="idperso-2">
+											$$IF=:FR:FORM:LANG$$
+												Non-meublé
+											$$END$$
+											$$IF!:FR:FORM:LANG$$
+												Not furnished
+											$$END$$
+									</label>
+									
+								</fieldset>
+						</li>
+					</ul>
+
+<script type="text/javascript">
+$(document).delegate("#moteur_perso","pageinit", function (event) {
+
+$("input[id*= idperso-]").each(function() {
+			$(this).click(function() {
+				var valuePerso = '';
+				var idPerso = '';
+				var $pe = $(this);
+				// DETERMINE ID CLICK
+				var splitPe = $(this).attr('id').split('-');
+				var idPe = splitPe[0];
+				var valuePe = splitPe[1];
+				// GET LOCAL STORAGE IF EXIST
+				if(valuePe == 0) {
+					eraselocale('idperso');
+					eraselocale('perso');
+					$("input[id*= idperso-]").each(function() {
+						if($(this).attr('id') != $pe.attr('id')) {
+							// UNCKECKED ALL EXCEPT NO CRITERIA
+							$(this).attr('checked',false).checkboxradio("refresh");
+						}
+					});
+				} else {
+					
+					// REMOVE CHECK NO CRITERIA
+					$("#idperso-0").attr('checked',false).checkboxradio("refresh");
+					// ADD LOCAL STORAGE
+					$("input[id*= idperso-]").each(function() {
+						if($(this).attr('checked') == "checked") {
+							valuePerso += $(this).parent().find('.ui-btn-text').html();
+							idPerso += $(this).val()+',';
+						}
+					});
+					localStorage.setItem('idperso',idPerso);
+					localStorage.setItem('perso',valuePerso);
+					console.log(idPerso);
+					console.log(valuePerso);
+				}
+			});
+	});
+	showchecked('idperso','idperso');	
+});
+</script>

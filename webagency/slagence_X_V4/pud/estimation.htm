@@ -1,0 +1,312 @@
+$$INIT:IDT=PUDESTIMATION$$
+$$INIT:CSS_PUD=1$$
+$$INIT:CSS_CARTO=1$$
+$$INIT:JS_BING=1$$
+$$INIT:JS_FORMULAIRES=1$$
+$$INIT:JS_EFFECTS=1$$
+$$INIT:JS_POPPUD=1$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+<h1 id="titre">$$LG:ESTIMATION pcase$$ $$LG:IMMOBILIERE lcase$$ sur $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>
+
+<!--#include virtual="pud/incl_txt_presentation.htm" -->
+<div id="annoncesBloc">
+	<p>Notre agence est spécialisée pour l'estimation de votre bien sur <strong>$$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</strong>.</p>
+	<p>Nous pouvons établir une estimation de votre bien gratuitement.</p>
+	<p>N'hésitez pas à nous contacter au <strong>$$AGENCE_TEL$$</strong> ou par <strong><a href="#FormContactAgence">formulaire</a></strong> ci-dessous.</p>
+	<p>Nous vous remercions et nous vous recontacterons très bientôt.</p>
+	<p>Cordialement,</p>
+	<p><strong>$$AGENCE_NOM$$</strong></p>
+	<!-- ZONE ANNONCES VENTES MAISONS -->
+	$$B:IMMOBW:ANN:2:QRY:LANG:::ADD:photo=10&ci=+FORM_CI+&tri=d_dt_crea:ALIAS:ANNMAISON$$
+	$$IF:ANNMAISON:NBR$$
+			<h2>$$LG:ANNONCES pcase$$ $$LG:MAISON lcase$$ $$LG:ET lcase$$ $$LG:APPARTEMENT lcase$$ $$LG:SUR lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h2>
+			$$BIF:ANNMAISON$$	
+				$$DO:1:3$$
+				$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNMAISON:IDPUBLICATION@@/@@ANNMAISON:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+				$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+					$$A:TITLE_SELECTION_INDEX=@@ANNMAISON:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNMAISON:IDTYPEBIEN gettypebien lcase@@ @@ANNMAISON:AVILLE ncase@@$$
+				$$END:WAGREF_IDDOSSIER_SITE$$
+				<div class="bloc_pud_annonce_x3 blocContentEffet">
+						$$IF:ANNMAISON:IDPHOTO$$										
+							<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$"><img class="image_pud_annonce_x3" src="$$ANNMAISON:C175_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" /></a>
+						$$END:ANNMAISON:IDPHOTO$$
+							<div class="content_pud_annonce_x3">
+								<h3 class="entete_pud_annonce">$$ANNMAISON:TITRE$$<br />$$ANNMAISON:AVILLE$$ ($$ANNMAISON:ACP$$)</h3>
+								<h3>$$ANNMAISON:IDTYPEBIEN gettypebien$$ - $$ANNMAISON:PRIX$$ $$ANNMAISON:PRIX_UNITE$$</h3>
+								<p class="detail_pud"><a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a></p>
+							</div>
+							<div class="clearpud"></div>
+				</div>
+				$$LOOP$$
+			<p class="texte_pud_annonce_x3"><a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&ci=$$FORM:CI$$&lang=fr&tri=d_dt_crea#tri">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:DE lcase$$ $$LG:MAISON lcase$$ $$LG:A lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</a></p>
+			$$BFIN$$
+	$$END$$
+	<div class="clearpud"></div>
+		<div id="bloc_contact_pud">
+				<!--<p>Notre agence est spécialisée pour l'estimation de votre bien sur <strong>$$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</strong>.</p>
+				<p>Nous pouvons établir une estimation de votre bien gratuitement.</p>
+				<p>N'hésitez pas à nous contacter au <strong>$$AGENCE_TEL$$</strong> ou par <strong>formulaire</strong> ci-dessous.</p>
+				<p>Nous vous remercions et nous vous recontacterons très bientôt.</p>
+				<p>Cordialement,</p>
+				<p><strong>$$AGENCE_NOM$$</strong></p>-->
+		<form method="post" id="FormContactAgence_Ctn">
+			<div id="FormContactAgence">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			
+				<input type="hidden" name="u" value="immobw:send-agence-mail" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+				<input type="hidden" name="idTypeVisu" value="8" />$$REM$$<!--// [INPUT OBLIGATOIRE] 1 : WebAg Message | 2 : WebAg Contact | 3 : WebAg Propriétaire | 8 : WebAg Estimation (anciennement E) | 6 : OBSOLÈTE - webag alerte (anciennement O) | 9 : OBSOLÈTE - webag intercab (anciennement I) | 13 : OBSOLÈTE - webag cgu (anciennement U) //-->$$END$$
+				<input type="hidden" name="page_ok" value="$$IF:REP:1$$/$$REP:1$$$$END$$/pud,estimation_ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+				<input type="hidden" name="page_err" value="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+				<input type="hidden" name="emailTemplate" value="/contact,estimation_envoi.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE]  Nom du template HTML de l'email à envoyer à l'agence //-->$$END$$
+				<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+				<input type="hidden" name="idPublication" value="$$REP:1$$" />
+				
+		$$REM$$<!--// On peut mettre autant d'autres champs de formulaire que l'on veut, il seront affichables dans l'email à l'aide des macros $$FORM:xxx$$ //-->$$END:REM$$
+		
+				
+					
+					<div>							
+							<h1>$$LG:DESCRBIEN pcase$$ que $$LG:SOUHAITEZ lcase$$ $$LG:ESTIMER lcase$$</h1>
+					</div>
+					
+					$$IF:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+
+						<div>
+							<div class="attention">$$LG:ATTENTION pcase$$</div>
+							<div class="erre">$$ERRE$$</div>
+						</div>
+
+					$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+					$$IF0:FORMESTIMCACHEIDTT$$
+
+						<div class="col1">
+							$$LG:VOUSSOUH pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<select name="typetransaction" class="inputSelect">
+								<option value="2">$$LG:VENTE lcase$$</option>
+								<option value="1">$$LG:LOCATION lcase$$</option>
+							</select>
+						</div>
+						<div class="clearpud"></div>
+					
+					$$END:FORMESTIMCACHEIDTT$$
+					$$IF:FORMESTIMCACHEIDTT$$
+						<input type="hidden" name="typetransaction" value="2" />	
+					$$END:FORMESTIMCACHEIDTT$$
+
+						<div class="col1">
+							$$LG:TYPEDEBIEN pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">						
+							<select name="typebien" class="inputSelect">
+								$$REM$$<!-- apparition des macros conditionnées dans incl_param.htm -->$$END:REM$$
+								$$REM$$<!-- pas de programme neuf dans les choix car c'est logique de ne pas le mettre -->$$END:REM$$
+								$$IF=:1:TB_SITE_1$$<option value="1" class="typeBien1">$$LG:APPARTEMENT lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_2$$<option value="2" class="typeBien2">$$LG:MAISON lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_3$$<option value="3" class="typeBien3">$$LG:PARKING lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_4$$<option value="4" class="typeBien4">$$LG:TERRAIN lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_6$$<option value="6" class="typeBien6">$$LG:BOUTIQUE lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_7$$<option value="7" class="typeBien7">$$LG:LOCALCOM lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_8$$<option value="8" class="typeBien8">$$LG:BUREAUX lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_9$$<option value="9" class="typeBien9">$$LG:LOFT2 lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_10$$<option value="10" class="typeBien10">$$LG:DIVERS lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_11$$<option value="11" class="typeBien11">$$LG:IMMEUBLE lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_12$$<option value="12" class="typeBien12">$$LG:BATIMENT lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_13$$<option value="13" class="typeBien13">$$LG:CHATEAU lcase$$</option>$$END$$
+								$$IF=:1:TB_SITE_14$$<option value="14" class="typeBien14">$$LG:HOTEL lcase$$</option>$$END$$
+							</select>
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:NBRP pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputNbPieces required number" name="nombrepieces" maxlength="3" value="$$FORM:NOMBREPIECES$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:SURFH2 pcase$$ (m&sup2;) <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputSurface required number" name="surface" maxlength="4" value="$$FORM:SURFACE$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:SURFT pcase$$ (m&sup2;) :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputTerrain" name="terrain" maxlength="5" value="$$FORM:TERRAIN$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:VILLE pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputVille required" name="villebien" maxlength="25" value="$$FORM:VILLEBIEN$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:CODEP pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputCP required number" name="codepostalbien" maxlength="8" value="$$FORM:CODEPOSTALBIEN$$" />$$REM$$<!--// [input obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1 message_ctn">
+							$$LG:PRECIS pcase$$ :
+						</div>
+						<div class="message_ctn col2">
+							<textarea class="inputTextarea inputMessage" name="message" cols="40" rows="4" onkeyup="limite(this,350);" onkeydown="limite(this,350);">$$FORM:MESSAGE$$</textarea>$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>						
+						<div class="clearpud"></div>
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					
+						<div class="pointillesBas">
+							<h1>$$LG:COORD3 pcase$$</h1>							
+						</div>
+					
+						<div class="col1 civ_ctn">
+							$$LG:CIVILITE pcase$$ :
+						</div>
+						<div class="civ_ctn col2">
+								<label><input type="radio" class="inputRadio" name="civ" value="Melle" /> $$LG:MADEMOISELLE pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mme" /> $$LG:MADAME pcase$$</label>
+								<label><input type="radio" class="inputRadio" name="civ" value="Mr" /> $$LG:MONSIEUR pcase$$</label>
+						</div>
+						<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:NOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputNom required nom" name="nomFamille" maxlength="25" value="$$FORM:NOMFAMILLE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">	
+							$$LG:PRENOM pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputPrenom required" name="prenom" maxlength="25" value="$$FORM:PRENOM$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+						<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:ADRESSE pcase$$ :
+						</div>
+						<div>
+							<input type="text" class="inputText inputAdresse" name="adresse" maxlength="40" value="$$FORM:ADRESSE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:CODEP pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputCP" name="cp" maxlength="8" value="$$FORM:CP$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:VILLE pcase$$ :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputVille" name="ville" maxlength="25" value="$$FORM:VILLE$$" />$$REM$$<!--// [input non obligatoire]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+					
+						<div class="col1">
+							$$LG:TEL pcase$$ <span class="obligatoire">*</span> :
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputTel required phoneUK" name="telephone" maxlength="15" value="$$FORM:TELEPHONE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+						</div>
+					<div class="clearpud"></div>
+						
+						<div class="col1">
+							$$LG:EMAIL pcase$$ <span class="obligatoire">*</span> :
+							<br />
+							<br />
+						</div>
+						<div class="col2">
+							<input type="text" class="inputText inputEmail required email" name="email" maxlength="30" value="$$FORM:EMAIL$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+							<br />
+							<br />
+						</div>
+					<div class="clearpud"></div>						
+						<div class="champsobligatoires_ctn pointillesHaut col1">
+							<p><span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span></p>
+						</div>
+						<div class="bouton_ctn pointillesHaut col2">
+							<input type="submit" id="PUDBoutonContactAnnonce" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+						</div>				
+					
+			</div>
+		</form>
+		</div>
+</div>
+
+<!-- MULTIAGENCES = YES -->
+$$IF:MULTIAGENCES$$
+<div id="bloc_agence_droite">
+		<!--#include virtual="/carto/incl_BingMap_agences.htm" -->
+		<!--#include virtual="/pud/incl_share_pud.htm" -->
+	<div class="clear"></div>
+	$$REM$$
+		<div id="titre_recherche">$$LG:VOTRERECHERCHE pcase$$</div>
+		<!--#include virtual="moteur/mini/moteur.htm" -->
+	$$END$$
+</div>
+$$END:MULTIAGENCES$$
+
+<!-- MULTIAGENCES = NO -->
+$$IF0:MULTIAGENCES$$
+<div id="bloc_agence_droite">
+	<div id="nom_ag">
+		<h3>$$AGENCE_NOM$$</h3> $$LG:TEXTEAGENCES lcase$$ $$AGENCE_VILLE$$ ($$AGENCE_CP$$)
+	</div>
+	<div id="photo_agence">
+		$$IF=:1:PHOTO_AG_PUD$$
+		<div id="bat_agence">
+		</div>
+		$$END$$
+		</div>
+	<div id="coord_pud">
+	<p id="adresse">
+		$$AGENCE_NOM$$<br />
+		$$AGENCE_ADRESSE$$ <br />
+		$$AGENCE_CP$$ $$AGENCE_VILLE$$<br />
+	</p>
+	<p id="phone">
+		$$LG:MINITEL$$ : $$AGENCE_TEL$$<br />
+		$$LG:FAX$$ : $$AGENCE_FAX$$<br />
+	</p>
+	<p id="url>
+		<a href="http://$$REP:SRV$$" >$$REP:SRV$$</a><br>
+	</p>
+		<p id="contact">
+		$$LG:LIEN:AGEN pcase$$ : <a href="contact,agence.htm?lang=$$LANGUE$$">$$LG:CONTACTERAGENCE$$</a>
+		</p>
+	</div>
+	<!--#include virtual="/pud/incl_share_pud.htm" -->
+	<div class="clearpud"></div>
+	$$REM$$
+		<div id="titre_recherche">$$LG:VOTRERECHERCHE pcase$$</div>
+		<!--#include virtual="moteur/mini/moteur.htm" -->
+	$$END$$
+	<div class="clearpud"></div>
+		<!--#include virtual="carto/incl_BingMap_agences.htm" -->
+</div>
+$$END:MULTIAGENCES$$
+
+<div class="clearpud"></div>
+
+<!--#include virtual="footer/incl_bas.htm" -->

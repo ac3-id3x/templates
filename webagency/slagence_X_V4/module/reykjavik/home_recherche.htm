@@ -1,0 +1,101 @@
+$$E:IMMOBW:ANNONCE:QRY:IDANNONCE:ALIAS:ANNONCEMODULE:~NOSTAT:1$$
+$$A:TITLE_SELECTION_INDEX=$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+					$$IF:FORM:LANG$$
+						$$IF!:FR:FORM:LANG$$
+							$$A:LIEN_SELECTION_INDEX=@@ANNONCEMODULE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+						$$END$$
+						$$IF=:FR:FORM:LANG$$
+							$$A:LIEN_SELECTION_INDEX=@@ANNONCEMODULE:URLVIRTUELLE@@$$
+						$$END$$
+					$$END$$
+					$$IF0:FORM:LANG$$
+						$$A:LIEN_SELECTION_INDEX=@@ANNONCEMODULE:URLVIRTUELLE@@$$
+					$$END$$
+				$$END$$
+				$$IF0:PAGE:URLREWRITINGENABLED$$
+					$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNONCEMODULE:IDPUBLICATION@@/@@ANNONCEMODULE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+				$$END$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_SELECTION_INDEX=@@ANNONCEMODULE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCEMODULE:IDTYPEBIEN gettypebien lcase@@ @@ANNONCEMODULE:AVILLE ncase@@$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+<div class="backgroundAnnonces">
+	$$B:IMMOBW:PHOTOS:QRY:IDANNONCE:ALIAS:BG$$
+</div>
+<div class="infosAnnonces">
+	<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+		<span>$$ANNONCEMODULE:IDTYPETRANSACTION gettypetransaction pcase$$</span>	
+		<span class="infosAnnoncesTransanction">$$ANNONCEMODULE:IDTYPEBIEN gettypebien pcase$$$$IF:ANNONCEMODULE:NB_PIECES$$, $$ANNONCEMODULE:NB_PIECES$$ $$IF=:1:ANNONCEMODULE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF!:0$1:ANNONCEMODULE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$$$END$$</span>
+	</a>
+</div>
+<div class="paginationAnnonces"></div>
+<script type="text/javascript">
+	var arrayBg = new Array();
+	$$BIF:BG$$	
+		$$DO:1:5$$
+			$$IF:BG:BIG_URL$$
+				arrayBg.push('$$BG:BIG_URL$$');
+			$$END$$
+			$$IF0:BG:BIG_URL$$
+				arrayBg.push('$$BG:URL$$');
+			$$END$$
+		$$LOOP$$
+	$$BFIN$$
+	function constructModule() {
+		var htmlBg = '';
+		var htmlPin = '';
+		for(i = 0; i < arrayBg.length; i++) {
+			// HTML BG
+			if(arrayBg[i] != '') {
+				htmlBg += '<div id="bg'+i+'" class="styleBackgroundDynamique';
+				if(i != 0) {
+					htmlBg += ' offBg';
+				}
+				if(i == 0) {
+					htmlBg += ' actifBg';
+				}
+				htmlBg  += '">';
+				htmlBg += '<img src="'+arrayBg[i]+'" width="590" height="363" /></div>';
+				// HTML PIN
+				htmlPin += '<div class="';
+				if(i == 0) {
+					htmlPin += 'pinOn ';
+				}
+				htmlPin += 'pinOff" id="pin'+i+'"></div>';
+			}
+		}
+		// FIX CSS AND CODE
+		$('.backgroundAnnonces').append(htmlBg);
+		$('.paginationAnnonces').append(htmlPin);
+		$('.styleBackgroundDynamique').css('cursor','pointer');
+		// ACTIONS
+		$('.styleBackgroundDynamique').click(function() {
+			// GET URL
+			window.location.href = '$$LIEN_SELECTION_INDEX$$';
+		});	
+		$('.pinOff').each(function() {
+			$(this).css('cursor','pointer');
+			$(this).mouseover(function() {
+				// GET BG RUN
+				var bgrun = $('.backgroundAnnonces').find('.actifBg').attr('id');
+				bgrunNum = bgrun.split('bg');
+				//console.log(bgrunNum[1]);
+				if($(this).attr('id') != 'pin'+bgrunNum[1]) {
+						// FIX PIN ET BG
+						var new_id = $(this).attr('id');
+						new_id = new_id.split('pin');
+						$(this).addClass('pinOn');
+						$('#bg'+new_id[1]).addClass('actifBg');
+						$('#bg'+new_id[1]).css('');
+						// FIX EX PIN ET BG
+						$('#pin'+bgrunNum[1]).removeClass('pinOn');
+						$('#'+bgrun).removeClass('actifBg');
+						$('#'+bgrun).addClass('offBg');
+				}
+			});			
+		});
+	}
+	$(document).ready(function() {
+		constructModule();
+	});
+</script>

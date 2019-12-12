@@ -1,0 +1,160 @@
+$$REM$$====================================================================
+//// <summary>Page 1/3 de creation alerte immo</summary>
+//// <remarks>
+//// <para>Utilise les mêmes includes et les même css que la page moteur</para>
+//// <para>Lien obligatoirement et exclusivement sur cette premiere page : alerte,creer.htm</para>
+//// <para>Pages reliees : immo.htm > prevalidation.htm > validation.htm > validation_ok.htm</para>
+//// <para>Page template envoyee par mail apres validation : inscription.htm</para>
+//// <para>Liens contenus dans l'Alerte Immo  : correspondance.htm + modification.htm + desinscription.htm</para>
+//// <para>Une alerte peut etre creee directement sans passer par la page des resultats de recherche</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = criteres, 2 = check champs libres cp (si champs libres), 3 = envoi coordonnees perso</para>
+//// </remarks>
+//// <update date="2011-04-26" author="lisbonne.siriphol">Creation XV3</update>
+====================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:CSS_ALERTE=1$$
+
+<!--#include virtual="/header/incl_haut.htm"-->
+<form method="get" action="/alerte,prevalidation.htm">
+	<div id="Moteur">
+		
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		
+		<h1>$$LG:CREATIONALERTEIMMO$$</h1>
+		<h3>$$LG:PARAMALERTEIMMO$$</h3>
+		<table class="moteurTable moteurMargin moteurAlerte">
+			<tr>
+				<td class="col1">
+					$$REM$$<!-- ////// types de transactions sur cette publication ////// -->$$END:REM$$
+					$$B:IMMOBW:AGENCETRANSACTIONS$$
+					$$BIF:IMMOBW:AGENCETRANSACTIONS$$	
+					<div class="ttr_alerte">				
+					<div class="alerteNumber"><span>1</span></div>
+					<h2>$$LG:TYPEDETRANSACTION pcase$$</h2>
+				</div>
+					<select name="idtt" class="miniForm">						
+						$$DO$$					
+						<option value="$$IMMOBW:AGENCETRANSACTIONS:IDTYPETRANSACTION$$"$$IF=:2:IMMOBW:AGENCETRANSACTIONS:IDTYPETRANSACTION$$ selected="selected"$$END$$>$$IMMOBW:AGENCETRANSACTIONS:DESCRIPTIONLG pcase$$</option>
+						$$LOOP$$
+					</select>
+					$$BFIN$$
+					<div class="clear"><!-- --></div>
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>2</span></div>
+					<h2>$$LG:MINITYPEBIEN pcase$$</h2>
+				</div>
+					<p class="moteurComment">($$LG:UNOUPLUSIEURS lcase$$)</p>
+					<!--#include virtual="moteur/incl_types_biens.htm" -->
+					
+				</td><!-- .col1 -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				<td class="col2">
+						<div class="ttr_alerte">
+						<div class="alerteNumber"><span>3</span></div>
+						<h2>$$LG:BUDGET pcase$$</h2>
+					</div>
+						<span>$$LG:MONTANTENTRE pcase$$</span>
+					<!--#include virtual="moteur/incl_budget.htm" -->
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>4</span></div>
+					<h2 class="moteurMargin">$$LG:SURFH2 pcase$$</h2>
+					</div>
+					<span>
+						$$IF=:FR:LANGUE$$Comprise entre$$END$$
+						$$IF!:FR:LANGUE$$$$LG:ENTRE pcase$$$$END$$
+					</span>
+					<!--#include virtual="moteur/incl_surface.htm" -->				
+					<!-- ////////////////////////////////////////////////////////////////////////// -->
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>5</span></div>
+					$$IF:MOTEUR_VILLES$$
+					<h2 class="moteurMargin">$$LG:ENTREZCPVILLEDPT pcase$$</h2>
+					</div>
+					<p class="moteurComment"><!--#include virtual="moteur/incl_intitule_villes.htm" --></p>
+					<!--#include virtual="moteur/incl_villes_champs_libres.htm" -->
+					$$END:MOTEUR_VILLES$$
+					
+					$$IF0:MOTEUR_VILLES$$
+					<h2 class="moteurMargin"><!--$$LG:OU pcase$$--> $$LG:SELECVILLE pcase$$</h2>
+					</div>
+					<!--#include virtual="moteur/mini/incl_villes_alerte.htm" -->	
+					<div class="clear"></div>
+					$$END:MOTEUR_VILLES$$
+					<!-- ////////////////////////////////////////////////////////////////////////// -->
+					$$IF:MOTEUR_RAYONCHECK$$
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>6</span></div>
+					<h2 class="moteurMargin">$$LG:ETENDRERECH pcase$$</h2>
+					</div>
+					<!--#include virtual="moteur/incl_rayon.htm" -->
+					$$END:MOTEUR_RAYONCHECK$$
+					<!-- ////////////////////////////////////////////////////////////////////////// -->
+					<div class="ttr_alerte">
+					<div class="alerteNumber"><span>7</span></div>
+					<h2 class="moteurMargin">$$LG:CRITERESAVANCES pcase$$</h2>
+					</div>
+					<p class="moteurComment">($$LG:FACULTATIF lcase$$)</p>
+					<!--#include virtual="moteur/incl_criteres_avances.htm" -->
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$					
+					<h4 class="moteurMargin">$$LG:CHAUFF pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_chauffage.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_SITUATIONS$$					
+					<h4 class="moteurMargin">$$LG:SITUATION pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_situations.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_SITUATIONS$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CUISINE$$					
+					<h4 class="moteurMargin">$$LG:CUISINE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_cuisine.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CUISINE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$					
+					<h4 class="moteurMargin">$$LG:ARCHITECTURE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_architecture.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$
+					<!--#include virtual="alerte/alerte_optin.htm" -->
+					<div id="MoteurBouton">			
+			<input type="submit" class="inputSubmit" value="$$IF=:FR:LANGUE$$Finaliser votre alerte$$END:LANGUE$$$$IF!:FR:LANGUE$$Finalize your alert$$END:LANGUE$$" />
+		</div>
+				</td>
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				<td class="alerteInfo_wrap">
+					<div class="alerteInfo" id="infoAlerte">
+						<h2>
+							$$IF=:FR:LANGUE$$L'Alerte Immo, qu'est-ce que c'est ?$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$Immo Alert : how does it work ?$$END:LANGUE$$						
+						</h2>					
+						$$IF=:FR:LANGUE$$
+							<p>L'Alerte Immo vous permet d'être prévenu(e) par courrier électronique dès qu'une nouvelle annonce correspondant à vos critères de recherche est diffusée sur le site <strong>$$SRV$$</strong>.</p>
+							<p><strong>L'inscription est gratuite et rapide.</strong> Vous pourrez stopper les envois d'annonces en cliquant sur un simple lien situé au bas des emails Alerte Immo.</p>
+						$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$
+							<p>The Immo Alert informs you via email whenever a new announce matching your search criteria is published on our present website : <strong>$$SRV$$</strong>.</p>
+							<p><strong>Registering is simple and fast.</strong> You can easily unsubscribe by clicking on the unsubscrition link you will find at the end of each email.</p>
+						$$END:LANGUE$$
+					</div><!-- .alerteInfo -->
+					<div class="alerteInfo" id="texteCriteres">
+						<h2>
+							$$IF=:FR:LANGUE$$Précisez les critères de votre alerte$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$Precise your search criteria for this Immo Alert$$END:LANGUE$$						
+						</h2>
+						<p>
+							$$IF=:FR:LANGUE$$Nous vous recommandons par souci d'efficacité de préciser tous vos critères de recherche, en renseignant par exemple le prix minimum et maximum ou en vous limitant à 2 codes postaux pour une recherche en Zone Urbaine.$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$We recommend for full effectiveness to specify all your search criteria, by filling in for example the minimum and maximum price or by limiting up to 2 postal codes a search in an Urban area.$$END:LANGUE$$
+						</p>
+					</div><!-- .alerteInfo -->					
+					
+				</td><!-- .alerteInfo_wrap -->
+			</tr>
+		</table>
+		
+		
+		
+	</div><!-- #Moteur -->
+</form>
+<!--#include virtual="/footer/incl_bas.htm"-->

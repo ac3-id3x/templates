@@ -1,0 +1,263 @@
+$$E:ID3:REDIRECT:ADD:/immobilier/:301$$
+$$REM$$====================================================================
+//// <summary>Nouvelle page optimisée pour le référencement</summary>
+//// <remarks>
+//// <para>Moins de fichiers imbriqués et meilleure présentation</para>
+//// <para>Moins de fichiers en .gen, on les remettra si ça rame trop mais il paraît qu'on peut maintenant</para>
+//// <para>Mêmes macros utilisées dans plan,site.htm</para>
+//// </remarks>
+//// <update date="2010-02-24" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=ANNONCIMMOS$$
+$$INIT:CSS_ANNONCES_BIEN=1$$
+
+$$REM$$<!-- ici on stocke des termes récurrants -->$$END:REM$$
+$$IF=:1:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:BIENALALOC@@$$ 										$$END$$
+$$IF=:2:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:BIENSIMMOAVENTE@@$$								$$END$$
+$$IF=:3:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:LIEN:LOCTMP@@$$										$$END$$
+$$IF=:4:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:LIEN:LOCVAC@@$$										$$END$$
+$$IF=:6:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:LIEN:PRODINVEST@@$$								$$END$$
+$$IF=:7:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:LIEN:LOCPST@@$$										$$END$$
+$$IF=:8:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:ANN:VENPRESTIGE@@$$								$$END$$
+$$IF=:9:FORM:IDTT$$				$$A:TYPETRANSAC=@@LG:LIEN:PGRNEUF@@$$										$$END$$
+$$IF=:10$11:FORM:IDTT$$		$$A:TYPETRANSAC=@@FORM:IDTT gettypetransaction@@$$			$$END$$
+		
+
+$$A:TITLE=@@LG:IMMOBILIER pcase@@ @@TYPETRANSAC lcase@@ @@1_ANNLISTE:AVILLE@@ @@1_ANNLISTE:CP cp2dep@@$$
+$$A:DESCRIPTION=@@LG:IMMOBILIER pcase@@ @@TYPETRANSAC lcase@@ @@1_ANNLISTE:AVILLE@@ @@1_ANNLISTE:CP@@ @@1_ANNLISTE:CP cp2dep@@$$
+$$A:KEYWORDS=@@LG:IMMOBILIER pcase@@ @@TYPETRANSAC lcase@@ @@1_ANNLISTE:AVILLE@@ @@1_ANNLISTE:CP@@ @@1_ANNLISTE:CP cp2dep@@$$
+
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div id="ImmoAnn">
+	<h1>		
+		$$TYPETRANSAC pcase$$
+		$$IF:ANNLISTE:NBRESULT$$
+			$$REM$$$$LG:A lcase$$ $$1_ANNLISTE:AVILLE$$ ($$1_ANNLISTE:ACP$$), $$1_ANNLISTE:ACP cp2dep$$$$END:REM$$
+			$$LG:A lcase$$ $$FORM:CI codeinsee2ville$$ ($$1_ANNLISTE:ACP$$), $$1_ANNLISTE:ACP cp2dep$$
+		$$END$$
+	</h1>
+	
+	<div class="pictoResults"><p><!-- --></p></div>
+	
+	<h2>
+		$$ANNLISTE:PHRASE htmlencode pcase$$
+		<span>$$ANNLISTE:NBRESULT formatnumber 0$$ $$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBR pluriel$$$$END:FR$$</span>
+	</h2>
+	
+	<table>
+		<tr>
+			$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANNLISTE$$
+			<td class="col1"$$BIF0:ANNLISTE$$ style="width: 100%; padding: 0;"$$BFIN$$>
+				
+				
+				$$BIF0:ANNLISTE$$					
+				<div id="Erreur_Ctn">
+					<div id="Erreur">
+						<p class="confirm">$$LG:DESOLE pcase$$.</p>
+						<p>
+							<strong>
+							$$IF=:FR:LANGUE$$
+								Aucune annonce trouv&eacute;e dans ces crit&egrave;res
+							$$END$$
+							$$IF!:FR:LANGUE$$
+								No listing matching the criteria
+							$$END$$
+							</strong>
+						</p>		
+						<p class="lien">
+							<a href="$$LIEN_PORTEFEUILLE_REF$$" title="">$$LG:RETOURLIS pcase$$</a>
+						</p>
+					</div>					
+				</div><!-- fin #Erreur_Ctn -->					
+				$$BFIN$$
+				
+				
+				$$BIF:ANNLISTE$$	
+				<!-- ================================ annonces ============================================-->
+				$$IF:ANNLISTE:NBRPAGES$$
+				<div id="RechPagesHaut">
+					<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+				</div><!-- #RechPagesHaut -->
+				$$END:ANNLISTE:NBRPAGES$$		
+						
+				$$DO:1:20$$
+				
+				
+				$$A:TITLE_ANN=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE@@$$
+				$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+				<div class="blocAnn">
+			
+					<a class="photo" $$IF:PAGE:URLREWRITINGENABLED$$href="$$ANNLISTE:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$"$$END$$$$IF0:PAGE:URLREWRITINGENABLED$$href="$$LIENDETAIL$$"$$END$$ title="$$TITLE_ANN$$">
+						<span class="indexAnn">$$ANNLISTE:N$$</span>
+						$$IF:ANNLISTE:IDPHOTO$$<img src="$$ANNLISTE:CARREURL0$$" style="z-index: 10;" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />$$END:IDPHOTO$$
+					</a><!-- .photo -->
+					
+					<p>
+						<a $$IF:PAGE:URLREWRITINGENABLED$$href="$$ANNLISTE:URLVIRTUELLE$$$$IF:FORM:LANG$$$$IF!:FR:FORM:LANG$$?lang=$$FORM:LANG$$$$END$$$$END$$"$$END$$$$IF0:PAGE:URLREWRITINGENABLED$$href="$$LIENDETAIL$$"$$END$$>
+							
+							$$LG:IMMOBILIER pcase$$
+							$$ANNLISTE:AVILLE htmlencode$$ ($$ANNLISTE:ACP$$) :
+							$$ANNLISTE:IDTYPETRANSACTION gettypetransaction lcase$$							
+							
+							$$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+								$$ANNLISTE:IDTYPEBIEN gettypebien lcase$$
+							$$END$$
+							
+							$$IF=:9:ANNLISTE:IDTYPETRANSACTION$$
+							<strong>
+								$$IF:ANNLISTE:SI_APPARTEMENT$$
+									$$IF:ANNLISTE:SI_MAISON$$
+										$$LG:APPARTEMENTS lcase$$ &amp; $$LG:MAISONS lcase$$
+									$$END$$ 
+									$$IF0:ANNLISTE:SI_MAISON$$	
+										$$LG:APPARTEMENTS lcase$$
+									$$END$$  
+								$$END$$ 
+								
+								$$IF0:ANNLISTE:SI_APPARTEMENT$$
+									$$LG:MAISONS lcase$$
+								$$END$$  
+							</strong> 
+							$$END$$
+							
+							$$IF:ANNLISTE:PX_AU_M2$$ - $$ANNLISTE:PX_AU_M2$$ &euro; / m2$$END$$		
+							$$IF:ANNLISTE:NOM$$ $$LG:PAR$$ $$ANNLISTE:NOM$$ $$END$$
+							$$IF:ANNLISTE:NOMCTC1$$ $$LG:PAR$$ $$ANNLISTE:NOMCTC1$$  $$END$$
+							$$IF:ANNLISTE:PROX$$  $$LG:SECTEUR lcase$$ $$ANNLISTE:PROX htmlencode$$$$END$$	
+							
+						</a>
+						<br />
+						$$ANNLISTE:DESCRIPTIF$$
+						$$REM$$<!-- en + du descriptif on ajoute le descr gen -->$$END$$
+						<br />
+						$$LG:IMMOBILIER$$ $$ANNLISTE:AVILLE htmlencode$$ $$ANNLISTE:PROX_GEN$$. $$ANNLISTE:DESCRIPTIF_GEN$$
+					</p>
+					<div class="clear"><!-- --></div>
+					
+				</div><!-- .blocAnn -->
+				$$LOOP$$
+				
+				$$IF:ANNLISTE:NBRPAGES$$
+				<div id="RechPagesBas">
+					<!--#include virtual="/recherche/incl_nb_pages.htm" -->		
+				</div><!-- #RechPagesBas -->
+				$$END:ANNLISTE:NBRPAGES$$
+				<!-- ================================ annonces ============================================-->
+				$$BFIN$$
+			</td><!-- .col1 -->
+			<td class="col2">
+				
+				$$B:IMMOBW:DEPARTEMENTSANNONCES::QRY:CP:QRY:IDTT:ALIAS:DEPANN$$
+				$$BIF:DEPANN$$
+				$$REM$$<!-- /////////////////////// affichage des IDTT par dep qry:cp /////////////////////// -->$$END:REM$$
+				$$DO$$
+				<h4>
+					<a href="http://$$REP:RSRV$$/immobilier,biens.htm?cp=$$DEPANN:DEP$$&amp;idtt=$$FORM:IDTT$$&amp;photo=1&amp;lang=$$LANGUE$$"
+						title="$$LG:IMMOBILIER pcase$$ $$FORM:IDTT gettypetransaction lcase$$ $$DEPANN:DEPARTEMENTAFF$$">
+						$$LG:IMMOBILIER pcase$$ $$FORM:IDTT gettypetransaction lcase$$ $$DEPANN:DEPARTEMENTAFF$$
+						<span class="nbAnn">($$DEPANN:NBANN$$ $$IF-:2:DEPANN:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:DEPANN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+					</a>
+				</h4>	
+				$$LOOP$$					
+				$$BFIN$$
+				
+				$$B:IMMOBW:VILLESANNONCES::QRY:CP:QRY:IDTT:ALIAS:VILANN$$
+				$$BIF:VILANN$$
+				$$REM$$<!-- /////////////////////// affichage des villes du DEP qry:cp /////////////////////// -->$$END:REM$$
+				<ul class="listeVilles">
+					$$DO$$
+					<li>
+						<span class="index">$$VILANN:I$$)</span>	
+						<a href="http://$$REP:RSRV$$/$$FORM:IDTT gettypetransaction replace ¤ - lcase$$-$$VILANN:VILLEAFF urlencode replace + - lcase$$/immobilier,biens.htm?ci=$$VILANN:CODEINSEE$$&amp;idtt=$$FORM:IDTT$$&amp;photo=1&amp;lang=$$LANGUE$$"
+							title="$$LG:IMMOBILIER pcase$$ $$FORM:IDTT gettypetransaction lcase$$ $$VILANN:VILLEAFF$$">
+							
+							$$IF=:1:FORM:IDTT$$				$$LG:LOCATIONS pcase$$ $$LG:A lcase$$										$$END$$
+							$$IF=:2:FORM:IDTT$$				$$LG:VENTES pcase$$ $$LG:A lcase$$								$$END$$
+							$$IF=:3:FORM:IDTT$$				$$LG:LIEN:LOCTMP pcase$$ $$LG:A lcase$$										$$END$$
+							$$IF=:4:FORM:IDTT$$				$$LG:LIEN:LOCVAC pcase$$ $$LG:A lcase$$										$$END$$
+							$$IF=:6:FORM:IDTT$$				$$LG:LIEN:PRODINVEST pcase$$ $$LG:A lcase$$								$$END$$
+							$$IF=:7:FORM:IDTT$$				$$LG:LIEN:LOCPST pcase$$ $$LG:A lcase$$										$$END$$
+							$$IF=:8:FORM:IDTT$$				$$LG:ANN:VENPRESTIGE pcase$$ $$LG:A lcase$$								$$END$$
+							$$IF=:9:FORM:IDTT$$				$$LG:LIEN:PGRNEUF pcase$$ $$LG:A lcase$$									$$END$$
+							$$IF=:10$11:FORM:IDTT$$		$$FORM:IDTT gettypetransaction pcase$$ $$LG:A lcase$$		$$END$$
+				
+							$$VILANN:VILLEAFF$$
+							
+							<span class="nbAnn">($$VILANN:NBANN$$ $$IF-:2:VILANN:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+						</a>
+						<span class="clear"><!-- --></span>
+					</li>
+					$$LOOP$$
+				</ul><!-- .listeVilles -->
+				$$BFIN$$
+				
+				$$B:IMMOBW:TYPESBIENS:ALIAS:TYPEBIEN_IDTT:QRY:IDTT$$
+				$$BIF:TYPEBIEN_IDTT$$
+				$$REM$$<!-- /////////////////////// ventes triees par types de bien /////////////////////// -->$$END:REM$$
+				
+				<h4>
+					$$LG:IMMOBILIER pcase$$ $$FORM:IDTT gettypetransaction lcase$$ $$FORM:CP$$ $$LG:PARTYPEBIEN lcase$$
+				</h4>
+				
+				$$REM$$
+				<!-- ================
+					> pour mémo comment s'écrit le type de bien
+						1		appartement
+						2		maison/villa
+						3		parking/box
+						4		terrain
+						5		commerce
+						6		boutique
+						7		local
+						8		bureaux
+						9		loft/atelier/surface
+						10	inconnu
+						11	immeuble
+						12	hangar
+						13	chateau
+						14	hotel particulier
+						15	programme
+				================ -->
+				$$END:REM$$
+				
+				<ul class="listeVilles">
+					$$DO$$
+					$$REM$$<!-- ici on conditionne l'affichage du faux sous répertoire -->$$END:REM$$
+				
+					$$IF=:1:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=appartement$$				$$END$$
+					$$IF=:2:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=maison$$							$$END$$
+					$$IF=:3:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=parking$$						$$END$$
+					$$IF=:4:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=terrain$$						$$END$$
+					$$IF=:5:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=commerce$$						$$END$$
+					$$IF=:6:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=boutique$$						$$END$$
+					$$IF=:7:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=local$$							$$END$$
+					$$IF=:8:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=bureaux$$						$$END$$
+					$$IF=:9:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=loft$$								$$END$$
+					$$IF=:10:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=divers$$							$$END$$
+					$$IF=:11:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=immeuble$$						$$END$$
+					$$IF=:12:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=batiment$$						$$END$$
+					$$IF=:13:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=chateau$$						$$END$$
+					$$IF=:14:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=hotel-particulier$$	$$END$$
+					$$IF=:15:TYPEBIEN_IDTT:IDTYPEBIEN$$		$$A:LIEN_TYPE_BIEN=bien-neuf$$					$$END$$
+					
+					<li>
+						<span class="index">$$TYPEBIEN_IDTT:I$$)</span>	
+						<a href="http://$$REP:RSRV$$/$$FORM:IDTT gettypetransaction replace ¤ - lcase$$-$$LIEN_TYPE_BIEN$$/immobilier,biens.htm?idtt=$$FORM:IDTT$$&amp;idtypebien=$$TYPEBIEN_IDTT:IDTYPEBIEN$$&amp;lang=$$LANGUE$$"
+							title="$$FORM:IDTT gettypetransaction pcase$$ $$TYPEBIEN_IDTT:DEF_LIBELLE lcase$$">
+							$$FORM:IDTT gettypetransaction pcase$$ $$TYPEBIEN_IDTT:DEF_LIBELLE lcase$$
+							<span class="nbAnn">($$TYPEBIEN_IDTT:NBANN$$ $$IF-:2:TYPEBIEN_IDTT:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TYPEBIEN_IDTT:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+						</a>
+						<span class="clear"><!-- --></span>
+					</li>					
+					$$LOOP$$
+				</ul><!-- .listeVilles -->			
+				$$BFIN$$
+				
+			</td><!-- .col2 -->
+		</tr>
+	</table>
+</div><!-- #ImmoAnn -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

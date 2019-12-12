@@ -1,0 +1,87 @@
+$$REM$$====================================================================
+//// <summary>Page confirmation de creation d'Alerte Immo</summary>
+//// <remarks>
+//// <para>Utilise les mêmes includes et les même css que la page contact agence (formulaire du bas)</para>    
+//// <para>Confirme que le formulaire de la page precedente (alerte,inscription.htm) a bien ete envoye</para>
+//// </remarks>
+//// <update date="2011-11-26" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:CSS_ALERTE=1$$
+<!--#include virtual="/header/incl_haut.htm"-->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+
+$$E:IMMOBW:AI_SWP:REP:2:REP:1:REP:3$$
+<div id="FormContactAgence_Ctn">
+	<div id="FormContactAgence">
+		<table style="width: auto;">
+			<tr>
+				<td colspan="2" class="pointillesBas">
+					<h1>
+						$$IF=:FR:LANGUE$$Votre Alerte Immo a été créée !$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$Your Immo Alert has been created !$$END:LANGUE$$	
+					</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="col1">
+						$$IF=:FR:LANGUE$$$$LG:NOM pcase$$ :$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$Name :$$END:LANGUE$$
+					</td>
+					<td class="col2">
+						$$FORM:NOM htmlencode pcase$$
+					</td>
+				</tr>			
+				<tr>
+					<td class="col1">
+						$$LG:EMAIL pcase$$ :
+					</td>
+					<td class="col2">
+						$$FORM:EMAIL$$
+					</td>
+				</tr>
+					<h2>
+						$$IF=:FR:LANGUE$$Les nouvelles annonces correspondant à votre recherche seront envoyées$$END:LANGUE$$
+						$$IF!:FR:LANGUE$$The anounces matching your search will be sent$$END:LANGUE$$
+						
+						$$IF=:1:FORM:IDFREQUENCEALERTE$$
+							$$IF=:FR:LANGUE$$dès leur mise en ligne,$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$as soon as set online,$$END:LANGUE$$		
+						$$END$$
+						$$IF=:2:FORM:IDFREQUENCEALERTE$$$$LG:TOUSLESJOURS lcase$$,$$END$$
+						$$IF=:3:FORM:IDFREQUENCEALERTE$$
+							$$IF=:FR:LANGUE$$tous les 4 jours,$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$every 4 days,$$END:LANGUE$$
+						$$END$$
+						$$IF=:0:FORM:SI_TXT$$
+							$$IF=:FR:LANGUE$$au format HTML$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$in HTML format$$END:LANGUE$$			
+						$$END$$
+						$$IF=:1:FORM:SI_TXT$$			
+							$$IF=:FR:LANGUE$$au format texte$$END:LANGUE$$
+							$$IF!:FR:LANGUE$$in text format$$END:LANGUE$$								
+						$$END$$
+						.					
+					</h2>					
+				</td>
+			</tr>			
+			<tr>						
+				<td class="col1 message_ctn pointillesBas">
+					$$IF=:FR:LANGUE$$$$LG:VOTRERECHERCHE pcase$$ :$$END:LANGUE$$
+					$$IF!:FR:LANGUE$$Your search :$$END:LANGUE$$
+				</td>
+				<td class="message_ctn pointillesBas col2">
+					$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG::NOVISU:~NOSTAT:1:ALIAS:RECH$$$$BIF:RECH$$$$DO$$$$LOOP$$$$BFIN$$
+						$$RECH:PHRASE pcase$$
+				</td>						
+			</tr>			
+		</table>
+		<!--#include virtual="alerte/incl_confiance.htm" -->
+	</div><!-- #FormContactAgence -->
+	
+</div><!-- #FormContactAgence_Ctn -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

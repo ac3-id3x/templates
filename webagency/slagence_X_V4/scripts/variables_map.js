@@ -1,0 +1,1 @@
+var heightPictoAgence=47;var widthPictoAgence=32;var heightPictoUser=47;var widthPictoUser=32;var arrayOfAgencies=new Array;var arrayAnnonce=new Array;var map=null;var startMap=$("#map-bing");var MM=Microsoft.Maps;var MyBingMapsCredentials="Ass_PTM9rWAzXPB2a0ojENLLZ4CQxFfg2bjjig-9JOxgpUjubCiieZwdHf1eCjuQ"

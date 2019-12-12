@@ -1,0 +1,683 @@
+
+
+$$INIT:IDT=RESULTATS$$
+$$INIT:CSS_RECHERCHE=1$$
+$$INIT:CSS_REFINE=1$$
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_METRO=1$$
+
+$$INIT:PARAMSREFINE=idtypebien,nb_pieces,nb_chambres,bilance,bilanegs,idq,si_mandatexclusif,visuels$$
+$$INIT:ADVANCEDREFINE=si_cave,si_sejour,si_est,si_parkings,si_sud,si_visavis,si_ascenseur,si_boxes,si_piscine,si_gardien,si_meuble$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG:::::d_dt_maj:ALIAS:ANNLISTE$$
+$$B:IMMOBW:ANN-REFINER:~params:VAL:PARAMSREFINE:~idqfix:1:~advanced:VALADVANCEDREFINE:~addmisc:1:ALIAS:REFINER$$
+
+<!--#include virtual="recherche/incl_haut_annonces.htm" -->
+
+$$BIF:ANNLISTE$$
+<div id="RechResultat" $$IF=:1:FORM:IDTT$$class="location"$$END$$>
+$$DO:config:config$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:LIBELLE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<div class="blocAnnonce $$IF=:1:ANNLISTE:I exec XX%2$$color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$color2$$END$$" id="Annonce$$ANNLISTE:IDANNONCE$$">
+		<div class="blocPhotoAnnonce">
+			$$IF:ANNLISTE:SI_COUPDECOEUR$$
+				<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+			$$END:COUPDECOEUR$$
+			$$IF:ANNLISTE:SI_EXCLUSIF$$
+				<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+			$$END:SI_EXCLUSIF$$
+			$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+				<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+			$$END$$
+			$$IF:ANNLISTE:SI_PROMO$$
+				<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+			$$END:SI_PROMO$$
+			$$IF:ANNLISTE:IDPHOTO$$	
+				<div class="blocBigPhoto"><img src="$$ANNLISTE:PHOTOURL0$$" /></div>
+			$$END$$
+			<div class="blocPhoto2$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$">
+				
+				$$IF:ANNLISTE:C175URL0$$
+				<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+					<img src="$$ANNLISTE:PHOTO_URL$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+				</a>
+				$$END:ANNLISTE:C175URL0$$
+				$$IF0:ANNLISTE:C175URL0$$
+					$$IF:ANNLISTE:SI_LOGO$$
+					<a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">	
+						<!--#include virtual="recherche/incl_no_photo_logo.htm" -->
+					</a>
+					$$END$$
+				$$END$$
+			</div>
+		
+				
+		</div>
+		
+		<div class="detailsAnnonce">
+			<!--#include virtual="recherche/incl_filtres_perso_picto.htm" -->
+			
+			<div id="TextAnnonceRech">
+				<div class="blocVilleDetails">$$ANNLISTE:AVILLE$$ <!--($$ANNLISTE:ACP$$)-->
+					
+				</div>
+				<div class="blocLibelleDetails">
+				$$IF:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE$$
+				$$END$$
+				$$IF0:ANNLISTE:LIBELLE$$
+					$$ANNLISTE:LIBELLE_FR$$
+				$$END$$
+				</div>
+				<div class="blocSurfaceDetails">
+
+					$$IF:ANNLISTE:NB_PIECES$$
+				$$ANNLISTE:NB_PIECES$$						
+					$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+							
+							$$IF:ANNLISTE:SURFACE$$ - $$END:ANNLISTE:SURFACE$$ 
+	
+				$$END:ANNLISTE:NB_PIECES$$
+				
+				
+				$$IF:ANNLISTE:SURFACE$$
+				
+					$$ANNLISTE:SURFACE field 1$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$$$END:ANNLISTE:SURFACE$$
+				</div>
+			$$IF:ANNLISTE:SURF_TERRAIN$$
+			<div class="blocSurfaceDetails">
+				$$LG:SURFT pcase$$
+				$$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$
+				$$IF=:EN:LANGUE$$
+					(approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+					$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+				$$END:EN$$						
+			</div>
+				$$END:ANNLISTE:SURF_TERRAIN$$
+				<div class="blocDescAnnDetails">
+							$$IF=:4:ANNLISTE:IDTYPETRANSACTION$$			
+								$$IF:ANNLISTE:NB_PERSONNES$$<p class="vac nbPersonnes">$$LG:NBPERSONNES pcase$$ : $$ANNLISTE:NB_PERSONNES$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_SEMAINE$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:SEMAINE lcase$$ : $$ANNLISTE:PX_BS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_QUINZ$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:QUINZAINE lcase$$ : $$ANNLISTE:PX_BS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_BS_MOIS$$<p class="vac pxBasseSais">$$LG:PRIXBASSESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_BS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_SEMAINE$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:SEMAINE lcase$$ :	$$ANNLISTE:PX_HS_SEMAINE$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_QUINZ$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:QUINZAINE lcase$$ :	$$ANNLISTE:PX_HS_QUINZ$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+								$$IF:ANNLISTE:PX_HS_MOIS$$<p class="vac pxHauteSais">$$LG:PRIXHAUTESAIS pcase$$ / $$LG:MOIS lcase$$ :	$$ANNLISTE:PX_HS_MOIS$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</p>$$END$$
+							$$END:IDTYPETRANSACTION$$
+						<p>
+							<!--#include virtual="recherche/incl_descriptif.htm" -->
+						</p>							
+						<!--#include virtual="recherche/incl_prix.htm" -->
+				</div><!-- .descrAnn -->
+				<div id="zoneMetro$$ANNLISTE:I$$"></div>
+				<script type="text/javascript">
+					$(document).ready(function() {
+						dispMetro('$$ANNLISTE:IDANNONCE getlieux escape$$','zoneMetro$$ANNLISTE:I$$');
+					});
+				</script>
+			</div>
+			
+			<div id="detail$$ANNLISTE:IDANNONCE$$" class="BtnDetailRech">	
+				<a href="$$LIENDETAIL$$" title="">		
+					<div class="pictoDetail"></div>								
+					<div class="textePicto texte-det">$$LG:PLUSDETAILS pcase$$</div>
+				</a>
+			</div>
+			<div class="clear"></div>			
+				
+		</div> <!-- .detailsAnnonce -->
+		
+		<div class="contactAnnonces">
+		
+			<div class="miniPict">
+				<div class="backgroundAnnonces">
+					$$IF:ANNLISTE:THUMBURL1$$
+						<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL1$$></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL2$$
+						<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL2$$></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL3$$
+						<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL3$$></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL4$$
+						<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL4$$></div>
+					$$END$$
+					$$IF:ANNLISTE:THUMBURL5$$
+						<div class=\"MiniPhotoRech\"><img src=$$ANNLISTE:THUMBURL5$$></div>
+					$$END$$
+				</div>
+			</div>
+				
+				
+				
+
+						<div class="refAnnonces">
+							$$IF:ANNLISTE:DT_DISPO$$<p>$$LG:DISPOLE pcase$$ : $$ANNLISTE:DT_DISPO date 2$$</p>$$END$$
+							<p>$$LG:MAJ pcase$$ : $$ANNLISTE:DT_FRAICHEUR date 2$$</p>
+							<p>$$LG:REFER pcase$$ : $$ANNLISTE:REFANNONCE$$</p>
+						</div>			
+			
+						<div class="contactAnnoncesMaj">				
+							<div class="liensAnn">	
+								$$IF:ANNLISTE:EMAIL$$
+									<div id="email$$ANNLISTE:IDANNONCE$$" class="BtnContactRech">		
+											<a href="$$LIENDETAIL$$#form_contact" title="">			
+											<div class="pictoContact"></div>
+											<div class="textePicto texte-select"><font>Contacter</font><br /> l'agence</div>
+										</a>
+									</div>					
+									$$END:EMAIL$$
+									$$IF:URL_AGENCE$$
+										$$IF:ANNLISTE:URL$$
+										<p><a href="$$ANNLISTE:URL$$" onclick="window.open(this.href); return false;">$$LG:SITEINTERNET pcase$$</a></p>
+										$$END:URL$$
+									$$END:URL_AGENCE$$
+							</div>
+							
+						</div>
+							$$IF0:ANNLISTE:SIPANIER$$
+					<!-- selection annonce -->
+					<div id="selection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">							
+							<a href="javascript:selectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoAjoutSelection"></div>
+								<div class="textePicto texte-select">
+									$$IF=:FR:LANGUE$$<font>Ajouter à</font><br />ma sélection$$END$$
+									$$IF!:FR:LANGUE$$<font>Add to</font><br /> my selection$$END$$	
+								</div>
+							</a>
+						</div>
+						$$END$$
+						$$IF:ANNLISTE:SIPANIER$$
+						<!-- deselection annonce -->
+						<div id="deselection$$ANNLISTE:IDANNONCE$$" class="BtnSelectRech">
+							<a href="javascript:deselectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">
+								<div class="pictoSupprimer"></div>
+								<div class="textePicto texte-select">$$LG:SUPPRIMERSELEC pcase$$</div>
+							</a>
+						</div>
+						$$END$$
+						
+						
+						
+					<div class="clear"></div>
+		</div>
+</div><!-- .blocAnnonce -->
+$$LOOP$$
+<div class="clear"></div>
+</div><!-- #RechResultat -->
+$$BFIN$$
+<div class="clear pushleft"></div>
+<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+
+$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	<!--			
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+	//-->
+</script>
+$$BFIN$$
+<script type="text/javascript">			
+$(document).ready(function() {
+	$('.triListeRecherche').removeAttr('onchange');
+	var maxpage="$$ANNLISTE:NBRPAGES$$";
+	usePagination(maxpage)
+	//$('#Mini_Moteur').html('');
+	$('#Mini_Send .miniBlocSelection').html('');
+	var btn='<div class="miniBouton" value="Rechercher" style="cursor: pointer;"></div>';
+	$('#Mini_Send .miniBlocSelection').html(btn);
+//DETERMINE LA DIV OU SE CHARGENT LES ANNONCES					
+	divcontent = "RechResultat";
+//RELOAD AU CHANGEMENT D'IDTT
+	$('#Mini_Transaction').on('click','input',function(){
+		var qry= 'idtt='+$(this).val()+'&checkidtt='+$(this).val();
+		$('#Mini_Moteur input').each(function(){
+			if($(this).attr('name') != "checkidtt" ){
+				if($(this).attr('type')=='text'){
+					if($(this).attr('name')=='pxmin'){
+						$(this).val('Min');
+					}
+					if($(this).attr('name')=='pxmax'){
+						$(this).val('Max');
+					}
+					if($(this).attr('name')=='cp'){
+						$(this).val('Villes, dpts, cpx');
+					}
+				}else{
+				$(this).attr('checked', false);
+				}
+			}
+		});
+		$('#Mini_Moteur input').each(function(){
+			$(this).attr('selected', false);
+			$('#idtypebien').trigger('liszt:updated');
+		});
+		loadInfos(divcontent,qry);
+		if ($(this).val() == 1){
+			$('#RechResultat').removeClass('vente');
+			$('#RechHautV2').removeClass('vente');
+			$('#RechPagesHaut').removeClass('vente');
+			$('#RechResultat').addClass('location');
+			$('#RechHautV2').addClass('location');
+			$('#RechPagesHaut').addClass('location');
+		}else{
+			$('#RechResultat').removeClass('location');
+			$('#RechHautV2').removeClass('location');
+			$('#RechPagesHaut').removeClass('location');
+			$('#RechResultat').addClass('vente');
+			$('#RechHautV2').addClass('vente');
+			$('#RechPagesHaut').addClass('vente');
+		}
+	});
+
+
+//RECUPERATION DE LA RECHERCHE EN CAS DE RETOUR D'UN DETAIL
+		var reloadsearch = function(){
+			var hashqry = window.location;
+			var cutqry = hashqry.hash.split('#');
+			if (cutqry !=""){
+				var qry = cutqry[1];
+				var cutqry = qry.split('&');
+				for (i=0;i<cutqry.length;i++){
+					var fullqry = cutqry[i].split('=');
+					var forminput = fullqry[0];
+						if(forminput=='idtypebien'){	
+						var allselect=fullqry[1];
+						var eachselect=allselect.split(',');
+						$('#idtypebien').children('option').each(function(){
+								if($(this).val() == eachselect){
+									$(this).attr('selected', true);
+									$('#idtypebien').trigger('liszt:updated');
+								}
+						});		
+					}
+					$('#Mini_Moteur input').each(function(){
+						var thisinput = $(this).attr('name');
+						if(thisinput=='checkidtt'){
+								$('#idtt').val=fullqry[1];
+								if (fullqry[1] == 1){
+									$('#bg-mot-int').addClass('loc');
+									$('#bg-mot-int').removeClass('ven');
+									$('#RechResultat').removeClass('vente');
+									$('#RechHautV2').removeClass('vente');
+									$('#RechPagesHaut').removeClass('vente');
+									$('#RechResultat').addClass('location');
+									$('#RechHautV2').addClass('location');
+									$('#RechPagesHaut').addClass('location');
+								}else{
+									$('#bg-mot-int').removeClass('loc');
+									$('#bg-mot-int').addClass('ven');
+									$('#RechResultat').removeClass('location');
+									$('#RechHautV2').removeClass('location');
+									$('#RechPagesHaut').removeClass('location');
+									$('#RechResultat').addClass('vente');
+									$('#RechHautV2').addClass('vente');
+									$('#RechPagesHaut').addClass('vente');
+								}
+						}
+						if(forminput==thisinput){
+							if($(this).attr('type')=='radio'){
+								if($(this).val() == fullqry[1]){
+									$(this).attr('checked', true);
+								}
+							}
+							if($(this).attr('type')=='checkbox'){
+								if($(this).val() == fullqry[1]){
+									$(this).attr('checked', true);
+								}
+							}
+							if($(this).attr('type')=='text'){
+								$(this).val(fullqry[1]);
+							}
+						}
+					});
+				}
+				if (qry != undefined){
+					loadInfos(divcontent,qry);
+				}
+			}
+			//var ciqry = cutqry[1];
+		}
+		reloadsearch();
+//CHOIX MULTIPLE DES VILLES
+	//var villeselect = $('.villes').html('');
+	$('.moteur-avantage').on('change','#cpVilles',function(){
+		var ci = $(this).context.value;
+		$(this).children('option').each(function(){
+			if($(this).val()==ci){
+				var villeselect = $('.villes').html();
+				var hiddenci = $('.ci').val();			
+				$('.villes').html(villeselect+'<div class="btn bouton-ville btn-neutre btn-small margin-bottom-5 ci-'+$(this).val()+'">'+$(this).html()+'<span class="btn-tooltip bouton-fermer-ville bold margin-left-5" data-placement="bottom" data-title="Me supprimer" data-original-title="">X</span></div>');
+				if(hiddenci ==''){
+					$('.ci').val($(this).val());
+				}else{
+					$('.ci').val(hiddenci+','+$(this).val());
+				}
+			}
+			$("#cpVilles").val('');
+		});
+		clickload();
+	});
+//SUPPRESSION DE VILLES DANS LE CHOIX MULTIPLE
+	$('.moteur-avantage').on('click','.bouton-fermer-ville',function(){
+		$(this).parent('.bouton-ville').remove();
+		$('.ci').val('');
+		$('.bouton-ville').each(function(){
+			var classe = $(this).attr('class');
+			var cutclass = classe.split('ci-');
+			var ci = cutclass[1];
+			var hiddenci = $('.ci').val();
+			if(hiddenci ==''){
+					$('.ci').val(ci);
+				}else{
+					$('.ci').val(hiddenci+','+ci);
+				}
+		});
+	clickload();
+	});
+//REMISE A ZERO
+				var noqry="";
+				$('.moteur-avantage').on('click', '.raz', function (e){
+					e.preventDefault();
+					if (noqry = 'undefined' ){
+						var noqry = "$$REFINER:ZEROQUERY removeqry pxmax removeqry pxmin removeqry surfacebtw removeqry pxbtw$$";
+					}else{
+						var noqry = zeroquery;
+					}
+					loadInfos(divcontent,noqry);
+					$("#MiniInputBudgetMin").val('');
+					$("#MiniInputBudgetMax").val('');
+					$("#MiniSelectSurface").val('');
+					$(".ci").val('');
+					$("#cpVilles").val('');
+					$('.bouton-ville').remove();
+					
+				});
+//LANCER LA RECHERCHE AU CLICK SUR LE BOUTON RECHERCHER
+				$('#Mini_Send').on('click', '.miniBouton', function (e){
+					e.preventDefault();
+					var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+					loadInfos(divcontent,qry);
+				});
+				allcheck();	
+			});	
+//UTILISER LA PAGINATION	
+			function usePagination(maxpage){
+					$('#RechPagesHaut ').on('click', '.rechLiensPages a', function (e){
+						e.preventDefault();
+						var recherche =$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+						var num=$(this).html();
+						var actif=$('.actif').html();
+						if(num == '&lt;&lt;'){
+							var qry = recherche;
+						}else if(num == '<span>&gt;&gt;</span>'){
+							var qry = recherche +'&ANNLISTEpg='+maxpage;
+						}else if(num == '<span>&gt;</span>'){
+							var gopage = parseInt(actif)+1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else if(num == '<span>&lt;</span>'){
+							var gopage = actif-1;
+							var qry = recherche +'&ANNLISTEpg='+gopage;
+						}else{
+							var qry = recherche +'&ANNLISTEpg='+num;
+						}
+						loadInfos(divcontent,qry);
+
+					});
+				}
+//RELOAD AU CLICK 
+			$$IF=:0:BTNSEARCHREFINE$$
+				function clickload(){
+					var qry=$('#moteur input').filter(function(){return $(this).val();}).serialize();
+					loadInfos(divcontent,qry);
+				}
+			$$END$$
+//UNCHECK DE TOUTE LES CHECKBOX SI TOUTE COCHEE	
+			function allcheck(){
+					$('.moteur-avantage').on('click', '.checkbox input', function (){
+						var checkval = $(this).val();
+						var checkname = $(this).attr('name');
+						if(checkval != '' && checkval != 'all'){
+							$('.checkbox input[name*='+checkname+']').each(function() {
+								if($(this).val() == '' || $(this).val() == 'all'){
+									$(this).attr('checked', false);
+									//RELOAD AU CLICK 
+									
+								}
+							});
+							clickload()
+						}else{
+							$('.checkbox input[name*='+checkname+']').each(function() {
+								$(this).attr('checked', false);
+							});
+							$(this).attr('checked', true);
+							//RELOAD AU CLICK 
+							clickload()
+						}
+					});
+			}
+//RELOAD AU CHANGEMENT DU MOTEUR 
+		//CHAMBRE OU PIECES
+		$('#Mini_Pieces,#Mini_Chambres').on('change','.miniForm',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//TYPES DE BIEN
+		$('#Mini_Biens').on('change','.miniForm',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//CRITERES AVANCES
+		$('#open').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//RAYON
+		$('#Mini_Rayon').on('click','input',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//TRI
+		$('.infoBloc').on('change','.triListeRecherche',function(){
+			$('#Mini_Moteur input[name="tri"]').val($(this).val());
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//VILLES A LA SELECTION
+		$('#Mini_Suggest').on('click','#suggestionsBox',function(){
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			console.log(qry);
+			loadInfos(divcontent,qry);
+		});
+		//VILLES A LA SUPPRESSION
+		$('.blocSearch').on('click','.closeLi',function(){
+			console.log('in');
+			var qry=$('#Mini_Moteur input,select').filter(function(){return $(this).val();}).serialize();
+			loadInfos(divcontent,qry);
+		});
+		//AFFICHAGE MASQUAGE DES CHECKBOX DU MOTEUR
+			$('.moteur-avantage').on('click', 'div[class*="conteneur-checkbox"] .h3-like', function (){
+				var liste = $(this).parent().children('.liste-checkbox')
+				if (liste.hasClass('display-none')){
+					liste.removeClass('display-none');
+					liste.addClass('display-show');
+				}else{
+					liste.removeClass('display-show');
+					liste.addClass('display-none');
+				}
+			});
+
+//CHARGEMENT DES ANNONCES ET DU MOTEUR
+			function loadInfos(divcontent,qry) {
+				var xhr = $.ajax({
+					type: 'GET',
+					data:qry,
+					dataType: 'json',
+					contentType: "application/json",
+					url: '/recherche,refine,incl_refine_js.htm',
+					beforeSend: function() {
+						$('.layer').show();
+						$('.layer-annonce').show();
+					},
+					success: function(data) {
+						$('.layer').hide();
+						$('.layer-annonce').hide();
+						var phrase= data.phrase;
+						$("#RechHautV2 h1").html('');
+						$("#RechHautV2 h1").html(phrase);
+						location.hash = data.qry;
+						$("#RechPagesHaut").html('');
+						$('#RechPagesBas').html('');
+						var pagination = data.pagination;
+						var maxpage = data.maxpage;
+						$('#RechPagesHaut').html(pagination);
+						$('#RechPagesBas').html(pagination);
+						var contenu= $('#'+divcontent).html('');
+						var table = parseInt(data.annonces.length);             
+						for( i=0;i<table;i++){
+					//DETERMINE HAUTEUR BLOC
+							$$IF0:ANNLISTE:SIPANIER$$
+								$$IF=:CONTAINER:SITEFLUIDE$$
+									$$A:HEIGHTANNLISTE=height-130$$
+								$$END$$
+								$$IF!:CONTAINER:SITEFLUIDE$$
+									$$A:HEIGHTANNLISTE=height-200$$
+								$$END$$
+							$$END$$
+					//RECUPERATION DES DONNE DU JSON
+							var objAnnonce = {
+								color:data.annonces[i].color,
+								idannonce:data.annonces[i].idannonce,
+								coupdecoeur : data.annonces[i].coupdecoeur,
+								exclusif : data.annonces[i].exclusif,
+								fraicheur : data.annonces[i].fraicheur,
+								promo : data.annonces[i].promo,
+								photo : data.annonces[i].photo,
+								filtres:data.annonces[i].filtres,
+								descriptif : data.annonces[i].descriptif,
+								descriptif2 : data.annonces[i].descriptif2,
+								prix : data.annonces[i].prix,
+								rechdetail:data.annonces[i].rechdetail,
+								sipanier : data.annonces[i].sipanier,
+								contactannonce2:data.annonces[i].contactannonce2,
+								contactannonce3:data.annonces[i].contactannonce3,
+								contactannonce:data.annonces[i].contactannonce,
+								miniphoto:data.annonces[i].miniphoto								
+							}
+							
+							var afficheAnnonce = function(a){
+						//PICTOS + picto
+								var photo = '<div class=\"blocPhotoAnnonce\">'+a.coupdecoeur+a.exclusif+a.fraicheur+a.promo+a.photo;+'</div>'
+						//BLOC SUR LE CONTENU
+								var descriptif = '<div class=\"detailsAnnonce\">'+a.filtres+'<div id="TextAnnonceRech">'+a.descriptif+a.descriptif2+a.prix+'</div>'+a.rechdetail+'</div><div class="contactAnnonces"><div class="miniPict"><div class="backgroundAnnonces">'+a.miniphoto+'</div></div>'+a.contactannonce+a.contactannonce2+a.contactannonce3+a.sipanier+'<div>';
+						//IMPLEMENTATION ET AFFICHAGE DU CONTENU
+								var contenu= $('#'+divcontent).html();
+								$('#'+divcontent).html(contenu+'<div class=\"blocAnnonce '+a.color+'\" id=\"Annonce'+a.idannonce+'\">'+photo+descriptif+'</div>');
+							} //FIN FONCTION
+							afficheAnnonce(objAnnonce);
+						}	//FIN BOUCLE
+						usePagination(maxpage);
+					//MISE A JOUR DE L ALERTE
+					$("input[name='qry']").val(data.qry);
+					$("input[name='phrase']").val(data.phrase);
+					//MISE A JOUR DU MOTEUR
+						var tableMoteur = parseInt(data.moteur.length);
+						var moteur = $('#content_moteur').html('');
+						var prevkey = '';
+						for( i=0;i<tableMoteur;i++){						
+							var idkey = data.moteur[i].idkey;
+							var keyname = data.moteur[i].keyname;
+							var queryvalue = data.moteur[i].queryvalue;
+							var valuename = data.moteur[i].valuename;
+							var nb = data.moteur[i].nb;
+							var contenupresent = $('#content_moteur').html();
+							if(nb != ""){
+								var nombre=' ('+nb+')';
+							}else{
+								var nombre='';
+							}
+							var querykey = data.moteur[i].querykey;
+							var selecte = data.moteur[i].selecte;
+							if(selecte == 1){
+								var check=' checked="checked" ';
+							}else{
+								var check='';
+							}
+							
+							var boxname= "conteneur-checkbox"+idkey;
+							var checkpresent = $("."+boxname).children('.liste-checkbox').html();
+							var addcheck = function(){
+								if(checkpresent == undefined){
+									checkpresent=""
+								}
+								$("."+boxname).children('.liste-checkbox').html(checkpresent+'<div class="control-group margin-0><div class="controls"><label class="checkbox">'+valuename+nombre+'<input type="checkbox" value="'+queryvalue+'" class="refineCheck" name="'+querykey+'"'+check+'/></label></div></div></div>');
+							}
+							if (idkey != prevkey){
+								var prevkey = idkey;
+								if (idkey==1 || idkey==2){
+									var show = "display-show";
+								}else{
+									var show = "display-none";
+								}
+								var contenu= contenupresent+'<div class="conteneur-checkbox'+idkey+'"><div class="h3-like cursor-pointer btn btn-neutre btn-block padding-5 margin-top-10">'+keyname+' <span class="caret margin-top-10 pull-right"></span></div><div class="liste-checkbox '+show+' padding-5"></div></div>';
+								var titre = 1;
+							}else{
+								var prevkey = idkey;
+								var contenu=contenupresent;
+								var titre = 0;
+							}
+							var moteur = $('.conteneur-checkbox').html();
+							var zeroquery= data.moteur[i].zeroquery;
+							$('#content_moteur').html(contenu);
+							addcheck(); 
+						}
+						
+
+					},
+					error : function (jqXHR, textStatus, errorThrown) {
+		                //console.log(jqXHR, textStatus, errorThrown);
+		                $('#'+divcontent).html('<div class="pagination-centered h2-like">$$LG:AUCUNEANN pcase$$</div>');
+		                $('.layer').hide();
+						$('.layer-annonce').hide();
+					},
+					complete: function(xhr,statusText) {
+						//console.log(xhr, statusText);
+						
+					}
+				});
+		$('#Mini_Bouton').wrap('<div class="test>');
+		$('#Mini_Bouton').remove;		
+}		
+</script>
+		
+		<!--#include virtual="footer/incl_bas.htm" -->

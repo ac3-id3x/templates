@@ -1,0 +1,42 @@
+$$REM$$
+	$$IF=:1:BIENSPECIFIC$$
+		<input type="checkbox" value="1" name="idtypebien" id="idtb-1">
+			<label for="idtb-1">
+				$$LG:APPARTEMENT pcase$$
+			</label>
+		<input type="checkbox" value="2,14" name="idtypebien" id="idtb-2">
+			<label for="idtb-2">
+				$$LG:MAISONS pcase$$ / $$LG:HOTEL pcase$$
+			</label>
+		<input type="checkbox" value="9,13,2.30,2.28,2.21" name="idtypebien" id="idtb-3">
+			$$REM$$<!--CAS DE MODIFICATION DE LA VALUE PENS2 A MODIFIER LIGNE 54 et 20 DE CE FICHIER et INCL MOTEUR PERSO-->$$END$$
+			<label for="idtb-3">
+				$$LG:CHATEAUDEMEURES pcase$$
+			</label>
+	$$END$$
+	
+	<script type="text/javascript">
+	//suppression chateau si location
+	$(document).delegate("#moteur_biens","pageinit", function (event) {
+		var storageTransaction = localStorage['idtypetransac'];
+		if(storageTransaction==1){
+			$('#idtb-3').parent('div').css('display','none');
+			$('input[id*="idtb-"]').prop('checked',false).checkboxradio("refresh");
+		}else{
+			$('#idtb-3').parent('div').attr('style','');
+			$('input[id*="idtb-"]').prop('checked',false).checkboxradio("refresh");
+		}
+		//suppression ville et dept si chateau
+		$('input[id*="idtb-"]').click(function(){
+			if($(this).is(':checked')){
+				if($(this).val()=="9,13,2.30,2.28,2.21" ){
+					$("#idtb-1").prop('checked',false).checkboxradio("refresh");
+					$("#idtb-2").prop('checked',false).checkboxradio("refresh");
+				}else{
+					$("#idtb-3").prop('checked',false).checkboxradio("refresh");
+				}
+			}
+		});
+	});
+	</script>
+$$END$$

@@ -1,0 +1,83 @@
+	$$IF=:RECHERCHE:IDT$$
+		<!--PASSAGE DES VALUES DANS LES INPUT HIDDEN-->
+	   <script type="text/javascript">
+	   	$(document).delegate("#recherche","pageinit", function (event) {
+	   		var storageTransaction = localStorage['idtypetransac'];
+		   	var storageTypeBien = localStorage['idtypebien']; 
+			$$IF:DEFAUTIDDT$$
+			if(storageTransaction == undefined) {
+				localStorage.setItem('idtypetransac',$$DEFAUTIDDT$$);
+				localStorage.setItem('idtt','$$DEFAUTIDDT gettypetransaction pcase$$');	
+			}				
+			$$END$$
+		  	$$IF=:1:SCRIPTPERSO$$
+		   		if (storageTransaction == '1'){ 
+		   			if (storageTypeBien == '0,'){
+		   				eraselocale('idtypebien'); 
+		   				eraselocale('typedebiens');
+		   			}
+		   		}
+		   		if (storageTypeBien == '0,'){
+		   			$('#blocVilleMoteurPerso').hide();
+		   			eraselocale('villes');
+		   			eraselocale('idville');
+		   		}else{
+		   			$('#blocVilleMoteurPerso').show();
+		   		}
+		   		$('#blocDeptMoteur').hide();
+		   $$END$$
+		   $$IF!:1:SCRIPTPERSO$$
+			if (localStorage['iddept']== undefined){
+				$('#blocVillesMoteur').css('display','none');
+			}else{
+				$('#blocVillesMoteur').css('');
+			}
+		  	$$END$$
+			function createInputHidden(inputId, hiddenId){
+				var localHidden = localStorage[hiddenId];
+				if (localHidden != undefined){
+				var villepers = '-920012,-920044,-920012,-920064,-920033,-780158,-920047,-920063,-920072,-920073,-920076,-780646,-920077,-920051';
+				var content = localHidden.indexOf(villepers);
+				if (content == -1)
+				{
+				$$IF!:1:SCRIPTPERSO$$
+						// FIX URL CITY <> DEP
+						if(inputId == "dept") {
+							if(localHidden) {
+								var hrefVilles = $("#urlVilles").attr("href");
+								$("#urlVilles").attr("href",hrefVilles+'&cp='+localHidden);
+								$("#blocVilleMoteurPerso").show();
+							} else {
+								$("#blocVilleMoteurPerso").hide();
+							}
+						}
+				$$END$$
+				$("#"+hiddenId).val(localHidden);
+				
+				}else{
+					$("#idvilleperso").val('78,92');
+					$("#"+hiddenId).val(localHidden);
+				}
+			}
+				}
+			createInputHidden('typetransac','idtypetransac'); 
+			createInputHidden('villes','idville');
+			createInputHidden('rayon','idrayon');
+			createInputHidden('idtypepublication','idtypepublication');
+	   		createInputHidden('dept','iddept');
+	   		createInputHidden('idtypebien','idtypebien');
+	   		createInputHidden('pieces','idpieces');
+	   		createInputHidden('surface','idsurface');
+	   		createInputHidden('budget','idbudget');
+	   		createInputHidden('perso','idperso');
+	   		createInputHidden('budget-0','idbudgetmin');
+	   		createInputHidden('budget-1','idbudgetmax');
+	   		createInputHidden('surface-0','idsurfacemin');
+	   		createInputHidden('surface-1','idsurfacemax');   		
+	   	});
+	   	</script>
+   	$$END$$
+   	<script src="$$-$$scripts/js/moteur.js"></script>
+   	$$IF=:RECHERCHE:IDT$$
+   		<!--#include virtual="scripts/efface_recherche.htm" -->
+	$$END$$

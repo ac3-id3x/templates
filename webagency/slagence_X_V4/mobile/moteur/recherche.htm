@@ -1,0 +1,96 @@
+$$INIT:IDT=RECHERCHE$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div data-role="content"  id="pagerecherche">
+<div data-role="fieldcontain">
+	<form name="" method="get" action="moteur,prevalidation.htm" data-ajax="false"> 
+		<input type="hidden" name="lang" value="$$FORM:LANG$$" />
+<!--CHAMPS VILLE-->			
+		<div data-role="fieldcontain" class="ui-hide-label searchPosition">
+			<div id="suggestionsBox" class="box"></div>
+			<label for="search">$$LG:MINIVILLES pcase$$</label>
+		    <input type="search" id="search" value="" placeholder="$$LG:MINIVILLES pcase$$" autocomplete="off"/><div class="clear"></div>
+			<div class="clear"></div>
+	    </div>	
+	    <input type="hidden" name="div" id="div" />
+		<input type="hidden" name="cp" id="cp" />
+		<input type="hidden" name="ci" id="ci" />
+		<input type="hidden" name="idq" id="idq" />
+ <!--SELECT TYPE TRANSACTION-->			 
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPETRANSACTION::QRY:LANG$$
+			$$BIF:TYPETRANSACTION$$
+		   	<select name="idtt" id="idtt" class="miniForm" onchange="javascript:ajaxGet(this.id,'$$LANGUE$$','idtypebien','type_bien');">
+			   	<option value="" selected="selected">$$LG:TYPEDETRANSACTION pcase$$</option>
+			   	$$DO$$
+			      <option value="$$TYPETRANSACTION:IDTYPETRANSACTION$$">
+									$$IF=:9:TYPETRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+									$$IF!:9:TYPETRANSACTION:IDTYPETRANSACTION$$$$TYPETRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+									($$TYPETRANSACTION:NBANN$$)</option>
+			    $$LOOP$$
+		   	</select>
+	   	$$BFIN$$
+<!--SELECT TYPE DE BIEN-->			   
+   <select id="idtypebien" name="idtypebien" disabled="disabled" >
+   			<option value="" selected="selected">$$LG:TYPEDEBIEN pcase$$</option>
+   			$$B:IMMOBW:TYPESBIENS:2:QRY:LANG:ALIAS:LISTETYPEBIENS$$
+			$$BIF:LISTETYPEBIENS$$
+					$$DO$$
+					<option value="$$LISTETYPEBIENS:IDTYPEBIEN$$" id="idtb_$$LISTETYPEBIENS:I$$">$$LISTETYPEBIENS:DEF_LIBELLE$$ ($$LISTETYPEBIENS:NBANN$$)</option>
+					$$LOOP$$
+			$$BFIN$$
+  </select>
+<!--SELECT NBR DE PIECES-->			   
+   <select id="nbpieces" name="nb_pieces" disabled="disabled" >
+      <option value="" selected="selected">$$LG:NBRP$$</option>
+      <option value="1">1 $$LG:PIECES$$</option>
+			<option value="2">2 $$LG:PIECES$$</option>
+			<option value="3">3 $$LG:PIECES$$</option>
+			<option value="4">4 $$LG:PIECES$$</option>
+			<option value="+4">5 $$LG:PIECES$$</option>
+   </select>
+
+   <!--#include virtual="moteur/incl_val_slider.htm" -->
+   
+   <script type="text/javascript">
+	   	var budgmaxvente = ($$PMAXV$$ + 10000);
+	   	var budgmaxloc = ($$PMAXL$$ + 1000);
+		var budgmaxloctemp = ($$PMAXLOCTEMP$$ + 1000);
+		var budgmaxlocvac = ($$PMAXLOCVAC$$ + 1000);
+	   	var budgmaxviager = ($$PMAXVIAGER$$ + 10000);
+		var budgmaxprodinvest = ($$PMAXPRODINVEST$$ + 100);
+		var budgmaxlocprest = ($$PMAXLPREST$$ + 1000);
+	   	var budgmaxventeprest = ($$PMAXVPREST$$ + 10000);
+		var budgmaxventeneuf = ($$PMAXVNEUF$$ + 10000);
+		var budgmaxventecomm = ($$PMAXVCOMM$$ + 10000);
+	   	var budgmaxbail = ($$PMAXBAIL$$ + 1000);
+   	</script>
+
+<!--SLIDER SURFACE-->			   	
+   <label for="slidersurf">
+   		$$IF=:FR:LANGUE$$
+   			Surface à partir de ($$LG:M2 lcase$$) : 
+   		$$END$$
+   		$$IF!:FR:LANGUE$$
+   			Living space from ($$LG:M2 lcase$$) : 
+   		$$END$$
+   		</label>
+   <input type="range" name="surfacemin" id="slidersurf" value="0" min="0" max="2000" step="10"  disabled="disabled" /><br />
+   
+<!--SLIDER BUDGET-->	   
+   <label for="sliderbudg">
+   	$$IF=:FR:LANGUE$$
+   		Budget jusqu'à (&euro;) :  
+   	$$END$$
+   	$$IF!:FR:LANGUE$$
+   		Budget up to (&euro;) : 
+   	$$END$$
+   </label>
+   <input type="range" name="pxmax" id="sliderbudg" value="" min="0" max="" step="1000"  disabled="disabled" />
+   <br />
+   
+<!--SUBMIT BUTTON-->	
+   <button id="bouton" class="ui-btn-hidden" name="submit" type="submit" data-ajax="false" disabled="disabled"> $$LG:RECHERCHER pcase$$ </button>
+</form>
+</div>
+</div> 
+<!--#include virtual="footer/incl_bas.htm" -->

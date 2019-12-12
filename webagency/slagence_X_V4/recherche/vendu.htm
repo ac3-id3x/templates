@@ -1,0 +1,238 @@
+$$REM$$====================================================================
+//// <summary>Bien vendus</summary>
+//// <remarks>
+//// <para>Lien accessible depuis le haut de la page de r&eacute;sultats</para>
+//// <para>Infos affich&eacute;es limit&eacute;es par rapport à une recherche d'annonces non vendues</para>
+//// <para>Utilise le même css que les pages : recherche,basic.htm</para>
+//// </remarks>
+//// <update date="2011-03-03" author="lisbonne.siriphol">Cr&eacute;ation</update>
+====================================================================$$END$$
+
+$$INIT:IDT=BIENSVENDUS$$
+$$INIT:CSS_RECHERCHE=1$$
+$$INIT:JS_RESULTATS=1$$
+$$INIT:JS_METRO=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$REM$$<!-- ============== // tous types de transactions // ============== -->$$END:REM$$
+	$$A:TITLE=@@LG:ANNONCIMMOS pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@FORM:CI codeinsee2ville@@ - @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@LG:ANNONCES pcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@FORM:CI codeinsee2ville@@ avec @@AGENCE_NOM@@.$$
+	$$A:KEYWORDS=@@LG:ANNONCIMMOS pcase@@, @@FORM:IDTT gettypetransaction lcase@@ @@FORM:IDTYPEBIEN gettypebien lcase@@ @@FORM:CI codeinsee2ville@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$REM$$<!-- ============== // tous types de transactions // ============== -->$$END:REM$$
+	$$A:TITLE=@@FORM:IDTT gettypetransaction pcase@@ @@FORM:IDTYPEBIEN gettypebien pcase@@ @@FORM:CI codeinsee2ville@@ - @@AGENCE_NOM@@$$
+	$$A:DESCRIPTION=@@FORM:IDTT gettypetransaction pcase@@ avec @@AGENCE_NOM@@.$$
+	$$A:KEYWORDS=@@LG:ANNONCIMMOS pcase@@ @@AGENCE_NOM@@$$		
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+	
+	$$IF0:HAUTRECHERCHEV2$$
+	<div id="RechHaut">
+		<div id="RechHautPictoResult">
+			<p class="results_null"></p>			
+		</div>
+		
+		<h1 class="biensVendus">
+		$$IF:FORM:IDTYPEBIEN$$
+			$$VENDU:NBR formatnumber 0$$
+			$$IF=:0$1:VENDU:NBR$$$$IF=:FR:LANGUE$$bien vendu$$END$$$$IF!:FR:LANGUE$$sold real estate good$$END$$$$END$$
+			$$IF!:0$1:VENDU:NBR$$$$LG:BIENVENDUS lcase$$$$END$$
+		$$END$$
+		</h1>
+		
+		<h2><span><!-- --></span></h2>
+
+		<div class="clear"></div>
+
+$$REM$$<!-- ==================== bloc agence si REP:1 ==================== -->$$END:REM$$
+		$$IF:REP:1$$
+			$$E:IMMOBW:AGENCE:REP:1:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:REP:1$$
+		
+		$$IF:FORM:IDPUBLICATION$$
+			$$E:IMMOBW:AGENCE:QRY:IDPUBLICATION:ALIAS:LISTEAG$$	
+			<!--#include virtual="agences/incl_liste_agences.htm" -->
+		$$END:FORM:IDPUBLICATION$$		
+		
+		
+		
+		<!--#include virtual="recherche/incl_haut_annonces_onglets.htm" -->
+		
+		<div id="RechHautLiens">
+			
+			<!--#include virtual="/recherche/incl_haut_annonces_liens.htm" -->
+			
+			<script type="text/javascript">
+				<!--
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+					}
+				}
+				//-->
+			</script>
+			
+				<form id="Tri" action="$$IF:REP:1$$/$$REP:1$$$$END$$/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">							
+					$$LG:TRIER pcase$$ :	
+					<select name="tri" id="TriAnn" class="miniForm" onchange="Trier(this.id);">
+			      <option value="a_px"$$IF=:a_px:FORM:TRI$$ selected="selected"$$END$$> $$LG:PRIX pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+						<option value="d_px"$$IF=:d_px:FORM:TRI$$ selected="selected"$$END$$> $$LG:PRIX pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+						<option value="a_surface"$$IF=:a_surface:FORM:TRI$$ selected="selected"$$END$$> $$LG:SURFACE pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+						<option value="d_surface"$$IF=:d_surface:FORM:TRI$$ selected="selected"$$END$$> $$LG:SURFACE pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+			      <option value="a_dtmutation"$$IF=:a_dtmutation:FORM:TRI$$ selected="selected"$$END$$> $$LG:DATEVENTE pcase$$, $$LG:ORDCROISSANT lcase$$</option>
+			      <option value="d_dtmutation"$$IF0:FORM:TRI$$ selected="selected"$$END$$$$IF=:d_dtmutation:FORM:TRI$$ selected="selected"$$END$$> $$LG:DATEVENTE pcase$$, $$LG:ORDDECROISSANT lcase$$</option>
+					</select>		
+				</div>
+			</form><!-- fin #Tri -->
+			
+			<div class="clear"><!-- --></div>
+			
+		</div><!-- #RechHautLiens -->
+		
+		
+			
+	</div><!-- #RechHaut -->
+	$$END$$
+	
+	$$IF:HAUTRECHERCHEV2$$
+		$$SET:CSS_HAUT_RECHERCHE=1$$
+		<!--#include virtual="/recherche/incl_haut_recherche.htm" -->	
+	$$END$$
+	
+$$IF:VENDU:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/recherche/incl_nb_pages_biensvendus.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+$$END:VENDU:NBRPAGES$$
+
+$$B:IMMOBW:KA-BIENS-VENDUS:~idPublication:QRY:IDPUBLICATION:~ci:QRY:CI:~cp:QRY:CP:~div:QRY:DIV:~idTypeBien:QRY:IDTYPEBIEN:~tri:QRY:TRI:~forceDiffusion:QRY:FORCEDIFFUSION:ALIAS:VENDU$$
+$$BIF:VENDU$$
+
+<div id="RechResultat">
+	
+	$$DO:1:10$$
+	
+	<div class="blocAnnonce $$IF=:1:VENDU:I exec XX%2$$color1$$END$$$$IF=:0:VENDU:I exec XX%2$$color2$$END$$"  id="Annonce$$VENDU:IDVENTE$$">
+		<div class="blocPhotoAnnonce">
+			<div class="vendu"></div>
+			<div class="blocPhoto" $$IF:VENDU:SILOGO$$ style="background: url($$VENDU:URLLOGO$$) 50% 50% no-repeat #fff;"$$END$$></div>
+		</div>
+		<div class="detailsAnnonce">
+			<div class="blocVilleDetails">$$VENDU:TITRE pcase$$ $$LG:VENDUA lcase$$ $$VENDU:PRIXVENTEFAI formatnumber 0$$ &euro; <sup>&nbsp;FAI</sup></div>
+			<div class="blocVilleDetails">$$VENDU:VILLE$$ ($$VENDU:CP$$)</div>
+			<div class="blocVenduDetails">
+				<strong>$$IF=:FR:LANGUE$$Vendu en$$END$$
+				$$IF!:FR:LANGUE$$$$LG:VENDUDEPUIS pcase$$$$END$$
+			: $$VENDU:DTMUTATION date MMMM_yyyy$$</strong>
+			</div>
+			$$IF:VENDU:SURFACEHABITABLE$$
+			<div class="blocVenduDetails">
+				$$LG:SURFH2 pcase$$ : $$VENDU:SURFACEHABITABLE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEHABITABLE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+				$$IF:VENDU:SURFACECARREZ$$
+					($$LG:LOICARREZ ncase$$ : $$VENDU:SURFACECARREZ replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACECARREZ exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$)
+				$$END:VENDU:SURFACEHABITABLE$$
+			</div>
+			$$END:VENDU:SURFACEHABITABLE$$
+			$$IF:VENDU:SURFACETERRAIN$$
+				<div class="blocVenduDetails">
+					$$LG:SURFT pcase$$
+					$$VENDU:SURFACETERRAIN formatnumber 0$$ $$LG:M2 lcase$$
+					$$IF=:EN:LANGUE$$
+						(approx. $$VENDU:SURFACETERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+						$$VENDU:SURFACETERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+					$$END:EN$$			
+				</div>		
+			$$END:VENDU:SURFACETERRAIN$$
+			$$IF:VENDU:NBPIECES$$
+				<div class="blocVenduDetails">
+					$$VENDU:NBPIECES$$
+						$$IF=:1:VENDU:NBPIECES$$$$LG:PIECE lcase$$$$END$$
+						$$IF+:2:VENDU:NBPIECES$$$$LG:PIECES2 lcase$$$$END$$						
+				</div>
+				$$END:VENDU:NBPIECES$$
+				$$IF:VENDU:ETAGE$$
+				<div class="blocVenduDetails">
+					$$LG:ETAGE pcase$$ : $$VENDU:ETAGE$$ $$IF:VENDU:NBETAGES$$($$LG:SUR lcase$$ $$VENDU:NBETAGES$$ $$LG:ETAGES lcase$$)$$END:VENDU:NBETAGES$$
+				</div>
+			$$END:VENDU:NBPIECES$$
+			$$IF:VENDU:NBBOX$$<div class="blocVenduDetails">$$IF=:FR:LANGUE$$Box$$END$$$$IF!:FR:LANGUE$$$$LG:BOXES2 pcase$$$$END$$ : $$VENDU:NBBOX$$</div>$$END$$
+					$$IF:VENDU:NBPARKEXT$$<div class="blocVenduDetails">$$LG:PARKINGSOUV pcase$$ : $$VENDU:NBPARKEXT$$</div>$$END$$
+					$$IF:VENDU:NBPARKINT$$<div class="blocVenduDetails">Parkings interieurs : $$VENDU:NBPARKINT$$</div>$$END$$
+					$$IF:VENDU:SICAVE$$<div class="blocVenduDetails">$$LG:CAVE1 pcase$$</div>$$END$$
+					$$IF:VENDU:ANNEECONSTRUCTION$$<div class="blocVenduDetails">$$LG:DATECONSTRUC pcase$$ : $$VENDU:ANNEECONSTRUCTION$$</div>$$END$$
+					$$IF:VENDU:SIASCENSEUR$$<div class="blocVenduDetails">$$LG:ASCENC1 pcase$$</div>$$END$$
+					$$IF:VENDU:SURFACEJARDIN$$<div class="blocVenduDetails">Jardin : $$VENDU:SURFACEJARDIN formatnumber 0$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEJARDIN exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$</div>$$END$$
+					$$IF:VENDU:NBTERRASSES$$
+					<div class="blocVenduDetails">
+						$$VENDU:NBTERRASSES$$ $$LG:TERRASSE pcase$$$$VENDU:NBTERRASSES pluriel$$
+						$$IF:VENDU:SURFACETERRASSES$$
+							$$VENDU:SURFACETERRASSES$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACETERRASSES exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+						$$END:SURFACETERRASSES$$
+					</div>
+					$$END$$
+					$$IF:VENDU:NBBALCONS$$
+					<div class="blocVenduDetails">
+						$$VENDU:NBBALCONS$$ $$LG:BALCON pcase$$$$VENDU:NBBALCONS pluriel$$
+						$$IF:VENDU:SURFACEBALCONS$$
+							$$VENDU:SURFACEBALCONS$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEBALCONS exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+						$$END:SURFACEBALCONS$$
+					</div>
+					$$END$$
+					$$IF:VENDU:SURFACEANNEXES$$<div class="blocVenduDetails">Surfaces annexes : $$VENDU:SURFACEANNEXES$$</div>$$END$$
+					$$IF=:true:VENDU:SITERRAINVIABILISE$$<div class="blocVenduDetails">Terrain viabilis&eacute;</div>$$END$$
+					$$IF=:true:VENDU:SITERRAINCONSTRUCTIBLE$$<div class="blocVenduDetails">Terrain constructible</div>$$END$$
+					$$IF=:true:VENDU:SIPISCINE$$<div class="blocVenduDetails">Piscine </div>$$END$$
+					$$IF:VENDU:IDTYPECHAUFFAGE$$<div class="blocVenduDetails">Type de chauffage : $$VENDU:IDTYPECHAUFFAGE gettypechauffage lcase$$</div>$$END$$
+					$$IF=:true:VENDU:SIOCCUPE$$<div class="blocVenduDetails">Bien vendu occup&eacute;$$IF:VENDU:LOYER$$, $$LG:LOYERMENSUEL lcase$$ : $$VENDU:LOYER formatnumber 0$$$$END$$</div>$$END$$
+					<div id="Dpe">
+						$$IF:VENDU:CODEBILANCONSOENERGIE$$
+						<div id="DiagConso">
+							<h5>$$LG:CONSOENERGIE pcase$$ :</h5>						
+							<img src="/z/webagency/slagence_X_V4/images/recherche/dpe/diag_dpe_$$VENDU:CODEBILANCONSOENERGIE$$.png" alt="" title="" />
+							$$IF:VENDU:CONSOENERGIE$$<div class="blocVenduDetails"><strong>$$VENDU:CONSOENERGIE$$ kWhep/m&sup2;/an</strong></div>$$END$$
+						</div>
+						$$END$$
+						$$IF:VENDU:CODEBILANEMISSIONSGES$$
+						<div id="DiagGes">
+							<h5>$$LG:EMISSIONGAZ pcase$$ :</h5></p>
+							<img src="/z/webagency/slagence_X_V4/images/recherche/dpe/diag_ges_$$VENDU:CODEBILANEMISSIONSGES$$.png" alt="" title="" />
+							$$IF:VENDU:EMISSIONSGES$$<div class="blocVenduDetails"><strong>$$VENDU:EMISSIONSGES$$ kgeqCO&sup2;/m&sup2;/an</strong></div>$$END$$
+						</div>
+						$$END$$
+					<div class="clear"></div>
+					</div>
+		</div>
+	</div>
+	$$LOOP$$
+</div>
+$$BFIN$$
+
+<div class="clear"></div>
+
+
+$$IF:VENDU:NBRPAGES$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/recherche/incl_nb_pages_biensvendus.htm" -->		
+	</div>
+	<!-- fin #RechPagesHaut -->
+$$END:VENDU:NBRPAGES$$
+
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+<!--#include virtual="referencement/incl_liste_villes_recherche.gen.htm" -->	
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$IF:VENDU:NBRPAGES$$
+<!--#include virtual="immo/incl_retour_haut.htm" -->	
+$$END:VENDU:NBRPAGES$$
+
+<!--#include virtual="footer/incl_bas.htm" -->

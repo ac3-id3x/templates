@@ -1,0 +1,124 @@
+$$INIT:IDT=RECHERCHE$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div data-role="content"  id="pagerecherche">
+<div data-role="fieldcontain">
+	<form name="" method="get" action="moteur,prevalidation.htm" data-ajax="false"> 
+		<input type="hidden" name="lang" value="$$FORM:LANG$$" />
+		<input type="hidden" id="idville" name="ci" value="" />
+		<input type="hidden" id="idvilleperso" name="cp" value="" />
+		<input type="hidden" id="iddept" name="cp" value="" />
+		<input type="hidden" id="idtypetransac" name="idtt" value="" />
+		<input type="hidden" id="idtypebien" name="idtypebien" value="" />
+		<input type="hidden" id="idpieces" name="nb_pieces" value="" />
+		<input type="hidden" id="idtypepublication" name="idpublication" value="" />
+		$$IF!:1:MOTSURFACEINPUT$$
+			<input type="hidden" id="idsurface" name="surfacebtw" value="" />
+		$$END$$
+		$$IF=:1:MOTSURFACEINPUT$$
+			<input type="hidden" id="idsurfacemin" name="surfacemin" value="" />
+			<input type="hidden" id="idsurfacemax" name="surfacemax" value="" />
+		$$END$$
+		
+		$$IF!:1:MOTBUDGETINPUT$$
+			<input type="hidden" id="idbudget" name="pxbtw" value="" />
+		$$END$$
+		$$IF=:1:MOTSURFACEINPUT$$
+			<input type="hidden" id="idbudgetmin" name="pxmin" value="" />
+			<input type="hidden" id="idbudgetmax" name="pxmax" value="" />
+		$$END$$
+		
+		<input type="hidden" id="idperso" name="si_meuble" value="" />
+		$$IF=:1:ONLYPHOTO$$
+			<input type="hidden" id="photo" name="photo" value="10" />
+		$$END$$
+		$$IF:TRIUSER$$
+			<input type="hidden" name="tri" value="$$TRIUSER$$" />
+		$$END$$ 
+		$$IF=:1:MOTEURRAYON$$
+			<input type="hidden" id="idrayon" name="rayon" value="" />
+		$$END$$
+		
+		<ul data-role="listview">
+		<!--CHAMPS TRANSACTION-->
+			<li data-icon="AR-custom$$IF:UNIQUEIDTT$$-none$$END$$">
+				$$IF:UNIQUEIDTT$$
+					<a href="#"><h4 id="nameidtt">$$LG:TYPEDETRANSACTION pcase$$</h4></a>
+				$$END$$
+				$$IF0:UNIQUEIDTT$$
+					<a href="/moteur,transaction.htm?lang=$$LANGUE$$"><h4 id="nameidtt">$$LG:TYPEDETRANSACTION pcase$$</h4></a>
+				$$END$$
+			</li>
+		<!--CHAMPS TYPE DE BIEN-->
+			<li data-icon="AR-custom">
+				<a href="/moteur,biens.htm?lang=$$LANGUE$$"><h4 id="nametypedebiens">$$LG:TYPEDEBIEN pcase$$</h4></a>
+			</li>
+		<!--CHAMPS DEPT-->
+			<li data-icon="AR-custom"  id="blocDeptMoteur">
+				<a href="/moteur,departement.htm?lang=$$LANGUE$$"><h4 id="namedept" >$$LG:DEPARTEMENTS pcase$$</h4></a>
+			</li>
+		<!--CHAMPS VILLE-->
+			$$IF!:1:VILLESPECIFIC$$
+			<li data-icon="AR-custom" id="blocVillesMoteur">
+				<a href="/moteur,villes.htm?lang=$$LANGUE$$" id="urlVilles"><h4 id="namevilles" >$$LG:VILLES3 pcase$$</h4></a>
+			</li>
+			$$END$$
+			$$IF=:1:VILLESPECIFIC$$
+			<li data-icon="AR-custom" id="blocVilleMoteurPerso">
+				<a href="/moteur,villes.htm?lang=$$LANGUE$$"><h4 id="namevilles" >$$LG:VILLES3 pcase$$</h4></a>
+			</li>
+			$$END$$
+		<!--CHAMPS VILLE-->
+			$$IF=:1:MOTEURRAYON$$
+			<li data-icon="AR-custom" id="blocVillesMoteur">
+				<a href="/moteur,rayon.htm?lang=$$LANGUE$$" id="urlRayon"><h4 id="namerayon" >$$LG:RAYON pcase$$</h4></a>
+			</li>
+			$$END$$
+		<!--CHAMPS NBR DE PIECES-->
+			<li data-icon="AR-custom">
+				<a href="/moteur,pieces.htm?lang=$$LANGUE$$"><h4 id="namepieces">$$LG:PIECES pcase$$</h4></a>
+			</li>
+		<!--INPUT PERSO-->	
+			$$IF=:1:INCLMOTEURPERSO$$
+			<li data-icon="AR-custom" id="blocPersoMoteur">
+				<a href="/moteur,perso.htm?lang=$$LANGUE$$"><h4 id="nameperso">$$INTITULEMOTEURPERSO pcase$$</h4></a>
+			</li>
+			$$END$$
+		<!--CHAMP SURFACE-->	
+			$$IF!:1:HIDESURFACE$$
+			<li data-icon="AR-custom">
+				<a href="/moteur,surface.htm?lang=$$LANGUE$$"><h4 id="namesurface">$$LG:SURFACE pcase$$</h4></a>
+			</li>
+			$$END$$
+		<!--CHAMP BUDGET-->
+			$$IF!:1:HIDEBUDGET$$
+			<li data-icon="AR-custom">
+				<a href="/moteur,budget.htm?lang=$$LANGUE$$"><h4 id="namebudget">$$LG:BUDGET pcase$$</h4></a>
+			</li>
+			$$END$$
+		<!--SUBMIT BUTTON-->
+			<li>	
+  				<!--#include virtual="moteur/incl/incl_bouton.htm" -->	
+			</li>
+		</ul>
+	
+</form>
+</div>
+</div> 
+
+    <script type="text/javascript">
+	   	/* DEFAUT TEXTE */
+	   	var rayondefaut = '$$LG:RAYON pcase$$';
+	   	var regiondefaut = '$$LG:REGION pcase$$';
+	   	var depdefaut = '$$LG:DEPART pcase$$';
+	   	var villesdefaut = '$$LG:VILLES3 pcase$$';
+	   	var typedebiensdefaut = '$$LG:TYPEDEBIEN pcase$$';
+	   	var idttdefaut = '$$LG:TYPEDETRANSACTION pcase$$';
+	   	var budgetdefaut = '$$LG:BUDGET pcase$$';
+	   	var piecesdefaut = '$$LG:PIECES pcase$$';
+	   	var surfacedefaut = '$$LG:SURFACE pcase$$';
+	   	var deptdefaut = '$$LG:DEPARTEMENTS pcase$$';
+	   	var persodefaut  = '$$LG:MEUBLEES pcase$$';
+   	</script>
+
+<!--#include virtual="scripts/incl_moteur_mobi.htm" -->
+<!--#include virtual="footer/incl_bas.htm" -->

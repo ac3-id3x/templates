@@ -1,0 +1,361 @@
+$$E:ID3:REDIRECT:ADD:/immobilier/:301$$
+$$REM$$====================================================================
+//// <summary>Nouvelle page optimisée pour le référencement, liste toutes les transacs dispos</summary>
+//// <remarks>
+//// <para>Moins de fichiers imbriqués et meilleure présentation</para>
+//// <para>Moins de fichiers en .gen, on les remettra si ça rame trop mais il paraît qu'on peut maintenant</para>
+//// <para>Si pas IDTT en QRY, on force idtt=x pour mettre les annonces de son choix en premier dans la liste</para>
+//// <para>Nouvelle phrase optimisée en haut de page</para>
+//// <para>Le référenceur a donc le choix de mettre en avant le type de transaction de son choix</para>
+//// </remarks>
+//// <update date="2010-02-24" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=ANNONCIMMOS$$
+$$INIT:CSS_ANNONCES_BIEN=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div id="ImmoAnn">
+	
+	$$REM$$<!-- ///////////// on crée une macro pour stocker idtt (qu'il y ait une idtt ou pas en qry) ///////////// -->$$END:REM$$
+	$$IF:FORM:IDTT$$ 		$$A:TYPETRANSAC=@@FORM:IDTT@@$$ 	$$END:FORM:IDTT$$	
+	$$IF0:FORM:IDTT$$ 	$$A:TYPETRANSAC=2$$ 							$$END:FORM:IDTT$$	
+	
+	$$REM$$<!-- ///////////////////////////// phrase et liens du haut vers idtt principale /////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:ALIAS:TXTVILLES:::QRY:IDTT$$
+	$$BIF:TXTVILLES$$
+	$$REM$$<!-- on met le H1 sur l'idtt qu'on veut mettre en avant -->$$END:REM$$
+	<h1>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$TYPETRANSAC$$&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$TYPETRANSAC gettypetransaction lcase$$">
+			$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$TYPETRANSAC gettypetransaction lcase$$
+		</a>
+	</h1>
+	<p><strong>
+		$$IF:MULTIAGENCES$$ $$LG:NOSAGENCESIMMO pcase$$ vous proposent$$END$$
+		$$IF0:MULTIAGENCES$$ Notre agence immobili&egrave;re vous propose$$END$$
+		des annonces de biens immobiliers (maison, appartement, studio, villa) en $$TYPETRANSAC gettypetransaction lcase$$ dans les villes suivantes :	
+	</strong></p>
+	<ul class="listeVilles">
+		$$DO$$
+		<li>
+			<span class="index">$$TXTVILLES:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/$$TYPETRANSAC gettypetransaction replace ¤ - lcase$$-$$TXTVILLES:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?ci=$$TXTVILLES:CODEINSEE$$&amp;idtt=$$TYPETRANSAC$$&amp;photo=1&amp;lang=$$LANGUE$$">
+				
+				$$IF=:1:TYPETRANSAC$$				$$LG:BIENALALOC pcase$$ $$LG:A lcase$$										$$END$$
+				$$IF=:2:TYPETRANSAC$$				$$LG:BIENSIMMOAVENTE pcase$$ $$LG:A lcase$$								$$END$$
+				$$IF=:3:TYPETRANSAC$$				$$LG:LIEN:LOCTMP pcase$$ $$LG:A lcase$$										$$END$$
+				$$IF=:4:TYPETRANSAC$$				$$LG:LIEN:LOCVAC pcase$$ $$LG:A lcase$$										$$END$$
+				$$IF=:6:TYPETRANSAC$$				$$LG:LIEN:PRODINVEST pcase$$ $$LG:A lcase$$								$$END$$
+				$$IF=:7:TYPETRANSAC$$				$$LG:LIEN:LOCPST pcase$$ $$LG:A lcase$$										$$END$$
+				$$IF=:8:TYPETRANSAC$$				$$LG:ANN:VENPRESTIGE pcase$$ $$LG:A lcase$$								$$END$$
+				$$IF=:9:TYPETRANSAC$$				$$LG:LIEN:PGRNEUF pcase$$ $$LG:A lcase$$									$$END$$
+				$$IF=:10$11:TYPETRANSAC$$		$$TYPETRANSAC gettypetransaction pcase$$ $$LG:A lcase$$		$$END$$
+				
+				$$TXTVILLES:VILLEAFF$$, $$TXTVILLES:CODEINSEE codeinsee2cp$$
+				<span class="nbAnn">($$TXTVILLES:NBANN$$ $$IF-:2:TXTVILLES:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:TXTVILLES:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+		</li>
+		$$LOOP$$	
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+
+	$$IF!:2:TYPETRANSAC$$
+	$$REM$$<!-- ////////////////////////////////////// VENTES //////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::2:ALIAS:VILANN2$$
+	$$BIF:VILANN2$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:VENTES lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:VENTES lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN2:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/ventes-$$VILANN2:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN2:CODEINSEE left 2$$&amp;ci=$$VILANN2:CODEINSEE$$&amp;idtt=2&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:BIENSIMMOAVENTE pcase$$ $$VILANN2:VILLEAFF$$">
+				$$LG:BIENSIMMOAVENTE pcase$$ $$LG:A lcase$$ $$VILANN2:VILLEAFF$$
+				<span class="nbAnn">($$VILANN2:NBANN$$ $$IF-:2:VILANN2:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN2:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:1:TYPETRANSAC$$
+	$$REM$$<!-- ////////////////////////////////////// LOCS //////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:~tri:d_nbann:::1:ALIAS:VILANN1$$
+	$$BIF:VILANN1$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LOCATIONS lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LOCATIONS lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN1:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/locations-$$VILANN1:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN1:CODEINSEE left 2$$&amp;ci=$$VILANN1:CODEINSEE$$&amp;idtt=1&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:BIENALALOC pcase$$ $$VILANN1:VILLEAFF$$">
+				$$LG:BIENALALOC pcase$$ $$LG:A lcase$$ $$VILANN1:VILLEAFF$$
+				<span class="nbAnn">($$VILANN1:NBANN$$ $$IF-:2:VILANN1:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN1:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:3:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// locations temporaires /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::3:ALIAS:VILANN3$$
+	$$BIF:VILANN3$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=3&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCTMP lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCTMP lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN3:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/locations-temporaires-$$VILANN3:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN3:CODEINSEE left 2$$&amp;ci=$$VILANN3:CODEINSEE$$&amp;idtt=3&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:LIEN:LOCTMP pcase$$ $$LG:A lcase$$ $$VILANN3:VILLEAFF$$">
+				$$LG:LIEN:LOCTMP pcase$$ $$LG:A lcase$$ $$VILANN3:VILLEAFF$$
+				<span class="nbAnn">($$VILANN3:NBANN$$ $$IF-:2:VILANN3:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN3:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:4:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// locations vacances /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::4:ALIAS:VILANN4$$
+	$$BIF:VILANN4$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=4&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCVAC lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCVAC lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN4:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/locations-vacances-$$VILANN4:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN4:CODEINSEE left 2$$&amp;ci=$$VILANN4:CODEINSEE$$&amp;idtt=4&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:LIEN:LOCVAC pcase$$ $$LG:A lcase$$ $$VILANN4:VILLEAFF$$">
+				$$LG:LIEN:LOCVAC pcase$$ $$LG:A lcase$$ $$VILANN4:VILLEAFF$$
+				<span class="nbAnn">($$VILANN4:NBANN$$ $$IF-:2:VILANN4:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN4:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:5:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// viagers /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::5:ALIAS:VILANN5$$
+	$$BIF:VILANN5$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=5&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:VIAGERS lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:VIAGERS lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN5:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/viagers-$$VILANN5:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN5:CODEINSEE left 2$$&amp;ci=$$VILANN5:CODEINSEE$$&amp;idtt=5&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:ANN:VIAGERS pcase$$ $$LG:A lcase$$ $$VILANN5:VILLEAFF$$">
+				$$LG:ANN:VIAGERS pcase$$ $$LG:A lcase$$ $$VILANN5:VILLEAFF$$
+				<span class="nbAnn">($$VILANN5:NBANN$$ $$IF-:2:VILANN5:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN5:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:6:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// produits d'investissement /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::6:ALIAS:VILANN6$$
+	$$BIF:VILANN6$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=6&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:PRODINVEST lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:PRODINVEST lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN6:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/produits-investissement-$$VILANN6:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN6:CODEINSEE left 2$$&amp;ci=$$VILANN6:CODEINSEE$$&amp;idtt=6&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:LIEN:PRODINVEST pcase$$ $$LG:A lcase$$ $$VILANN6:VILLEAFF$$">
+				$$LG:LIEN:PRODINVEST pcase$$ $$LG:A lcase$$ $$VILANN6:VILLEAFF$$
+				<span class="nbAnn">($$VILANN6:NBANN$$ $$IF-:2:VILANN6:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN6:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:7:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// locations de prestige /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::7:ALIAS:VILANN7$$
+	$$BIF:VILANN7$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=7&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCPST lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:LOCPST lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN7:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/locations-prestige-$$VILANN7:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN7:CODEINSEE left 2$$&amp;ci=$$VILANN7:CODEINSEE$$&amp;idtt=7&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:LIEN:LOCPST pcase$$ $$LG:A lcase$$ $$VILANN7:VILLEAFF$$">
+				$$LG:LIEN:LOCPST pcase$$ $$LG:A lcase$$ $$VILANN7:VILLEAFF$$
+				<span class="nbAnn">($$VILANN7:NBANN$$ $$IF-:2:VILANN7:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN7:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:8:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// prestige /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::8:ALIAS:VILANN8$$
+	$$BIF:VILANN8$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=8&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:VENPRESTIGE lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:VENPRESTIGE lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN8:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/vente-de-prestige-$$VILANN8:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN8:CODEINSEE left 2$$&amp;ci=$$VILANN8:CODEINSEE$$&amp;idtt=8&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:ANN:VENPRESTIGE pcase$$ $$LG:A lcase$$ $$VILANN8:VILLEAFF$$">
+				$$LG:ANN:VENPRESTIGE pcase$$ $$LG:A lcase$$ $$VILANN8:VILLEAFF$$
+				<span class="nbAnn">($$VILANN8:NBANN$$ $$IF-:2:VILANN8:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN8:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+		
+	
+	$$IF:RESULTATS_NEUF$$
+	$$IF!:9:TYPETRANSAC$$
+	$$REM$$<!-- /////////////////////////////////////// programmes neufs /////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:::9:ALIAS:VILANN9$$
+	$$BIF:VILANN9$$
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:PGRNEUF lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:PGRNEUF lcase$$
+		</a>
+	</h2>	
+	<ul class="listeVilles">		
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN9:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/vente-neuf-$$VILANN9:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN9:CODEINSEE left 2$$&amp;ci=$$VILANN9:CODEINSEE$$&amp;idtt=9&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:IMMOBILIER pcase$$ $$LG:NEUF lcase$$ $$VILANN9:VILLEAFF$$">
+				$$LG:IMMOBILIER pcase$$ $$LG:NEUF lcase$$ $$LG:A lcase$$ $$VILANN9:VILLEAFF$$
+				<span class="nbAnn">($$VILANN9:NBANN$$ $$IF-:2:VILANN9:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN9:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	$$END:RESULTATS_NEUF$$
+	
+	
+	$$IF!:10:TYPETRANSAC$$
+	$$REM$$<!-- //////////////////////////////////////fonds de commerces//////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:~tri:d_nbann:::10:ALIAS:VILANN10$$
+	$$BIF:VILANN10$$	
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=10&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:FCOMMERCE lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:LIEN:FCOMMERCE lcase$$
+		</a>
+	</h2>
+	<ul class="listeVilles">
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN10:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/vente-fonds-de-commerces-$$VILANN10:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN10:CODEINSEE left 2$$&amp;ci=$$VILANN10:CODEINSEE$$&amp;idtt=10&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:LIEN:FCOMMERCE pcase$$ $$VILANN10:VILLEAFF$$">
+				$$LG:LIEN:FCOMMERCE pcase$$ $$LG:A lcase$$ $$VILANN10:VILLEAFF$$
+				<span class="nbAnn">($$VILANN10:NBANN$$ $$IF-:2:VILANN10:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN10:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+	
+	$$IF!:11:TYPETRANSAC$$
+	$$REM$$<!-- //////////////////////////////////////CESSIONS DE BAIL//////////////////////////////////////////////////-->$$END:REM$$
+	$$B:IMMOBW:VILLESANNONCES:#REF:~tri:d_nbann:::11:ALIAS:VILANN11$$
+	$$BIF:VILANN11$$	
+	<h2>
+		<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=11&amp;lang=$$LANGUE lcase$$" 
+			title="$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:CESSIONBAILS lcase$$">
+		$$LG:TOUTESANNONC pcase$$ $$LG:DE lcase$$ $$LG:ANN:CESSIONBAILS lcase$$
+		</a>
+	</h2>
+	<ul class="listeVilles">
+		$$DO$$
+		<li>
+			<span class="index">$$VILANN11:I$$)</span>	
+			<a href="http://$$REP:RSRV$$/cession-de-bail-$$VILANN11:VILLEAFF vireaccents urlencode replace + - replace ' - lcase$$/immobilier,biens.htm?cp=$$VILANN11:CODEINSEE left 2$$&amp;ci=$$VILANN11:CODEINSEE$$&amp;idtt=11&amp;photo=1&amp;lang=$$LANGUE$$"
+				title="$$LG:ANN:CESSIONBAILS pcase$$ $$VILANN11:VILLEAFF$$">
+				$$LG:ANN:CESSIONBAILS pcase$$ $$LG:A lcase$$ $$VILANN11:VILLEAFF$$
+				<span class="nbAnn">($$VILANN11:NBANN$$ $$IF-:2:VILANN11:NBANN$$$$LG:ANNONCE lcase$$$$END$$$$IF+:2:VILANN11:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$)</span>
+			</a>
+			<span class="clear"><!-- --></span>
+		</li>
+		$$LOOP$$
+	</ul><!-- .listeVilles -->
+	$$BFIN$$
+	$$END:TYPETRANSAC$$
+	
+</div><!-- #ImmoAnn -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

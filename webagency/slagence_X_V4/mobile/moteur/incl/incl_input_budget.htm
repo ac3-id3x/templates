@@ -1,0 +1,62 @@
+<ul id="budg" data-role="listview" class="ss-moteur">
+			<li data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+						<input type="number" name="px_min" id="budget-0" type="number" placeholder="$$LG:BUDGET pcase$$ $$LG:MINI lcase$$ €" value="">
+						<input type="number" name="px_max" id="budget-1" type="number" placeholder="$$LG:BUDGET pcase$$ $$LG:MAXI lcase$$ €" value="">
+				</fieldset>
+			</li>
+		</ul>
+		
+<script type="text/javascript">
+	function format(valeur,separateur) {
+		// formate un chiffre avec 'decimal' chiffres après la virgule et un separateur
+		var val=Math.floor(Math.abs(valeur));
+		var val_format=val+"";
+		var nb=val_format.length;
+			for (var i=1;i<4;i++) {
+				if (val>=Math.pow(10,(3*i))) {
+				val_format=val_format.substring(0,nb-(3*i))+separateur+val_format.substring(nb-(3*i));
+				}
+			}
+			if (parseFloat(valeur)<0) {val_format="-"+val_format;}
+			return val_format;
+	}
+	$('.button-top').click(function(){
+		var budgetMin = $('#budget-0').val();
+		var budgetMax = $('#budget-1').val();
+		if(budgetMin.length > 0) {
+			if(budgetMax.length > 0) {
+				var nomrub = format(budgetMin,' ') + '€ / ' + format(budgetMax,' ') + '€'
+				localStorage.setItem('budget',nomrub);
+				localStorage.setItem('idbudgetmin',budgetMin);
+				localStorage.setItem('idbudgetmax',budgetMax);
+			}else{
+				var nomrub ='Min ' + format(budgetMin,' ') + '€'
+				localStorage.setItem('budget',nomrub);
+				localStorage.setItem('idbudgetmin',budgetMin);
+				eraselocale('idbudgetmax');
+			}
+		}else{
+			if(budgetMax.length > 0) {
+				var nomrub = 'Max ' + format(budgetMax,' ') + '€'
+				localStorage.setItem('budget',nomrub);
+				localStorage.setItem('idbudgetmax',budgetMax);
+				eraselocale('idbudgetmin');
+			}else{
+				eraselocale('budget');
+				eraselocale('idbudgetmin');
+				eraselocale('idbudgetmax');
+			}
+		}
+	});
+	$(document).delegate("#moteur_budget","pageshow", function (event) {
+		var bMin = localStorage['idbudgetmin'];
+		var bMax = localStorage['idbudgetmax'];
+		if(bMin != undefined) {
+			$('#budget-0').val(bMin);
+		}
+		if(bMax != undefined) {
+			$('#budget-1').val(bMax);
+		}
+	});
+</script>

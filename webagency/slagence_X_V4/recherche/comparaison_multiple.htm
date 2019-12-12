@@ -1,0 +1,68 @@
+$$DYN:ID3:NODEBUGPOPUP$$
+<html>
+	<head>
+			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			<script type="text/javascript">
+				var maxChoix = 5;
+				var cptChoix = 0;
+				$(document).ready(function() {
+					// REINIT
+					$(".choixComparer").removeAttr("disabled");
+					$(".choixComparer").attr('checked',false);
+					$(".choixComparer").click(function() {
+						if(this.checked) {
+							cptChoix ++;
+							if(cptChoix == maxChoix) {
+								// DISABLED ALL
+								$(".choixComparer").each(function() {
+									if(!this.checked) {
+										$(this).attr("disabled", true);
+									}
+								});
+							}
+						} else {
+							if(cptChoix == maxChoix) {
+								// ENABLED ALL
+								$(".choixComparer").each(function() {
+									if($(this).attr("disabled")) {
+										$(this).removeAttr("disabled");
+									}
+								});
+							}
+							cptChoix --;
+						}
+					});
+					$("#lienComparer").click(function() {
+						var idAnnonces = '';
+						var lengthC = $(".choixComparer:checked").length;
+						var cptValid = 0;
+						$(".choixComparer").each(function() {
+							if(this.checked) {
+								cptValid ++;
+								if(cptValid == lengthC) {
+									idAnnonces += 'idAnnonce'+cptValid+'='+$(this).val();
+								} else {
+									idAnnonces += 'idAnnonce'+cptValid+'='+$(this).val()+'&';
+								}
+							}
+						});
+						document.location.href= 'recherche,comparaison.htm?'+idAnnonces+'&totalAnnonce='+lengthC;
+					});
+				});
+			</script>
+			<style>
+				#lienComparer {display:block;clear:both;cursor:pointer;padding:4px;border:1px solid #333;float:left;}	
+			</style>
+	</head>
+	<body>
+		<h1>Jusqu'à <script type="text/javascript">document.write(maxChoix);</script> choix</h1>
+		$$B:IMMOBW:ANN:2::::idtypebien=1,2:ALIAS:ANNONCES$$
+		$$BIF:ANNONCES$$
+			$$DO:1:10$$
+				<div><label>$$ANNONCES:LIBELLE$$<input type="checkbox" class="choixComparer" value="$$ANNONCES:IDANNONCE$$"></label></div>
+			$$LOOP$$
+		$$BFIN$$
+		<br /><br />
+		<div id="lienComparer">Comparer</div>
+	</body>
+</html>

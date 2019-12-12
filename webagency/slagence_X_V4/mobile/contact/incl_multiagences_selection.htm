@@ -1,0 +1,47 @@
+$$REM$$====================================================================
+//// <summary>Liste de toutes les agences du site</summary>
+//// <remarks>
+//// <para>Fichier à ne PAS démutualiser</para>
+//// <para>Si multiagences, sélection de toutes les agences par bouton radio</para>
+//// <para>Utilisation macro MULTIAGENCES créée dans fichier mutualisé header/incl_variables.htm</para>
+//// </remarks>
+//// <update date="2010-06-14" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+
+
+$$REM$$<!--// s'il y a plusieurs agences sur le site //-->$$END:REM$$
+$$IF:MULTIAGENCES$$
+$$REM$$<!--// s'il n'y a pas de REP:1 on affiche la liste des agences //-->$$END:REM$$
+$$IF0:REP:1$$
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script type="text/javascript">
+	<!--
+	function valider(id) {
+		document.location.href='/'+id+'/$$REP:0$$?$$REP:QRY$$';
+		}
+	// -->
+</script>
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$BIF:COMPTE_AGENCES$$
+<div class="pageMobi">
+<form action="/$$REP:0$$?$$REP:QRY$$" method="post" id="FormContactListeAgences">
+<p>$$COMPTE_AGENCES:NBR$$ $$LG:AGENCESAVOTRSERVICE lcase$$</p>
+<p>
+	$$IF=:CONTACTAGENCE:IDT$$
+		$$LG:PARVENIRMESSAGE pcase$$
+	$$END:IDT$$
+	$$IF=:ESTIMATION:IDT$$
+		$$LG:DEMANDEZESTIM pcase$$
+	$$END:IDT$$
+</p>
+<p>$$LG:SELECTIONA pcase$$</p>
+	$$DO$$
+		<input type="radio" id="$$COMPTE_AGENCES:IDPUBLICATION$$" value="$$COMPTE_AGENCES:IDPUBLICATION$$" onclick="valider(this.value)" name="agence"$$IF0:COMPTE_AGENCES:EMAIL$$ disabled="disabled"$$END:COMPTE_AGENCES:EMAIL$$ /> 
+		<label for="$$COMPTE_AGENCES:IDPUBLICATION$$">$$COMPTE_AGENCES:NOM$$, $$COMPTE_AGENCES:VILLE ncase$$ ($$COMPTE_AGENCES:CP$$)$$IF0:COMPTE_AGENCES:EMAIL$$ - <strong>$$LG:EMAIL pcase$$ $$LG:MININONDISPO lcase$$</strong> -$$END:COMPTE_AGENCES:EMAIL$$</label>
+	$$LOOP$$
+</form>
+$$BFIN$$
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+$$END:REP:1$$
+</div>
+$$END:MULTIAGENCES$$

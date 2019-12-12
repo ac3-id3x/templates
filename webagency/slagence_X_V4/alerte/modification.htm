@@ -1,0 +1,68 @@
+$$REM$$====================================================================
+//// <summary>Le mail Alerte Immo renvoie vers cette page qui switche la frequence d'envoi des emails</summary>
+//// <remarks>
+//// <para>Utilise le meme fichier .css que tous les fichiers d'alerte email : styles/alerte.css</para>
+//// <para>01.12.2009 : remplacement de la mention "Nom" par la mention "Prénom" sur tous les messages de l'alerte</para>
+//// </remarks>
+//// <update date="2010-06-23" author="lisbonne.siriphol">Creation XV3</update>
+//// <update date="2009-12-01" author="lisbonne.siriphol">Update</update>
+//// <update date="2008-05-28" author="lisbonne.siriphol">Creation</update>
+//// <update date="2008-05-28" author="erick.barbant">attente validation ID3X</update>
+====================================================================$$END$$
+$$INIT:IDT=MODIFALERTEIMMO$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:CSS_ALERTE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+$$E:IMMOBW:AI_SWP:REP:2:REP:1:REP:3$$
+
+<div id="AlerteImmo">
+	
+	$$IF=:FR:LANGUE$$
+		<h1>Modification de votre Alerte Immo</h1>
+	$$END$$
+	$$IF!:FR:LANGUE$$
+		<h1>Changes of your email Alert</h1>
+	$$END$$
+	
+	$$IF:IMMOBW:AI_SWP:ERRE$$
+	<!--#include virtual="alerte/incl_erreur.htm" -->
+	$$END:IMMOBW:AI_SWP:ERRE$$
+	
+	$$IF0:IMMOBW:AI_SWP:ERRE$$
+	<div class="modif_ok_ctn">
+		<div class="modif_ok">
+			
+			$$IF=:FR:LANGUE$$
+				<p>L'Alerte Immo a &eacute;t&eacute; modifi&eacute;e.</p>
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				<p>Your email alert has been changed</p>
+			$$END$$
+			
+			$$IF:IMMOBW:AI_SWP:EMAIL$$
+			<p>$$IF=:FR:LANGUE$$Pr&eacute;nom :$$END$$
+			$$IF!:FR:LANGUE$$First name : $$END$$<strong>$$IMMOBW:AI_SWP:NOM$$</strong></p>				
+			<p>Email : <strong>$$IMMOBW:AI_SWP:EMAIL encodemail javascript$$</strong></p>
+			$$END:EMAIL$$
+			$$IF:IMMOBW:AI_SWP:TEXTE$$
+			<p>Crit&egrave;res : <strong>$$IMMOBW:AI_SWP:TEXTE$$</strong></p>
+			$$END:TEXTE$$
+			<p>
+				$$IF=:FR:LANGUE$$D&eacute;sormais vous recevrez les nouvelles annonces$$END$$ $$IF!:FR:LANGUE$$Now you will receive the new ads$$END$$<!-- $$REP:3$$ -->				
+				$$IF=:1:REP:3$$<strong>$$IF=:FR:LANGUE$$dès leur mise en ligne$$END$$ $$IF!:FR:LANGUE$$when they are online$$END$$</strong>.$$END$$
+				$$IF!:1:REP:3$$<strong>$$IF=:FR:LANGUE$$deux fois par semaine$$END$$ $$IF!:FR:LANGUE$$twice a week$$END$$</strong>.$$END$$
+			</p>				
+		</div><!-- .modif_ok -->
+	</div><!-- .modif_ok_ctn -->
+	
+	<!--#include virtual="alerte/incl_confirmation.htm" -->
+	<!--#include virtual="alerte/incl_confiance.htm" -->
+	
+	$$END:IMMOBW:AI_SWP:ERRE$$
+	
+
+</div><!-- #AlerteImmo -->
+
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,77 @@
+		<ul id="surface" data-role="listview" class="ss-moteur">
+			<li data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					$$IF!:FR:LANGUE$$
+						<input type="number" name="surfacemin" id="surface-0" type="number" placeholder="$$LG:SURFACE pcase$$ $$LG:MINI lcase$$ Sq Ft" value="">
+						<input type="number" name="surfacemax" id="surface-1" type="number" placeholder="$$LG:SURFACE pcase$$ $$LG:MAXI lcase$$ Sq Ft" value="">
+					$$END$$
+					$$IF=:FR:LANGUE$$
+						<input type="number" name="surfacemin" id="surface-0" type="number" placeholder="$$LG:SURFACE pcase$$ $$LG:MINI lcase$$ $$LG:M2$$" value="">
+						<input type="number" name="surfacemax" id="surface-1" type="number" placeholder="$$LG:SURFACE pcase$$ $$LG:MAXI lcase$$ $$LG:M2$$" value="">
+					$$END$$
+				</fieldset>
+			</li>
+		</ul>
+	
+<script type="text/javascript">
+	$('.button-top').click(function(){
+		$$IF=:FR:LANGUE$$
+			var surfaceMin = $('#surface-0').val();
+			var surfaceMax = $('#surface-1').val();
+			var surMin = parseInt(surfaceMin);
+			var surMax = parseInt(surfaceMax);
+		$$END$$
+		$$IF!:FR:LANGUE$$
+			var surfaceMin = $('#surface-0').val();
+			var surfaceMax = $('#surface-1').val();
+			var surMin = parseInt(surfaceMin * 0.0929);
+			var surMax = parseInt(surfaceMax * 0.0929);
+		$$END$$
+		console.log(surfaceMin);
+		console.log(surfaceMax);
+		if(surfaceMin.length > 0) {
+			if(surfaceMax.length > 0) {
+				var nomrub = surfaceMin + ' $$IF=:FR:LANGUE$$$$LG:M2$$$$END$$$$IF!:FR:LANGUE$$Sq Ft$$END$$ / ' + surfaceMax + ' $$IF=:FR:LANGUE$$$$LG:M2$$$$END$$$$IF!:FR:LANGUE$$Sq Ft$$END$$'
+				localStorage.setItem('surface',nomrub);
+				localStorage.setItem('idsurfacemin',surMin);
+				localStorage.setItem('idsurfacemax',surMax);
+			}else{
+				var nomrub = 'Min ' + surfaceMin + ' $$IF=:FR:LANGUE$$$$LG:M2$$$$END$$$$IF!:FR:LANGUE$$Sq Ft$$END$$'
+				localStorage.setItem('surface',nomrub);
+				localStorage.setItem('idsurfacemin',surMin);
+				eraselocale('idsurfacemax');
+			}
+		}else{
+			if(surfaceMax.length > 0) {
+				var nomrub = 'Max ' + surfaceMax + ' $$IF=:FR:LANGUE$$$$LG:M2$$$$END$$$$IF!:FR:LANGUE$$Sq Ft$$END$$'
+				localStorage.setItem('surface',nomrub);
+				localStorage.setItem('idsurfacemax',surMax);
+				eraselocale('idsurfacemin');
+			}else{
+				eraselocale('surface');
+				eraselocale('idsurfacemin');
+				eraselocale('idsurfacemax');
+			}
+		}
+	});
+	$(document).delegate("#moteur_surface","pageshow", function (event) {
+		var sMin = localStorage['idsurfacemin'];
+		var sMax = localStorage['idsurfacemax'];
+		$$IF=:FR:LANGUE$$
+			if(sMin != 'undefined') {
+				$('#surface-0').val(sMin);
+			}
+			if(sMax != 'undefined') {
+				$('#surface-1').val(sMax);
+			}
+		$$END$$
+		$$IF!:FR:LANGUE$$
+			if(sMin != 'undefined') {
+				$('#surface-0').val(Math.round(sMin*10.763910));
+			}
+			if(sMax != 'undefined') {
+				$('#surface-1').val(Math.round(sMax*10.763910));
+			}
+		$$END$$
+	});
+</script>

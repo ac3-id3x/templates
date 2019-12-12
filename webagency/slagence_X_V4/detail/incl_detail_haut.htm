@@ -1,0 +1,41 @@
+$$REM$$====================================================================
+//// <summary>Eléments récurrants, partie haut du détail d'annonces</summary>
+//// <remarks>
+//// <para>Données de l'annonce déclarées en premier</para>
+//// <para>2011-03-17 : aliasage macro IMMOBW:ANNONCE</para>
+//// </remarks>
+//// <update date="2010-06-30" author="lisbonne.siriphol">Création dans XV3</update>
+//// <update date="2009-07-22" author="lisbonne.siriphol">Corrections</update>
+//// <update date="2009-07-29" author="christophe.ledoux">Update opti ref</update>
+====================================================================$$END$$
+
+
+$$INIT:IDT=DETAILANNONCE$$
+
+$$REM$$<!--// données de l'annonce //-->$$END$$
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:ALIAS:ANNDETAIL$$
+
+$$B:IMMOBW:FIL-ARIANE-ANNONCE:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idpublication:ADD:ANNDETAIL_IDPUBLICATION:ALIAS:FIL$$
+
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIEN_ANNONCE=@@ANNDETAIL:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIEN_ANNONCE=@@ANNDETAIL:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIEN_ANNONCE=@@ANNDETAIL:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIEN_ANNONCE=@@URLBASE@@/@@ANNDETAIL:IDPUBLICATION@@/@@ANNDETAIL:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@FORM:LANG@@$$
+$$END$$
+
+$$REM$$<!-- paramétrage des alt et title dynamiques pour toutes les photos des détail d'annonces = type de transaction + type de bien + ville + CP -->$$END$$
+$$A:REF_ALT_TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@)$$
+$$A:REF_ALT_TITLE_NO_REF=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:LIBELLE lcase@@ @@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@)$$
+
+<!--#include virtual="header/incl_haut.htm" -->

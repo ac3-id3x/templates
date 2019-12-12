@@ -1,0 +1,159 @@
+$$INIT:IDT=RECHERCHE$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+<div data-role="content"  id="pagerecherche">
+<div data-role="fieldcontain">
+	<form name="" method="get" action="moteur,prevalidation.htm" data-ajax="false"> 
+		<input type="hidden" name="lang" value="$$FORM:LANG$$" />
+		<input type="hidden" id="cpville" name="ci" value="" />
+		<input type="hidden" id="typetransac" name="idtt" value="" />
+		<input type="hidden" id="typebien" name="idtypebien" value="" />
+		<input type="hidden" id="nbpieces" name="nb_pieces" value="" />
+		
+<!--CHAMPS VILLE-->		
+ <ul data-role="listview">
+ 	<li>
+			<h4>$$LG:CHOIXVILLES pcase$$</h4>
+			<ul data-role="listview" data-corners="false">
+				<li data-corners="false">
+					<fieldset data-role="controlgroup">
+						<a href="#" data-role="button" data-icon="check-custom" data-iconpos="notext" data-rel="back">$$VALIDER$$</a>
+						$$B:IMMOBW:VILLESANNONCES:ALIAS:LISTEVILLES$$
+							$$BIF:LISTEVILLES$$
+								<ul  data-role="listview" data-filter="true" data-filter-placeholder="$$LG:MAXIVILLES pcase$$" data-inset="true">
+								$$DO$$
+								<li data-filtertext="$$LISTEVILLES:VILLEAFF$$ $$LISTEVILLES:CODEINSEE codeinsee2cp$$">
+									<input type="checkbox" name="ci" id="ville-$$LISTEVILLES:I$$" value="$$LISTEVILLES:CODEINSEE$$">
+									<label for="ville-$$LISTEVILLES:I$$">
+										$$LISTEVILLES:VILLEAFF$$
+									</label>
+								</li>
+								$$LOOP$$
+								</ul>
+							$$BFIN$$
+					</fieldset>
+				</li>
+			</ul>
+	</li>
+</ul>
+ 
+ <!--SELECT TYPE TRANSACTION-->		
+<ul data-role="listview">
+ 	<li>
+ 		<h4>$$LG:TYPEDETRANSACTION pcase$$</h4>
+ 		<ul id="idtypetransaction" data-role="listview">
+ 			<li data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+ 				<a href="#" data-role="button" data-icon="check-custom" data-iconpos="notext" data-rel="back">$$VALIDER$$</a>
+		$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPETRANSACTION::QRY:LANG$$
+			$$BIF:TYPETRANSACTION$$
+			   	$$DO$$
+			   		<input type="radio" value="$$TYPETRANSACTION:IDTYPETRANSACTION$$" name="idtt" id="idtt-$$TYPETRANSACTION:IDTYPETRANSACTION$$" >
+			   		<label for="idtt-$$TYPETRANSACTION:IDTYPETRANSACTION$$">
+				   		$$IF=:9:TYPETRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$$$IF!:9:TYPETRANSACTION:IDTYPETRANSACTION$$$$TYPETRANSACTION:DESCRIPTIONLG pcase$$ $$END$$	
+				   		($$TYPETRANSACTION:NBANN$$)
+					</label>
+			    $$LOOP$$
+	   	$$BFIN$$
+	   			</fieldset>
+	  		</li>
+	</ul>
+</li>
+</ul>
+<!--SELECT TYPE DE BIEN-->	
+ <ul data-role="listview">
+	<li>
+		<h4>$$LG:TYPEDEBIEN pcase$$</h4>
+		<ul id="idtypebien" data-role="listview">
+			<li data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+				<a href="#" data-role="button" data-icon="check-custom" data-iconpos="notext" data-rel="back">$$VALIDER$$</a>
+		   		$$B:IMMOBW:TYPESBIENS:2:QRY:LANG:ALIAS:LISTETYPEBIENS$$
+					$$BIF:LISTETYPEBIENS$$
+						$$DO$$
+							<input type="checkbox" value="$$LISTETYPEBIENS:IDTYPEBIEN$$" name='idtypebien' id="idtb-$$LISTETYPEBIENS:I$$">
+							<label for="idtb-$$LISTETYPEBIENS:I$$">
+								$$LISTETYPEBIENS:DEF_LIBELLE$$ ($$LISTETYPEBIENS:NBANN$$)
+							</label>
+						$$LOOP$$
+					$$BFIN$$
+				</fieldset>
+			</li>
+		</ul>
+	</li>
+</ul>
+<!--SELECT NBR DE PIECES-->	
+ <ul data-role="listview">		   
+	<li> 
+		<h4>$$LG:PIECES pcase$$</h4> 
+		<ul id="nbrpieces" data-role="listview">
+			<li data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<a href="#" data-role="button" data-icon="check-custom" data-iconpos="notext" data-rel="back">$$VALIDER$$</a>
+		     		<input type="radio" value="1" name="pieces" id="pieces-1" >
+		      		<label for="pieces-1">1 $$LG:PIECES$$</label>
+		      		<input type="radio" value="2" name="pieces" id="pieces-2" >
+					<label for="pieces-2">2 $$LG:PIECES$$</label>
+					<input type="radio" value="3" name="pieces" id="pieces-3" >
+					<label for="pieces-3">3 $$LG:PIECES$$</label>
+					<input type="radio" value="4" name="pieces" id="pieces-4" >
+					<label for="pieces-4">4 $$LG:PIECES$$</label>
+					<input type="radio" value="4+" name="pieces" id="pieces-5" >
+					<label for="pieces-5">5 $$LG:PIECES$$ $$LG:PIECES$$</label>
+				</fieldset>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+   <!--#include virtual="moteur/incl_val_slider.htm" -->
+   
+   <script type="text/javascript">
+	   	var budgmaxvente = ($$PMAXV$$ + 10000);
+	   	var budgmaxloc = ($$PMAXL$$ + 1000);
+		var budgmaxloctemp = ($$PMAXLOCTEMP$$ + 1000);
+		var budgmaxlocvac = ($$PMAXLOCVAC$$ + 1000);
+	   	var budgmaxviager = ($$PMAXVIAGER$$ + 10000);
+		var budgmaxprodinvest = ($$PMAXPRODINVEST$$ + 100);
+		var budgmaxlocprest = ($$PMAXLPREST$$ + 1000);
+	   	var budgmaxventeprest = ($$PMAXVPREST$$ + 10000);
+		var budgmaxventeneuf = ($$PMAXVNEUF$$ + 10000);
+		var budgmaxventecomm = ($$PMAXVCOMM$$ + 10000);
+	   	var budgmaxbail = ($$PMAXBAIL$$ + 1000);
+   	</script>
+<br />
+<!--SLIDER SURFACE-->			   	
+   <label for="slidersurf">
+   		$$IF=:FR:LANGUE$$
+   			Surface à partir de ($$LG:M2 lcase$$) : 
+   		$$END$$
+   		$$IF!:FR:LANGUE$$
+   			Living space from ($$LG:M2 lcase$$) : 
+   		$$END$$
+   		</label>
+   <input type="range" name="surfacemin" id="slidersurf" value="0" min="0" max="2000" step="10" /><br />
+   
+<!--SLIDER BUDGET-->	   
+   <label for="sliderbudg">
+   	$$IF=:FR:LANGUE$$
+   		Budget jusqu'à (&euro;) :  
+   	$$END$$
+   	$$IF!:FR:LANGUE$$
+   		Budget up to (&euro;) : 
+   	$$END$$
+   </label>
+   <input type="range" name="pxmax" id="sliderbudg" value="" min="0" max="" step="1000" />
+   <br />
+   
+<!--SUBMIT BUTTON-->	
+   <button id="bouton" class="ui-btn-hidden" name="submit" type="submit" data-ajax="false" > $$LG:RECHERCHER pcase$$ </button>
+   <script type="text/javascript">
+   $(document).delegate("#recherche","pageinit", function (event) {
+   		createInputHidden('ville-','cpville');
+   		createInputHidden('idtb-','typebien');
+   });
+   	</script>
+</form>
+</div>
+</div> 
+<!--#include virtual="footer/incl_bas.htm" -->

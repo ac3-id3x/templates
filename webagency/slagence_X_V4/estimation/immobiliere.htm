@@ -1,0 +1,94 @@
+$$INIT:IDT=COTEIMMOBILIERE$$
+$$E:OBSERVATOIRE:MELURL$$
+$$E:OBSERVATOIRE:SIMELACTIF$$ 
+<!--#include virtual="header/incl_haut.htm" -->
+$$IF=:2:FORM:IDTYPEBIEN$$
+	$$A:TITLEH1=@@LG:ESTIMERMAISON pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+$$END$$
+$$IF!:2:FORM:IDTYPEBIEN$$
+	$$A:TITLEH1=@@LG:ESTIMERAPPARTEMENT pcase@@ @@LG:AVEC lcase@@ @@REP:SRV@@$$
+$$END$$
+$$IF=:1:OBSERVATOIRE:SIMELACTIF:ACTIF$$
+
+	$$REM$$<!--ESTIM V1-->$$END$$
+	$$IF=:1:PAGE:MEL_CFG_V1$$
+		$$IF=:1:FORM:IDTYPEBIEN$$
+			$$A:TAILLE=700$$
+		$$END$$
+		$$IF=:2:FORM:IDTYPEBIEN$$
+			$$A:TAILLE=920$$
+		$$END$$
+		$$IF0:FORM:IDTYPEBIEN$$
+			$$A:TAILLE=700$$
+		$$END$$
+	<!--#include virtual="estimation/incl_intro_estimation.htm" -->
+		<style>#Content {padding:0;}#navigue {padding:0;}</style>
+		<iframe src="$$OBSERVATOIRE:MELURL:URL$$&o=INTP-0001&idtypebien=$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$1$$END$$"  width="960" height="$$TAILLE$$" scrolling="no" style="overflow-y:hidden;border:0;" frameborder="0"></iframe>
+	$$END$$	
+
+	$$REM$$<!--ESTIM V2-->$$END$$
+	$$IF!:1:PAGE:MEL_CFG_V1$$
+		<!--#include virtual="header/incl_text_estimation.htm" -->
+		<link rel="stylesheet" href="/z/webagency/slagence_X_V4/bower_components/estimation/dist/assets/css/estimation_form.min.css">
+		<script type="text/javascript" src="/z/webagency/slagence_X_V4/bower_components/estimation/dist/assets/js/estimationForm.js"$$IF:XDEV$$ data-report-suite="selogerpolirisdev"$$END$$$$IF0:XDEV$$ data-report-suite="selogerpolirisprod"$$END$$></script>
+		<script type="text/javascript">
+		    var textperso = {
+		            step0: {
+		            title: "$$TITLE_BIENVENUE$$",
+		            intro: "$$INTRO_BIENVENUE$$"
+		        },
+		        contact: {
+		            par1: "$$CONTACT_PARTI_ONE$$",
+		            par2: "$$CONTACT_PARTI_TWO$$",
+		            CTA: "$$CONTACT_BTN$$"
+		        },
+		        noestim: {
+		            par1: "$$NO_ESTIM_PART_ONE$$",
+		            par2: "$$NO_ESTIM_PART_TWO$$"
+		        }
+		    }
+		    $jq(document).ready(function(){
+		        $jq('.estimation-test').estimation({
+		            type:"poliris",
+		            color: "$$IF:PAGE:MEL_CFG_COULEUR$$$$PAGE:MEL_CFG_COULEUR$$$$END$$$$IF0:PAGE:MEL_CFG_COULEUR$$#a5a5a5$$END$$",
+		            text:textperso,
+		            preEstim: "/api/estimation/ObtenirFaisabilite",
+		            sauvegardeAppart: "/api/estimation/SauvegarderEstimationAppartement",
+		            sauvegardeMaison: "/api/estimation/SauvegarderEstimationMaison",
+		            estimAppart: "/api/estimation/ObtenirEstimationAppartement",
+		            estimMaison: "/api/estimation/ObtenirEstimationMaison",
+		            ClefIdentification : "$$PAGE:MEL_CFG_JETON$$",
+		            server : "http://evaluation-svc.pericles.fr",
+		            autocomplete : "bower_components,estimation,dist,assets,json,autocomplete.json"
+		        });
+		    })
+		</script>
+		<style type="text/css">
+			.estimation-test {
+				color:#000;
+				padding:20px;
+			}
+			.estimation-test div,td{
+				color:#000;
+				
+			}
+			.main_estimation_container .intro h1 {
+			    color: #000;
+			}
+			.main_estimation_container {
+			    padding: 20px;
+			}
+		</style>
+		$$REM$$<!--FORMULAIRE-->$$END$$
+		<!--#include virtual="estimation/incl_intro_estimation.htm" -->
+		<div class="row-fluid">
+		    <div class="estimation-test"></div>
+		</div>
+	$$END$$
+
+$$END$$
+
+$$IF=:0:OBSERVATOIRE:SIMELACTIF:ACTIF$$
+     <!--#include virtual="estimation/incl_construction_estimation.htm" -->
+$$END$$
+<!--#include virtual="footer/incl_bas.htm" -->
