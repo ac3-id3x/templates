@@ -1,0 +1,152 @@
+$$SET:PAGE:DISPLAYINFOSC2C=1$$
+$$SET:PAGE:NBC2C=1$$
+$$SET:PAGE:GDTAILLE=0$$
+
+<style type="text/css" >
+.divc2c {
+	width: $$IF=:1:PAGE:GDTAILLE$$100$$END$$$$IF=:0:PAGE:GDTAILLE$$150$$END$$px;
+	border: 0;
+	display: none;
+	text-align: center;
+	}
+
+.tabc2c {
+	width: $$IF=:1:PAGE:GDTAILLE$$100$$END$$$$IF=:0:PAGE:GDTAILLE$$150$$END$$px;
+	height: 172;
+	border: 0;
+	height: 90px;
+	
+}
+
+.tabc2cinfo {
+	width: 172px;
+	border: 0;
+ 	text-align: center;
+}
+<!--
+ .tabc2c td{
+	border-color: #fff; 
+	border-width: 0px; 
+	border-style: solid;
+  
+  height: 8px;
+}
+ -->
+.tabc2c img{
+	width: $$IF=:1:PAGE:GDTAILLE$$100$$END$$$$IF=:0:PAGE:GDTAILLE$$205$$END$$px;
+	height: $$IF=:1:PAGE:GDTAILLE$$75$$END$$$$IF=:0:PAGE:GDTAILLE$$139$$END$$px;
+	border-color: #000000; 
+	border-width: 1px; 
+	border-style: solid;
+	margin: 5px; 
+	text-align: center;
+}
+
+	
+.allc2c a {	
+	font-size:10px;
+	color:#01257B;
+	text-decoration:underline;
+	font-weight:normal;
+}
+
+.exclu a {
+font-size: 11px;
+color:#013A71;
+text-decoration:none;	
+font-weight:normal;	
+}
+
+.exclu a:hover {
+font-size: 11px;
+color:#013A71;
+text-decoration:underline;	
+font-weight:normal;	
+}
+
+.exclu2 a {
+font-size: 11px;
+color:#F2242E;
+text-decoration:none;	
+font-weight:bold;	
+}
+
+.exclu2 a:hover {
+font-size: 11px;
+color:#F2242E;
+text-decoration:underline;
+font-weight:bold;	
+}
+
+</style>
+
+$$BIF:COUPDECOEUR$$ 
+$$DO:1:99$$
+$$INCL:COEUR_DEFILE_INCLUDE.HTM$$
+$$LOOP$$
+<script language="JavaScript" type="text/javascript">
+<!--
+var celki = 0;
+var celki2 = 0;
+var timeout = 0;
+
+$$REM$$
+/* ========================================================= 
+  afficheC2c : affichage des coups de coeur 
+	raz : 0, 1 utile pour le random 
+	mode : normal, random pour un défilement aléatoire 
+	nb : 2 coups de coeur maximum
+	[PH]
+============================================================ */
+$$END$$
+function afficheC2c(raz,mode,nb){
+var nbc2c = "$$COUPDECOEUR:NBR$$";
+
+if(mode=="random"){
+	celki = Math.floor(Math.random() * nbc2c) + 1;
+	}
+else{
+	if(celki==nbc2c){celki = 0;}
+	celki++;
+}
+
+if(nb==2){
+	if(mode=="random"){
+		for(var i = 0;i!=1;i){
+		 celki2 = Math.floor(Math.random() * nbc2c) + 1;
+		 if(celki2!=celki){i = 1;}
+		}
+	}
+	else {
+		celki2=celki;
+		if(celki==nbc2c){celki = 0;}
+    celki++;
+	}
+}
+
+if(raz==1){
+for(var j=1;j<=nbc2c;j++){
+	document.getElementById('tabc2c'+j).style.display = "none"; 
+	}
+}
+document.getElementById('tabc2c'+celki).style.display = "inline"; 
+if(nb==2){document.getElementById('tabc2c'+celki2).style.display = "inline";} 
+}
+
+function imageContinu() {
+	var vitesse = 2500;
+  afficheC2c(1,"random",$$PAGE:NBC2C$$); // raz tjs à 1
+  timeout = setTimeout("imageContinu()", vitesse);
+}
+
+function arret() {clearTimeout(timeout);}
+
+afficheC2c(0,"random",$$PAGE:NBC2C$$); // raz tjs à 0
+imageContinu();
+
+//-->
+</script>
+$$BFIN$$
+$$BIF0:COUPDECOEUR$$
+	££LG:NOCOUPDECOEUR££
+$$BFIN$$
