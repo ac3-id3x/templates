@@ -1,0 +1,56 @@
+$$SET:PAGE:RUBRIQUE=Sélection des agences$$
+$$A:CHECKAGENCE=0$$
+<script type="text/javascript">	
+	<!--
+	
+function valider(id) {
+	window.location.href='/'+id+'/vendeur.htm?$$REP:QRY$$';
+}
+
+
+function ListeAg(monurl, mesparametres, elt){
+		mesparametres = "lang=$$LANGUE$$&cp=" + elt.value;
+		
+	new Insertion.Top('ListeAg', '<span class="patientez">Patientez, chargement en cours...<br/></span>');
+	 
+	var myAjax = new Ajax.Updater(
+	'ListeAg', 
+	monurl, 
+			{
+				method: 'get', 
+				parameters: mesparametres
+			});
+		
+		}
+		
+-->
+</script>
+
+<br />
+<table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+	<td>$$REM$$<!--<a class="envoiToutesAgences" href="/vendeur.htm?lang=$$LANGUE$$&remail=$$BIF:IMMOBW:AGENCES$$$$DO:1:120$$$$IF:IMMOBW:AGENCES:EMAIL$$$$IF=:1:CHECKAGENCE$$>, <$$IMMOBW:AGENCES:EMAIL$$$$END$$$$IF!:1:CHECKAGENCE$$$$A:CHECKAGENCE=1$$$$IMMOBW:AGENCES:EMAIL$$$$END$$$$END$$$$LOOP$$$$BFIN$$&agence_nom=%20">$$LG:LISTOUTES$$</a> $$LG:OU$$
+<br/>-->$$END$$
+	<form action="/vendeur.htm" method="post" name="preestimation">
+		$$B:IMMOBW:AGENCES:ALIAS:LISTEAGDEP:DEP:::WITHDEP::ALL$$
+		$$BIF:LISTEAGDEP$$
+				<p>&nbsp;&nbsp;Votre d&eacute;partement&nbsp;
+								<select name="CP" id="cpdep" onchange="javascript:ListeAg('/liste_ag.htm','',this);" style="font-size:11px;">	
+									<option value="">-- $$LG:SELECDEP pcase$$ --</option>
+											$$DO$$   
+											$$IFNEXT:LISTEAGDEP:DEP$$
+									<option value="$$LISTEAGDEP:DEP$$" $$IF(:FORM_CP:LISTEAGDEP:DEP$$selected="selected"$$END$$$$IF(:FORM_CP left 2:LISTEAGDEP:DEP$$selected="selected"$$END$$>$$LISTEAGDEP:DEPARTEMENT$$ ($$LISTEAGDEP:DEP$$) </option>
+											$$END$$
+											$$LOOP$$
+								</select></p>
+								<br />
+		$$BFIN$$
+		
+		
+
+			<div id="ListeAg"></div>
+		<br />
+	</form>
+	</td>
+</tr>
+</table>

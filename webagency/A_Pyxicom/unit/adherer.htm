@@ -1,0 +1,380 @@
+$$INCL:HAUT.HTM$$
+<script language="javascript" type="text/javascript">
+	<!--		
+				function Activite(){
+					var Tab = document.getElementById("actcrea");
+					
+					var Valeur = document.getElementsByName("actcreation");
+					for(i=0; i<Valeur.length; i++){
+						
+							if(Valeur[i].checked){
+								if(Valeur[i].value=="non"){
+									Tab.style.display='inline';
+								}else{
+									Tab.style.display='none';
+									document.getElementById("rcs").value = "";
+									document.getElementById("garant").value = "";
+									document.getElementById("syndic").value = "";
+								}
+							}
+					}
+					
+				}
+				
+				function Maniement(){
+					var Tab = document.getElementById("maniementfonds");
+					var Agimmo = document.getElementsByName("typedossier1");
+
+								if(Agimmo[0].checked){
+									Tab.style.display='inline';
+								}else{
+									Tab.style.display='none';
+										document.getElementById("maniementavec").checked = false;
+										document.getElementById("maniementsans").checked = false;
+									}
+				}
+				
+				function Montantgarantie(){
+					var Tab = document.getElementById("montantgarantie");
+					var Admin = document.getElementsByName("typedossier2");
+
+								if(Admin[0].checked){
+									Tab.style.display='inline';
+								}else{
+									Tab.style.display='none';
+									document.getElementById("montant").value = "";
+									}
+				}
+				
+				
+				function Reseau(){
+					var Tab = document.getElementById("tabreseau");
+					var Reseau = document.getElementsByName("reseau");
+						
+								if(Reseau[0].checked){
+									Tab.style.display='inline';
+									}else{
+									Tab.style.display='none';
+									document.getElementById("nomreseau").value = "";
+									}
+				}
+				
+				
+				function Verif(){
+					var Activite = document.getElementsByName("actcreation");
+					var Agimmo = document.getElementById("agimmo");
+					var Admsyge = document.getElementById("admsyge");
+					var Marchands = document.getElementById("marchands");
+					var Reseau = document.getElementsByName("reseau");
+					var val = "0";
+					for(i=0; i<Activite.length; i++){
+							if(Activite[i].checked == true){
+								val = "1";
+								if(Activite[i].value=="non"){
+									if(document.getElementById("rcs").value == ""||document.getElementById("garant").value == ""){
+										alert ("Vous devez renseigner votre RCS et le garant actuel");
+										return false;
+									}
+								}
+							}
+					}
+					if(val == "0"){
+						alert ("Votre activité est-elle en création ? ");
+						return false;
+					}
+					
+					if(Agimmo.checked == false && Admsyge.checked == false && Marchands.checked == false){
+							alert ("Vous devez selectionner votre type de demande de dossier d’adhésion à l’UNIT ");
+							return false;
+					}
+					
+					if(Agimmo.checked == true){
+						if(document.getElementById("maniementavec").checked == false && document.getElementById("maniementsans").checked == false){
+							alert ("Agent immobilier avec ou sans maniement de fonds ? ");
+							return false;
+						}
+					}
+					
+					if(Admsyge.checked == true){
+						if(document.getElementById("montant").value == ""){
+							alert ("Quel est le montant de la garantie ? ");
+							return false;
+						}
+					}
+					
+					if(Reseau[0].checked == true){
+						if(document.getElementById("nomreseau").value == ""){
+							alert ("Quel est le nom de votre réseau ? ");
+							return false;
+						}
+					}
+				}
+			-->	
+</script>
+	<table width="100%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td align="center">Pour recevoir un dossier d’admission à l’UNIT, nous vous remercions <br />de remplir le formulaire ci-dessous ou de nous joindre au 01 42 93 79 86</td>
+</tr>
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_message_ok.htm?lang=$$LANGUE$$" onsubmit="return Verif();">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_message_ok.htm" />
+	<input type="hidden" name="page_err" value="adherer.htm" />
+	<input type="hidden" name="cfg_form" value="adherer" />
+	<input type="hidden" name="cfg_emails" value="adherer" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('vanessa@poliris.com');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	<input type="hidden" name="REMAILNOM" value="UNIT" />
+	<script type="text/javascript">
+	var remailencode=unescape('$$PAGE:EMAIL_UNIT encodemail hex$$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+remailencode +' \" />');
+   </script>
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font>
+	
+	<!--vos coordonnées--> 
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COORD3$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td width="50%" align="left">$$LG:AI5$$ * :</td>
+		<td width="50%" align="left"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:ADRESSE$$ * :</td>
+		<td align="left">$$IF=:FR:LANGUE$$<input type="text" class="imputForm" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:VILLE$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:CODEP$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></td>
+	</tr>
+	$$IF!:FR:LANGUE$$
+	<tr> 
+		<td align="left">$$LG:PAYS$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2pays" size="25" value="$$FORM:2PAYS$$" /></td>
+	</tr>
+	$$END$$	  
+	<tr> 
+		<td align="left">$$LG:TEL pcase$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="15" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:FAX pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" maxlength="15"/></td>
+	</tr>
+	<tr> 
+		<td align="left">$$IF=:FR:LANGUE$$Mobile$$END$$$$IF!:FR:LANGUE$$Cellular$$END$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="2mobile" size="15" value="$$FORM:2MOBILE$$" maxlength="15" /></td>
+	</tr>
+	</table>
+	<br />
+	<!--vos coordonnées--> 
+	<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>Exploitant l’établissement désigne ci-après :</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr> 
+		<td width="55%" align="left">Enseigne commerciale / Raison sociale :</td>
+		<td width="45%" align="left"><input class="imputForm" type="text" name="enseigne" size="40" value="$$FORM:ENSEIGNE$$" maxlength="100" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Adresse du siège social :</td>
+		<td align="left">
+			$$IF=:FR:LANGUE$$<input type="text" class="imputForm" name="adrsiege" size="40" value="$$FORM:ADRSIEGE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="adrsiege" cols="20" Rows="3">$$FORM:ADRSIEGE$$</textarea>$$END$$</td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:VILLE$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="Villesiege" size="40" value="$$FORM:VILLESIEGE$$" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:CODEP$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="cpsiege" size="10" value="$$FORM:CPSIEGE$$" /></td>
+	</tr>
+	$$IF!:FR:LANGUE$$
+	<tr> 
+		<td align="left">$$LG:PAYS$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="payssiege" size="25" value="$$FORM:PAYSSIEGE$$" /></td>
+	</tr>
+	$$END$$	  
+	<tr> 
+		<td align="left">$$LG:TEL pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="phonesiege" size="15" value="$$FORM:PHONESIEGE$$" maxlength="15" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:FAX pcase$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="faxsiege" size="15" value="$$FORM:FAXSIEGE$$" maxlength="15"/></td>
+	</tr>
+	<tr> 
+		<td align="left">$$IF=:FR:LANGUE$$Mobile$$END$$$$IF!:FR:LANGUE$$Cellular$$END$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="mobile2" size="15" value="$$FORM:MOBILE2$$" maxlength="15" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></td>
+	</tr>
+	<tr> 
+		<td align="left" valign="top">Activité en création * :</td>
+		<td align="left"><input class="imputForm" type="radio" name="actcreation" value="oui" $$IF(:OUI:FORM:ACTCREATION$$checked="checked"$$END$$ onclick="Activite();"/>&nbsp;Oui
+			&nbsp;&nbsp;<input class="imputForm" type="radio" name="actcreation" value="non" $$IF(:NON:FORM:ACTCREATION$$checked="checked"$$END$$ onclick="Activite();"/>&nbsp;Non
+		</td>
+	</tr>
+	<tr><td colspan="2" align="right">
+		<div style="display:none;" id="actcrea">
+				<table width="60%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>N° RCS * : </td>
+						<td><input class="imputForm" type="text" name="rcs" id="rcs" size="20" value="$$FORM:RCS$$" /></td>
+					</tr>
+					<tr>
+						<td>Garant actuel * :</td>
+						<td><input class="imputForm" type="text" name="garant" id="garant" size="20" value="$$FORM:GARANT$$" /></td>
+					</tr>
+					<tr>
+						<td>Syndicat professionnel :</td>
+						<td><input class="imputForm" type="text" name="syndic" id="syndic" size="20" value="$$FORM:SYNDIC$$" /></td>
+					</tr>
+				</table>
+			</div>
+	</td></tr>
+	<tr> 
+		<td align="left">Souhaitez-vous une proposition de RCP ? * :</td>
+		<td align="left"><input class="imputForm" type="radio" name="rcp" value="oui" $$IF(:OUI:FORM:RCP$$checked="checked"$$END$$/>&nbsp;Oui
+			&nbsp;&nbsp;<input class="imputForm" type="radio" name="rcp" value="non" $$IF(:NON:FORM:RCP$$checked="checked"$$END$$/>&nbsp;Non</td>
+	</tr>
+	<tr> 
+		<td align="left">Souhaitez-vous une proposition de garantie financière ? * :</td>
+		<td align="left"><input class="imputForm" type="radio" name="garantie" value="oui" $$IF(:OUI:FORM:GARANTIE$$checked="checked"$$END$$/>&nbsp;Oui
+			&nbsp;&nbsp;<input class="imputForm" type="radio" name="garantie" value="non" $$IF(:NON:FORM:GARANTIE$$checked="checked"$$END$$/>&nbsp;Non</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="FormInfos">
+		Il vous est possible d’adhérer à l’UNIT tout en conservant, si vous le souhaitez, vos garantie(s) financière(s) et/ou RCP.<br />
+		A défaut, l’UNIT pourra vous proposer d’y souscrire par l’intermédiaire de ses partenaires.
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><hr /></td>
+	</tr>
+	<tr> 
+		<td align="left" colspan="2">Votre demande de dossier d’adhésion à l’UNIT porte sur * :<br />
+			<input class="imputForm" type="checkbox" name="typedossier1" id="agimmo" value="agimmo" onclick="Maniement();" $$IF(:AGIMMO:FORM:TYPEDOSSIER1$$checked="checked"$$END$$/>&nbsp;Agent immobilier / Transactionnaire [carte T]	<br />
+			<div style="display:none;" id="maniementfonds">
+					<table width="50%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><input class="imputForm" type="radio" name="maniement" id="maniementavec" value="avecmaniement" $$IF(:AVECMANIEMENT:FORM:MANIEMENT$$checked="checked"$$END$$/></td>
+							<td>AVEC maniement de fonds</td>
+						</tr>
+						<tr>
+							<td><input class="imputForm" type="radio" name="maniement" id="maniementsans" value="sansmaniement" $$IF(:SANSMANIEMENT:FORM:MANIEMENT$$checked="checked"$$END$$/></td>
+							<td>SANS maniement de fonds  </td>
+						</tr>
+					</table>
+			</div>
+			<input class="imputForm" type="checkbox" name="typedossier2" id="admsyge" value="admsyge" onclick="Montantgarantie();" $$IF(:ADMSYGE:FORM:TYPEDOSSIER2$$checked="checked"$$END$$/>&nbsp;Administrateur de biens / Syndic / Gestion [carte G]<br />
+			<div style="display:none;" id="montantgarantie">
+						<table width="70%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td>Montant de la garantie souhaitée :</td>
+								<td><input class="imputForm" type="text" name="montant" id="montant" size="20" value="$$FORM:MONTANT$$" /></td>
+							</tr>
+						</table>
+					</div>
+			<input class="imputForm" type="checkbox" name="typedossier3" id="marchands" value="marchands" $$IF(:MARCHANDS:FORM:TYPEDOSSIER3$$checked="checked"$$END$$/>&nbsp;Marchand de biens / Lotisseur
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="FormInfos">
+		Si vous souhaitez adhérer en tant que Marchand de Biens et que exercez par ailleurs avec une carte T et/ou G, vous devrez adhérer à l’UNIT pour l’ensemble de vos activités.
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><hr /></td>
+	</tr>
+	<tr> 
+		<td align="left">Faites-vous partie d’un réseau immobilier ? :</td>
+		<td align="left"><input class="imputForm" type="radio" name="reseau" value="oui" onclick="Reseau();" $$IF(:OUI:FORM:RESEAU$$checked="checked"$$END$$/>&nbsp;Oui
+			&nbsp;&nbsp;<input class="imputForm" type="radio" name="reseau" value="non" onclick="Reseau();" $$IF(:NON:FORM:RESEAU$$checked="checked"$$END$$/>&nbsp;Non</td>
+	</tr>
+	<tr>
+		<td>
+			<div style="display:none;" id="tabreseau">
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td>Lequel ?</td>
+								<td><input class="imputForm" type="text" name="nomreseau" id="nomreseau" size="20" value="$$FORM:NOMRESEAU$$" /></td>
+							</tr>
+						</table>
+				</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="FormInfos">
+		Vous pouvez bien entendu adhérer à l’UNIT tout en étant par ailleurs membre d’un réseau immobilier.
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><hr /></td>
+	</tr>
+	<tr> 
+		<td align="left">Je souhaite recevoir le dossier * :</td>
+		<td align="left"><input class="imputForm" type="checkbox" name="dossier" value="email" $$IF(:EMAIL:FORM:DOSSIER$$checked="checked"$$END$$/>&nbsp;Par email
+			&nbsp;&nbsp;<input class="imputForm" type="checkbox" name="dossier" value="courrier" $$IF(:COURRIER:FORM:DOSSIER$$checked="checked"$$END$$/>&nbsp;Par courrier</td>
+	</tr>
+	</table>
+	<br />
+	<!--validation--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	<tr> 
+		<td align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr> 
+		<td align="right"><br /><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">À réception de votre email, l’UNIT vous adressera un dossier d’admission correspondant à votre(vos) activité(s)</td>
+	</tr>
+	</table> 
+	</form>
+	</td>
+</tr>
+</table>
+$$INCL:CGU_FORMULAIRE.HTM$$
+
+$$INCL:BAS.HTM$$
+$$SET:PAGE:IDT=ADHERER$$

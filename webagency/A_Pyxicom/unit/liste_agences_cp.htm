@@ -1,0 +1,58 @@
+
+$$SET:PAGE:TITR=Agence immobiliere @@PAGE:CFG_TITRE@@$$
+
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=LISTEAG$$
+<br />
+<!-- $$REP:1$$ -->
+$$B:IMMOBW:AGENCES:CP:QRY:CPAG:QRY:NOM:::ALL::QRY:RESPAG:QRY:DEP:QRY:REGION:QRY:VILLEAG$$
+$$BIF0:IMMOBW:AGENCES:CP$$
+<br /><br />
+<p align="center">Il n'y a pas d'agences correspondant à votre recherche</p>
+<br /><br />
+<p align="right"><a href="javascript:history.go(-1)" title="">$$LG:RETOURNER pcase$$</a></p>
+$$BFIN$$
+$$BIF:IMMOBW:AGENCES:CP$$
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+$$DO:1:999$$
+<tr>
+	<td valign="top" width="70%"><span class="liste_agences_nom"><strong>$$IMMOBW:AGENCES:CP:NOM$$</strong></span><br />
+	$$IMMOBW:AGENCES:CP:ADRESSE htmlencode crlf2br$$<br />
+	<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$IMMOBW:AGENCES:CP:TEL formattel$$<br />
+	$$IF:IMMOBW:AGENCES:CP:FAX$$<font class="liste_agences_info">Fax :</font> $$IMMOBW:AGENCES:CP:FAX formattel$$<br />$$END$$
+	$$IF:IMMOBW:AGENCES:CP:EMAIL$$
+	<script type="text/javascript">
+	var emailencode=unescape('$$IMMOBW:AGENCES:CP:EMAIL encodemail hex$$');
+	document.write('<a href=\"mailto:'+ emailencode +'\">E-mail</a>');
+   </script>
+   <br/>
+	$$END$$
+	<font class="liste_agences_info">$$LG:NOMRESP$$</font> $$IMMOBW:AGENCES:CP:RESPAG$$<br />
+	 
+	<br />
+	</td>
+	<td valign="top" width="30%" align="right">
+  $$IF:IMMOBW:AGENCES:CP:URL$$	<a href="$$IMMOBW:AGENCES:CP:URL$$" target="_blank" class="liste_agences_lien">Site web</a>
+  	<br />$$END$$
+	$$IF:IMMOBW:AGENCES:CP:SI_AFFURL$$
+	$$IF:IMMOBW:AGENCES:CP:URL$$
+	<a href="$$IMMOBW:AGENCES:CP:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$IMMOBW:AGENCES:CP:NOM$$</strong></a><br />
+	$$END:URL$$
+	$$END:SI_AFFURL$$
+	$$IF0:IMMOBW:AGENCES:CP:SI_AFFURL$$
+	$$IF=:CV:REP:1$$
+<a href="javascript:MM_openBrWindow('/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/carte_visite.htm?lang=$$LANGUE$$','CarteVisite','width=450,height=450');"  class="liste_agences_lien">$$LG:VITRINE$$</a><br />
+	$$END$$
+	$$END:!SI_AFFURL$$
+	<a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/contact.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:NOUSCTC$$</a><br />
+	<a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/vendeur.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a><br />
+$$A:CARTE:CP=@@IMMOBW:AGENCES:CP:CP@@$$
+$$A:CARTE:VILLE=@@IMMOBW:AGENCES:CP:VILLE replace ' \'@@$$
+$$A:CARTE:ADRESSE=@@IMMOBW:AGENCES:CP:ADRESSE crlf2br replace <br/> &nbsp; replace ' \' nbsp2sp@@$$
+$$INCL:LOCALISATION_AGENCE.HTM$$
+	</td>
+</tr>
+$$LOOP$$
+</table>
+$$BFIN$$
+$$INCL:BAS.HTM$$
