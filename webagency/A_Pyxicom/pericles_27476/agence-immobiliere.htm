@@ -1,0 +1,141 @@
+$$REM$$
+====================================================================
+
+//// <summary>Carte de visite agence contenant les coordonnées, le texte public et le portefeuille d'annonces</summary>
+//// <remarks>
+//// <para>slagence_X_V2/liste-agences-immobilieres.htm : affiche des liens vers le présent fichier</para>
+//// <para>Fichier qui n'existait pas dans slagence_X, cette page était fabriquée pour chaque site</para>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V2/styles/agence-immobiliere.css</para>
+//// <para>Lien NOUS SITUER masqué tant qu'il est en panne</para>
+//// <para>Le portefeuille d'annonces (incl_portefeuille_01.htm) n'apparaît que si le site a souscrit à un contrat de référencement</para>
+//// <para>l'include des horaires ne fonctionne que si le paramètre HORAIRE = 1 a été rempli dans la conf</para>
+//// </remarks>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Update noms responsables ventes + loc + vacances + communication</update>
+//// <update date="2008-10-08" author="lisbonne.siriphol">Update include mentions legales</update>
+//// <update date="2008-09-11" author="lisbonne.siriphol">Update include horaires</update>
+//// <update date="2008-01-30" author="sophie.nataf">Validation Ref oK</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-01-14" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-01-14" author="erick.barbant">Validation Id3x ok</update>
+
+====================================================================
+$$END$$
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=AGENCEIMMOBILIERE$$
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "/styles,agence-immobiliere.css?@@IF:FORM:IDP@@idp=@@FORM:IDP@@@@END@@" );
+	@import url( "/styles,portefeuille01.css" );
+	@import url( "/styles,portefeuille02.css" );
+	@import url( "/styles,annonces01.css" );
+	@import url( "/styles,horaires.css" );
+</style>$$
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!--#include virtual="incl_multi.htm" -->
+<div id="CV">
+	$$IF=:1:MULTI$$
+	<div class="linkOut"><a href="$$URLBASE$$/liste-agences-immobilieres.htm?lang=$$LANGUE$$$$IF:FORM:TRI$$&tri=$$FORM:TRI$$$$END$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:LIEN:LISTEAG pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:LIEN:LISTEAG pcase$$</a></div>
+	$$END:MULTI$$
+	<h1>$$CV:NOM ucase$$</h1>	
+	<div id="Agence">
+		<div id="Img_Ctn">			
+			<p id="Vitrine"></p>
+		</div>
+		<div id="Coordonnees">
+			<h2>$$CV:NOM ucase$$</h2>
+			<p class="cv_adresse">
+				$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+				<strong>$$CV:CP$$ $$CV:VILLE ucase$$</strong>
+			</p>
+			<p>
+				<!-- tel standard-->
+				$$IF:CV:TEL$$<label class="cv_tel"><span>$$LG:MINITEL$$ :</span> $$CV:TEL formattel$$</label>$$END:TEL$$				
+				<!-- fax standard -->
+				$$IF:CV:FAX$$<br /><label class="cv_fax"><span>$$LG:FAX$$ :</span> $$CV:FAX formattel$$</label>$$END:FAX$$
+				$$IF:CV:RESPAG$$<br /><label class="cv_respag"><span>$$LG:NOMRESP$$</span> $$CV:RESPAG ncase$$</label>$$END:RESPAG$$
+			</p>
+			<p>			
+				$$IF:CV:EMAIL$$<label class="cv_email"><span>$$LG:EMAIL pcase$$ : <a href="$$URLBASE$$/$$CV:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCEIMMOBILIERE pcase$$ $$CV:NOM ncase$$ $$CV:VILLE ncase$$$$END$$">$$CV:EMAIL encodemail javascript$$</a></span></label>$$END:EMAIL$$
+				$$IF:CV:URL$$<br /><label class="cv_url"><span>$$LG:SITE pcase$$ : <a href="$$CV:URL$$" title="$$LG:IMMOBILIER pcase$$ $$CV:VILLE ncase$$" onclick="this.target='_blank'">$$CV:URL$$</a></span></label>$$END:URL$$
+			</p>
+			
+			$$IF:CV:TELVEN$$
+			<p>
+				$$IF:CV:RESPVEN$$<br /><label class="cv_respag"><span>$$LG:CTCVENTE pcase$$ :</span> $$CV:RESPVEN ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELVEN$$<br /><label class="cv_telven"><span>$$LG:MINITEL$$ $$LG:VENTES lcase$$ :</span> $$CV:TELVEN formattel$$</label>$$END:TELVEN$$
+				$$IF:CV:FAXVEN$$<br /><label class="cv_faxven"><span>$$LG:FAX$$ $$LG:VENTES lcase$$ :</span> $$CV:FAXVEN formattel$$</label>$$END:FAXVEN$$
+			</p>
+			$$END:TELVEN$$
+			
+			$$IF:CV:TELLOC$$
+			<p>
+				$$IF:CV:RESPLOC$$<br /><label class="cv_respag"><span>$$LG:CTCLOC pcase$$ :</span> $$CV:RESPLOC ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELLOC$$<br /><label class="cv_telloc"><span>$$LG:MINITEL$$ $$LG:LOCATION lcase$$ :</span> $$CV:TELLOC formattel$$</label>$$END:TELLOC$$
+				$$IF:CV:FAXLOC$$<br /><label class="cv_faxloc"><span>$$LG:FAX$$ $$LG:LOCATION lcase$$ :</span> $$CV:FAXLOC formattel$$</label>$$END:FAXLOC$$
+			</p>
+			$$END:TELLOC$$
+			
+			$$IF:CV:TELVAC$$
+			<p>
+				$$IF:CV:RESPVAC$$<br /><label class="cv_respag"><span>$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ :</span> $$CV:RESPVAC ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELVAC$$<br /><label class="cv_telvac"><span>$$LG:MINITEL$$ $$LG:LOCVAC lcase$$ :</span> $$CV:TELVAC formattel$$</label>$$END:TELVAC$$
+				$$IF:CV:FAXVAC$$<br /><label class="cv_faxvac"><span>$$LG:FAX$$ $$LG:LOCVAC lcase$$ :</span> $$CV:FAXVAC formattel$$</label>$$END:FAXVAC$$
+			</p>
+			$$END:TELVAC$$
+			
+			$$IF:CV:TELCOM$$
+			<p>
+				$$IF:CV:RESPCOM$$<br /><label class="cv_respag"><span>$$LG:CONTACT pcase$$ $$LG:COM lcase$$ :</span> $$CV:RESPCOM ncase$$</label>$$END:RESPAG$$
+				$$IF:CV:TELCOM$$<br /><label class="cv_telcom"><span>$$LG:MINITEL$$ $$LG:COMEETENT lcase$$ :</span> $$CV:TELCOM formattel$$</label>$$END:TELCOM$$
+				$$IF:CV:FAXCOM$$<br /><label class="cv_faxcom"><span>$$LG:FAX$$ $$LG:COMEETENT lcase$$ :</span> $$CV:FAXCOM formattel$$</label>$$END:FAXCOM$$
+			</p>
+			$$END:TELCOM$$
+			<br />
+		</div>
+		
+		$$IF=:1:PAGE:HORAIRES$$
+		$$E:IMMOBW:HORAIRE_OUVERTURE_AGENCE:~IDAGENCE:VAL:CV_IDAGENCE:ALIAS:HEURE$$
+		<!--#include virtual="/agence-immobiliere-horaires.htm" -->
+		$$END:HORAIRES$$		
+		<p class="clear"><!-- --></p>
+		<!--#include virtual="/agence-immobiliere-texte.htm" -->
+
+		<a name="portefeuille"></a>		
+		<!--#include virtual="/incl_portefeuille_01.htm" -->
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		<!--#include virtual="/annonces/incl_annonces_01.htm" -->
+		$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+				
+		$$IF:XDEV$$		
+		<!--#include virtual="/annonces/incl_annonces_01.htm" -->
+		$$END:XDEV$$
+		
+	</div>
+	<div id="CvFoot" class="clear">
+		<p id="Links">
+			<a class="message" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/$$FORM:IDP$$/message.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:NOUSECRIRE pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:NOUSECRIRE pcase$$</span></a>
+			<a class="estimation" href="$$URLBASE$$/$$CV:IDPUBLICATION$$/$$FORM:IDP$$/estimation.htm?lang=$$LANGUE$$" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:ESTIMATION pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:AGENCE pcase$$ $$CV:NOM ncase$$$$END$$"><span>$$LG:ESTIMATION pcase$$</span></a>
+		</p>
+		<p class="clear"><!-- --></p>
+	</div>
+	<div class="linkOut clear retour"><a href="javascript:history.go(-1)" title="$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:RETOURNER pcase$$$$END$$$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$LG:IMMOBILIER pcase$$ $$CV:VILLE scase$$$$END$$">$$LG:RETOURNER pcase$$</a></div>
+	
+	<div id="MentionCV">
+		$$REM$$<!-- on utilise l'ALIAS "ML" car cette include est aussi utilisée ailleurs -->$$END$$
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:ML$$
+		<!--#include virtual="agence-immobiliere-mentions.htm" -->
+		
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:1:ALIAS:CARTEPROT$$
+		$$IF=:1:CARTEPROT:IDTYPECARTEPRO$$
+		<!--#include virtual="/agence-immobiliere-carteprot.htm" -->
+		$$END:1:IDTYPECARTEPRO$$
+		
+		$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:2:ALIAS:CARTEPROG$$
+		$$IF=:2:CARTEPROG:IDTYPECARTEPRO$$
+		<!--#include virtual="/agence-immobiliere-carteprog.htm" -->
+		$$END:2:IDTYPECARTEPRO$$
+		
+		* : informations non renseignées		
+	</div>
+</div>
+$$INCL:BAS.HTM$$
