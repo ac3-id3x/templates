@@ -1,0 +1,53 @@
+$$REM$$====================================================================
+//// <summary>Liste des annonces du site classées par type de transaction, puis type de biens</summary>
+//// <remarks>
+//// <para>Pour les packs avantage on exclut les idtt = 3,4,6,7,8,9,11</para>
+//// <para>Utilisation de IMMOBW:AGENCETRANSACTIONS</para>
+//// <para>Nécessité d'utiliser script js pour effectuer comptage des annonces avant leur affichage, car le total des ventes n'est jamais le bon</para>
+//// <para>Les ventes additionnent les IDDT 2 (ventes) + 6 (prod. invest) + 8 (prestige) ; ainsi on tombe enfin juste</para>
+//// <para>Les locations additionnent les IDDT 1 (loc) + 7 (loc de prestige)</para>
+//// <para>Erick avait recommandé la macro "B:IMMOBW:NBANN_PAYS:~tri:pays,idtypetransaction,idtypebien", qui raccourci le code, mais le chiffre ne tombe pas juste</para>
+//// </remarks>
+//// <update date="2010-02-17" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$	
+	
+$$E:ID3:DATE:2$$
+
+	
+$$REM$$<!-- //// comptage initial nb annonces par type de transaction //// -->$$END$$
+$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSAC_DISPOS$$
+			
+$$A:TOT_1_LOC=0$$ 
+$$A:TOT_2_VEN=0$$
+$$A:TOT_3_LOCTEMP=0$$
+$$A:TOT_4_LOCVAC=0$$
+$$A:TOT_5_VIAGER=0$$
+$$A:TOT_6_PROD=0$$
+$$A:TOT_7_LOCPRES=0$$
+$$A:TOT_8_VENPRES=0$$
+$$A:TOT_9_NEUF=0$$
+$$A:TOT_10_FONDCOM=0$$
+$$A:TOT_11_CESSIONB=0$$
+
+$$REM$$<!-- //// on compte //// -->$$END$$
+$$BIF:TRANSAC_DISPOS$$
+$$DO$$				
+$$IF=:1:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_1_LOC=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:2:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_2_VEN=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:3:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_3_LOCTEMP=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:4:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_4_LOCVAC=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:5:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_5_VIAGER=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:6:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_6_PROD=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:7:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_7_LOCPRES=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:8:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_8_VENPRES=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:9:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_9_NEUF=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:10:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_10_FONDCOM=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$IF=:11:TRANSAC_DISPOS:IDTYPETRANSACTION$$$$A:TOT_11_CESSIONB=@@TRANSAC_DISPOS:NBANN@@$$$$END$$
+$$LOOP$$
+$$BFIN$$
+
+$$TOT_2_VEN$$&nbsp;$$LG:LIEN:VEN pcase$$&nbsp;&nbsp;<span class="bar">|</span>&nbsp;
+$$TOT_8_VENPRES$$&nbsp;$$LG:LIEN:VENPRES pcase$$&nbsp;&nbsp;<span class="bar">|</span>&nbsp;
+$$TOT_1_LOC$$&nbsp;$$LG:LIEN:LOC pcase$$&nbsp;&nbsp;<span class="bar">|</span>&nbsp;			
+$$TOT_6_PROD$$&nbsp;$$LG:LIEN:PRODINVEST pcase$$&nbsp;&nbsp;<span class="bar">|</span>&nbsp;	
+$$TOT_10_FONDCOM$$&nbsp;$$LG:FONDDECOMMERCE pcase$$	
