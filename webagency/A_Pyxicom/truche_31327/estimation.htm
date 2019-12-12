@@ -1,0 +1,168 @@
+$$INIT:IDT=ESTIMATION$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:JS_FORMULAIRES=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$SET:PAGE:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+<h1 class="ttl-pages">Déposez une annonce</h1>
+<p>Vendez ou louez votre bien l&rsquo;esprit tranquille avec les professionnels de l&rsquo;immobilier partenaires de habiterlyon.com<br />
+		Vous &ecirc;tes propri&eacute;taire d&rsquo;un bien immobilier &agrave; vendre ou &agrave; louer ?<br />
+		Pour vous aider &agrave; r&eacute;aliser votre transaction dans les meilleures conditions, habiterlyon.com met &agrave; votre disposition son service gratuit de mise en relation avec des professionnels de l&rsquo;immobilier de votre r&eacute;gion.
+	</p>
+		
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5">
+<tr>
+	<td>
+	<form method="post" action="page_ok_estimation.htm?lang=$$LANGUE$$" id="FormContactAgence_Ctn">
+	<div id="FormContactAgence">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_ok_estimation.htm" />
+	<input type="hidden" name="page_err" value="estimation.htm" />
+	<input type="hidden" name="cfg_form" value="estimation$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="estimation" />
+	<div id="conteneur_form">
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_BCC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+	$$END$$
+	$$IF:FORM:REMAIL$$
+		<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+	$$END$$
+	$$IF0:FORM:REMAIL$$
+	$$IF:IMMOBW:AGENCE:EMAIL$$
+		<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+		<script type="text/javascript">
+		var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+		document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+      </script>
+	$$END$$
+	$$END$$
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<font color="#CC0033"><strong>$$ERRE$$</strong></font><br />
+	<strong class="estimationNomAgence">$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$</strong>
+	<p align="center" id="$$FORM:ESTIMATION$$"><font size="3"><strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</strong></font></p>
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:louer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:vendre:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+	$$IF=:3:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$IF=:gerer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2$3:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td></td>
+	</tr>
+	<tr>
+		<td align="center" class="tabTitre"><strong>$$LG:VOUSPOSSEDEZ2$$&nbsp;$$LG:ESTIMER lcase$$</strong></td>
+	</tr>
+	<tr>
+		<td align="center">
+		$$IF0:PAGE:IDTC1$$		
+		<input type="radio" name="Rdesir" value="Location" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked$$END$$$$END$$ />
+		$$LG:LOCATION$$
+		$$END$$
+		$$IF0:PAGE:IDTC3$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="Rdesir" value="Vente" checked />
+		$$LG:VENTE$$
+		$$END$$
+		$$IF:PAGE:IDTC4$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="Rdesir" value="Gérer" checked />
+		$$LG:GERER$$
+		$$END$$
+		</td>
+	</tr>
+	</table>
+	<br />
+	$$END$$
+	$$END$$
+	
+			<div class="pointillesBas"><h1>$$LG:DESCRIPBIEN$$</h1></div>
+			<div class="col1">$$LG:BIENPROP$$ :</div>
+			<div class="col2">		
+						<input type="radio" name="Pbien" value="un appartement" />$$LG:APPARTEMENT$$&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="Pbien" value="une maison" />$$LG:MAISON$$
+			</div>
+			<div class="col1">$$LG:SURFH$$</div>
+			<div class="col2"><input class="imputForm" type="text" name="Psurf" size="10" value="$$FORM:PSURF$$" /> m&sup2;</div>
+			<div class="clear"></div>
+			<div class="col1">$$LG:SURFT$$</div>
+			<div class="col2"><input class="imputForm" type="text" name="Pterre" size="10" value="$$FORM:PTERRE$$" /> m&sup2;</div>
+			<div class="clear"></div>
+			<div class="col1">$$LG:NBRP$$</div>
+			<div class="col2"><input class="imputForm" type="text" name="Ppieces" size="10" value="$$FORM:PPIECES$$" /> $$LG:PIECES$$</div>
+			<div class="clear"></div>
+			<div class="col1">$$LG:DPTV$$ :</div>
+			<div class="col2"><input class="imputForm" type="text" name="Pville" size="25" value="$$FORM:PVILLE$$" /></div>
+			<div class="clear"></div>
+			<div class="col1">$$LG:PRECIS$$ :</div>
+			<div class="col2"><textarea class="imputForm" name="PPrecisions" cols="35" rows="3">$$FORM:PPRECISIONS$$</textarea></div>
+	
+		<div class="clear"></div>
+	<!--vos coordonnées-->
+	<div class="pointillesBas"><h1>$$LG:COORD$$</h1></div>
+	<div class="col1">$$LG:AI5$$ * :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2nom" size="25" value="$$FORM:2NOM$$" maxlength="30" /></div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:PRENOM$$ * :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2prenom" size="25" value="$$FORM:2PRENOM$$" maxlength="30" /></div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:ADRESSE$$ :</div>
+	<div class="col2">$$IF=:FR:LANGUE$$<input class="imputForm" type="text" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:VILLE$$ :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2Ville" size="25" value="$$FORM:2VILLE$$" /></div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:CODEP$$ :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></div>
+	<div class="clear"></div>
+	$$IF!:FR:LANGUE$$
+	<div class="col1">$$LG:PAYS$$ :</div>
+	<div class="col2"><input type="text" name="2pays" size="25" value="$$FORM:2PAYS$$" /></div>
+	<div class="clear"></div>
+	$$END$$
+	<div class="col1">$$LG:TEL pcase$$ * :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2phone" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:FAX pcase$$ :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2fax" size="15" value="$$FORM:2FAX$$" /></div>
+	<div class="clear"></div>
+	<div class="col1">$$LG:AI6$$ * :</div>
+	<div class="col2"><input class="imputForm" type="text" name="2Email" size="25" value="$$FORM:2EMAIL$$" /></div>
+		<div class="clear"></div>
+	
+						<div class="pointillesHaut">
+							<p><span class="obligatoire">* : $$LG:CHAMPSOBLIGATOIRES pcase$$</span></p>
+
+							<input type="submit" id="boutonEnvoiEstimation" class="inputSubmit" value="$$LG:ENVOYER2 pcase$$" />
+							<div class="clear"></div>
+						</div>						
+	
+	<!--validation-->
+	
+		</div> <!-- #conteneur_form -->
+	</form>
+	</div><!-- #FormContactAgence -->
+	
+	</td>
+</tr>
+</table>
+<!--#include virtual="footer/incl_bas.htm" -->

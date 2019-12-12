@@ -1,0 +1,123 @@
+$$A:JS_ANNONCES=1$$
+
+$$IF:PAGE:CFG_STATS_OMNITURE$$
+$$REM$$<!--·========·////·OMNITURE·:·Valorisation·des·principales·variables···////·========·-->$$END:REM$$
+<!--#include·virtual="omniture/incl_omniture_main_tag.htm"·-->
+$$REM$$<!--·======================================================================·-->$$END:REM$$
+$$END:PAGE:CFG_STATS_OMNITURE$$
+<div id="selection_annonces">
+$$DO:1:3$$
+$$IF:PAGE:CFG_STATS_OMNITURE$$
+<!--#include·virtual="omniture/incl_omniture_annonce_tag.htm"·-->
+$$END:PAGE:CFG_STATS_OMNITURE$$ 
+$$IF!:REP_1:ANNLISTE:IDANNONCE$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIEN_SIMILAIRE=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$A:TITLE_SIMILAIRE=$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_SIMILAIRE=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	<div class="detailAnnoncesRef" id="annoncesBloc$$ANNLISTE:I$$">
+	$$END$$
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	<div class="detailAnnonces" id="annoncesBloc$$ANNLISTE:I$$">
+	$$END$$
+		<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">
+			<div class="blocContentEffet">
+				$$IF:ANNLISTE:SI_COUPDECOEUR$$
+					<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+				$$END:COUPDECOEUR$$
+				$$IF:ANNLISTE:SI_EXCLUSIF$$
+					<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+				$$END:SI_EXCLUSIF$$
+				$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+					<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+				$$END$$
+				$$IF:SI_PROMO$$
+					$$IF:ANNLISTE:SI_PROMO$$
+					<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+					$$END:SI_PROMO$$
+				$$END:SI_PROMO$$
+				<div class="blocPhoto$$IF0:ANNLISTE:IDPHOTO$$$$IF=:FALSE:ANNLISTE:SI_LOGO$$ blocNoPhoto$$END$$$$END$$">
+					$$IF:ANNLISTE:IDPHOTO$$
+						<img src="$$ANNLISTE:C175URL0$$" alt="$$TITLE_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$" />
+					$$END:ANNLISTE:IDPHOTO$$
+					$$IF0:ANNLISTE:C175URL0$$
+					$$IF:ANNLISTE:SI_LOGO$$
+						<!--#include virtual="detail/incl_similaires_no_photo_logo.htm" -->
+					$$END$$
+				$$END$$
+				</div>
+			</div>
+		</a>
+		$$IF:ANNLISTE:IDPHOTO$$
+		<div class="blocNumPhotoBg"></div>
+		<div class="blocNumPhoto">
+			<span class="picto">
+				<img src="$$~$$images/selection/rech_picto_photo.png" />
+			</span>
+			<span class="libelle"><strong>$$ANNLISTE:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+			<div class="clear"></div>
+		</div>
+		$$END$$
+		<div class="blocTypeBien">
+			<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+				$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE:IDTYPEBIEN gettypebien lcase$$
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+					$$ANNLISTE:LIBELLE$$
+				$$END:WAGREF_IDDOSSIER_SITE$$
+			</a>
+		</div>
+		<div class="blocVilleBien">
+			<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">$$ANNLISTE:AVILLE ncase$$</a>
+		</div>
+		$$IF:ANNLISTE:SURFACE$$
+			<div class="blocSurfaceBien">
+				$$ANNLISTE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+				$$LG:ENVIRON lcase$$
+			</div>
+		$$END:ANNLISTE:SURFACE$$
+		$$IF:ANNLISTE:NB_PIECES$$
+			<div class="blocPiecesBien">
+				$$ANNLISTE:NB_PIECES$$
+				$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$					
+				$$IF:ANNLISTE:NB_CHAMBRES$$
+					($$ANNLISTE:NB_CHAMBRES$$ 
+					$$IF=:1:ANNLISTE:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+				$$END:ANNLISTE:NB_CHAMBRES$$
+			</div>
+		$$END:ANNLISTE:NB_PIECES$$
+		$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<div class="blocTxtRefBien">
+				$$ANNLISTE:DESCRIPTIF smalltextv2 60 vireaccents$$
+			</div>
+		$$END:WAGREF_IDDOSSIER_SITE$$
+			<div class="blocPrixBien">
+				$$ANNLISTE:PRIX formatnumber 0$$ $$ANNLISTE:PRIX_UNITE htmlencode$$
+			</div>
+			<div class="blocDetailBien">
+				<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">$$LG:DETAILS pcase$$</a>
+			</div>
+	</div>
+$$END:IDANNONCE$$
+$$LOOP$$
+<div class="clear"></div>
+</div>

@@ -1,0 +1,153 @@
+$$REM$$
+====================================================================
+
+//// <summary>Resultat recherche PANORAMA</summary>
+//// <remarks>
+//// <para>Fichier appelé par présentation PANORAMA et PANORAMA LIGHT</para>
+//// <para>Appelle des feuilles de styles dans autres fichiers includes</para>
+//// </remarks>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Ajout IDTT dans tous les liens qui vont vers la page DETAIL afin de pouvoir  </update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-02-27" author="lisbonne.siriphol">Séparation du fichier en include</update>
+//// <update date="2008-08-29" author="lisbonne.siriphol">Création</update>
+
+
+====================================================================
+$$END$$
+
+$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:ALIAS:ANNLISTE$$
+
+<!--#include virtual="recherche/incl_haut_annonces.htm" -->
+
+$$BIF:ANNLISTE$$
+
+$$DO:1:9$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+
+$$IF:FORM:LANG$$
+	$$IF!:FR:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+	$$END$$
+	$$IF=:FR:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIENDETAIL=@@ANNLISTE:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIENDETAIL=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_ANN=@@ANNLISTE:LIBELLE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+		<div class="blocAnnonce_wrap" id="Annonce$$ANNLISTE:IDANNONCE$$">
+			<div class="blocAnnonce$$IF=:1:ANNLISTE:I exec XX%2$$ color1$$END$$$$IF=:0:ANNLISTE:I exec XX%2$$ color2$$END$$"">
+				<div class="photo$$IF!:ANNLISTE:IDPHOTO$$$$IF0:ANNLISTE:SI_LOGO$$	blocNoPhoto$$END$$$$END:IDPHOTO$$">
+					<a href="$$LIENDETAIL$$" title="">
+					$$IF:ANNLISTE:SI_COUPDECOEUR$$
+						<!--#include virtual="recherche/incl_bandeau_coupdecoeur.htm" -->
+					$$END:COUPDECOEUR$$
+					$$IF:ANNLISTE:SI_EXCLUSIF$$
+						<!--#include virtual="recherche/incl_bandeau_exclusif.htm" -->
+					$$END:SI_EXCLUSIF$$
+					$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+						<!--#include virtual="recherche/incl_bandeau_nouveau.htm" -->
+					$$END$$
+					$$IF:ANNLISTE:SI_PROMO$$
+						<!--#include virtual="recherche/incl_bandeau_sipromo.htm" -->
+					$$END:SI_PROMO$$
+					$$IF:ANNLISTE:PHOTO_URL$$
+						<div class="photoFix"><img src="$$ANNLISTE:PHOTOURL0$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" /></div>
+					$$END$$
+					$$IF0:ANNLISTE:PHOTO_URL$$
+						$$IF:ANNLISTE:SI_LOGO$$
+							<!--#include virtual="recherche/incl_no_photo_logo.htm" -->
+						$$END$$
+					$$END$$
+					</a>
+				</div>
+				<!-- fin .photo -->
+				<div class="descr">
+					<a class="nbPhoto" href="$$LIENDETAIL$$" title="">$$ANNLISTE:NBPHOTOS$$ <span>$$IF=:0$1:ANNLISTE:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span></a>
+					<p class="libelle">
+					$$IF:ANNLISTE:LIBELLE$$
+						$$ANNLISTE:LIBELLE$$
+					$$END$$
+					$$IF0:ANNLISTE:LIBELLE$$
+						$$ANNLISTE:LIBELLE_FR$$
+					$$END$$
+					$$IF:ANNLISTE:SURFACE$$					
+						<span class="surface">($$ANNLISTE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ / $$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$)</span>
+					$$END:ANNLISTE:SURFACE$$
+					$$IF:ANNLISTE:SURF_TERRAIN$$
+						<span class="terrain">
+								$$LG:TERRAIN$$
+								($$ANNLISTE:SURF_TERRAIN$$ $$LG:M2 lcase$$
+								$$IF=:EN:LANGUE$$
+									/ approx. $$ANNLISTE:SURF_TERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+									$$ANNLISTE:SURF_TERRAIN exec XX*0.0002471054 formatnumber 3$$ acres
+								$$END:EN$$)
+						</span>
+					$$END:ANNLISTE:SURF_TERRAIN$$
+					</p>
+					<p class="ville">$$ANNLISTE:VILLE$$ ($$ANNLISTE:CP$$)</p>
+					<!--#include virtual="recherche/incl_prix.htm" -->
+				</div>
+				$$IF0:ANNLISTE:SIPANIER$$
+				<!-- selection annonce -->
+				<div class="ajoutSelection" id="selection$$ANNLISTE:IDANNONCE$$">
+					<span class="picto"><img src="$$~$$detail/img_commun/outil_ajout_selection.png" /></span>
+					<span><a href="javascript:selectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">$$LG:AJOUTERSEL pcase$$</a></span>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				$$END$$
+				$$IF:ANNLISTE:SIPANIER$$
+				<!-- deselection annonce -->
+				<div class="supprimerSelection" id="deselection$$ANNLISTE:IDANNONCE$$">
+					<a href="javascript:deselectionAnnoncePanier($$ANNLISTE:IDPUBLICATION$$, $$ANNLISTE:IDANNONCE$$);" title="">$$LG:SUPPRIMERSELEC pcase$$</a>
+				</div>
+				<div class="clear"></div>
+				$$END$$	
+			</div>
+			<!-- fin .blocAnnonce -->
+			<div class="detail">
+				<span>Tél : $$ANNLISTE:TELEPHONE formattel$$</span>		
+				<span><a class="lienDetail" href="$$LIENDETAIL$$" title="">$$LG:DETAILS pcase$$</a></span>
+				<div class="clear"><!-- --></div>
+			</div>
+			<!-- fin .detail -->
+		</div>
+		<!-- fin .blocAnnonce_wrap -->
+		$$IF=:0:ANNLISTE:I exec XX%3$$
+		<div align="center">
+			<a href="immo,empruntis.htm?lang=$$LANGUE$$"><img src="images/bannierepub-empruntis.jpg" alt="" /></a>
+		</div>
+		$$END$$
+$$LOOP$$
+$$BFIN$$
+<div class="clear"></div>
+<!--#include virtual="recherche/incl_bas_annonces.htm" -->
+
+$$B:IMMOBW:ANN:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+$$BIF:CHECKBASKET$$
+<script type="text/javascript">
+	<!--			
+	$(document).ready(function() {
+		// $$REM$$actualise le nb annonce du panier$$END$$
+		nbAnnoncePanier($$CHECKBASKET:NBR$$);	
+		// $$REM$$actualise le nb annonce page selection$$END$$
+		nbAnnonceSelection($$CHECKBASKET:NBR$$);
+		$$DO$$
+			cacheLienPanier($$CHECKBASKET:IDANNONCE$$);	// $$REM$$cache annonce du panier$$END$$
+		$$LOOP$$
+	});
+	//-->
+</script>
+$$BFIN$$

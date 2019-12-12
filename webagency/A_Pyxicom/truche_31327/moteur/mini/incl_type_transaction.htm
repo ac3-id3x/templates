@@ -1,0 +1,47 @@
+$$REM$$================================================================================================
+//// <summary>Type de transaction du mini moteur dynamique</summary>
+//// <remarks>
+//// <para>2 possibilités : on affiche tous les types de transac dispos, ou bien on affiche un seul type de transac de son choix</para>
+//// <para>Possibilité de masquer le nb d'annonces dispos avec MINIMOTEUR_NBANNVISIBLE </para>
+//// </remarks>
+//// <update date="2010-02-22" author="lisbonne.siriphol">Adaptation pour x_v3</update>
+================================================================================================$$END$$
+<span class="miniBlocTitre">$$LG:TYPEDETRANSACTION$$</span>
+<span class="miniBlocSelection">
+		$$IF!:1:MINI_IDTTCHECK$$
+			$$IF=:0:MINI_IDTTUNIQUE$$
+			$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+			$$BIF:TYPE_TRANSACTION$$		
+				<select id="idtt" name="idtt" class="miniForm" onchange="javascript:ajaxGet(this.id,'$$LANGUE$$','Mini_Biens','type_bien');$$IF=:1:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Region','region');contentEmpty('0','Mini_Departement|Mini_Villes|Mini_Quartiers|Mini_Rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Villes','villes');$$END$$testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');">
+					$$IF=:0:MINI_IDTTDEFAUT$$<option value="" selected="selected">-- $$LG:SELECTIONNEZ2 pcase$$ --</option>$$END:MINI_IDTTDEFAUT$$
+					$$DO$$
+					$$IF):MINIMOTEUR*IDTTCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+						<option value="$$TYPE_TRANSACTION:IDTYPETRANSACTION$$"$$IF=:MINI*IDTTDEFAUT:TYPE_TRANSACTION:IDTYPETRANSACTION$$ selected="selected"$$END$$>
+							$$IF=:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+							$$IF!:9:TYPE_TRANSACTION:IDTYPETRANSACTION$$$$TYPE_TRANSACTION:DESCRIPTIONLG pcase$$ $$END$$					
+							$$IF=:1:MINI_NBVISIBLES$$($$TYPE_TRANSACTION:NBANN$$)$$END$$</option>
+					$$END:MINIMOTEUR_IDTBCACHE:TYPE_TRANSACTION:IDTYPETRANSACTION$$
+					$$LOOP$$				
+				</select>	
+			$$BFIN$$
+			$$END:MINI_IDTTUNIQUE$$	
+			$$IF=:1:MINI_IDTTUNIQUE$$
+				<input type="hidden" name="idtt"  id="idtt" value="$$MINI_IDTTDEFAUT$$" />	
+				$$IF=:1:MINI_IDTTDEFAUT$$$$LG:LIEN:LOC pcase$$$$END$$
+				$$IF=:2:MINI_IDTTDEFAUT$$$$LG:LIEN:VEN pcase$$$$END$$
+				$$IF=:3:MINI_IDTTDEFAUT$$$$LG:LIEN:LOCTMP pcase$$$$END$$
+				$$IF=:4:MINI_IDTTDEFAUT$$$$LG:LIEN:LOCVAC pcase$$$$END$$
+				$$IF=:5:MINI_IDTTDEFAUT$$$$LG:LIEN:VIAGER pcase$$$$END$$
+				$$IF=:6:MINI_IDTTDEFAUT$$$$LG:LIEN:PRODINVEST pcase$$$$END$$
+				$$IF=:7:MINI_IDTTDEFAUT$$$$LG:LIEN:LOCPST pcase$$$$END$$
+				$$IF=:8:MINI_IDTTDEFAUT$$$$LG:LIEN:VENPST pcase$$$$END$$
+				$$IF=:9:MINI_IDTTDEFAUT$$$$LG:LIEN:PGRNEUF pcase$$$$END$$
+				$$IF=:10:MINI_IDTTDEFAUT$$$$LG:MINIFONDSCOM pcase$$$$END$$
+				$$IF=:11:MINI_IDTTDEFAUT$$$$LG:MINIBAIL pcase$$$$END$$
+			$$END:MINI_IDTTUNIQUE$$
+		$$END$$
+		$$IF=:1:MINI_IDTTCHECK$$
+			<label id="miniAcheter"><input name="idtt" id="idtt" type="radio" value="2" onclick="ajaxGet(this.id,'$$LANGUE$$','Mini_Biens','type_bien');$$IF=:1:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Region','region');contentEmpty('0','Mini_Departement|Mini_Villes|Mini_Quartiers|Mini_Rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Villes','villes');$$END$$testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');" checked="checked" />$$LG:ACHETER pcase$$</label>
+			<label id="miniLouer"><input name="idtt" id="idtt" type="radio" value="1" onclick="ajaxGet(this.id,'$$LANGUE$$','Mini_Biens','type_bien');$$IF=:1:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Region','region');contentEmpty('0','Mini_Departement|Mini_Villes|Mini_Quartiers|Mini_Rayon');$$END$$$$IF=:0:MINI_REGION$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Departement','dep');$$END$$$$IF=:0:MINI_DEP$$ajaxGet(this.id,'$$FORM:LANG$$','Mini_Villes','villes');$$END$$testBudget('MiniSelectBudgetVente','MiniSelectBudgetLoc');" />$$LG:LIEN:LOUER pcase$$</label>
+		$$END:MINI_IDTTCHECK$$
+</span>
