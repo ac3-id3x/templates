@@ -1,0 +1,242 @@
+
+<P>$$INCL:HAUT.HTM$$ $$SET:PAGE:RUBRIQUE=CALCULETTE$$ 
+  <SCRIPT LANGUAGE="JavaScript"><!--
+
+function calc(what)
+{
+	switch(what) {
+		case 'mens':
+			T = document.monform.mens_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				C = document.monform.mens_emprunt.value.replace(',','.');
+				n = document.monform.mens_nbmens.value.replace(',','.');
+				if (document.monform.mens_duree[1].checked) n *= 12;
+				document.monform.mens_mens.value = Math.round(100*C*(t/(1-(1/Math.pow(1+t,n)))))/100;
+			}
+			break;
+		case 'emprunt':
+			T = document.monform.emprunt_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				//n = document.monform.emprunt_nbmens.value.replace(',','.');
+				n = document.monform.emprunt_nbmens.value.replace(',','.');
+				if (document.monform.emprunt_duree[1].checked) n *= 12;
+				m = document.monform.emprunt_mens.value.replace(',','.');
+				document.monform.emprunt_emprunt.value = Math.round(m*((1-(1/Math.pow(1+t,n)))/t));
+			}
+			break;
+		case 'nbmens':
+			T = document.monform.nbmens_taux.value.replace(',','.')/100;
+			T = document.monform.emprunt_taux.value.replace(',','.')/100;
+			if ((T<0.04) || (T>0.09))
+				alert('Vous devez saisir un taux situé entre 4% et 9%');
+			else
+			{
+				t = T/12;
+				C = document.monform.nbmens_emprunt.value.replace(',','.');
+				m = document.monform.nbmens_mens.value.replace(',','.');
+				document.monform.nbmens_nbmens.value = Math.round(Math.log(-1/(((C/m)*t)-1))/Math.log(1+t));
+				document.monform.nbmens_nbmens.value += ' mois (' + Math.round(document.monform.nbmens_nbmens.value/12) + ' an' + ((Math.round(document.monform.nbmens_nbmens.value/12)>1)?'s':'') + ')';
+			}
+			break;
+	};
+}
+// --></SCRIPT>
+</P>
+<TABLE WIDTH="90%" CELLSPACING="0" CELLPADDING="10" ALIGN="center">
+  <TR>
+    <TD>
+      <P ALIGN="LEFT">Calculez au choix , <A HREF="#mensualites">les mensualités</A>, 
+        <A HREF="#duree">la durée</A>, ou <A HREF="#montant">le montant</A> de 
+        votre prêt. <BR>
+      </P>
+      <FORM METHOD="get" ACTION="" NAME="monform">
+        <TABLE BORDER="0" WIDTH="100%">
+          <TR ALIGN="left" VALIGN="bottom"> 
+            <TD COLSPAN="2" CLASS="bgtablintercab"> <B>&nbsp;•<A NAME="mensualite"></A> 
+              Calculer votre remboursement mensuel </B></TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="5">&nbsp;</TD>
+          </TR>
+<TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez la <B>mensualité</B> souhaitée:<BR>
+              <FONT SIZE="1">sans espace, ni virgule, ex : 5000</FONT> 
+              <BR>
+            </TD>
+            <TD WIDTH="154" > 
+              <INPUT TYPE="text" NAME="emprunt_mens" SIZE="10"> Euros </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez la <B>dur&eacute;e</B> :<BR>
+              <FONT SIZE="1">pr&eacute;cisez (obligatoire):</FONT>
+              <INPUT TYPE="radio" NAME="emprunt_duree" VALUE="m">
+              <FONT SIZE="1">Mois</FONT>
+              <INPUT TYPE="radio" NAME="emprunt_duree" VALUE="a" checked>
+              <FONT SIZE="1">Ann&eacute;es</FONT> 
+			</TD>
+            <TD WIDTH="154" > 
+              <INPUT TYPE="text" NAME="emprunt_nbmens" SIZE="10">
+            </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez le <B>taux</B> :<BR>
+            <FONT SIZE="1">1 chiffre maximum apr&egrave;s la virgule,  ex: 7,5 ou 7</FONT>
+			</TD>
+            <TD WIDTH="154" > 
+              <INPUT TYPE="text" NAME="emprunt_taux" SIZE="10">
+              %
+			</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="22">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34" CLASS="fond_tab2"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+                <TR> 
+                  <TD WIDTH="8">&nbsp;</TD>
+                  <TD WIDTH="70%"> 
+                    <INPUT TYPE="BUTTON" NAME="emprunt_calculer" VALUE="votre emprunt sera de :" onClick="calc('emprunt')">
+                  </TD>
+                  <TD WIDTH="30%"> &nbsp; 
+                    <INPUT TYPE="text" NAME="emprunt_emprunt" SIZE="10">
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD></TR>
+	     <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" CLASS="bgtablintercab"> 
+			<B>&nbsp;•<A NAME="montant"></A> Calculer le montant de votre emprunt</B>
+            </TD>
+          </TR>
+      
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+<TR> 
+            <TD WIDTH="373" > &raquo; Entrez le <B>montant</B> de votre emprunt 
+              : <FONT SIZE="1"><BR>
+              sans espace, ni virgule, ex :750000 </FONT> </TD>
+            <TD VALIGN="top" WIDTH="154" ALIGN="left" > 
+                <INPUT TYPE="text" NAME="mens_emprunt" SIZE="10"> Euros
+            </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez<B> la dur&eacute;e</B> :<BR>
+              <FONT SIZE="1">pr&eacute;cisez (obligatoire):</FONT> 
+              <INPUT TYPE="radio" NAME="mens_duree" VALUE="m">
+              <FONT SIZE="1">Mois</FONT>
+              <INPUT TYPE="radio" NAME="mens_duree" VALUE="a" checked>
+              <FONT SIZE="1">Ann&eacute;es</FONT> 
+			</TD>
+            <TD WIDTH="154" ALIGN="left" > 
+                <INPUT TYPE="text" NAME="mens_nbmens" SIZE="10">
+            </TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez le <B>taux</B> :<BR>
+            <FONT SIZE="1">1 chiffre maximum apr&egrave;s la virgule, ex: 7,5 ou 7</FONT>
+			</TD>
+            <TD WIDTH="154" > 
+              <INPUT TYPE="text" NAME="mens_taux" SIZE="10"> %
+			</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+                <TR> 
+                  <TD WIDTH="8">&nbsp;</TD>
+                  <TD WIDTH="70%" > 
+                    <INPUT TYPE="BUTTON" NAME="mens_calculer" VALUE="votre remboursement sera de :" onClick="calc('mens')">
+                  </TD>
+                  <TD WIDTH="30%" > &nbsp; 
+                    <INPUT TYPE="text" NAME="mens_mens" SIZE="10">
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD></TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" CLASS="bgtablintercab"> 
+			<B>&nbsp;• <A NAME="duree"></A>Calculer la dur&eacute;e de votre emprunt</B> 
+			</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" > &raquo; Entrez le <B>montant</B> de votre emprunt 
+              :<BR>
+              <FONT SIZE="1">sans espace, ni virgule, ex :750000</FONT> 
+			</TD>
+            <TD WIDTH="154"  > 
+              <INPUT TYPE="text" NAME="nbmens_emprunt" SIZE="10">
+              Euros
+			</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373">
+			&raquo; Entrez la <B>mensualité</B> 
+              souhaitée :<BR>
+            <FONT SIZE="1">sans espace, ni virgule, ex : 5000</FONT>
+			</TD>
+            <TD WIDTH="154" > 
+              <INPUT TYPE="text" NAME="nbmens_mens" SIZE="10">
+              Euros
+			</TD>
+          </TR>
+          <TR> 
+            <TD WIDTH="373" >
+			&raquo; Entrez le <B>taux</B> :<BR>
+            <FONT SIZE="1">1 chiffre maximum apr&egrave;s la virgule, ex: 7,5 ou 7</FONT>
+			</TD>
+            <TD WIDTH="154"> 
+              <INPUT TYPE="text" NAME="nbmens_taux" SIZE="10">
+              % 
+			</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="5">&nbsp;</TD>
+          </TR>
+          <TR> 
+            <TD COLSPAN="2" HEIGHT="34" CLASS="fond_tab2"> 
+              <TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+                <TR> 
+                  <TD WIDTH="12">&nbsp;</TD>
+                  <TD WIDTH="70%"> 
+                    <INPUT TYPE="BUTTON" NAME="nbmens_calculer" VALUE="la durée de votre emprunt sera de :" onClick="calc('nbmens')">
+                  </TD>
+                  <TD WIDTH="30%"> &nbsp; 
+                    <INPUT TYPE="text" NAME="nbmens_nbmens" SIZE="24">
+                  </TD>
+                </TR>
+              </TABLE>
+            </TD></TR>
+        </TABLE>
+      </FORM>
+      <P></P>
+    </TD>
+  </TR>
+</TABLE>
+<P>$$INCL:BAS.HTM$$ </P>

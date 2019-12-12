@@ -1,0 +1,84 @@
+$$INCL:HAUT.HTM$$
+
+
+<p align="center" valign="center">
+  
+<table width="90%" border="0" cellspacing="3" cellpadding="0">
+  <tr> 
+    <td> 
+      <p> 
+        <SCRIPT language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.bas.length)
+	{
+		if (document.bas.elements[i].name=='cp')
+		{
+			document.bas.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 20);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.bas.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 20);
+	}
+}
+function subm()
+{
+var url = '$$IF:FORM:IDTT$$/$$FORM:IDTT$$$$END$$/recherche.htm?$$FORM:QRY escape$$';
+	for(i=0; i<document.bas.length; i++)
+	{
+		if (document.bas.elements[i].checked) url += '&cp=' + document.bas.elements[i].value;
+	}
+	document.location.href= url;
+}
+// -->
+</SCRIPT>
+      </p>
+      <p>&nbsp;</p>
+      <form method="get" action="/proxiloc.htm">
+        <table width="80%" border="0" cellspacing="1" cellpadding="2" align="center" class="bgtablproxi" bgcolor="#23377c">
+          <tr> 
+            <td colspan="2" height="20"><font size="2" face="Arial, Helvetica, sans-serif"><b><font color="#FFFFFF">Recherche 
+              des villes &agrave; proximit&eacute;</font></b></font></td>
+          </tr>
+          <tr> 
+            <td width="100%" colspan="2" bgcolor="#FFFFFF"><font size="2" face="Arial, Helvetica, sans-serif">code 
+              postal: 
+              <input type="text" name="cps" value="$$FORM:CPS$$">
+              <br>
+              ou ville:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+              <input type="text" name="ville" value="$$FORM:VILLE$$">
+              <input type="submit" name="Submit" value="Rechercher">
+              <input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$">
+              </font></td>
+          </tr>
+        </table>
+      </form>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">$$B:SELOGER:PROXY$$ 
+        $$BIF:SELOGER:PROXY$$ </font></p>
+      <form name="bas" method="get" action="/recherche.htm?$$FORM:QRY$$">
+        <font size="2" face="Arial, Helvetica, sans-serif"><b>Liste des villes 
+        trouv&eacute;es:</b>$$DO:2:10$$<br>
+        <input type="checkbox" name="cp" value="$$SELOGER:PROXY:CP$$">
+        <font size="1"> $$SELOGER:PROXY:VILLE$$ ($$SELOGER:PROXY:CP$$) $$LOOP$$ 
+        </font><br>
+        <input type="button" name="Submit3" value="Tout s&eacute;lectionner" onClick="coche(0);">
+        <input type="button" name="Submit3" value="Tout déselectionner" onClick="decoche(bas.length-1);">
+        <input type="button" value="Chercher" onClick="subm();" name="button">
+        </font> 
+      </form>
+      <font size="2" face="Arial, Helvetica, sans-serif">$$BFIN$$ </font> 
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+  
+<!--$$FORM:T$$--> $$INCL:BAS.HTM$$ $$SET:PAGE:RUBRIQUE=Proximit&eacute;$$ 
