@@ -1,0 +1,105 @@
+﻿$$INIT:IDT=TOPVILLE$$
+$$INIT:TOPVILLE=1$$
+$$A:JS_TOPVILLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~nbAnnoncesMin:1$$
+<div class="row-fluid">
+	<div class="span12">
+		<ul class="breadcrumb">
+			<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$URLBASE$$" itemprop="url"><span itemprop="title">Accueil</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$TTTB:URLVIRTUELLETT$$" itemprop="url"><span itemprop="title">$$LG:ANNONCES pcase$$</span></a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span12">
+		<h1>$$H1_IMMOBILIER$$</h1>
+		<hr$$IF:TEXTE-TOPVILLES$$ class="margin-bottom-5"$$END$$ >
+	</div>
+</div>
+<!--#include virtual="referencement/incl_texte_immobilier.htm" -->
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	$$BIF:TTTB$$
+	<div class="span5">
+		$$DO$$
+			$$IFPREV:TTTB:IDTYPETRANSACTION$$
+				$$A:CALMAX=0$$
+			$$END$$
+			$$A:CALMAX=@@CALMAX exec XX+1@@$$
+			$$IFPREV:TTTB:IDTYPETRANSACTION$$
+			<div class="liste-immobilier relative">
+				<ul class="nav nav-pills nav-stacked nav-immobilier">
+				<li class="element-liste-titre">
+					<h2 class="h3-like">
+						<a href="$$TTTB:URLVIRTUELLETT$$">
+							<span>$$LG:NOSANNONCESDE pcase$$</span> $$TTTB:IDTYPETRANSACTION gettypetransaction lcase$$
+						</a>
+					</h2>
+				</li>
+			$$END:IFPREV$$
+			<li class="element-liste$$IF+:6:CALMAX$$ display-none$$END$$"><a href="$$TTTB:URLVIRTUELLE$$">$$IF!:9:TTTB:IDTYPETRANSACTION$$$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$END$$$$TTTB:TYPEBIEN pcase$$ $$IF=:9:TTTB:IDTYPETRANSACTION$$$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$END$$ ($$TTTB:NBANNONCES$$)</a></li>
+			$$IFNEXT:TTTB:IDTYPETRANSACTION$$ 
+				</ul>
+				<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+				</div>
+			$$END$$
+		$$LOOP$$
+	</div>
+	$$BFIN$$
+	<div class="span4 colonne-responsive">
+		$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150$$		
+		$$BIF:TOP$$
+		<div class="row-fluid">
+			<div class="span12">
+				<ul class="nav nav-pills nav-stacked nav-immobilier">
+					<li class="element-liste-titre">
+						<h2 class="h3-like">
+							$$LG:NOSANNONCESPARVILLES pcase$$
+						</h2>	
+					</li>
+			$$DO:1:50$$
+				$$IF-:11:TOP:I$$
+					<li class="element-liste"><a href="$$TOP:URLVIRTUELLE$$">Immobilier <span class="ville">$$TOP:VILLE$$</span> &nbsp;<span class="typo-action">($$TOP:NBANNONCES$$)</span></a></li>
+				$$END$$
+				$$IF+:11:TOP:I$$
+					<li class="element-liste display-none"><a href="$$TOP:URLVIRTUELLE$$">Immobilier <span class="ville">$$TOP:VILLE$$</span> &nbsp;<span class="typo-action">($$TOP:NBANNONCES$$)</span></a></li>
+				$$END$$
+			$$LOOP$$	
+				$$IF=:150:TOP:NBR$$
+				$$E:ID3:URW-GETURL:ALIAS:URLVIL:~ressource:Villes$$
+				<li class="element-liste display-none"><a href="$$URLVIL:URLVIRTUELLE$$">Autres villes</a></li>
+				$$END$$
+				</ul>
+				<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+			</div>
+		$$BFIN$$
+		</div>
+		<div class="row-fluid">
+			<div class="span12 margin-top-40">
+				<h2 class="h3-like">$$LG:NOSAUTRESANNONCES pcase$$</h2>
+				<ul class="nav nav-pills nav-stacked nav-immobilier">
+					$$E:ID3:URW-GETURL:ALIAS:URLPYS:~ressource:Countries$$
+					<li class="element-liste"><a href="$$URLPYS:URLVIRTUELLE$$">Top Pays</a></li>
+					$$E:ID3:URW-GETURL:ALIAS:URLREG:~ressource:Regions$$
+					<li class="element-liste"><a href="$$URLREG:URLVIRTUELLE$$">Top Régions</a></li>
+					$$E:ID3:URW-GETURL:ALIAS:URLDEP:~ressource:Departements$$
+					<li class="element-liste"><a href="$$URLDEP:URLVIRTUELLE$$">Top Départements</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="span3 hidden-phone">
+	$$IF=:1:MULTIAGENCES$$
+		<!--#include virtual="agences/incl_pub.htm" -->
+	$$END$$
+	$$IF=:0:MULTIAGENCES$$
+		<!--#include virtual="agence/incl_pub_agence.htm" -->
+	$$END$$	
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

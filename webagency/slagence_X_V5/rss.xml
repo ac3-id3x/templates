@@ -1,0 +1,52 @@
+$$REM$$
+====================================================================
+
+//// <summary>Flux rss d'une recherche de bien</summary>
+//// <remarks>
+//// <para>S'utilise de la même manière qu'une recherche, donc la querystring DOIT ABSOLUMENT contenir au minimum idtt=</para>
+//// <para>Utilise le fichier include wagstyle : incl_choix_wag_style.htm</para>
+//// <para>Fichier en cache pendant 480 minutes (soit 8 heures)</para>
+//// <para>htmlencode sur certaines macros sinon accents créent des caractères bizarres</para>
+//// <para>Forcé en français</para>
+//// </remarks>
+//// <update date="2008-10-09" author="lisbonne.siriphol">Corrections htmlencode</update>
+//// <update date="2008-02-12" author="erick.barbant">Création v1</update>
+//// <update date="2008-02-12" author="lisbonne.siriphol">Validation HTML/CSS</update>
+//// <update date="2008-02-12" author="isabelle.padrutt">Validation référencement en cours</update>
+//// <update date="2008-02-12" author="erick.barbant">Validation Id3x</update>
+
+====================================================================
+$$END$$$$TTL:480$$<?xml version="1.0" encoding="$$IF0:PAGE:ID3_USE_CHARSET$$windows-1252$$END$$$$PAGE:ID3_USE_CHARSET$$"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<atom:link href="$$SCHEME$$://$$REP:RSRV$$/$$REP:URI$$$$IF:REP:QRY$$?$$REP:QRY replace & &#38;$$$$END$$" rel="self" type="application/rss+xml" />
+	<title>$$REP:RSRV$$ : $$DERNIERES_VENTES:PHRASESTRI htmlencode$$</title>
+	<link>$$SCHEME$$://$$REP:RSRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm$$IF:REP:QRY$$?$$REP:QRY replace & &#38;$$$$END$$</link>
+	<description>$$LG:RESULTATRECHCIS pcase$$ : $$DERNIERES_VENTES:PHRASE$$</description>
+	<language>fr-FR</language>
+	<image>
+		<title>$$REP:RSRV$$ : $$DERNIERES_VENTES:PHRASESTRI htmlencode$$</title>
+		<link>$$SCHEME$$://$$REP:RSRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm$$IF:REP:QRY$$?$$REP:QRY replace & &#38;$$$$END$$</link>
+		<url>$$SCHEME$$://$$REP:RSRV$$$$-$$img/logo_rss.jpg</url>
+		<width>96</width>
+		<height>96</height>
+	</image>$$E:ID3:DATE:2:ALIAS:PUBDATE$$
+	<pubDate>$$PUBDATE:VAL  date rfc822$$</pubDate>
+	$$B:IMMOBW:ANN-ES:ALIAS:DERNIERES_VENTES:QRY:IDTT:VAL:LANG:::::d_dt_crea:~nostat:1$$
+	$$BIF:DERNIERES_VENTES$$
+	$$DO:1:20$$
+		$$A:DATEDIFF=@@DERNIERES_VENTES:DT_CREA datediff now timespan totalhours leftuntil ,@@$$
+		$$IF-:-2:DATEDIFF$$
+			<item>
+				<title>$$DERNIERES_VENTES:LIBELLE htmlencode$$ - $$DERNIERES_VENTES:VILLE htmlencode$$ ($$DERNIERES_VENTES:CP$$)</title>
+				<link>$$DERNIERES_VENTES:URLVIRTUELLE$$</link>
+				<description>$$DERNIERES_VENTES:DESCRIPTIF htmlencode$$</description>
+				<pubDate>$$DERNIERES_VENTES:DT_CREA date rfc822$$</pubDate>
+				<guid>$$DERNIERES_VENTES:URLVIRTUELLE$$</guid>
+				<category>$$DERNIERES_VENTES:IDTYPEBIEN gettypebien$$</category>
+			</item>
+		$$END$$
+	$$LOOP$$
+	$$BFIN$$
+</channel>
+</rss>$$DYN:ID3:NOFOOTER$$

@@ -1,0 +1,107 @@
+$$INIT:IDT=RECRUTEMENT$$
+<!--#include virtual="header/incl_boucle_index.htm" -->
+<!--#include virtual="header/incl_haut.htm"-->
+
+<h1>$$LG:RECRUTEMENT pcase$$</h1><hr>
+
+<div class="row-fluid">
+    $$IF=:1:RECRUTEMENTPERSO$$
+        <div class="span6">
+            <p class="h2-like typo-action">Vous souhaitez intégrer le réseau 100% expert,<br>cliquez ici :</p>
+            <p><a href="https://www.devenir-arthurimmo.com/" target="_blank" class="btn btn-action">Devenir Arthurimmo.com</a></p>
+
+
+            $$B:EASA:TEXTES:~idCategorie:VAL:IDCATRECRUTEMENT:~inverse:1:ALIAS:EDITEURRECRUTEMENT$$
+            $$BIF:EDITEURRECRUTEMENT$$
+            <p class="h2-like typo-action margin-top-30">Nos offres d'emploi :</p>
+            <ul class="margin-top-20">
+            $$DO$$
+                <li>
+                    $$IF:EDITEURRECRUTEMENT:DTCREA$$
+                        <p>$$LG:PUBLIELE pcase$$ <span itemprop="datePublished">$$EDITEURRECRUTEMENT:DTCREA date 1 lcase$$</span></p>
+                    $$END$$
+                    <span class="h3-like">$$EDITEURRECRUTEMENT:TITRE$$</span>
+                    $$IF:EDITEURRECRUTEMENT:DESCRIPTION$$
+                        <p>$$EDITEURRECRUTEMENT:DESCRIPTION$$</p>
+                    $$END$$
+                    $$IF0:EDITEURRECRUTEMENT:DESCRIPTION$$
+                        <p>$$EDITEURRECRUTEMENT:TEXTE$$</p>
+                    $$END$$
+                    <a href="/$$EDITEURRECRUTEMENT:IDTEXTE$$/immo,recrutement_detail.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small" title="$$LG:POSTULEZ pcase$$">$$LG:POSTULEZ pcase$$</a>
+                    <hr class="margin-top-20 margin-bottom-20">
+                </li>
+            $$LOOP$$
+            </ul>
+            $$BFIN$$
+        </div>
+    $$END$$
+    <div class="span6">
+         <p class="h2-like typo-action">Candidature spontanée</p>
+         $$IF:TXTRECRUTEMENTPERSO$$
+             $$TXTRECRUTEMENTPERSO$$
+         $$END$$
+         $$IF0:TXTRECRUTEMENTPERSO$$
+             <p>Vous souhaitez déposer une candidature spontanée, veuillez remplir le formulaire ci-dessous en joignant votre CV et lettre de motivation.</p>
+         $$END$$
+
+         $$IF:ERRE$$
+            <p class="small typo-action">$$ERRE$$</p>
+        $$END$$
+
+        <form method="post" action="$$URLBASE$$$$REP:1$$/$$REP:0$$" enctype="multipart/form-data" class="margin-top-20">
+            <!--#include virtual="contact/incl_honeypot.htm" -->
+            <input type="hidden" name="u" value="ID3:FORMMAIL" />
+            <input type="hidden" name="page_ok" value="/immo,recrutement_envoi.htm" />
+            <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+            <input type="hidden" name="page_html" value="/immo,recrutement_email.htm" />
+            <input type="hidden" name="cfg_form" value="recrutement" />
+            <input type="hidden" name="cfg_emails" value="recrutement" />
+            <input type="hidden" name="subject" value="$$BT:TITRE$$"/>
+
+            $$IF=:0:MULTIAGENCES$$
+                <input type="hidden" name="email_to" value="$$AGENCE_EMAIL$$" />
+            $$END$$
+
+            $$IF=:1:MULTIAGENCES$$
+                <div class="control-group">
+                    <label>Choix de l'agence</label>
+                    <div class="has-select">
+                        <select name="email_to" class="center">
+                            $$BIF:COMPTE_AGENCES$$
+                                $$DO$$
+                                    <option value="$$COMPTE_AGENCES:EMAIL$$">$$COMPTE_AGENCES:NOM ucase$$ - $$COMPTE_AGENCES:ADRESSE htmlencode$$</option>
+                                $$LOOP$$
+                            $$BFIN$$
+                        </select>
+                    </div>
+                </div>
+            $$END$$
+
+            <div class="control-group">
+                <label for="nom_from">$$LG:VOTRENOM pcase$$ / $$LG:VOTREPRENOM pcase$$*</label>
+                <input type="text" class="center" id="nom_from" name="nom_from" required>
+            </div>
+            <div class="control-group">
+                <label for="email_from">$$LG:VOTREMAIL pcase$$*</label>
+                <input type="text" class="center" id="email_from" name="email_from" required>
+            </div>
+            <div class="control-group">
+                <label for="attachment">$$LG:VOTRECV$$</label>
+                <input type="file" id="attachment" name="attachment">
+            </div>
+            <div class="control-group">
+                <label for="message">$$LG:MESSAGE pcase$$*</label>
+                <textarea id="message" name="message" class="center" rows="5" required></textarea>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="btn btn-action">$$LG:POSTULEZ pcase$$</button>
+            </div>
+
+            <div class="margin-top-20">
+                <p class="smaller italic">* $$LG:CHAMPSOBLIGATOIRES pcase$$</p>
+                <!--#include virtual="legal/incl_rgpd.htm" -->
+            </div>
+        </form>
+    </div>
+</div>
+<!--#include virtual="footer/incl_bas.htm"-->

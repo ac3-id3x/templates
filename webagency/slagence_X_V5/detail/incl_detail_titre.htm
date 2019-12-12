@@ -1,0 +1,62 @@
+<h1 itemprop="name" class="margin-top-10">
+    $$IF!:1:HIDE_TRANSACTION$$
+        $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+            $$IF:ANNDETAIL:SI_LIBRE$$
+                $$LG:VIAGERLIBRE2 pcase$$
+            $$END$$
+            $$IF0:ANNDETAIL:SI_LIBRE$$
+                $$LG:VIAGEROCCUPE2 pcase$$
+            $$END$$
+        $$END$$
+        $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+            $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                $$IF!:1:LOCALCESSION$$
+                    $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                $$END$$
+            $$END$$
+            $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+            $$END$$
+        $$END$$
+    $$END$$
+        $$IF!:1:HIDE_TYPEBIEN$$
+            $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                $$IF=:1:NOCOMM$$
+                    $$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace Local¤commercial Local$$
+                $$END$$
+                $$IF!:1:NOCOMM$$
+                    $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$
+                    $$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                $$END$$                
+                $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$ : $$ANNDETAIL:LIBELLE$$$$END$$
+            $$END$$
+            $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                $$IF=:1:LOCALCESSION$$
+                    $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$LG:AVEC$$ $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                $$END$$
+                $$IF!:1:LOCALCESSION$$
+                    $$IF=:1:NOCOMM$$
+                        $$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace Local¤commercial Local$$
+                    $$END$$
+                    $$IF!:1:NOCOMM$$
+                        $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$
+                        $$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                    $$END$$                    
+                $$END$$
+            $$END$$
+        $$END$$
+        $$IF!:1:HIDE_SOUSTYPEBIEN$$
+            $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+                $$IF!:1:HIDE_TYPEBIEN$$ - $$END$$$$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+            $$END$$
+        $$END$$
+    $$IF=:1:SHOW_LIBELLE$$ $$ANNDETAIL:LIBELLE$$ $$END$$
+    $$IF!:1:HIDE_VILLE$$
+        <br />$$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+    $$END$$
+</h1>
+<div>
+$$IF!:1:HIDEQUARTIER$$
+$$IF:ANNDETAIL:IDQUARTIER$$<span class="quartier-annonce-detail">$$LG:QUARTIER pcase$$ : <a href="#POI" class="lien-poi" title="$$LG:DECOUVRIR pcase$$ $$ANNDETAIL:IDQUARTIER getquartier$$">$$ANNDETAIL:IDQUARTIER getquartier$$</a></span>$$END:ANNDETAIL:IDQUARTIER$$
+$$END$$
+$$IF:ANNDETAIL:PROX$$<span> $$IF:ANNDETAIL:IDQUARTIER$$$$IF!:1:HIDEQUARTIER$$<span class="quartier-annonce-detail">-</span>$$END$$$$END$$ <!--#include virtual="/detail/incl_prox.htm" --></span>$$END:ANNDETAIL:PROX$$$$IF:ANNDETAIL:DT_DISPO$$<p class="dt-dispo">$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</p>$$END$$</div>

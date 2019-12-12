@@ -1,0 +1,50 @@
+<ul class="nav nav-stacked">
+	$$IF:CV:RESPAG$$
+		 $$IF!:1:HIDENOMRESPONSABLE$$<li class="agence-responsable">
+			$$IF0:MULTIRESPAGENCE$$
+				$$LG:RESPAGENCE pcase$$ : 
+			$$END$$
+			$$IF=:1:MULTIRESPAGENCE$$
+				$$LG:RESPSAGENCE pcase$$ : 
+			$$END$$		
+			<span class="typo-action">$$CV:RESPAG$$</span>
+		</li>$$END$$
+	$$END$$
+	$$IF:CV:RESPVEN$$<li class="agence-responsable-ven">$$LG:CTCVENTE pcase$$ : <span class="typo-action">$$CV:RESPVEN$$</span></li>$$END$$
+	$$IF:CV:RESPLOC$$<li class="agence-responsable-loc">$$LG:CTCLOC pcase$$ :<span class="typo-action"> $$CV:RESPLOC$$</span></li>$$END$$
+	$$IF:CV:RESPVAC$$<li class="agence-responsable-vac">$$LG:CONTACT pcase$$ $$LG:LOCVAC lcase$$ : <span class="typo-action">$$CV:RESPVAC$$</span></li>$$END$$
+	$$IF:CV:RESPCOM$$<li class="agence-responsable-com">$$LG:CONTACT pcase$$ $$LG:RESPCOM lcase$$ : <span class="typo-action">$$CV:RESPCOM$$</span></li>$$END$$
+	$$IF!:1:HIDE_EMAIL_AGENCE$$
+		$$IF:CV:EMAIL$$
+			$$IF!:1:BTNSHOWMAIL$$
+				$$IF0:CONTACT_EMAIL_CLICKABLE$$
+					<li class="agence-email">$$LG:EMAIL pcase$$ : <span class="typo-action">$$CV:EMAIL encodemail javascript$$</span></li>
+				$$END$$
+				$$IF:CONTACT_EMAIL_CLICKABLE$$
+					<li class="agence-email">$$LG:EMAIL pcase$$ : <span class="typo-action"><a href="mailto:$$CV:EMAIL$$">$$CV:EMAIL$$</a></span></li>
+				$$END$$
+			$$END$$
+			$$IF=:1:BTNSHOWMAIL$$
+				<div id="bouton-contactez-nous" class="$$TYPEBOUTON$$ btn-block btn-large btn-important agence-contactez-nous display-block hidden-tablet hidden-desktop">
+					<i class="icon-v5-paperplane opacity-4 margin-right-10"></i>
+					<span id="texte-contactez-nous">$$LG:CONTACTEZNOUS pcase$$</span>
+					<span id="email-contactez-nous" class="display-none" itemprop="email">$$CV:EMAIL encodemail javascript$$</span>
+				</div>
+				<div id="bouton-contactez-nous" class="$$TYPEBOUTON$$ btn-block btn-large btn-important agence-contactez-nous display-block hidden-phone">
+					<i class="icon-v5-paperplane opacity-4 margin-right-10"></i>
+					<span id="texte-contactez-nous">$$LG:CONTACTEZNOUS pcase$$</span>
+					<span id="email-contactez-nous" class="display-none" itemprop="email">$$CV:EMAIL encodemail javascript$$</span>
+				</div>
+			$$END$$
+		$$END$$
+	$$END$$
+
+	$$IF=:1:CONTACTAGENCESUPP$$
+		$$IF:CV:EMAILLOC$$<li class="email-loc">$$LG:EMAIL pcase$$ $$LG:LOCATION lcase$$ :<span class="typo-action"> $$CV:EMAILLOC encodemail javascript$$</span></li>$$END$$
+		$$IF:CV:EMAILVEN$$<li class="email-vente">$$LG:EMAIL pcase$$ $$LG:VENTE lcase$$ :<span class="typo-action"> $$CV:EMAILVEN encodemail javascript$$</span></li>$$END$$
+	$$END$$
+
+	$$IF=:1:SHOWURLSITE$$
+	  $$IF:CV:URL$$<li class="agence-siteweb">$$LG:SITE pcase$$ : <span class="typo-action" itemprop="url"><a href="$$CV:URL lcase$$" title="agence immobilière $$CV:VILLE lcase$$"><span itemprop="title">$$CV:URL lcase$$</span></a></span></li>$$END$$
+	$$END$$
+</ul>

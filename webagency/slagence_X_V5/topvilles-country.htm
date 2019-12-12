@@ -1,0 +1,131 @@
+$$INIT:IDT=TOPVILLE$$
+$$INIT:TOPVILLE=1$$
+$$A:JS_TOPVILLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$E:ID3:URW-GETVALUES:~ressource:Country:~values:pays$$
+<!-- SEO > IDPAYS : $$FORM:IDPAYS$$ -->
+<div class="row-fluid">
+	<div class="span12">
+		<ul class="breadcrumb">
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$URLBASE$$" itemprop="url"><span itemprop="title">Accueil</span></a>
+			</li>
+			<li><span class="icon-v5-arrow-right-6"></span></li>
+			<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+				<a href="$$URWRACINE:URLVIRTUELLE$$" itemprop="url"><span itemprop="title">Annonces</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				n>
+				<a href="$$TTTB:URLVIRTUELLETT$$" itemprop="url"><span itemprop="title">$$ID3:URW-GETVALUES:PAYS$$&nbsp;<span class="typo-action">($$TTTB:NBANNONCESTOTAL$$ annonce$$TTTB:NBANNONCESTOTAL pluriel$$)</spa</span></a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span12">
+		<h1>$$H1_IMMOBILIER$$</h1>
+		<hr$$IF:TEXTE-TOPVILLES$$ class="margin-bottom-5"$$END$$ >
+	</div>
+</div>
+<!--#include virtual="referencement/incl_texte_immobilier.htm" -->
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~nbAnnoncesMin:1:~idPays:QRY:idPays$$
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span4">
+		$$BIF:TTTB$$
+			$$DO$$
+				$$IFPREV:TTTB:IDTYPETRANSACTION$$
+					$$A:CALMAX=0$$
+				$$END$$
+					$$A:CALMAX=@@CALMAX exec XX+1@@$$
+					$$IFPREV:TTTB:IDTYPETRANSACTION$$
+					<div class="liste-immobilier relative">
+						<ul class="nav nav-pills nav-stacked nav-immobilier">
+						<li class="element-liste-titre">
+							<h2 class="h3-like">
+								<a href="$$TTTB:URLVIRTUELLETT$$">$$TTTB:TYPETRANSACTION pcase$$</a>
+							</h2>
+						</li>
+					$$END:IFPREV$$
+					<li class="element-liste$$IF+:6:CALMAX$$ display-none$$END$$"><a href="$$TTTB:URLVIRTUELLE$$">$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$TTTB:TYPEBIEN pcase$$  <span class="typo-action">($$TTTB:NBANNONCES$$)</span></a></li>
+					$$IFNEXT:TTTB:IDTYPETRANSACTION$$ 
+						</ul>
+						<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+					</div>
+				$$END$$
+			$$LOOP$$
+		$$BFIN$$
+	</div>
+	<div class="span5 colonne-responsive">
+		$$B:IMMOBW:PLANSITE-REGIONS:ALIAS:TOPREG:~nbAnnoncesMin:1:~idPays:QRY:idPays$$
+		$$BIF:TOPREG$$
+		<div class="liste-immobilier relative">
+			<ul class="nav nav-pills nav-stacked nav-immobilier">
+			<li class="element-liste-titre">
+				<h2 class="h3-like">
+					Nos annonces par région
+				</h2>
+			</li>
+		$$DO$$
+			$$IFPREV:TOPREG:REGION$$
+				$$IF:TOPREG:NBANNONCES$$
+					<li class="element-liste$$IF+:10:TOPREG:I$$ display-none$$END$$"><a href="$$TOPREG:URLVIRTUELLE$$">Immobilier $$TOPREG:REGION$$&nbsp;<span class="typo-action">($$TOPREG:NBANNONCES$$)</span></a></li>
+				$$END$$
+			$$END:REGION$$
+		$$LOOP$$
+			</ul>
+			<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+		</div>
+		$$BFIN$$
+		
+		$$B:IMMOBW:PLANSITE-DEPARTEMENTS:ALIAS:TOP:~nbAnnoncesMin:1:~idPays:QRY:idPays$$
+		$$BIF:TOP$$
+		<div class="liste-immobilier relative">
+			<ul class="nav nav-pills nav-stacked nav-immobilier">
+			<li class="element-liste-titre">
+				<h2 class="h3-like">
+					Nos annonces par département
+				</h2>
+			</li>
+		$$DO$$
+			$$IFPREV:TOP:DEPARTEMENT$$
+				$$IF:TOP:NBANNONCES$$
+					<li class="element-liste$$IF+:10:TOP:I$$ display-none$$END$$"><a href="$$TOP:URLVIRTUELLE$$">Immobilier $$TOP:DEPARTEMENT$$&nbsp;<span class="typo-action">($$TOP:NBANNONCES$$)</span></a></li>
+				$$END$$
+			$$END:DEPARTEMENT$$
+		$$LOOP$$
+				<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+			</ul>
+		</div>
+		$$BFIN$$
+		
+		$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TVILLES:~top:50$$
+		$$BIF:TVILLES$$
+		<div class="liste-immobilier relative">
+			<ul class="nav nav-pills nav-stacked nav-immobilier">
+			<li class="element-liste-titre">
+				<h2 class="h3-like">
+					Nos annonces par villes
+				</h2>
+			</li>
+		$$DO$$
+			$$IF:TVILLES:NBANNONCES$$
+				<li class="element-liste$$IF+:10:TVILLES:I$$ display-none$$END$$"><a href="$$TVILLES:URLVIRTUELLE$$">Immobilier $$TVILLES:VILLE$$&nbsp;<span class="typo-action">($$TVILLES:NBANNONCES$$)</span></a></li>
+			$$END$$
+		$$LOOP$$
+			</ul>
+			<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+		</div>
+		$$BFIN$$
+	</div>
+	<div class="span3 hidden-phone">
+		$$IF=:1:MULTIAGENCES$$
+			<!--#include virtual="agences/incl_pub.htm" -->
+		$$END$$
+		$$IF=:0:MULTIAGENCES$$
+			<!--#include virtual="agence/incl_pub_agence.htm" -->
+		$$END$$	
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

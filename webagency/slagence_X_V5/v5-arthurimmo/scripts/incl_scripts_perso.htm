@@ -1,0 +1,405 @@
+<script type="text/javascript" src="$$-$$scripts/js/slick.min.js"></script>
+<script type="text/javascript" src="$$-$$scripts/js/tipso.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        /* -------------------------------------------*/
+        /* -- TOOLTIPS */
+        /* -------------------------------------------*/
+
+        $('.has-tooltip').tipso({
+            speed: 100,
+            background: '#f89d21',
+            width: 140,
+            color: '#fff',
+        });
+
+        $('.has-tooltip-left').tipso({
+            speed: 100,
+            position: 'left',
+            background: '#f89d21',
+            width: 140,
+            color: '#fff'
+        });
+
+
+        /* -------------------------------------------*/
+        /* -- NEWSLETTER */
+        /* -------------------------------------------*/
+
+        $(".form-nl").on("click",".btn-nl", function (e) {
+            e.preventDefault();
+            var bton = $(this);
+            $.ajax({
+                type: "POST",
+                data : bton.closest(".form-nl").serialize(),
+                dataType:"json",
+                url: "/footer,nl_email.htm",
+                beforeSend: function() {
+                    $(".form-nl-alert").html("");
+                },
+                success: function(data) {
+                    var idpublication = data.idpublication;
+                    if(data.message.length > 0) {
+                        $(".form-nl-alert").html(data.message);
+                        if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                            $("#email-message").addClass("error").removeClass("success");
+                        } else {
+                            $("#email-message").removeClass("error").addClass("success");
+                        }
+                    } else {
+                        $(".form-nl-alert").html(messageOK);
+                        $("#email-message").val("");
+                        alert(messageOK);
+                        $("#email-message").removeClass("error").addClass("success");
+                    }
+                },
+                error : function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                },
+                complete: function() {
+                    $(".form-nl-alert").show("slow").delay(2500).hide("slow");
+                }
+            });
+        });
+
+        /* -------------------------------------------*/
+        /* -- PARTENAIRES FOOTER */
+        /* -------------------------------------------*/
+
+        $('.carousel-part').slick({
+            autoplay: true,
+            autoplaySpeed: 0,
+            arrows: false,
+            slidesToShow: 7,
+            slidesToScroll: 1,
+            cssEase: 'linear',
+            speed: 5000,
+            accessibility: false,
+            draggable: false,
+            lazyLoad: 'progressive',
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            swipe: false,
+            touchMove: false,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 6
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                },
+                {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }
+            ]
+        });
+
+    });
+</script>
+
+$$REM$$<!-- SLIDER AGENCE FOOTER (MULTI UNIQUEMENT) -->$$END$$
+$$IF=:1:MULTIAGENCES$$
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.footer-agences').cycle({
+                fx:'scrollUp',
+                speed       : 300,
+                timeout     : 5000,
+                width       : '100%',
+                fit         : 1,
+                pause       : 'true'
+            });
+        });
+    </script>
+$$END$$
+
+$$REM$$<!-- SLIDER H1 HOME (MULTI UNIQUEMENT) -->$$END$$
+$$IF=:INDEX:IDT$$
+
+    $$REM$$<!-- CONTROLES VIDEO HOME -->$$END$$
+    $$IF=:1:MF_SLIDER_CONTROLS$$
+        <script>
+            var video = document.getElementById("slidermf-video");
+            var playButton = document.getElementById("slidermf-play");
+            var pauseButton = document.getElementById("slidermf-pause");
+            var muteButton = document.getElementById("slidermf-mute");
+            playButton.addEventListener("click", function() {
+                video.play();
+            });
+            pauseButton.addEventListener("click", function() {
+                video.pause();
+            });
+            muteButton.addEventListener("click", function() {
+                if (video.muted == false) {
+                    video.muted = true;
+                    muteButton.innerHTML = '<i class="mf-icon-mute"></i>';
+                } else {
+                    video.muted = false;
+                    muteButton.innerHTML = '<i class="mf-icon-unmute"></i>';
+                }
+            });
+        </script>
+    $$END$$
+
+    $$IF=:1:MULTIAGENCES$$
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.slidermf-h1-switch').cycle({
+                    fx:'scrollUp',
+                    speed       : 300,
+                    timeout     : 5000,
+                    width       : '100%',
+                    fit         : 1,
+                    pause       : 'true'
+                });
+            });
+        </script>
+    $$END$$
+$$END$$
+
+
+
+$$IF=:INDEX:IDT$$
+
+    $$IF=:1:ARTHUR_POPUP$$
+
+        $$REM$$<!-- INITIALISATION -->$$END$$
+        <script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.arthurpop-trigger').colorbox({
+                    inline: true,
+                    maxWidth: '80%',
+                    close: 'X',
+                    fixed: 'true'
+                });
+            });
+        </script>
+
+        $$REM$$<!-- SI DELAI AVANT OUVERTURE -->$$END$$
+        $$IF:ARTHUR_POPUP_OPENDELAY$$
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    setTimeout(function() {
+                        $('.arthurpop-trigger').trigger('click');
+                    }, $$ARTHUR_POPUP_OPENDELAY$$);
+                });
+            </script>
+        $$END$$
+        $$REM$$<!-- SINON AFFICHAGE DIRECT -->$$END$$
+        $$IF0:ARTHUR_POPUP_OPENDELAY$$
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('.arthurpop-trigger').trigger('click');
+                });
+            </script>
+        $$END$$
+
+        $$REM$$<!-- SI DELAI AVANT FERMETURE -->$$END$$
+        $$IF:ARTHUR_POPUP_CLOSEDELAY$$
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    setTimeout(function() {
+                        $('.arthurpop-trigger').colorbox.close();
+                    }, $$ARTHUR_POPUP_CLOSEDELAY$$);
+                });
+            </script>
+        $$END$$
+
+    $$END$$
+
+
+    <script>
+        $(document).ready(function(){
+
+            $(document).on("scroll", onScroll);
+
+            /* -------------------------------------------*/
+            /* -- SCROLL ANCRES */
+            /* -------------------------------------------*/
+
+            $('.scrollto').on('click', function() {
+                var to = $(this).attr('href');
+                var speed = 750;
+                $('html, body').animate( { scrollTop: $(to).offset().top - 100 }, speed );
+                return false;
+            });
+
+
+            /* -------------------------------------------*/
+            /* -- NAV LATERALE */
+            /* -------------------------------------------*/
+
+            function onScroll(event){
+                var scrollPos = $(document).scrollTop() + 105;
+                $('.sidenav-item:first').addClass('active');
+                $('.sidenav-item').slice(1).each(function () {
+                    var currLink = $(this);
+                    var refElement = $(currLink.attr("href"));
+                    if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() + 145 > scrollPos) {
+                        $('.sidenav-item').removeClass("active");
+                        currLink.addClass("active");
+                    }
+                    else{
+                        currLink.removeClass("active");
+                    }
+                });
+            }
+
+
+        });
+    </script>
+$$END$$
+
+$$IF=:FINANCEMENT:IDT$$
+    <script>
+        $(document).ready(function(){
+
+            /* -------------------------------------------*/
+            /* -- FORMULAIRE FINANCEMENT */
+            /* -------------------------------------------*/
+
+            //Classe générique pour gérer ACTIF/INACTIF
+            $(".btn-financement").on("click",function(e) {
+                e.preventDefault();
+                var btn = $(this);
+                var val = btn.data("value");
+                var champ = btn.data("hidden");
+                $("#"+champ).val(val);
+                $(".btn-financement[data-hidden='"+champ+"']").removeClass("btn-action").addClass("btn-neutre");
+                btn.addClass("btn-action").removeClass("btn-neutre");
+            });
+
+            // Classe spécifique pour gérer les 3 groupes.
+            $(".btn-financement[data-hidden='FinTypeFinancement']").on("click",function() {
+                $("."+$(this).data("hidden")).hide();
+                $("#"+$(this).data("cible")).show();
+                if($(this).data("cible") == 'FinTypeFinancement-2'){
+                    $(".SituationPerso").hide();
+                } else {
+                    $(".SituationPerso").show();
+                }
+
+                $(".FinSituationPerso").show();
+                $(".FinSubmit").show();
+            });
+
+            // Situation familiale
+            $(".btn-financement[data-hidden='FinSituation']").on("click",function() {
+                $("."+$(this).data("hidden")).hide();
+                $("#"+$(this).data("cible")).show();
+                if($(this).data("cible") == 'FinSituation-2'){
+                    $(".FinSituationConjoint").show();
+                } else {
+                    $(".FinSituationConjoint").hide();
+                }
+            });
+
+            // Situation professionnelle
+            $("select[name='FinSituationPro']").on("change",function() {
+                if($('option:selected',this).data("cible") == 'FinSituationSalarie'){
+                    $("#FinSituationSalarie").show();
+                } else {
+                    $("#FinSituationSalarie").hide();
+                }
+                if($('option:selected',this).data("statut") == 'freelance'){
+                    $(".FinSituationFreelance").hide();
+                } else {
+                    $(".FinSituationFreelance").show();
+                }
+            });
+
+            // Signature
+            $(".btn-financement[data-hidden='ProSign']").on("click",function() {
+                $("."+$(this).data("hidden")).hide();
+                $("#"+$(this).data("cible")).show();
+            });
+
+            // Autre type de projet
+            $("select[name='ProTypeProjet']").on("change",function() {
+                if($('option:selected',this).data("cible") == 'ProTypeProjetAutre'){
+                    $(".ProTypeProjetAutre").show();
+                } else {
+                    $(".ProTypeProjetAutre").hide();
+                }
+            });
+
+            // Autres charges
+            $(".btn-financement[data-hidden='RegrpCharges']").on("click",function() {
+                $("."+$(this).data("hidden")).hide();
+                $("#"+$(this).data("cible")).show();
+            });
+
+            // Logement
+            $(".btn-financement[data-hidden='RegrpLogement']").on("click",function() {
+                $("."+$(this).data("hidden")).hide();
+                $("#"+$(this).data("cible")).show();
+            });
+
+            $("#form-financement").submit(function(e){
+                var error = false;
+                $(".btn-financement-required").each(function(){
+                    if( $(this).is(":visible") ){
+                        var hid = $(this).data("hidden");
+                        var valhid = $("#"+hid).val();
+                        if( !valhid ){
+                            error = true;
+                            $(".btn-financement[data-hidden='"+hid+"']").addClass("btn-error");
+                        }
+                    }
+                });
+                $(".required").each(function(){
+                    if( $(this).is(":visible") ){
+                        if( !$(this).val() ){
+                            error = true;
+                            $(this).addClass("field-error");
+                        }
+                    }
+                });
+                if( error ){
+                    e.preventDefault();
+                    alert("Veuillez renseigner tous les champs obligatoires");
+                }
+            });
+
+            if( $("#form-financement").length ){  //on vérifie qu'on est sur le form de financement.
+                $(".btn-financement").each(function(){
+                    var hid = $(this).data("hidden");
+                    var valhid = $("#"+hid).val();
+                    var valbtn = $(this).data("value");
+                    if( valhid == valbtn ){
+                        $(this).click();
+                    }
+                });
+            }
+
+        });
+    </script>
+$$END$$
+
+$$IF=:RESULTATS:IDT$$
+    <script type="text/javascript">
+        calculMensualite = function(taux,prix,nmensualite,dureeemprunt,idAnnonce){
+            prix = prix.replace(/\s/g,"");
+            prix = parseFloat(prix);
+            montantpret =  Math.floor(prix/1.2 * 100) / 100;
+            mensualite = montantpret*(taux/100)/(1-Math.pow((1+taux/100/12),(-nmensualite)))/12;
+            mensualite = Math.floor(mensualite * 100) / 100;
+            $('.mensualite-'+idAnnonce).html(mensualite);
+        };
+    </script>
+$$END$$
+
+
+
+<!--#include virtual="scripts/incl_scripts_perso_demut.htm" -->

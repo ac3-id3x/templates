@@ -1,0 +1,123 @@
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_COLORBOX=1$$
+$$E:IMMOBW:360PREVISITE:ADD:ANNDETAIL_IDANNONCE$$
+$$E:IMMOBW:LOAD-INFOS-FORM:ALIAS:LOADINFOS$$
+<div class="row-fluid margin-top-5 margin-bottom-5">
+	<div class="span$$IF=:PRESTIGE:PAGE_STYLE$$12$$END$$$$IF!:PRESTIGE:PAGE_STYLE$$7$$END$$">
+		$$REM$$<a class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-zoom-detail btn-tooltip margin-right-5" data-placement="top" data-title="$$LG:AFFICHERPHOTOS pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/zoom-in.png" alt="$$LG:AGRANDIR pcase$$"></a>$$END$$
+		$$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+			$$BIF:VIDEO$$
+				$$DO:1:1$$
+				<a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="$$TYPEBOUTON$$ btn-small btn-important bouton-video-detail btn-tooltip margin-right-5 small" data-placement="top" data-title="$$LG:VIDEO pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO pcase$$" class="margin-right-5"> $$LG:VIDEO pcase$$</a>
+				$$LOOP$$
+			$$BFIN$$
+			$$IF:ANNDETAIL:VIDEO_URL$$
+				<a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="$$TYPEBOUTON$$ btn-small btn-important bouton-video-detail btn-tooltip margin-right-5 smallest" data-placement="top" data-title="$$LG:VIDEO pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO pcase$$" class="margin-right-5"> $$LG:VIDEO pcase$$</a>
+			$$END$$
+		$$IF:ANNDETAIL:ID360$$	
+			$$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+				$$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+			$$END$$
+			<a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-video-360 btn-tooltip margin-right-5 hidden-phone" data-placement="top" data-title="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/picto360.png" alt="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"></a>
+		$$END$$
+		$$IF:ANNDETAIL:360_URL$$
+			<a href="$$ANNDETAIL:360_URL$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-video-360 btn-tooltip margin-right-5 hidden-phone" data-placement="top" data-title="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/picto360.png" alt="$$IF0:TITLE_WIDGET_360$$360&deg;$$END$$$$IF:TITLE_WIDGET_360$$$$TITLE_WIDGET_360$$$$END$$"></a>
+		$$END$$
+		$$B:IMMOBW:VISUELS:ALIAS:PDF:~idannonce:REP:1:~idTypeVisuel:18$$
+		$$BIF:PDF$$
+			$$DO$$
+				<a href="$$PDF:URL$$" target="_blank" rel="nofollow" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-pdf-detail btn-tooltip margin-right-5 hidden-phone" data-placement="top" data-title="PDF"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/pdf.png"></a>
+			$$LOOP$$
+		$$BFIN$$
+		<a target="_blank" href="/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,fiche_visite$$IF:CHOIXFICHEVISITE$$_v$$CHOIXFICHEVISITE$$$$END$$.htm" rel="nofollow" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-video-imprimer hidden-phone btn-tooltip margin-right-5" data-placement="top" data-title="$$LG:IMPRIMER pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/printer.png" alt="$$LG:IMPRIMER pcase$$"></a>
+		<div class="dropdown display-inline btn-tooltip margin-right-5" data-placement="top" data-title="$$LG:ENVOYERAMI pcase$$">
+				<div data-toggle="dropdown" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-envoyer-ami"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/send.png" alt="$$LG:ENVOYERAMI pcase$$"></div>
+				<div class="typo-black dropdown-menu popup-envoyer-ami margin-top-5 pull-left">
+					<form method="post" id="form-envoi-ami" action="/$$REP:2$$/$$REP:1$$/$$REP:0$$" novalidate="novalidate">
+						<input type="hidden" name="u" value="ID3:FORMMAIL" />$$REM$$<!--// [INPUT OBLIGATOIRE] macro utilisee //-->$$END$$
+						<input type="hidden" name="path" value="contact" />			
+						<input type="hidden" name="page_ok" value="/contact,ami_envoi.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] template à charger si la macro ne renvoie pas de message d'erreur //-->$$END$$
+            <input type="hidden" name="page_err" value="/contact,ami_envoi.htm" />$$REM$$<!--// [input non obligatoire] template à charger si la macro renvoie un message d'erreur.  //-->$$END$$
+            <input type="hidden" name="cfg_form" value="ami" />$$REM$$<!--// [INPUT OBLIGATOIRE] Nom du fichier de config, sans l'extension .cfg et sans le préfixe formmail_ //-->$$END$$
+						<input type="hidden" name="cfg_emails" value="ami" />$$REM$$<!--// [INPUT OBLIGATOIRE] Liste des templates d'email (séparateur virgule ou point-virgule). //-->$$END$$
+						$$REM$$<!--// infos pour lien annonce //-->$$END$$
+						<input type="hidden" name="srv" value="$$SRV$$" />$$REM$$<!--// url site envoyé dans message par SRV //-->$$END$$
+						<input type="hidden" name="rep" value="$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$" />$$REM$$<!--// idpublication + idannonce envoyés dans message par FORM:REP //-->$$END$$
+						<input type="hidden" name="style" value="$$PAGE:WAG_STYLE_DETAIL$$" />$$REM$$<!--// nom de la page détail envoyé dans message par FORM:STYLE //-->$$END$$
+						<input type="hidden" name="lang" value="$$LANGUE$$" /> $$REM$$<!--// lang courante envoyé dans message par FORM:LANG //-->$$END$$
+						$$REM$$<!--// infos pour descriptif annonce //-->$$END$$
+						<input type="hidden" name="idtt" value="$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$" />
+						<input type="hidden" name="libelle" value="$$ANNDETAIL:LIBELLE$$" />
+						<input type="hidden" name="url" value="$$ANNDETAIL:URLVIRTUELLE$$" />
+						$$IF:ANNDETAIL:SURFACE$$ 
+			      		<input type="hidden" name="surface" value="($$ANNDETAIL:SURFACE$$ m2)" />
+			     		$$END$$ 
+			      		<input type="hidden" name="ref" value="$$ANNDETAIL:REFANNONCE$$" />
+			      		<input type="hidden" name="ville" value="$$ANNDETAIL:VILLE$$" /> 
+			      		<input type="hidden" name="cp" value="$$ANNDETAIL:CP$$" /> 
+			      		<input type="hidden" name="prix" value="$$ANNDETAIL:PRIX$$" /> 
+						<input type="hidden" name="descriptif" value="$$ANNDETAIL:DESCRIPTIF_FR format 70 replace " '$$" />
+						<div class="row-fluid pagination-left">
+							<div class="span6">
+								<div class="control-group margin-0">
+									<label>$$LG:SONNOM pcase$$</label>
+									<input type="text" class="center" name="tonom" id="tonom">
+								</div>
+								<div class="control-group margin-0 margin-top-10">
+									<label>$$LG:VOTRENOM pcase$$</label>
+									<input type="text" class="center" name="nom_from" id="nom_from" $$IF:LOADINFOS:NOM$$value="$$LOADINFOS:NOM$$"$$END$$>
+								</div>
+							</div>
+							<div class="span6">
+								<div class="control-group margin-0">
+									<label>$$LG:SONEMAIL pcase$$</label>
+									<input type="email" class="center" name="toemail" id="toemail">
+								</div>
+								<div class="control-group margin-0 margin-top-10">
+									<label>$$LG:VOTREMAIL pcase$$</label>
+									<input type="email" class="center" name="email_from" id="email_from" $$IF:LOADINFOS:EMAIL$$value="$$LOADINFOS:EMAIL$$"$$END$$>
+								</div>
+							</div>
+						</div>
+						<div class="control-group margin-0 margin-top-10">
+							<textarea name="msg" class="center" rows="5">$$LG:VOICIANNONCEDECOUVRE pcase$$ $$ANNDETAIL:URLVIRTUELLE$$</textarea>
+						</div>
+						<div class="control-group margin-top-5">
+							<label class="checkbox inline">
+								<input type="checkbox" name="memoriser"$$IF=:true:LOADINFOS:MEMO$$ checked="checked"$$END$$> $$LG:MEMORISERINFO pcase$$
+							</label>
+						</div>
+						<div class="control-group margin-0">
+							<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-form-envoyer-ami" data-loading-text="$$LG:ENVOIENCOURS pcase$$">$$LG:ENVOYERAMI pcase$$</div>
+						</div>
+						<div class="message-erreur-ami bold pagination-left margin-top-5"></div>
+						<div class="display-none nouvel-envoi-ami bold pagination-left margin-top-5 cursor-pointer typo-action">$$LG:NOUVELENVOIAMI pcase$$</div>
+						<script type="text/javascript">var messageAmiOK = '$$LG:BIENENVOYE pcase$$';</script>
+					</form>
+				</div>
+		</div>
+		<a href="#" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small bouton-ajouter-selection-detail btn-tooltip margin-right-5" data-placement="top" data-title="$$LG:AJOUTERSEL pcase$$" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$" data-title-ok="$$LG:ANNONCEAJOUTEE pcase$$"><img src="$$~$$images/widget/$$PICTO_COULEUR$$/star.png" alt="$$LG:AJOUTERSEL pcase$$"></a>
+		<a href="/outils,calculettes.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-small btn-tooltip margin-right-5 bouton-calculette hidden-phone" data-placement="top" data-title="$$LG:CALCULIMMO pcase$$"><!--#include virtual="detail/incl_detail_widget_calculettes.htm" --></a>
+		<!--#include virtual="detail/incl_detail_selection_js.htm" -->
+	</div>
+	$$IF!:PRESTIGE:PAGE_STYLE$$
+		$$IF=:1:PICTOANNONCE$$
+		<div class="span5">
+			<div class="row-fluid">
+				<!--#include virtual="detail/incl_pictos_annonce.htm" -->
+			</div>
+		</div>
+		$$END$$
+	$$END$$
+</div>
+$$IF=:PRESTIGE:PAGE_STYLE$$
+$$IF=:1:PICTOANNONCE$$
+<div class="row-fluid hidden-phone margin-top-10">
+	<div class="span12">
+		<div class="row-fluid">
+			<!--#include virtual="detail/incl_pictos_annonce.htm" -->
+		</div>
+	</div>
+</div>
+$$END$$
+$$END$$

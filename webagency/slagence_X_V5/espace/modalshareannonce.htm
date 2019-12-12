@@ -1,0 +1,55 @@
+<div class="modal-header clearfix typo-black">
+	<h3 class="modal-title">Envoyer ces annonces à vos amis
+		<i class="btn typo-action cursor-pointer general typoicon-remove pull-right"
+		ng-click="$dismiss()">
+		</i>
+	</h3>
+</div>
+
+<div class="modal-body typo-black" style="min-height: 300px">
+	<div class="margin-top-10">
+		<select ng-options="Friend.Email for Friend in Friends" ng-model="FriendMail" ng-change="AddSendFriends(FriendMail)">
+			<option style="display:none" value="">Choisissez vos amis</option>
+		</select>
+	</div>
+
+	<br>
+
+	<div class="row-fluid">
+		<div class="control-group margin-0">
+			<label class="pagination-left">$$LG:AJOUTERNOUVELLEADRESSE pcase$$</label>
+
+			<div class="row-fluid">
+				<div class="span10 margin-bottom-5">
+					<input type="email" class="width-100-pourcent" name="toemail" id="toemail" ng-model="addNewFriend" placeholder="Adresse e-mail">
+				</div>
+
+				<div class="span2">
+					<a class="btn btn-primary width-100-pourcent" ng-click="validAdFriend(addNewFriend)">Ajouter</a>
+				</div>
+			</div>
+
+			<div ng-repeat="selectedFriend in selectedFriends" class="margin-top-5">
+				<div class="btn btn-neutre pull-left">
+					{{selectedFriend}}<span class="smallest general typoicon-remove margin-left-5 remove-friend" ng-click="removeFriend(selectedFriend)"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row-fluid">
+		<label class="checkbox inline">
+			<input type="checkbox" name="memoriser"$$IF=:true:LOADINFOS:MEMO$$ checked="checked"$$END$$> $$LG:MEMORISERINFO pcase$$
+		</label>
+	</div>
+
+	<div class="message-erreur-ami bold pagination-left margin-top-5"></div>
+	<div class="display-none nouvel-envoi-ami bold pagination-left margin-top-5 cursor-pointer typo-action">$$LG:NOUVELENVOIAMI pcase$$</div>
+	<script type="text/javascript">var messageAmiOK = '$$LG:BIENENVOYE pcase$$';</script>
+</div>
+
+<div class="modal-footer typo-black">
+	<button class="btn btn-primary" ng-click="ok(selectedFriends)">OK</button>
+</div>

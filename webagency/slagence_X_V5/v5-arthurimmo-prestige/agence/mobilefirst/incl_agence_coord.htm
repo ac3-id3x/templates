@@ -1,0 +1,61 @@
+<div class="agence-infos">
+    <div class="agence-infos-ttl">$$IF=:FR:LANGUE$$Venir à l'agence$$END$$$$IF!:FR:LANGUE$$Come to the agency$$END$$</div>
+    <div class="agence-infos-inner">
+        <div class="agence-coord">
+            <div class="agence-infos-ssttl">$$LG:ADRESSE$$</div>
+            <span class="typo-action">$$CV:NOM$$</span><br>
+            $$IF!:CPVILLEAGENCE:CV:ADRESSE$$
+                <i class="mf-icon-localisation typo-action"></i>&nbsp;
+                <span itemprop="streetaddress" class="agence-adresse">$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 trim$$</span><br>
+            $$END$$
+            <span itemprop="postalCode" class="agence-cp">$$CV:CP$$</span>
+            <span itemprop="addressLocality" class="agence-ville">$$CV:VILLE$$</span>
+            <ul class="nav nav-stacked margin-top-20">                
+                $$IF!:1:HIDE_EMAIL_AGENCE$$
+                    $$IF:CV:EMAIL$$
+                        $$IF!:1:BTNSHOWMAIL$$
+                            $$IF0:CONTACT_EMAIL_CLICKABLE$$
+                                <li class="agence-email">$$LG:EMAIL pcase$$ : <span class="typo-action">$$CV:EMAIL encodemail javascript$$</span></li>
+                            $$END$$
+                            $$IF:CONTACT_EMAIL_CLICKABLE$$
+                                <li class="agence-email">$$LG:EMAIL pcase$$ : <span class="typo-action"><a href="mailto:$$CV:EMAIL$$">$$CV:EMAIL$$</a></span></li>
+                            $$END$$
+                        $$END$$
+                        $$IF=:1:BTNSHOWMAIL$$
+                            <div id="bouton-contactez-nous" class="$$TYPEBOUTON$$ btn-block btn-large btn-important agence-contactez-nous display-block hidden-tablet hidden-desktop">
+                                <i class="icon-v5-paperplane opacity-4 margin-right-10"></i>
+                                <span id="texte-contactez-nous">$$LG:CONTACTEZNOUS pcase$$</span>
+                                <span id="email-contactez-nous" class="display-none" itemprop="email">$$CV:EMAIL encodemail javascript$$</span>
+                            </div>
+                            <div id="bouton-contactez-nous" class="$$TYPEBOUTON$$ btn-block btn-large btn-important agence-contactez-nous display-block hidden-phone">
+                                <i class="icon-v5-paperplane opacity-4 margin-right-10"></i>
+                                <span id="texte-contactez-nous">$$LG:CONTACTEZNOUS pcase$$</span>
+                                <span id="email-contactez-nous" class="display-none" itemprop="email">$$CV:EMAIL encodemail javascript$$</span>
+                            </div>
+                        $$END$$
+                    $$END$$
+                $$END$$
+
+                $$IF=:1:CONTACTAGENCESUPP$$
+                    $$IF:CV:EMAILLOC$$<li class="email-loc">$$LG:EMAIL pcase$$ $$LG:LOCATION lcase$$ :<span class="typo-action"> $$CV:EMAILLOC encodemail javascript$$</span></li>$$END$$
+                    $$IF:CV:EMAILVEN$$<li class="email-vente">$$LG:EMAIL pcase$$ $$LG:VENTE lcase$$ :<span class="typo-action"> $$CV:EMAILVEN encodemail javascript$$</span></li>$$END$$
+                $$END$$
+
+                $$IF=:1:SHOWURLSITE$$
+                  $$IF:CV:URL$$<li class="agence-siteweb">$$LG:SITE pcase$$ : <span class="typo-action" itemprop="url"><a href="$$CV:URL lcase$$" title="agence immobilière $$CV:VILLE lcase$$"><span itemprop="title">$$CV:URL lcase$$</span></a></span></li>$$END$$
+                $$END$$
+            </ul>
+        </div>
+        $$REM$$
+        $$IF!:1:HIDE_AGENCECONTACTLISTE$$
+            <div class="agence-contacts">
+                <div class="agence-infos-ssttl">$$LG:CONTACTS$$</div>
+                <!--#include virtual="agence/incl_contact_liste.htm" -->
+            </div>
+        $$END$$
+        $$END:REM$$
+    </div>
+    <p class="margin-top-30">
+        <a href="https://www.bing.com/maps/default.aspx?rtp=~adr.$$CV:ADRESSE$$&lvl=16" target="_blank" class="btn btn-action">$$LG:TROUVERITINERAIRE pcase$$</a>
+    </p>
+</div>

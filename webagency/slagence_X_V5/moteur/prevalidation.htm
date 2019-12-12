@@ -1,0 +1,89 @@
+$$INIT:IDT=PREVALIDATION$$
+$$A:JS_PREVALIDATION=1$$
+$$REM$$====================================================================
+//// <summary>Page intermédiaire du moteur de recherche : quand VILLE, DP ou CP ambigu</summary>
+//// <remarks>
+//// <para>On arrive ici si option champs libres pour entrer le nom des villes</para>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </para>
+//// </remarks>
+//// <update date="2010-10-11" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+<!--#include virtual="header/incl_haut.htm"-->
+<div class="row-fluid">
+	<div class="span12">
+		<h1>$$LG:VOTRERECHERCHE pcase$$ :	$$RECH:PHRASE pcase$$</h1>
+		<hr>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<p>$$LG:LOCAMBIGU$$</p>
+		<p>$$LG:SELECLOC$$</p>
+	</div>
+</div>
+$$B:IMMOBW:ANN-ES:ALIAS:RECH:QRY:IDTT:::NOVISU:~NOSTAT:1$$$$BIF:RECH$$$$DO:1:1$$$$LOOP$$$$BFIN$$	
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span12">
+	<form method="get" action="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm">
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		<!--#include virtual="moteur/incl_input_langue.htm" -->	
+		$$IF:FORM:IDTYPEBIEN$$<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />$$END:IDTYPEBIEN$$
+		$$IF:FORM:NB_CHAMBRES$$<input type="hidden" name="nb_chambres" value="$$FORM:NB_CHAMBRES$$" />$$END:NB_CHAMBRES$$
+		$$IF:FORM:NB_PIECES$$<input type="hidden" name="nb_pieces" value="$$FORM:NB_PIECES$$" />$$END:NB_PIECES$$
+		$$IF:FORM:PXMIN$$<input type="hidden" name="pxmin" value="$$FORM:PXMIN$$" />$$END:PXMIN$$
+		$$IF:FORM:PXMAX$$<input type="hidden" name="pxmax" value="$$FORM:PXMAX$$" />$$END:PXMAX$$
+		$$IF:FORM:SURFACEMIN$$<input type="hidden" name="surfacemin" value="$$FORM:SURFACEMIN$$" />$$END:SURFACEMIN$$
+		$$IF:FORM:SURFACEMAX$$<input type="hidden" name="surfacemax" value="$$FORM:SURFACEMAX$$" />$$END:SURFACEMAX$$
+		$$IF:FORM:CA_ACTUELMIN$$<input type="hidden" name="ca_actuelmin" value="$$FORM:CA_ACTUELMIN$$" />$$END:CA_ACTUELMIN$$
+		$$IF:FORM:CA_ACTUELMAX$$<input type="hidden" name="ca_actuelmax" value="$$FORM:CA_ACTUELMAX$$" />$$END:CA_ACTUELMAX$$
+		$$IF:FORM:SI_MEUBLE$$<input type="hidden" name="si_meuble" value="$$FORM:SI_MEUBLE$$" />$$END:SI_MEUBLE$$
+		$$IF:FORM:PHOTO$$<input type="hidden" name="photo" value="$$FORM:PHOTO$$" />$$END:PHOTO$$
+		$$IF:FORM:PROX$$<input type="hidden" name="prox" value="$$FORM:PROX$$" />$$END:PROX$$
+		$$IF:FORM:360$$<input type="hidden" name="360" value="$$FORM:360$$" />$$END:360$$
+		$$IF:FORM:FRAICHEUR$$<input type="hidden" name="fraicheur" value="$$FORM:FRAICHEUR$$" />$$END:FRAICHEUR$$
+		$$IF:FORM:SI_HANDICAPE$$<input type="hidden" name="si_handicape" value="$$FORM:SI_HANDICAPE$$" />$$END:SI_HANDICAPE$$
+		$$IF:FORM:SI_CONSTRUCTIBLE$$<input type="hidden" name="si_constructible" value="$$FORM:SI_CONSTRUCTIBLE$$" />$$END:SI_CONSTRUCTIBLE$$
+		<div class="row-fluid margin-top-10">
+			<div class="span3">
+				<a onclick="coche(0);" title="$$LG:TTSELEC pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:TTSELEC pcase$$</a>
+			</div>
+			<div class="span3">
+				<a onclick="decoche(villes.length-1);" title="$$LG:TTDESLEC pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:TTDESLEC pcase$$</a>					
+			</div>
+			<div class="span3">
+				<a onclick="history.back();" title="$$LG:RETOURCRITERES pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:RETOURCRITERES pcase$$</a>				
+			</div>
+		</div>
+		$$B:IMMOBW:PREANN:QRY:CP:ADD:/+REP_1+/recherche,+PAGE_WAG*STYLE*RECHERCHE+.htm$$
+		$$BIF:IMMOBW:PREANN:QRY$$
+		<ul class="nav-pills nav-stacked margin-top-10">
+		$$DO:1:50$$
+			$$IF:IMMOBW:PREANN:QRY:ISDEP$$
+			<li>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox">
+							<input type="checkbox" name="cp" value="$$IMMOBW:PREANN:QRY:DEP$$" /> $$IMMOBW:PREANN:QRY:DEPARTEMENTAFF$$
+						</label>
+					</div>
+				</div>
+			</li>
+			$$END$$
+			$$IF0:IMMOBW:PREANN:QRY:ISDEP$$
+			<li>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox">
+							<input type="checkbox" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ checked="checked"$$END$$> $$IMMOBW:PREANN:QRY:VILLEAFF$$ ($$IMMOBW:PREANN:QRY:CODEINSEE codeinsee2cp$$)
+						</label>
+					</div>
+				</div>
+			</li>
+			$$END$$
+		$$LOOP$$
+		</ul>
+		$$BFIN$$		
+		<input type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$" value="$$LG:RECHERCHER pcase$$" />
+	</form>
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm"-->

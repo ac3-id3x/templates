@@ -1,0 +1,246 @@
+$$REM$$<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$IF=:MOBILEFIRST:STYLEMOTEURREFINE$$
+    $$A:JS_RECHERCHE_MOBILEFIRST=1$$
+$$END$$
+$$IF!:MOBILEFIRST:STYLEMOTEURREFINE$$
+    $$A:JS_RECHERCHE_BASIC=1$$
+    $$A:JS_SHOW_HIDE_SLIDER=1$$
+$$END$$
+
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+
+<div class="recherche-mobilefirst">
+
+    <script type="text/javascript">
+        var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+        var maxpage = '$$ANNLISTE:NBRPAGES$$';
+        var btnaction = 'choix-selection-refine';
+        var btnneutre = 'choix-neutre-refine';
+        var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+        var typemoteur = "$$TYPEMOTEUR$$";
+        var lang = "$$LANGUE$$";
+        var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:LOYERBTW$$$$FORM:LOYERBTW$$$$END$$';
+    </script>
+
+    $$REM$$<!-- RESULTATS DE RECHERCHE -->$$END$$
+    $$IF0:ANNLISTE:SIPANIER$$
+
+        $$REM$$<!-- FIL D'ARIANE -->$$END$$
+        $$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+            $$BIF:FIL$$
+                $$IF+:2:FIL:NBR$$
+                    <div class="container">
+                        <!--#include virtual="recherche/incl_fil_ariane.htm" -->
+                    </div>
+                $$END$$
+            $$BFIN$$
+        $$END$$
+
+        $$REM$$<!-- MOTEUR TOP -->$$END$$
+    	$$IF:TAILLEMOTEURRESULTATS$$
+			$$IF=:1:EMPLACEMENTMOTEURTOP$$
+				$$IF=:MOBILEFIRST:STYLEMOTEURREFINE$$
+					<!--#include virtual="recherche/incl_basic_moteur.htm" -->
+				$$END$$
+			$$END$$
+		$$END$$
+
+        <div class="container">
+
+            $$REM$$<!-- INCLUDE PERSO -->$$END$$
+            <!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+
+            $$REM$$<!-- H1 / TRI -->$$END$$
+            $$IF!:0:ANNLISTE:NBRESULT$$
+                <div class="row-fluid recherche-heading">
+                    <div class="$$IF=:MOBILEFIRST:STYLEMOTEURREFINE$$span9$$END$$$$IF!:MOBILEFIRST:STYLEMOTEURREFINE$$span12$$END$$">
+                        <!--#include virtual="recherche/mobilefirst/incl_recherche_h1.htm" -->
+                    </div>
+                    $$IF0:ANNLISTE:SIPANIER$$
+                        <div class="span3">
+                            $$IF=:MOBILEFIRST:STYLEMOTEURREFINE$$
+                                <div class="recherche-ligne-tri-pages">
+                                    <!--#include virtual="recherche/mobilefirst/incl_tri.htm" -->
+                                </div>
+                            $$END$$
+                            <p class="pagination-right">
+                                <a href="/recherche,vendu.htm" title="$$LG:BIENVENDUS pcase$$" class="btn btn-action btn-small">$$LG:CLICBIENSVENDUS pcase$$</a>
+                            </p>
+                        </div>
+                    $$END$$
+                </div>
+            $$END$$
+
+            $$REM$$<!-- TEXTE SEO -->$$END$$
+            $$IF=:1:CANONICAL$$
+                $$IF:SEO_RESULTS_CONTENT$$
+                    <div class="row-fluid margin-bottom-10">
+                        <div class="span12">
+                            $$SEO_RESULTS_CONTENT$$
+                        </div>
+                    </div>
+                $$END$$
+            $$END$$
+
+            $$IF!:1:EMPLACEMENTMOTEURTOP$$
+            <div class="row-fluid">
+            $$END$$
+
+                $$REM$$<!-- MOTEUR LATERAL -->$$END$$
+                $$IF:TAILLEMOTEURRESULTATS$$
+                	$$IF!:1:EMPLACEMENTMOTEURTOP$$
+    					<!--#include virtual="recherche/incl_basic_moteur.htm" -->
+                	$$END$$
+                	$$IF=:1:EMPLACEMENTMOTEURTOP$$
+    					$$IF!:MOBILEFIRST:STYLEMOTEURREFINE$$
+    						<!--#include virtual="recherche/incl_basic_moteur.htm" -->
+    					$$END$$
+    				$$END$$
+                $$END$$
+
+                $$REM$$<!-- RESULTATS -->$$END$$
+                $$BIF:ANNLISTE$$
+                    <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$" id="recherche-listing">
+                        <!--#include virtual="recherche/mobilefirst/incl_recherche_resultats.htm" -->
+                    </div>
+                $$BFIN$$
+                $$B:IMMOBW:ANN-ES:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+                <!--#include virtual="recherche/incl_calcul_selection.htm" -->
+
+                $$REM$$<!-- PAS DE RESULTATS -->$$END$$
+                $$BIF0:ANNLISTE$$
+                    <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ margin-top-10" id="recherche-listing">
+                        <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+                        <!--LOADER-->
+                        <div class="layer display-none fixe height-100-pourcent top right left bottom row-fluid">
+                            <div class="z25 span12 margin-top-200">
+                                <div class="row-fluid">
+                                    <div class="span4"></div>
+                                    <div class=" span4 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+                                        <img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+                                        <p class="typo-black pagination-centered">
+                                            $$LG:VEUILLEZPATIENTER$$
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute bg-picture opacity-7 top right left bottom z-25" ></div>
+                        </div>
+                        <!-- FINLOADER-->
+                    </div>
+                $$BFIN$$
+
+            $$IF!:1:EMPLACEMENTMOTEURTOP$$
+            </div>
+            $$END$$
+
+            <!--#include virtual="recherche/mobilefirst/incl_recherche_alerte.htm" -->
+
+            $$IF:ANNLISTE:NBR$$
+                <hr class="margin-top-30">
+                <div class="small mentions">
+                    <p>$$LG:LOI78AGENCE$$<a href="$$URLBASE$$/legal,mentions.htm$$IF=:0:MULTIAGENCES$$?idp=$$AGENCE_IDPUBLICATION$$$$END$$" title="$$LG:ADR2EDITEUR$$">$$LG:ADR2EDITEUR$$</a>.</p>
+                </div>
+            $$END$$
+
+        </div>
+
+    $$END$$
+
+
+    $$REM$$<!-- PANIER -->$$END$$
+    $$IF:ANNLISTE:SIPANIER$$
+    <div class="recherche-compare container">
+
+        $$REM$$<!-- BTN COMPARATEUR -->$$END$$
+        <div class="row-fluid recherche-ligne-tri-pages">
+            <div class="span9">
+                <a href="javascript:history.go(-1);" class="$$TYPEBOUTON$$ btn-neutre margin-right-5">$$LG:RETOURANNONCES pcase$$</a>
+                $$IF=:PACK2$PACK3:TYPE_OFFRE$$
+                    <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ hidden-phone bouton-comparer-selection margin-right-5" data-imprimer="0" data-lang="$$LANGUE$$">
+                        $$LG:COMPARERANNONCES pcase$$
+                    </div>
+                $$END$$
+                <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-vider-selection">
+                    $$LG:VIDERSELEC pcase$$
+                </div>
+                <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ hidden-phone bouton-comparer-selection" data-imprimer="1">
+                    <i class="mf-icon-print"></i> $$LG:IMPRIMER pcase$$
+                </div>
+            </div>
+            $$IF+:1:ANNLISTE:NBRPAGES$$
+                <div class="span3">
+                    <div class="pagination pagination-right">
+                        <!--#include virtual="recherche/incl_nb_pages.htm" -->
+                    </div>
+                </div>
+            $$END$$
+        </div>
+
+        $$BIF:ANNLISTE$$
+        <h1 class="phrase-recherche margin-top-30">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+        <hr>
+        <div class="row-fluid">
+            <!--#include virtual="recherche/mobilefirst/incl_recherche_resultats.htm" -->
+        </div>
+        $$BFIN$$
+        $$BIF0:ANNLISTE$$
+            $$IF0:ANNLISTE:SIPANIER$$
+                <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+            $$END$$
+            $$IF:ANNLISTE:SIPANIER$$
+
+            <h1 class="margin-top-30">$$LG:DANSVOTRESELEC pcase$$ : <span class="typo-action">0 $$LG:ANNONCE$$</span></h1><hr>
+            <div class="row-fluid">
+                <div class="span12 margin-top-10">
+                    <p>$$LG:CREERSELECTION pcase$$</p>
+                </div>
+            </div>
+            $$END$$
+        $$BFIN$$
+
+    </div>
+    $$END$$
+
+
+</div>
+
+<script>
+$(document).ready(function() {
+    // CLICK ADD COMPARE
+    $('#recherche-listing').on('click','.bouton-ajouter-selection-detail',function() {
+        var $this = $(this);
+        var thisIcone = $this.find('i');
+        var idAnnonce = $this.attr('data-idannonce');
+        var idPublication = $this.attr('data-idpublication');
+        if(thisIcone.hasClass('mf-icon-star-full')){
+            $.ajax({
+                type: "GET",
+                data: 'idannonce='+idAnnonce+'&idp='+idPublication,
+                url: '/scripts,panier,selection_supprimer.htm',
+                dataType: "json",
+                cache:false,
+                success: function(data) {
+                    $this.find('i').attr('class','mf-icon-star');
+                }
+            });
+        }else{
+            $.ajax({
+                type: "GET",
+                data : "idannonce="+idAnnonce+"&idpublication="+idPublication,
+                url: '/scripts,panier,selection_ajouter.htm',
+                dataType: "json",
+                cache:false,
+                success: function(data) {
+                    $this.find('i').attr('class','mf-icon-star-full');
+                }
+            });
+        };
+    });
+});
+</script>

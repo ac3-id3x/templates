@@ -1,0 +1,114 @@
+$$A:CALCULMODULO=@@ANNLISTE:I  exec XX%2$$
+$$IF=:1:CALCULMODULO$$<div class="row-fluid">$$END$$
+   $$IF!:1:DEUXANNONCESPRESLIST$$<div class="row-fluid">$$END$$
+   <div class="$$IF=:1:DEUXANNONCESPRESLIST$$span6$$END$$ $$IF!:1:DEUXANNONCESPRESLIST$$span12$$END$$ conteneur-annonce margin-bottom-20 pres-listing hidden-phone">
+      <div class="row-fluid">
+         <div class="span12 $$REM$$height-480$$END$$ transition-bg recherche-annonces padding-10" id="annonce$$ANNLISTE:IDANNONCE$$">
+
+            <a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+               <div class="relative">
+                  <div class="row-fluid recherche-annonces-galerie">
+                     <div class="$$IF!:1:NOMINIATURE$$span9$$END$$ $$IF=:1:NOMINIATURE$$span12$$END$$ height-300 overflow">
+                        $$IF:ANNLISTE:BIGURL0$$
+                           <div style="background: url($$ANNLISTE:BIGURL0$$) center center no-repeat; background-size:cover;" class="recherche-annonces-photo height-300"></div>
+                        $$END$$
+                        $$IF0:ANNLISTE:BIGURL0$$
+                           $$IF:ANNLISTE:PHOTOURL0$$
+                              <div style="background: url($$ANNLISTE:PHOTOURL0$$) center center no-repeat; background-size:cover;" class="recherche-annonces-photo height-300"></div>
+                           $$END$$
+                           $$IF0:ANNLISTE:PHOTOURL0$$
+                              <!--#include virtual="recherche/incl_no_photo_recherche.htm" -->
+                           $$END$$
+                        $$END$$
+                     </div>
+                     $$IF!:1:NOMINIATURE$$
+                     <div class="span3 height-300 overflow">
+                        $$IF:ANNLISTE:PHOTOURL1$$
+                           <div style="background: url($$ANNLISTE:PHOTOURL1$$) center center no-repeat; background-size:cover;" class="recherche-annonces-photo height-100"></div>
+                        $$END$$
+                        $$IF0:ANNLISTE:PHOTOURL1$$
+                        <!--#include virtual="recherche/incl_no_photo_recherche.htm" -->
+                        $$END$$
+
+                        $$IF:ANNLISTE:PHOTOURL2$$
+                           <div style="background: url($$ANNLISTE:PHOTOURL2$$) center center no-repeat; background-size:cover;" class="recherche-annonces-photo height-100"></div>
+                        $$END$$
+                        $$IF0:ANNLISTE:PHOTOURL2$$
+                        <!--#include virtual="recherche/incl_no_photo_recherche.htm" -->
+                        $$END$$
+
+                        $$IF:ANNLISTE:PHOTOURL3$$
+                           <div style="background: url($$ANNLISTE:PHOTOURL3$$) center center no-repeat; background-size:cover;" class="recherche-annonces-photo height-100"></div>
+                        $$END$$
+                        $$IF0:ANNLISTE:PHOTOURL3$$
+                        <!--#include virtual="recherche/incl_no_photo_recherche.htm" -->
+                        $$END$$
+                     </div>
+                     $$END$$
+                  </div>
+                  $$IF!:1:PICTOANNONCELISTHOME$$
+                  <div class="row-fluid absolute top left margin-top-10 margin-left-10">
+                     <div class="span6">
+                        <!--#include virtual="recherche/incl_pictos_annonce.htm" -->
+                     </div>
+                  </div>
+                  $$END$$
+               </div>
+               <div class="row-fluid margin-bottom-10 padding-top-10">
+                  <div class="span9">
+                     <p class="typo-action bold padding-top-0">
+                        <span class="bigger typo-important ville">$$IF:ANNLISTE:VILLE$$$$ANNLISTE:VILLE gettypebien ncase$$$$END$$</span><br>
+                        <span class="typo-important type-bien-listing">
+                           $$IF!:1:HIDE_TYPEBIEN$$
+                              $$IF=:10:ANNLISTE:IDTYPETRANSACTION$$
+                                 $$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$
+                              $$END$$
+                              $$IF!:10:ANNLISTE:IDTYPETRANSACTION$$
+                                 $$IF=:1:NOVILLA$$
+                                    $$ANNLISTE:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$
+                                 $$END$$
+                                 $$IF!:1:NOVILLA$$
+                                    $$ANNLISTE:IDTYPEBIEN gettypebien pcase$$
+                                 $$END$$
+                                 $$IF:ANNLISTE:NB_PIECES$$
+                                    $$IF:ANNLISTE:SURFACE$$ - $$END$$
+                                       $$ANNLISTE:NB_PIECES$$
+                                    $$IF=:1:ANNLISTE:NB_PIECES$$                                       
+                                       $$LG:PIECE lcase$$
+                                    $$END$$
+                                    $$IF+:2:ANNLISTE:NB_PIECES$$
+                                       $$LG:PIECES2 lcase$$
+                                    $$END$$
+                                 $$END$$
+                              $$END$$
+                              $$IF=:9:FORM:IDTT$$ : $$ANNLISTE:LIBELLE$$$$END$$
+                           $$END$$
+                           $$IF=:1:SHOW_LIBELLE$$$$IF!:1:HIDE_TYPEBIEN$$ - $$END$$$$ANNLISTE:LIBELLE$$$$END$$
+                        </span>
+                     </p>
+                     <p class="padding-0 infos-bien">
+                        $$IF:ANNLISTE:SURFACE$$<!--#include virtual="recherche/incl_surface.htm" -->$$END$$
+                        $$IF:ANNLISTE:NB_CHAMBRES$$, <!--#include virtual="recherche/incl_chambres.htm" --> $$IF=:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$$$END$$ $$END$$
+                     </p>
+                     $$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+                     <span class="big prix-listing">
+                        <!--#include virtual="recherche/incl_prix.htm" -->
+                     </span>
+                     $$END$$
+                     <!--#include virtual="recherche/incl_descriptif.htm" -->
+                     <!--#include virtual="recherche/incl_prix_location.htm" -->
+                  </div>
+                  <div class="span3">
+                     <!--#include virtual="recherche/incl_favoris.htm" -->
+                  </div>
+               </div>
+            </a>
+         </div>
+      </div>
+   </div>
+   $$IF!:1:DEUXANNONCESPRESLIST$$</div>$$END$$
+   $$IF=:0:CALCULMODULO$$</div>$$END$$
+
+<div class="hidden-desktop hidden-tablet">
+   <!--#include virtual="recherche/incl_mobile_annonce_v2.htm" -->
+</div>

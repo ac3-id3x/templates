@@ -1,0 +1,64 @@
+$$DYN:ID3:CHECKIP:217.151.0.0/24 10.0.0.0/8 127.0.0.1 192.168.0.0/16$$<html>	
+<head>
+<title>Formulaire d'envois de template en ligne</title>
+<style>
+body {padding:10px; margin:0px; background:#2f383f; color:#FFF; font:12px/14px Tahoma, sans-serif;}
+div, p, ul, h3, h4, img {padding:0px; margin:0px;}
+h2 {padding:0px; margin:5 0 10 0px;}
+ul {list-style-type:none;}
+h2.erreur {color:#FF5300;padding:0px; margin:5 0 10 0px;}
+form.send {color:#fff; margin: 10px 0 0 0; padding:0 0 0 9px;}
+form.send select {height:18px; border: #abadb3 1px solid; font:12px/14px Tahoma, sans-serif; width:50px}
+form.send input {height:22px; border: #abadb3 1px solid; font:12px/14px Tahoma, sans-serif; width:80px}
+form.send input.email {height:22px; border: #abadb3 1px solid; font:12px/14px Tahoma, sans-serif; width:250px}
+form.send input.submitBtn {margin:10px 0 10px 0; border: #abadb3; color:#2f383f;}
+</style>
+</head>
+<body>
+<h1>Page d'envois de template AlerteImmo du site $$REP:RSRV$$</h1>
+$$IF:ALERTEIMMO:SENDTEMPLATE:ERRMSG$$
+<h2 class="erreur">$$ALERTEIMMO:SENDTEMPLATE:ERRMSG$$</h2>
+$$END$$
+$$IF:ALERTEIMMO:SENDTEMPLATE:OKMSG$$
+<h2>$$ALERTEIMMO:SENDTEMPLATE:OKMSG$$</h2>
+<script>
+  window.setTimeout(function(){document.location="/$$REP:URI$$"},3000);
+</script>
+$$END$$
+<form method="POST" action="/$$REP:URI$$" class="send">
+<!--#include virtual="contact/incl_honeypot.htm" -->
+<input type="hidden" name="u" value="alerteimmo:sendtemplate" />
+<input type="hidden" name="page_ok" value="/$$REP:URI$$">
+<input type="hidden" name="page_err" value="/$$REP:URI$$">
+<div>Adresse email de réception du template : <input type="text" name="sendemail" class="email" value="$$COOKIE:EMAIL-TEST-ALI$$"/></div>
+<div>Nombre d'annonces par mail : <select name="annmax">
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option selected="selected">5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	<option>9</option>
+	<option>10</option>
+	<option>11</option>
+	<option>12</option>
+	<option>13</option>
+	<option>14</option>
+	<option>15</option>
+	<option>16</option>
+	<option>17</option>
+	<option>18</option>
+	<option>19</option>
+	<option>20</option>
+</select></div>
+<div>Adresse email d'inscription que l'on veut tester* : <input type="text" name="email" class="email" /></div>
+<div><input type="submit" name="send" value="Envoyer" class="submitBtn" /></div>
+</form>
+<div>*: facultatif, il s'agit de l'adresse email correspondant à une réelle inscription à l'alerte immo, peut-être différente de l'adresse de réception du template.
+	<br/>Si cette adresse n'est pas précisé, l'inscription à l'alerte immo la plus récente sur ce site sera utilisée.
+	<br/>Si vous n'êtes pas sûre, ne rien mettre ici.
+</div>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+$$IF:ANNLISTE:BIGURL0$$
+    $$A:ANNONCEIMG=@@ANNLISTE:BIGURL0@@$$
+$$END$$
+$$IF0:ANNLISTE:BIGURL0$$
+    $$IF:ANNLISTE:PHOTOURL0$$
+        $$A:ANNONCEIMG=@@ANNLISTE:PHOTOURL0@@$$
+    $$END$$
+    $$IF0:ANNLISTE:PHOTOURL0$$
+        $$IF!:1:SANS_PHOTO_PERSO$$
+            $$A:ANNONCEIMG=@@~@@images/recherche/sans_photo.jpg$$
+        $$END$$
+        $$IF=:1:SANS_PHOTO_PERSO$$
+            $$A:ANNONCEIMG=@@_@@images/recherche/sans_photo.jpg$$
+        $$END$$
+    $$END$$
+$$END$$
+
+<div class="annonce" id="annonce$$ANNLISTE:IDANNONCE$$">
+
+    <a href="$$LIENDETAIL$$" title="$$TITLE_ANN$$">
+        <div class="annonce-img" style="background-image: url($$ANNONCEIMG$$);"></div>
+        <div class="annonce-content">
+            <div class="annonce-content-left">
+                <h3 class="annonce-type">
+                    <span class="annonce-typetransaction">
+                        $$IF!:9$10:FORM:IDTT$$
+                            $$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                    </span>
+                    <!--#include virtual="recherche/mobilefirst/incl_type_bien.htm" -->
+                    <!--#include virtual="recherche/mobilefirst/incl_type_viager.htm" -->
+                </h3>
+                <h4 class="annonce-ville">
+                    <!--#include virtual="recherche/mobilefirst/incl_villes.htm" -->
+                </h4>
+            </div>
+            <div class="annonce-content-right">
+                $$IF!:9:ANNLISTE:IDTYPETRANSACTION$$
+                    <!--#include virtual="recherche/mobilefirst/incl_prix.htm" -->
+                $$END$$
+                <div class="annonce-specs">
+                    $$IF:ANNLISTE:SURFACE$$
+                        <span class="annonce-surface"><!--#include virtual="recherche/mobilefirst/incl_surface.htm" --></span>
+                    $$END$$
+                    $$IF:ANNLISTE:NB_PIECES$$
+                        <span class="annonce-pieces">
+                            $$IF:ANNLISTE:SURFACE$$ - $$END$$<!--#include virtual="recherche/mobilefirst/incl_pieces.htm" -->
+                            $$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                        </span>
+                    $$END$$
+                    $$IF0:ANNLISTE:SURFACE$$
+                        $$IF0:ANNLISTE:NB_PIECES$$
+                             -
+                        $$END$$
+                    $$END$$
+                </div>
+            </div>
+        </div>
+    </a>
+
+
+    $$IF:ANNLISTE:SIPANIER$$
+        <div class="hidden-phone">
+            $$IF=:PACK2$PACK3:TYPE_OFFRE$$
+                <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-comparer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"><i class="mf-icon-star"></i> $$LG:AJOUTCOMPARAISON pcase$$</div>
+            $$END$$
+            <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-supprimer-selection-detail" data-idannonce="$$ANNLISTE:IDANNONCE$$" data-idpublication="$$ANNLISTE:IDPUBLICATION$$" data-title-ok="$$LG:AJOUTCOMPARAISON pcase$$"><i class="mf-icon-close"></i> $$LG:SUPPRIMERSELEC pcase$$</div>
+        </div>
+    $$END$$
+</div>
+

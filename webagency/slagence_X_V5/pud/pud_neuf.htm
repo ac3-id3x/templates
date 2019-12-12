@@ -1,0 +1,82 @@
+$$INIT:IDT=PUDNEUF$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid margin-top-20 margin-bottom-10 pud pud-neuf">
+	<div class="span12">
+		<div class="row-fluid margin-bottom-10">
+			<div class="span12">
+				<h1>$$LG:IMMONEUF pcase$$ $$LG:SUR lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</h1>
+				<hr>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span8">
+				$$B:IMMOBW:ANN-ES:9:QRY:LANG:::ADD:ci=+FORM_CI+&tri=d_dt_crea:ALIAS:NEUFMAI$$
+				$$BIF:NEUFMAI$$
+				$$IF=:0:MULTIAGENCES$$
+					<p>Vous souhaitez investir ?</p>
+					<p>Notre agence $$AGENCE_NOM$$ vous propose une sélection de <strong>programmes neufs sur $$FORM:CI codeinsee2ville$$ </strong> et sa région. Nous restons à votre écoute. Contactez-nous !</p>
+				$$END$$
+				<div class="row-fluid margin-bottom-10">
+					<div class="span12">
+						<div class="row-fluid">
+							$$DO:1:3$$
+							$$A:TITLEANNONCES=@@NEUFMAI:IDTYPETRANSACTION gettypetransaction pcase@@ @@NEUFMAI:IDTYPEBIEN gettypebien lcase@@ @@NEUFMAI:AVILLE ncase@@$$
+							<div class="$$IF!:1:NEUFMAI:I$$hidden-phone $$END$$span4 pagination-centered">
+								<a href="$$NEUFMAI:URLVIRTUELLE$$" title="$$TITLEANNONCES$$">
+								$$IF:NEUFMAI:IDPHOTO$$										
+								<img src="$$NEUFMAI:C175_URL$$" alt="$$TITLEANNONCES$$" title="$$TITLEANNONCES$$" class="margin-top-10"/>
+								$$END:NEUFMAI:IDPHOTO$$
+								<h3 class="normal margin-top-5 typo-black typo-black">$$NEUFMAI:TITRE$$<br /><span class="ville">$$NEUFMAI:AVILLE$$</span> ($$NEUFMAI:ACP$$)</h3>
+								<h3 class="normal typo-black">$$NEUFMAI:IDTYPEBIEN gettypebien$$</h3>
+								<p>$$LG:DETAILANNONCE pcase$$</p>
+								</a>
+							</div>
+						$$LOOP$$
+						</div>
+						<div class="clear pagination-right margin-top-20"><a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&lang=fr&ci=$$FORM:CI$$&tri=d_dt_crea">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:DE lcase$$ $$LG:VENTE lcase$$ $$LG:IMMONEUF lcase$$ $$LG:A lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</a></div>
+					</div>
+				</div>
+				$$BFIN$$
+				$$BIF0:NEUFMAI$$
+					$$B:IMMOBW:ANN-ES:9:QRY:LANG:::ADD:rayon=5&ci=+FORM_CI+&tri=d_dt_crea:ALIAS:NEUFMAI5$$
+					$$BIF:NEUFMAI5$$
+					<div class="row-fluid margin-bottom-10">
+						<div class="span12">
+							<div class="row-fluid">
+								$$DO:1:3$$
+								$$A:TITLEANNONCES=@@NEUFMAI5:IDTYPETRANSACTION gettypetransaction pcase@@ @@NEUFMAI5:IDTYPEBIEN gettypebien lcase@@ @@NEUFMAI5:AVILLE ncase@@$$
+								<div class="$$IF!:1:NEUFMAI5:I$$hidden-phone $$END$$span4 pagination-centered">
+									<a href="$$NEUFMAI5:URLVIRTUELLE$$" title="$$TITLEANNONCES$$">
+									$$IF:NEUFMAI5:IDPHOTO$$										
+									<img src="$$NEUFMAI5:C175_URL$$" alt="$$TITLEANNONCES$$" title="$$TITLEANNONCES$$" class="margin-top-10"/>
+									$$END:NEUFMAI5:IDPHOTO$$
+									<h3 class="normal margin-top-5 typo-black typo-black">$$NEUFMAI5:TITRE$$<br /><span class="ville">$$NEUFMAI5:AVILLE$$</span> ($$NEUFMAI5:ACP$$)</h3>
+									<h3 class="normal typo-black">$$NEUFMAI5:IDTYPEBIEN gettypebien$$</h3>
+									<p>$$LG:DETAILANNONCE pcase$$</p>
+									</a>
+								</div>
+							$$LOOP$$
+							</div>
+							<div class="clear pagination-right margin-top-20"><a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=9&lang=fr&ci=$$FORM:CI$$&tri=d_dt_crea">$$LG:NOSDERNIERESANNONCES pcase$$ $$LG:DE lcase$$ $$LG:VENTE lcase$$ $$LG:IMMONEUF lcase$$ $$LG:A lcase$$ $$FORM:CI codeinsee2ville field 1$$ $$FORM:CP cp2dep field 1$$</a></div>
+						</div>
+					</div>
+					$$BFIN$$
+				$$BFIN$$
+			</div>
+			<div class="span4">
+				<div class="row-fluid">
+					<div class="span12">
+					$$IF=:0:MULTIAGENCES$$
+						<!--#include virtual="pud/incl_agence_mono.htm" -->
+					$$END$$
+					$$IF=:1:MULTIAGENCES$$
+						<div class="h2-like margin-bottom-20">$$LG:DECOUVNOSAGENCES pcase$$</div>
+						<!--#include virtual="pud/incl_agence_multi.htm" -->
+					$$END$$
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,1 @@
+$(document).ready(function(){if(winW>=640){$('body').append('<a href="#" class="scrollToTop hidden-phone hidden-tablet">Scroll</a>');$(window).scroll(function(){if($(this).scrollTop()>100){$('.scrollToTop').fadeIn()}else{$('.scrollToTop').fadeOut()}});$('.scrollToTop').click(function(){$("html, body").animate({scrollTop:0},1000);return false})}});

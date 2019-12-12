@@ -1,0 +1,86 @@
+<div class="detail-header">
+    <div class="detail-header-col">
+        <div class="small uppercase">
+            $$IF!:1:HIDE_TRANSACTION$$
+                $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF:ANNDETAIL:SI_LIBRE$$
+                        $$LG:VIAGERLIBRE2 pcase$$
+                    $$END$$
+                    $$IF0:ANNDETAIL:SI_LIBRE$$
+                        $$LG:VIAGEROCCUPE2 pcase$$
+                    $$END$$
+                $$END$$
+                $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF!:1:LOCALCESSION$$
+                            $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                    $$END$$
+                    $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF!:1:HIDE_TYPEBIEN$$
+                -
+                $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                    $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$ : $$ANNDETAIL:LIBELLE$$$$END$$
+                $$END$$
+                $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                    $$IF=:1:LOCALCESSION$$
+                        $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$LG:AVEC$$ $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                    $$END$$
+                    $$IF!:1:LOCALCESSION$$
+                        $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                    $$END$$
+                $$END$$
+            $$END$$
+        </div>
+        <h1 itemprop="name">
+            $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+                $$IF:ANNDETAIL:IDSOUSTYPEBIEN$$
+                    $$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$ -
+                $$END$$
+            $$END$$
+            $$IF=:0:PRIXMASQUE$$
+                $$IF:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                    <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                $$END$$
+                $$IF0:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                    $$IF:ANNDETAIL:PRIX$$
+                        <div class="detail-prix">
+                            <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><!--#include virtual="detail/hd-panorama/incl_detail_prix.htm" --></div>
+                        </div>
+                    $$END$$
+                    $$IF0:ANNDETAIL:PRIX$$
+                        <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF=:1:PRIXMASQUE$$
+                <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+            $$END$$
+            <br>
+            $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+        </h1>
+    </div>
+    <div class="detail-header-col hidden-phone">
+        <a href="#" class="detail-galerie-btn js-detail-galerie btn-has-picto">
+            $$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+            $$BIF:GALERIE$$
+                $$DO$$$$LOOP$$
+                <span>
+                    $$IF=:1:GALERIE:NBR$$
+                        $$LG:VOIRLAPHOTO pcase$$
+                    $$END$$
+                    $$IF+:2:GALERIE:NBR$$
+                        $$LG:VOIRLES pcase$$ $$GALERIE:NBR$$ $$LG:PHOTS lcase$$
+                    $$END$$
+                </span>
+                <i class="mf-icon-arrow-right"></i>
+            $$BFIN$$
+        </a>
+    </div>
+</div>

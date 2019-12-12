@@ -1,0 +1,163 @@
+$$REM$$<!-- FIL ARIANE -->$$END$$
+$$IF:ANNDETAIL:IDTYPETRANSACTION$$
+    <aside class="detail-ariane">
+        <div class="container">
+            $$BIF:FIL$$
+                $$IF+:2:FIL:NBR$$
+                    <!--#include virtual="recherche/incl_fil_ariane.htm" -->
+                $$END$$
+            $$BFIN$$
+        </div>
+    </aside>
+$$END$$
+
+
+<div class="detail-main">
+
+    $$REM$$<!-- GALERIE PHOTO -->$$END$$
+    <!--#include virtual="detail/hd-panorama/incl_detail_galerie.htm" -->
+
+    <div class="container">
+
+
+        <div class="row-fluid">
+
+            $$REM$$<!-- COLONNE PRINCIPALE -->$$END$$
+            <div class="span8">
+
+
+                <div class="row-fluid margin-top-15 margin-bottom-40">
+                    <div class="span6">
+                        $$REM$$<!-- LOCALISATION -->$$END$$
+                        <!--#include virtual="detail/hd-panorama/incl_detail_localisation.htm" -->
+
+                        $$REM$$<!-- SURFACE -->$$END$$
+                        <!--#include virtual="detail/hd-panorama/incl_detail_surface.htm" -->
+                    </div>
+                    <div class="span6">
+                        $$REM$$<!-- WIDGET -->$$END$$
+                        <!--#include virtual="detail/hd-panorama/incl_detail_widgets.htm" -->
+
+                        <p class="detail-ref">
+                            $$LG:REFER pcase$$ $$ANNDETAIL:REFANNONCE$$
+                            $$IF!:0:DTMAJMASQUE$$<br>$$LG:MAJV5$$ : $$ANNDETAIL:DT_MAJ date 2$$$$END$$
+                        </p>
+                    </div>
+                </div>
+
+                $$REM$$<!-- DESCRIPTIF -->$$END$$
+                <div class="detail-desc">
+
+                    <h2 class="h3-like detail-ssttl">
+                        $$IF=:1:ANNDETAIL:IDTYPEBIEN$$
+                            $$LG:DESCRIPTIFAPPARTEMENTA pcase$$ $$ANNDETAIL:VILLE pcase$$
+                        $$END$$
+                        $$IF=:2:ANNDETAIL:IDTYPEBIEN$$
+                            $$LG:DESCRIPTIFMAISONA pcase$$ $$ANNDETAIL:VILLE pcase$$
+                        $$END$$
+                        $$IF=:4:ANNDETAIL:IDTYPEBIEN$$
+                            $$LG:DESCRIPTIFTERRAINA pcase$$ $$ANNDETAIL:VILLE pcase$$
+                        $$END$$
+                        $$IF!:1$2$4:ANNDETAIL:IDTYPEBIEN$$
+                            $$LG:DESCRIPTIFBIENA pcase$$ $$ANNDETAIL:VILLE pcase$$
+                        $$END$$
+                    </h2>
+                    <!--#include virtual="detail/hd-panorama/incl_detail_descriptif.htm" -->
+
+                    $$REM$$<!-- VISITE VIRTUELLE FULL -->$$END$$
+                    $$IF=:1:BIGVISITE$$
+                        $$IF:ANNDETAIL:ID360$$
+                            <div class="h3-like detail-ssttl">$$LG:VISITEVIRTUELLE pcase$$</div>
+                            <div class="detail-desc-visite">
+                                $$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+                                    $$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+                                $$END$$
+                                <iframe src="$$LIEN_360$$" width="100%" height="600"></iframe>
+                            </div>
+                        $$END$$
+                        $$IF:ANNDETAIL:360_URL$$
+                            <div class="h3-like detail-ssttl">$$LG:VISITEVIRTUELLE pcase$$</div>
+                            <div class="detail-desc-visite">
+                                <iframe src="$$ANNDETAIL:360_URL$$" width="100%" height="600"></iframe>
+                            </div>
+                        $$END$$
+                    $$END$$
+
+                    $$REM$$<!-- FICHE SIGNALETIQUE -->$$END$$
+                    <h3 class="detail-ssttl">$$LG:CARACTERISTIQUES pcase$$</h3>
+                     <!--#include virtual="detail/hd-panorama/incl_detail_signaletique.htm" -->
+
+
+                    <h3 class="detail-ssttl">DPE & GES</h3>
+                    <!--#include virtual="detail/hd-panorama/incl_detail_dpe.htm" -->
+
+                    <div class="detail-desc-prix">
+                        <!--#include virtual="detail/hd-panorama/incl_detail_alur.htm" -->
+                        $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+                            <!--#include virtual="detail/hd-panorama/incl_detail_saison.htm" -->
+                        $$END$$
+                    </div>
+
+                    $$REM$$<!-- LOTS -->$$END$$
+                    $$IF!:1:HIDELOTSDETAIL$$
+                        $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+                            <div class="detail-lots">
+                                <div class="h3-like detail-ssttl">$$LG:LOTSDISPO pcase$$</div>
+                                <!--#include virtual="detail/incl_detail_lots.htm" -->
+                            </div>
+                        $$END$$
+                    $$END$$
+
+                    $$REM$$<!-- DISPO LOCATIONS VACANCES -->$$END$$
+                    $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+                        <div class="detail-dispo">
+                            <!--#include virtual="detail/hd-panorama/incl_detail_dispo.htm" -->
+                        </div>
+                    $$END$$
+                </div>
+
+            </div>
+
+
+            $$REM$$<!-- SIDEBAR -->$$END$$
+            <div class="span4">
+                <div class="detail-contact">
+                    <div class="detail-contact-agc hidden-phone">
+                        <!--#include virtual="detail/hd-panorama/incl_detail_agence.htm" -->
+                    </div>
+                    <div class="detail-contact-form">
+                        <!--#include virtual="detail/hd-panorama/incl_detail_form.htm" -->
+                    </div>
+                </div>
+                <!--#include virtual="detail/hd-panorama/incl_detail_services.htm" -->
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="detail-bottom">
+    <div class="container">
+
+        $$REM$$<!-- ANNONCES SIMILAIRES -->$$END$$
+        <!--#include virtual="detail/hd-panorama/incl_detail_similaire.htm" -->
+
+    </div>
+
+    $$REM$$<!-- INFOS LEGALES -->$$END$$
+    <div class="detail-legal">
+        <div class="container">
+            <!--#include virtual="detail/hd-panorama/incl_detail_glossaire.htm" -->
+            <div class="mentions accordion" id="accordion-mentions">
+                $$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:ML$$
+                $$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:1:ALIAS:CARTEPROT$$
+                $$E:IMMOBW:CARTEPRO:~idpublication:VAL:ANNDETAIL_IDPUBLICATION:~idtypecartepro:2:ALIAS:CARTEPROG$$
+                <!--#include virtual="legal/incl_mentions_infoslegales_mini.htm" -->
+            </div>
+        </div>
+    </div>
+
+</div>

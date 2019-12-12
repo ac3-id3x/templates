@@ -1,0 +1,138 @@
+$$INIT:IDT=VENDRE$$
+<!--#include virtual="header/incl_boucle_index.htm" -->
+<!--#include virtual="header/incl_haut.htm"-->
+
+<h1>
+    $$IF=:FR:LANGUE$$
+        Vous désirez vendre/louer votre bien immobilier
+    $$END$$
+    $$IF!:FR:LANGUE$$
+        You want to sell/rent your property
+    $$END$$
+</h1><hr>
+
+<form method="post" action="/$$REP:0$$" enctype="multipart/form-data">
+    <!--#include virtual="contact/incl_honeypot.htm" -->
+    <input type="hidden" name="u" value="ID3:FORMMAIL" />
+    <input type="hidden" name="page_ok" value="/immo,vente_envoi.htm" />
+    <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+    <input type="hidden" name="page_html" value="/immo,vente_email.htm" />
+    <input type="hidden" name="cfg_form" value="vente" />
+    <input type="hidden" name="cfg_emails" value="vente" />
+    <input type="hidden" name="subject" value="Mettre en vente/location un bien"/>
+    $$IF=:0:MULTIAGENCES$$
+        <input type="hidden" name="email_to" value="$$AGENCE_EMAIL$$"/>
+    $$END$$
+    $$IF:ERRE$$
+        <div class="margin-bottom-20">
+            <span class="h3-like typo-action bold uppercase">$$LG:ERREUR$$</span>
+            <p class="small">$$ERRE$$</p>
+        </div>
+    $$END$$
+    $$IF=:1:MULTIAGENCES$$
+        <div class="control-group">
+            <h2 class="h3-like typo-action bold uppercase">$$LG:CHOISISSEZAGENCE pcase$$</h3><hr>
+            <div class="has-select">
+                <select name="email_to" class="center">
+                    $$B:IMMOBW:AGENCES:ALIAS:AGS$$
+                    $$BIF:AGS$$
+                        $$DO$$
+                            <option value="$$AGS:EMAIL$$">$$AGS:NOM ucase$$ - $$AGS:ADRESSE htmlencode$$</option>
+                        $$LOOP$$
+                    $$BFIN$$
+                </select>
+            </div>
+        </div>
+    $$END$$
+
+    <div class="row-fluid margin-top-30">
+        <div class="span6 margin-top-15">
+            <h3 class="typo-action bold uppercase">Votre bien</h3><hr>
+            <div class="control-group">
+                <label>$$LG:BIENPROP pcase$$ :</label>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="1" $$IF=:1:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:APPARTEMENT pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="2" $$IF=:2:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:MAISON pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="4" $$IF=:4:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:TERRAIN pcase$$</label></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="3" $$IF=:3:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:PARKING pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="11" $$IF=:11:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:IMMEUBLE pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="vente-typebien" value="5" $$IF=:5:FORM:VENTE-TYPEBIEN$$checked$$END$$ required> $$LG:COMMERCE pcase$$</label></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="vente-surface">$$LG:SURFH2 pcase$$*</label>
+                <input type="text" id="vente-surface" class="center" name="vente-surface" value="$$FORM:VENTE-SURFACE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-terrain">$$LG:TERRAIN pcase$$*</label>
+                <input type="text" id="vente-terrain" class="center" name="vente-terrain" value="$$FORM:VENTE-TERRAIN$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-pieces">$$LG:NBRP pcase$$*</label>
+                <input type="text" id="vente-pieces" class="center" name="vente-pieces" value="$$FORM:VENTE-PIECES$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-dpt">$$LG:DPTV pcase$$*</label>
+                <input type="text" id="vente-dpt" class="center" name="vente-dpt" value="$$FORM:VENTE-DPT$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-prix">$$LG:PRIXLOYER pcase$$*</label>
+                <input type="text" id="vente-prix" class="center" name="vente-prix" value="$$FORM:VENTE-PRIX$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-precisions">$$LG:PRECIS pcase$$</label>
+                <textarea id="vente-precisions" class="center" rows="5" name="vente-precisions">$$FORM:VENTE-PRECISIONS$$</textarea>
+            </div>
+        </div>
+        <div class="span6">
+            <h3 class="typo-action bold uppercase">$$LG:COORD3 pcase$$</h3><hr>
+            <div class="control-group">
+                <label>$$LG:CIVILITE pcase$$* :</label>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="vente-civil" value="1" $$IF=:1:FORM:VENTE-CIVIL$$checked$$END$$ required> $$LG:MONSIEUR pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="vente-civil" value="2" $$IF=:2:FORM:VENTE-CIVIL$$checked$$END$$ required> $$LG:MADAME pcase$$</label></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="vente-nom">$$LG:VOTRENOM pcase$$*</label>
+                <input type="text" id="vente-nom" class="center" name="vente-nom" value="$$FORM:VENTE-NOM$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-adresse">$$LG:ADRESSE pcase$$*</label>
+                <input type="text" id="vente-adresse" class="center" name="vente-adresse" value="$$FORM:VENTE-ADRESSE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-cp">$$LG:CODEP pcase$$*</label>
+                <input type="text" id="vente-cp" class="center" name="vente-cp" value="$$FORM:VENTE-CP$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-ville">$$LG:VILLE pcase$$*</label>
+                <input type="text" id="vente-ville" class="center" name="vente-ville" value="$$FORM:VENTE-VILLE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-tel">$$LG:TEL pcase$$*</label>
+                <input type="tel" id="vente-tel" class="center" name="vente-tel" value="$$FORM:VENTE-TEL$$" required>
+            </div>
+            <div class="control-group">
+                <label for="vente-fax">$$LG:FAX pcase$$</label>
+                <input type="tel" id="vente-fax" class="center" name="vente-fax" value="$$FORM:VENTE-FAX$$">
+            </div>
+            <div class="control-group">
+                <label for="email_from">$$LG:EMAIL pcase$$*</label>
+                <input type="email" id="email_from" class="center" name="email_from" value="$$FORM:EMAIL_FROM$$" required>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$">$$LG:ENVOYMES pcase$$</button>
+            </div>
+        </div>
+    </div>
+    <div class="margin-top-20">
+        <p class="smaller italic">* $$LG:CHAMPSOBLIGATOIRES pcase$$</p>
+        <!--#include virtual="legal/incl_rgpd.htm" -->
+    </div>
+
+</form>
+
+<!--#include virtual="footer/incl_bas.htm"-->

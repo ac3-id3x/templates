@@ -1,0 +1,201 @@
+$$REM$$<!-- ================================================ -->$$END$$
+$$REM$$<!-- == GLOBAL                                        -->$$END$$
+$$REM$$<!-- ================================================ -->$$END$$
+
+$$REM$$<!-- TARGET IE 10 -->$$END$$
+<script type="text/javascript">
+   $(document).ready(function() {
+        var ie = window.navigator.userAgent.indexOf("MSIE 10.0");
+        if (ie > 0) {
+            $('html').addClass('ie10');
+        }
+        return false;
+    });
+</script>
+
+$$REM$$<!-- SLIDER AGENCE TOP HEADER (MULTI UNIQUEMENT) -->$$END$$
+$$IF=:1:MULTIAGENCES$$
+    $$IF!:0:MF_HEADERTOP$$
+        $$IF!:0:MF_HEADERTOP_INFOAGENCE$$
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('.header-top-agences').cycle({
+                        fx:'scrollUp',
+                        speed       : 300,
+                        timeout     : 5000,
+                        width       : 380,
+                        fit         : 1,
+                        pause       : 'true'
+                    });
+                });
+            </script>
+        $$END$$
+    $$END$$
+$$END$$
+
+$$REM$$<!-- HEADER STICKY -->$$END$$
+$$IF=:1:MF_HEADER_STICKY$$
+    <script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.sticky.min.js"></script>
+    <script type="text/javascript">
+        $(window).load(function(){
+            $(".header-main").sticky();
+        });
+    </script>
+$$END$$
+
+$$REM$$<!-- PRIORITY NAV PATTERN -->$$END$$
+$$IF=:1:MF_MENU_PRIORITY$$
+    <script>
+        var reso = 768;
+        $(window).load(function(){
+
+            var $nav = $('.menu');
+            var $btn = $('.menu-toggle');
+            var $vlinks = $('.menu-principal');
+            var $hlinks = $('.menu-secondaire');
+            var numOfItems = 0;
+            var totalSpace = 0;
+            var breakWidths = [];
+
+            $vlinks.children().outerWidth(function(i, w) {
+                totalSpace += w;
+                numOfItems += 1;
+                breakWidths.push(totalSpace);
+            });
+
+            var availableSpace, numOfVisibleItems, requiredSpace;
+
+            function check() {
+                availableSpace = $vlinks.width() - 10;
+                numOfVisibleItems = $vlinks.children().length;
+                requiredSpace = breakWidths[numOfVisibleItems - 1];
+
+                detectionWindow();
+                if(window.innerWidth < reso) {
+                    availableSpace = 0;
+                }
+
+                if (requiredSpace > availableSpace) {
+                    $vlinks.children().last().prependTo($hlinks);
+                    numOfVisibleItems -= 1;
+                    check();
+                } else if (availableSpace > breakWidths[numOfVisibleItems]) {
+                    $hlinks.children().first().appendTo($vlinks);
+                    numOfVisibleItems += 1;
+                }
+
+                $btn.attr("count", numOfItems - numOfVisibleItems);
+                if (numOfVisibleItems === numOfItems) {
+                    $btn.addClass('is-hidden');
+                } else $btn.removeClass('is-hidden');
+            }
+
+            $(window).resize(function() {
+                check();
+            });
+
+            $btn.on('click', function() {
+                if ($(this).hasClass("mf-icon-menu")) {
+                    $(this).removeClass("mf-icon-menu").addClass("mf-icon-close");
+                } else {
+                    $(this).removeClass("mf-icon-close").addClass("mf-icon-menu");
+                }
+                var top = $(".header-main").outerHeight();
+                $hlinks.toggleClass('hidden');
+                $hlinks.css('top', top + 'px');
+            });
+
+            check();
+
+        });
+    </script>
+$$END$$
+$$IF!:1:MF_MENU_PRIORITY$$
+    <script>
+        $(window).load(function(){
+            $('.menu-classic-toggle').click(function(){
+                var top = $(".header-main").outerHeight();
+
+                if ($(this).hasClass("mf-icon-menu")) {
+                    $(this).removeClass("mf-icon-menu").addClass("mf-icon-close");
+                    $('.menu-principal').css('top', top + 'px').addClass('is-open');
+                } else {
+                    $(this).removeClass("mf-icon-close").addClass("mf-icon-menu");
+                    $('.menu-principal').removeClass('is-open');
+                }
+                return false;
+            });
+        });
+    </script>
+$$END$$
+
+
+
+$$REM$$<!-- ================================================ -->$$END$$
+$$REM$$<!-- == INDEX                                         -->$$END$$
+$$REM$$<!-- ================================================ -->$$END$$
+
+$$IF=:INDEX:IDT$$
+
+    $$REM$$<!-- SLIDER -->$$END$$
+    $$IF=:1:MF_SLIDER$$
+        <script>
+            $(document).ready(function() {
+                var getSpeed = $('.slidermf-inner').attr('data-rotation');
+                $('.slidermf-inner').cycle({
+                    //height      : '100%',
+                    speed       : 1000,
+                    timeout     : getSpeed,
+                    slideResize : 0,
+                    fit         : 1
+                });
+            });
+        </script>
+    $$END$$
+
+    $$REM$$<!-- MINI MOTEUR -->$$END$$
+    $$IF=:1:MF_MOTEUR_TYPE$$
+        <script>
+            $(window).load(function(){
+                $('.moteurmf-toggle').click(function(){
+                    if ($(this).hasClass("is-active")) {
+                        $('.moteurmf-more').removeClass('is-open');
+                        $(this).text('$$LG:PLUSCRIT pcase$$').removeClass('is-active');
+                    } else {
+                        $('.moteurmf-more').addClass('is-open');
+                        $(this).text('$$LG:MOINSCRITERES pcase$$').addClass('is-active');
+                    }
+                });
+            });
+        </script>
+    $$END$$
+    $$IF=:2$3:MF_MOTEUR_TYPE$$
+        <script>
+            $(window).load(function(){
+
+                $$IF0:MF_MOTEUR_IDTTDEFAULT$$
+                    var tab = 0;
+                $$END$$
+                $$IF:MF_MOTEUR_IDTTDEFAULT$$
+                    var tab = $$MF_MOTEUR_IDTTDEFAULT$$;
+                $$END$$
+
+                $(".moteurmf-tab-idtt").click(function(){
+                    $(".moteurmf-tab-idtt").removeClass("is-active");
+                    $(this).addClass("is-active");
+                    var idtt = $(this).data("idtt");
+                    $("#idtt").val(idtt).trigger('change');
+                });
+
+                if( tab == 0 ){
+                    $(".moteurmf-tab-idtt:first-child").addClass("is-active");
+                }else{
+                    $(".moteurmf-tab-idtt[data-idtt=$$MF_MOTEUR_IDTTDEFAULT$$]").addClass("is-active").click();
+                }
+
+
+            });
+        </script>
+    $$END$$
+
+$$END$$

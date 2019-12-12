@@ -1,0 +1,154 @@
+$$REM$$<!-- DESCRIPTIF -->$$END$$
+<p class="detail-desc-txt">
+    $$IF:ANNDETAIL:DESCRIPTIF$$
+       $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+       $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+    $$END$$
+    $$IF0:ANNDETAIL:DESCRIPTIF$$
+       $$ANNDETAIL:DESCRIPTIF_GEN$$
+    $$END$$
+</p>
+
+$$REM$$<!-- DESCRIPTIF PERSO SEO -->$$END$$
+<!--#include virtual="detail/incl_detail_descriptif_perso.htm" -->
+
+$$REM$$<!-- VIDEO -->$$END$$
+$$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+$$BIF:VIDEO$$
+    $$DO:1:1$$
+        $$A:IDVIDEO=@@VIDEO:URL replace http://www.youtube.com/embed/ ?@@$$
+        $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+        $$A:IDVIDEO=@@IDVIDEO trim@@$$
+        <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" target="_blank" class="$$TYPEBOUTON$$ btn-important bouton-video-detail btn-tooltip" data-placement="top" data-title="$$LG:VIDEO pcase$$">
+            <img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO:360 pcase$$" class="margin-right-5"> $$LG:VIDEO:360 pcase$$
+        </a>
+        <div itemprop="video" itemscope itemtype="" class="display-none"> 
+            <iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+            <div class="h3-like" itemprop="name">$$TITLE$$</div>
+            <p itemprop="description">
+                $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+                $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+            </p>
+            <meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+			 <meta itemprop="uploadDate" content="" />
+        </div> 
+    $$LOOP$$
+$$BFIN$$
+$$IF:ANNDETAIL:VIDEO_URL$$
+    <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" target="_blank"  class="$$TYPEBOUTON$$ btn-important bouton-video-detail btn-tooltipest" data-placement="top" data-title="$$LG:VIDEO pcase$$">
+        <img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO:360 pcase$$" class="margin-right-5"> $$LG:VIDEO:360 pcase$$
+    </a>
+    <div itemprop="video" itemscope itemtype="" class="display-none"> 
+        $$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace http://www.youtube.com/watch_popup?v= ?@@$$
+        $$A:IDVIDEO=@@IDVIDEO trim@@$$
+        <iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+        <div class="h3-like" itemprop="name">$$TITLE$$</div>
+        <p itemprop="description">
+            $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+            $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+        </p>
+        <meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+		 <meta itemprop="uploadDate" content="" />
+</div>
+$$END$$
+
+$$REM$$<!-- VISITE VIRTUELLE -->$$END$$
+$$IF!:1:BIGVISITE$$
+    $$IF:ANNDETAIL:ID360$$
+        $$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+            $$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+        $$END$$
+        <p>
+            <a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-video-360">
+                $$LG:VISITEVIRTUELLE pcase$$
+            </a>
+        </p>
+    $$END$$
+    $$IF:ANNDETAIL:360_URL$$
+        <p>
+            <a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" target="_blank" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-video-360">
+                $$LG:VISITEVIRTUELLE pcase$$
+            </a>
+        </p>
+    $$END$$
+$$END$$
+
+$$REM$$<!-- LIEN EXTERNE -->$$END$$
+$$IF:ANNDETAIL:LIEN_URL$$
+    $$IF0:HIDE_LIEN_URL$$
+        <a href="$$ANNDETAIL:LIEN_URL$$" class="$$TYPEBOUTON$$ btn-important btn-tooltip" target="_blank">$$ANNDETAIL:LIEN_DESCRIPTIF_FR$$</a>
+    $$END$$
+$$END$$
+
+$$REM$$<!-- PDF -->$$END$$
+$$BIF:PDF$$
+<ul>
+    $$DO$$
+        <li>&bull; <a href="$$PDF:URL$$" target="_blank" rel="nofollow" class="$$TYPEBOUTON$$ btn-important btn-small bouton-pdf-detail" data-placement="top" data-title="$$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$document&nbsp;$$PDF:I$$$$END$$">
+            <img src="$$~$$images/widget/$$PICTO_COULEUR$$/pdf.png"> $$PDF:DESCRIPTIF_FR$$$$IF0:PDF:DESCRIPTIF_FR$$Document&nbsp;$$PDF:I$$$$END$$</a>
+        </li>
+    $$LOOP$$
+</ul>
+$$BFIN$$
+
+$$REM$$<!-- COPROPRIETE -->$$END$$
+$$IF:ANNDETAIL:SI_COPROPRIETE$$
+    <p><i class="icon-v5-arrow-right-6"></i> $$LG:COPROPRIETE pcase$$ ($$ANNDETAIL:NB_LOTS_COPROPRIETE$$ $$LG:LOTS$$)</p>
+    <p>
+        <i class="icon-v5-arrow-right-6"></i> $$LG:PROCSYNDIC pcase$$ :
+        $$IF!:true$false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+            $$LG:NONRENSEIGNE pcase$$
+        $$END$$
+        $$IF=:false:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+            $$LG:AUCUNE pcase$$
+        $$END$$
+        $$IF=:true:ANNDETAIL:SI_PROCEDURE_SYNDICAT$$
+            $$IF:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+                $$ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+            $$END$$
+            $$IF0:ANNDETAIL:DESCRIPTION_PROCEDURE_SYNDICAT$$
+                $$LG:OUI2$$
+            $$END$$
+        $$END$$
+    </p>
+$$END$$
+
+$$REM$$<!-- CHARGES ANNUELLES -->$$END$$
+$$IF:ANNDETAIL:CHARGES_ANNUELLES$$
+   <p><i class="icon-v5-arrow-right-6"></i> $$LG:CHARGESANNUELLES pcase$$ : $$ANNDETAIL:CHARGES_ANNUELLES formatnumber 0$$ &euro;</p>
+$$END$$
+
+$$REM$$<!-- SPECIFIQUE PROGRAMMES NEUFS -->$$END$$
+$$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+    <p>$$LG:V5PROGRAMME pcase$$ : $$ANNDETAIL:LIBELLE$$</p>
+$$END$$
+
+$$REM$$<!-- SPECIFIQUE VIAGER -->$$END$$
+$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+    <p>
+        $$IF:ANNDETAIL:AGE_F$$
+            $$LG:FEMME pcase$$ : $$ANNDETAIL:AGE_F$$ ans
+        $$END$$
+        $$IF:ANNDETAIL:AGE_H$$
+            $$IF!:0:ANNDETAIL:AGE_F$$
+                &nbsp;
+            $$END$$
+            $$LG:HOMME pcase$$ : $$ANNDETAIL:AGE_H$$ ans
+        $$END$$
+    </p>
+$$END$$
+
+$$REM$$<!-- DISPO -->$$END$$
+$$IF:ANNDETAIL:DT_DISPO$$
+    <p>$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</p>
+$$END$$
+
+
+$$REM$$<!-- METRO -->$$END$$
+<div id="zoneMetro"></div>
+<script type="text/javascript">
+    // MGT JQUERY METRO
+    $(document).ready(function() {
+        dispMetro('$$ANNDETAIL:IDANNONCE getlieux escape$$','zoneMetro');
+    });
+</script>

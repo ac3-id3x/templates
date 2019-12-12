@@ -1,0 +1,73 @@
+// FIX DEFAULT
+$color-sous-menu:false !default;
+// CSS
+.menu-principal > li > a.menu-sub-on {
+	@if $color-sous-menu != false {
+		background:$color-sous-menu;
+		@include lightnessColor($color-sous-menu);
+	} @else {
+		background:$color-action;
+		@include lightnessColor($color-action);
+	}
+}
+.menu-sub a:hover {
+	color:inherit;
+}
+.menu-sub .menu-sub-bg {
+	@if $color-sous-menu != false {
+		background:$color-sous-menu;
+	} @else {
+		background:$color-action;
+	}
+}
+.menu-sub ul li {
+	float:left;
+}
+.menu-sub ul li a{
+	font-size:$font-size-text * 0.7;
+	text-transform:none;
+	font-weight:normal;
+	@extend .font-body;
+	padding:10px 17px;
+	border-right: 1px solid #af0102;
+	border-left: 1px solid #d90001;
+	font-weight:normal;
+	display:block;
+	@if $color-sous-menu != false {
+		@include lightnessColor($color-sous-menu,no);
+			&:hover {
+			@include lightnessColor($color-sous-menu,no);
+			@include background-image(linear-gradient(top, darken($color-sous-menu,5) 0%, darken($color-sous-menu,10) 100%));
+			@include filter-gradient(darken($color-sous-menu,5),darken($color-sous-menu,10),vertical);
+			text-decoration:none;
+		}
+	} @else {
+		@include lightnessColor($color-action,no);
+			&:hover {
+			@include lightnessColor($color-action,no);
+			background:lighten($color-action,2);
+			text-decoration:none;
+		}
+	}
+}
+// MEDIA QUERY
+@media only screen and (max-width : 767px) {
+	.menu-sub-picture {
+		margin-left:0px;
+	}
+	.menu-sub {
+		margin-top:15px;
+	}
+	.menu-sub > .menu-sub-bg {
+		position:absolute;
+	}
+	.menu-sub ul li {
+		float:none;
+	}
+	.menu-sub ul li a{
+		border-right: 0px;
+		border-left: 0px;
+		font-size:$font-size-text * 0.8;
+	}
+}
+

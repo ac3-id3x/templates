@@ -1,0 +1,106 @@
+$$A:JS_MINI_MOTEUR=1$$
+<form class="form-$$TYPEMOTEUR$$" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+	<input type="hidden" name="idqfix" value="1">
+	<!--#include virtual="moteur/incl_input_langue.htm" -->
+	<div class="row-fluid moteur-orpi">
+	  <div class="span4">
+	    <div class="bloc margin-top-15">
+					<div class="legend">$$LG:TYPEDETRANSACTION pcase$$</div>
+					$$IF=:0:MINI_IDTTUNIQUE$$
+						<div id="Mini_Transaction" class="small">
+							$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+							<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->	
+						</div>
+					$$END$$
+					$$IF=:1:MINI_IDTTUNIQUE$$
+						<input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+					$$END$$
+				</div>
+				<div class="margin-top-15">
+				<div class="legend">$$LG:TYPEDEBIEN pcase$$</div>
+					$$IF=:1:MINIBIENS_AFFICHAGE$$
+						<div id="Mini_Biens" class="Mini_Biens small">
+							<script type="text/javascript">
+								$(document).ready(function() {
+									ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$');
+								});
+							</script>
+						</div>
+					$$END$$
+				</div>
+	   </div>
+		<div class="span4 padding-right-15 padding-left-15">
+			<div class="row-fluid">
+				<div class="bloc margin-top-10">
+				$$IF=:1:MINI_BUDGET_AFFICHAGE$$
+					<div id="Mini_Budget" class="Mini_Budget small">
+						<script type="text/javascript">
+						$(document).ready(function() {
+								ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+						});
+						</script>
+					</div>
+				$$END$$
+				</div>
+					<div class="bloc margin-top-10">
+						$$IF=:1:MINIPIECES_AFFICHAGE$$
+						<div id="Mini_Pieces">
+							<!--#include virtual="moteur/mini/incl_pieces.htm" -->
+						</div>
+						$$END$$
+					</div>
+					<div class="control-group hidden-phone margin-top-20">
+                  <div class="row-fluid">
+                    <div class="span4 pagination-right margin-top-5">
+                        <div class="legend">$$IF!:1:REFORPIPERSO$$Ref. ORPI$$END$$$$IF=:1:REFORPIPERSO$$$$REFORPITXTPERSO$$$$END$$</div>
+                    </div>
+                    <div class="span8">
+                        <input type="text" class="center" name="refannonce"/>
+                    </div>
+                  </div>
+                </div>			
+			</div>
+		</div>
+		<div class="span4 padding-right-15 relative z100">
+			<div class="row-fluid">
+				<div class="span12 bloc margin-top-10">
+					<div class="legend">$$LG:LOCALIS pcase$$</div>
+					<div id="Mini_Villes" class="Mini_Villes relative small">
+						$$IF=:1:MINIVILLES_SUGGEST$$
+						$$REM$$<!-- VILLE SUGGEST -->$$END$$
+						$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+						$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+						$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+						<!--#include virtual="moteur/suggest/incl_input.htm" -->
+						<!--#include virtual="moteur/suggest/incl_json.htm" -->
+						$$END$$
+						$$IF!:1:MINIVILLES_SUGGEST$$
+							<script type="text/javascript">
+							$(document).ready(function() {
+									ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes','$$TYPEMOTEUR$$');
+							});
+							</script>
+						$$END$$
+						$$IF=:1:MINIRAYON_AFFICHAGE$$
+    					<div id="Mini_Rayon">
+    						<!--#include virtual="moteur/mini/incl_rayon.htm" -->
+    					</div>
+					   $$END$$
+					</div>
+					$$IF=:INDEX:IDT$$
+						$$IF=:1:MOTEUR_VILLES_REF$$
+							<!--#include virtual="moteur/mini/incl_villes_referencement.htm" -->	
+						$$END$$
+					$$END$$
+				</div>
+			</div>	
+			<div class="row-fluid">
+				<div id="Mini_Bouton" class="margin-left-0">
+					<div class="control-group margin-top-10">	
+						<div class="cursor-pointer pagination-centered bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$"><img src="$$-$$images/moteur/btn_trouver_$$LANGUE ucase$$.png" alt="$$LG:TROUVEZVOTREBIEN pcase$$" /></div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

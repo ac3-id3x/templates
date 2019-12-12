@@ -1,0 +1,79 @@
+$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+<!--#include virtual="modules/annonces-8/incl_tailles_photos.htm" -->
+$$BIF:ANNONCESHOME$$
+$$A:JS_ANNONCES-8=1$$
+<div class="module-homepage">
+	<div class="span4">
+		<h2 class="margin-top-10 h2-like"><!--#include virtual="modules/incl_titre_module.htm" --></h2>
+		<p class="margin-top-10 typo-body">
+			<!--#include virtual="modules/annonces-8/incl_phrase_intro.htm" -->
+		</p>
+		<div class="margin-top-20 hidden-phone">
+			<!--#include virtual="modules/incl_titre_bouton.htm" -->
+		</div>
+	</div>
+	<div class="span8">
+	$$DO$$
+	$$A:CALCULMODULO=@@ANNONCESHOME:I  exec XX%2$$
+	$$IF=:1:CALCULMODULO$$
+	<div class="row-fluid margin-bottom-10">
+	$$END$$
+		<div class="span6 module-annonces-homepage$$IF+:3:ANNONCESHOME:I$$ hidden-phone$$END$$">
+			$$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+$$A:ALT_ANNONCE1=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+$$A:ALT_ANNONCE2=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+			<a href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+				<div class="img-homepage overflow box-shadow relative $$HEIGHTPICTURE8$$">
+					$$IF:ANNONCESHOME:BIGURL0$$
+					$$IF!:1:PICTOANNONCELISTHOME$$
+					<div class="row-fluid absolute bottom margin-left-5 margin-bottom-10 z25 hidden-phone">
+		            <!--#include virtual="modules/incl_pictos_modules.htm" -->
+		          </div>
+		          $$END$$
+						<div style="background-image:url('$$ANNONCESHOME:BIGURL0$$');" class="relative picture-responsive"></div>
+					$$END$$
+					
+					$$IF0:ANNONCESHOME:BIGURL0$$
+					  $$IF:ANNONCESHOME:PHOTOURL0$$
+					    $$IF!:1:PICTOANNONCELISTHOME$$
+        					<div class="row-fluid absolute bottom margin-left-5 margin-bottom-10 z25">
+        		            <!--#include virtual="modules/incl_pictos_modules.htm" -->
+        		          </div>
+		              $$END$$
+						<div style="background-image:url('$$ANNONCESHOME:PHOTOURL0$$');" class="relative picture-responsive"></div>
+					  $$END$$
+                  $$IF0:ANNONCESHOME:PHOTOURL0$$
+					    <!--#include virtual="modules/incl_no_photo_modules.htm" -->
+				     $$END$$
+					$$END$$
+					$$IF:ANNONCESHOME:BIGURL1$$
+						<div class="hidden-phone hidden-tablet $$HEIGHTPICTURE8$$"><div style="background-image:url('$$ANNONCESHOME:BIGURL1$$');" class="picture-responsive display-none relative"></div></div>
+					$$END$$
+					$$IF0:ANNONCESHOME:BIGURL1$$
+    					$$IF:ANNONCESHOME:PHOTOURL1$$
+    						<div class="hidden-phone hidden-tablet $$HEIGHTPICTURE8$$"><div style="background-image:url('$$ANNONCESHOME:PHOTOURL1$$');" class="picture-responsive display-none relative"></div></div>
+    					$$END$$
+					$$END$$
+					<div class="absolute left top margin-left-10 margin-top-10 hidden-phone z25">
+						<div class="relative padding-5 typo-white module-villes-annonces ville">
+							<!--#include virtual="modules/annonces-8/incl_villes.htm" -->
+							<div class="absolute bloc-info left top right bottom bg-black typo-white opacity-8 z-25"></div>
+						</div>
+					</div>
+				</div>
+				<div class="margin-top-10 typo-body margin-bottom-5">
+					<span class="h3-like"><!--#include virtual="modules/annonces-8/incl_type_bien_bloc.htm" --></span><br />
+					<!--#include virtual="modules/annonces-8/incl_infos_bien.htm" -->
+				</div>
+				<!--#include virtual="modules/annonces-8/incl_prix.htm" -->
+			</a>
+		</div>
+	$$IF=:0:CALCULMODULO$$
+	</div>
+	$$END$$
+	$$LOOP$$
+	</div>
+</div>
+$$REM$$<div class="pull-right margin-top-10 nav-rotation"></div>$$END$$
+<div class="clear"></div>
+$$BFIN$$

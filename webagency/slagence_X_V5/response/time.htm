@@ -1,0 +1,69 @@
+$$DYN:ID3:NODEBUG$$$$DYN:ID3:NOCNXWEB$$$$DYN:ID3:NOFOOTER$$$$DYN:ID3:NODEBUGPOPUP$$$$DYN:ID3:NOCYBERMONITOR$$
+<doctype html>
+<html>
+    <head>
+        <style type="text/css">
+            span{margin: 20px; padding:10px;}
+            div{height: 50px;}
+            .btn{border: solid grey 1px; background-color: LightGrey ;cursor:pointer;}
+        </style>
+    </head>
+    <body>
+        <div>
+            Temps de chargement de la page :<span id="Pageload"></span>ms
+        </div>
+        <div>
+            <span class="btn" onclick='loadXMLDoc("/response,listing.json?idtt=2","annListing", "Listing d`annonces");'>Test listing d'annonces</span>
+            <span id="annListing"></span>
+        </div>
+        <div>
+            <span class="btn" onclick='loadXMLDoc("/response,listingcfg.json?idtt=2","annListingCfg", "Listing d`annonces paginé");'>Test listing d'annonces paginé</span>
+            <span id="annListingCfg"></span>
+        </div>
+        <div>
+            <span class="btn" onclick='loadXMLDoc("/response,detail.json","ann", "Détail annonces");'>Test détail annonces</span>
+            <span id="ann"></span>
+        </div>
+        <script type="text/javascript">
+            var time = window.performance.timing;
+            window.onload = function() {
+
+                document.getElementById('Pageload').innerHTML = time.responseStart - time.requestStart;
+            };
+            
+            function loadXMLDoc(url, blocName, text) {
+                document.getElementById(blocName).innerHTML = "<span style='color:red'>CHARGEMENT</span>";
+                var timerStart = Date.now();
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                       if(xmlhttp.status == 200){
+                            var responseTime = "Temps de réponse" + text + ": " + (Date.now()-timerStart) + " ms";
+                            document.getElementById(blocName).innerHTML = responseTime;
+                       }
+                       else if(xmlhttp.status == 400) {
+                          alert('There was an error 400')
+                       }
+                       else {
+                           alert('something else other than 200 was returned')
+                       }
+                    }
+                };
+
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+            }
+            //loadXMLDoc("/response,detail.json","ann", "Détail annonces") ;
+            //loadXMLDoc("/response,listing.json?idtt=2","annListing", "Listing d'annonces");
+
+
+        </script>
+</html>

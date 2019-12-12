@@ -1,0 +1,108 @@
+$$A:JS_MINI_MOTEUR=1$$
+<form class="form-$$TYPEMOTEUR$$" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+	<input type="hidden" name="idqfix" value="1">
+	<!--#include virtual="moteur/incl_input_langue.htm" -->
+	$$IF=:2:TYPESITE$$
+		<div class="row-fluid margin-top-5 hidden-phone">
+			<span class="h1-like bold">$$LG:RECHERCHER pcase$$</span> <span class="h1-like lowercase">$$LG:BIENIMMORAPIDE pcase$$</span>
+			<p><span class="bold italic big">$$E:IMMOBW:NBANN:ALIAS:NBANNTOTAL$$$$NBANNTOTAL:NB$$</span> $$LG:ANNSITE lcase$$</p>
+		</div>
+		$$END$$
+	<div class="row-fluid">
+		$$IF=:1:TYPESITE$$
+		<div class="span4 margin-top-20 hidden-phone">
+			<span class="h1-like bold">$$LG:RECHERCHER pcase$$</span>
+			<span class="h1-like lowercase">$$LG:BIENIMMORAPIDE pcase$$</span>
+			<p><span class="margin-top-10 bold italic big">$$E:IMMOBW:NBANN:ALIAS:NBANNTOTAL$$$$NBANNTOTAL:NB$$</span> $$LG:ANNSITE lcase$$</p>
+		</div>
+		$$END$$
+		<div class="$$IF=:1:TYPESITE$$span4$$END$$$$IF=:2:TYPESITE$$span6$$END$$ zone1 padding-right-10">
+			<div class="row-fluid">
+				<div class="span12 margin-top-20">
+					<div class="legend">$$LG:LOCALIS pcase$$</div>
+					<div id="Mini_Villes" class="Mini_Villes relative small">
+						$$IF=:1:MINIVILLES_SUGGEST$$
+						$$REM$$<!-- VILLE SUGGEST -->$$END$$
+						$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+						$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+						$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+						<!--#include virtual="moteur/suggest/incl_input.htm" -->
+						<!--#include virtual="moteur/suggest/incl_json.htm" -->
+						$$END$$
+						$$IF!:1:MINIVILLES_SUGGEST$$
+							<script type="text/javascript">
+							$(document).ready(function() {
+									ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes','$$TYPEMOTEUR$$');
+							});
+							</script>
+						$$END$$
+					</div>
+					$$IF=:INDEX:IDT$$
+						$$IF=:1:MOTEUR_VILLES_REF$$
+							<span class="small"><!--#include virtual="moteur/mini/incl_villes_referencement.htm" --></span>
+						$$END$$
+					$$END$$
+					<div class="legend">$$LG:TYPEDETRANSACTION pcase$$</div>
+					$$IF=:0:MINI_IDTTUNIQUE$$
+					<div id="Mini_Transaction" class="small">
+						$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+						<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->	
+					</div>
+					$$END$$
+					$$IF=:1:MINI_IDTTUNIQUE$$
+						<input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+					$$END$$
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="legend">$$LG:TYPEDEBIEN pcase$$</div>
+					$$IF=:1:MINIBIENS_AFFICHAGE$$
+						<div id="Mini_Biens" class="Mini_Biens small">
+							<script type="text/javascript">
+								$(document).ready(function() {
+									ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$');
+								});
+							</script>
+						</div>
+					$$END$$
+				</div>
+			</div>
+		</div>
+		<div class="$$IF=:1:TYPESITE$$span4$$END$$$$IF=:2:TYPESITE$$span6$$END$$ zone2 padding-right-10 margin-top-15 relative z100">
+			<div class="row-fluid">
+				<div class="span12 margin-top-5">
+					$$IF=:1:MINIPIECES_AFFICHAGE$$
+					<div id="Mini_Pieces">
+						<!--#include virtual="moteur/mini/incl_pieces.htm" -->
+					</div>
+					$$END$$
+					$$IF=:1:MINI_SURFACE_AFFICHAGE$$
+					<div id="Mini_Surface" class="small">
+						<!--#include virtual="moteur/mini/incl_surface.htm" -->
+					</div>
+					$$END$$
+					$$IF=:1:MINI_SURFACE_TERRAIN_AFFICHAGE$$
+					<div id="Mini_Surface_Terrain" class="display-none">
+						<!--#include virtual="moteur/mini/incl_surface_terrain.htm" -->
+					</div>
+					$$END$$
+					$$IF=:1:MINI_BUDGET_AFFICHAGE$$
+					<div id="Mini_Budget" class="Mini_Budget small">
+						<script type="text/javascript">
+						$(document).ready(function() {
+								ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+						});
+						</script>
+					</div>
+					$$END$$
+					<div id="Mini_Bouton" class="margin-left-0 pagination-centered">
+						<div class="control-group margin-top-10">	
+							<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-important bold cursor-pointer pagination-centered bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$">$$LG:RECHERCHER pcase$$</div>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,83 @@
+<div class="detail-header">
+    <div class="row-fluid">
+        <div class="span9 detail-header-col">
+            <h1 itemprop="name">
+                $$IF!:1:HIDE_TRANSACTION$$
+                    $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF:ANNDETAIL:SI_LIBRE$$
+                            $$LG:VIAGERLIBRE2 pcase$$
+                        $$END$$
+                        $$IF0:ANNDETAIL:SI_LIBRE$$
+                            $$LG:VIAGEROCCUPE2 pcase$$
+                        $$END$$
+                    $$END$$
+                    $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF!:1:LOCALCESSION$$
+                                $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                            $$END$$
+                        $$END$$
+                        $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                    $$END$$
+                $$END$$
+
+                $$IF!:1:HIDE_TYPEBIEN$$
+                    $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                        $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$ : $$ANNDETAIL:LIBELLE$$$$END$$
+                    $$END$$
+                    $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF=:1:LOCALCESSION$$
+                            $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$LG:AVEC$$ $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                        $$END$$
+                        $$IF!:1:LOCALCESSION$$
+                            $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$$$END$$
+                        $$END$$
+                    $$END$$
+                $$END$$
+                $$IF!:1:HIDE_SOUSTYPEBIEN$$
+                    $$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+                        $$IF!:1:HIDE_TYPEBIEN$$ - $$END$$$$ANNDETAIL:IDSOUSTYPEBIEN getsoustypesbien$$
+                    $$END$$
+                $$END$$
+
+                $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+
+            </h1>
+        </div>
+        <div class="span3 detail-header-col">
+            $$IF=:0:PRIXMASQUE$$
+                $$IF:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                    <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                $$END$$
+                $$IF0:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                    $$IF:ANNDETAIL:PRIX$$
+                        <div class="detail-prix">
+                            <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><!--#include virtual="detail/mobilefirst/incl_detail_prix.htm" --></div>
+                        </div>
+                    $$END$$
+                    $$IF0:ANNDETAIL:PRIX$$
+                        <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF=:1:PRIXMASQUE$$
+                <div class="detail-prix">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+            $$END$$
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span9 detail-header-col detail-localisation">
+            <!--#include virtual="detail/mobilefirst/incl_detail_localisation.htm" -->
+        </div>
+        <div class="span3 detail-header-col">
+            <p class="detail-ref">
+                $$LG:REFER pcase$$ $$ANNDETAIL:REFANNONCE$$
+                $$IF!:0:DTMAJMASQUE$$<br>$$LG:MAJV5$$ : $$ANNDETAIL:DT_MAJ date 2$$$$END$$
+            </p>
+        </div>
+    </div>
+</div>

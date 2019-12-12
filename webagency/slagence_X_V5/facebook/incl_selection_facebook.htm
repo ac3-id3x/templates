@@ -1,0 +1,50 @@
+<!-- [ttl: 4h] -->
+$$REM$$====================================================================
+//// <summary>Sélection d'annonces affichée (souvent des cdc) sur l'index</summary>
+//// <remarks>
+//// <para>Paramétrage avec macros qui se trouvent dans incl_param.htm du site</para>
+//// <para>Paramétrages possible = fraicheur, défilant ou pas, type transac et nb annonces affichées</para>
+//// <para>Packs avantage = par défaut NOUVEAUTÉS. CDC, exclus et autres à vérifier si on a droit</para>
+//// <para>On ne démutualise pas ce fichier !</para>
+//// <para>La date de fraicheur du bien est affichée en commentaire: info utile pour chefs de projets</para>
+//// <para>On enlève ces valeurs de la qry, ça ne sert que pour le neuf : idtt= IMMOBW:ANN:~limit:IDTYPETRANSACTION IF:IMMOBW:ANN:~limit:IDANNONCEPARENT &amp;idap= IMMOBW:ANN:~limit:IDANNONCEPARENT END</para>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Reprise de x_v2 et adaptation pour x_v3</update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-07-08" author=christophe.ledoux">Updates</update>
+=====================================================================$$END$$
+$$B:IMMOBW:ANN-ES:VAL:IDTTCC:FR:QRY:IDP::photo=10::d_dt_maj:ALIAS:ANNLISTE$$
+$$BIF:ANNLISTE$$
+<div class="row-fluid">
+$$DO:1:4$$
+$$A:LIEN_ANNLISTE_INDEX=@@ANNLISTE:URLVIRTUELLE@@$$
+$$A:TITLE_ANNLISTE_INDEX=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+$$REM$$<!-- DEBUT CONSTRUCTION ANNONCE -->$$END$$
+	<div class="span3 pagination-centered padding-10">
+		<a href="$$LIEN_ANNLISTE_INDEX$$" title="$$TITLE_ANNLISTE_INDEX$$" target="_blank">
+			$$IF:ANNLISTE:IDPHOTO$$
+				<img src="$$ANNLISTE:PHOTO_URL$$" class="height-150" alt="$$TITLE_ANNLISTE_INDEX$$" title="$$TITLE_ANNLISTE_INDEX$$"  />
+			$$END:ANNLISTE:IDPHOTO$$
+			$$IF0:ANNLISTE:IDPHOTO$$
+				$$IF=:TRUE:ANNLISTE:SI_LOGO$$
+				<div style="background:url('$ANNLISTE:URLLOGO$') 50% 50% no-repeat #fff;"></div>
+				$$END:ANNLISTE:SI_LOGO$$
+			$$END:ANNLISTE:IDPHOTO$$
+		$$IF:ANNLISTE:IDPHOTO$$
+		<p>$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$</p>
+		$$END$$
+		<p>$$ANNLISTE:AVILLE ncase$$</p>
+		$$IF:ANNLISTE:NB_PIECES$$
+		<p>
+			$$ANNLISTE:NB_PIECES$$
+			$$IF=:1:ANNLISTE:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+			$$IF!:0$1:ANNLISTE:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$					
+			$$IF:ANNLISTE:SURFACE$$ - $$ANNLISTE:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+			$$END:ANNLISTE:SURFACE$$
+		</p>
+		$$END:ANNLISTE:NB_PIECES$$
+		</a>
+	</div>
+$$REM$$<!-- FIN CONSTRUCTION ANNONCE -->$$END$$
+$$LOOP$$
+</div>
+$$BFIN$$

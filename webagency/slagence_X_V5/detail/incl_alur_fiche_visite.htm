@@ -1,0 +1,159 @@
+$$IF=:1$3:ANNDETAIL:IDTYPETRANSACTION$$
+	$$IF!:6$7$8$11$12:ANNDETAIL:IDTYPEBIEN$$
+	<div class="print-small" style="page-break-before: always;">
+		<div style="padding-top: 10px; margin-top-: 20px;" class="bloc-detail-reference">
+			<span class="bold" style="color: #78797d">$$LG:ALUR_APROPOSDUPRIX$$</span>
+			<hr class="margin-top-0 margin-bottom-0" />
+		</div>
+
+		<div>
+			<p class="pagination-justify">
+				$$LG:ALUR_LOYER$$ : $$ANNDETAIL:PRIX formatnumber 0$$
+
+				$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+				$$END$$
+
+				$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					&euro; $$LG:PARMOIS lcase$$ + $$LG:CHARGES lcase$$
+				$$END$$
+
+				$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					&euro; $$LG:ALUR_MOISCHARGESCOMPRISES$$
+				$$END$$
+
+				<br />
+
+				$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					$$LG:DONT ncase$$ :
+				$$END$$
+
+				$$IF!:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					$$IF:ANNDETAIL:CMPLTLOYER$$
+						$$LG:DONT ncase$$ :
+					$$END$$
+
+					$$IF0:ANNDETAIL:CMPLTLOYER$$
+						$$IF:ANNDETAIL:PX_CHARGES$$
+							$$LG:DONT ncase$$ :
+						$$END$$
+					$$END$$
+				$$END$$
+			</p>
+
+			<ul class="margin-top-neg-7">
+				$$IF:ANNDETAIL:CMPLTLOYER$$<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_COMPLEMENTLOYER$$ : $$ANNDETAIL:CMPLTLOYER formatnumber 0$$ &euro;</li>$$END$$
+				
+				$$IF=:3:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					<li class="margin-left-30" style="list-style: disc;">$$LG:ALUR_REMBOURSEMENTANNUELLOCATAIREJUSTIF$$</li>
+				$$END$$
+				
+				$$IF=:1$2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					$$IF:ANNDETAIL:PX_CHARGES$$
+						<li class="margin-left-30" style="list-style: disc;">
+							$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+								$$LG:ALUR_CHARGESFORFAITAIRES$$ : 
+							$$END$$
+
+							$$IF=:2:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+								$$LG:ALUR_PROVISIONSCHARGESREGULANNUELLE$$ : 
+							$$END$$
+
+							$$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro; 
+
+							$$IF=:1:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+								/ $$LG:MOIS lcase$$
+							$$END$$
+						</li>
+					$$END$$
+				$$END$$
+
+				$$IF0:ANNDETAIL:IDTYPECHARGESLOCATIONHONORAIRES$$
+					$$IF:ANNDETAIL:PX_CHARGES$$
+						<li class="margin-left-30" style="list-style: disc;">$$LG:CHARGES$$ : $$ANNDETAIL:PX_CHARGES formatnumber 0$$ &euro;</li>
+					$$END$$
+				$$END$$
+			</ul>
+
+			$$IF:ANNDETAIL:HONORAIRESLOCATAIRE$$
+				<p class="pagination-justify">
+					$$LG:ALUR_HONORAIRESTTCLOCATAIRE$$ : $$ANNDETAIL:HONORAIRESLOCATAIRE formatnumber 0$$ &euro;
+					<br />
+					$$IF:ANNDETAIL:HONORAIRESETATLIEUX$$ $$LG:DONT ncase$$ : $$LG:ALUR_HONORAIRESTTCRESILIATIONETATLIEUX$$ : $$ANNDETAIL:HONORAIRESETATLIEUX formatnumber 0$$ &euro;$$END$$
+				</p>	
+			$$END$$
+		</div>
+
+		<div style="font-weight: initial;">
+			$$IF=:1$3$7:ANNDETAIL:IDTYPETRANSACTION$$
+		    <p class="prix-honoraires-charges">
+			    $$IF:ANNDETAIL:GARANTIE$$$$LG:V5DEPOTGARANTIE pcase$$ : $$ANNDETAIL:GARANTIE formatnumber 0 replace € ¤$$ &euro;$$END$$
+		    </p>
+			$$END$$
+		</div>
+	</div>
+	$$END$$
+$$END$$
+					
+
+
+$$IF=:2$5$6$8:ANNDETAIL:IDTYPETRANSACTION$$
+	$$IF!:6$7$8$11$12:ANNDETAIL:IDTYPEBIEN$$
+	<div class="print-small" style="page-break-before: always;">
+		<div style="padding-top: 10px; margin-top-: 20px;" class="bloc-detail-reference">
+			<span class="bold" style="color: #78797d">$$LG:ALUR_APROPOSDUPRIX$$</span>
+			<hr class="margin-top-0 margin-bottom-0" />
+		</div>
+
+		<div>
+			$$LG:PRIX$$ : $$ANNDETAIL:PRIX$$ &euro;
+
+			<br />
+			$$IF=:1:FICHEVISITE_CHARGES_ANNUELLES$$
+				$$IF0:LOCATION_LOCAL_COMMERCIAL$$
+					$$IF:ANNDETAIL:CHARGES_ANNUELLES$$
+					<p>$$LG:CHARGESANNUELLES pcase$$ : $$ANNDETAIL:CHARGES_ANNUELLES formatnumber 0$$ &euro;</p>
+					$$END$$
+				$$END$$
+			$$END$$
+
+			$$IF=:1:ANNDETAIL:IDTYPERESPONSABLEHONORAIRES$$
+				<p class="pagination-justify">
+					$$IF:ANNDETAIL:HONORAIRESTTCENPOURCENTAGEPXHH$$ 
+						$$LG:ALUR_HONORAIRESTTCACQUEREUR$$ : $$ANNDETAIL:HONORAIRESTTCENPOURCENTAGEPXHH$$ % $$LG:ALUR_POURCENTPRIXHORSHONORAIRES$$ 
+						<br />
+					$$END$$
+
+					$$IF:ANNDETAIL:PXHORSHONORAIRESACQUEREUR$$ $$LG:ALUR_PRIXHORSHONORAIRES$$ : $$ANNDETAIL:PXHORSHONORAIRESACQUEREUR formatnumber 0$$ &euro; $$END$$
+				</p>
+			$$END$$
+
+			$$IF=:2:ANNDETAIL:IDTYPERESPONSABLEHONORAIRES$$
+				<p class="pagination-justify">$$LG:ALUR_HONORAIRESVENDEUR$$</p>
+			$$END$$
+
+			$$IF=:3:ANNDETAIL:IDTYPERESPONSABLEHONORAIRES$$
+				<p class="pagination-justify">
+					$$IF:ANNDETAIL:HONORAIRESTTCENPOURCENTAGEPXHH$$ 
+						$$LG:ALUR_HONORAIRESTTCACQUEREUR$$ : $$ANNDETAIL:HONORAIRESTTCENPOURCENTAGEPXHH$$ % $$LG:ALUR_POURCENTPRIXHORSHONORAIRES$$ 
+						<br />
+					$$END$$
+
+					$$IF:ANNDETAIL:PXHORSHONORAIRESACQUEREUR$$ 
+						$$LG:ALUR_PRIXHORSHONORAIRESACQUEREUR$$ : $$ANNDETAIL:PXHORSHONORAIRESACQUEREUR formatnumber 0$$ &euro;
+						<br />
+					$$END$$
+
+					$$LG:ALUR_HONORAIRESVENDEUR2$$
+				</p>
+			$$END$$
+
+
+			
+
+
+		
+		</div>
+	</div>
+	$$END$$
+$$END$$

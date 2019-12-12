@@ -1,0 +1,101 @@
+$$DYN:ID3:NODEBUGPOPUP$$
+<!--#include virtual="/header/params_global.htm" -->
+$$B:IMMOBW:LISTANNONCES:~lstidannonce:QRY:IDANNONCES:ALIAS:ANNLISTECOMPARER$$
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="$$~$$scripts/libs/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() { 
+		        $("#tableTriAnnonces").tablesorter(); 
+		        $$IF=:1:FORM:PRINT$$
+		        	$(document).ready(function(){
+		        		window.focus();
+			        	window.print();
+			        });
+		        $$END$$
+		    }); 	
+		</script>
+		<link rel="stylesheet" href="$$~$$sources/css/bootstrap.css"/>
+		<link rel="stylesheet" href="$$_$$css/style.css" type="text/css"/>
+	</head>
+	<body class="bg-white">
+		<table cellpadding="5" cellspacing="0" id="tableTriAnnonces" class="margin-top-5 margin-bottom-5 table tablesorter table-striped table-hover">
+			<thead>
+				<tr>
+					<td class="h2-like width-100 typo-action"></td>
+					<th class="h6-like typo-action width-100 padding-10"><span class="smaller">$$LG:VILLE pcase$$</span></th>	
+					<th class="h6-like width-150 typo-action width-90 padding-10"><span class="smaller">$$LG:PRIX pcase$$</span></th>	
+					<th class="h6-like width-150 typo-action padding-10"><span class="smaller">$$LG:SURFACE pcase$$</span></th>
+					<th class="h6-like width-150 typo-action padding-10"><span class="smaller">$$LG:PIECES pcase$$</span></th>
+					<th class="h6-like width-150 typo-action padding-10"><span class="smaller">$$LG:CHAMBRESYO pcase$$</span></th>
+					<th class="h6-like typo-action width-150"><span class="smaller">$$LG:CONSENERGIE pcase$$</span></th>
+					<th class="h6-like typo-action width-150"><span class="smaller">$$LG:GAZAEFFET pcase$$</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				$$BIF:ANNLISTECOMPARER$$
+					$$DO$$
+						<tr>
+							<td class="smaller width-100"><strong>$$ANNLISTECOMPARER:IDTYPEBIEN gettypebien pcase$$</strong>$$IF:ANNLISTECOMPARER:THUMBURL0$$<img src="$$ANNLISTECOMPARER:THUMBURL0$$" />$$END$$</td>
+							<td class="smaller width-100">$$ANNLISTECOMPARER:VILLE$$</td>
+							<td class="smaller width-90">
+								$$IF=:0:PRIXMASQUE$$
+									$$ANNLISTECOMPARER:PRIX$$$$ANNLISTECOMPARER:PRIX_UNITE$$
+								$$END$$
+								$$IF=:1:PRIXMASQUE$$
+									<!--#include virtual="/immo/incl_prix_nous_consulter.htm" -->
+								$$END$$
+							</td>
+							<td class="smaller">
+								$$IF:ANNLISTECOMPARER:SURFACE$$
+									$$ANNLISTECOMPARER:SURFACE$$ $$ANNLISTECOMPARER:SURF_UNITE$$
+								$$END$$
+								$$IF0:ANNLISTECOMPARER:SURFACE$$
+									$$LG:NONRENSEIGNE pcase$$
+								$$END$$
+							</td>
+							<td class="smaller">
+								$$IF:ANNLISTECOMPARER:NB_PIECES$$
+									$$ANNLISTECOMPARER:NB_PIECES$$
+								$$END$$
+								$$IF0:ANNLISTECOMPARER:NB_PIECES$$
+									$$LG:NONRENSEIGNE pcase$$
+								$$END$$
+							</td>
+							<td class="smaller">
+								$$IF:ANNLISTECOMPARER:NB_CHAMBRES$$
+									$$ANNLISTECOMPARER:NB_CHAMBRES$$
+								$$END$$
+								$$IF0:ANNLISTECOMPARER:NB_CHAMBRES$$
+									$$LG:NONRENSEIGNE pcase$$
+								$$END$$
+							</td>
+							<td class="smaller width-150">
+								$$IF:ANNLISTECOMPARER:BILANCONSOENERGIE$$
+									$$ANNLISTECOMPARER:BILANCONSOENERGIE$$
+								$$END$$
+								$$IF0:ANNLISTECOMPARER:BILANCONSOENERGIE$$
+									$$LG:NONRENSEIGNE pcase$$
+								$$END$$
+							</td>
+							<td class="smaller width-150">
+								$$IF:ANNLISTECOMPARER:BILANEMISSIONGES$$
+									$$ANNLISTECOMPARER:BILANEMISSIONGES$$
+								$$END$$
+								$$IF0:ANNLISTECOMPARER:BILANEMISSIONGES$$
+									$$LG:NONRENSEIGNE pcase$$
+								$$END$$
+							</td>
+						</tr>
+					$$LOOP$$
+				$$BFIN$$
+				$$BIF0:ANNLISTECOMPARER$$
+						<tr>
+							<td class="small" colspan="8">$$LG:CHOISIRANNONCES pcase$$</td>	
+						</tr>
+				$$BFIN$$
+			</tbody>
+		</table>
+	</body>
+</html>

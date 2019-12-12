@@ -1,0 +1,209 @@
+$$REM$$<!-- JS BASIC -->$$END$$
+$$INIT:CSS_COLORBOX=1$$
+$$A:JS_RECHERCHE_BASIC=1$$
+$$A:JS_SHOW_HIDE_SLIDER=1$$
+$$REM$$<!-- VARIABLES PAGINATION GOOGLE OPTI REF -->$$END$$
+$$INIT:PN_GOOGLE=1$$
+$$REM$$<!-- FICHIER QUI SERT A APPELER UN TYPE DE MOTEUR VIA UN INCLUDE ET A LE PERSONNALISER -->$$END$$
+<!--#include virtual="recherche/incl_basic_config_moteur.htm" -->
+$$REM$$<!-- RESULTATS RECHERCHE = PAS PANIER -->$$END$$
+<!-- SEO : $$IF:FORM:CI$$CI > $$FORM:CI$$$$END$$$$IF0:FORM:CI$$CP > $$FORM:CP$$$$END$$ -->
+$$IF0:ANNLISTE:SIPANIER$$
+    $$IF=:10$11:FORM:IDTT$$
+        $$A:TAILLEMOTEURRESULTATS=0$$
+        $$A:TAILLERESULTATS=12$$
+    $$END$$
+    $$IF=:FALSE:ID3:URW-GETINFOS:CANONICAL$$
+        $$BIF:FIL$$
+            $$IF+:2:FIL:NBR$$
+            <div class="row-fluid">
+                <div class="span12 margin-bottom-10">
+                <!--#include virtual="recherche/incl_fil_ariane.htm" -->                
+                </div>
+            </div>
+            $$END$$
+        $$BFIN$$
+    $$END$$
+    <!--#include virtual="recherche/incl_recherche_haut_perso.htm" -->
+    <div class="row-fluid bg-phrase-resultat">
+        <div class="span12">
+            <h1 class="nocase phrase-recherche margin-bottom-10">
+                <div class="pull-left phrase-annonce">
+                    $$FORM:IDTT gettypetransaction pcase$$ $$FORM:IDTYPEBIEN gettypebien lcase$$ <br>
+                    <img src="/images/modules/pin-module.png" alt="">
+                    $$FORM:CI codeinsee2ville field 1$$
+                    $$FORM:CP cp2dep field 1$$
+                    $$IF0:FORM:CI$$
+                        $$IF0:FORM:CP$$
+                            $$SEO_VILLERESULT$$
+                        $$END$$
+                    $$END$$
+                </div>
+                <div class="pull-right">
+                    <div class="smallest nb-annonce">$$ANNLISTE:NBRESULT formatnumber 0$$
+                    $$IF=:1:ANNLISTE:NBRESULT$$$$LG:ANNONCEIMMO lcase$$$$END$$
+                    $$IF+:2:ANNLISTE:NBRESULT$$$$LG:ANNONCIMMOS lcase$$$$END$$</div>
+                </div>                
+            </h1>
+        </div>
+    </div>
+
+
+
+    $$REM$$<!-- TEST CANONICAL IN INCL_ROBOTS.HTM -->$$END$$
+    $$IF=:1:CANONICAL$$
+        $$IF:SEO_RESULTS_CONTENT$$
+      <div class="row-fluid margin-bottom-20 hidden-phone">
+          <p class="span12">$$SEO_RESULTS_CONTENT$$</p>
+      </div>
+      $$END$$
+    $$END$$
+
+    <div id="alerte-moteur" class="row-fluid display-none">
+       <form action="/$$REP:0$$?$$REP:QRY removeqry immobw_ann_qrypg removeqry alierr removeqry nom removeqry email removeqry inscription htmlencode$$" method="post" class="form-horizontal" id="form-alerte-moteur" novalidate="novalidate">
+          <div class="span12 moteur-alerte">
+             <div class="row-fluid">
+                <div class="span12 margin-top-15">
+                   <div class="formanim-grp$$IF:FORM:ALIERR$$$$IF0:FORM:NOM$$ error$$END$$$$END$$">
+                      <input type="text" id="nom-alerte" placeholder="$$LG:VOTRENOM pcase$$" class="formanim-input" name="nom" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$>
+                      
+                   </div>
+                </div>
+                <div class="span12 margin-top-15">
+                   <div class="formanim-grp$$IF:FORM:ALIERR$$$$IFNOTNULL:FORM:EMAIL$$ error$$END$$$$END$$">
+                      <input type="email" id="email-alerte" placeholder="$$LG:VOTREMAIL pcase$$" class="formanim-input" name="email" $$IF:FORM:EMAIL$$value="$$FORM:EMAIL$$"$$END$$>                  
+                   </div>
+                </div>
+                <div class="span3 margin-top-15">
+                   <div class="control-group margin-0" id="zone-bouton-alerte">
+                      <div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</div>
+                   </div>
+                </div>
+             </div>
+             <div class="row-fluid">
+                <div class="span6">
+                   <!--#include virtual="recherche/incl_alerte_optin.htm" -->
+                </div>
+             </div>
+             <div class="clear"></div>
+             <input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
+             <input type="hidden" name="phrase" value="$$ANNLISTE:PHRASE$$" />
+             <input type="hidden" name="page_ok" value="/alerte,incl_creation.htm" />
+             <input type="hidden" name="page_base" value="http://$$REP:RSRV$$/$$REP:0$$?$$REP:QRY removeqry inscription removeqry option removeqry nom removeqry email removeqry alierr htmlencode$$" />
+             <input type="hidden" name="page_err" value="/alerte,incl_creation.htm" />
+             <input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />
+             <input type="hidden" name="srv" value="$$SRV$$" />
+             <input type="hidden" name="idFrequenceAlerte" value="1"/>
+             <!--#include virtual="moteur/incl_input_langue.htm" -->
+             <!--#include virtual="recherche/incl_alerte_erreur.htm" -->
+          </div>
+       </form>
+    </div>
+
+    <div class="row-fluid">
+        $$REM$$<!-- AFFICHAGE MOTEUR + ANNONCES LEFT -->$$END$$
+        $$IF:TAILLEMOTEURRESULTATS$$
+            <!--#include virtual="recherche/incl_basic_moteur.htm" -->
+        $$END$$
+
+        $$BIF:ANNLISTE$$
+
+        $$REM$$<!--AFFICHAGE DU LISTING-->$$END$$
+        <div class="$$IF!:1:EMPLACEMENTMOTEURTOP$$$$TAILLERESULTATS$$$$END$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_basic_resultats.htm" -->
+        </div>
+
+            $$IF0:ANNLISTE:SIPANIER$$
+                $$B:IMMOBW:ANN-ES:ALIAS:CHECKBASKET:0:::NOVISU:~NOSTAT:1$$
+                <!--#include virtual="recherche/incl_calcul_selection.htm" -->
+            $$END$$
+        $$BFIN$$
+        $$BIF0:ANNLISTE$$
+        <div class="$$TAILLERESULTATS$$ margin-top-10" id="recherche-listing">
+            <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+            <!--LOADER-->
+            <div class="layer display-none fixe height-100-pourcent top right left bottom row-fluid">
+                <div class="z25 span12 margin-top-200">
+                    <div class="row-fluid">
+                        <div class="span4"></div>
+                        <div class=" span4 pagination-centered padding-10 margin-top-10 box-shadow bg-white padding-10 margin-10 radius-5 border-solid-white-2">
+                            <img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif" alt="loader" />
+                            <p class="typo-black pagination-centered">
+                                $$LG:VEUILLEZPATIENTER$$
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bg-picture opacity-7 top right left bottom z-25" ></div>
+            </div>
+            <!-- FINLOADER-->
+            <script type="text/javascript">
+                var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+                var maxpage = '$$ANNLISTE:NBRPAGES$$';
+                var btnaction = 'choix-selection-refine';
+                var btnneutre = 'choix-neutre-refine';
+                var presdefault = '$$PAGE:WAG_STYLE_RECHERCHE_DEFAULT$$';
+                var pxbtw='$$IF:FORM:PXBTW$$$$FORM:PXBTW$$$$END$$$$IF:FORM:LOYERBTW$$$$FORM:LOYERBTW$$$$END$$';
+            </script>
+        </div>
+        $$BFIN$$
+        $$REM$$<!-- AFFICHAGE BOUTON ALERTE MOBILE  -->$$END$$
+        <div class="row-fluid hidden-desktop hidden-tablet alerte-mobile">
+            <div class="pull-left">
+                <!--#include virtual="recherche/incl_bouton_alerte.htm" -->                    
+            </div>
+            <div class="pull-right">
+                <!--#include virtual="recherche/incl_bouton_affiner.htm" -->
+            </div>
+        </div>
+    </div>
+
+    $$IF0:ANNLISTE:SIPANIER$$
+    <div class="row-fluid">
+        <div class="span12">
+            $$IF:ANNLISTE:NBR$$
+                <hr />
+                <div class="margin-top-20 small mentions">
+                    $$IF:ANNLISTE:NBR$$
+                        <!-- $$IF=:1:FORM:IDTT$$<p>CC : $$LG:LOYERCC lcase$$</p>$$END$$ -->
+                    $$END:ANNLISTE:NBR$$
+                    <p>$$LG:LOI78AGENCE$$<a href="$$URLBASE$$/legal,mentions.htm$$IF=:0:MULTIAGENCES$$?idp=$$AGENCE_IDPUBLICATION$$$$END$$" title="$$LG:ADR2EDITEUR$$">$$LG:ADR2EDITEUR$$</a>.</p>
+                </div>
+                <div class="margin-top-20"></div>
+            $$END$$
+        </div>
+    </div>
+    $$END$$
+$$END$$
+$$REM$$<!-- PANIER -->$$END$$
+$$IF:ANNLISTE:SIPANIER$$
+    $$BIF:ANNLISTE$$
+    <div class="row-fluid">
+        <div class="span12 $$IF=:1:PHRASELIGHT$$xbiggest$$END$$">
+            <h1 class="phrase-recherche">$$LG:DANSVOTREPANIER pcase$$ : <span class="typo-action">$$ANNLISTE:NBR$$ $$IF=:0$1:ANNLISTE:NBR$$$$LG:ANNONCE lcase$$$$END$$$$IF!:0$1:ANNLISTE:NBR$$$$LG:ANNONCES lcase$$$$END$$</span></h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <!--#include virtual="recherche/incl_basic_resultats.htm" -->
+    </div>
+    $$BFIN$$
+    $$BIF0:ANNLISTE$$
+        $$IF0:ANNLISTE:SIPANIER$$
+        <!--#include virtual="recherche/incl_no_resultats_layer.htm" -->
+        $$END$$
+        $$IF:ANNLISTE:SIPANIER$$
+        <div class="row-fluid">
+            <div class="span12">
+                <h1>$$LG:DANSVOTRESELEC pcase$$ : <span class="typo-action">0 $$LG:ANNONCE$$</span></h1>
+                <hr />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 margin-top-10">
+                <p>$$LG:CREERSELECTION pcase$$</p>
+            </div>
+        </div>
+        $$END$$
+    $$BFIN$$
+$$END$$

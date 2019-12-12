@@ -1,0 +1,76 @@
+$$REM$$<!-- Variables qui sert pour charger le fichier js -->$$END$$
+$$BIF:ANNONCESHOME$$
+$$A:JS_ANNONCES-7=1$$
+<!--#include virtual="modules/annonces-7/incl_tailles_photos.htm" -->
+<div class="module-homepage">
+	<ul class="row-fluid relative overflow margin-top-10 ul-homepage-biens$$IF=:1:ROTATION_MODULE$$ rotation-module$$END$$" $$IF=:1:ROTATION_MODULE$$$$IF:SPEED_MODULE$$ data-rotation="$$SPEED_MODULE$$"$$END$$$$IF:EFFECT_MODULE$$ data-fx="$$EFFECT_MODULE$$"$$END$$$$END$$>
+	$$DO$$
+		$$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+$$A:ALT_ANNONCE1=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+$$A:ALT_ANNONCE2=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+		<li class="ligne-cycle module-annonces-homepage height-100-pourcent width-100-pourcent relative padding-10$$IF!:1:ROTATION_MODULE$$ margin-bottom-10$$END$$$$IF+:3:ANNONCESHOME:I$$ hidden-phone$$END$$">
+			<a  href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+			<div class="span4">
+				<!--#include virtual="modules/annonces-7/incl_type_bien_bloc.htm" -->
+				$$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$
+					$$IF:ANNONCESHOME:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$ $$END$$
+					$$IF0:ANNONCESHOME:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$
+				$$END$$
+				$$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$
+				&nbsp;
+				$$END$$
+				<p class="margin-top-10 typo-body"><!--#include virtual="modules/annonces-7/incl_descriptif.htm" --></p>
+				$$IF!:1:PICTOANNONCELISTHOME$$
+				<div class="row-fluid hidden-phone">
+		        <!--#include virtual="modules/incl_pictos_modules.htm" -->
+		      </div>
+		      $$END$$
+				<p class="margin-top-10 typo-body"><!--#include virtual="modules/annonces-7/incl_prix.htm" --></p>
+				<div class="margin-top-20 $$TYPEBOUTON$$ $$TYPEBOUTONACTION$$">$$LG:SAVOIR pcase$$</div>
+			</div>
+			<div class="span8">
+				<div class="img-homepage overflow box-shadow relative $$HEIGHTPICTURE7$$ overflow">
+					$$IF:ANNONCESHOME:BIGURL0$$
+						<div style="background-image:url('$$ANNONCESHOME:BIGURL0$$');" class="relative picture-responsive"></div>
+					$$END$$
+					$$IF0:ANNONCESHOME:BIGURL0$$
+					  $$IF:ANNONCESHOME:PHOTOURL0$$
+						<div style="background-image:url('$$ANNONCESHOME:PHOTOURL0$$');" class="relative picture-responsive"></div>
+					  $$END$$
+                  $$IF0:ANNONCESHOME:PHOTOURL0$$
+					    <!--#include virtual="modules/incl_no_photo_modules.htm" -->
+				     $$END$$
+					$$END$$
+					$$IF!:1:HIDEPHOTO2ANNONCEHOME$$
+    					$$IF:ANNONCESHOME:BIGURL1$$
+    						<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOME:BIGURL1$$');" class="picture-responsive display-none relative"></div></div>
+    					$$END$$
+    					$$IF0:ANNONCESHOME:BIGURL1$$
+        					$$IF:ANNONCESHOME:PHOTOURL1$$
+            						<div class="hidden-phone hidden-tablet height-100-pourcent width-100-pourcent"><div style="background-image:url('$$ANNONCESHOME:PHOTOURL1$$');" class="picture-responsive display-none"></div></div>
+            				$$END$$
+        				$$END$$
+					$$END$$
+					<div class="absolute left top margin-left-20 margin-top-20 z25">
+						<div class="relative padding-10 typo-white module-villes-annonces ville">
+							<!--#include virtual="modules/annonces-7/incl_villes.htm" -->
+							<div class="absolute bloc-info left top right bottom bg-black typo-white opacity-8 z-25"></div>
+						</div>
+					</div>
+					<div class="absolute bloc-info left bottom margin-left-20 margin-bottom-20">
+						<div class="relative padding-10 typo-white">
+							<!--#include virtual="modules/annonces-7/incl_infos_bien.htm" -->
+							<div class="absolute bloc-info left top right bottom bg-black typo-white opacity-8 z-25"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			</a>
+		</li>
+	$$LOOP$$
+	</ul>
+</div>
+<div class="pull-right margin-top-10 nav-rotation"></div>
+<div class="clear"></div>
+$$BFIN$$

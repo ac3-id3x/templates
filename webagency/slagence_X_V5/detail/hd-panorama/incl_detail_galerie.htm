@@ -1,0 +1,135 @@
+$$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
+<!--#include virtual="detail/incl_detail_selection_js.htm" -->
+
+<div class="detail-galerie">
+
+
+    $$IF!:0:PICTOANNONCE$$
+        <div class="detail-tags container">
+            $$IF:ANNDETAIL:SI_EXCLUSIF$$
+                <div class="detail-tag detail-tag-exclu">
+                    $$LG:EXCLUSIVITE pcase$$
+                </div>
+            $$END$$
+            $$IF:ANNDETAIL:SI_COUPDECOEUR$$
+                <div class="detail-tag detail-tag-cdc">
+                    $$LG:COUPDECOEUR pcase$$
+                </div>
+            $$END$$
+            $$IF+:FRAICHEUR:ANNDETAIL:DT_CREA datediff now timespan days$$
+                <div class="detail-tag detail-tag-new">
+                    $$LG:NEWCOURT pcase$$
+                </div>
+            $$END$$
+        </div>
+    $$END$$
+
+
+    $$BIF:GALERIE$$
+        <div class="detail-galerie-module">
+            $$REM$$<!-- TEL MOBILE -->$$END$$
+            <div class="detail-tel-mobile hidden-desktop">
+                $$IF=:1:TELEPHONEMASQUE$$
+                    <div class="bloc-detail-telephone">
+                        <div id="bouton-telephonez-nous-detail" class="bg-body-light padding-10 cursor-pointer $$IF=:1:AFFICHAGE_NOM_CONTACT$$ btn-detail-tel$$END$$">
+                            <span id="texte-telephonez-nous-detail"><span class="mf-icon-call"></span> &nbsp;$$LG:V5APPELEZNOUS pcase$$</span>
+                            <span id="numero-telephonez-nous-detail" class="display-none"><span class="mf-icon-call"></span> &nbsp;<!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" --></span>
+                        </div>
+                    </div>
+                $$END$$
+                $$IF=:0:TELEPHONEMASQUE$$
+                    <div class="bloc-detail-telephone hidden-desktop">
+                        <div id="bouton-telephonez-nous-detail" class="bg-body-light padding-10 cursor-pointer $$IF=:1:AFFICHAGE_NOM_CONTACT$$ btn-detail-tel$$END$$">
+                            <span class="mf-icon-call"></span> &nbsp;
+                            <!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" -->
+                        </div>
+                    </div>
+                $$END$$
+            </div>
+            $$DO$$
+                $$IF=:1:GALERIE:N$$
+                    $$IF:GALERIE:FULLSIZE_URL$$
+                        <a class="detail-galerie-item js-detail-galerie" href="$$GALERIE:FULLSIZE_URL$$" style="background-image:url($$GALERIE:FULLSIZE_URL$$);"></a>
+                    $$END$$
+                    $$IF0:GALERIE:FULLSIZE_URL$$
+                        $$IF:GALERIE:BIG_URL$$
+                            <a class="detail-galerie-item js-detail-galerie" href="$$GALERIE:BIG_URL$$" style="background-image:url($$GALERIE:BIG_URL$$);"></a>
+                        $$END$$
+                        $$IF0:GALERIE:BIG_URL$$
+                            <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);"></div>
+                        $$END$$
+                    $$END$$
+                $$END$$
+            $$LOOP$$
+        </div>
+    $$BFIN$$
+    $$BIF0:GALERIE$$
+        <div class="detail-galerie-module">
+            <div class="detail-galerie-item" style="background-image:url($$~$$images/detail/sans_photo.jpg);"></div>
+        </div>
+    $$BFIN$$
+
+    <div class="detail-galerie-heading">
+        <div class="container">
+
+            <div class="detail-galerie-heading-row">
+                <div class="detail-galerie-heading-left">
+                    $$REM$$<!-- TITRE -->$$END$$
+                    <!--#include virtual="detail/hd-panorama/incl_detail_heading.htm" -->
+                </div>
+                <div class="detail-galerie-heading-gutter hidden-phone">&nbsp;</div>
+                <div class="detail-galerie-heading-right hidden-phone">
+                    $$IF=:1:TELEPHONEMASQUE$$
+                        <div class="bloc-detail-telephone">
+                            <div id="bouton-telephonez-nous-detail">
+                                <span id="texte-telephonez-nous-detail"><span class="mf-icon-call"></span> &nbsp;$$LG:V5APPELEZNOUS pcase$$</span>
+                                <span id="numero-telephonez-nous-detail" class="display-none">
+                                    <span class="mf-icon-call"></span> &nbsp;
+                                    <!--#include virtual="detail/incl_nom_contact.htm" -->
+                                    <!--#include virtual="header/incl_formatel.htm" -->
+                                </span>
+                            </div>
+                        </div>
+                    $$END$$
+                    $$IF=:0:TELEPHONEMASQUE$$
+                        <div class="bloc-detail-telephone">
+                            <div id="bouton-telephonez-nous-detail">
+                                <!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" -->
+                            </div>
+                        </div>
+                    $$END$$
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+$(window).load(function(){
+    $('.js-detail-galerie').magnificPopup({
+        type: 'image',
+        items: [
+            $$BIF:GALERIE$$
+                $$DO$$
+                    $$IF:GALERIE:FULLSIZE_URL$$
+                        {src: '$$GALERIE:FULLSIZE_URL$$'},
+                    $$END$$
+                    $$IF0:GALERIE:FULLSIZE_URL$$
+                        $$IF:GALERIE:BIG_URL$$
+                            {src: '$$GALERIE:BIG_URL$$'},
+                        $$END$$
+                    $$END$$
+                $$LOOP$$
+            $$BFIN$$
+        ],
+        gallery:{
+            enabled:true,
+            tCounter: ''
+        }
+    });
+});
+</script>
+

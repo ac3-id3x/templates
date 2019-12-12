@@ -1,0 +1,103 @@
+$$INIT:IDT=TOPVILLE$$
+$$INIT:TOPVILLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$E:ID3:URW-GETVALUES:~ressource:Arrondissement:~values:arrondissement,ville,departement,region$$
+$$E:ID3:URW-GETURL:ALIAS:URLVIL:~ressource:Ville$$
+$$E:ID3:URW-GETURL:ALIAS:URLDEP:~ressource:Departement$$
+$$E:ID3:URW-GETURL:ALIAS:URLREG:~ressource:Region$$
+<!-- SEO > ARRONDISSEMENT : $$FORM:CODEDEPARTEMENT$$ -->
+<div class="row-fluid">
+	<div class="span12">
+		<ul class="breadcrumb">
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$URLBASE$$" itemprop="url"><span itemprop="title">Accueil</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+				<a href="$$URWRACINE:URLVIRTUELLE$$" itemprop="url"><span itemprop="title">Annonces</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a  itemprop="url" href="$$URLREG:URLVIRTUELLE$$"><span itemprop="title">$$ID3:URW-GETVALUES:REGION$$</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a  itemprop="url" href="$$URLDEP:URLVIRTUELLE$$"><span itemprop="title">$$ID3:URW-GETVALUES:DEPARTEMENT$$</span></a>
+			</li>
+			<li><span class="icon-v5-arrow-right-6"></span></li>
+			<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a class="ville" itemprop="url" href="$$URLVIL:URLVIRTUELLE$$"><span itemprop="title">$$ID3:URW-GETVALUES:VILLE$$</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$TTTB:URLVIRTUELLETT$$" itemprop="url"><span itemprop="title">$$ID3:URW-GETVALUES:ARRONDISSEMENT$$ ($$TTTB:NBANNONCESTOTAL$$ annonce$$TTTB:NBANNONCESTOTAL pluriel$$)</span></a>
+				
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span12">
+		<h1>$$H1_IMMOBILIER$$</h1>
+	</div>
+	<hr$$IF:TEXTE-TOPVILLES$$ class="margin-bottom-5"$$END$$ >
+</div>
+<!--#include virtual="referencement/incl_texte_immobilier.htm" -->
+$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~nbAnnoncesMin:1:~codeInsee:QRY:codeInseeArrdt$$
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	$$BIF:TTTB$$
+	<div class="span3 border-solid-right-primary-1">
+		<ul class="nav nav-pills nav-stacked">
+		$$DO$$
+			$$IFPREV:TTTB:IDTYPETRANSACTION$$
+			<li class="bold">$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLETT$$">$$END$$
+				$$TTTB:TYPETRANSACTION pcase$$ $$ID3:URW-GETVALUES:COUNTRY$$
+			$$IF:TTTB:NBANNONCES$$</a>$$END$$
+			</li>
+			$$END:IFPREV$$
+			<li>$$IF:TTTB:NBANNONCES$$<a href="$$TTTB:URLVIRTUELLE$$">$$END$$
+			$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$TTTB:TYPEBIEN pcase$$
+			$$IF:TTTB:NBANNONCES$$<span class="typo-action"> ($$TTTB:NBANNONCES$$)</span></a>$$END$$</li>
+		$$LOOP$$
+		</ul>
+	</div>
+	$$BFIN$$
+	<div class="span9">
+		$$B:IMMOBW:PLANSITE-QUARTIERS:ALIAS:QURT:~codeInsee:QRY:codeInseeArrdt$$
+		$$BIF:QURT$$
+		<div class="h2-like">Quartiers</div>
+		<div class="row-fluid margin-bottom-20">
+				$$DO$$
+					$$IF=:1$11$21:QURT:I$$
+						<div class="span4">
+							<ul class="nav nav-pills nav-stacked">
+					$$END$$
+					$$IF:QURT:NBANNONCES$$
+						<li><a href="$$QURT:URLVIRTUELLE$$">Immobilier $$QURT:QUARTIER$$&nbsp;<span class="infos_count">($$QURT:NBANNONCES$$)</span></a></li>
+					$$END$$
+					$$IF=:10$20$30:QURT:I$$
+						</ul>
+					</div>
+					$$END$$
+					$$IF!:10$20$30:QURT:I$$
+						$$IF=:QURT_NBR:QURT:I$$
+							</ul>
+						</div>
+						$$END$$
+					$$END$$
+				$$LOOP$$
+			</div>
+		$$BFIN$$
+		$$B:IMMOBW:ANN:ALIAS:ANN-ES:2::::ADD:idtt=2&idTypeBien=1,2&ci=+FORM_CODEINSEE+&tri=d_dt_crea$$
+		$$BIF:ANN$$
+		<div class="h2-like">$$LG:NOSDERNANN pcase$$</div>
+			$$DO:1:5$$
+				<div class="row-fluid margin-top-10">
+					<div class="span12 padding-10 border-solid-primary-1"><a href="$$ANN:URLVIRTUELLE$$">$$ANN:TITRE$$, $$ANN:VILLE$$</a>,$$ANN:DESCRIPTIF$$</div>
+				</div>
+			$$LOOP$$
+		$$BFIN$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

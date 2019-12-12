@@ -1,0 +1,57 @@
+$$A:JS_MINI_MOTEUR=1$$
+<form class="form-$$TYPEMOTEUR$$ normal moteur-avantage-mobile" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">	
+	<div class="row-fluid padding-top-10 padding-bottom-10">
+		<div class="span4">
+			<div id="Mini_Villes" class="Mini_Villes relative bloc margin-top-15">
+				$$IF=:1:MINIVILLES_SUGGEST$$
+				$$REM$$<!-- VILLE SUGGEST -->$$END$$
+				$$B:IMMOBW:GET-LOCALISATION:~query:QRY::CHOIX:ALIAS:RECUPVILLES$$
+				$$B:IMMOBW:INIT-PLACES-AGENCES:ALIAS:INITLISTING$$
+				$$B:IMMOBW:PAYSANNONCES:ALIAS:INITPAYS$$
+				<!--#include virtual="moteur/suggest/incl_input.htm" -->
+				<!--#include virtual="moteur/suggest/incl_json.htm" -->
+				$$END$$
+				$$IF!:1:MINIVILLES_SUGGEST$$
+					<script type="text/javascript">
+						$(document).ready(function() {
+							ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes','$$TYPEMOTEUR$$');
+						});
+					</script>
+				$$END$$
+			</div>
+		</div>
+		<div class="span2">				
+			<div class="$$TAILLEMOTEUR$$ bloc margin-top-15">
+				$$IF=:0:MINI_IDTTUNIQUE$$
+					<div id="Mini_Transaction">
+						$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TYPE_TRANSACTION::QRY:LANG$$
+						<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->	
+					</div>
+				$$END$$
+				$$IF=:1:MINI_IDTTUNIQUE$$
+					<input type="hidden" name="idtt" id="idtt" value="$$MINI_IDTTDEFAUT$$">
+				$$END$$
+			</div>
+		</div>			
+		<div class="span2">
+			$$IF=:1:MINIBIENS_AFFICHAGE$$
+				<div id="Mini_Biens" class="Mini_Biens $$TAILLEMOTEUR$$ bloc margin-top-15">
+					<script type="text/javascript">
+						$(document).ready(function() {
+							ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$');
+						});
+					</script>
+				</div>
+			$$END$$				
+		</div>
+		<div class="$$TAILLEBOUTONMOTEUR$$ smaller">
+			<div class="row-fluid">
+				<div class=" border-solid-left-primary-1 span1 height-60">
+				</div>
+				<div class="span11 control-group margin-0 btn-moteur-conteneur">	
+					<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ big btn-block btn-index margin-top-8 bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$">$$LG:RECHERCHER pcase$$</div>
+				</div>
+			</div>	
+		</div>			
+	</div>
+</form>

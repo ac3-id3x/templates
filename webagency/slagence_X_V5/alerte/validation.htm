@@ -1,0 +1,113 @@
+$$REM$$=========================================================================================
+//// <summary>Page intermédiaire 3/3 de creation d'Alerte Immo : envoi et coordonnees</summary>
+//// <remarks>
+//// <para>Utilise les mêmes includes et les même css que la page contact agence (formulaire du bas)</para>
+//// <para>Pages reliees : immo.htm > prevalidation.htm > validation.htm > validation_ok.htm</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = choix IDTT, 2 = choix autres criteres, 3 = envoi coordonnees perso</para>
+//// <para>Apres validation on s'en va vers une page de confirmation</para>
+//// </remarks>
+//// <update date="2011-04-26" author="lisbonne.siriphol">Creation</update>
+=========================================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+<!--#include virtual="/header/incl_haut.htm"-->
+
+$$DYN:ID3:NOCACHE:FULL$$	$$REM$$<!-- charles ? FILE -->$$END:REM$$
+<form method="post" action="/alerte,validation.htm" name="f" id="FormContactAgence_Ctn">
+	<div id="FormContactAgence">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+		<!--#include virtual="contact/incl_honeypot.htm" -->
+		<input type="hidden" name="qry" value="$$REP:QRY$$" />
+		<input type="hidden" name="phrase" value="$$RECH:PHRASESTRI$$" />
+		<input type="hidden" name="page_ok" value="/alerte,validation_ok.htm" />
+		<input type="hidden" name="page_err" value="/alerte,validation.htm" />
+		<input type="hidden" name="u" value="IMMOBW:ALERTEIMMO" />	
+		<input type="hidden" name="srv" value="$$SRV$$" />
+		<input type="hidden" name="lang" value="$$LANGUE$$" />
+		$$IF0:ERRE$$		
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />
+		$$IF:FORM:NOM$$<input type="hidden" name="nom" value="$$FORM:NOM$$" />$$END$$
+		$$IF:FORM:EMAIL$$<input type="hidden" name="email" value="$$FORM:EMAIL$$" />$$END$$
+		
+		$$REM$$<!--  envoi du mail de confirmation si param de conf-->$$END:REM$$
+		$$IF:PAGE:CFG_FORMULAIRE_AR_NOMFROM$$
+			<input type="hidden" name="email_info" value="/alerte,Alerteimmo_SiteAgence.htm" /> 
+		$$END$$
+		
+		$$END:ERRE$$
+
+		<div class="row-fluid">
+			<div class="span12">
+				$$REM$$<!-- //========= phrase resultats =========// -->$$END:REM$$				
+				$$B:IMMOBW:ANN-ES:ALIAS:RECH:QRY:IDTT:::NOVISU:~NOSTAT:1$$$$BIF:RECH$$$$DO$$$$LOOP$$$$BFIN$$
+				<!-- nbr resultats = $$RECH:NBRESULT formatnumber 0$$ annonce$$RECH:NBR pluriel$$ -->
+				
+				<h1>$$LG:V5ALERTE:VOSCRITERES$$ :</h1><hr />
+				<h2 class="typo-action margin-top-20">$$RECH:PHRASE pcase$$</h2>
+				<div class="alerteCriteres$$IF-:150:RECH:NBRESULT$$Check$$END$$$$IF+:150:RECH:NBRESULT$$Warning$$END$$"><!-- --></div>
+				<h3 class="margin-top-20">
+					$$IF=:FR:LANGUE$$$$LG:V5ALERTE:ACTUELLEMENT$$ $$RECH:NBRESULT formatnumber 0$$ annonce$$RECH:NBR pluriel$$ $$LG:V5ALERTE:CRITERES$$.$$END:LANGUE$$
+					$$IF!:FR:LANGUE$$$$LG:V5ALERTE:ACTUELLEMENT$$ $$RECH:NBRESULT formatnumber 0$$ announce$$RECH:NBR pluriel$$ $$LG:V5ALERTE:CRITERES$$.$$END:LANGUE$$					
+				</h3>
+				$$IF+:150:RECH:NBRESULT$$
+					<h4 class="typo-action margin-top-15">
+						$$LG:V5ALERTE:OPTIMISEZ$$
+					</h4>
+					$$LG:V5ALERTE:PHRASE$$
+				$$END$$
+				<p><a class="btn btn-action" href="javascript:history.go(-1)" title="$$LG:MODCRITERERS pcase$$">$$LG:MODCRITERERS pcase$$</a></p>
+			
+				
+				<h2 class="typo-action margin-top-40">$$LG:V5ALERTE:FINALYSER$$</h2>
+				<p>
+					$$LG:V5ALERTE:REMPLIR$$
+				</p>		
+				
+				$$IF:IMMOBW:ALERTEIMMO:ERRE$$
+					<div class="row-fluid margin-top-5 bold">
+						<div class="span12">
+							<div class="attention">$$LG:ATTENTION pcase$$</div>
+							<div class="erre">$$IMMOBW:ALERTEIMMO:ERRE$$</div>
+						</div>
+					</div>
+				$$END:ALERTEIMMO:ERRE$$
+			
+				
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="control-group">
+							<label>$$LG:VOTRENOM pcase$$</label>
+							<input type="text" autocomplete="off" id="nom-alerte" name="nom" class="center" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$>
+						</div>
+						<div class="control-group">
+							<label>$$LG:VOTREMAIL pcase$$</label>
+							<input type="email" autocomplete="off" id="email-alerte" name="email" class="center">
+						</div>					
+					</div>					
+				</div>
+				
+				<!--#include virtual="recherche/incl_alerte_optin.htm" -->
+					
+				<h3 class="margin-top-20 margin-bottom-10">$$LG:FORMATRECEPTION pcase$$ :</h3>
+				<div class="control-group">
+					<label class="radio pagination-left"><input type="radio" name="si_txt" value="0" checked="checked" /> $$LG:AI9 pcase$$ $$LG:V5ALERTE:OPTIONS$$</label>
+					<label class="radio pagination-left"><input type="radio" name="si_txt" value="1" /> $$LG:AI10 pcase$$</label>
+				</div>		
+				
+				<h3 class="margin-top-20 margin-bottom-10">
+					$$LG:V5ALERTE:FREQUENCE$$				
+				</h3>
+				<div class="control-group">	
+					<label class="radio pagination-left"><input type="radio" name="idFrequenceAlerte" value="1" checked="checked" /> $$LG:AI19 pcase$$ $$LG:V5ALERTE:OPTIONS$$</label>				
+					<label class="radio pagination-left"><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI8 pcase$$</label>
+				</div>
+				<div class="control-group">
+					<input type="submit" class="btn btn-important" value="$$LG:VALIDER pcase$$" />
+				</div>		
+				<!--#include virtual="legal/incl_rgpd.htm" -->		
+			</div>				
+		</div>				
+	</div>		
+</form>
+
+<!--#include virtual="footer/incl_bas.htm" -->

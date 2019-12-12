@@ -1,0 +1,1 @@
+function coche(i){if(i<document.villes.length){if(document.villes.elements[i].name=='ci'){document.villes.elements[i].checked=true;setTimeout('coche('+(i+1)+')',15)}else setTimeout('coche('+(i+1)+')',0)}}function decoche(i){if(i>=0){document.villes.elements[i].checked=false;setTimeout('decoche('+(i-1)+')',15)}}

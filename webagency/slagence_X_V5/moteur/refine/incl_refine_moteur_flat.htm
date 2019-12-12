@@ -1,0 +1,179 @@
+$$REM$$
+
+
+$$A:JS_REFINE=1$$
+<form method="GET" action="/$$REP:URI$$" id="Mini_Moteur" class="relative margin-top-10">	
+	<input type="hidden" name="idtt" value="$$IF:FORM:IDTT$$$$FORM:IDTT$$$$END$$$$IF0:FORM:IDTT$$$$MINI_IDTTDEFAUT$$$$END$$" class="hidden-idtt" />
+	<input type="hidden" name="ci"  value="$$IF:FORM:IDTT$$$$FORM:CI$$$$END$$" class="hidden-ci"/>
+	<input type="hidden" name="idq" value="$$IF:FORM:IDQ$$$$FORM:IDQ$$$$END$$" class="hidden-idq"  />
+	<!--#include virtual="moteur/incl_input_langue.htm" -->
+	<div class="row-fluid">
+		<div class="conteneur-checkbox span2 relative">
+			<div class="row-fluid titre-section-refine">
+				<div class="span11">$$LG:TRANSACTION pcase$$</div>
+				<div class="span1"><i class="opacity-3 smallest general typoicon-plus "></i></div>
+			</div>
+			<div class="liste-checkbox refine-transac display-none absolute row-fluid bg-primary">
+				<div class="control-group margin-bottom-0">
+					<!--#include virtual="moteur/refine/incl_refine_idtt.htm" -->
+				</div>
+			</div>
+		</div>
+		$$IF=:1:BTNSEARCHREFINE$$
+			<!--#include virtual="moteur/mini/incl_moteur_bouton.htm" -->
+		$$END$$
+			<div class="conteneur-checkbox span2 relative">
+				<div class="row-fluid titre-section-refine">
+					<div class="span11">$$LG:NVILLES pcase$$</div>
+					<div class="span1"><i class=" opacity-3 smallest general typoicon-minus"></i></div>
+				</div>
+				<div class="row-fluid display-none absolute bg-primary">
+					<div class="span12 padding-10">
+						<div class="liste-checkbox input-ville">
+					<!--VILLE MINI MOTEUR-->
+						<div class="control-group search-field $$IF=:1:MINIVILLES_SELECT$$ villes-refine$$END$$">
+							<select name="ci" id="cpVilles" class="center chzn-select" data-placeholder="$$LG:CHOIXVILLES2 pcase$$" multiple tabindex="-1">
+								<!--#include virtual="moteur/refine/incl_villes_refine.htm" -->
+							</select>
+							$$IF=:1:MINIVILLES_LIBRE$$
+								<label>$$LG:CHOIXVILLES2 pcase$$</label>
+								<input type="text" name="ci" class="center" autocomplete="off" spellcheck="false" >
+							$$END$$
+						</div>
+					<!--FIN VILLE MINI MOTEUR-->
+					<!--RAYON-->		
+						<label for="rayon" >$$LG:ETENDRERECH pcase$$</label>
+						<div class="row-fluid refine-rayon control-group margin-bottom-0">
+							<div class="span8">
+								<select id="rayon" name="rayon" class="center">
+									<option value="">0 km</option>
+									<option value="5"$$IF=:FORM_RAYON:5$$selected="selected"$$END$$>5 km</option>
+									<option value="10"$$IF=:FORM_RAYON:10$$selected="selected"$$END$$>10 km</option>
+									<option value="15"$$IF=:FORM_RAYON:15$$selected="selected"$$END$$>15 km</option>
+									<option value="20"$$IF=:FORM_RAYON:20$$selected="selected"$$END$$>20 km</option>
+									<option value="25"$$IF=:FORM_RAYON:25$$selected="selected"$$END$$>25 km</option>
+								</select>
+							</div>
+							<div class="span4">
+								<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-rechercher-refine bold">$$LG:OK ucase$$</div>
+							</div>
+						</div>
+					<!--FIN RAYON-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="conteneur-checkbox span3">
+					<div class="row-fluid">
+						<div class="span12 padding-5">
+							<div class="liste-checkbox input-text">
+								<!--#include virtual="moteur/mini/incl_surface.htm" -->
+							</div>
+						</div>
+					</div>
+			</div>		
+			<div class="conteneur-checkbox span3">
+				<div class="row-fluid">
+					<div class="span12 padding-5">
+						<div class="liste-checkbox input-text">
+							<div class="control-group$$IF=:INLINE:TYPEMOTEUR$$ margin-bottom-0$$END$$$$IF:REFINERECHERCHE$$ margin-bottom-0$$END$$">
+								<div class="row-fluid">
+									$$IF0:REFINERECHERCHE$$
+										<div class="span3 normal">
+											<div class="margin-top-7 pagination-right titre-budget">$$LG:BUDGET pcase$$</div>
+										</div>
+									$$END$$
+									$$IF=:1:REFINERECHERCHE$$
+										$$IF=:INLINE:TYPEMOTEUR$$
+											<div class="span3 normal">
+												<div class="margin-top-7 pagination-right titre-budget">$$LG:BUDGET pcase$$</div>
+											</div>
+										$$END$$
+									$$END$$
+									$$IF=:2$8$9$10$5$6$11:FORM:IDTT$$
+										<div class="span3"><input type="text" id="MiniInputBudgetMin" class="center moteur-input-change prix-min" name="pxmin" value="$$IF0:FORM:PXMIN$$$$LG:MINI pcase$$$$END$$$$IF:FORM:PXMIN$$$$FORM:PXMIN$$$$END$$" data-placeholder="$$LG:MINI pcase$$"></div>
+										<div class="span3"><input type="text" id="MiniInputBudgetMax" class="center moteur-input-change prix-max" name="pxmax" value="$$IF0:FORM:PXMAX$$$$LG:MAXI pcase$$$$END$$$$IF:FORM:PXMAX$$$$FORM:PXMAX$$$$END$$"></div>
+									$$END$$
+									$$IF=:1$3$7:FORM:IDTT$$
+										<div class="span3"><input type="text" id="MiniInputBudgetMin" class="center moteur-input-change prix-min" name="px_loyermin" value="$$IF0:FORM:PX_LOYERMIN$$$$LG:MINI pcase$$$$END$$$$IF:FORM:PX_LOYERMIN$$$$FORM:PX_LOYERMIN$$$$END$$" data-placeholder="$$LG:MINI pcase$$"></div>
+										<div class="span3"><input type="text" id="MiniInputBudgetMax" class="center moteur-input-change prix-max" name="px_loyermax" value="$$IF0:FORM:PX_LOYERMAX$$$$LG:MAXI pcase$$$$END$$$$IF:FORM:PX_LOYERMAX$$$$FORM:PX_LOYERMAX$$$$END$$" data-placeholder="$$LG:MAXI pcase$$"></div>
+									$$END$$
+									$$IF=:4:FORM:IDTT$$
+										<div class="span3"><input type="text" id="MiniInputBudgetMin" class="center moteur-input-change prix-min" name="px_bs_semainemin" value="$$IF0:FORM:PX_BS_SEMAINEMIN$$$$LG:MINI pcase$$$$END$$$$IF:FORM:PX_BS_SEMAINEMIN$$$$FORM:PX_BS_SEMAINEMIN$$$$END$$" data-placeholder="$$LG:MINI pcase$$"></div>
+										<div class="span3"><input type="text" id="MiniInputBudgetMax" class="center moteur-input-change prix-max" name="px_bs_semainemax" value="$$IF0:FORM:PX_BS_SEMAINEMAX$$$$LG:MAXI pcase$$$$END$$$$IF:FORM:PX_BS_SEMAINEMAX$$$$FORM:PX_BS_SEMAINEMAX$$$$END$$" data-placeholder="$$LG:MAXI pcase$$"></div>
+									$$END$$
+										<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ span3 bouton-rechercher-moteur bold">$$LG:OK ucase$$</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>		
+			$$BIF:REFINER$$
+				<div id="content-moteur" class="span2 relative"><!--REFINE DU MOTEUR-->
+							$$DO$$
+								$$IFPREV:REFINER:IDKEY$$
+									<div class="conteneur-checkbox $$IF!:idtypebien:REFINER:QUERYKEY$$display-none$$END$$">
+										<div class="row-fluid titre-section-refine" $$IF=:idtypebien$nb_pieces$nb_chambres$si_mandatexclusif:REFINER:QUERYKEY$$data-name="$$REFINER:QUERYKEY$$"$$END$$>
+											<div class="span11 json-moteur-titre">$$REFINER:KEYNAME pcase$$</div>
+											<div class="span1"><i class="opacity-3 smallest general typoicon-plus "></i></div>
+										</div>
+										<div class="row-fluid display-none absolute row-fluid bg-primary">
+											<div class="span12">
+												<div class="liste-checkbox">
+													<div class="control-group margin-0">
+								$$END$$
+								$$IF:REFINER:QUERYVALUE$$
+									$$IF!:all:REFINER:QUERYVALUE$$
+										$$IF!:0:REFINER:NB$$
+											<div class="ligne row-fluid btn-check $$IF!:1:REFINER:SELECTED$$choix-neutre-refine$$END$$$$IF=:1:REFINER:SELECTED$$choix-selection-refine$$END$$" data-value="$$REFINER:QUERYVALUE urldecode$$" $$IF!:idtypebien$nb_pieces$nb_chambres$si_mandatexclusif:REFINER:QUERYKEY$$data-name="$$REFINER:QUERYKEY$$"$$END$$ $$IF=:1:REFINER:SELECTED$$checked="checked"$$END$$>
+												<div class="typo-white span1 ">
+													<div class="json-check $$IF!:1:REFINER:SELECTED$$display-none$$END$$">
+													<i class="general typoicon-remove small "></i>
+													</div>
+												</div>
+												<div class="$$IF=:IDQ:REFINER:QUERYKEY$$span11$$END$$$$IF!:IDQ:REFINER:QUERYKEY$$span8$$END$$ refine-valuename">$$REFINER:VALUENAME replace inconnu divers replace si_ ¤ pcase$$ </div>
+												$$IF!:IDQ:REFINER:QUERYKEY$$
+													$$IF:REFINER:NB$$
+														<div class="span3"><div class="nombre-resultat-refine pagination-centered small">$$REFINER:NB$$</div></div>
+													$$END$$
+												$$END$$
+											</div>
+										$$END$$
+									$$END$$
+								$$END$$
+								$$IFNEXT:REFINER:IDKEY$$
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								$$END$$
+							$$LOOP$$
+				</div><!--FIN DU REFINE DU MOTEUR-->
+	</div>
+				$$IF=:1:BTNSEARCHREFINE$$	
+					<!--#include virtual="moteur/mini/incl_moteur_bouton.htm" -->
+				$$END$$
+			$$BFIN$$
+</form>
+$$IF=:1:REFINERECHERCHE$$
+	<script type="text/javascript">
+		var lienAlerte= 'http://$$REP:RSRV$$/$$REP:0$$';
+		var maxpage = '$$ANNLISTE:NBRPAGES$$';
+		var cdc='<div class="row-fluid"><div class="span3 json-cdc"><!--#include virtual="recherche/incl_picto_cdc.htm" --></div>';
+		var exclu='<div class="span4 json-exclu"><!--#include virtual="recherche/incl_picto_exclusif.htm" --></div>';
+		var fraicheur='<div class="span5 json-fraicheur"><!--#include virtual="recherche/incl_picto_nouveau.htm" --></div></div>';
+		var btnaction = 'choix-selection-refine';
+		var btnneutre = 'choix-neutre-refine';
+		$$IF:FORM:IDTT$$
+			var idtt= "$$FORM:IDTT$$"
+		$$END$$
+		$$IF0:FORM:IDTT$$
+			var idtt= 0;
+		$$END$$
+	</script>
+$$END$$
+
+
+$$END$$

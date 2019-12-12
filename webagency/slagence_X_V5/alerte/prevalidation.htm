@@ -1,0 +1,103 @@
+$$REM$$====================================================================
+//// <summary>Page intermédiaire 2/3 de creation d'Alerte Immo : quand VILLE, DP ou CP ambigu</summary>
+//// <remarks>
+//// <para>On arrive ici si option champs libres pour entrer le nom des villes</para>
+//// <para>Utilise les mêmes includes et les même css que la page moteur</para>
+//// <para>Pages reliees : immo.htm > prevalidation.htm > validation.htm > validation_ok.htm</para>
+//// <para>Trois etapes pour creer une Alerte Immo : 1 = choix IDTT, 2 = choix autres criteres, 3 = envoi coordonnees perso</para>
+//// </remarks>
+//// <update date="2011-04-26" author="lisbonne.siriphol">Creation</update>
+====================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+<!--#include virtual="/header/incl_haut.htm"-->
+
+<script type="text/javascript">
+	<!--
+		function coche(i)	{
+			if (i<document.villes.length)
+			{
+				if (document.villes.elements[i].name=='ci')
+				{
+					document.villes.elements[i].checked=true;
+					setTimeout('coche('+(i+1)+')', 15);
+				}
+				else
+					setTimeout('coche('+(i+1)+')', 0);
+			}
+		}
+				
+		function decoche(i)	{
+			if (i>=0)
+			{
+				document.villes.elements[i].checked=false;
+				setTimeout('decoche('+(i-1)+')', 15);
+			}
+		}	
+		
+		/*
+		function carte(ci)	{
+			window.open('http://$$REP:RSRV$$/'+ci+'/france.htm','france','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=650,height=570');
+		}
+		*/
+	// -->
+</script>
+
+<div class="row-fluid">
+	<div class="span12">
+		<form method="get" action="/alerte,validation.htm" name="villes">
+			<div id="Moteur">
+				<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />			
+				<input type="hidden" name="nom" value="$$FORM:NOM$$" />
+				<input type="hidden" name="email" value="$$FORM:EMAIL$$" />
+				
+				$$IF:FORM:IDTYPEBIEN$$<input type="hidden" name="idtypebien" value="$$FORM:IDTYPEBIEN$$" />$$END:IDTYPEBIEN$$
+				$$IF:FORM:NB_CHAMBRES$$<input type="hidden" name="nb_chambres" value="$$FORM:NB_CHAMBRES$$" />$$END:NB_CHAMBRES$$
+				$$IF:FORM:NB_PIECES$$<input type="hidden" name="nb_pieces" value="$$FORM:NB_PIECES$$" />$$END:NB_PIECES$$
+				$$IF:FORM:PXMIN$$<input type="hidden" name="pxmin" value="$$FORM:PXMIN$$" />$$END:PXMIN$$
+				$$IF:FORM:PXMAX$$<input type="hidden" name="pxmax" value="$$FORM:PXMAX$$" />$$END:PXMAX$$
+				$$IF:FORM:SURFACEMIN$$<input type="hidden" name="surfacemin" value="$$FORM:SURFACEMIN$$" />$$END:SURFACEMIN$$
+				$$IF:FORM:SURFACEMAX$$<input type="hidden" name="surfacemax" value="$$FORM:SURFACEMAX$$" />$$END:SURFACEMAX$$
+				$$IF:FORM:SI_MEUBLE$$<input type="hidden" name="si_meuble" value="$$FORM:SI_MEUBLE$$" />$$END:SI_MEUBLE$$
+				$$IF:FORM:PHOTO$$<input type="hidden" name="photo" value="$$FORM:PHOTO$$" />$$END:PHOTO$$
+				$$IF:FORM:PROX$$<input type="hidden" name="prox" value="$$FORM:PROX$$" />$$END:PROX$$
+				$$IF:FORM:360$$<input type="hidden" name="360" value="$$FORM:360$$" />$$END:360$$
+				$$IF:FORM:FRAICHEUR$$<input type="hidden" name="fraicheur" value="$$FORM:FRAICHEUR$$" />$$END:FRAICHEUR$$
+				$$IF:FORM:SI_HANDICAPE$$<input type="hidden" name="si_handicape" value="$$FORM:SI_HANDICAPE$$" />$$END:SI_HANDICAPE$$
+				$$IF:FORM:SI_CONSTRUCTIBLE$$<input type="hidden" name="si_constructible" value="$$FORM:SI_CONSTRUCTIBLE$$" />$$END:SI_CONSTRUCTIBLE$$
+
+				<h1>$$LG:CREATIONALERTEIMMO$$</h1><hr />
+				$$B:IMMOBW:ANN-ES:ALIAS:RECH:QRY:IDTT:::NOVISU:~NOSTAT:1$$$$BIF:RECH$$$$DO$$$$LOOP$$$$BFIN$$
+				<h2 class="typo-action margin-top-20">$$LG:VOTRERECHERCHE pcase$$ : $$RECH:PHRASE pcase$$</h2>
+				<div class="alerteAmbigu"><!-- --></div>
+				<h3 class="margin-top-20">$$LG:LOCAMBIGU$$<br />$$LG:SELECLOC$$</h3>
+				$$B:IMMOBW:PREANN:QRY:CP:ADD:/alerte,validation.htm$$
+				$$BIF:IMMOBW:PREANN:QRY$$					
+				<div class="control-group margin-top-10">				
+					$$DO:1:50$$				
+						$$IF:IMMOBW:PREANN:QRY:ISDEP$$				
+							<label class="checkbox"><input type="checkbox" name="cp" value="$$IMMOBW:PREANN:QRY:DEP$$" /> $$IMMOBW:PREANN:QRY:DEPARTEMENTAFF$$ ($$LG:DEPART$$)</label>
+						$$END$$					
+						$$IF0:IMMOBW:PREANN:QRY:ISDEP$$				
+							<label class="checkbox"><input type="checkbox" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ checked$$END$$ />
+							$$IMMOBW:PREANN:QRY:VILLEAFF$$ ($$IMMOBW:PREANN:QRY:DEP$$)</label>
+						$$END$$					
+					$$LOOP$$					
+				</div>
+				$$BFIN$$
+				
+				<div class="row-fluid preValid margin-top-20">
+					<div class="span3"><a class="btn btn-action btn-block btn-large" onclick="coche(0);" title="$$LG:TTSELEC pcase$$">$$LG:TTSELEC pcase$$</a></div>
+					<div class="span3"><a class="btn btn-action btn-block btn-large" onclick="decoche(villes.length-1);" title="">$$LG:TTDESLEC pcase$$</a></div>
+					<div class="span3"><a class="btn btn-action btn-block btn-large" onclick="history.back();" title="">$$LG:RETOURCRITERES pcase$$</a></div>		
+					<div class="span3"><input type="submit" class="btn btn-important btn-block btn-large" value="$$LG:V5ALERTE:ETAPEFINALE$$" /></div>
+				</div>
+				
+		
+		
+			</div><!-- #Moteur -->
+		</form>
+	</div>
+</div>
+
+<!--#include virtual="footer/incl_bas.htm"-->

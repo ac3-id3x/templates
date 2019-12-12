@@ -1,0 +1,74 @@
+$$IF!:1:HIDECALENDRIER$$
+    $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+        $$BIF:CAL$$
+
+        <div class="h4-like detail-ssttl">$$LG:CALENDRIERDISPO$$</div>
+
+        $$REM$$<!-- LEGENDE -->$$END$$
+        <div class="row-fluid margin-top-30 margin-bottom-20">
+            <div class="span4">
+                <div class="row-fluid">
+                    <div class="span2 height-20 bg-action"></div>
+                    <div class="span10">$$LG:DISPO2$$</div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="row-fluid">
+                    <div class="span2 height-20 bg-important"></div>
+                    <div class="span10">$$LG:MININONDISPO$$</div>
+                </div>
+            </div>
+        </div>
+
+        $$A:TEST=0$$
+        $$DO$$
+            $$IFNOTNULL:CAL:DEBUTMOIS$$
+                $$A:TEST=@@TEST exec XX+1@@$$
+                $$A:CALCULMODULO=@@TEST exec XX%4@@$$
+                $$IF=:1:CALCULMODULO$$
+                    <div class="row-fluid">
+                $$END$$
+                <div class="span3 height-230 margin-bottom-5">
+                    <p class="pagination-centered bg-action font-title small uppercase">$$CAL:DATE date MMM_yyyy pcase $$</p>
+                    <table class="width-100-pourcent">
+                        <tr>
+                            <td colspan="7" height="5"></td>
+                        </tr>
+                        <tr class="pagination-centered small font-title typo-action">
+                            <td>$$LG:SAMEDI left 1 pcase$$</td>
+                            <td>$$LG:DIMANCHE left 1 pcase$$</td>
+                            <td>$$LG:LUNDI left 1 pcase$$</td>
+                            <td>$$LG:MARDI left 1 pcase$$</td>
+                            <td>$$LG:MERCREDI left 1 pcase$$</td>
+                            <td>$$LG:JEUDI left 1 pcase$$</td>
+                            <td>$$LG:VENDREDI left 1 pcase$$</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" height="5"></td>
+                        </tr>
+                        <tr>
+                            $$CAL:DEBUTMOIS repeatcode <td></td>$$
+                        $$END$$
+                        $$IFNULL:CAL:DEBUTMOIS$$
+                            $$IF=:6:CAL:WEEKDAY$$<tr>$$END$$
+                        $$END$$
+                        <td>
+                            <div class="$$IF0:CAL:DISPO$$bg-important$$END$$$$IF:CAL:DISPO$$bg-action$$END$$ smallest pagination-centered">$$CAL:DATE day$$</div>
+                        </td>
+                        $$IFNULL:CAL:DEBUTMOIS$$
+                            $$IF=:5:CAL:WEEKDAY$$</tr>$$END$$
+                        $$END$$
+                        $$IFNOTNULL:CAL:FINMOIS$$
+                            $$CAL:FINMOIS repeatcode <td></td>$$
+                        </tr>
+                    </table>
+                </div>
+                $$IF=:0:CALCULMODULO$$
+                    </div>
+                $$END$$
+
+            $$END$$
+        $$LOOP$$
+        $$BFIN$$
+    $$END$$
+$$END$$

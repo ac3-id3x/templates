@@ -1,0 +1,118 @@
+<p class="detail-form-intro hidden-phone">
+    $$IF=:1:ANNDETAIL:IDTYPEBIEN$$
+        $$LG:CETAPPARTEMENTVOUSINTERESSE pcase$$ ?<br>
+    $$END$$
+    $$IF=:2:ANNDETAIL:IDTYPEBIEN$$
+        $$LG:CETTEMAISONVOUSINTERESSE pcase$$ ?<br>
+    $$END$$
+    $$IF=:4:ANNDETAIL:IDTYPEBIEN$$
+        $$LG:CETERRAINVOUSINTERESSE pcase$$ ?<br>
+    $$END$$
+    $$IF!:1$2$4:ANNDETAIL:IDTYPEBIEN$$
+        $$LG:CEBIENVOUSINTERESSE pcase$$ ?<br>
+    $$END$$
+    <span class="typo-action">$$LG:CONTACTEZ pcase$$ $$ANNDETAIL:COOR-NOM ncase$$</span>
+</p>
+
+<div class="detail-form-nav">
+    <label class="btn btn-action btn-block">
+        <input type="radio" name="type-message" value="1" data-message="Je souhaite être rappelé par votre agence." data-type="callback" class="display-none">
+        $$LG:ETRERAPPEL pcase$$
+    </label>
+    <label class="btn btn-action btn-block">
+        <input type="radio" name="type-message" value="3" data-message="Je souhaite visiter ce bien." data-type="visit" class="display-none">
+        $$LG:VISITERBIEN pcase$$
+    </label>
+    <label class="btn btn-action btn-block">
+        <input type="radio" name="type-message" value="2" data-message="Je souhaite avoir plus d'information sur cette annonce." data-type="information" class="display-none">
+        $$LG:PLUSDETAILS pcase$$
+    </label>
+</div>
+
+<form id="detail-form">
+
+   <!--#include virtual="contact/incl_honeypot.htm" -->
+   <!--#include virtual="detail/incl_detail_formulaire_input.htm" -->
+
+    $$REM$$<!-- WRAP FORMULAIRE -->$$END$$
+    <div class="detail-form-content display-none">
+
+        <a class="detail-form-close btn btn-action">X</a>
+
+        <p class="h4-like detail-form-ttl margin-bottom-10"></p>
+
+        <div class="control-group">
+            <input type="text" class="center" name="cnom" value="$$FORM:CNOM$$" placeholder="$$LG:NOM pcase$$ / $$LG:PRENOM pcase$$*" required>
+        </div>
+        <div class="control-group">
+            <input type="email" class="center" name="from" value="$$FORM:FROM$$" placeholder="$$LG:EMAIL pcase$$*" required>
+        </div>
+        <div class="control-group">
+            <input type="tel" class="center" name="ctel" value="$$FORM:CTEL$$" placeholder="$$LG:TEL pcase$$*" required>
+        </div>
+
+        $$REM$$<!-- ETRE RAPPELE -->$$END$$
+        <div class="control-group">
+            <fieldset class="callback">
+                <!--#include virtual="detail/incl_detail_formulaire_bloc_rappel.htm" -->
+            </fieldset>
+        </div>
+
+        $$REM$$<!-- VISITER LE BIEN -->$$END$$
+        <div class="control-group">
+            <fieldset class="visit display-none">
+                <!--#include virtual="detail/incl_detail_formulaire_bloc_visiter.htm" -->
+            </fieldset>
+        </div>
+
+        $$REM$$<!-- PLUS DE DETAILS -->$$END$$
+        <div class="control-group">
+            <fieldset class="information display-none">
+                <div class="control-group">
+                    <label class="checkbox margin-0">
+                        <input type="checkbox" name="detail_demande" value="Montant des charges"> $$LG:MONTANTCHARGES pcase$$
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="checkbox margin-0">
+                        <input type="checkbox" name="detail_demande" value="Situation et environnement"> $$LG:SITUATIONENVIRONNEMENT pcase$$
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="checkbox margin-0">
+                        <input type="checkbox" name="detail_demande" value="Etat du bien"> $$LG:ETATBIEN pcase$$
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="checkbox margin-0">
+                        <input type="checkbox" name="detail_demande" value="Disponibilté du bien"> $$LG:DISPOBIEN  pcase$$
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+
+
+        <div class="control-group">
+            <textarea class="center" name="demande_autre" value="$$FORM:DEMANDE_AUTRE$$" rows="3" placeholder="$$LG:COMMENTAIRES pcase$$"></textarea>
+        </div>
+
+        <div class="control-group margin-0">
+            <button type="submit" class="btn btn-action btn-large btn-block btn-send-contact" data-loading-text="$$LG:ENVOIENCOURS pcase$$">
+                $$LG:ENVOYMES pcase$$
+            </button>
+            <div class="response"></div>
+            <p class="required smallest opacity-5 padding-bottom-0">* $$LG:CHAMPSOBLIGATOIRES pcase$$</p>
+        </div>
+
+        <div class="margin-top-10">
+            <!--#include virtual="legal/incl_rgpd.htm" -->
+        </div>
+
+
+    </div>
+</form>
+
+<script>
+    var messageOK = '<i class="pt10 text-center bigger icon-v5-checkmark"></i><span class="big">$$LG:BIENENVOYE pcase$$</span>$$IF=:1:TRAITEMENTMAIL$$<br />$$LG:TRAITONSDEMANDE$$$$END$$';
+    var boutonOK = '$$LG:ENVOICONFIRME pcase$$';
+</script>

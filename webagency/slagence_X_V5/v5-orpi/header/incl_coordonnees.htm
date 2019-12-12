@@ -1,0 +1,32 @@
+$$IF=:0:MULTIAGENCES$$
+	<span class="bold h2-title-moteur">$$AGENCE_NOM$$</span>
+	<p>$$AGENCE_ADRESSE pcase$$, $$AGENCE_CP$$ $$AGENCE_VILLE pcase$$<br />
+	$$IF=:0:TELEPHONEMASQUEHEADER$$
+	$$LG:MINITEL pcase$$ : $$AGENCE_TEL$$<br />$$LG:FAX pcase$$ : $$AGENCE_FAX$$<br />
+	$$END$$
+<a href="$$AGENCE_URLVIRT$$">$$LG:SAVOIR pcase$$</a></p>
+$$END$$
+$$IF=:1:MULTIAGENCES$$
+$$BIF:COMPTE_AGENCES$$
+$$A:JS_JQUERY_CYCLE=1$$
+<ul id="liste-bloc-coordonnees">
+	$$DO$$
+	<li>
+		<span class="bold h2-title-moteur">$$COMPTE_AGENCES:NOM$$</span>
+		<p>$$COMPTE_AGENCES:ADRESSE pcase rxreplace (.*)\s(\d{5})\s(.*) $1$$, $$COMPTE_AGENCES:CP$$ $$COMPTE_AGENCES:VILLE pcase$$<br />
+		$$IF=:0:TELEPHONEMASQUEHEADER$$
+		<span class="tel-coordonnes">$$LG:MINITEL pcase$$ : $$COMPTE_AGENCES:TEL$$</span> <span class="fax-coordonnees"><br />$$LG:FAX pcase$$ : $$COMPTE_AGENCES:FAX$$</span><br />
+		$$END$$
+	<a href="$$COMPTE_AGENCES:URLVIRTUELLE$$">$$LG:SAVOIR pcase$$</a></p>
+	</li>
+	$$LOOP$$
+</ul>
+<script type="text/javascript">
+	$(window).load(function() {
+		if(winW > 1100) {
+			$('#liste-bloc-coordonnees').cycle().delay( 1000 );
+		}
+	});
+</script>
+$$BFIN$$
+$$END$$

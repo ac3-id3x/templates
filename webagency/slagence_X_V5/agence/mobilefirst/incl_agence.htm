@@ -1,0 +1,157 @@
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+$$A:CPVILLEAGENCE=@@CV:CP@@ @@CV:VILLE@@$$
+
+<div class="page-agence agence-mobilefirst" itemscope itemtype="http://schema.org/RealEstateAgent">
+
+    $$REM$$<!-- TEL MOBILE -->$$END$$
+    <div class="agence-tel-mobile hidden-desktop">
+        $$IF=:1:TELEPHONEMASQUE$$
+            <div id="bouton-telephonez-nous" class="bg-body-light padding-10 cursor-pointer agence-telephonez-nous">
+                <span id="texte-telephonez-nous"><span class="mf-icon-call"></span> &nbsp;$$LG:V5APPELEZNOUS pcase$$</span>
+                <span id="numero-telephonez-nous" class="display-none" itemprop="telephone"><!--#include virtual="header/incl_formatel.htm"--></span>
+            </div>
+        $$END$$
+        $$IF=:0:TELEPHONEMASQUE$$
+            <div id="bouton-telephonez-nous" class="bg-body-light padding-10 cursor-pointer">
+                <!--#include virtual="detail/incl_nom_contact.htm" --><!--#include virtual="header/incl_formatel.htm" -->
+            </div>
+        $$END$$
+    </div>
+
+    $$REM$$<!-- DECLINAISONS -->$$END$$
+    $$IF=:2$3:AGENCEMF_TYPE$$
+        <div class="agence-header$$IF=:2:AGENCEMF_TYPE$$ agence-header-banner$$END$$">
+
+            $$IF:AGENCEMF_BANNER$$
+                $$IF=:IDP:AGENCEMF_BANNER$$
+                    $$A:AGENCE_BANNER=@@_@@images/agences/@@CV:IDPUBLICATION@@-banner.jpg$$
+                $$END$$
+                $$IF=:HOME:AGENCEMF_BANNER$$
+                    $$A:AGENCE_BANNER=@@_@@images/homepage/homepage_1.jpg$$
+                $$END$$
+                $$IF=:PERSO:AGENCEMF_BANNER$$
+                    $$A:AGENCE_BANNER=@@_@@images/agences/banner.jpg$$
+                $$END$$
+            $$END$$
+
+            <div class="agence-header-img" style="background-image:url('$$AGENCE_BANNER$$');"></div>
+            $$IF=:3:AGENCEMF_TYPE$$
+                <div class="agence-header-map">
+                    <div class="relative height-100-pourcent" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                        <div id="geo-map-3" class="height-100-pourcent"></div>
+						<script type="text/javascript">
+							id3xContent.addMap({
+								container: {id: 'geo-map-3'},
+								mapData: [{ mapDataType: 'AGENCIES', marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}}, popup: true } }],
+								options: { listing: true }
+							});
+						</script>
+                    </div>
+                </div>
+            $$END$$
+        </div>
+    $$END$$
+
+    $$REM$$<!-- FIL ARIANE -->$$END$$
+    <aside class="agence-ariane">
+        <div class="container">
+            <!--#include virtual="agence/mobilefirst/incl_agence_ariane.htm" -->
+        </div>
+    </aside>
+
+    <div class="agence-content container">
+        <div class="row-fluid">
+
+            $$REM$$<!-- COLONNE PRINCIPALE -->$$END$$
+            <div class="span8">
+
+                $$REM$$<!-- TITRE / SLOGAN -->$$END$$
+                <!--#include virtual="agence/mobilefirst/incl_agence_titre.htm" -->
+
+                <div class="agence-card" itemtype="http://schema.org/PostalAddress" itemscope="" itemprop="address">
+
+                    $$REM$$<!-- PHOTO -->$$END$$
+                    <!--#include virtual="agence/mobilefirst/incl_agence_photo.htm" -->
+
+                    $$REM$$<!-- COORDONNEES -->$$END$$
+                    <!--#include virtual="agence/mobilefirst/incl_agence_coord.htm" -->
+
+                </div>
+
+                $$REM$$<!-- HORAIRES -->$$END$$
+                <!--#include virtual="agence/mobilefirst/incl_agence_horaires.htm" -->
+
+                $$REM$$<!-- DESCRIPTIF -->$$END$$
+                <!--#include virtual="agence/mobilefirst/incl_agence_descriptif.htm" -->
+
+                $$REM$$<!-- RESEAUX SOCIAUX -->$$END$$
+                <!--#include virtual="agence/mobilefirst/incl_agence_social.htm" -->
+
+                $$REM$$<!-- GEOLOC -->$$END$$
+                <!--#include virtual="agence/mobilefirst/incl_agence_map.htm" -->
+
+                $$REM$$<!-- TXT PERSO -->$$END$$
+                $$IF=:1:TXT_AGENCE_SUPPLEMENTAIRE$$
+                    <!--#include virtual="agence/incl_txt_perso_detail.htm" -->
+                $$END$$
+
+                $$REM$$<!-- AGENTS -->$$END$$
+                $$IF=:1:AGENCEMF_AGENTS$$
+                    <!--#include virtual="agence/incl_agents.htm" -->
+                $$END$$
+
+            </div>
+
+            $$REM$$<!-- SIDEBAR -->$$END$$
+            <div class="span4">
+                <div class="agence-contact">
+                    <div class="agence-contact-tel hidden-phone">
+                        <!--#include virtual="agence/incl_telephone_agence.htm" -->
+                    </div>
+                    <div class="agence-contact-nav hidden-desktop">
+                        <a href="javascript:void(0);" class="btn btn-action btn-large btn-block">
+                            $$LG:CONTACTERAGENCE pcase$$
+                        </a>
+                    </div>
+                    <div class="agence-contact-form">
+                        <!--#include virtual="agence/mobilefirst/incl_agence_form.htm" -->
+                    </div>
+                </div>
+                $$IF=:1:BADGE_GOOGLE_AGENCE$$
+                    <div class="row-fluid margin-top-20 hidden-phone">
+                        <!--#include virtual="agence/incl_badge_google_agence.htm" -->
+                    </div>
+                $$END$$
+
+                <!--#include virtual="agence/mobilefirst/incl_agence_services.htm" -->
+
+            </div>
+
+        </div>
+    </div>
+
+    $$REM$$<!-- PORTEFEUILLE -->$$END$$
+    $$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:TRANSAC_DISPOS:QRY:IDP:VAL:LANGUE$$
+    $$BIF:TRANSAC_DISPOS$$
+        $$IF!:1:HIDEPORTEFEUILLEAGENCE$$
+            <div class="agence-portefeuille">
+                <div class="container">
+                    <!--#include virtual="agence/mobilefirst/incl_agence_portefeuille.htm" -->
+                </div>
+            </div>
+        $$END$$
+    $$BFIN$$
+
+    <div class="container">
+
+        $$REM$$<!-- DERNIERES ANNONCES (VENTE UNIQUEMENT) -->$$END$$
+        <!--#include virtual="agence/mobilefirst/incl_agence_annonces.htm" -->
+
+        <div class="agence-legal">
+            <!--#include virtual="agence/incl_mentions_agence.htm" -->
+            <!--#include virtual="agence/incl_bareme_agence.htm" -->
+            <!--#include virtual="agence/incl_microdonnes_agence.htm" -->
+        </div>
+    </div>
+
+</div>

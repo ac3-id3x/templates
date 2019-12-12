@@ -1,0 +1,1 @@
+$(document).ready(function(){$('.bouton_suivi').css('cursor','pointer');$('.bouton_suivi').on('click',function(){var btn=$(this);var dataRel=$('#'+$(this).attr('data-rel'));if(dataRel.hasClass('open')){dataRel.hide(0,function(){btn.html('+');$(this).removeClass('open')})}else{dataRel.show(0,function(){btn.html('-');$(this).addClass('open')})}})});

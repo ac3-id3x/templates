@@ -1,0 +1,58 @@
+<inputs label="Type de bien" class="required property-type">
+	<radio model="$ec.formData.type" value="'house'" icon="home">Maison</radio>
+	<radio model="$ec.formData.type" value="'apartment'" icon="building">Appartement</radio>
+</inputs>
+
+<div ng-if="$ec.$state.current.name === 'pro.general'">
+	<number model="$ec.formData.surface" form="$ec.estimationForm"
+	        label="{{ $ec.formData.type === 'house' ? 'Surface habitable de la maison' : 'Surface habitable de l\'appartement' }}"
+	        placeholder="ex : 150" class="required surface" unit="m"></number>
+	<number model="$ec.formData.house.lot" form="$ec.estimationForm"
+	        label="Surface terrain (b&acirc;ti de la maison inclus)"
+	        placeholder="ex : 20" class="required lot" unit="m"
+	        ng-if="$ec.formData.type === 'house'"></number>
+</div>
+
+<div class="nbrDisplay row-stackable">
+	<div class="nbrDisplayDeriv">
+		<number-control model="$ec.formData.rooms"
+		                label="Nombre de pi&egrave;ces"
+		                placeholder="ex : 5" class="rooms required"
+		></number-control>
+	</div>
+	<div class="nbrDisplayDeriv" ng-if="$ec.formData.type !== 'apartment' && $ec.$state.current.name !== 'pro.general'">
+		<number-control model="$ec.formData.stories"
+		                label="Nombre de niveaux de la maison"
+		                placeholder="ex : 5" class="stories required"
+		></number-control>
+	</div>
+	<div class="nbrDisplayDeriv" ng-if="$ec.formData.type === 'apartment' && $ec.$state.current.name !== 'pro.general'">
+		<number-control model="$ec.formData.floor"
+		                label="&Eacute;tage de l'appartement"
+		                placeholder="ex : 5" class="floor required"
+		                min="0"
+		></number-control>
+	</div>
+</div>
+
+<select-box name="constructionYear" model="$ec.formData.constructionYear"
+            label="&Eacute;poque de construction" req="required"
+            placeholder="S&eacute;lectionnez" class="contruction-year"
+            options="{
+                before1850: 'Avant 1850',
+				before1913: '1850 - 1913',
+				before1947: '1914 - 1947',
+				before1974: '1948 - 1974',
+				before1984: '1975 - 1984',
+				before2007: '1985 - 2007',
+				since2008: 'Depuis 2008'
+            }"
+			ng-if="$ec.$state.current.name !== 'pro.general'"
+></select-box>
+
+<controls>
+	<prev state="locate"></prev>
+	<next state="online.house.details" ng-if="$ec.formData.type !== 'apartment' && $ec.$state.current.name !== 'pro.general'"></next>
+	<next state="online.apartment.details" ng-if="$ec.formData.type === 'apartment' && $ec.$state.current.name !== 'pro.general'"></next>
+	<next state="pro.credentials" ng-if="$ec.$state.current.name === 'pro.general'"></next>
+</controls>

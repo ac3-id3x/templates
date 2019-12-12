@@ -1,0 +1,25 @@
+$$IF0:SCRIPT_RECAPTCHA_GOOGLE_LOADED$$
+	$$REM$$<!-- prerequis Recaptcha Google -->$$END$$
+	$$IF:PAGE:USE_GOOGLE_RECAPTCHA$$
+		$$IF=:1:PAGE:USE_GOOGLE_RECAPTCHA$$
+<input  type="hidden" id="recaptchaResponse" name="recaptcha_response" />
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=$$PAGE:GOOGLE_RECAPTCHA_PUBLIC_KEY$$"></script>
+<script type="text/javascript">
+	recaptcha_google_disabled = false;
+	function useGoogleRecaptcha(p) {
+		// p = { final_steps: String }
+		grecaptcha.ready(function() {
+			grecaptcha.execute('$$PAGE:GOOGLE_RECAPTCHA_PUBLIC_KEY$$', { action: 'submit' }).then(function(token) {
+				if (token != null) {
+					document.getElementById('recaptchaResponse').value = token;
+					// final steps
+					try { if (p.final_steps != null) eval(p.final_steps); } catch (error) { console.error(error); }
+				}
+			});
+		});
+	}
+</script>
+			$$A:SCRIPT_RECAPTCHA_GOOGLE_LOADED=1$$
+		$$END$$
+	$$END$$
+$$END$$

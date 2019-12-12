@@ -1,0 +1,92 @@
+$$INIT:IDT=TOPVILLE$$
+$$INIT:TOPVILLE=1$$
+$$A:JS_TOPVILLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$E:ID3:URW-GETVALUES:~ressource:TypeTransaction:~values:typeTransaction,typeBien$$
+<div class="row-fluid">
+	<div class="span12">
+		<ul class="breadcrumb">
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$URLBASE$$" itemprop="url"><span itemprop="title">Accueil</span></a>
+			</li>
+			<li><span class="icon-v5-arrow-right-6"></span></li>
+			<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				$$E:ID3:URW-GETURL:ALIAS:URWRACINE:~ressource:Racine$$
+				<a href="$$URWRACINE:URLVIRTUELLE$$" itemprop="url"><span itemprop="title">Annonces</span></a>
+			</li>
+			<li class="hidden-phone"><span class="icon-v5-arrow-right-6"></span></li>
+			<li class="hidden-phone" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+				<a href="$$URWRACINE:URLVIRTUELLE$$/bien-$$ID3:URW-GETVALUES:TYPETRANSACTION pcase$$/" itemprop="url"><span itemprop="title">$$ID3:URW-GETVALUES:TYPETRANSACTION pcase$$</span></a>
+				
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span12">
+		<h1>$$H1_IMMOBILIER$$</h1>
+		<hr$$IF:TEXTE-TOPVILLES$$ class="margin-bottom-5"$$END$$ >
+	</div>
+</div>
+<!--#include virtual="referencement/incl_texte_immobilier.htm" -->
+<div class="row-fluid margin-top-10 margin-bottom-10">
+	<div class="span4">
+	$$B:IMMOBW:PLANSITE-TTTB:ALIAS:TTTB:~idTypeTransaction:QRY:idTypeTransaction:~nbAnnoncesMin:1$$
+		$$BIF:TTTB$$
+		<ul class="nav nav-pills nav-stacked nav-immobilier">
+			<li class="element-liste-titre">
+				<h2 class="h3-like">
+					$$LG:ANNONCES pcase$$ $$ID3:URW-GETVALUES:TYPETRANSACTION lcase$$ $$LG:PARTYPEDEBIENS lcase$$
+				</h2>
+			</li>
+			$$DO$$
+			<li class="element-liste">
+				<a href="$$TTTB:URLVIRTUELLE$$">$$IF!:9:TTTB:IDTYPETRANSACTION$$$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$END$$$$TTTB:TYPEBIEN pcase$$ $$IF=:9:TTTB:IDTYPETRANSACTION$$$$TTTB:TYPETRANSACTION pcase$$&nbsp;$$END$$</a>
+			</li>
+			$$LOOP$$
+		</ul>
+		$$BFIN$$
+	</div>
+	<div class="span5">
+		<div class="row-fluid">
+			<div class="span12">
+				<ul class="nav nav-pills nav-stacked nav-immobilier">
+					<li class="element-liste-titre">
+						<h2 class="h3-like">
+							$$LG:NOSANNONCESPARVILLES pcase$$
+						</h2>
+					</li>
+				$$B:IMMOBW:PLANSITE-TOPVILLES:ALIAS:TOP:~top:150:~idTypeTransaction:QRY:idTypeTransaction:~nbAnnoncesMin:1$$
+				$$BIF:TOP$$
+					$$DO:1:50$$
+						$$IF-:11:TOP:I$$
+							<li class="element-liste"><a href="$$TOP:URLVIRTUELLE$$">Immobilier <span class="ville">$$TOP:VILLE$$</span> &nbsp;<span class="typo-action">($$TOP:NBANNONCES$$)</span></a></li>
+						$$END$$
+						$$IF+:11:TOP:I$$
+							<li class="element-liste display-none"><a href="$$TOP:URLVIRTUELLE$$">Immobilier <span class="ville">$$TOP:VILLE$$</span> &nbsp;<span class="typo-action">($$TOP:NBANNONCES$$)</span></a></li>
+						$$END$$
+					$$LOOP$$	
+					
+					$$REM$$
+						$$IF=:150:TOP:NBR$$
+						$$E:ID3:URW-GETURL:ALIAS:URWTTPAGES:~ressource:TypeTransactionPages$$
+						<li class="element-liste display-none"><a href="$$URWTTPAGES:URLVIRTUELLE$$">Autres villes</a></li>
+						$$END$$
+					$$END$$
+					
+				$$BFIN$$
+				</ul>
+				<div class="bouton-plus-topville $$TYPEBOUTON$$ btn-neutre btn-small">$$LG:AFFICHERLASUITE pcase$$</div>
+			</div>
+		</div>
+	</div>
+	<div class="span3 hidden-phone">
+		$$IF=:1:MULTIAGENCES$$
+			<!--#include virtual="agences/incl_pub.htm" -->
+		$$END$$
+		$$IF=:0:MULTIAGENCES$$
+			<!--#include virtual="agence/incl_pub_agence.htm" -->
+		$$END$$	
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

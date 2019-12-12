@@ -1,0 +1,91 @@
+$$E:EASA:TEXTE:~idCategorie:VAL:IDCATRECRUTEMENT:~idTexte:REP:1:ALIAS:BT$$
+$$INIT:IDT=RECRUTEMENT_DETAIL$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid">
+	<div class="span12">
+		<h1>$$LG:RECRUTEMENT pcase$$ : $$BT:TITRE$$</h1>
+		<hr>
+	</div>			
+</div>
+<div class="row-fluid margin-top-20 margin-bottom-20" itemscope itemtype="http://schema.org/JobPosting">
+	<div class="span8">
+		<h2>$$LG:OFFREDEMPLOI pcase$$</h2>
+		$$IF:BT:DESCRIPTION$$
+		    <div itemprop="description">$$BT:DESCRIPTION$$</div>
+		$$END$$
+		$$IF:BT:TEXTE$$
+		    <div itemprop="text">$$BT:TEXTE$$</div>
+		$$END$$
+	</div>
+	<div class="span4">
+	    <div class="row-fluid">
+	        <div class="span12 detail-bloc-contact padding-10 border-solid-primary-1">
+	            $$IF:ERRE$$
+	                <span class="h2-like">$$LG:ERREUR$$</span>
+        	        <p class="small">$$ERRE$$</p>
+        	    $$END$$
+	            <span class="h2-like">$$LG:VOTRECANDIDATURE pcase$$</span>
+        		<form method="post" action="/$$REP:1$$/$$REP:0$$" enctype="multipart/form-data">
+					<!--#include virtual="contact/incl_honeypot.htm" -->
+        			<input type="hidden" name="u" value="ID3:FORMMAIL" />
+        			<input type="hidden" name="page_ok" value="/immo,recrutement_envoi.htm" />
+        			<input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+        			<input type="hidden" name="page_html" value="/immo,recrutement_email.htm" />
+        			<input type="hidden" name="cfg_form" value="recrutement" />
+        			<input type="hidden" name="cfg_emails" value="recrutement" />
+        			<input type="hidden" name="subject" value="$$BT:TITRE$$"/>
+        			$$IF:TO_RECRUTEMENT$$
+        			    <input type="hidden" name="email_to" value="$$TO_RECRUTEMENT$$"/>
+        			$$END$$
+        			$$IF0:TO_RECRUTEMENT$$
+        			    <input type="hidden" name="email_to" value="jobs@$$REP:SRV$$"/>
+        			$$END$$
+        			<div class="control-group">
+        				<label>$$LG:VOTRENOM pcase$$ / $$LG:VOTREPRENOM pcase$$</label>
+        				<input type="text" class="center" name="nom_from" autocomplete="off">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:VOTREMAIL pcase$$</label>
+        				<input type="text" class="center" name="email_from" autocomplete="off">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:VOTRECV$$</label>
+        				<input type="file" name="attachment">
+        			</div>
+        			<div class="control-group">
+        				<label>$$LG:MESSAGE pcase$$</label>
+        				<textarea name="message" class="center" rows="5"></textarea>
+        			</div>
+        			<div class="row-fluid">
+        				<div class="span4" hidden-phone"></div>
+        				<div class="span4">
+        					<input type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block" value="$$LG:POSTULEZ pcase$$" />
+        				</div>
+        			</div>
+                    <div class="margin-top-10">
+                        <!--#include virtual="legal/incl_rgpd.htm" -->
+                    </div>
+        		</form>
+	         </div>
+	     </div>
+	     $$B:EASA:TEXTES:~idCategorie:VAL:IDCATRECRUTEMENT:~inverse:1:ALIAS:EDITEURRECRUTEMENT$$
+	     $$BIF:EDITEURRECRUTEMENT$$
+	     <div class="row-fluid margin-top-20">
+	        <div class="span12 border-solid-primary-1 detail-bloc-contact padding-10">
+				<div class="h2-like margin-bottom-10">$$LG:LG:NOSAUTRESJOBS pcase$$</div>
+    			<ul>
+    				$$DO:1:5$$
+    					<li class="padding-5">
+    						<a href="/$$EDITEURRECRUTEMENT:IDTEXTE$$/immo,recrutement_detail.htm" title="$$EDITEURRECRUTEMENT:TITRE pcase$$">$$EDITEURRECRUTEMENT:TITRE smalltextv2 30$$</a>
+    					</li>
+    				$$LOOP$$
+    			</ul>
+				<div class="margin-top-20 pagination-centered">
+					<a href="/immo,recrutement.htm" title="$$LG:NOSAUTRESJOBS pcase$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block">$$LG:NOSAUTRESJOBS pcase$$</a>
+				</div>
+	          </div>   
+	     </div>
+	     $$BFIN$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

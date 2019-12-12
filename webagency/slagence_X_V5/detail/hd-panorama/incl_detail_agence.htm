@@ -1,0 +1,39 @@
+$$A:CPVILLEAGENCE= @@ANNDETAIL:AGCP@@ @@ANNDETAIL:AGVILLE@@$$
+$$A:ADRAGENCE= @@ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+
+<div class="h3-like typo-action" itemprop="name">$$ANNDETAIL:COOR-NOM$$</div>
+
+<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="detail-agc-adresse">
+    $$IF:ANNDETAIL:COOR-ADRESSE$$
+        $$IF!:CPVILLEAGENCE:ADRAGENCE$$
+            <span itemprop="streetAddress">$$ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</span><br>
+        $$END$$
+        <span itemprop="postalCode">$$ANNDETAIL:AGCP$$</span>
+        <span itemprop="addressLocality">$$ANNDETAIL:AGVILLE$$</span>
+     $$END$$
+</div>
+
+$$IF=:250:ANNDETAIL:IDPAYS$$
+    $$IF!:1:AGENTCODETAIL$$
+        <p>
+            <a href="$$AG:URLVIRTUELLE$$" title="$$LG:NOTREAGENCEIMMOA pcase$$ $$ANNDETAIL:AGVILLE pcase$$" itemprop="url" class="btn-has-picto">
+                <span itemprop="title">$$LG:NOTREAGENCEIMMOA pcase$$ $$ANNDETAIL:AGVILLE$$</span>
+                <i class="mf-icon-arrow-right"></i>
+            </a>
+        </p>
+    $$END$$
+    $$IF=:1:AGENTCODETAIL$$
+        <p>
+            <a href="$$AG:URLVIRTUELLE$$" title="$$LG:NOTREAGENCEIMMOA pcase$$ $$ANNDETAIL:AGVILLE pcase$$" itemprop="url">
+                <span itemprop="title">
+                    $$IF=:FR:LANGUE$$
+                        Voir la fiche de notre agent commercial
+                    $$END$$
+                    $$IF!:FR:LANGUE$$
+                        View profile
+                    $$END$$
+                </span>
+            </a>
+        </p>
+    $$END$$
+$$END$$

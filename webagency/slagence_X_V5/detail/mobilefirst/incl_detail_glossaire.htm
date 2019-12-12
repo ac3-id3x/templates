@@ -1,0 +1,38 @@
+<div class="detail-glossaire">
+
+    $$REM$$<!-- conditionnement si France -->$$END:REM$$
+    $$IF=:250:ANNDETAIL:IDPAYS$$
+        $$IF!:1$3$4$7:ANNDETAIL:IDTYPETRANSACTION$$
+            $$IF!:6$7$8$11$12:ANNDETAIL:IDTYPEBIEN$$
+                $$IF!:1:HONORAIRESINCLUS$$
+                    <p class="small honoraires"><sup>*</sup>$$LG:PRIXHORSFRAIS$$</p>
+                $$END$$
+            $$END$$
+            $$IF=:6$7$8$11$12:ANNDETAIL:IDTYPEBIEN$$
+                $$IF!:1:HONORAIRESINCLUS$$
+                    $$IF=:True$False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                        <p class="small honoraires"><sup>*</sup>$$LG:PRIXHORSFRAIS$$</p>
+                    $$END$$
+                    $$IF!:True$False:ANNDETAIL:SI_HONORAIRES_ACQUEREUR$$
+                        <p class="small honoraires"><sup>*</sup>$$LG:HONORAIRESNON$$</p>
+                    $$END$$
+                $$END$$
+            $$END$$
+            $$IF=:1:HONORAIRESINCLUS$$
+                <p>&sup1; <!--#include virtual="recherche/incl_honoraires.htm" --> : $$LG:HONORAIRESINCLUS lcase$$ - $$LG:PRIXNETHORSFRAIS pcase$$</p>
+            $$END$$
+        $$END$$
+    $$END$$
+
+    $$REM$$<!-- conditionnement si différent France -->$$END:REM$$
+    $$IF!:250:ANNDETAIL:IDPAYS$$
+        <p class="small honoraires"><sup>*</sup>$$IF!:1:HORSFRAISAPPLICABLES_PERSO$$$$LG:HORSFRAISAPPLICABLES lcase$$$$END$$ $$IF=:1:HORSFRAISAPPLICABLES_PERSO$$$$INTITULE_HORSFRAISAPPLICABLES_PERSO$$$$END$$</p>
+    $$END$$
+
+    $$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+        $$IF!:1:HIDEHORSFRAIS$$
+            <p>&sup1; $$LG:V5HORSFRAIS pcase$$</p>
+        $$END$$
+    $$END$$
+
+</div>

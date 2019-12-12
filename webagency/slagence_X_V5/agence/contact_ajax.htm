@@ -1,0 +1,245 @@
+$$REM$$ <!--$$A:IDT=NOTREAGENCE$$ EFFET DE BORD LE 12/09/2018, ne doit pas charger le JS de la page agence-->·$$END$$
+<!--#include virtual="header/incl_var_params.htm" -->
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<!-- VERSION MULTI AGENCE -->
+$$IFNOTNULL:CV:IDPUBLICATION$$
+	
+	$$A:CPVILLEAGENCE=@@CV:CP@@ @@CV:VILLE@@$$
+
+	$$IF0:CONTACT_EMAIL$$
+		$$A:CONTACT_EMAIL=@@CV:EMAIL@@$$
+	$$END$$
+
+	$$REM$$<!-- AGENCE -->$$END$$
+	<div class="row-fluid ctc-agence margin-top-30">
+		<div class="span6 ctc-infos-agence typo-action">
+
+			$$REM$$<!-- COORDONNES AGENCE -->$$END$$
+			<div class="row-fluid">
+				<div class="span8 ctc-coord-agence">
+					<span class="ctc-nom-agence">$$CV:NOM ncase$$<br></span>
+					$$IF!:CPVILLEAGENCE:CV:ADRESSE$$<span itemprop="streetaddress" class="ctc-adresse-agence">$$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 trim$$<br></span>$$END$$
+					<span itemprop="postalCode" class="ctc-cp-agence">$$CV:CP$$</span> <span itemprop="addressLocality" class="ctc-ville-agence">$$CV:VILLE$$</span>
+				</div>
+				$$REM$$<!-- TEL AGENCE -->$$END$$
+				<div class="span4">
+					<!--#include virtual="agence/incl_telephone_agence.htm" -->
+				</div>
+			</div>
+
+			$$REM$$<!-- INFOS AGENCE -->$$END$$
+			<ul class="margin-top-20 ctc-infos-agence">
+				$$REM$$<!-- RESPONSABLE AGENCE -->$$END$$
+				$$IF:CV:RESPAG$$
+					$$IF!:1:HIDENOMRESPONSABLE$$
+					<li class="ctc-resp-agence">
+						$$IF0:MULTIRESPAGENCE$$
+							$$LG:RESPAGENCE pcase$$ :
+						$$END$$
+						$$IF=:1:MULTIRESPAGENCE$$
+							$$LG:RESPSAGENCE pcase$$ :
+						$$END$$
+						$$CV:RESPAG$$
+					</li>
+					$$END$$
+				$$END$$
+
+				$$REM$$<!-- EMAIL AGENCE -->$$END$$
+				$$IF!:1:HIDE_EMAIL_AGENCE$$
+					$$IF:CV:EMAIL$$
+					<li class="ctc-email-agence">$$LG:EMAIL pcase$$ : $$CV:EMAIL$$</li>
+					$$END$$
+				$$END$$
+
+				$$REM$$<!-- LIEN PAGE AGENCE -->$$END$$
+				<li class="ctc-lien-agence margin-top-10"><p><a href="$$CV:URLVIRTUELLE$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn">$$LG:DECOUVRIRAG pcase$$</a></p></li>
+			</ul>
+
+			$$REM$$<!-- SOCIAL AGENCE -->$$END$$
+			<div class="margin-top-20 social-ico ctc-social-agence">
+				$$IF:URL_FACEBOOK$$
+				<a href="$$URL_FACEBOOK$$" title="$$URL_FACEBOOK$$" target="_blank" class="margin-right-5"><span class="icon-v5-facebook-2 xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-facebook$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_TWITTER$$
+				<a href="$$URL_TWITTER$$" title="$$URL_TWITTER$$" target="_blank" class="margin-right-5"><span class="icon-v5-twitter-2 xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-twitter$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_GOOGLE_PLUS$$
+				<a href="$$URL_GOOGLE_PLUS$$" title="$$URL_GOOGLE_PLUS$$" target="_blank" class="margin-right-5"><span class="icon-v5-googleplus-2 xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-googleplus$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_PINTEREST$$
+				<a href="$$URL_PINTEREST$$" title="$$URL_PINTEREST$$" target="_blank" class="margin-right-5"><span class="icon-v5-pinterest xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-pinterest$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_TUMBLR$$
+				<a href="$$URL_TUMBLR$$" title="$$URL_TUMBLR$$" target="_blank" class="margin-right-5"><span class="icon-v5-tumblr-2 xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-tumblr$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_YOUTUBE$$
+				<a href="$$URL_YOUTUBE$$" title="$$URL_YOUTUBE$$" target="_blank" class="margin-right-5"><span class="icon-v5-youtube-2 xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-youtube$$END$$"></span></a>
+				$$END$$
+				$$IF:URL_DAILYMOTION$$
+				<a href="$$URL_DAILYMOTION$$" title="$$URL_DAILYMOTION$$" target="_blank" class="margin-right-5"><span class="icon-v5-dailymotion xxbiggest$$IF=:1:COULEUR_SOCIAL$$ social-couleur-dailymotion$$END$$"></span></a>
+				$$END$$
+			</div>
+
+			$$REM$$<!-- TXT INTRO -->$$END$$
+			<p class="typo-body margin-top-20 ctc-intro">
+				$$IF0:CONTACT_INTRO$$
+					$$LG:CONTACTINTRO$$
+				$$END$$
+				$$IF:CONTACT_INTRO$$
+					$$CONTACT_INTRO none$$
+				$$END$$
+			</p>
+		</div>
+
+		$$IF0:CONTACT_VISUEL$$
+			$$IF:CV:SI_LOGO$$
+				<div class="span6 bg-primary">
+					<div class="height-310 bg-primary" style="background:url($$CV:URLLOGO$$) center center no-repeat;"></div>
+				</div>
+			$$END$$
+			$$IF0:CV:SI_LOGO$$
+				<div class="span6 bg-primary">
+					<div class="height-310 bg-primary" style="background:url($$_$$images/logo.png) center center no-repeat;"></div>
+				</div>
+			$$END$$
+		$$END$$
+
+		$$IF:CONTACT_VISUEL$$
+		<div class="span6">
+			$$CONTACT_VISUEL pcase$$
+		</div>
+		$$END$$
+	</div>
+
+	$$REM$$<!-- FORMULAIRE -->$$END$$
+	<h2 class="h1-like margin-top-70" id="ancre-formulaire">$$LG:ENVOYMES pcase$$</h2><hr>
+
+	 $$IF:ERRE$$
+	<div id="ctc-form-error" class="ctc-form-error bg-action typo-white pagination-centered small margin-bottom-30">
+		<p>$$ERRE$$</p>
+	</div>
+	$$END$$
+	
+	<!--#include virtual="detail/incl_detail_contact_js.htm" -->
+	<div class="row-fluid">
+		<div class="span2 hidden-phone"></div>
+		<div class="span8">
+			<form id="contact_ajax_SLAgence_X_V5" method="post" action="/agence,contact.htm?idp=$$CV:IDPUBLICATION$$" enctype="multipart/form-data" class="ctc-form">
+				<!--#include virtual="contact/incl_honeypot.htm" -->
+				<input type="hidden" name="u" value="ID3:FORMMAIL" />
+				<input type="hidden" name="page_ok" value="/agence,contact_envoi.htm" />
+				<input type="hidden" name="page_err" value="/agence,contact.htm" />
+				<input type="hidden" name="page_html" value="/agence,contact_email.htm" />
+				<input type="hidden" name="cfg_form" value="contact" />
+				<input type="hidden" name="cfg_emails" value="contact" />
+				<input type="hidden" name="subject" value="Une demande depuis votre site internet !"/>
+				<input type="hidden" name="email_to" value="$$CONTACT_EMAIL$$"/>
+
+				<div class="ctc-field ctc-field-input ctc-field-required $$IF:FORM:NOM_FROM$$focused$$END$$">
+					<input type="text" class="ctc-field-txt" name="nom_from" value="$$FORM:NOM_FROM$$">
+					<label class="ctc-field-label">$$LG:NOM pcase$$ / $$LG:PRENOM pcase$$</label>
+					<i class="ctc-field-icon big icon-v5-users"></i>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span6">
+						<div class="ctc-field ctc-field-input ctc-field-required $$IF:FORM:TEL_FROM$$focused$$END$$">
+							<input type="text" class="ctc-field-txt" name="tel_from" value="$$FORM:TEL_FROM$$">
+							<label class="ctc-field-label">$$LG:TEL pcase$$</label>
+							<i class="ctc-field-icon big icon-v5-phone"></i>
+						</div>
+					</div>
+					<div class="span6">
+						<div class="ctc-field ctc-field-input ctc-field-required $$IF:FORM:EMAIL_FROM$$focused$$END$$">
+							<input type="text" class="ctc-field-txt" name="email_from" value="$$FORM:EMAIL_FROM$$">
+							<label class="ctc-field-label">$$LG:EMAIL pcase$$</label>
+							<i class="ctc-field-icon big icon-v5-paperplane"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="ctc-field ctc-field-input $$IF:FORM:VILLE_FROM$$focused$$END$$">
+					<input type="text" class="ctc-field-txt" name="ville_from" value="$$FORM:VILLE_FROM$$">
+					<label class="ctc-field-label">$$LG:VILLE pcase$$</label>
+					<i class="ctc-field-icon big icon-v5-location"></i>
+				</div>
+
+				<div class="ctc-field ctc-field-select ctc-field-required $$IF:FORM:OBJET_FROM$$filled$$END$$">
+					<select class="ctc-field-txt" name="objet_from">
+						<option value="">$$LG:CONTACTAJAX:OPT:OBJ_MESSAGE$$</option>
+						$$IF:CONTACT_OBJET_1$$
+							<option $$IF=:CONTACT_OBJET_1:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$CONTACT_OBJET_1$$</option>
+						$$END$$
+						 $$IF:CONTACT_OBJET_2$$
+							<option $$IF=:CONTACT_OBJET_1:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$CONTACT_OBJET_2$$</option>
+						$$END$$
+						 $$IF:CONTACT_OBJET_3$$
+							<option $$IF=:CONTACT_OBJET_1:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$CONTACT_OBJET_3$$</option>
+						$$END$$
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_CRIT_LOCATION@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_CRIT_LOCATION$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_CRIT_ACHAT@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_CRIT_ACHAT$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_LOUER_BIEN@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_LOUER_BIEN$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_VENDRE_BIEN@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_VENDRE_BIEN$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_ANN_LOCATION@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_ANN_LOCATION$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_ANN_VENTE@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_ANN_VENTE$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_CALLBACK@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_CALLBACK$$</option>
+						<option $$IF=:@@LG:CONTACTAJAX:OPT:OBJ_OTHER@@:FORM:OBJET_FROM$$ selected="selected"$$END$$>$$LG:CONTACTAJAX:OPT:OBJ_OTHER$$</option>
+					</select>
+					<label class="ctc-field-label icon-v5-list big"></label>
+				</div>
+
+				<div class="ctc-field ctc-field-textarea $$IF:FORM:MESSAGE$$focused$$END$$">
+					<textarea class="ctc-field-txt" name="message" rows="7">$$FORM:MESSAGE$$</textarea>
+					<label class="ctc-field-label">$$LG:MESSAGE pcase$$</label>
+					<i class="ctc-field-icon big icon-v5-pencil"></i>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span7">
+						<div class="typo-action small italic"><i class="ctc-icon-required margin-right-5"></i> $$LG:CHAMPSOBLIGATOIRES pcase$$</div>
+					</div>
+					<div class="span5">
+						<input type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-large btn-block" value="$$LG:ENVOYER2 pcase$$">
+					</div>
+				</div>
+				<div class="margin-top-10">
+					<!--#include virtual="legal/incl_rgpd.htm" -->
+				</div>
+
+			</form>
+		</div>
+	</div>
+	
+    $$IF0:CONTACT_HIDECARTO$$
+        $$REM$$<!-- CARTO -->$$END$$
+        <h3 class="h1-like margin-top-70">$$LG:NOUSSITUER pcase$$ - $$LG:AGENCEIMMOBILIERE pcase$$ $$CV:VILLE$$</h3><hr>
+        <a href="https://www.bing.com/maps/default.aspx?rtp=~adr.$$CV:ADRESSE$$&lvl=16" target="_blank" class="ctc-map-venir">
+	        <i class="icon-v5-location big"></i> $$LG:VENIRCHEZNOUS pcase$$
+        </a>
+        
+		$$REM$$ <!-- developer's grudge :
+					 Do you want more sufferings ? I just found out that someone injected personalized HTML code... using AJAX result object.
+				     => see the "slagence_X_V5/scripts/espace/contact.js" file (method « chargeInfoAgence() »), before growling. --> $$END$$
+		<script type="text/javascript" src="/z/webagency/slagence_X_V5/scripts/espace/contact.min.js"></script>
+		
+		<div id="geo-map-7" class="height-350 relative width-100-percent hidden-phone border-solid-block-1"></div>
+		<script type="text/javascript">
+			colorMarker = '$$PINCARTO$$';
+			espaceContactGeoMapId = 'geo-map-7';
+			id3xContent.addMap({
+				container: {id: espaceContactGeoMapId},
+				mapData: [{
+					mapDataType: 'AGENCIES',
+					marker: { icon: {defaultIcon: {color: '$$PINCARTO$$'}}, popup: true },
+					filters: [ {action: 'single', key: 'idPublication', value: $('.ctc-select-agence').val()} ]
+				}]
+			});
+		</script>
+    $$END$$
+
+$$END$$
+
+<!-- VERSION MONO AGENCE -->
+$$IF0:CV:IDPUBLICATION$$
+$$END$$

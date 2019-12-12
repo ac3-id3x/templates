@@ -1,0 +1,67 @@
+$$REM$$====================================================================
+//// <summary>Page confirmation de creation d'Alerte Immo</summary>
+//// <remarks>
+//// <para>Utilise les mêmes includes et les même css que la page contact agence (formulaire du bas)</para>    
+//// <para>Confirme que le formulaire de la page precedente (alerte,inscription.htm) a bien ete envoye</para>
+//// </remarks>
+//// <update date="2011-11-26" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+$$INIT:IDT=ALERTEIMMO$$
+<!--#include virtual="/header/incl_haut.htm"-->
+<!--#include virtual="contact/incl_nocnxweb.htm" -->
+$$E:IMMOBW:AI_SWP:REP:2:REP:1:REP:3$$
+<div class="row-fluid">
+	<div class="span12">
+		<h1>
+			$$LG:V5ALERTE:CREA$$	
+		</h1><hr />
+		
+		<p>
+			<strong>
+				$$LG:NOM pcase$$ :
+			</strong>
+			$$FORM:NOM htmlencode pcase$$
+		</p>
+		
+		<p>
+			<strong>$$LG:EMAIL pcase$$ :</strong>
+			$$FORM:EMAIL$$
+		</p>
+		
+		<h2 class="typo-action margin-top-20">
+			$$LG:V5ALERTE:NEW$$
+			
+			$$IF=:1:FORM:IDFREQUENCEALERTE$$
+				$$LG:V5ALERTE:ONLINE$$		
+			$$END$$
+			$$IF=:2:FORM:IDFREQUENCEALERTE$$$$LG:TOUSLESJOURS lcase$$,$$END$$
+			$$IF=:3:FORM:IDFREQUENCEALERTE$$
+				$$LG:V5ALERTE:4JOURS$$
+			$$END$$
+			$$IF=:0:FORM:SI_TXT$$
+				$$LG:V5ALERTE:HTML$$			
+			$$END$$
+			$$IF=:1:FORM:SI_TXT$$			
+				$$LG:V5ALERTE:TEXTE$$								
+			$$END$$
+			.					
+		</h2>					
+		
+		<p>
+			<strong>
+				$$LG:V5ALERTE:RECHERCHE$$
+			</strong>			
+			$$B:IMMOBW:ANN-ES:QRY:IDTT:QRY:LANG::NOVISU:~NOSTAT:1:ALIAS:RECH$$$$BIF:RECH$$$$DO$$$$LOOP$$$$BFIN$$
+			$$RECH:PHRASE pcase$$
+		</p>
+		<p>
+			$$LG:V5ALERTE:DEJA$$
+		</p>
+		<p><a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?$$FORM:QRY$$" class="btn btn-action">$$LG:V5ALERTE:DECOUVREZ$$</a></p>
+
+
+
+	</div>	
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

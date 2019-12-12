@@ -1,0 +1,61 @@
+<!--#include virtual="espace/incl_deconnexion.htm" -->
+<div class="impair padding-10">
+	<div class="row-fluid">
+		<div class="span12 margin-bottom-10 border-solid-left-primary-2 padding-left-10"><span class="" ng-if="Researchs.length>1">Recherches sauvegardées </span><span class="" ng-if="Researchs.length<2">Recherche sauvegardée </span> : {{Researchs.length}}</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span1">
+			Liste <i class="icon-v5-arrow-down-6"></i>
+		</div>
+
+		<div class="span3 pair padding-5 pagination-centered small">
+			<label style="margin:0;">
+				<input type="checkbox" ng-click="checkAll()" /> Tout selectionner
+			</label>
+		</div>
+
+		<div class="span2 pair padding-5 pagination-centered small cursor-pointer" ng-click="btnDeleteAllResearch()">
+			<i class="icon-v5-trash"></i>$$LG:SUPPRIMERESPACE pcase$$
+		</div>
+
+		<div class="span3 hidden-phone"></div>
+
+		<div class="span3">
+			<div ng-click="btnDeleteAllAlertes()" class="{{globalParams.typebouton}} btn-neutre  btn-block" >Supprimer vos alertes email</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div ng-repeat="Research in Researchs" class="transition-bg recherche-annonces box-shadow padding-10 margin-bottom-10">
+		<div class="row-fluid">
+			<div class="span12 big typo-action margin-bottom-10">
+				<a href="$$SCHEME$$://$$REP:SRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?{{Research.Url}}">{{Research.Url | getTypeTransactionFromQry}}</a>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span2">
+				<img src="$$~$$images/recherche/sans_photo.jpg" />
+			</div>
+			<div class="span7">
+				<div ng-hide="curentEditLine == $index">
+					<input type="checkbox" ng-model="Research.selected"><a href="$$SCHEME$$://$$REP:SRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?{{Research.Url}}" title="{{Research.Nom}}"><span class="big typo-action">{{Research.Nom}} </span></a><i ng-click="editLine($index)" class="icon-v5-pencil cursor-pointer"></i>
+				</div>
+
+				<form name="search name" ng-show="curentEditLine == $index">
+					<input type="text" ng-model="Research.Nom" class="recherche-nom">
+					<div ng-click="btnEditSearch(Research)" class="{{globalParams.typebouton}} {{globalParams.typeboutonaction}}">Sauvegarder <i class="icon-v5-pencil cursor-pointer"></i></div>
+				</form>
+				<div class="small italic">sauvegardée le : {{Research.DtSauvegarde | convertDateFromIso}}</div>
+				<div class="margin-top-10">{{Research.Descritpion}}</div>
+				<a class="underline" href="$$SCHEME$$://$$REP:SRV$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?{{Research.Url}}" title="{{Research.Nom}}"><i class="icon-v5-arrow-right-6"></i> Voir cette recherche</a>
+			</div>
+			<div class="span3 pagination-right" ng-switch="Research.IsAlerte">
+				<div ng-click="btnAddAlerte(Research)" class="{{globalParams.typebouton}} {{globalParams.typeboutonaction}} btn-block" ng-switch-when="false">Alerte</div>
+				<div ng-click="btnDeleteAlerte(Research)" class="{{globalParams.typebouton}} {{globalParams.typeboutonaction}} btn-block" ng-switch-when="true"><i class="icon-v5-checkmark"></i>Alerte</div>
+				<div ng-click="btnDeleteResearch(Research)" class="small margin-top-40">Supprimer <i class="icon-v5-trash"></i> </div>
+			</div>
+		</div>
+	</div>
+</div>

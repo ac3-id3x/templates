@@ -1,0 +1,214 @@
+// TRANSITION
+@mixin transition-bg($temps:0.3s) {
+	@include single-transition(background-color, $temps, ease-in-out, 0);
+}
+@mixin transition-color($temps:0.3s) {
+	@include single-transition(color, $temps, ease-in-out, 0);
+}
+// DECLINAISON COULEURS PRIMAIRES/SECONDAIRES
+@mixin light-or-dark($effect:light,$type:bg,$color:$color-primary,$value-effect:10) {
+	@if $type == bg {
+		@if $effect == light {
+			background-color:lighten($color,$value-effect);
+		} @else {
+			background-color:darken($color,$value-effect);
+		}
+	} @else {
+		@if $effect == light {
+			color:lighten($color,$value-effect);
+		} @else {
+			color:darken($color,$value-effect);
+		}
+	}
+}
+// FUNCTION BORDER
+@mixin border($side:full,$size:1px,$color:#000,$type:solid) {
+	@if $side == full {
+		border:$size $type $color;
+	} @else {
+		border-#{$side}:$size $type $color;
+	}
+}
+// FUNCTION MARGIN
+@mixin margin($side:full,$size:1px) {
+	@if $side == full {
+		margin:$size;
+	} @else {
+		margin-#{$side}:$size;
+	}
+}
+// FUNCTION PADDING
+@mixin padding($side:full,$size:1px) {
+	@if $side == full {
+		padding:$size;
+	} @else {
+		padding-#{$side}:$size;
+	}
+}
+// FUNCTION MIN-HEIGHT 
+@mixin min-height($size:100px) {
+	min-height:$size+px;
+}
+// FUNCTION HEIGHT 
+@mixin height($size:100px) {
+	height:$size+px;
+}
+// FUNCTION WIDTH 
+@mixin width($size:100px) {
+	width:$size+px;
+}
+// FUNCTION BOX-SHADOW
+@mixin shadow-box {
+	@include box-shadow(0px 2px 5px 0px rgba(0, 0, 0, 0.3));
+}
+// FUNCTION GRADIENT-BG
+@mixin gradient($sens:top,$lighten:no,$multi:no) {
+	$color1:0;
+	$color2:0;
+	// DETERMINE COLOR IF LIGHTEN
+	@if $lighten == no {
+		$color1:$color-primary;
+		$color2:$color-secondary;
+	} @else {
+		@if $site-ambient == light {
+			$color1:lighten($color-primary,22);
+			$color2:lighten($color-secondary,100);
+		} @else {
+			$color1:lighten($color-primary,72);
+			$color2:lighten($color-secondary,100);
+		}
+	}
+	// GRADIENT IE
+	@include filter-gradient($color1, $color2,vertical);
+	// GRADIENT ALL
+	// MULTI OR NOT
+	@if $multi == no {
+		@include background-image(linear-gradient($sens,$color1,$color2 100%));
+	} @else {
+		$color3:$color2;
+		@include background-image(linear-gradient($sens,$color1 0%,$color2 20%,$color3 100%));
+	}
+}
+@mixin gradient-btn-action($sens:top,$lighten:no,$multi:no) {
+	// FALLBACK
+	background-color:$color-action;
+	// CREATE VARS
+	$color1:0;
+	$color2:0;
+	// DETERMINE COLOR IF LIGHTEN
+	@if $lighten == no {
+		$color1:$color-action;
+		$color2:$color-action;
+	} @else {
+		$color1:$color-action-light-10;
+		$color2:$color-action;
+	}
+	// GRADIENT IE
+	@if $sens == top {
+		@include filter-gradient($color1,$color2,vertical);
+	} @else {
+		@include filter-gradient($color2,$color1,vertical);
+	}
+	// GRADIENT ALL
+	// MULTI OR NOT
+	@if $multi == no {
+		@include background-image(linear-gradient($sens,$color1,$color2 100%));
+	} @else {
+		$color3:$color2;
+		@include background-image(linear-gradient($sens,$color1 0%,$color2 20%,$color3 100%));
+	}
+}
+@mixin gradient-primary($sens:top) {
+	background-color: $color-primary;
+	@if $sens == top {
+		@include background-image(linear-gradient(top, lighten($color-primary,10) 0%, $color-primary 100%));
+		@include filter-gradient(lighten($color-primary,10),$color-primary,vertical);
+	} @else {
+		@include background-image(linear-gradient(bottom, $color-primary 0%, lighten($color-primary,10) 100%));
+		@include filter-gradient($color-primary,lighten($color-primary,10),vertical);
+	}
+}
+@mixin gradient-secondary($sens:top) {
+	background-color: $color-secondary;
+	@if $sens == top {
+		@include background-image(linear-gradient(top, lighten($color-secondary,10) 0%, $color-secondary 100%));
+		@include filter-gradient(lighten($color-secondary,10),$color-secondary,vertical);
+	} @else {
+		@include background-image(linear-gradient(bottom, $color-secondary 0%, lighten($color-secondary,10) 100%));
+		@include filter-gradient($color-secondary,lighten($color-secondary,10),vertical);
+	}
+}
+@mixin gradient-radial-primary {
+	@include background-image(radial-gradient(at center, $color-primary-light-10, $color-primary));
+	background-color:$color-primary;
+}
+@mixin gradient-radial-secondary {
+	@include background-image(radial-gradient(at center, $color-secondary-light-10, $color-secondary));
+	background-color:$color-secondary;
+}
+@mixin gradient-radial-block {
+	@include background-image(radial-gradient(at center, $color-block-light-10, $color-block));
+	background-color:$color-block;
+}
+@mixin lightnessColor($color:$color-primary,$shadow:yes) {
+	@if lightness($color) > 60% {
+		color:#000;
+		@if $shadow == yes {
+			text-shadow: 1px 1px rgba(0,0,0,0.1);
+		}
+	} @else {
+		color:#fff;
+		@if $shadow == yes {
+			text-shadow: 1px 1px rgba(0,0,0,0.8);
+		}
+	}
+}
+@mixin lightnessTextShadow($color:$color-primary) {
+	@if lightness($color) > 60% {
+		text-shadow: 1px 1px rgba(0,0,0,0.2);
+	} @else {
+		text-shadow: 1px 1px rgba(0,0,0,0.8);
+	}
+}
+@mixin ligthnessHR($color:$color-primary) {
+	@if lightness($color) > 60% {
+		border:solid $color-block-dark-10;
+	} @else {
+		border:solid $color-block-light-10;
+	}
+}
+@mixin ligthnessBg($color:$color-sous-menu) {
+	@if lightness($color) > 60% {
+		background:darken($color-sous-menu,5);
+	} @else {
+		background:lighten($color-sous-menu,5);
+	}
+}
+@mixin ligthnessBorderBottom($color:$color-sous-menu) {
+	@if lightness($color) > 60% {
+		border-bottom: 1px solid darken($color-sous-menu,5);
+	} @else {
+		border-bottom: 1px solid lighten($color-sous-menu,5);
+	}
+}
+// BORDER NAVIGATION
+@mixin border-navigation ($height-nav, $height-border, $color) {
+  @media screen and (min-width:768px) {
+  height:$height-nav;
+  border-bottom-style: solid;
+  border-bottom-color: $color;
+  border-bottom-width: $height-border;
+  box-sizing: border-box;
+  }
+}
+
+/////// ZONE DE TEST ///////
+// FUNCTION BG-COLOR
+@mixin bg-color($color:$color-primary,$lum:lighten,$val:0) {
+	@if $lum == lighten {
+		background-color:lighten($color,$val);
+	} 
+	@else {
+		background-color:darken($color,$val);
+	}
+}

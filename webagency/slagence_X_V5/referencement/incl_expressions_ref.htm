@@ -1,0 +1,192 @@
+$$REM$$<!-- =================================================================================================
+//// <summary>Page qui définie les expressions REF par défaut des balises TITLE et META</summary>
+//// <remarks>
+//// <para>apparaît seulement si le site a un contrat de réf en cours</para>
+//// <para>la liste des pages n'est pas exhaustive (ou presque) mais ce sont les plus utilisees</para>
+//// <para>Plus aucun conditionnement réf ne vient de la conf</para>
+//// </remarks>
+//// <update date="2011-03-01" author="damien.robert">Update RefUniversalis</update>
+//// <update date="2010-08-10" author="lisbonne.siriphol">Validation universelle</update>
+=================================================================================================== -->$$END$$
+
+<!--#include virtual="referencement/incl_expressions_ref_mono.htm" -->
+<!--#include virtual="referencement/incl_expressions_ref_multi.htm" -->
+
+$$REM$$<!-- =======================================================================================
+////////////////////// REFERENCEMENT COMMUN  MONO/MULTI /////////////////////
+=====================================================================================-->$$END:REM$$
+
+$$REM$$<!-- ================================ agence,immobiliere.htm ===============================-->$$END:REM$$
+$$IF=:NOTREAGENCE:IDT$$
+	$$IF:TITLE_AGENCE$$
+		$$IF:LANGUE$$
+			$$IF!:FR:LANGUE$$
+				$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@$$
+			$$END$$
+			$$IF=:FR:LANGUE$$
+				$$A:TITLE=@@TITLE_AGENCE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:LANGUE$$
+			$$A:TITLE=@@TITLE_AGENCE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:TITLE_AGENCE$$
+		$$A:TITLE=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE ncase@@ - @@CV:NOM pcase@@ @@CV:VILLE ncase@@ (@@CV:CP@@)$$
+	$$END$$
+	$$IF:DESCRIPTION_AGENCE$$
+		$$IF:LANGUE$$
+			$$IF!:FR:LANGUE$$
+				$$A:DESCRIPTION=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+			$$END$$
+			$$IF=:FR:LANGUE$$
+				$$A:DESCRIPTION=@@DESCRIPTION_AGENCE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:LANGUE$$
+			$$A:DESCRIPTION=@@DESCRIPTION_AGENCE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:DESCRIPTION_AGENCE$$
+		$$A:DESCRIPTION=@@LG:PRESENTAGEN pcase@@ @@LG:IMMOBILIERE lcase@@ @@CV:NOM pcase@@ @@LG:A lcase@@ @@CV:VILLE ncase@@.$$
+	$$END$$
+	$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@, @@LG:AGENCEIMMOBILIERE lcase@@, @@CV:CP@@, @@CV:VILLE ncase@@$$
+$$END$$
+
+$$REM$$<!-- ================================ detail annonce / pour les appartements, maisons, loft et chateaux ===============================-->$$END:REM$$
+$$IF=:DETAILANNONCE:IDT$$
+  $$IF:ANNDETAIL:IDPUBLICATION$$
+    	$$IF=:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@@@IF:ANNDETAIL:NB_PIECES@@ @@ANNDETAIL:NB_PIECES lcase@@ @@LG:PIECES lcase@@@@END@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:AVEC lcase@@ @@ANNDETAIL:NB_CHAMBRES@@ @@LG:CHAMBRE@@@@ANNDETAIL:NB_CHAMBRES pluriel@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+    	$$REM$$<!-- ================================  detail annonce / pour tous les autres types de bien  ===============================-->$$END:REM$$
+    	$$IF!:1$2$9$13:ANNDETAIL:IDTYPEBIEN$$
+    		$$IF:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$
+    		$$END$$
+    		$$IF0:NOM_SITE_REF$$
+    			$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@LG:A lcase@@ @@ANNDETAIL:VILLE@@ : @@ANNDETAIL:SURFACE@@ @@LG:M2 lcase@@ @@LG:A lcase@@ @@ANNDETAIL:PRIX@@ euros - @@ANNDETAIL:COOR-NOM pcase@@$$	
+    		$$END$$
+    		$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF smalltextv2 150@@$$
+    		$$A:KEYWORDS=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@, @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@$$
+    	$$END:IDTYPEBIEN$$
+	$$END$$
+	$$IF0:ANNDETAIL:IDPUBLICATION$$
+	    $$A:TITLE=@@LG:ANNPLUSDISPO pcase@@$$
+	    $$A:DESCRIPTION=$$
+	    $$A:KEYWORDS=$$
+	$$END$$
+$$END:DETAILANNONCE:IDT$$
+
+$$REM$$<!-- ================================ detail,fiche_visite.htm ===============================-->$$END:REM$$
+$$IF=:FICHEVISITE:IDT$$
+	$$A:TITLE=@@LG:LIEN:FICHE pcase@@ - @@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:SURFACE replace , .@@ m² @@ANNDETAIL:VILLE@@ @@ANNDETAIL:CI@@$$
+	$$A:DESCRIPTION=@@LG:PREPAREVISITE pcase@@ - @@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:SURFACE replace , .@@ m² @@ANNDETAIL:VILLE@@ @@ANNDETAIL:CI@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ alerte,immo.htm ===============================-->$$END:REM$$
+$$IF=:ALERTEIMMO:IDT$$
+	$$A:TITLE=@@LG:CREERALERTETITLE pcase@@$$
+	$$A:DESCRIPTION=@@LG:LG:ALERTECRITERESDESC pcase@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,responsive.htm ===============================-->$$END:REM$$
+$$IF=:RESPONSIVE:IDT$$
+	$$A:TITLE=@@LG:DECOUVRIRRESPONSIVE@@$$
+	$$A:DESCRIPTION=@@DECOUVRIRRESPONSIVE@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ plan,realisation.htm ===============================-->$$END:REM$$
+$$IF=:NETLINKING:IDT$$
+	$$A:TITLE=@@LG:POLIRISTITLE pcase@@$$
+	$$A:DESCRIPTION=$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ recherche,basic.htm / tous les résultats de recherche par requête ===============================-->$$END:REM$$
+$$IF=:RESULTATS$RESULTATSCARTE:IDT$$
+		$$REM$$<!-- ================================ TITLE ET DESCRIPTION SONT DANS incl_expressions_ref_mono/multi ===============================-->$$END:REM$$
+		$$A:KEYWORDS=@@LG:ANNONCIMMOS lcase@@, @@FORM:IDTT gettypetransaction@@ @@FORM:IDTT gettypebien@@$$
+		$$REM$$<!-- ================================ selection annonces ===============================-->$$END:REM$$
+		$$IF0:FORM:IDTT$$
+			$$A:TITLE=@@LG:DANSVOTRESELEC pcase@@$$
+			$$A:DESCRIPTION=@@LG:DANSVOTRESELEC pcase@@$$
+			$$A:KEYWORDS=@@LG:DANSVOTRESELEC pcase@@$$
+		$$END$$
+$$END:RESULTATS:IDT$$
+
+$$REM$$<!-- ================================ suivi,client.htm ===============================-->$$END:REM$$
+$$IF=:SUIVICLIENT:IDT$$
+	$$A:TITLE=@@LG:ESPACESUIVICLIENT pcase@@ @@LG:SUR lcase@@ @@REP:SRV@@$$
+	$$A:DESCRIPTION=@@LG:DESCSUIVICLIENT pcase@@$$
+	$$A:KEYWORDS=@@LG:ESPACESUIVICLIENT pcase@@, @@REP:SRV@@$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,actu.htm ===============================-->$$END:REM$$
+$$IF=:ACTUSEDITEUR:IDT$$
+	$$A:TITLE=@@BT:TITRE@@$$
+	$$A:DESCRIPTION=@@BT:DESCRIPTION htmlencode@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ immo,actus.htm ===============================-->$$END:REM$$
+$$IF=:ACTUSEDITEURLISTING:IDT$$
+	$$A:TITLE=@@LG:TOUTESNOSACTUS@@$$
+	$$A:DESCRIPTION=@@LG:TOUTESNOSACTUS@@$$
+	$$A:KEYWORDS=$$
+$$END$$
+
+$$REM$$<!-- ================================ alerte,modification.htm ===============================-->$$END:REM$$
+$$IF=:MODIFALERTEIMMO:IDT$$
+	$$A:TITLE=@@LG:MODIFALERTEIMMO pcase@@ @@LG:SUR lcase@@ @@REP:SRV@@$$
+	$$A:DESCRIPTION=@@LG:MODIFALERTEIMMO pcase@@$$
+	$$A:KEYWORDS=@@LG:ALERTEIMMO pcase@@, @@REP:SRV@@$$
+$$END$$
+
+$$REM$$<!-- ================================ alerte,descinscription.htm ===============================-->$$END:REM$$
+$$IF=:DESINSALERTEIMMO:IDT$$
+	$$A:TITLE=@@LG:DESINSCRALERTE pcase@@ @@LG:SUR lcase@@ @@REP:SRV@@$$
+	$$A:DESCRIPTION=@@LG:DESINSCRALERTE pcase@@$$
+	$$A:KEYWORDS=@@LG:ALERTEIMMO pcase@@, @@REP:SRV@@$$
+$$END$$
+
+$$REM$$<!-- ================================ estimation,immobiliere.htm ===============================-->$$END:REM$$
+$$IF=:ESTIMATION:IDT$$
+  $$IF=:0:ESTIMATIONLEAD$$
+    $$IF:TITLE_ESTIMATION$$
+      $$A:TITLE=@@TITLE_ESTIMATION@@$$
+    $$END$$
+    $$IF0:TITLE_ESTIMATION$$
+      $$A:TITLE=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@CVESTIMATION:NOM pcase@@$$
+    $$END$$
+    $$IF:DESCRIPTION_ESTIMATION$$
+      $$A:DESCRIPTION=@@DESCRIPTION_ESTIMATION@@$$
+    $$END$$
+    $$IF0:DESCRIPTION_ESTIMATION$$
+      $$A:DESCRIPTION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@CVESTIMATION:VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+    $$END$$
+	  $$A:KEYWORDS=@@LG:LIEN:ESTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+  $$END$$
+	$$IF=:1:ESTIMATIONLEAD$$
+	  $$IF:TITLE_ESTIMATION$$
+      $$A:TITLE=@@TITLE_ESTIMATION@@$$
+    $$END$$
+    $$IF0:TITLE_ESTIMATION$$
+      $$A:TITLE=@@LG:FAITESESTIMBIEN pcase@@ @@LG:AVEC lcase@@ @@AGENCE_NOM pcase@@$$
+    $$END$$
+    $$IF:DESCRIPTION_ESTIMATION$$
+      $$A:DESCRIPTION=@@DESCRIPTION_ESTIMATION@@$$
+    $$END$$
+    $$IF0:DESCRIPTION_ESTIMATION$$
+      $$A:DESCRIPTION=@@LG:DEMANDEZESTIM pcase@@ @@LG:A lcase@@ @@AGENCE_VILLE pcase@@ @@LG:ETSAREGION lcase@@$$
+    $$END$$
+	  $$A:KEYWORDS=@@LG:LIEN:ESTIM pcase@@, @@LG:IMMOBILIER lcase@@$$
+	$$END$$
+$$END$$
+
+<!--#include virtual="referencement/incl_ref_perso.htm" -->

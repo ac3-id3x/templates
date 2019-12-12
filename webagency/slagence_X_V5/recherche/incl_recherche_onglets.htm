@@ -1,0 +1,41 @@
+<div class="row-fluid hidden-phone">	
+	$$IF=:1:MOTEURREFERENCE$$		
+		<div class="$$TAILLEMOTEURRESULTATS$$ recherche-ref-liste">
+			$$IF!:1:REFERENCETOP$$
+				<p>$$LG:RECHREF pcase$$</p>
+				<!--#include virtual="recherche/incl_recherche_reference.htm" -->
+			$$END$$
+		</div>		
+	$$END$$
+	<div class="$$TAILLERESULTATS$$">	
+		<div class="nav nav-tabs row-fluid tab-recherche margin-top-15 margin-bottom-15">
+			$$B:IMMOBW:KA-BIENS-VENDUS:~tri:d_dt_maj:ALIAS:BIENSVENDUS$$	
+			$$BIF:BIENSVENDUS$$					
+				$$DO:1:1$$
+					$$IF!:1:HIDEBIENSVENDUS$$		
+						$$IF!:1:FORM:IDTT$$
+						<div class="span3 active-tab-recherche pagination-centered border-solid-block-1">
+							<div class="bg-picture btn-listing-annonces padding-top-15 padding-bottom-15 active typo-body" title="Listing annonces">$$LG:V5LISTINGSANNONCES pcase$$</div>
+						</div>
+$$REM$$<!--POSSIBILITE DE VOIR LES BIENS VENDUS D'UNE SEUL AGENCE AVEC AGENCEUNIQUEBIENSVENDUS-->$$END$$
+						<div class="span3 pagination-centered">
+							<a href="/recherche,vendu.htm$$IF:AGENCEUNIQUEBIENSVENDUS$$?idpublication=$$AGENCEUNIQUEBIENSVENDUS$$$$END$$" class="btn-neutre padding-top-15 padding-bottom-15 active typo-body" title="$$LG:BIENVENDUS pcase$$">$$LG:BIENVENDUS pcase$$</a>
+						</div>
+						$$END$$
+					$$END$$
+					$$IF!:1:FORM:IDTT$$
+						<div class="$$IF!:1:HIDEBIENSVENDUS$$span6$$END$$$$IF=:1:HIDEBIENSVENDUS$$span12$$END$$ recherche-selection-top margin-top-5"><!--#include virtual="recherche/incl_bouton_selection.htm" --></div>	
+					$$END$$
+					$$IF=:1:FORM:IDTT$$
+					<div class="span12 recherche-selection-top margin-top-5"><!--#include virtual="recherche/incl_bouton_selection.htm" --></div>				
+					$$END$$
+				$$LOOP$$
+			$$BFIN$$
+			$$BIF0:BIENSVENDUS$$
+				$$IF!:1:REFERENCETOP$$
+				<div class="span12 recherche-selection-top margin-top-5"><!--#include virtual="recherche/incl_bouton_selection.htm" --></div>			
+				$$END$$
+			$$BFIN$$
+		</div>
+	</div>
+</div>

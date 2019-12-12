@@ -1,0 +1,77 @@
+$$INIT:IDT=ESPACEPERSO$$
+$$A:ESPACEPERSO=1$$
+$$A:CSS_TOASTER=1$$
+$$A:CSS_MODALE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<script type="text/javascript">
+	var globalParams = {
+		urlSite : "$$REP:RSRV$$",
+		typebouton : "$$TYPEBOUTON$$",
+		typeboutonaction : "$$TYPEBOUTONACTION$$",
+		typeboutonimportant : "btn-important",
+		typeboutonsecondaire: "$$TYPEBOUTONSECONDAIRE$$",
+		IdTypePublication : "$$PAGE:CFG_IMMOBW_IDTYPEPUBLICATION$$",
+		IdTmpAccount :"$$FORM:IDTMPACCOUNT$$",
+		SansPhotoPerso :"$$IF=:1:SANS_PHOTO_PERSO$$$$_$$$$END$$$$IF!:1:SANS_PHOTO_PERSO$$$$~$$$$END$$images/recherche/sans_photo.jpg"
+    };
+	var urlserver = "http://epsa.svc.groupe-seloger.com";
+	var urlWslogin = urlserver + "/SecurityAuthentication.svc/Login/";
+	var urlMdp = urlserver + "/SecurityAccountManagement.svc/ForggotenPassword/";
+	var urlCreate= urlserver + "/SecurityAccountManagement.svc/CreateAccount/";
+	var urlGetinfo = urlserver + "/SecurityAccountEdition.svc/GetInfos/";
+	var urlSetOptin = urlserver + "/SecurityAccountEdition.svc/SetOptin/";
+	var urlValidate = urlserver + "/SecurityAccountManagement.svc/ValidateAccount/";
+	var urlEditinfo = urlserver + "/SecurityAccountEdition.svc/EditAccount/";
+	var urlUserDeleteAccount = urlserver + "/SecurityAccountEdition.svc/DeleteAccount/";
+
+	var urlGetResearch = urlserver + "/MesRecherches.svc/GetUserRecherche/";
+	var urlDeleteAllResearch = urlserver + "/MesRecherches.svc/DeleteAllRecherche/";
+	var urlDeleteResearch = urlserver + "/MesRecherches.svc/DeleteRecherche/";
+	var urlEditSearch = urlserver + "/MesRecherches.svc/EditRecherche/";
+
+	var urlAddAnnEspace = urlserver + "/MesAnnonces.svc/SauvegardeAnnonce/";
+	var urlGetAllAnnonces = urlserver + "/MesAnnonces.svc/GetUserAnnonce/";
+	var urlDeleteAllAnnonces = urlserver + "/MesAnnonces.svc/DeleteAllAnnonce/";
+	var urlEditAnnonce = urlserver + "/MesAnnonces.svc/EditAnnonce/";
+	var urlDeleteAnnonce = urlserver + "/MesAnnonces.svc/DeleteAnnonce/";
+	var urlSendFriend = urlserver + "/MesAnnonces.svc/EnvoyerAUnAmi/";
+	var urlContact = urlserver + "/MesAnnonces.svc/Contact/";
+
+	var urlGetAllFriends = urlserver + "/MesAmis.svc/GetAllAmi/";
+	var urlDeleteAmi = urlserver + "/MesAmis.svc/DeleteAmi/";
+	var urlAddFriends = urlserver + "/MesAmis.svc/SauvegardeAmi/";
+	var urlDeleteAllFriends = urlserver + "/MesAmis.svc/DeleteAllAmi/";
+
+	var urlAddAlerte = urlserver + "/MesRecherches.svc/InscriptionAlerte/";
+	var urlDeleteAlerte = urlserver + "/MesRecherches.svc/DesinscriptionAlerte/";
+	var urlDeleteAllAlerte = urlserver + "/MesRecherches.svc/DeleteAllAlerte/";
+	var urlCountAlerte = urlserver + "/MesRecherches.svc/AlerteCount/";
+	$(document).ready(function() {
+		$('#myModal').modal('toggle');
+	});
+	var allTypeTransac = [];
+	$$B:IMMOBW:TYPESTRANSACTION:ALIAS:TT$$
+		$$BIF:TT$$
+		$$DO$$
+			allTypeTransac[$$TT:IDTYPETRANSACTION$$] ="$$TT:TYPETRANSACTION$$";
+		$$LOOP$$
+	$$BFIN$$
+	var allTypeBien = [];
+	$$B:IMMOBW:TYPESBIENS:ALL:ALIAS:TB$$
+		$$BIF:TB$$
+		$$DO$$
+			allTypeBien[$$TB:IDTYPEBIEN$$] ="$$TB:DEF_LIBELLE$$";
+		$$LOOP$$
+	$$BFIN$$
+</script>
+<div ng-app="espacePersoApp" ng-controller="appController"> 
+	<toaster-container toaster-options="{
+		'limit':1,
+		'time-out': 6000,
+		'position-class': 'toast-top-center'
+		}">
+	</toaster-container>
+
+	<div ng-view=""></div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

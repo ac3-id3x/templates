@@ -1,0 +1,77 @@
+$$B:IMMOBW:ANN-ES:ALIAS:BASKETTOP:0:::NOVISU:~NOSTAT:1$$
+$$BIF:BASKETTOP$$
+$$IF=:1:BASKETTOP:NBR$$
+    $$A:NBRSELECTION=@@BASKETTOP:NBR@@ @@LG:ANNONCE lcase@@$$
+$$END$$
+$$IF!:1:BASKETTOP:NBR$$
+    $$A:NBRSELECTION=@@BASKETTOP:NBR@@ @@LG:ANNONCES lcase@@$$
+$$END$$
+$$DO$$$$LOOP$$
+$$BFIN$$
+$$BIF0:BASKETTOP$$
+$$A:NBRSELECTION=0 @@LG:ANNONCE lcase@@$$
+$$BFIN$$
+$$IF!:0:SOCIAL$$
+	$$IF=:1:SOCIAL_BARRE_FIXE$$
+	<!--#include virtual="header/incl_social_fixe.htm" -->
+	$$END$$
+$$END$$
+<div class="row-fluid line-height-40">
+		<ul class="nav nav-social-menu pull-right">
+			$$IF!:1:TOPAGENCEHIDDEN$$
+		   <li class="top-agence">
+		   		$$IF=:1:MULTIAGENCES$$
+		   			$$IF!:1:CONTACTHEADERFORM$$
+		   				<a href="/agences,liste.htm$$IF:TRIAGENCES$$?tri=$$TRIAGENCES$$$$END$$" title="$$IF:INTITULE_AGENCES_PERSO$$$$INTITULE_AGENCES_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCES_PERSO$$$$LG:NOSAGENCES pcase$$$$END$$">$$IF:INTITULE_AGENCES_PERSO$$$$INTITULE_AGENCES_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCES_PERSO$$$$LG:NOSAGENCES pcase$$$$END$$</a>
+		   			$$END$$
+		   			$$IF=:1:CONTACTHEADERFORM$$
+		   				<a href="/agence,contact.htm" title="$$IF:INTITULE_AGENCES_PERSO$$$$INTITULE_AGENCES_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCES_PERSO$$$$LG:NOSAGENCES pcase$$$$END$$">$$IF:INTITULE_AGENCES_PERSO$$$$INTITULE_AGENCES_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCES_PERSO$$$$LG:NOSAGENCES pcase$$$$END$$</a>
+		   			$$END$$
+		   		$$END$$
+		   		$$IF=:0:MULTIAGENCES$$<a href="$$AGENCE_URLVIRT$$" title="$$IF:INTITULE_AGENCE_PERSO$$$$INTITULE_AGENCE_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCE_PERSO$$$$LG:LIEN:AGEN pcase$$$$END$$">$$IF:INTITULE_AGENCE_PERSO$$$$INTITULE_AGENCE_PERSO pcase$$$$END$$$$IF0:INTITULE_AGENCE_PERSO$$$$LG:LIEN:AGEN pcase$$$$END$$</a>$$END$$
+		   	</li>
+		   	$$END$$
+		   	$$IF!:1:HIDDENRECRUTHEADER$$
+		   	<li class="top-recrutement"><a href="/immo,recrutement.htm" title="$$LG:REJOINDRE pcase$$">$$LG:REJOINDRE pcase$$</a></li>
+		   	$$END$$
+		   	$$IF=:1:PERSOTOPHEADER$$
+			<li class="perso-top-header"><!--#include virtual="header/incl_perso_top_header.htm" --></li>
+			$$END$$
+			$$IF=:1:MULTIAGENCES$$
+		 	<li class="bg-secondary bg-tel-header padding-right-5 overflow slide_agences_header">
+		   		<ul style="width: $$WIDTHMULTI$$px;" >
+				$$BIF:COMPTE_AGENCES$$
+					$$DO$$
+				   		<li style="width: $$WIDTHMULTI$$px;">
+							<a href="$$IF!:1:HEADERAGENCELIST$$$$COMPTE_AGENCES:URLVIRTUELLE$$$$END$$$$IF=:1:HEADERAGENCELIST$$/agences,liste.htm$$END$$">$$COMPTE_AGENCES:NOM ncase$$ $$COMPTE_AGENCES:VILLE ucase$$</a>
+						</li>
+					$$LOOP$$
+				$$BFIN$$
+		   		</ul>
+		   	</li>
+
+			<script type="text/javascript">
+				$(function(){
+				    setInterval(function(){
+				    $(".slide_agences_header ul li:first-child").animate({"margin-left": -$$WIDTHMULTI$$}, 800, function(){
+				        $(this).css("margin-left",0).appendTo(".slide_agences_header ul");
+				    });
+				  }, 3500);
+				   });
+			</script>
+			$$END$$
+		   	$$IF=:0:MULTIAGENCES$$
+		   	<li class="bg-secondary bg-tel-header padding-right-5"><i class="icon-v5 icon-v5-mobile padding-left-5"></i> $$AGENCE_TEL$$</li>
+		   	$$END$$
+		   	$$IF:URL_FACEBOOK$$
+		   	<li class="li-rs"><a href="$$URL_FACEBOOK$$" target="_blank" class="bg-facebook-header"><i class="icon-v5 iconv-v5-header icon-v5-facebook typo-white bigger"></i></a></li>
+		   	$$END$$
+		   	$$IF:URL_TWITTER$$
+		   	<li class="li-rs"><a href="$$URL_TWITTER$$" target="_blank" class="bg-twitter-header"><i class="icon-v5 iconv-v5-header icon-v5-twitter typo-white bigger"></i></a></li>
+		   	$$END$$
+		   	$$IF:URL_BLOG$$
+		   	<li class="li-rs"><a href="$$URL_BLOG$$" target="_blank" class="bg-blog-header"><i class="icon-v5 iconv-v5-header v2-icon-v5-blog typo-white bigger"></i></a></li>
+		   	$$END$$
+		   	<li class="dropdown"><!--#include virtual="header/incl_langue_menu.htm" --></li>
+		</ul>
+</div>

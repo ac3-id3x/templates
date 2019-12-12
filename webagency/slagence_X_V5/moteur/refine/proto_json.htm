@@ -1,0 +1,59 @@
+$$A:STYLE_RECHERCHE=linea$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid" id="testJson">
+</div>
+<script type="text/javascript">
+	$$IF=:BASIC:STYLE_RECHERCHE$$
+		var html = $('<!--#include virtual="moteur/refine/incl_proto_basic.htm" -->');
+	$$END$$
+	$$IF=:LINEA:STYLE_RECHERCHE$$
+		var html = $('<!--#include virtual="moteur/refine/incl_proto_linea.htm" -->');
+	$$END$$
+	function jsonProto() {
+		var xhr = $.ajax({
+			type: 'GET',
+			data : "idtt=2",
+			contentType: "application/json; charset=utf-8",  
+			cache : "true",
+			dataType: 'json',
+			contentType: "application/json",
+			url: '/moteur,refine,proto_json_js.htm',
+			beforeSend: function() {
+				$('#testJson').html('<div class="pagination-centered"><img src="/z/webagency/slagence_X_V5/images/carto/ajax-loader.gif"></div>');
+			},
+			success: function(data) {
+				$('#testJson').html('');
+				for(i = 0; i < data.annonces.length; i++) {
+					$$IF=:LINEA:STYLE_RECHERCHE$$
+					var contentJSON = html;
+					contentJSON.find('.json').each(function() {
+							if($(this).hasClass('json-id')) {
+								$(this).html(data.annonces[i].id);
+							}
+							if($(this).hasClass('json-prix')) {
+								$(this).html(data.annonces[i].prix);
+							}
+							if($(this).hasClass('json-title')) {
+								$(this).html(data.annonces[i].title);
+							}
+							$('#testJson').append(contentJSON.html());
+						});
+						$$END$$
+						$$IF!:LINEA:STYLE_RECHERCHE$$
+							$('#testJson').append(data.annonces[i].html);
+						$$END$$
+				}
+			},
+			error : function (jqXHR, textStatus, errorThrown) {
+	               console.log(jqXHR, textStatus, errorThrown);
+	              // $('#testJson').html('<div class="pagination-centered h2-like">$$LG:AUCUNEANN pcase$$</div>');
+			},
+			complete: function(xhr,statusText) {
+			}
+		});
+	}
+	$(document).ready(function() {
+		jsonProto();
+	});
+</script>
+<!--#include virtual="footer/incl_bas.htm" -->

@@ -1,0 +1,75 @@
+$$REM$$====================================================================
+//// <summary>Déclaration diverses variables par défaut valables pour sites agences</summary>
+//// <remarks>
+//// <para>variable sur dossier ref en cours ou pas</para>
+//// <para>Contient un mini dico pour la macro RUBRIQUE</para>
+//// <para>Var URLBASE : url absolue affichée seulement si le site a un contrat de réf en cours</para>
+//// <para>Var NBANNVENTES, NBANNLOCS, NBANNNEUF, NBANNVIAGER : nb annonces affichées sur agence-immobiliere.htm</para>
+//// <para>Var MULTIAGENCE qui remplace incl_multi</para>
+//// <para>Var LANGUE</para>
+//// <para>01.03.2010 : update macro GALERIE_VIGNETTE_CLICK pour paramétrer les images des détails d'annonces</para>
+//// </remarks>
+//// <update date="2010-02-15" author="lisbonne.siriphol">Adapté pour la version slagence_x_v3</update>
+//// <update date="2010-01-18" author="christophe.ledoux">Ajout d'une redirection mutualisée vers version mobile</update>
+//// <update date="2008-05-04" author="lisbonne.siriphol">Création</update>
+//// <update date="2008-05-04" author="erick.barbant">Validation ok</update>
+====================================================================$$END$$
+$$REM$$<!-- conditionnant le langage affiché ou langage par défaut -->$$END:REM$$
+$$REM$$
+	$$IF:FORM:LANG$$$$A:LANGUE=@@FORM:LANG lcase@@$$$$END$$
+	$$IF0:FORM:LANG$$$$A:LANGUE=@@PAGE:CFG_LANGUAGE@@$$$$END$$
+$$END$$
+$$A:LANGUE=@@PAGE:CFG_LANGUAGE@@$$
+
+$$REM$$<!-- va chercher les urls des sites multilangues -->$$END:REM$$
+$$IF:PAGE:URL_SITE_FR$$
+	$$A:SITEFR=@@PAGE:URL_SITE_FR@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_EN$$
+	$$A:SITEEN=@@PAGE:URL_SITE_EN@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_DE$$
+	$$A:SITEDE=@@PAGE:URL_SITE_DE@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_ES$$
+	$$A:SITEES=@@PAGE:URL_SITE_ES@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_NL$$
+	$$A:SITENL=@@PAGE:URL_SITE_NL@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_IT$$
+	$$A:SITEIT=@@PAGE:URL_SITE_IT@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_PT$$
+	$$A:SITEPT=@@PAGE:URL_SITE_PT@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_CN$$
+	$$A:SITECN=@@PAGE:URL_SITE_CN@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_RU$$
+	$$A:SITERU=@@PAGE:URL_SITE_RU@@$$
+$$END$$
+$$IF:PAGE:URL_SITE_AUTRE$$
+	$$A:SITEAUTRE=@@PAGE:URL_SITE_AUTRE@@$$
+$$END$$
+
+$$REM$$<!-- VARIABLE POUR SAVOIR SI LE DOMAINE DOIT ETRE INDEXE = UTILE MULTILANUES -->$$END$$
+$$A:SITEINDEXATION=@@PAGE:NOINDEX_META@@$$	
+
+$$REM$$<!-- nouvelle macro MULTIAGENCES : determine si le site est multi ou non, avec des noms de macros improbables car on ne sait jamais -->$$END:REM$$
+<!--#include virtual="header/incl_ordre_info_agence.htm" -->	
+$$A:MULTIAGENCES=0$$$$B:IMMOBW:AGENCES:ALIAS:COMPTE_AGENCES:VAL:ORDERAGENCY:::::ALL$$$$BIF:COMPTE_AGENCES$$$$DO$$$$IF+:2:COMPTE_AGENCES:NBR$$$$A:MULTIAGENCES=1$$$$END$$$$LOOP$$$$BFIN$$
+
+$$SET:URLBASE=@@SCHEME@@://@@REP:SRV@@$$
+$$A:LIENACCUEIL=@@SCHEME@@://@@REP:SRV@@/?lang=@@LANGUE@@$$
+
+$$REM$$<!-- bandeau "nouveau" sur annonces de -15 jours par défaut -->$$END:REM$$
+$$IF0:SELECTIONFRAICHEUR$$
+	$$A:SELECTIONFRAICHEUR=-15$$
+$$END$$
+
+$$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+	$$IF=:7:ANNDETAIL:IDTYPEBIEN$$
+		$$A:LOCATION_LOCAL_COMMERCIAL=1$$
+	$$END$$
+$$END$$

@@ -1,0 +1,73 @@
+// FIX DEFAULT
+$color-sous-menu:false !default;
+// CSS
+.menu-principal > li > a.menu-sub-on {
+	@if $color-sous-menu != false {
+		background:$color-sous-menu;
+		@include lightnessColor($color-sous-menu,no);
+	} @else {
+		background:$color-action;
+		@include lightnessColor($color-action,no);
+	}
+}
+
+.menu-sub-container {
+	position:relative;
+}
+
+.menu-sub a:hover {
+	color:inherit;
+}
+
+.menu-sub {
+	top:0; 
+	left:100%;
+}
+
+.menu-sub .menu-sub-bg {
+	@if $color-sous-menu != false {
+		background:$color-sous-menu;
+	} @else {
+		background:$color-action;
+	}
+}
+.menu-sub ul li a{
+	font-weight:normal;
+	display:block;
+	@if $color-sous-menu != false {
+		@include lightnessColor($color-sous-menu,no);
+		@include ligthnessBorderBottom($color-sous-menu);
+			&:hover {
+			@include ligthnessBg($color-sous-menu);
+			@include lightnessColor($color-sous-menu,no);
+			text-decoration:none;
+		}
+	} @else {
+		@include lightnessColor($color-action,no);
+		border-bottom: 1px solid lighten($color-action,5);
+			&:hover {
+			background:darken($color-action,5);
+			@include lightnessColor($color-action,no);
+			text-decoration:none;
+		}
+	}
+}
+// MEDIA QUERY SMARTPHONE
+@media only screen and (max-width : 767px) {
+	.menu-sub {
+		margin-top:15px;
+	}
+	.menu-sub > .menu-sub-bg {
+		position:absolute;
+	}
+}
+// MEDIA QUERY TABLET PORTRAIT
+@media only screen and (min-width:768px) and (max-width: 979px) and (orientation:portrait) {
+	.menu-sub {
+		position:relative;
+		margin-top:15px;
+	}
+	.menu-sub > .menu-sub-bg {
+		position:absolute;
+	}
+}
