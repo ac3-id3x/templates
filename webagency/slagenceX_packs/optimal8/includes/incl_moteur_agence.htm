@@ -1,0 +1,61 @@
+<form name="regions" action="/agences,liste.htm" method="get" onsubmit="VerifMoteurAg();">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	$$LG:REGION pcase$$<br />
+	$$B:IMMOBW:REGIONS:ALIAS:REGION$$
+		$$BIF:REGION$$
+			<select name="cp" id="MiniRegionAg" onchange="ListeDepAg(this.value,'$$LANGUE$$');">
+				<option value="">$$LG:SELECREG$$</option>					
+				$$DO$$
+					$$A:REG=@@REGION:DEPS@@$$
+					<option value="$$REGION:DEPS$$" $$IF=:FORM_CP:REGION:DEPS$$selected$$END$$ $$IF=:FORM_CPREG:REGION:DEPS$$selected$$END$$>$$REGION:REGION$$</option>					
+				$$LOOP$$					
+			</select>
+	$$BFIN$$
+  <br />
+  <div id="mini_dep_agence">
+  $$IF:FORM:CP$$
+  	$$IF:FORM:CPREG$$
+  		<br />
+  		$$B:IMMOBW:AGENCES:ALIAS:DEPREG:dep:QRY:CPREG::WITHDEP$$
+			$$BIF:DEPREG$$
+					$$LG:DEPART pcase$$<br />
+					<select name="cp" id="MiniDepAg">
+						<option value="">$$LG:SELECDEP pcase$$</option>					
+						$$DO$$
+						$$IFPREV:DEPREG:DEPARTEMENTAFF$$
+							<option value="$$DEPREG:DEP$$" $$IF=:FORM_CP:DEPREG:DEP$$selected$$END$$>$$DEPREG:DEPARTEMENTAFF$$</option>		
+						$$END$$			
+						$$LOOP$$					
+					</select>
+			$$BFIN$$
+			$$BIF0:DEPREG$$
+			<p>Pas d'agence dans cette région</p>
+			$$BFIN$$
+  		
+  	
+  	$$END$$
+  	$$IF0:FORM:CPREG$$
+  		<br />
+  		$$B:IMMOBW:AGENCES:ALIAS:DEP:dep:QRY:CP::WITHDEP$$
+			$$BIF:DEP$$
+					$$LG:DEPART pcase$$<br />
+					<select name="cp" id="MiniDepAg">
+						<option value="">$$LG:SELECDEP pcase$$</option>					
+						$$DO$$
+						$$IFPREV:DEP:DEPARTEMENTAFF$$
+							<option value="$$DEP:DEP$$">$$DEP:DEPARTEMENTAFF$$</option>		
+						$$END$$			
+						$$LOOP$$					
+					</select>
+			$$BFIN$$
+			$$BIF0:DEP$$
+			<p>Pas d'agence dans cette région</p>
+			$$BFIN$$
+		$$END$$
+$$END$$	
+  </div>
+
+<p class="bouton">
+	<input type="image" src="/images/pic_ok.gif" name="submit" class="submit" />
+</p>
+</form>

@@ -1,0 +1,97 @@
+$$REM$$
+====================================================================
+//// <summary>Include comportant les variables liées au détails d'annonce</summary>
+//// <remarks>
+//// <para>Projet Web Analytic avec la solution Omniture</para>
+//// </remarks>
+//// <update date="2009-08-26" author="florian.adam"></update>
+//// <update date="2009-09-23" author="florian.adam">Ajout du département, Ajout du type de recherche</update>
+====================================================================
+$$END:REM$$
+<script type="text/javascript">
+	
+	// Consultation d'annonce
+	s.events = s.apl(s.events, "event1", ',',1);
+	
+	// Idannonce
+	s.prop12="$$IMMOBW:ANNONCE:IDANNONCE$$";
+	s.products = s.apl(s.products, ";$$IMMOBW:ANNONCE:IDANNONCE$$;;;", ';',1);
+	
+	// Mode d'accès aux annonces
+	// Il faut encore ajouter le champs dans les query string qui permettent d'afficher la page plus_annonce_full.htm
+	$$IF:FORM:TYPERECHERCHE$$
+		$$IF=:1:FORM:TYPERECHERCHE$$
+			s.products = s.apl(s.products, "evar3=$$FORM:TYPERECHERCHE$$", '|',1);
+		$$END$$
+	$$END$$
+	
+	// Idagence
+	//s.evar39="$$IMMOBW:ANNONCE:IDAGENCE$$";
+	s.products = s.apl(s.products, "evar39=$$IMMOBW:ANNONCE:IDAGENCE$$", ';',1);
+	
+	/****************************************/
+	/* 		Variables liés à une annonce			*/
+	/****************************************/
+	
+	// idtiers
+	$$IF:IMMOBW:ANNONCE:IDTIERS$$
+		s.products = s.apl(s.products, "evar28=$$IMMOBW:ANNONCE:IDTIERS$$", '|',1);
+	$$END:IDTIERS$$
+	
+	// Département
+	$$IF:IMMOBW:ANNONCE:DEP$$
+		s.products = s.apl(s.products, "evar26=$$IMMOBW:ANNONCE:DEP$$", '|',1);
+	$$END:DEP$$
+	// Type de bien
+	$$IF:IMMOBW:ANNONCE:IDSYNDICAT$$
+	//		s.eVar40 = "$$IMMOBW:ANNONCE:IDSYNDICAT$$";
+		s.products = s.apl(s.products, "evar40=$$IMMOBW:ANNONCE:IDSYNDICAT$$", '|',1);
+	$$END:IDSYNDICAT$$
+	
+	// Type de bien
+	$$IF:IMMOBW:ANNONCE:IDTYPEBIEN$$
+	//		s.eVar41 = "$$IMMOBW:ANNONCE:IDTYPEBIEN$$";
+		s.products = s.apl(s.products, "evar41=$$IMMOBW:ANNONCE:IDTYPEBIEN$$", '|',1);
+	$$END:IDTYPEBIEN$$
+
+	// Type de transaction
+	$$IF:FORM:IDTT$$
+		s.eVar42 = "$$FORM:IDTT$$";
+		//s.products = s.apl(s.products, "evar42=$$IMMOBW:ANNONCE:IDTT$$", '|',1);
+	$$END:IDTT$$
+	
+	// Code postal
+	$$IF:IMMOBW:ANNONCE:CP$$
+	//		s.eVar43 = "$$IMMOBW:ANNONCE:CP$$";
+		s.products = s.apl(s.products, "evar43=$$IMMOBW:ANNONCE:CP$$", '|',1);
+	$$END:CP$$
+	
+	// Nombre de pièces et chambres
+	//	s.eVar44 = "$$IMMOBW:ANNONCE:NB_PIECES$$#$$IMMOBW:ANNONCE:NB_CHAMBRES$$";
+	if( s.eVar44 != "") s.products = s.apl(s.products, "evar44=$$IMMOBW:ANNONCE:NB_PIECES$$#$$IMMOBW:ANNONCE:NB_CHAMBRES$$", '|',1);
+	
+	// Prix
+	$$IF:IMMOBW:ANNONCE:PRIX$$
+		//		s.eVar45 = "$$IMMOBW:ANNONCE:PRIX$$";
+		s.products = s.apl(s.products, "evar45=$$IMMOBW:ANNONCE:PRIXRAW$$", '|',1);
+	$$END:PRIX$$
+	
+	// Nombre de photos + visite virtuelle
+	//	s.eVar46 = "$$IMMOBW:ANNONCE:NB_PHOTOS$$#$$IMMOBW:ANNONCE:NB_360$$";
+	if( s.eVar46 != "") s.products = s.apl(s.products, "evar46=$$IMMOBW:ANNONCE:NB_PHOTOS$$#$$IMMOBW:ANNONCE:NB_360$$", '|',1);
+	
+	// Etages
+	$$IF:IMMOBW:ANNONCE:ETAGE$$
+	//		s.eVar47 = "$$IMMOBW:ANNONCE:ETAGE$$";
+		s.products = s.apl(s.products, "evar47=$$IMMOBW:ANNONCE:ETAGE$$", '|',1);
+	$$END:ETAGE$$
+	
+	// Type de cuisine et chauffage
+	//	s.eVar48 = "$$IMMOBW:ANNONCE:IDTYPECUISINE$$#$$IMMOBW:ANNONCE:IDTYPECHAUFFAGE$$";
+	if( s.eVar48 != "") s.products = s.apl(s.products, "evar48=$$IMMOBW:ANNONCE:IDTYPECUISINE$$#$$IMMOBW:ANNONCE:IDTYPECHAUFFAGE$$", '|',1);
+	
+	// Etat d'avancement - Variable spécifique à Selogerpro.com
+	//s.eVar49 = "$$IMMOBW:ANNONCE:IDETAT$$";
+	if( s.eVar49 != "") s.products = s.apl(s.products, "evar49=$$IMMOBW:ANNONCE:IDETAT$$", '|',1);
+	
+</script>
