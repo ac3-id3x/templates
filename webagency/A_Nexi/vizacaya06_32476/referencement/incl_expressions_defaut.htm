@@ -1,0 +1,79 @@
+$$REM$$<!-- =================================================================================================
+//// <summary>Page qui définie les expressions SANS REF par défaut des balises TITLE et META</summary>
+//// <remarks>
+//// <para>apparaît seulement si le site n'a pas de contrat de réf</para>
+//// <para>la liste des pages n'est pas exhaustive mais ce sont les plus utilisees</para>
+//// <para>Plus aucun conditionnement réf ne vient de la conf</para>
+//// </remarks>
+//// <update date="2010-02-17" author="lisbonne.siriphol">Création/Validation</update>
+=================================================================================================== -->$$END$$
+
+$$REM$$<!-- ======================================================================================
+////////////////////////////// DICTIONNAIRE EXPRESSIONS RECURRANTES //////////////////////////////
+////////////////////// Exemples sans les dollars sinon ça fait tout sauter ///////////////////////
+==================================================================================================
+	
+	IF:MULTIAGENCES > signifie que le site est multiagences
+	IF0:MULTIAGENCES > signifie que le site a une seule agence
+	
+	==> attention les macros suivantes bouclent sur les détails de la première agence
+		AGENCE_NOM
+		AGENCE_ADRESSE
+		AGENCE_CP
+		AGENCE_VILLE
+		AGENCE_TEL
+		AGENCE_FAX
+		AGENCE_EMAIL
+		AGENCE_IDPUBLICATION
+		
+	==> identifiants de pages réf diverses
+		IF=:ANNONCIMMOS:IDT 										==> immobilier,annonces.htm (ancien liste-annonces-immobilieres.htm)
+		IF=:RESULTATS-dollar-RESULTATSCARTE:IDT ==> resultat recherche liste et carte
+		IF=:DETAILANNONCE:IDT										==> détail annonce
+		IF=:SUIVICLIENT:IDT											==> suivi client pericles
+		IF=:FICHEVISITE:IDT											==> détail, imprimer fiche de visite
+		IF=:AMI:IDT															==> détail, envoyer cette annonce à un ami
+		IF=:NOSAGENCES:IDT											==> liste des agences
+		IF=:NOTREAGENCE:IDT											==> page agence
+		IF=:GESTION:IDT													==> immo,gestion.htm
+		IF=:ESTIMATION:IDT											==> formulaire contact,estimation.htm
+		IF=:CONTACTAGENCE:IDT										==> formulaire contact,agence.htm
+		IF=:PLAN:IDT														==> plan du site plan,site.htm
+		IF=:MOTEUR:IDT													==> moteur recherche
+																						==> IF=:2:FORM:IDTT > moteur ventes
+																						==> IF=:1:FORM:IDTT > moteur locations																						
+		
+====================================================================================-->$$END:REM$$
+
+
+$$REM$$<!-- ======================================================================================
+//////////////////////// optis par défaut souhaité sur toutes les pages  ////////////////////////
+=====================================================================================-->$$END:REM$$
+$$IF:MULTIAGENCES$$
+	$$REM$$<!-- multi -->$$END:REM$$
+	$$A:TITLE=@@REP:SRV@@ : @@LG:AGENCESIMMO lcase@@$$
+	$$A:DESCRIPTION=Retrouvez nos annonces sur @@REP:SRV@@.$$
+	$$A:KEYWORDS=@@REP:SRV@@, @@LG:AGENCESIMMO lcase@@$$
+$$END$$
+
+$$IF0:MULTIAGENCES$$
+	$$REM$$<!-- mono -->$$END:REM$$
+	$$A:TITLE=@@REP:SRV@@ : @@LG:AGENCEIMMOBILIERE lcase@@$$
+	$$A:DESCRIPTION=Retrouvez nos annonces sur @@REP:SRV@@.$$
+	$$A:KEYWORDS=@@REP:SRV@@, @@LG:AGENCEIMMOBILIERE lcase@@$$
+$$END$$
+
+$$REM$$<!-- ===============================================================================
+========================================== INDEX ==========================================
+============================================================================ -->$$END:REM$$
+$$IF=:INDEX:IDT$$
+	$$A:TITLE=Agence immobiliere Nice Port, achat appartement Nice Mont Boron, appartement Nice - Vizcaya Immobilier$$
+	$$A:DESCRIPTION=Annonces immobilières de vente et achat d'appartement sur Nice Mont Boron et les environs avec l'agence immobilière Vizcaya Immobilier à Nice Port$$
+$$END$$
+
+$$REM$$<!-- ====================== Biens vendus (recherche,vendu.htm) ====================== -->$$END:REM$$
+$$IF=:BIENSVENDUS:IDT$$
+	$$A:TITLE=@@LG:BIENVENDUS pcase@@$$
+$$END:BIENSVENDUS$$
+
+$$REM$$<!-- lien vers NEW page IMMOBILIER ref -->$$END:REM$$			$$A:LIEN_PORTEFEUILLE_REF=@@URLBASE@@/immobilier,annonces.htm?lang=@@LANGUE@@$$
