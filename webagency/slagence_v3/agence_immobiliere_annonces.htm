@@ -1,0 +1,97 @@
+<!-- $$REP:1$$ -->
+<!-- Bandeau -- Start -->
+$$E:IMMOBW:AGENCE:REP:1$$
+
+$$SET:RUB:IDT=AG$$
+$$SET:RUB:UNIVERS:CHEMINEMENT= je cherche  @@IMMOBW:ANN:QRY:PHRASE htmlencode@@ pour l' agence immobilière @@IMMOBW:AGENCE:NOM@@ à @@IMMOBW:AGENCE:VILLE@@ (@@IMMOBW:AGENCE:CP left 2@@). $$
+
+$$IF0:imp:FORM:FORM$$
+	$$INCL:HAUT.HTM$$
+$$END$$
+<!-- Bandeau -- End -->
+
+
+$$A:CHEMIN=NEUF > Recherche d'un bien neuf$$
+
+<!-- $$FORM:IDTYPEBIEN$$ -->
+						
+<h5>$$ERRE$$</h5>
+
+
+$$IF0:IMMOBW:ANN:QRY:NBR$$
+	<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+	<!--
+	location.href='/annonces.htm?$$REP:QRY$$&msg=0';
+	-->
+	</Script>
+$$END$$
+$$IF=:300:IMMOBW:ANN:QRY:NBR$$
+	<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+	<!--
+	location.href='/annonces.htm?$$REP:QRY$$&msg=1';
+	-->
+	</SCRIPT>
+$$END$$
+
+
+
+				Je cherche une  $$IMMOBW:ANN:QRY:PHRASE htmlencode$$ pour l' agence immobilière $$IMMOBW:AGENCE:NOM$$ à $$IMMOBW:AGENCE:VILLE$$ ($$IMMOBW:AGENCE:CP left 2$$)
+				R&eacute;sultats : $$IF0:IMMOBW:ANN:QRY:NBR$$0$$END$$$$IF:IMMOBW:ANN:QRY:NBR$$$$IMMOBW:ANN:QRY:NBR$$$$END$$ annonce$$IMMOBW:ANN:QRY:NBR pluriel$$  $$IF:IMMOBW:ANN:QRY:NBRPAGES$$- <SPAN CLASS="texte3">page $$IMMOBW:ANN:QRY:PAGE$$ / $$IMMOBW:ANN:QRY:NBRPAGES$$$$END$$<br></SPAN>
+
+<!-- Affichage Annonce : Start -->
+$$B:IMMOBW:ANN:QRY:IDTT:FR:REP:1:/annonces.htm:REP:1$$
+$$BIF:IMMOBW:ANN:QRY$$
+$$DO:1:50$$ 
+
+$$SET:TITRE:TRANSACTION=@@1_IMMOBW:ANN:QRY:DESCRIPTION@@$$
+$$SET:TITRE:BIEN=@@1_IMMOBW:ANN:QRY:IDTYPEBIEN @@$$
+$$SET:TITRE:VILLE=@@1_IMMOBW:ANN:QRY:VILLE@@$$
+$$SET:TITRE:CP=@@1_IMMOBW:ANN:QRY:CP left 2@@ $$
+$$SET:TITRE:PROXIMITE=@@1_IMMOBW:ANN:QRY:PROX_FR@@$$
+$$SET:TITRE:LIBELLE_FR=@@1_IMMOBW:ANN:QRY:LIBELLE_FR@@$$
+$$SET:TITRE:DESCRIPTIF=@@1_IMMOBW:ANN:QRY:DESCRIPTIF_FR htmlencode@@$$
+
+
+
+
+<P>
+<A HREF="/$$IMMOBW:ANN:QRY:IDPUBLICATION$$/$$IMMOBW:ANN:QRY:IDANNONCE$$/plus_annonce_full.htm?">
+				$$IMMOBW:ANN:QRY:DESCRIPTION$$
+				$$IF!:9:IMMOBW:ANN:QRY:IDTYPETRANSACTION$$$$IMMOBW:ANN:QRY:IDTYPEBIEN $$ $$END$$
+				
+				$$IF=:9:IMMOBW:ANN:QRY:IDTYPETRANSACTION$$
+				<b>
+					$$IF:IMMOBW:ANN:QRY:SI_APPARTEMENT$$
+			    		$$IF:IMMOBW:ANN:QRY:SI_MAISON$$ 	Appartements & Maisons	$$END$$ 
+			    		$$IF0:IMMOBW:ANN:QRY:SI_MAISON$$	Appartements			$$END$$  
+			    	$$END$$ 
+			    	$$IF0:IMMOBW:ANN:QRY:SI_APPARTEMENT$$	Maisons					$$END$$  
+				 </b> 
+				$$END$$
+
+				<b>
+				$$IMMOBW:ANN:QRY:ACP$$&nbsp;$$IMMOBW:ANN:QRY:AVILLE htmlencode$$
+				- $$IMMOBW:ANN:QRY:LIBELLE_FR$$ </b> 			
+				
+				$$IF:IMMOBW:ANN:QRY:PX_AU_M2$$ - $$IMMOBW:ANN:QRY:PX_AU_M2$$ &euro; / m2$$END$$		
+				<BR>
+				$$IF:IMMOBW:ANN:QRY:NOM$$ par $$IMMOBW:ANN:QRY:NOM$$, $$END$$
+				$$IF:IMMOBW:ANN:QRY:NOMCTC1$$ par $$IMMOBW:ANN:QRY:NOMCTC1$$,  $$END$$
+				$$IF:IMMOBW:ANN:QRY:PROX_FR$$  à proximité de : $$IMMOBW:ANN:QRY:PROX_FR htmlencode$$$$END$$	
+					
+				</A></P>
+				<P>$$IMMOBW:ANN:QRY:DESCRIPTIF_FR$$</P>
+	
+$$LOOP$$
+$$BFIN$$
+$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<CENTER>
+	$$IF:IMMOBW:ANN:QRY:LIENARRIERE$$<A HREF="$$IMMOBW:ANN:QRY:LIENARRIERE$$"><FONT COLOR=#D4000E><IMG SRC="images/fr/bt_pageprec.gif" BORDER=0></FONT></A>$$END$$
+	&nbsp;Pages : &nbsp;&nbsp;$$IMMOBW:ANN:QRY:MULTIPAGE$$&nbsp;
+	$$IF:IMMOBW:ANN:QRY:LIENAVANT$$<FONT COLOR=#D4000E><A HREF="$$IMMOBW:ANN:QRY:LIENAVANT$$"><IMG SRC="images/fr/bt_pagesuiv.gif" BORDER=0></A></FONT>$$END$$  
+	</CENTER>
+$$END$$
+
+$$INCL:BAS.HTM$$
+
+

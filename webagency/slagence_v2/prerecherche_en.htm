@@ -1,0 +1,60 @@
+$$INCL:HAUT_EN.HTM$$ 
+<SCRIPT language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.villes.length)
+	{
+		if (document.villes.elements[i].name=='ci')
+		{
+			document.villes.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 15);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.villes.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 15);
+	}
+}
+function subm()
+{
+var url = '/recherche_en.htm?$$REP:QRY escape$$';
+	for(i=0; i<document.villes.length; i++)
+	{
+		if (document.villes.elements[i].checked)
+		{
+			if (url.indexOf('&ci='+document.villes.elements[i].value) == -1) url += '&ci=' + document.villes.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+function carte(ci)
+{
+	window.open('/'+ci+'/france.htm','france','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=650,height=570');
+}
+// -->
+</SCRIPT>
+<FONT face="Verdana, Arial, Helvetica, sans-serif" size="2"><B><FONT size="3" color="#B81313">» 
+$$E:IMMOBW:TYPETRANSACTION:QRY:IDTT$$$$IMMOBW:TYPETRANSACTION:DESCRIPTION ncase$$</FONT></B> 
+(check off the towns you are looking for)<BR>
+<FORM method="GET" action="/recherche_en.htm" name="villes">
+<CENTER>
+$$B:IMMOBW:PREANN:QRY:CP:/recherche_en.htm$$$$BIF:IMMOBW:PREANN:QRY$$$$DO:2:50$$<FONT size=1>
+<INPUT type="CHECKBOX" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ CHECKED$$END$$>
+<A href="javascript:carte('$$IMMOBW:PREANN:QRY:CODEINSEE$$');">$$IMMOBW:PREANN:QRY:VILLEAFF$$</A> ($$IMMOBW:PREANN:QRY:CODEINSEE left 2$$)<BR>
+</FONT>$$LOOP$$$$BFIN$$
+</CENTER>
+<BR>
+<INPUT type="button" value="Select all" onClick="coche(0);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<INPUT type="button" value="Deselect all" onClick="decoche(villes.length-1);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<INPUT type="button" value="Change your query" onClick="history.back();" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<BR><BR>
+<DIV align="RIGHT"><A href="javascript:subm();"><IMG src="images/recherche.gif" border="0" width="75" height="17"></A></DIV>
+</FORM>
+</FONT> $$INCL:BAS_EN.HTM$$ 

@@ -1,0 +1,194 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=INTERCAB$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+
+$$IF:IMMOBW:AGENCE:EMAIL$$
+	$$A:AGENCE:EMAIL=@@IMMOBW:AGENCE:EMAIL@@$$
+	$$A:AGENCE:NOM=@@IMMOBW:AGENCE:NOM@@$$
+$$END$$
+$$IF0:IMMOBW:AGENCE:EMAIL$$
+		$$B:IMMOBW:AGENCES$$ $$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+			$$IF0:AGENCE:EMAIL$$
+				$$IF:IMMOBW:AGENCES:EMAIL$$
+					$$A:AGENCE:EMAIL=@@IMMOBW:AGENCES:EMAIL@@$$ $$A:AGENCE:NOM=@@IMMOBW:AGENCES:NOM@@$$
+				$$END$$
+			$$END$$
+		$$LOOP$$$$BFIN$$
+$$END$$
+$$IF0:AGENCE:EMAIL$$
+	<CENTER>
+	<BR><BR><BR><BR>
+	D&eacute;sol&eacute;, mais la page d'inter-cabinet ne peut être utilis&eacute;e actuellement.<BR>
+	  L'adresse e-mail du destinataire n'est pas disponible. <BR>
+	  <BR><BR><BR>
+	</CENTER>
+$$END$$
+$$IF:AGENCE:EMAIL$$
+	<table width="95%" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+	  <tr align="left" valign="top">
+	    <td><br>
+	      <P align="justify"><span class="txtCouleur1"><b>
+	      $$IF=:FR:LANGUE$$Cher(s) confr&egrave;re(s)$$END$$
+	      $$IF!:FR:LANGUE$$Dear fellow-member(s)$$END$$
+	      ,<br>
+	      <br>
+	      $$IF=:FR:LANGUE$$
+		      Pour vos clients qui ont un bien &agrave; mettre en location ou en vente,
+		      nous vous proposons de remplir la fiche technique ci-dessous et nous vous
+		      recontacterons.
+		  $$END$$
+		  $$IF!:FR:LANGUE$$
+		  	For your customers who have to sale or to rent a real estate,
+		  	we propose to you to fill out the chart below and we will recontact you.
+		  $$END$$
+	      </b></span></p>
+	      <CENTER>
+	        <b><FONT FACE="Verdana, Arial, Helvetica, sans-serif" COLOR="#FF0000">$$ERRE$$</FONT></b>
+	      </CENTER>
+	      <form method="post" action="Intercab_ok.htm">
+	  <input type="hidden" name="u" value="formmail">
+	  <input type="hidden" name="page_ok" value="InterCab_ok.htm">
+	  <input type="hidden" name="page_err" value="InterCab.htm">
+	  <input type="hidden" name="cfg_form" value="InterCab">
+	  <input type=hidden name="cfg_emails" value="InterCab">
+	  <INPUT TYPE="hidden" NAME="REMAIL" VALUE="$$AGENCE:EMAIL$$">
+	  <INPUT TYPE="hidden" NAME="REMAILNOM" VALUE="$$AGENCE:NOM$$">
+	  <INPUT TYPE="hidden" NAME="SRV" VALUE="$$SRV$$">
+	        <!--Description du bien-->
+	        <table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+	          <tr>
+	            <td colspan="2" class="tabTitre">
+	               <b>$$LG:DESCRIPBIEN$$</b>
+	            </td>
+	          </tr>
+	          <tr>
+	            <td width="100" >$$LG:TYPEDETRANSACTION$$</td>
+	            <td>  <input type="radio" name="1Secteur" value="Vente" checked>$$LG:VENTE$$
+
+	              <input type="radio" name="1Secteur" value="Location"> $$LG:LOCATION$$
+
+	              </td>
+	          </tr>
+	          <tr>
+	            <td width="100" >$$LG:BIENPROP$$</td>
+	            <td>
+	              <input type="text" name="1Bien" size="25">
+	              <font size="1"> Ex:
+	              $$LG:APPARTEMENT$$ 3/4 pi&egrave;ces</font></td>
+	          </tr>
+	          <tr>
+	            <td width="100">$$LG:DPTV$$</td>
+	            <td>
+	              <input type="text" name="1Ville" size="25">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td width="100">$$LG:PRIXLOYER$$</td>
+	            <td>
+	              <input type="text" name="1prix" size="25">
+	              <font size="1">
+	              	$$IF=:FR:LANGUE$$
+		            	Ex: Entre 450 et 610 €/mois
+		            $$END$$
+		            $$IF!:FR:LANGUE$$
+		            	Ex: Betw. 450 and 610 €/month
+		            $$END$$
+	              </font></td>
+	          </tr>
+	          <tr>
+	            <td width="100">$$LG:SURFACE$$</td>
+	            <td>
+	              <input type="text" name="1Surface" size="25">
+	              <font size="1"> Ex:
+	              $$LG:ENVIRON$$ 80m2</font></td>
+	          </tr>
+	          <tr>
+	            <td width="100">$$LG:PRECIS$$</td>
+	            <td>
+	              <textarea name="1Precisions" cols="35"></textarea>
+	            </td>
+	          </tr>
+	        </table>
+	  <br>
+	        <!--vos coordonnées-->
+	        <table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+	          <tr>
+
+	            <td colspan="2" class="tabTitre"> <b>$$LG:COORD3$$</b></td>
+	          </tr>
+	          <tr>
+	            <td ><b>$$LG:NOM$$</b></td>
+	            <td >
+	              <input type="text" name="1nom" size="20" value="$$1NOM$$" maxlength="30">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td ><b>$$LG:PRENOM$$</b></td>
+	            <td >
+	              <input type="text" name="1prenom" size="20" value="$$1PERNOM$$" maxlength="30">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td >$$LG:RAISONSOC$$</td>
+	            <td >
+	              <input type="text" name="1raison" size="30" value="$$1RAISON$$">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td >$$LG:ADRESSE$$</td>
+	            <td >
+	              <input type="text" name="1adresse" size="30" value="$$1ADRESSE$$">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td >$$LG:VILLE$$</td>
+	            <td >
+	              <input type="text" name="1Ville" size="25" value="$$1VILLE$$">
+	              $$LG:CODEP$$:
+	              <input type="text" name="1codepostal" size="10" value="$$1CODEPOSTAL$$">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td ><b>$$LG:TEL$$</b></td>
+	            <td >
+	              <input type="text" name="1phone" size="15" value="$$1PHONE$$" maxlength="20">
+	              $$LG:FAX$$:
+	              <input type="text" name="1fax" size="15" value="$$1FAX$$">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td ><b>$$LG:EMAIL$$</b></td>
+	            <td >
+	              <input type="text" name="1Email" size="30" value="$$1EMAIL$$">
+	            </td>
+	          </tr>
+	        </table>
+	  <br>
+	        <!--validation-->
+	        <table width="95%" border="0" cellspacing="0" cellpadding="2" align="center">
+	          <tr>
+	            <td class="tabTitre">
+	              <b>$$LG:VERIFINFOS$$</b>
+	            </td>
+	          </tr>
+			  <tr>
+	            <td align="right"><br>
+					<input type="image" border="0" name="envoi"
+						$$IF=:FR:LANGUE$$
+							src="Img/ENVOYER_FR.gif"
+						$$END$$
+						$$IF!:FR:LANGUE$$
+							src="Img/ENVOYER_EN.gif"
+						$$END$$
+					>
+	            </td>
+	          </tr>
+	        </table>
+	        <br>
+	  </form></td>
+	</tr>
+	</table>
+$$END$$
+
+$$INCL:BAS.HTM$$

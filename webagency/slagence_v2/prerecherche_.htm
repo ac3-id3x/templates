@@ -1,0 +1,62 @@
+$$INCL:HAUT.HTM$$
+<TABLE width="95% ALIGN="CENTER" cellpadding="2" class="tabFond1">
+  <TR>
+	<TD>
+	 <SCRIPT language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.villes.length)
+	{
+		if (document.villes.elements[i].name=='ci')
+		{
+			document.villes.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 15);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.villes.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 15);
+	}
+}
+function subm()
+{
+var url = '/recherche.htm?$$REP:QRY escape$$';
+	for(i=0; i<document.villes.length; i++)
+	{
+		if (document.villes.elements[i].checked)
+		{
+			if (url.indexOf('&ci='+document.villes.elements[i].value) == -1) url += '&ci=' + document.villes.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+// -->
+</SCRIPT>
+
+<B><FONT size="3" color="#B81313">»
+$$E:IMMOBW:TYPETRANSACTION:QRY:IDTT$$$$IMMOBW:TYPETRANSACTION:DESCRIPTION ncase$$</FONT></B> (cochez les villes que vous recherchez)<BR>
+<FORM method="GET" action="/recherche.htm" name="villes">
+<CENTER>
+$$B:IMMOBW:PREANN:QRY:CP:/recherche.htm$$$$BIF:IMMOBW:PREANN:QRY$$$$DO:2:50$$<FONT size=1>
+<INPUT type="CHECKBOX" name="ci" value="$$IMMOBW:PREANN:QRY:CODEINSEE$$"$$IF:IMMOBW:PREANN:QRY:SEUL$$ CHECKED$$END$$> $$IMMOBW:PREANN:QRY:VILLEAFF$$ ($$IMMOBW:PREANN:QRY:CODEINSEE left 2$$)<BR>
+</FONT>$$LOOP$$$$BFIN$$
+</CENTER>
+<BR>
+<INPUT type="button" value="Tout sélectionner" onClick="coche(0);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<INPUT type="button" value="Tout désélectionner" onClick="decoche(villes.length-1);" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<INPUT type="button" value="Modifier vos critères" onClick="history.back();" style="font-family: Verdana,Arial; font-size: 8pt; width: 140px">
+<BR><BR>
+        <DIV align="RIGHT"><A href="javascript:subm();"><IMG src="IMG/rechercher.gif" border="0"></A></DIV>
+</FORM>
+
+  </TD>
+ </TR>
+</TABLE>
+$$INCL:BAS.HTM$$

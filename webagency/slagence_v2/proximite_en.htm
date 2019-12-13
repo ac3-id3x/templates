@@ -1,0 +1,110 @@
+$$INCL:HAUT_EN.HTM$$ $$SET:PAGE:RUB=chercher$$ 
+<SCRIPT language="JavaScript">
+<!--
+function coche(i)
+{
+	if (i<document.bas.length)
+	{
+		if (document.bas.elements[i].name=='cp')
+		{
+			document.bas.elements[i].checked=true;
+			setTimeout('coche('+(i+1)+')', 20);
+		}
+		else
+			setTimeout('coche('+(i+1)+')', 0);
+	}
+}
+function decoche(i)
+{
+	if (i>=0)
+	{
+		document.bas.elements[i].checked=false;
+		setTimeout('decoche('+(i-1)+')', 20);
+	}
+}
+function subm()
+{
+var url = '$$IF:FORM:IDTT$$/$$FORM:IDTT$$$$END$$/recherche.htm?$$FORM:QRY escape$$';
+	for(i=0; i<document.bas.length; i++)
+	{
+		if (document.bas.elements[i].checked)
+		{
+			if (url.indexOf('&cp='+document.bas.elements[i].value) == -1) url += '&cp=' + document.bas.elements[i].value;
+		}
+	}
+	document.location.href= url;
+}
+// -->
+</SCRIPT>
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+  <tr>
+        <td><font face="Verdana, Arial, Helvetica, sans-serif" size="3"><b>&gt;&gt; 
+			Search in nearby towns.</b></font> <br>
+      <form method="get" action="/proximite_en.htm">
+        <table width="80%" border="0" cellspacing="1" cellpadding="2" class="formTitre" align="center">
+          <tr> 
+            			<td colspan="2" class="formTitre"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Search 
+							nearby towns</b></font></td>
+          </tr>
+          <tr> 
+            <td colspan=2> 
+              <table width="100%">
+                <tr> 
+                  					<td width="50%" class="formTexte"><font FACE="Verdana, Arial, Helvetica, sans-serif" SIZE="2">post 
+										code (or departement): </font></td>
+                  <td width="50%" class="formTexte"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+                    <input type="text" name="cps" value="$$FORM:CPS$$">
+                    </font></td>
+                </tr>
+                <tr> 
+                  					<td width="50%" class="formTexte"><font FACE="Verdana, Arial, Helvetica, sans-serif" SIZE="2">and/or 
+										town: </font></td>
+                  <td width="50%" class="formTexte"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> 
+                    <input type="text" name="ville" value="$$FORM:VILLE htmlencode$$">
+                    </font></td>
+                </tr>
+                <tr> 
+                  <td width="50%" class="formTexte"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;</font></td>
+                  <td width="50%" class="formTexte">
+                    <input type="submit" name="Submit" value="  search  ">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$">
+        <input type="hidden" name="idtt" value="$$FORM:IDTT htmlencode$$">
+      </form>
+      $$B:IMMOBW:FINDVILLE$$$$BIF:IMMOBW:FINDVILLE$$ 
+      <form name="bas" method="get" action="/proximite_en.htm">
+				<b><font FACE="Verdana, Arial, Helvetica, sans-serif" SIZE="2">Select 
+				a town:</font></b> <font face="Verdana, Arial, Helvetica, sans-serif"> 
+				$$DO:2:20$$<font size="1"> 
+				<input type="RADIO" name="idville" value="$$IMMOBW:FINDVILLE:IDVILLE$$">
+        $$IMMOBW:FINDVILLE:VILLEAFF$$ ($$IMMOBW:FINDVILLE:CP$$)</font><br>
+        $$LOOP$$</font><br>
+        <center>
+          <input type="SUBMIT" value="find nearby towns" name="SUBMIT">
+        </center>
+        <input type="hidden" name="qry" value="$$FORM:QRY htmlencode$$">
+        <input type="hidden" name="idtt" value="$$FORM:IDTT htmlencode$$">
+      </form>
+      $$BFIN$$ $$B:IMMOBW:FINDPROXIMITE$$$$BIF:IMMOBW:FINDPROXIMITE$$ 
+      <form name="bas" method="get" action="/recherche_en.htm?$$FORM:QRY$$">
+				<b><font FACE="Verdana, Arial, Helvetica, sans-serif" SIZE="2">List 
+				of towns found in the neighborhood:</font></b> <font face="Verdana, Arial, Helvetica, sans-serif"> 
+				<!-- $$FORM:IDVILLE$$ -->
+				$$DO:2:20$$<font size="1"> 
+				<input type="checkbox" name="cp" value="$$IMMOBW:FINDPROXIMITE:CP$$">
+        $$IF=:FORM_IDVILLE:IMMOBW:FINDPROXIMITE:IDVILLE$$<b>$$END$$ $$IMMOBW:FINDPROXIMITE:VILLEAFF$$ 
+        ($$IMMOBW:FINDPROXIMITE:CP$$)$$IF=:FORM_IDVILLE:IMMOBW:FINDPROXIMITE:IDVILLE$$</b>$$END$$</font><br>
+        $$LOOP$$</font><br>
+        <input type="button" value="Select all" onClick="coche(0);" name="button">
+        <input type="button" value="Deselect all" onClick="decoche(bas.length-1);" name="button">
+        <input type="button" value="Search" onClick="subm();" name="button">
+      </form>
+      $$BFIN$$</td>
+  </tr>
+</table>
+$$INCL:BAS_EN.HTM$$ 
