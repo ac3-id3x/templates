@@ -1,0 +1,139 @@
+$$REM$$====================================================================
+//// <summary>Liste des agences</summary>
+//// <remarks>
+//// <para>Carto géoloc agences</para>
+//// <para>tri des agences possible par ville (ville) , par cp (cp) , par ville puis par code postal (villecp) , par département puis ville et pour paris par arrondissement (depvillenom) , par département (dep) , par hasard (random) en passant par la querystring. Exemple : liste,agences.htm ?tri=cp ; par défaut le tri se fera par le nom des agences.</para>
+//// <para>On conditionne les options de tri selon le nombre d'agence, s'il y en plus de 10 on montre tout</para>
+//// <para>On utilise la macro BIF:COMPTE_AGENCES (voir header/incl_variables.htm)</para>
+//// <para>agences/incl_liste_agences.htm est aussi affiché sur la page de recherche (si REP:1)</para>
+//// </remarks>
+//// <update date="2010-06-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOSAGENCES$$
+$$INIT:JS_BING=1$$
+$$INIT:CSS_AGENCE=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région$$
+	$$A:DESCRIPTION=@@LG:NOSAGENCESIMMO pcase@@ sur @@1_LISTEAG:CP cp2dep@@ et sa région.$$
+	$$A:KEYWORDS=@@LG:AGENCESIMMO pcase@@ @@1_LISTEAG:VILLE@@, @@LG:IMMOBILIER lcase@@ @@1_LISTEAG:CP cp2dep@@, @@LG:ANNONCIMMOS lcase@@ @@1_LISTEAG:CP cp2dep@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:NOSAGENCESIMMO pcase@@ @@REP:SRV@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$REM$$<!-- ====================== TEST INCLUDE ====================== -->$$END:REM$$
+$$REM$$<!--#include virtual="agences/incl_txt_perso.htm" -->$$END$$
+
+<div id="AgImmo_Ctn">
+	$$IF+:2:COMPTE_AGENCES:NBR$$
+	$$REM$$<h3>$$COMPTE_AGENCES:NBR$$ $$LG:AGENCESAVOTRSERVICE lcase$$</h3>$$END$$
+	$$END:COMPTE_AGENCES:NBR$$
+	
+	$$IF:OPTION_GEOLOC$$
+	<!--#include virtual="carto/incl_BingMap_agences.htm" -->	
+	$$END:OPTION_GEOLOC$$
+
+	$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+	$$BIF:LISTEAG$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesHaut">
+		
+		$$IF+:5:COMPTE_AGENCES:NBR$$
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+			<script type="text/javascript">
+				<!--	
+				function Trier( idname ) {
+					var obj = document.getElementById(idname);
+					if( obj ) {
+						var critereTri = obj.options[obj.selectedIndex].value;
+						location.href= '/$$REP:0$$?$$REP:QRY removeqry tri$$&tri=' + critereTri + '#tri';
+						}
+					}
+				//-->	
+			</script>
+		
+			<a name="tri"></a>
+			
+			<form id="Tri" action="/$$REP:0$$?$$REP:QRY htmlencode$$" method="post">
+				<div id="Tri_Ctn">
+					$$LG:TRIERPAR pcase$$ :		
+					<select name="triAnn" id="TriAnn" class="miniForm" onchange="Trier(this.id);">
+						<option $$IF=:nom:FORM:TRI$$selected="selected"$$END$$ $$IF0:FORM:TRI$$selected="selected"$$END$$ value="nom"> $$LG:NOM pcase$$</option>
+						<option $$IF=:cp:FORM:TRI$$selected="selected"$$END$$ value="cp"> $$LG:CODEP pcase$$</option>
+						<option $$IF=:ville:FORM:TRI$$selected="selected"$$END$$ value="ville"> $$LG:VILLE pcase$$</option>
+						$$IF+:10:COMPTE_AGENCES:NBR$$
+						<option $$IF=:dep:FORM:TRI$$selected="selected"$$END$$ value="dep"> $$LG:DEPART pcase$$</option>
+						$$END:COMPTE_AGENCES:NBR$$				
+					</select>
+				</div>
+			</form><!-- #Tri -->
+		$$REM$$<!-- ================ tri des agences ================ -->$$END:REM$$
+		
+		
+		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesHaut -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+$$END:COMPTE_AGENCES:NBR$$
+
+<p style="font-size: 24px;background:#36B9EB;padding:10px;text-align: center;"><a href="$$URLBASE$$/immo,25ans.htm?lang=fr" target="_blank">Les 25 ans de l' agence ...</a></p> 
+			
+		
+	$$DO:1:10$$
+	<!--#include virtual="agences/incl_liste_agences.htm" -->
+	$$LOOP$$
+	$$BFIN$$
+	
+	$$IF:LISTEAG:NBRPAGES$$
+	<div id="RechPagesBas">		
+		<!--#include virtual="agences/incl_nb_pages.htm" -->		
+	</div><!-- #RechPagesBas -->
+	$$END:LISTEAG:NBRPAGES$$
+	
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	<div class="agencetxt">
+	<p>
+		Composée d’une équipe féminine, fidèle à l’agence depuis ses débuts, l’agence 
+		MCF met à votre disposition un ensemble de compétences et d’expériences pour 
+		vous aider à réaliser votre projet immobilier sur Bréval, Bueil et la région, 
+		dans les meilleures conditions.
+	</p>
+	<h2>Les Agences immobilières MCF  à Bréval et Bueil vous souhaitent la bienvenue.</h2>
+	<p>
+		Spécialiste du marché immobilier de <a href="$$URLBASE$$/immobilier-breval.htm">Bréval</a>, 
+		<a href="$$URLBASE$$/immobilier-bueil.htm">Bueil</a> 
+		et environs, notre agence développe une activité de transactions immobilières, pour un véritable service de proximité.<br/>
+		Maîtrisant de longue date les tendances et les évolutions de notre marché local, nos négociatrices sont en mesure de 
+		vous donner les meilleurs conseils pour trouver votre future résidence principale à moins de 1h de Paris St Lazare par le train.<br/>
+		Un secteur de l’ouest parisien, peu urbanisé et sur lequel vous trouverez un choix de maisons et terrains, pour un meilleur rapport qualité de vie / prix/ espace.
+	</p>
+	<p>
+		Notre site rassemble toutes nos <a href="$$URLBASE$$/annonces-immobilieres-breval.htm">annonces immobilières sur Bréval</a> 
+		et sa région, avec un choix d’annonces de vente d’appartements dans les centres ville, des annonces de <a href="$$URLBASE$$/vente-maison-breval.htm">vente de maisons 
+		sur Bréval</a>, <a href="$$URLBASE$$/vente-maison-bueil.htm">Bueil</a> et les villages des environs, parmi une sélection 
+		de maisons traditionnelles, maisons anciennes, fermes, longères, pavillons contemporains, propriétés et terrains à bâtir.<br/>
+		Nos annonces immobilières sont largement diffusées sur les portails immobiliers et portails d’annonces du web.
+	</p>
+	<p>
+		Notre collaboratrice, spécialiste de la vente de terrains, se tient à votre disposition pour vous informer 
+		sur les aspects d’urbanisme et de viabilisation, et nos partenaires, courtiers ou entreprises du bâtiment, 
+		pourront intervenir pour vous aider à constituer votre dossier de financement et étudier vos projets travaux et rénovation.
+	</p>
+	<p>
+		Toute l’équipe de l’agence immobilière MCF à Bréval et Bueil vous attend pour une étude personnalisée de votre projet immobilier.
+	</p>
+</div>
+</div><!-- #AgImmo -->
+
+
+
+<!--#include virtual="footer/incl_bas.htm" -->
+
