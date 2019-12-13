@@ -1,0 +1,154 @@
+$$REM$$====================================================================
+//// <summary>Sélection d'annonces affichée (souvent des cdc) sur l'index</summary>
+//// <remarks>
+//// <para>Paramétrage avec macros qui se trouvent dans incl_param.htm du site</para>
+//// <para>Paramétrages possible = fraicheur, défilant ou pas, type transac et nb annonces affichées</para>
+//// <para>Packs avantage = par défaut NOUVEAUTÉS. CDC, exclus et autres à vérifier si on a droit</para>
+//// <para>On ne démutualise pas ce fichier !</para>
+//// <para>La date de fraicheur du bien est affichée en commentaire: info utile pour chefs de projets</para>
+//// <para>On enlève ces valeurs de la qry, ça ne sert que pour le neuf : idtt= IMMOBW:ANN:~limit:IDTYPETRANSACTION IF:IMMOBW:ANN:~limit:IDANNONCEPARENT &amp;idap= IMMOBW:ANN:~limit:IDANNONCEPARENT END</para>
+//// <update date="2010-02-18" author="lisbonne.siriphol">Reprise de x_v2 et adaptation pour x_v3</update>
+//// <update date="2009-11-19" author="Guillaume.Richard">Mise à jour de la fontion de macro smalltext (smalltextv2) pour le descriptif</update>
+//// <update date="2009-07-08" author=christophe.ledoux">Updates</update>
+=====================================================================$$END$$
+
+
+$$INIT:SELECTION_INDEX=1$$
+
+<!--#include virtual="styles/macros_cdc.htm" -->
+<!--#include virtual="styles/all_global_macros.htm" -->
+$$B:IMMOBW:ANN:~limit:VAL:MAXCC3:VAL:IDTTCC3:QRY:LANG:ALIAS:ANNLISTE3:::VAL:TYPEANN3::d_dt_maj:~NOSTAT:1$$
+$$BIF:ANNLISTE3$$
+<div id="div_C2C_T3">
+$$DO$$
+$$REM$$<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->$$END$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIEN_SELECTION_INDEX=@@ANNLISTE3:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE3:IDPUBLICATION@@/@@ANNLISTE3:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$A:TITLE_SELECTION_INDEX=$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_SELECTION_INDEX=@@ANNLISTE3:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE3:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE3:AVILLE ncase@@$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+$$REM$$<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END$$
+
+<div
+	class="selectionIndex_Ctn div_C2C"
+	$$IF=:1:DEFILE3$$style="display:none;"$$END$$
+	>
+	<div class="selectionIndex" id="tabc2c_T3$$ANNLISTE3:I$$" $$IF=:1:DEFILE3$$style="display:none;"$$END$$>
+		<!-- fraicheur = $$ANNLISTE3:DT_MAJ datediff now timespan days$$ -->
+		
+		$$IF!:1:SELECTION_INDEX_NO_PICTO$$
+			$$IF:ANNLISTE3:SI_EXCLUSIF$$<div class="selectionIndexExclusif"><!-- --></div>$$END:SI_EXCLUSIF$$
+			$$IF:ANNLISTE3:SI_COUPDECOEUR$$<div class="selectionIndexCDC"><!-- --></div>$$END:SI_COUPDECOEUR$$
+			$$IF:SI_PROMO$$$$IF:ANNLISTE3:SI_PROMO$$<div class="selectionIndexPromo"><!-- --></div>$$END:SI_PROMO$$$$END:SI_PROMO$$
+			$$IF!:1:SELECTION_INDEX_NO_PICTO_NOUVEAU$$
+				$$IF+:SELECTIONFRAICHEUR:ANNLISTE3:DT_CREA datediff now timespan days$$<div class="selectionNouveau"><!-- --></div>$$END$$
+			$$END$$
+		$$END:SELECTION_INDEX_NO_PICTO$$		
+		
+		<div class="selectionPhoto_ctn">			
+			$$IF:ANNLISTE3:IDPHOTO$$
+			<div class="nbPhotos_ctn">
+				<div class="nbPhotosBg"><!-- --></div>
+				<a class="nbPhotos" href="$$LIEN_SELECTION_INDEX$$" title="">
+					<em><!-- --></em>
+					<span><strong>$$ANNLISTE3:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE3:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE3:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+					<span class="clear"><!-- --></span>
+				</a>
+			</div><!-- .nbPhotos_ctn -->
+			$$END$$	
+			
+			<a class="selectionPhoto"	
+				$$IF0:RECH_SANS_PHOTO$$
+					$$IF=:TRUE:ANNLISTE3:SI_LOGO$$
+					style="background: url('$$ANNLISTE3:URLLOGO$$') 50% 50% no-repeat #fff;"
+					$$END$$
+					$$IF=:FALSE:ANNLISTE3:SI_LOGO$$
+					style="background: url('$$SANS_PHOTO_INDEX$$') 0 0 no-repeat !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$$SANS_PHOTO_INDEX$$', sizingMethod='scale');}
+					$$END$$
+				$$END:RECH_SANS_PHOTO$$
+				$$IF:RECH_SANS_PHOTO$$
+					style="background: $$RECH_SANS_PHOTO$$;"
+				$$END:RECH_SANS_PHOTO$$
+					href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				$$REM$$<!-- 2010.06.08 nouveau format d'image C175 > carré croppé de 175 x 175 px -->$$END:REM$$
+				$$IF:ANNLISTE3:C175URL0$$
+				<img class="selectionPhotoImg" src="$$ANNLISTE3:C175URL0$$" alt="$$TITLE_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" />
+				$$END$$
+			</a><!-- .selectionPhoto -->			
+		</div><!-- .selectionPhoto_ctn -->
+		
+		<div class="selectionDescr">			
+			<p class="selectionVille">
+					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+					<strong>
+						$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE3:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE3:IDTYPEBIEN gettypebien lcase$$
+						$$END:WAGREF_IDDOSSIER_SITE$$
+						$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE3:LIBELLE$$
+						$$END:WAGREF_IDDOSSIER_SITE$$
+					</strong>
+					<br />
+					$$ANNLISTE3:AVILLE ncase$$ ($$ANNLISTE3:ACP$$)
+				</a>
+			</p>
+			$$IF:ANNLISTE3:SURFACE$$
+			<p class="selectionSurface">
+				$$ANNLISTE3:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE3:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+				$$LG:ENVIRON lcase$$
+			</p>
+			$$END:ANNLISTE3:SURFACE$$
+				
+			$$IF:ANNLISTE3:NB_PIECES$$
+			<p class="selectionNbPieces">
+				$$ANNLISTE3:NB_PIECES$$
+				$$IF=:1:ANNLISTE3:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:0$1:ANNLISTE3:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$					
+				$$IF:ANNLISTE3:NB_CHAMBRES$$
+					($$ANNLISTE3:NB_CHAMBRES$$ 
+					$$IF=:1:ANNLISTE3:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE3:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+				$$END:ANNLISTE3:NB_CHAMBRES$$
+			</p>
+			$$END:ANNLISTE3:NB_PIECES$$
+			
+						
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<p class="selectionTxt">$$ANNLISTE3:DESCRIPTIF smalltextv2 60 vireaccents$$</p>
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<p class="selectionPrix">$$ANNLISTE3:PRIX formatnumber 0$$ $$ANNLISTE3:PRIX_UNITE htmlencode$$</p>
+			<p class="selectionDescrAnn">$$ANNLISTE3:DESCRIPTIF smalltext 150 htmlencode$$</p>
+			<p class="selectionDetail"><a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a></p>
+		</div><!-- .selectionDescr -->
+	</div><!-- .selectionIndex -->
+</div><!-- .selectionIndex_Ctn -->
+$$LOOP$$
+
+$$IF=:1:DEFILE3$$
+	<script type="text/javascript" src="z/webagency/slagence_X_V3/scripts/selection_index3.js"></script>
+	$$IF0:SELECTION_VITESSE_DEFIL3$$
+		$$A:SELECTION_VITESSE_DEFIL3=4000$$
+	$$END$$
+	<script type="text/javascript">
+		<!--
+		// function C2C_install( divid, prefix, nbaffiches, nbtotal, vitesse, mode, events ) 
+		C2C_install3(/* id c2c*/"div_C2C_T3",/* prefixe c2c*/"tabc2c_T3",/*nb affiches*/$$NBAFFICHDEFILE$$,/*nb total*/$$IF+:21:ANNLISTE3:NBR$$24$$END$$$$IF-:21:ANNLISTE3:NBR$$$$ANNLISTE3:NBR$$$$END$$,/* vitesse */$$SELECTION_VITESSE_DEFIL3$$,/* Mode */"random",/* si souris */true);
+		//-->
+	</script>
+$$END:DEFILE3$$
+</div><!-- #div_C2C -->
+$$BFIN$$

@@ -1,0 +1,139 @@
+$$INIT:SELECTION_INDEX=1$$
+
+<!--#include virtual="styles/macros_cdc.htm" -->
+<!--#include virtual="styles/all_global_macros.htm" -->
+$$B:IMMOBW:ANN:~limit:VAL:MAXCC4:VAL:IDTTCC4:QRY:LANG:ALIAS:ANNLISTE4:::VAL:TYPEANN4::d_dt_maj:~NOSTAT:1$$
+$$BIF:ANNLISTE4$$
+<div id="div_C2C_T4">
+$$DO$$
+$$REM$$<!-- //////////////////////////// on stocke ici le lien vers l'annonce + les valeurs de TITLE, car les infos sont récurrantes //////////////////////////// -->$$END$$
+$$IF:PAGE:URLREWRITINGENABLED$$
+	$$IF:FORM:LANG$$
+		$$IF!:FR:FORM:LANG$$
+			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE4:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+		$$END$$
+		$$IF=:FR:FORM:LANG$$
+			$$A:LIEN_SELECTION_INDEX=@@ANNLISTE4:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:FORM:LANG$$
+		$$A:LIEN_SELECTION_INDEX=@@ANNLISTE4:URLVIRTUELLE@@$$
+	$$END$$
+$$END$$
+$$IF0:PAGE:URLREWRITINGENABLED$$
+	$$A:LIEN_SELECTION_INDEX=@@URLBASE@@/@@ANNLISTE4:IDPUBLICATION@@/@@ANNLISTE4:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+$$END$$
+$$A:TITLE_SELECTION_INDEX=$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE_SELECTION_INDEX=@@ANNLISTE4:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE4:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE4:AVILLE ncase@@$$
+$$END:WAGREF_IDDOSSIER_SITE$$
+$$REM$$<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->$$END$$
+
+<div
+	class="selectionIndex_Ctn div_C2C"
+	$$IF=:1:DEFILE4$$style="display:none;"$$END$$
+	>
+	<div class="selectionIndex" id="tabc2c_T4$$ANNLISTE4:I$$" $$IF=:1:DEFILE3$$style="display:none;"$$END$$>
+		<!-- fraicheur = $$ANNLISTE4:DT_MAJ datediff now timespan days$$ -->
+		
+		$$IF!:1:SELECTION_INDEX_NO_PICTO$$
+			$$IF:ANNLISTE4:SI_EXCLUSIF$$<div class="selectionIndexExclusif"><!-- --></div>$$END:SI_EXCLUSIF$$
+			$$IF:ANNLISTE4:SI_COUPDECOEUR$$<div class="selectionIndexCDC"><!-- --></div>$$END:SI_COUPDECOEUR$$
+			$$IF:SI_PROMO$$$$IF:ANNLISTE4:SI_PROMO$$<div class="selectionIndexPromo"><!-- --></div>$$END:SI_PROMO$$$$END:SI_PROMO$$
+			$$IF!:1:SELECTION_INDEX_NO_PICTO_NOUVEAU$$
+				$$IF+:SELECTIONFRAICHEUR:ANNLISTE4:DT_CREA datediff now timespan days$$<div class="selectionNouveau"><!-- --></div>$$END$$
+			$$END$$
+		$$END:SELECTION_INDEX_NO_PICTO$$		
+		
+		<div class="selectionPhoto_ctn">			
+			$$IF:ANNLISTE4:IDPHOTO$$
+			<div class="nbPhotos_ctn">
+				<div class="nbPhotosBg"><!-- --></div>
+				<a class="nbPhotos" href="$$LIEN_SELECTION_INDEX$$" title="">
+					<em><!-- --></em>
+					<span><strong>$$ANNLISTE4:NBPHOTOS$$</strong> $$IF=:0$1:ANNLISTE4:NBPHOTOS$$$$LG:PHOT lcase$$$$END$$$$IF+:2:ANNLISTE4:NBPHOTOS$$$$LG:PHOTS lcase$$$$END$$</span>
+					<span class="clear"><!-- --></span>
+				</a>
+			</div><!-- .nbPhotos_ctn -->
+			$$END$$	
+			
+			<a class="selectionPhoto"	
+				$$IF0:RECH_SANS_PHOTO$$
+					$$IF=:TRUE:ANNLISTE4:SI_LOGO$$
+					style="background: url('$ANNLISTE4:URLLOGO$') 50% 50% no-repeat #fff;"
+					$$END$$
+					$$IF=:FALSE:ANNLISTE4:SI_LOGO$$
+					style="background: url('$$SANS_PHOTO_INDEX$$') 0 0 no-repeat !important; background: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$$SANS_PHOTO_INDEX$$', sizingMethod='scale');}
+					$$END$$
+				$$END:RECH_SANS_PHOTO$$
+				$$IF:RECH_SANS_PHOTO$$
+					style="background: $$RECH_SANS_PHOTO$$;"
+				$$END:RECH_SANS_PHOTO$$
+					href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+				$$REM$$<!-- 2010.06.08 nouveau format d'image C175 > carré croppé de 175 x 175 px -->$$END:REM$$
+				$$IF:ANNLISTE4:C175URL0$$
+				<img class="selectionPhotoImg" src="$$ANNLISTE4:C175URL0$$" alt="$$TITLE_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$" />
+				$$END$$
+			</a><!-- .selectionPhoto -->			
+		</div><!-- .selectionPhoto_ctn -->
+		
+		<div class="selectionDescr">			
+			<p class="selectionVille">
+					<a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">
+					<strong>
+						$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE4:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE4:IDTYPEBIEN gettypebien lcase$$
+						$$END:WAGREF_IDDOSSIER_SITE$$
+						$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE4:LIBELLE$$
+						$$END:WAGREF_IDDOSSIER_SITE$$
+					</strong>
+					<br />
+					$$ANNLISTE4:AVILLE ncase$$ ($$ANNLISTE4:ACP$$)
+				</a>
+			</p>
+			$$IF:ANNLISTE4:SURFACE$$
+			<p class="selectionSurface">
+				$$ANNLISTE4:SURFACE$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$ANNLISTE4:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+				$$LG:ENVIRON lcase$$
+			</p>
+			$$END:ANNLISTE4:SURFACE$$
+				
+			$$IF:ANNLISTE4:NB_PIECES$$
+			<p class="selectionNbPieces">
+				$$ANNLISTE4:NB_PIECES$$
+				$$IF=:1:ANNLISTE4:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+				$$IF!:0$1:ANNLISTE4:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$					
+				$$IF:ANNLISTE4:NB_CHAMBRES$$
+					($$ANNLISTE4:NB_CHAMBRES$$ 
+					$$IF=:1:ANNLISTE4:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$$$END$$$$IF!:0$1:ANNLISTE4:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$)
+				$$END:ANNLISTE4:NB_CHAMBRES$$
+			</p>
+			$$END:ANNLISTE4:NB_PIECES$$
+			
+						
+			$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+			<p class="selectionTxt">$$ANNLISTE4:DESCRIPTIF smalltextv2 60 vireaccents$$</p>
+			$$END:WAGREF_IDDOSSIER_SITE$$
+			<p class="selectionPrix">$$ANNLISTE4:PRIX formatnumber 0$$ $$ANNLISTE4:PRIX_UNITE htmlencode$$</p>
+			<p class="selectionDescrAnn">$$ANNLISTE4:DESCRIPTIF smalltext 150 htmlencode$$</p>
+			<p class="selectionDetail"><a href="$$LIEN_SELECTION_INDEX$$" title="$$TITLE_SELECTION_INDEX$$">$$LG:DETAILANNONCE pcase$$</a></p>
+		</div><!-- .selectionDescr -->
+	</div><!-- .selectionIndex -->
+</div><!-- .selectionIndex_Ctn -->
+$$LOOP$$
+
+$$IF=:1:DEFILE4$$
+	<script type="text/javascript" src="z/webagency/slagence_X_V3/scripts/selection_index3.js"></script>
+	$$IF0:SELECTION_VITESSE_DEFIL4$$
+		$$A:SELECTION_VITESSE_DEFIL4=4000$$
+	$$END$$
+	<script type="text/javascript">
+		<!--
+		// function C2C_install( divid, prefix, nbaffiches, nbtotal, vitesse, mode, events ) 
+		C2C_install3(/* id c2c*/"div_C2C_T4",/* prefixe c2c*/"tabc2c_T4",/*nb affiches*/$$NBAFFICHDEFILE$$,/*nb total*/$$IF+:21:ANNLISTE4:NBR$$24$$END$$$$IF-:21:ANNLISTE4:NBR$$$$ANNLISTE4:NBR$$$$END$$,/* vitesse */$$SELECTION_VITESSE_DEFIL4$$,/* Mode */"random",/* si souris */true);
+		//-->
+	</script>
+$$END:DEFILE4$$
+</div><!-- #div_C2C -->
+$$BFIN$$
