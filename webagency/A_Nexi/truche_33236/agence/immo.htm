@@ -1,0 +1,141 @@
+$$REM$$====================================================================
+//// <summary>Affiche toutes les infos concernant l'agence</summary>
+//// <remarks>
+//// <para>Obligation d'appeler l'IDPUBLICATION de l'agence via la querystring idp=XXXX</para>
+//// <para>Utilise le style css : slagence_X_V3/styles/agence-immobiliere.css</para>
+//// <para>Portefeuille d'annonces + vignettes des 4 dernières annonces apparaîssent si l'agence a souscrit à un contrat de référencement</para>
+//// <para>MENTIONS LEGALES : SI MODIFS > MODIFIER AUSSI LE FICHIER "LEGAL,MENTIONS.HTM"</para>
+//// </remarks>
+//// <update date="2010-06-10" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+$$INIT:IDT=NOTREAGENCE$$
+$$INIT:CSS_AGENCE=1$$
+$$INIT:JS_BING=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@ - @@LG:IMMOBILIER pcase@@ @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@CV:NOM@@ : @@LG:AGENCEIMMOBILIERE lcase@@ à @@CV:VILLE@@ est spécialiste de l'immobilier à @@CV:VILLE@@ (@@CV:CP@@).$$
+	$$A:KEYWORDS=@@LG:AGENCEIMMOBILIERE pcase@@ @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@CV:NOM@@ à @@CV:VILLE@@ (@@CV:CP@@)$$
+	$$A:DESCRIPTION=@@TITLE@@.$$
+	$$A:KEYWORDS=@@CV:NOM@@, @@CV:VILLE@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:CV$$
+<div id="AgImmo_Ctn" $$IF:PAGE:WAGREF_IDDOSSIER_SITE$$itemscope itemtype="http://schema.org/RealEstateAgent"$$END$$>
+	
+$$REM$$<!-- ============================== gauche ============================== -->$$END:REM$$
+			<div id="AgImmoGauche" style="position:relative;">
+			
+				<div id="AgImmoVitrine_Ctn2"><img src="$$_$$images/agence_int.jpg" /></div>
+				
+				<div id="AgImmoMentions">
+					<h6>$$LG:LIEN:MENTION pcase$$</h6>
+					<p>$$LG:RAISONSOC pcase$$ : C2P REGIE ON LINE | 
+					$$LG:SIEGESOCIAL pcase$$ : 490 AVENUE JEAN MONNET 69300 CALUIRE ET CUIRE France | 
+					$$LG:RCS$$ : LYON 788962397 00014 | 
+					RCS juridique : * | 
+					$$LG:FORMESOC pcase$$ : SARL | 
+					$$IF=:FR:LANGUE$$Numero TVA Intracommunautaire$$END$$$$IF!:FR:LANGUE$$EU VAT number$$END$$ : * | 
+					</p>		
+					
+					<h6>Carte professionnelle transaction n&deg; 123565</h6>
+					<p>$$IF=:FR:LANGUE$$Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle$$END$$$$IF!:FR:LANGUE$$Prefecture of issue of the professional card$$END$$ : Lyon | 
+					$$LG:CAPITAL pcase$$ : 25 000 € | 
+					$$IF=:FR:LANGUE$$Caisse garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Fund financial guarantee$$END$$ : GALIAN | 
+					$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Amount of financial assurance$$END$$ : 120 000 €
+					</p>
+					
+					<h6>Carte professionnelle gestion n&deg; 12847</h6>
+					<p>Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle : Lyon | 
+					$$LG:CAPITAL pcase$$ : 25 000 € | 
+					Caisse garantie financi&egrave;re : GALIAN | 
+					Montant garantie financi&egrave;re : 200 000 €
+					</p>
+					<p>* : $$LG:INFONONRENS lcase$$</p>
+				</div><!-- #AgImmoMentions -->
+				
+			</div><!-- #AgImmoGauche -->
+			
+$$REM$$<!-- ============================== droite ============================== -->$$END:REM$$
+			<div id="AgImmoDroite">
+				
+				<h2>REGIE ONLINE $$IF=:GRENOBLE:FORM:IDP$$GRENOBLE$$END$$$$IF=:PARIS:FORM:IDP$$PARIS$$END$$</h2>				
+				
+				$$IF=:GRENOBLE:FORM:IDP$$
+				<p>
+					<span>Responsable : Valérie Favre-Jayet</span><br />
+					<span >$$LG:MINITEL$$ : 07.82.40.94.51</span><br />
+					<span>$$LG:EMAIL pcase$$ :  $$A:MAIL=grenoble@regie-online.fr$$ $$MAIL encodemail javascript full$$ </span>
+				</p>
+				$$END$$
+				
+				$$IF=:PARIS:FORM:IDP$$
+				<p>
+					<span>Responsable : Sandrine Perzo</span><br />
+					<span >$$LG:MINITEL$$ : 06.95.09.80.59</span><br />
+					<span>$$LG:EMAIL pcase$$ :  $$A:MAIL=paris@regie-online.fr$$ $$MAIL encodemail javascript full$$ </span>
+				</p>
+				$$END$$
+				
+				<p class="AgImmo-btn">				
+					<a class="btn-dossier " href="http://gestion.regie-online.fr" target="_blank">Faites votre devis<br>de gestion locative <strong>en ligne</strong></a>
+					<a class="btn-dossier" href="http://locataire.regie-online.fr/" target="_blank">Remplissez votre dossier<br>de location <strong>en ligne</strong></a>					
+				</p>
+				<div class="clear">&nbsp;</div>							
+			
+				<!--#include virtual="agence/incl_txt_public.htm" -->
+
+				<div id="AgImmoServices">			
+					<h4 id="AgImmo_activites">$$LG:NOSSERVICES pcase$$ </h4>	
+					<p>La Gestion locative : suivi administratif, comptable, technique et juridique de vos biens. </p>
+					<p>La Location : recherche de locataires, accompagnement lors des visites, choix et solvabilité des candidats, signature des baux, états des lieux.</p><br />					
+				</div>								
+					
+				<h4 id="portefeuilleAgence">$$LG:PORTEFEUILLE pcase$$</h4>							
+				<div class="ttl_cdc_agence">
+					<p>Nos dernières locations</p>
+					$$IF=:GRENOBLE:FORM:IDP$$
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;cp=38&amp;lang=$$LANGUE$$">Toutes nos locations</a>
+					$$END$$
+					$$IF=:PARIS:FORM:IDP$$
+						<a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;cp=75&amp;lang=$$LANGUE$$">Toutes nos locations</a>
+					$$END$$
+				</div>
+				<div id="cdc_agence">
+
+					$$IF=:GRENOBLE:FORM:IDP$$
+						$$INIT:MAXSLIDER2=6$$
+						$$INIT:IDTTMODULE2=1$$					
+						$$INIT:TYPEANNMODULE2=photo=10&tri=d_dt_maj&cp=38$$			
+						<!--#include virtual="module/rome/annonces2.gen.htm" -->
+					$$END$$
+					
+					$$IF=:PARIS:FORM:IDP$$
+						$$INIT:MAXSLIDER3=6$$
+						$$INIT:IDTTMODULE3=1$$					
+						$$INIT:TYPEANNMODULE3=photo=10&tri=d_dt_maj&cp=75$$			
+						<!--#include virtual="module/rome/annonces3.gen.htm" -->
+					$$END$$
+					
+					$$INIT:DEFILEROME=0$$
+					$$INIT:DEFILEROMESPEED=0$$
+					
+					
+				</div><!--div#cdc_agence-->
+			
+
+			</div><!-- #AgImmoDroite -->
+			<div class="clear"></div>
+			
+			<!--#include virtual="immo/incl_retour_haut.htm" -->
+</div><!-- #AgImmo_Ctn -->
+<!--#include virtual="footer/incl_bas.htm" -->

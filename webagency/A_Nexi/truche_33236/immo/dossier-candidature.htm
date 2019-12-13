@@ -1,0 +1,404 @@
+$$INIT:IDT=CANDIDATURE$$
+$$INIT:CSS_FORMULAIRES=1$$
+$$INIT:JS_FORMULAIRES=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+	<h1>Dossier de candidature en ligne</h1>
+	
+	$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE=@@LG:CONTACT pcase@@ @@CONTACT_AGENCE:NOM@@$$
+		$$A:DESCRIPTION=@@LG:CONTACTERAGENCES pcase@@ @@CONTACT_AGENCE:NOM@@ @@CONTACT_AGENCE:VILLE@@$$
+		$$A:KEYWORDS=@@LG:CONTACT lcase@@ @@LG:IMMOBILIER lcase@@, @@CONTACT_AGENCE:NOM@@, @@LG:IMMOBILIER lcase@@ @@CONTACT_AGENCE:VILLE@@$$
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+	$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+	$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE=@@LG:CONTACT pcase@@ @@REP:RSRV@@$$
+	$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+	<!--#include virtual="contact/incl_nocnxweb.htm" -->
+
+	<form method="post" id="FormContactAgence_Ctn" action="immo,dossier-candidature-ok.htm?lang=$$LANGUE$$">
+		<div id="FormCandidature">$$REM$$<!--// on range les input hidden dans un div, sinon invalide w3c //-->$$END$$
+			<input type="hidden" name="lang" value="$$LANGUE$$" />
+			<input type="hidden" name="u" value="id3:formmail" />
+			<input type="hidden" name="page_ok" value="immo,dossier-candidature-ok.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] validation renvoyee sur page courante //-->$$END$$
+			<input type="hidden" name="page_err" value="immo,dossier-candidature.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE] erreur renvoyees sur page courante //-->$$END$$
+			<input type="hidden" name="cfg_form" value="candidature" />
+			<input type="hidden" name="cfg_emails" value="candidature" />
+			<input type="hidden" name="source" value="$$REP:SRV lcase$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+			<input type="hidden" name="idPublication" value="$$REP:1$$" />
+			
+			
+	
+			<div id="conteneur_form" style="width: 100%;">
+			
+				$$IF:ERRE$$
+					<div>
+						<div class="attention">$$LG:ATTENTION pcase$$</div>
+						<div class="erre">$$ERRE$$</div>
+					</div>
+				$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+				
+				<h2>CANDIDATURE DE LOCATION</h2>	
+				<table>
+					<tr>
+						<td><label>CANDIDAT(S) LOCATAIRE(S) :</label></td>
+						<td colspan="3"><input type="text" name="candidat" value="$$FORM:CANDIDAT$$" /></td>
+					</tr>
+					<tr>
+						<td width="171"><label>NUMERO DE TELEPHONE :</label></td>
+						<td width="170"><input type="text" name="telephone" value="$$FORM:TELEPHONE$$" /></td>
+						<td width="170"><label>@ :</label></td>
+						<td width="170"><input type="text" name="email" value="$$FORM:EMAIL$$" /></td>
+					</tr>
+					<tr>
+						<td><label>NOM LOCATAIRE SORTANT :</label></td>
+						<td colspan="3"><input type="text" name="locataire_sortant" value="$$FORM:LOCATAIRE_SORTANT$$" /></td>
+					</tr>
+					<tr>
+						<td><label>ADRESSE DU BIEN :</label></td>
+						<td colspan="3"><input type="text" name="adresse" value="$$FORM:ADRESSE$$" /></td>
+					</tr>
+					<tr>
+						<td><label>DATE D'ENTREE SOUHAITEE :</label></td>
+						<td><input type="text" name="date_entree" value="$$FORM:DATE_ENTREE$$" /></td>
+						<td><label>BIEN LIBRE LE :</label></td>
+						<td><input type="text" name="bien_libre" value="$$FORM:BIEN_LIBRE$$" /></td>
+					</tr>
+					<tr>
+						<td><label>APPARTEMENT TYPE :</label></td>
+						<td><input type="text" name="appart_type" value="$$FORM:APPART_TYPE$$" /></td>
+						<td><label>MAISON TYPE :</label></td>
+						<td><input type="text" name="maison_type" value="$$FORM:MAISON_TYPE$$" /></td>
+					</tr>
+					<tr>
+						<td><label>AUTRE :</label></td>
+						<td colspan="3"><input type="text" name="autre_type" value="$$FORM:AUTRE_TYPE$$" /></td>
+					</tr>
+					<tr>
+						<td colspan="4" class="souscat"><label>ANNEXES AU LOGEMENT :</label></td>
+					</tr>
+					<tr>
+						<td class="radiocat">
+							<label class="radiotitle"><strong>PARKING</strong></label>
+							<label><input type="radio" name="parking" value="Oui" $$IF=:Oui:FORM:PARKING$$checked="checked"$$END$$ />OUI</label>
+							<label><input type="radio" name="parking" value="Non" $$IF=:Non:FORM:PARKING$$checked="checked"$$END$$ />NON</label>
+						</td>
+						<td class="radiocat">
+							<label class="radiotitle"><strong>GARAGE</strong></label>
+							<label><input type="radio" name="garage" value="Oui" $$IF=:Oui:FORM:GARAGE$$checked="checked"$$END$$ />OUI</label>
+							<label><input type="radio" name="garage" value="Non" $$IF=:Non:FORM:GARAGE$$checked="checked"$$END$$ />NON</label>
+						</td>
+						<td class="radiocat">
+							<label class="radiotitle"><strong>CAVE</strong></label>
+							<label><input type="radio" name="cave" value="Oui" $$IF=:Oui:FORM:CAVE$$checked="checked"$$END$$ />OUI</label>
+							<label><input type="radio" name="cave" value="Non" $$IF=:Non:FORM:CAVE$$checked="checked"$$END$$ />NON</label>
+						</td>
+						<td class="radiocat">
+							<label class="radiotitle"><strong>AUTRE</strong></label>						
+							<label><input type="radio" name="autre" value="Oui" $$IF=:Oui:FORM:AUTRE$$checked="checked"$$END$$ />OUI</label>
+							<label><input type="radio" name="autre" value="Non" $$IF=:Non:FORM:AUTRE$$checked="checked"$$END$$ />NON</label>
+						</td>
+					</tr>
+					<tr>
+						<td><label>LOYER HORS CHARGES :</label></td>
+						<td><input type="text" name="loyer" value="$$FORM:LOYER$$" /></td>
+						<td><label>PROVISION POUR CHARGES :</label></td>
+						<td><input type="text" name="provision" value="$$FORM:PROVISION$$" /></td>
+					</tr>
+					<tr>
+						<td><label>TOTAL :</label></td>
+						<td colspan="3"><input type="text" name="total" value="$$FORM:TOTAL$$" /></td>
+					</tr>
+					<tr>
+						<td><label>MONTANT DEPOT DE GARANTIE :</label></td>
+						<td><input type="text" name="depot" value="$$FORM:DEPOT$$" /></td>
+						<td><label>HONORAIRES DE LOCATION :</label></td>
+						<td><input type="text" name="honoraires" value="$$FORM:HONORAIRES$$" /></td>
+					</tr>
+				</table>
+				
+				<h2>ETAT CIVIL</h2>
+				<table>
+					<tr>
+						<td width="230"></td>
+						<td class="souscat" width="230">CANDIDAT</td>
+						<td class="souscat" width="230">CONJOINT / CO-CANDIDAT</td>
+					</tr>
+					<tr>
+						<td><label>NOM</label></td>
+						<td><input type="text" name="candidat_nom" value="$$FORM:CANDIDAT_NOM$$"></td>
+						<td><input type="text" name="conjoint_nom" value="$$FORM:CONJOINT_NOM$$"></td>
+					</tr>
+					<tr>
+						<td><label>PRENOMS</label></td>
+						<td><input type="text" name="candidat_prenom" value="$$FORM:CANDIDAT_PRENOM$$"></td>
+						<td><input type="text" name="conjoint_prenom" value="$$FORM:CONJOINT_PRENOM$$"></td>
+					</tr>
+					<tr>
+						<td><label>DATE DE NAISSANCE</label></td>
+						<td><input type="text" name="candidat_datenaissance" value="$$FORM:CANDIDAT_DATENAISSANCE$$"></td>
+						<td><input type="text" name="conjoint_datenaissance" value="$$FORM:CONJOINT_DATENAISSANCE$$"></td>
+					</tr>				
+					<tr>
+						<td><label>LIEU DE NAISSANCE</label></td>
+						<td><input type="text" name="candidat_lieunaissance" value="$$FORM:CANDIDAT_LIEUNAISSANCE$$"></td>
+						<td><input type="text" name="conjoint_lieunaissance" value="$$FORM:CONJOINT_LIEUNAISSANCE$$"></td>
+					</tr>										
+					<tr>
+						<td><label>ADRESSE</label></td>
+						<td><input type="text" name="candidat_adresse" value="$$FORM:CANDIDAT_ADRESSE$$"></td>
+						<td><input type="text" name="conjoint_adresse" value="$$FORM:CONJOINT_ADRESSE$$"></td>
+					</tr>
+					<tr>
+						<td><label>SITUATION DE FAMILLE</label></td>
+						<td>
+							<ul>
+								<li><label><input type="radio" name="candidat_situation" value="Marié" $$IF=:Marié:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>MARI&Eacute;</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Veuf" $$IF=:Veuf:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>VEUF</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Célibataire" $$IF=:Célibataire:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>C&Eacute;LIBATAIRE</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Divorcé" $$IF=:Divorcé:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>DIVORC&Eacute;</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Instance" $$IF=:Instance:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>INSTANCE</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Séparé" $$IF=:Séparé:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>S&Eacute;PAR&Eacute;</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Concubin" $$IF=:Concubin:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>CONCUBIN</label></li>
+								<li><label><input type="radio" name="candidat_situation" value="Pacsé" $$IF=:Pacsé:FORM:CANDIDAT_SITUATION$$checked="checked"$$END$$>PACS&Eacute;</label></li>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<li><label><input type="radio" name="conjoint_situation" value="Marié" $$IF=:Marié:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>MARI&Eacute;</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Veuf" $$IF=:Veuf:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>VEUF</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Célibataire" $$IF=:Célibataire:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>C&Eacute;LIBATAIRE</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Divorcé" $$IF=:Divorcé:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>DIVORC&Eacute;</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Instance" $$IF=:Instance:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>INSTANCE</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Séparé" $$IF=:Séparé:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>S&Eacute;PAR&Eacute;</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Concubin" $$IF=:Concubin:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>CONCUBIN</label></li>
+								<li><label><input type="radio" name="conjoint_situation" value="Pacsé" $$IF=:Pacsé:FORM:CONJOINT_SITUATION$$checked="checked"$$END$$>PACS&Eacute;</label></li>
+							</ul>						
+						</td>
+					</tr>
+					<tr>
+						<td><label>NOMBRE D'ENFANTS A CHARGE</label></td>
+						<td><input type="text" name="candidat_nbrenfant" value="$$FORM:CANDIDAT_NBRENFANT$$"></td>
+						<td><input type="text" name="conjoint_nbrenfant" value="$$FORM:CONJOINT_NBRENFANT$$"></td>
+					</tr>
+					<tr>
+						<td><label>PROFESSION</label></td>
+						<td><input type="text" name="candidat_profession" value="$$FORM:CANDIDAT_PROFESSION$$"></td>
+						<td><input type="text" name="conjoint_profession" value="$$FORM:CONJOINT_PROFESSION$$"></td>
+					</tr>
+					<tr>
+						<td><label>EMPLOYEUR</label></td>
+						<td><input type="text" name="candidat_employeur" value="$$FORM:CANDIDAT_EMPLOYEUR$$"></td>
+						<td><input type="text" name="conjoint_employeur" value="$$FORM:CONJOINT_EMPLOYEUR$$"></td>
+					</tr>	
+					<tr>
+						<td><label>ADRESSE LIEU DE TRAVAIL</label></td>
+						<td><input type="text" name="candidat_adressetravail" value="$$FORM:CANDIDAT_ADRESSETRAVAIL$$"></td>
+						<td><input type="text" name="conjoint_adressetravail" value="$$FORM:CONJOINT_ADRESSETRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>CP - VILLE</label></td>
+						<td><input type="text" name="candidat_cptravail" value="$$FORM:CANDIDAT_CPTRAVAIL$$"></td>
+						<td><input type="text" name="conjoint_cptravail" value="$$FORM:CONJOINT_CPTRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>TELEPHONE</label></td>
+						<td><input type="text" name="candidat_teltravail" value="$$FORM:CANDIDAT_TELTRAVAIL$$"></td>
+						<td><input type="text" name="conjoint_teltravail" value="$$FORM:CONJOINT_TELTRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>TYPE DE CONTRAT (CDI, CDD, Int&eacute;rim...)</label></td>
+						<td><input type="text" name="candidat_contrat" value="$$FORM:CANDIDAT_CONTRAT$$"></td>
+						<td><input type="text" name="conjoint_contrat" value="$$FORM:CONJOINT_CONTRAT$$"></td>
+					</tr>
+					<tr>
+						<td><label>DATE DEBUT CONTRAT</label></td>
+						<td><input type="text" name="candidat_datecontrat" value="$$FORM:CANDIDAT_DATECONTRAT$$"></td>
+						<td><input type="text" name="conjoint_datecontrat" value="$$FORM:CONJOINT_DATECONTRAT$$"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2" class="souscat">RESSOURCES</td>
+					</tr>	
+					<tr>
+						<td><label>REVENUS ANNUELS</label></td>
+						<td><input type="text" name="candidat_revenus" value="$$FORM:CANDIDAT_REVENUS$$"></td>
+						<td><input type="text" name="conjoint_revenus" value="$$FORM:CONJOINT_REVENUS$$"></td>
+					</tr>
+					<tr>
+						<td><label>AUTRES RESSOURCES (pension, APL, rentes...)</label></td>
+						<td><input type="text" name="candidat_ressources" value="$$FORM:CANDIDAT_RESSOURCES$$"></td>
+						<td><input type="text" name="conjoint_ressources" value="$$FORM:CONJOINT_RESSOURCES$$"></td>
+					</tr>
+					<tr>
+						<td><label>TOTAL</label></td>
+						<td><input type="text" name="candidat_revenutotal" value="$$FORM:CANDIDAT_REVENUTOTAL$$"></td>
+						<td><input type="text" name="conjoint_revenutotal" value="$$FORM:CONJOINT_REVENUTOTAL$$"></td>
+					</tr>
+				</table>
+				
+				<h2>CAUTION SOLIDAIRE</h2>
+				<table>
+					<tr>
+						<td width="230"></td>
+						<td class="souscat" width="230">CAUTION 1</td>
+						<td class="souscat" width="230">CAUTION 2</td>
+					</tr>
+					<tr>
+						<td><label>NOM</label></td>
+						<td><input type="text" name="caution1_nom" value="$$FORM:CAUTION1_NOM$$"></td>
+						<td><input type="text" name="caution2_nom" value="$$FORM:CAUTION2_NOM$$"></td>
+					</tr>
+					<tr>
+						<td><label>PRENOMS</label></td>
+						<td><input type="text" name="caution1_prenom" value="$$FORM:CAUTION1_PRENOM$$"></td>
+						<td><input type="text" name="caution2_prenom" value="$$FORM:CAUTION2_PRENOM$$"></td>
+					</tr>
+					<tr>
+						<td><label>DATE DE NAISSANCE</label></td>
+						<td><input type="text" name="caution1_datenaissance" value="$$FORM:CAUTION1_DATENAISSANCE$$"></td>
+						<td><input type="text" name="caution2_datenaissance" value="$$FORM:CAUTION2_DATENAISSANCE$$"></td>
+					</tr>
+					<tr>
+						<td><label>LIEU DE NAISSANCE</label></td>
+						<td><input type="text" name="caution1_lieunaissance" value="$$FORM:CAUTION1_LIEUNAISSANCE$$"></td>
+						<td><input type="text" name="caution2_lieunaissance" value="$$FORM:CAUTION2_LIEUNAISSANCE$$"></td>
+					</tr>
+					<tr>
+						<td><label>ADRESSE</label></td>
+						<td><input type="text" name="caution1_adresse" value="$$FORM:CAUTION1_ADRESSE$$"></td>
+						<td><input type="text" name="caution2_adresse" value="$$FORM:CAUTION2_ADRESSE$$"></td>
+					</tr>
+					<tr>
+						<td><label>CP - VILLE</label></td>
+						<td><input type="text" name="caution1_cp" value="$$FORM:CAUTION1_CP$$"></td>
+						<td><input type="text" name="caution2_cp" value="$$FORM:CAUTION2_CP$$"></td>
+					</tr>
+					<tr>
+						<td><label>TELEPHONE</label></td>
+						<td><input type="text" name="caution1_tel" value="$$FORM:CAUTION1_TEL$$"></td>
+						<td><input type="text" name="caution2_tel" value="$$FORM:CAUTION2_TEL$$"></td>
+					</tr>
+					<tr>
+						<td><label>EMAIL</label></td>
+						<td><input type="text" name="caution1_email" value="$$FORM:CAUTION1_EMAIL$$"></td>
+						<td><input type="text" name="caution2_email" value="$$FORM:CAUTION2_EMAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>SITUATION DE FAMILLE</label></td>
+						<td>
+							<ul>
+								<li><label><input type="radio" name="caution1_situation" value="Marié" $$IF=:Marié:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>MARI&Eacute;</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Veuf" $$IF=:Veuf:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>VEUF</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Célibataire" $$IF=:Célibataire:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>C&Eacute;LIBATAIRE</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Divorcé" $$IF=:Divorcé:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>DIVORC&Eacute;</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Instance" $$IF=:Instance:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>INSTANCE</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Séparé" $$IF=:Séparé:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>S&Eacute;PAR&Eacute;</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Concubin" $$IF=:Concubin:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>CONCUBIN</label></li>
+								<li><label><input type="radio" name="caution1_situation" value="Pacsé" $$IF=:Pacsé:FORM:CAUTION1_SITUATION$$checked="checked"$$END$$>PACS&Eacute;</label></li>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<li><label><input type="radio" name="caution2_situation" value="Marié" $$IF=:Marié:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>MARI&Eacute;</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Veuf" $$IF=:Veuf:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>VEUF</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Célibataire" $$IF=:Célibataire:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>C&Eacute;LIBATAIRE</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Divorcé" $$IF=:Divorcé:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>DIVORC&Eacute;</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Instance" $$IF=:Instance:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>INSTANCE</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Séparé" $$IF=:Séparé:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>S&Eacute;PAR&Eacute;</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Concubin" $$IF=:Concubin:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>CONCUBIN</label></li>
+								<li><label><input type="radio" name="caution2_situation" value="Pacsé" $$IF=:Pacsé:FORM:CAUTION2_SITUATION$$checked="checked"$$END$$>PACS&Eacute;</label></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td><label>NOMBRE D'ENFANTS A CHARGE</label></td>
+						<td><input type="text" name="caution1_nbrenfant" value="$$FORM:CAUTION1_NBRENFANT$$"></td>
+						<td><input type="text" name="caution2_nbrenfant" value="$$FORM:CAUTION2_NBRENFANT$$"></td>
+					</tr>
+					<tr>
+						<td><label>PROFESSION</label></td>
+						<td><input type="text" name="caution1_profession" value="$$FORM:CAUTION1_PROFESSION$$"></td>
+						<td><input type="text" name="caution2_profession" value="$$FORM:CAUTION2_PROFESSION$$"></td>
+					</tr>
+					<tr>
+						<td><label>EMPLOYEUR</label></td>
+						<td><input type="text" name="caution1_employeur" value="$$FORM:CAUTION1_EMPLOYEUR$$"></td>
+						<td><input type="text" name="caution2_employeur" value="$$FORM:CAUTION2_EMPLOYEUR$$"></td>
+					</tr>
+					<tr>
+						<td><label>ADRESSE LIEU DE TRAVAIL</label></td>
+						<td><input type="text" name="caution1_adressetravail" value="$$FORM:CAUTION1_ADRESSETRAVAIL$$"></td>
+						<td><input type="text" name="caution2_adressetravail" value="$$FORM:CAUTION2_ADRESSETRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>CP - VILLE</label></td>
+						<td><input type="text" name="caution1_cptravail" value="$$FORM:CAUTION1_CPTRAVAIL$$"></td>
+						<td><input type="text" name="caution2_cptravail" value="$$FORM:CAUTION2_CPTRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>TELEPHONE</label></td>
+						<td><input type="text" name="caution1_teltravail" value="$$FORM:CAUTION1_TELTRAVAIL$$"></td>
+						<td><input type="text" name="caution2_teltravail" value="$$FORM:CAUTION2_TELTRAVAIL$$"></td>
+					</tr>
+					<tr>
+						<td><label>TYPE DE CONTRAT (CDD, CDI, Int&eacute;rim...)</label></td>
+						<td><input type="text" name="caution1_contrat" value="$$FORM:CAUTION1_CONTRAT$$"></td>
+						<td><input type="text" name="caution2_contrat" value="$$FORM:CAUTION2_CONTRAT$$"></td>
+					</tr>
+					<tr>
+						<td><label>DATE DEBUT CONTRAT</label></td>
+						<td><input type="text" name="caution1_datecontrat" value="$$FORM:CAUTION1_DATECONTRAT$$"></td>
+						<td><input type="text" name="caution2_datecontrat" value="$$FORM:CAUTION2_DATECONTRAT$$"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2" class="souscat">RESSOURCES</td>
+					</tr>
+					<tr>
+						<td><label>REVENUS ANNUELS</label></td>
+						<td><input type="text" name="caution1_revenus" value="$$FORM:CAUTION1_REVENUS$$"></td>
+						<td><input type="text" name="caution2_revenus" value="$$FORM:CAUTION2_REVENUS$$"></td>
+					</tr>
+					<tr>
+						<td><label>AUTRES RESSOURCES<label></td>
+						<td><input type="text" name="caution1_ressources" value="$$FORM:CAUTION1_RESSOURCES$$"></td>
+						<td><input type="text" name="caution2_ressources" value="$$FORM:CAUTION2_RESSOURCES$$"></td>
+					</tr>
+					<tr>
+						<td><label>TOTAL<label></td>
+						<td><input type="text" name="caution1_revenutotal" value="$$FORM:CAUTION1_REVENUTOTAL$$"></td>
+						<td><input type="text" name="caution2_revenutotal" value="$$FORM:CAUTION2_REVENUTOTAL$$"></td>
+					</tr>
+						<tr>
+						<td></td>
+						<td colspan="2" class="souscat">INFORMATIONS COMPLÉMENTAIRES</td>
+					</tr>
+					<tr>
+						<td><label></label></td>
+						<td colspan="2">
+							<textarea name="message" style="width: 100%; height: 120px;"></textarea>
+						</td>
+					</tr>
+					
+				</table>
+	
+	<p><strong>Ce document n'est pas une réservation de location</strong></p>
+<p><strong>Le(s) signataire(s) certifie(nt) l'exactitude des renseignements ci-dessus : toute fausse d&eacute;claration ou omission engage sa (leur) responsabilit&eacute;.</strong></p>
+				<input type="submit" value="Envoyer" /><div class="clear"></div>
+				
+			</div>
+		</div>
+	</form>
+	
+
+				
+		
+	<!--#include virtual="legal/incl_formulaire_cgu.htm" -->
+	<!--#include virtual="immo/incl_retour_haut.htm" -->
+	
+<!--#include virtual="footer/incl_bas.htm" -->

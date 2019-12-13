@@ -1,0 +1,161 @@
+$$REM$$<!-- ======================== FICHIER A NE PAS DEMUTUALISER ======================== -->$$END:REM$$
+$$REM$$<!-- ======================== VARIABLES ET PARAMS AGENCE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_var_params.htm" -->	
+$$REM$$<!-- ======================== DOCTYPE ======================== -->$$END:REM$$
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+<!--#include virtual="header/incl_titre.htm" -->
+$$REM$$<!-- ========================== JS INIT ========================== -->$$END:REM$$
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+$$REM$$<!-- ========================== CSS ========================== -->$$END:REM$$
+<!--#include virtual="styles/incl_styles.htm" -->
+$$REM$$<!-- ========================== ICON NAVIGATEUR ================= -->$$END:REM$$
+$$IF:FAVICON$$
+	<link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico" />
+$$END$$	
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+</head>
+$$IF=:LOC:FORM:M$$
+	$$A:RUB=LOC$$
+$$END$$
+$$A:NOMPAGE=@@REP:0 left 5@@$$		
+<body class="$$IF!:INDEX.HTM:REP:0$$int$$END$$ $$IF!:IMMO,:NOMPAGE$$full$$END$$">
+	<div id="Header"></div>
+	<div id="header">
+		<div class="wrap">		
+			<a href="$$LIENACCUEIL$$" class="btnaccueil btnnoir">accueil</a>
+			<a href="http://blog.regie-online.fr" target="_blank" class="btnaccueil btnnoir">$$LG:BLOG ucase$$</a>
+			<ul id="btn_compte">
+				<li><a href="" class="btncompte btnnoir"><span></span>MON COMPTE</a>
+					<ul id="boite_login">
+						<li>			
+						<div id="login">
+							<form method="post" action="http://regie-online.crypto-extranet.com/extranet/connexion/login" id="loginForm" name="loginForm">
+								<table summary="identification">
+									<tr>
+										<td>
+											<label for="login">Identifiant:</label>
+										</td>
+										<td>
+											<input class="required" title="La saisie de l'identifiant est obligatoire !" name="login" id="login" value="" />
+											<input type="hidden" id="secureID" name="secureID" value="16a9b6adf6fa0baddf623a62b3f95a02" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label for="password">Mot de passe:</label>
+										</td>
+										<td>
+											<input class="required" title="La saisie du mot de passe est obligatoire !" type="password" id="password" name="password" value="" />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: right;">
+											<input class="button button-current" type="submit" id="submitBtn" value="Connexion" />
+										</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			
+			<script>			
+				$("#boite_login").hide();			
+				
+				$("#btn_compte").mouseenter(function() {
+					$("#boite_login").stop().show();
+				});
+					
+				$("#btn_compte").mouseleave(function() {
+					$("#boite_login").delay(5000).fadeOut(300);
+				});
+			</script>
+
+			
+			<div class="clear"></div>
+			<div class="titre">				
+				<img src="images/titre.png" alt="gestion immobilière locative en ligne" />
+			</div>
+			
+			<div id="btn_villes">
+				<a href="$$URLBASE$$/agence,immo.htm?idp=paris&amp;lang=$$LANGUE$$" title="Paris">Paris</a>		
+				<a href="$$URLBASE$$/agence,immobiliere.htm?idp=471315&amp;lang=$$LANGUE$$" title="Lyon">Lyon</a>
+				<a href="$$URLBASE$$/agence,immo.htm?idp=grenoble&amp;lang=$$LANGUE$$" title="Grenoble">Grenoble</a>					
+				<a class="btn_inverse" href="http://gestion.regie-online.fr" target="_blank" title="Votre devis de gestion personnalis&eacute;">Votre devis de gestion <span>en ligne</span></a>			
+			</div>
+		
+			
+			
+		</div><!-- div.wrap -->
+	</div><!-- div#header -->
+	
+	
+	$$IF=:INDEX.HTM:REP:0$$
+		<div id="logo"><img src="images/logo.png" alt="" /></div>
+	$$END$$
+	
+	$$IF!:INDEX.HTM:REP:0$$
+		<div id="content">
+			<div class="wrap">
+				$$IF!:AGENCE,IMMOBILIERE.HTM$AGENCE,IMMO.HTM:REP:0$$
+				<div id="logoint">
+					$$IF=:GERER:RUB$$
+						<a href="immo,gerer.htm?lang=$$LANGUE$$" id="gerer">g&eacute;rer</a>
+					$$END$$
+					$$IF!:GERER:RUB$$
+						<a href="immo,louer.htm?lang=$$LANGUE$$" id="louer">louer</a>
+					$$END$$
+					<img src="images/logo-int.jpg" alt="">
+					<div class="clear"></div>
+				</div>
+				$$END$$
+				$$IF!:IMMO,:NOMPAGE$$			
+					<div id="menuH">
+						<ul>
+							<!--#include virtual="menu/incl_menu.htm" -->
+						</ul>					
+					</div>
+				$$END$$
+				$$IF=:IMMO,:NOMPAGE$$
+					<div id="col">				
+						<div id="menuV">
+							<ul>
+								<!--#include virtual="menu/incl_menu.htm" -->
+							</ul>					
+						</div>		
+						<p class="adresse">
+							$$IF=:IMMO,LOUER.HTM$IMMO,GERER.HTM:REP:0$$
+								<div class="btn-villes-side">
+									<a href="$$URLBASE$$/agence,immo.htm?idp=paris&amp;lang=$$LANGUE$$" title="Paris">Paris</a>		
+									<a href="$$URLBASE$$/agence,immobiliere.htm?idp=471315&amp;lang=$$LANGUE$$" title="Lyon">Lyon</a>
+									<a href="$$URLBASE$$/agence,immo.htm?idp=grenoble&amp;lang=$$LANGUE$$" title="Grenoble">Grenoble</a>
+								</div>
+							$$END$$
+							$$IF=:IMMO,CANDIDATURE-LOCATION.HTM:REP:0$$
+								<a class="link-mail-side" href="mailto:contact@regie-online.fr">contact@regie-online.fr</a>
+							$$END$$
+							$$IF!:IMMO,LOUER.HTM$IMMO,CANDIDATURE-LOCATION.HTM$IMMO,GERER.HTM:REP:0$$
+								<b>Siège social</b><br />
+								490, avenue Jean Monnet<br />69300 Caluire et Cuire<br />
+								<a href="mailto:contact@regie-online.fr">contact@regie-online.fr</a><br />
+								<strong>04 78 58 29 84</strong>
+							$$END$$
+						</p>						
+					</div><!-- div#col -->
+				$$END$$			
+				<div id="page">
+		$$END$$
+		
+		$$REM$$
+			$$IF=:AGENCE,IMMOBILIERE.HTM:REP:0$$
+				<div id="pub_agence" class="cycle-slideshow" data-cycle-random="true" data-cycle-slides="> a">
+					<a href="http://www.habiterlyon.com/ " target="_blank"><img src="$$_$$images/pub_home/pub01.gif" /></a>
+					<a href="http://www.fornas.fr/" target="_blank"><img src="$$_$$images/pub_home/pub02.gif" /></a>
+				</div>	
+			$$END$$
+		$$END$$

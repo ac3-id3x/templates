@@ -1,0 +1,126 @@
+$$A:JS_ANNONCES=1$$
+$$DO:1:6$$
+$$IF!:REP_1:ANNLISTE:IDANNONCE$$
+	$$IF:PAGE:URLREWRITINGENABLED$$
+		$$IF:FORM:LANG$$
+			$$IF!:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF=:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:FORM:LANG$$
+			$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:PAGE:URLREWRITINGENABLED$$
+		$$A:LIEN_SIMILAIRE=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	$$END$$
+	$$A:TITLE_SIMILAIRE=$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE_SIMILAIRE=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+	$$END:WAGREF_IDDOSSIER_SITE$$
+
+
+
+	<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">
+			<div class="on">
+				<span class="AnnonceTypeBien">
+					$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+						$$ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNLISTE:IDTYPEBIEN gettypebien lcase$$
+					$$END:WAGREF_IDDOSSIER_SITE$$
+					$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE:LIBELLE$$
+					$$END:WAGREF_IDDOSSIER_SITE$$	
+				</span>
+				<span class="AnnonceVille">$$ANNLISTE:AVILLE ncase$$</span>
+				<span class="AnnoncePrixBien">$$ANNLISTE:PRIX formatnumber 0$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</span>
+			</div>
+			$$IF:ANNLISTE:IDPHOTO$$
+					<div class="photo">
+							$$IF:ANNLISTE:SI_PROMO$$
+								<img src="$$_$$images/bandeaux/promo.png" alt="" class="promo_perso" />
+							$$END:SI_PROMO$$			
+
+							
+							$$A:V=@@ANNLISTE:IDVALEURPERSO@@$$		
+
+							$$REM$$ <!-- PREMIER BANDEAU --> $$END$$	
+
+										$$A:E=0$$
+										
+										$$IF!:1:E$$
+											$$IF(:V:501$$
+												<img src="$$_$$images/bandeaux/dejaloue.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+											$$END$$
+											$$IF(:V:502$$
+												<img src="$$_$$images/bandeaux/reserve.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+											$$END$$
+										$$END$$
+										
+										$$IF!:1:E$$
+											$$IF+:SELECTIONFRAICHEUR:ANNLISTE:DT_CREA datediff now timespan days$$
+												<img src="$$_$$images/bandeaux/nouveau.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+											$$END$$
+										$$END$$
+										
+										$$IF!:1:E$$
+												<img src="$$_$$images/bandeaux/libre.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+										$$END$$
+										
+							$$REM$$ <!-- FIN PREMIER BANDEAU  --> $$END$$					
+										
+										
+							$$REM$$ <!-- SECOND BANDEAU NOIR --> $$END$$	
+
+										$$A:E=0$$
+
+										$$IF!:1:E$$
+											$$IF:ANNLISTE:SI_MEUBLE$$			
+												<img src="$$_$$images/bandeaux/meuble.png" alt="" class="bandeau_perso" />				
+												$$A:E=1$$
+											$$END$$
+										$$END$$
+										
+										$$IF!:1:E$$
+											$$IF(:V:503$$
+												<img src="$$_$$images/bandeaux/refait.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+											$$END$$
+											$$IF(:V:504$$
+												<img src="$$_$$images/bandeaux/programme.png" alt="" class="bandeau_perso" />
+												$$A:E=1$$
+											$$END$$
+										$$END$$
+										
+							$$REM$$ <!-- FIN SECOND BANDEAU NOIR --> $$END$$				
+						<img src="$$ANNLISTE:C175URL0$$" alt="$$TITLE_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$" />
+					</div>
+				$$END:ANNLISTE:IDPHOTO$$
+				$$IF0:ANNLISTE:C175URL0$$
+				$$IF:ANNLISTE:SI_LOGO$$
+					<div class="silogo">
+						<img src="$$ANNLISTE:URLLOGO$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+					</div>
+				$$END$$
+			$$END$$
+			<div class="triangle"><span>+</span></div>
+		</a>
+
+
+
+
+
+
+
+$$END:IDANNONCE$$
+$$LOOP$$
+
+
+
+	
