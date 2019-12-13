@@ -1,0 +1,104 @@
+<div class="row-fluid margin-top-30 detail-titre">
+    <div class="span8">
+
+        <div class="row-fluid zone-ligne">
+            $$A:SHOWHONORAIRETOP=0$$
+            $$A:ANNDETAIL:SI_HONORAIRES_ACQUEREUR=False$$
+            <div class="span8">
+                <h1 itemprop="name" class="typo-white line-height-24">
+                    $$IF!:1:HIDE_TRANSACTION$$
+                    <span class="font-body xsmallest uppercase typo-body">
+                        $$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF:ANNDETAIL:SI_LIBRE$$
+                                $$LG:VIAGERLIBRE2 pcase$$
+                            $$END$$
+                            $$IF0:ANNDETAIL:SI_LIBRE$$
+                                $$LG:VIAGEROCCUPE2 pcase$$
+                            $$END$$
+                        $$END$$
+                        $$IF!:5:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF!:1:LOCALCESSION$$
+                                    $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                                $$END$$
+                            $$END$$
+                            $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                                $$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+                                    à louer
+                                $$END$$
+                                $$IF=:2:ANNDETAIL:IDTYPETRANSACTION$$
+                                    à vendre
+                                $$END$$
+                                $$IF!:1$2:ANNDETAIL:IDTYPETRANSACTION$$
+                                    $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                                $$END$$
+                            $$END$$
+                        $$END$$
+                    </span><br>
+                    $$END$$
+                    $$IF!:1:HIDE_TYPEBIEN$$
+                        $$IF!:11:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien pcase replace maison¤/¤villa maison$$$$END$$
+                            $$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$$$END$$
+                            $$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$ : $$ANNDETAIL:LIBELLE$$$$END$$
+                        $$END$$
+                        $$IF=:11:ANNDETAIL:IDTYPETRANSACTION$$
+                            $$IF=:1:LOCALCESSION$$
+                                $$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$ $$LG:AVEC$$ $$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$
+                            $$END$$
+                            $$IF!:1:LOCALCESSION$$
+                                $$IF=:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien pcase replace maison¤/¤villa maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$$$END$$
+                            $$END$$
+                        $$END$$
+                    $$END$$
+                    $$IF!:1:HIDE_VILLE$$
+                        , $$ANNDETAIL:VILLE$$
+                    $$END$$
+                </h1>
+            </div>
+            <div class="span4 pagination-right typo-white margin-top-10">
+                <div class="recherche-annonces-prix" itemprop="offers" itemscope itemtype="http://schema.org/Offer" id="prix$$ANNDETAIL:IDANNONCE$$">
+                    $$IF=:0:PRIXMASQUE$$
+                        $$IF:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                            <div class="big bold"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></div>
+                        $$END$$
+                        $$IF0:ANNDETAIL:XML xml PRIX_NOUS_CONSULTER$$
+                            $$IF:ANNDETAIL:PRIX$$
+                                <!--#include virtual="detail/incl_detail_prix_microdonnes.htm" -->
+                                <div class="bigger bold bloc-detail-prix"><!--#include virtual="detail/incl_detail_prix.htm" --></div>
+                            $$END$$
+                        $$END$$
+                    $$END$$
+                    $$IF=:1:PRIXMASQUE$$
+                        <div class="big bold"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></div>
+                    $$END$$
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="span4 detail-carac margin-top-10 hidden-phone">
+
+        $$IF:ANNDETAIL:SURFACE$$
+        <span class="detail-carac-item">
+            <i class="material-icons">&#xE85B;</i>
+            <span>$$ANNDETAIL:SURFACE$$ m² habitables</span>
+        </span>
+        $$END$$
+
+        $$IF:ANNDETAIL:NB_PIECES$$
+        <span class="detail-carac-item">
+            <i class="material-icons">&#xE871;</i>
+            <span>
+                $$ANNDETAIL:NB_PIECES$$
+                $$IF=:1:ANNDETAIL:NB_PIECES$$
+                    $$LG:PIECE lcase$$
+                $$END$$
+                $$IF!:0$1:ANNDETAIL:NB_PIECES$$
+                    $$LG:PIECES2 lcase$$
+                $$END$$
+            </span>
+        $$END$$
+        </span>
+    </div>
+</div>

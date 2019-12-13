@@ -1,0 +1,257 @@
+$$INIT:IDT=INDEX$$
+	<!--#include virtual="header/incl_boucle_index.htm" -->
+	<!--#include virtual="header/incl_haut.htm" -->
+	<section class="margin-top-under-nav-fixe">
+
+		<aside class="aside-home-1 height-scrolling relative">
+			<div class="$$SITEFLUIDE$$">
+				<div class="relative pagination-centered titre-milieu">
+					<img src="$$_$$images/logo-home.png" alt="Opportunity" class="logo-home">
+					$$SET:JS_MINI_MOTEUR=1$$
+					$$SET:CSS_MINI_MOTEUR=1$$
+					<form class="form-$$TYPEMOTEUR$$ mini-moteur" action="/moteur,prevalidation.htm" method="get" id="Mini_Moteur">
+						<input type="hidden" name="idqfix" value="1">
+						<!--#include virtual="moteur/incl_input_langue.htm" -->
+						<div class="moteur-avantage">
+							<div class="moteur-avantage-wrap">
+								<div id="Mini_Transaction" class="Mini_Transaction">
+									<!--#include virtual="moteur/mini/incl_type_transaction.htm" -->
+								</div>
+								<div id="Mini_Biens" class="Mini_Biens">
+									<script type="text/javascript">
+									$(document).ready(function() {
+										ajaxGet('idtt','$$LANGUE$$','Mini_Biens','type_biens','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$'$$IF:FORM:IDTYPEBIEN$$,'idtypebien=$$FORM:IDTYPEBIEN$$'$$END$$$$IF:FORM:IDTYPECOMMERCE$$,'idtypecommerce=$$FORM:IDTYPECOMMERCE$$'$$END$$);
+									});
+									</script>
+								</div>
+								<div id="Mini_Villes" class="Mini_Villes">
+									<script type="text/javascript">
+									$(document).ready(function() {
+										ajaxGet('idtt','$$LANGUE$$','Mini_Villes','villes_ajax','$$TYPEMOTEUR$$'$$IF:FORM:CI$$,'','ci=$$FORM:CI$$'$$END$$);
+									});
+									</script>
+									<!--#include virtual="moteur/mini/incl_villes.htm" -->
+								</div>
+								<div id="Mini_Budget" class="Mini_Budget">
+									<script type="text/javascript">
+									$(document).ready(function() {
+										ajaxGet('idtt','$$LANGUE$$','Mini_Budget','budget','$$TYPEMOTEUR$$','$$IF=:1:MINI_BUDGET_LIBRE$$libre$$END$$$$IF=:1:MINI_BUDGET_TRANCHE$$tranche$$END$$$$IF=:1:MINI_BUDGET_SLIDER$$slider$$END$$');
+									});
+									</script>
+								</div>
+
+								<div id="Mini_Bouton" class="Mini_Bouton">
+									<div class="control-group margin-0">
+										<div class="$$TYPEBOUTON$$ btn-action btn-large btn-block bouton-rechercher-moteur" data-loading-text="$$LG:LOADING pcase$$">$$LG:RECHERCHER pcase$$</div>
+									</div>
+								</div>
+							</div>
+							<!--#include virtual="moteur/mini/incl_input_hidden.htm" -->
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="absolute z-25 top left right bottom size-picture-container width-100-pourcent height-100-pourcent">
+				<!--#include virtual="header/incl_rotation_fullscreen.htm" -->
+			</div>
+			<div class="scrollto">
+				<a href="#homesuite" class="toanchor scrollto-btn">
+					<i class="icon-v5-arrow-down-6"></i>
+				</a>
+			</div>
+		</aside>
+
+		<div id="homesuite" class="anchor hidden-phone"></div>
+		<aside class="aside-home-2 bg-half-primary hidden-phone relative">
+			<div class="$$SITEFLUIDE$$">
+				<div class="row-fluid">
+					<div class="span6 conseillers-search">
+						<p>
+							<span class="uppercase">$$LG:LIEN:RESEAU pcase$$</span><br>
+							<span class="font-title bigger typo-white">$$LG:CONSEILLERSSERVICES pcase$$</span>
+						</p>
+						<p>OPPORTUNITY est un réseau de mandataires immobilier implantés partout en France et travaillant ensemble pour vous apporter un service sur mesure et de qualité en transaction immobilière, gestion immobilière ou de syndic de copropriété.</p>
+						<p>Une parfaite connaissance du marché nous permet de localiser les meilleures affaires pour présenter à nos clients les biens les plus rares.</p>
+						<p>Contactez le conseiller le plus proche de chez vous, qui vous accompagnera dans la réalisation de votre projet immobilier </p>
+						<p class="uppercase typo-white">Rechercher un conseiller</p>
+						<form class="conseillers-form" action="/conseillers,liste.htm" method="get">
+							$$B:IMMOBW:AGENCES:DEP:::WITHDEP::::::QRY:REGION:ALIAS:DEPT$$
+							$$B:IMMOBW:VILLESAGENCES:ALIAS:VILLESAGENCES$$
+							<div class="span3">
+								<select class="select-carte select-reg center" name="region">
+									<option value="">$$LG:REGION pcase$$</option>
+									<option value="ile-de-france" data-cps="75,77,78,91,92,93,94,95">Ile de France</option>
+									<option value="bretagne" data-cps="22,29,35,56">Bretagne</option>
+								</select>
+							</div>
+							<div class="span3">
+								<select class="select-carte select-dept center opacity-2" disabled name="cp">
+									<option value="">$$LG:DEPART pcase$$</option>
+									$$BIF:DEPT$$
+										$$DO$$
+											$$IFNEXT:DEPT:DEP$$
+												$$REM$$<option value="$$DEPT:DEPARTEMENT urlencode$$" data-cp="$$DEPT:DEP$$">$$DEPT:DEPARTEMENTAFF ncase replace ¤ -$$ ($$DEPT:DEP$$)</option>$$END$$
+											$$END$$
+										$$LOOP$$
+									$$BFIN$$
+								</select>
+							</div>
+							<div class="span3">
+								<select class="select-carte select-ville center opacity-2" disabled name="cp">
+									<option value="">Ville</option>
+									$$BIF:VILLESAGENCES$$
+										$$DO$$
+											$$A:CP=@@VILLESAGENCES:CP left 2@@$$
+												$$REM$$<option value="$$VILLESAGENCES:CP$$ $$VILLESAGENCES:VILLE urlencode$$" data-cp="$$VILLESAGENCES:CP$$" data-ville="$$VILLESAGENCES:VILLE ncase$$">$$VILLESAGENCES:VILLE ncase$$ ($$VILLESAGENCES:CP$$)</option>$$END$$
+										$$LOOP$$
+									$$BFIN$$
+								</select>
+							</div>
+							<div class="span3">
+								<span class="bloc-btn-agence">
+									<a href="/conseillers,liste.htm" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-large btn-ok" title="$$LG:AFFICHER1 pcase$$">$$LG:AFFICHER1 pcase$$</a>
+								</span>
+							</div>
+						</form>
+					</div>
+					<div class="span6 conseillers-map">
+						<div id="geo-map-demut-index" class="height-500 hidden-phone"></div>
+						<script type="text/javascript">
+							id3xContent.addMap({
+								container: {
+									id: 'geo-map-demut-index',
+									cssStyle: {
+										addStyle: 'position:absolute; width:50%; height:100%; right:0px; top:0px;' + ' -webkit-filter:grayscale(100%); filter:grayscale(100%);' // fix for : map size + grey filter
+									} 
+								},
+								mapData: [{ mapDataType: 'AGENCIES', marker: { icon: { defaultIcon: { color: '$$PINCARTO$$'}}, popup: true } }],
+								options: { listing: true }
+							});
+						</script>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+		<aside class="aside-home-3">
+			<div class="$$SITEFLUIDE$$">
+				<!--#include virtual="modules/incl_modules.htm" -->
+			</div>
+		</aside>
+
+		<aside class="aside-home-4">
+			<div class="$$SITEFLUIDE$$">
+				<p class="pagination-centered line-height-36 padding-0">
+					<span class="uppercase">Nos trois agences immobilières</span><br>
+					<span class="font-title biggest typo-white uppercase">Agences de prestige</span>
+				</p>
+				<div class="row-fluid">
+					<div class="span4 margin-top-30">
+						<img src="$$_$$images/agences/vincennes.jpg" alt="Opportunity Vincennes" class="radius-3">
+						<p class="line-height-28 margin-top-15">
+							<span class="uppercase">Votre Agence Île-de-France</span><br>
+							<span class="font-title biggest typo-white">Opportunity<br><span class="smaller">Vincennes</span></span>
+						</p>
+						<hr class="hr-action">
+						<div class="row-fluid">
+							<div class="span2 pagination-centered hidden-phone">
+								<i class="icon-v5-location biggest"></i>
+							</div>
+							<div class="span8 typo-white">
+								3/3 bis rue de Montreuil<br>
+								94300 VINCENNES<br>
+								$$A:MAIL=vincennes@agencesopportunity.com$$
+								$$MAIL encodemail javascript full$$
+							</div>
+						</div>
+					</div>
+					<div class="span4 margin-top-30">
+						<img src="$$_$$images/agences/fontenay.jpg" alt="Opportunity Fontenay sous Bois" class="radius-3">
+						<p class="line-height-28 margin-top-15">
+							<span class="uppercase">Votre Agence Île-de-France</span><br>
+							<span class="font-title biggest typo-white">Opportunity<br><span class="smaller">Fontenay sous Bois</span></span>
+						</p>
+						<hr class="hr-action">
+						<div class="row-fluid">
+							<div class="span2 pagination-centered hidden-phone">
+								<i class="icon-v5-location biggest"></i>
+							</div>
+							<div class="span8 typo-white">
+								176, avenue de la République <br>
+								94120 Fontenay sous Bois
+							</div>
+						</div>
+					</div>
+					<div class="span4 margin-top-30">
+						<img src="$$_$$images/agences/lyon.jpg" alt="Opportunity Gare de Lyon" class="radius-3">
+						<p class="line-height-28 margin-top-15">
+							<span class="uppercase">Votre Agence Île-de-France</span><br>
+							<span class="font-title biggest typo-white">Opportunity<br><span class="smaller">Gare de Lyon</span></span>
+						</p>
+						<hr class="hr-action">
+						<div class="row-fluid">
+							<div class="span2 pagination-centered hidden-phone">
+								<i class="icon-v5-location biggest"></i>
+							</div>
+							<div class="span8 typo-white">
+								54, bd Diderot<br>
+								75012 Paris
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</aside>
+
+		<div id="estimation" class="anchor hidden-phone"></div>
+		<aside class="aside-home-5 aside-estimation">
+			<div class="$$SITEFLUIDE$$">
+				<p class="line-height-36 padding-0">
+					<span class="uppercase">$$LG:ESTIMBIEN pcase$$</span><br>
+					<span class="font-title biggest typo-white uppercase">$$LG:ESTIMATIONLIGNE pcase$$</span>
+				</p>
+				<p class="hidden-phone">
+					Basé sur les données précises de votre quartier, notre outil d'estimation immobilière en ligne vous permet d'estimer votre bien au prix juste. Vous pourrez par la suite affiner le prix de vente de votre bien avec l’un de nos conseillers spécialistes de votre région.
+				</p>
+				<p>
+					<a href="/estimation,immobiliere.htm" title="Estimer en ligne" class="btn btn-large btn-action">Estimer en ligne</a>
+				</p>
+			</div>
+		</aside>
+
+		<aside class="aside-home-6">
+			<div class="$$SITEFLUIDE$$">
+				<div class="row-fluid">
+					<a href="/alerte,immo.htm" title="$$LG:ALERTEMAIL pcase$$" class="span4 blocservice blocservice-alerte">
+						<div class="blocservice-img"></div>
+						<div class="blocservice-txt">
+							<div class="bigger typo-white light">$$LG:ALERTEMAIL pcase$$</div>
+							<p>Créez gratuitement votre alerte email pour recevoir nos dernières annonces</p>
+							<p class="typo-white uppercase small padding-bottom-0">Créer une alerte</p>
+						</div>
+					</a>
+					<a href="/immo,partenaires.htm" title="$$LG:LIEN:PART pcase$$" class="span4 blocservice blocservice-partenaire">
+						<div class="blocservice-img"></div>
+						<div class="blocservice-txt">
+							<div class="bigger typo-white light">$$LG:LIEN:PART pcase$$</div>
+							<p>Si vous aussi vous êtes animés par l’envie d’améliorer vos services</p>
+							<p class="typo-white uppercase small padding-bottom-0">$$LG:DEVENIRPARTENAIRE pcase$$</p>
+						</div>
+					</a>
+					<a href="$$URL_BLOG$$" target="_blank" class="span4 blocservice blocservice-actu">
+						<div class="blocservice-img"></div>
+						<div class="blocservice-txt">
+							<div class="bigger typo-white light">$$LG:LIEN:ACTU pcase$$</div>
+							<p>Toute l'actualité du marché immobilier en France</p>
+							<p class="typo-white uppercase small padding-bottom-0">Blog Opportunity</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</aside>
+
+	</section>
+
+	<!--#include virtual="footer/incl_bas.htm" -->

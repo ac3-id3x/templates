@@ -1,0 +1,190 @@
+$$IF=:INDEX$REJOINDRE$VENDRE$GESTION:IDT$$
+<script type="text/javascript">
+
+// -----------------------------------------------
+// ---- SCROLL ANCRES
+// -----------------------------------------------
+
+$(window).load(function(){
+    $('.toanchor').click(function(){
+        var the_id = $(this).attr("href");
+        $('html, body').animate({
+            scrollTop:$(the_id).offset().top
+        }, 'slow');
+        return false;
+    });
+})
+
+</script>
+$$END$$
+
+$$IF=:INDEX:IDT$$
+<script type="text/javascript">
+
+// -----------------------------------------------
+// ---- CONSEILLERS SUR HOMEPAGE
+// -----------------------------------------------
+
+function btnclick(ville,cp){
+    $('.bloc-btn-agence').on('click','.btn',function(e){
+
+        var ville = $('.select-ville').find("option:selected").data("ville");
+        var cp = $('.select-ville').find("option:selected").data("cp");
+        var region = $('.select-reg').val();
+        var titre = $('.select-ville').val();
+        if( !cp ){
+            var cp = $('.select-dept').find(':selected').data("cp");
+            var titre = $('.select-dept').val();
+        }
+        if( !cp ){
+            var cp = $('.select-reg').find(':selected').data("cps");
+            var titre = region;
+        }
+        if( !cp ){
+            var newUrl = "/conseillers,liste.htm?titre="+titre;
+        }else{
+            if( !ville ){
+                var newUrl = "/conseillers,liste.htm?cp="+cp+"&titre="+titre;
+            }else{
+                var newUrl = "/conseillers,liste.htm?cp="+cp+"&ville="+ville+"&titre="+titre;
+            }
+        }
+        e.preventDefault();
+        document.location.href = newUrl;
+    });
+}
+
+$(window).load(function () {
+    $('.select-reg').val("");
+    $('.select-dept').val("");
+    $('.select-ville').val("");
+
+    $('.select-reg').on('change', function () {
+        var valeur = $(this).val();
+        $('.select-dept').val("");
+        $('.select-ville').val("");
+        $('.select-dept').html("");
+        $('.select-ville').html("");
+        var cps = $(this).find(':selected').data("cps");
+
+        var xhr = $.ajax({
+            type: 'GET',
+            data: "region=" + valeur + "&cps=" + cps,
+            dataType: 'html',
+            url: '/scripts,ajax_dept.htm',
+            beforeSend: function () {
+                $('.select-dept').html("<option>Chargement</option>");
+                $('.select-dept').addClass('opacity-2');
+                $('.select-dept').prop('disabled', 'disabled');
+            },
+            success: function (data) {
+                if (valeur) {
+                    $('.select-dept').removeClass('opacity-2');
+                    $('.select-dept').prop('disabled', false);
+                    $('.select-ville').addClass('opacity-2');
+                    $('.select-ville').prop('disabled', 'disabled');
+                } else {
+                    $('.select-dept').addClass('opacity-2');
+                    $('.select-dept').prop('disabled', 'disabled');
+                    $('.select-ville').addClass('opacity-2');
+                    $('.select-ville').prop('disabled', 'disabled');
+                }
+                $('.select-dept').html(data);
+                $('.select-ville').html("");
+                $('.select-dept').val("");
+                $('.select-ville').val("");
+                var ville = "";
+                var cp = cps;
+                var region = $('.select-reg').val();
+                btnclick(ville, cp);
+                getGeoloc();
+            }, error: function () {
+            }, complete: function () {
+            }
+        });
+
+    });
+    $('.select-dept').on('change', function () {
+        var cp = $(this).find(':selected').data("cp");
+        $('.select-ville').html("");
+        $('.select-ville').val("");
+        var valeur = $(this).val();
+        var xhr = $.ajax({
+            type: 'GET',
+            data: "cp=" + cp,
+            dataType: 'html',
+            url: '/scripts,ajax_ville.htm',
+            beforeSend: function () {
+                $('.select-ville').html("<option>Chargement</option>");
+                $('.select-ville').addClass('opacity-2');
+                $('.select-ville').prop('disabled', 'disabled');
+            },
+            success: function (data) {
+                if (valeur) {
+                    $('.select-ville').removeClass('opacity-2');
+                    $('.select-ville').prop('disabled', false);
+                } else {
+                    $('.select-ville').addClass('opacity-2');
+                    $('.select-ville').prop('disabled', 'disabled');
+                    var cp = $('.select-reg').find(':selected').data("cps");
+                }
+                $('.select-ville').html(data);
+
+                var ville = "";
+                $('.select-ville').val("");
+                var region = $('.select-reg').val();
+                btnclick(ville, cp);
+                getGeoloc();
+            }, error: function () {
+            }, complete: function () {
+            }
+        });
+
+    });
+    $('.select-ville').on('change', function () {
+        var ville = $(this).find("option:selected").data("ville");
+        var cp = $(this).find("option:selected").data("cp");
+        if (!cp) {
+            var cp = $('.select-dept').find(':selected').data("cp");
+        }
+        getGeoloc();
+        btnclick(ville, cp);
+    });
+});
+
+$(function() {
+    $('#conseillers-map-switch').change(function(){
+        $('.conseillers-mapwrap').hide();
+        $('.map-' + $(this).val()).show();
+    });
+});
+
+</script>
+$$END$$
+
+$$IF=:DETAILANNONCE:IDT$$
+<script src="/z/webagency/slagence_X_V5/scripts/libs/jquery.colorbox.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(".apporteur-form-trigger").colorbox({
+        inline:true,
+        closeButton: false
+    });
+});
+</script>
+$$END$$
+
+$$REM$$
+<!--
+// -----------------------------------------------
+// ---- CARTO SUR HOMEPAGE
+// -----------------------------------------------
+-->
+$$END$$
+$$IF=:INDEX:IDT$$
+	<script src="/z/webagency/slagence_X_V5/pub/listing_agences_homepage.js"></script>
+$$END$$
+
+$$IF=:1:JS_LISTINGAGENCES2$$
+    <script src="$$_$$scripts/js/listing_agences.js"></script>
+$$END$$
