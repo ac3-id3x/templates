@@ -1,0 +1,25 @@
+$$INIT:JS_DEFILEMENT=1$$
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+	$$BIF:AGS$$
+		$$DO$$
+			coord[$$AGS:I exec XX-1$$]="adr_$$AGS:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+	$(document).ready(function() {
+		Adresse();
+	});
+</script>
+$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+$$BIF:AGS$$
+	$$DO$$
+	<div id="adr_$$AGS:IDPUBLICATION$$" style="display:none; font-size: 11px;" class="blocAgenceDefilement">
+		<div class="coords">
+			$$AGS:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 $$ 
+			$$AGS:CP$$ $$AGS:VILLE$$ - $$IF:AGS:TEL$$$$LG:MINITEL pcase$$. : $$AGS:TEL$$$$END$$  -
+		  	$$A:MAIL=accort.immo@wanadoo.fr$$$$MAIL encodemail javascript full$$
+		</div>
+	</div>
+	$$LOOP$$
+$$BFIN$$
