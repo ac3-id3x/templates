@@ -1,0 +1,387 @@
+<!--#include virtual="header/incl_redirection_mobile.htm" -->
+<!--#include virtual="header/incl_var_params.htm" -->
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+    <!--#include virtual="header/incl_titre.htm" -->
+    <!--#include virtual="scripts/incl_init_scripts.htm" -->
+    <!--#include virtual="styles/incl_styles.htm" -->
+    <link rel="stylesheet" href="styles,structure_idtt_perso.css?lang=$$LANGUE$$">
+    <link rel="stylesheet" href="styles,structure_fancy.css">
+    <link rel="shortcut icon" type="image/x-icon" href="$$_$$images/favicon.ico" />
+
+    <!--#include virtual="referencement/incl_script_google.htm" -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36806873-1']);
+        _gaq.push(['_setDomainName', 'oralia.fr']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".FancyBox").fancybox({ overlayColor:'#000', width:650, height:490,padding: 0 });
+
+            $("#menu ul ul").mouseover(function() {
+                $(this).parent().addClass("on");
+            });
+            $("#menu ul ul").mouseout(function() {
+                $(this).parent().removeClass("on");
+            });
+            $("#client_form_close").click(function() {
+                $("#client ul").hide();
+            });
+            $("#client").mouseover(function() {
+                $("#client ul").show();
+            });
+            $("#client").mouseout(function() {
+                $("#client ul").hide();
+            });
+
+
+            $(".txt").click(function() {
+                if(!$(this).hasClass('txt2')){
+                    $(this).val("");
+                    $(this).addClass('txt2');
+                }
+            });
+            $(".txt").keydown(function() {
+                if(!$(this).hasClass('txt2')){
+                    $(this).val("");
+                    $(this).addClass('txt2');
+                }
+            });
+        });
+    </script>
+    $$IF=:FR:LANGUE$$
+    $$A:CRITERES=Critères$$
+    $$A:TRIER=Trier$$
+    $$END$$
+    $$IF!:FR:LANGUE$$
+    $$A:CRITERES=Criteria$$
+    $$A:TRIER=Sort$$
+    $$END$$
+
+
+    $$IF!:RECHERCHE,BASIC.HTM$INDEX.HTM$IMMO,TEST.HTM:REP:0$$
+    $$A:FULLWIDTH=1$$
+    $$END$$
+
+    $$IF=:2$10:FORM:IDTT$$
+    $$A:VALIDTT= deux$$
+    $$END$$
+    $$IF=:1:FORM:IDTT$$
+    $$A:VALIDTT= un$$
+    $$END$$
+    $$IF=:2$10:ANNDETAIL:IDTYPETRANSACTION$$
+    $$A:VALIDTT= deux$$
+    $$END$$
+    $$IF=:1:ANNDETAIL:IDTYPETRANSACTION$$
+    $$A:VALIDTT= un$$
+    $$END$$
+
+    $$IF=:IMMO,NOSANNONCES.HTM$IMMO,METIERS.HTM$IMMO,OUTILS.HTM$IMMO,GROUPE.HTM:REP:0$$
+    <script type="text/javascript" src="$$_$$scripts/tabinterm.js"></script>
+    $$END$$
+
+    $$IF=:IMMO,VIDEO.HTM:REP:0$$
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+    $$END$$
+
+</head>
+<body class="$$LANGUE$$$$IF!:INDEX.HTM$RECHERCHE,BASIC.HTM:REP:0$$ int$$END$$$$IF=:1:FULLWIDTH$$ detail$$END$$$$VALIDTT$$$$IF=:AGENCE,IMMOBILIERE.HTM:REP:0$$ agence$$END$$">
+    <div class="wrap">
+        <div id="Header"></div>
+        <div id="wrapper">
+            <div id="head">
+                <div id="logo"><a href="http://$$REP:RSRV$$?lang=$$LANGUE$$"><img src="images/skin/logo.jpg" alt="Oralia" /></a></div>
+                <div id="alerte"><a href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$" title="$$LG:CREERALERTEMAIL pcase$$">$$LG:CREERALERTEMAIL pcase$$</a></div>
+                <div id="langue"><!--#include virtual="menu/incl_menu_langue.htm" --></div>
+                <ul id="client" class="noli">
+                    <li>
+                        <a href="javascript:void(0);" id="accesclient">$$LG:ACCESCLIENT pcase$$</a>
+                        <ul class="noli">
+                            <li>
+                                <div id="client_form">
+                                    <div id="client_form_close"></div>
+                                    <div class="titre">
+                                        $$IF=:FR:LANGUE$$Saisissez vos identifiants$$END$$
+                                        $$IF!:FR:LANGUE$$Enter your login$$END$$</div>
+                                    <div class="form">
+                                        <form method="post" action="https://www.extranetoralia.fr/login_externe.php">
+                                            <input type="hidden" name="groupe" value="oralia" />
+                                            <input type="text" name="login" id="login" class="txt" value="$$IF=:FR:LANGUE$$Votre identifiant$$END$$$$IF!:FR:LANGUE$$Your login$$END$$" />
+                                            <input type="password" name="mdp" id="mdp" class="txt" value="$$IF=:FR:LANGUE$$Votre mot de passe$$END$$$$IF!:FR:LANGUE$$Your password$$END$$" />
+                                            <a href="https://www.extranetoralia.fr/mdp.php?groupe=oralia" class="oubli">$$IF=:FR:LANGUE$$Mot de passe oubli&eacute;$$END$$
+                                                $$IF!:FR:LANGUE$$Lost password$$END$$</a>
+                                            <input type="submit" value="$$IF=:FR:LANGUE$$Valider la saisie$$END$$$$IF!:FR:LANGUE$$Confirm entry$$END$$" class="bouton" />
+                                        </form>
+                                    </div><!-- div.form -->
+                                </div><!-- div#client_form" -->
+                            </li>
+                        </ul>
+                    </li>
+                </ul><!-- div#client -->
+                <div id="menu">
+                    <ul>
+                        <!--#include virtual="menu/incl_menu.htm" -->
+                    </ul>
+                </div><!-- div#menu -->
+                <div id="ariane">
+                    $$REM$$
+                    $$B:IMMOBW:FIL-ARIANE-ANNONCE:ALIAS:FIL$$
+                    <!--#include virtual="/recherche/incl_fil_ariane.htm" -->
+                    $$END$$
+
+                    <!--#include virtual="/header/incl_fil_ariane.htm" -->
+
+
+                </div><!-- id#ariane -->
+            </div><!-- div#head -->
+
+            $$IF=:INDEX.HTM:REP:0$$
+            <div id="accueil">
+
+                <div id="wrapSlider">
+
+                    <script type="text/javascript">
+                        var oCedric=0;
+                        function changeSlider(curr, next, opts){
+                            var prochain=opts.nextSlide;
+                            if(oCedric==0){
+                                prochain=0;
+                                oCedric=1;
+                            }
+                            $("#progress").slider('value',prochain);
+                        }
+                        $(document).ready(function() {
+                            $(function() {
+                                $( "#progress" ).slider({
+                                    min: 0,
+                                    max: 4,
+                                    animate: true
+                                });
+                                $(function() {
+                                    $('#slider').cycle({
+                                        fx:     'fade',
+                                        prev:    '#prev',
+                                        next:    '#next',
+                                        pause: 1,
+                                        timeout: 6000,
+                                        before: changeSlider
+                                    });
+                                });
+                            });
+                            $( "#progress" ).bind( "slidestop", function(event, ui) {
+                                $('#slider').cycle($("#progress").slider('value'));
+                            });
+                        });
+                    </script>
+                    $$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:NBSLIDER$$
+                    $$BIF:NBSLIDER$$
+                    $$DO$$
+                    $$IF=:2:NBSLIDER:IDTYPETRANSACTION$$
+                    $$A:NBDEVENTE=@@NBSLIDER:NBANN@@$$
+                    $$END$$
+                    $$IF=:1:NBSLIDER:IDTYPETRANSACTION$$
+                    $$A:NBDELOCATION=@@NBSLIDER:NBANN@@$$
+                    $$END$$
+                    $$LOOP$$
+                    $$BFIN$$
+
+                    <div id="slider">
+                        <div class="blocSlider">
+                            <div class="fond">
+                                <div class="contenu">
+                                    $$IF=:FR:LANGUE$$
+                                    <h2>SYNDIC</h2>
+                                    <h3>DE COPROPRI&eacute;t&eacute;</h3>
+                                    <p>4400 copropri&eacute;t&eacute;s g&eacute;r&eacute;es,<br />
+                                        et plus de 130 000 copropri&eacute;taires<br />
+                                        font confiance &agrave; <span>Oralia</span></p>
+                                    <p><a href="immo,metiers-syndic.htm?lang=$$LANGUE$$">Plus d'infos</a></p>
+                                    $$END$$
+                                    $$IF!:FR:LANGUE$$
+                                    <h2>SYNDIC</h2>
+                                    <h3>OF JOINT OWNERSHIP</h3>
+                                    <p>4000 joint ownership managed,<br />
+                                        and more than 120,000 owners<br />
+                                        trust <span>Oralia</span></p>
+                                    <p><a href="immo,metiers-syndic.htm?lang=$$LANGUE$$">More</a></p>
+                                    $$END$$
+                                </div><!-- div.contenu -->
+                                <img src="images/slider/bg5.jpg" width="712" height="201" alt="" />
+                            </div><!-- div.fond -->
+                        </div><!-- div.blocSlider -->
+
+
+                        <div class="blocSlider">
+                            <div class="fond">
+                                <div class="contenu">
+                                    $$IF=:FR:LANGUE$$
+                                    <h2>FAIRE G&eacute;rer</h2>
+                                    <h3>VOTRE BIEN</h3>
+                                    <p><span>Oralia</span> vous propose une<br />gestion sur mesure</p>
+                                    <p><a href="immo,metiers-gestion.htm?lang=$$LANGUE$$">Plus d'infos</a></p>
+                                    $$END$$
+                                    $$IF!:FR:LANGUE$$
+                                    <h2>MAKE MANAGING</h2>
+                                    <h3>YOUR PROPERTY</h3>
+                                    <p><span>Oralia</span> offers<br />customized management</p>
+                                    <p><a href="immo,metiers-gestion.htm?lang=$$LANGUE$$">More</a></p>
+                                    $$END$$
+                                </div>
+                                <img src="images/slider/bg4.jpg" width="712" height="201" alt="" />
+                            </div>
+                        </div><!-- div.blocSlider -->
+
+
+                        <div class="blocSlider">
+                            <div class="fond">
+                                <div class="contenu">
+                                    <h2>$$LG:LOCATION ucase$$</h2>
+                                    <h3>$$NBDELOCATION$$ $$LG:ANNONCES lcase$$</h3>
+                                    <p>
+                                        $$IF=:FR:LANGUE$$D&eacute;couvrez toutes nos<br />annonces de location$$END$$
+                                        $$IF!:FR:LANGUE$$Discover all our<br />rental ads$$END$$</p>
+
+                                    <p><a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=1&amp;lang=$$LANGUE$$">$$LG:VOIRANN pcase$$</a>
+                                        <a href="$$URLBASE$$/moteur,recherche.htm?idtt=1&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Effectuez une recherche$$END$$
+                                            $$IF!:FR:LANGUE$$Do a search$$END$$</a></p>
+                                </div>
+                                <img src="images/slider/bg3.jpg" width="712" height="201" alt="" />
+                            </div>
+                        </div><!-- div.blocSlider -->
+
+                        <div class="blocSlider">
+                            <div class="fond">
+                                <div class="contenu">
+                                    $$IF=:FR:LANGUE$$
+                                    <h2>VENDRE</h2>
+                                    <h3>VOTRE BIEN</h3>
+                                    <p><span>Oralia</span> vous apporte le conseil et<br />les moyens qui correspondent à<br />votre situation.</p>
+                                    <p><a href="contact,estimation.htm?lang=$$LANGUE$$">Plus d'infos</a></p>
+                                    $$END$$
+                                    $$IF!:FR:LANGUE$$
+                                    <h2>SELL</h2>
+                                    <h3>YOUR PROPERTY</h3>
+                                    <p><span>Oralia</span> offers you consulting and<br />resources that match<br />your situation.</p>
+                                    <p><a href="contact,estimation.htm?lang=$$LANGUE$$">More</a></p>
+                                    $$END$$
+                                </div>
+                                <img src="images/slider/bg2.jpg" width="712" height="201" alt="" />
+                            </div>
+                        </div><!-- div.blocSlider -->
+
+                        <div class="blocSlider">
+                            <div class="fond">
+                                <div class="contenu">
+                                    <h2>$$LG:ACHETER ucase$$</h2>
+                                    <h3>$$NBDEVENTE$$ $$LG:ANNONCES lcase$$</h3>
+                                    <p>
+                                        $$IF=:FR:LANGUE$$D&eacute;couvrez toutes nos<br />annonces de vente$$END$$
+                                        $$IF!:FR:LANGUE$$Discover all our<br /> sale ads$$END$$</p>
+                                    <p>
+                                        <a href="$$URLBASE$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;lang=$$LANGUE$$">$$LG:VOIRANN pcase$$</a>
+                                        <a href="$$URLBASE$$/moteur,recherche.htm?idtt=2&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Effectuez une recherche$$END$$
+                                            $$IF!:FR:LANGUE$$Do a search$$END$$</a>
+                                    </p>
+                                </div>
+                                <img src="images/slider/bg1.jpg" width="712" height="201" alt="" />
+                            </div>
+                        </div><!-- div.blocSlider -->
+
+
+                    </div><!-- div#slider -->
+
+
+                    <div id="controls">
+                        <a href="javascript:void(0);" class="fleche gauche" id="prev"></a>
+                        <a href="javascript:void(0);" class="fleche droite" id="next"></a>
+                    </div>
+                    <div id="Wrapprogress"><div id="progress"></div></div>
+
+                </div> <!-- di#wrapSlider -->
+                <div id="carte">
+                    <img src="images/skin/carte.gif" alt="" border="0" usemap="#Map"/>
+
+                    <map id="Map" name="Map">
+                        <area shape="rect" coords="64,58,119,77" href="$$URLBASE$$/immo,agences-paris.htm?lang=$$LANGUE$$" />
+                        <area shape="rect" coords="101,84,150,98" href="$$URLBASE$$/agence,immobiliere.htm?idp=461351&lang=$$LANGUE$$" />
+                        <area shape="rect" coords="111,100,150,128" href="$$URLBASE$$/immo,agences-rhone-alpes.htm?lang=$$LANGUE$$" />
+                        <area shape="rect" coords="52,130,119,148" href="$$URLBASE$$/agence,immobiliere.htm?idp=461343&lang=$$LANGUE$$" />
+                        <area shape="rect" coords="133,131,190,153" href="$$URLBASE$$/immo,agences-rhone-alpes.htm?lang=$$LANGUE$$" />
+                        <area shape="rect" coords="93,155,156,176" href="$$URLBASE$$/agence,immobiliere.htm?idp=471609&lang=$$LANGUE$$" />
+                    </map>
+
+
+                    <br />
+                    <a href="agences,liste.htm?lang=$$LANGUE$$" class="flecheverte">
+                        $$IF=:FR:LANGUE$$Localiser votre agence par carte$$END$$
+                        $$IF!:FR:LANGUE$$Locate your agency$$END$$
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div><!-- div#accueil -->
+            $$END$$
+            $$IF:TITRE_PAGE2$$<h1 id="interm_title2">$$TITRE_PAGE2$$</h1>$$END$$
+            $$IF!:INTRANET.HTM$INDEX.HTM$RECHERCHE,BASIC.HTM$DETAIL,SENTO.HTM:REP:0$$<a class="backbefore" href="javascript:history.go(-1);" title="Retour &agrave; la page pr&eacute;c&eacute;dente">
+            $$IF=:FR:LANGUE$$Retourner &agrave; la page pr&eacute;c&eacute;dente$$END$$
+            $$IF!:FR:LANGUE$$Return to previous page$$END$$</a>$$END$$
+            <div id="content">
+
+
+                $$IF!:1:FULLWIDTH$$
+                <div id="MiniMot">
+
+                    <div class="MiniMotTitre">$$LG:SOUHAITEZ pcase$$</div>
+                    <div class="MiniMotChoix">
+                        <a href="javascript:louer();" class="louer">$$LG:LOUER ucase$$</a>
+                        <a href="javascript:acheter();" class="acheter">$$LG:ACHETER ucase$$</a>
+                    </div>
+                    <div class="MiniMotContent">
+                        <div id="WrapCdc">
+                            <div class="bloc-cdc" id="louer">
+                                <ul class="carousel">
+                                    <!--#include virtual="ajax,incl_selection_annonces_li.htm" -->
+                                </ul>
+                            </div>
+                            <div class="bloc-cdc" id="acheter">
+                                <ul class="carousel">
+                                    <!--#include virtual="/ajax/incl_selection_annonces_li2.htm" -->
+                                </ul>
+                            </div>
+
+
+                            <div class="clear"></div>
+                        </div><!-- div#WrapCdc -->
+
+                        <!--#include virtual="moteur/mini/moteur.htm" -->
+
+
+                        <div class="clear"></div>
+
+                        <a href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$" class="alerte" title="$$LG:CREERALERTEMAIL pcase$$">
+                            <h6>$$LG:CREERALERTEMAIL pcase$$</h6>
+                            <p>
+                                $$IF=:FR:LANGUE$$Soyez les premiers à être prévenus par mail dès qu’un bien correspond à vos critères$$END$$
+                                $$IF!:FR:LANGUE$$Be the first to be notified by mail when a property matches your criteria$$END$$
+                            </p>
+                        </a>
+                        <br />
+                    </div><!-- div.MiniMotContent -->
+                </div><!-- div#MiniMot -->
+                $$END:FULLWIDTH$$
+                <div id="droite" $$IF=:IMMO,NOSANNONCES.HTM$IMMO,METIERS.HTM$IMMO,OUTILS.HTM$IMMO,GROUPE.HTM:REP:0$$class="MainPageInterm"$$END$$>
+
+
+                    $$IF:TITRE_PAGE$$<h1 class="ttl_page">$$TITRE_PAGE$$</h1>$$END$$

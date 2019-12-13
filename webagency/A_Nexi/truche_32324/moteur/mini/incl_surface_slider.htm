@@ -1,0 +1,33 @@
+$$INIT:JS_SLIDER=1$$
+$$INIT:CSS_JQUERY_UI=1$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(function() {
+			$( "#slider-range-surface" ).slider({
+				range: true,
+				min: reelminsurf,
+				step: stepsurf,
+				max: reelmaxsurf,
+				values: [ afficheminsurf, affichemaxsurf ],
+				slide: function( event, ui ) {
+					var varmin=lisibilite_nombre(ui.values[0])+" m²";
+					var varmax=lisibilite_nombre(ui.values[1])+" m²";
+					if(ui.values[1]==SurfaceLimite){
+						varmax="Max";
+						$("#MiniInputSurfaceMax").val("");
+					}else{
+						$("#MiniInputSurfaceMax").val(ui.values[1]);
+					}
+					$("#amount-surface").val("$$LG:DE lcase$$ " + varmin + " $$LG:A lcase$$ "+varmax);
+					$("#MiniInputSurfaceMin").val(ui.values[0]);
+					
+				}
+			});
+			SliderInitiateSurface(stepsurf,reelminsurfloc,affichemaxsurfloc,reelmaxsurfloc);
+		});
+	});
+</script>
+<div class="miniTitre" for="amount-surface">$$LG:SURFACE pcase$$  <input type="text" id="amount-surface" class="fourchette" /></div>
+<div class="slider_wrap"><div id="slider-range-surface"></div></div>
+<input id="MiniInputSurfaceMin" type="hidden" name="surfacemin" value="" />
+<input id="MiniInputSurfaceMax" type="hidden" name="surfacemax" value=""/>

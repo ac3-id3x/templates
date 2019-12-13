@@ -1,0 +1,180 @@
+$$REM$$====================================================================
+//// <summary>Moteur de recherche annonces</summary>
+//// <remarks>
+//// <para>Fonctionne avec tous les idtt en querystring</para>
+//// <para>Utilise les paramètres de moteur/incl_moteur_param.htm (aussi utilisé par le mini moteur d'accueil)</para>
+//// <para>Les macros s'appellent A:MINIMOTEUR, ne pas faire attention ça marche aussi, c'est que je les ai mal nommés depuis le début</para>
+//// <para>Attention le moteur de l'alerte immo utilise les memes includes que le moteur d'annonces !</para>
+//// </remarks>
+//// <update date="2010-11-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+$$INIT:IDT=MOTEUR$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:JS_MOTEUR=1$$
+
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:MOTRECH pcase@@ : @@LG:ANNONCES lcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:MOTRECH pcase@@ : @@LG:ANNONCES lcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+
+
+
+
+<form name="" method="get" action="moteur,mini,prevalidation.htm" onsubmit="Envoi();" id="FormRecherche">
+	<div id="MoteurPerso">
+		<input type="hidden" name="idtt" id="idtt" value="$$FORM:IDTT$$" />
+		<input type="hidden" name="lang" value="$$FORM:LANG$$" />
+		<!--#include virtual="moteur/incl_input_hidden.htm" -->		
+		<div id="bandeTitre">
+			<!--#include virtual="moteur/incl_moteur_titre.htm" -->
+			<h2>$$FORM:IDTT gettypetransaction pcase$$</h2>
+			<h3>
+				$$LG:TROUVEZVOTREBIENPARMI pcase$$
+				
+				$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:ALIAS:ANNLISTE:~NOSTAT:1$$
+				$$BIF:ANNLISTE$$
+				$$DO:1:2$$$$LOOP$$
+				<strong><a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$FORM:IDTT$$">$$ANNLISTE:NBRESULT formatnumber 0$$</a></strong>
+				$$BFIN$$
+				$$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBR pluriel$$$$END:FR$$
+				$$LG:DE lcase$$
+				$$FORM:IDTT gettypetransaction lcase$$$$IF!:1:ANNLISTE:NBR$$s$$END$$	
+			</h3>
+			<div class="clear"></div>
+		</div><!-- div#bandeTitre -->
+			
+			
+			
+		<script src="$$_$$scripts/jquery.bxSlider.min.js" type="text/javascript"></script>
+			<script type="text/javascript">
+			  $(document).ready(function(){
+			    $('.bloc-cdc .carousel').bxSlider({
+			    	displaySlideQty: 5,
+			    	moveSlideQty: 2,
+			    	prevText: '',
+			    	nextText: '',
+			    	auto: 1,
+			    	pager: false
+			    });
+			  });
+			</script>  
+		<div id="WrapCarousel">				
+			<div class="bloc-cdc">
+				<ul class="carousel">		
+					$$IF=:1:FORM:IDTT$$
+						<!--#include virtual="ajax,incl_selection_annonces_li.htm" -->
+					$$END$$
+					$$IF=:2:FORM:IDTT$$
+						<!--#include virtual="ajax,incl_selection_annonces_li2.htm" -->
+					$$END$$
+				</ul>
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="colonne colonne1">
+			<div class="Hmin">
+				<div class="MotTitre MotTitreVide">$$LG:RECHREF pcase$$</div>
+				<div class="module">				
+					<input id="ref_ann_input" type="text" class="inputText" name="refannonce" value="$$FORM:REF$$" />
+				</div>
+			</div>
+			
+			<div class="MotTitre MotTitreUn">$$LG:MINITYPEBIEN pcase$$ $$LG:EN lcase$$ $$FORM:IDTT gettypetransaction lcase$$</div>
+			<div class="module margeHaut">				
+				<!--#include virtual="moteur/incl_types_biens.htm" -->
+				$$IF=:2$5:FORM:IDTT$$
+					<input type="checkbox" id="viager" name="viager"> $$LG:LIEN:VIAGER pcase$$
+					<script>
+						$('#FormRecherche').submit(function(){
+							if($("#viager").attr('checked')){
+								$("#idtt").val("5");
+							}else{
+								$("#idtt").val("2");
+							}
+						});
+					</script>
+				$$END$$
+			</div>
+		</div><!-- div.colonne1 -->
+		
+		<div class="colonne colonne2">
+			<div class="MotTitre MotTitreDeux">$$IF=:FR:LANGUE$$Critères$$END$$$$IF!:FR:LANGUE$$Criteria$$END$$</div>
+			<div class="module margeHaut">
+				<div class="miniDiv" id="Mini_Budget"><!--#include virtual="moteur/mini/incl_budget_slider.htm" --></div>
+				<input type="hidden" id="MiniInputBudgetMin" name="pxmin" value="" />
+				<input type="hidden" id="MiniInputBudgetMax" name="pxmax" value="" />
+			</div>
+			
+			<div class="module">
+					<div class="miniDiv" id="Mini_Surface">
+						<!--#include virtual="moteur/mini/incl_surface_slider.htm" -->	
+					</div>
+					<input type="hidden" id="MiniInputSurfaceMin" name="surfacemin" value="$$LG:MINI$$" />
+					<input type="hidden" id="MiniInputSurfaceMax" name="surfacemax" value="$$LG:MAXI$$" />	
+			</div>
+			
+			<div class="module">
+					<div class="miniDiv" id="Mini_SurfaceTerrain">
+						<!--#include virtual="moteur/mini/incl_surfaceterrain_slider.htm" -->	
+					</div>
+					<input type="hidden" id="MiniInputSurfaceMin" name="surfacemin" value="$$LG:MINI$$" />
+					<input type="hidden" id="MiniInputSurfaceMax" name="surfacemax" value="$$LG:MAXI$$" />	
+			</div>
+		</div><!-- div.colonne2 -->
+		<div class="colonne colonne3">
+					<div class="MotTitre MotTitreTrois">$$LG:LOCALIS pcase$$</div>
+					<div class="module">
+						<div class="miniDiv" id="Mini_Suggest">
+							<!--#include virtual="moteur/suggest/suggest.htm" -->	
+						</div>
+					</div>					
+					<div class="module">
+						<h2 class="moteurMargin">$$LG:ETENDRERECH pcase$$</h2>
+						<!--#include virtual="moteur/incl_rayon.htm" -->
+					</div>
+		</div><!-- div.colonne3 -->
+		<div class="colonne colonne4">
+			<div class="MotTitre MotTitreQuatre">$$LG:LIEN:RESULTATS pcase$$</div>
+			<div class="module margeHaut">
+				<!--#include virtual="moteur/mini/incl_geolocalisation.htm" -->	
+			</div>
+			<div id="MoteurBouton" class="module">							
+				<input type="submit" class="inputSubmit" value="$$LG:RECHERCHER pcase$$" />
+			</div>
+		
+	<br />
+				
+				<a href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$" class="alerte" title="$$LG:CREERALERTEMAIL pcase$$">
+					<h6>$$LG:CREERALERTEMAIL pcase$$</h6>
+					<p>
+					$$IF=:FR:LANGUE$$Soyez les premiers à être prévenus par mail dès qu’un bien correspond à vos critères$$END$$
+					$$IF!:FR:LANGUE$$Be the first to be notified by mail when a property matches your criteria$$END$$
+					</p>
+				</a>
+		
+		
+		</div><!-- div.colonne4 -->
+		<div class="clear"></div>
+		
+	
+	
+	
+
+		
+		
+	</div><!-- #Moteur -->
+</form>
+<!--#include virtual="footer/incl_bas.htm" -->

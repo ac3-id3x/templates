@@ -1,0 +1,33 @@
+$$INIT:JS_SLIDER=1$$
+$$INIT:CSS_JQUERY_UI=1$$
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(function() {
+			$( "#slider-range-surfaceterrain" ).slider({
+				range: true,
+				min: reelminsurfTerrain,
+				step: stepsurfTerrain,
+				max: reelmaxsurfTerrain,
+				values: [ afficheminsurfTerrain, affichemaxsurfTerrain ],
+				slide: function( event, ui ) {
+					var varmin=lisibilite_nombre(ui.values[0])+" m²";
+					var varmax=lisibilite_nombre(ui.values[1])+" m²";
+					if(ui.values[1]==SurfaceTerrainLimite){
+						varmax="Max";
+						$("#MiniInputSurfaceTerrainMax").val("");
+					}else{
+						$("#MiniInputSurfaceTerrainMax").val(ui.values[1]);
+					}
+					$("#amount-surfaceterrain").val("$$LG:DE lcase$$ " + varmin + " $$LG:A lcase$$ "+varmax);
+					$("#MiniInputSurfaceMin").val(ui.values[0]);
+					
+				}
+			});
+			SliderInitiateSurfaceTerrain(stepsurfTerrain,reelminsurfTerrainloc,affichemaxsurfTerrainloc,reelmaxsurfTerrainloc);
+		});
+	});
+</script>
+<div class="miniTitre" for="amount-surfaceterrain">$$LG:SURFT pcase replace : $$  <input type="text" id="amount-surfaceterrain" class="fourchette" /></div>
+<div class="slider_wrap"><div id="slider-range-surfaceterrain"></div></div>
+<input id="MiniInputSurfaceTerrainMin" type="hidden" name="surf_terrainmin" value="" />
+<input id="MiniInputSurfaceTerrainMax" type="hidden" name="surf_terrainmax" value=""/>
