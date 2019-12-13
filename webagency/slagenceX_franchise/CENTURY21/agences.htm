@@ -1,0 +1,179 @@
+$$SET:AGENCE=1$$
+$$SET:PAGE:IDT=CARTEVISITE$$ 
+$$E:IMMOBW:AGENCE:REP:1$$
+<!--#include virtual="incl_haut.htm"-->
+
+<div id="resume-agence">	
+<h1><span>$$IMMOBW:AGENCE:NOM$$</span><img src="$$-$$images/fin_grand_titres.gif" alt="CENTURY 21 $$IMMOBW:AGENCE:NOM$$" /></h1>
+
+
+<div align="center">
+
+</div>
+<br />
+
+
+	<div class="resume-agence-options">
+		<div class="options">
+			<ul>
+
+<li><a href="javascript:void(0)" onclick="popup('/$$IMMOBW:AGENCE:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$','Contactez_nous','toolbar=0,location=0,directories=0,status=0,scrollbars=1,resizable=0,copyhistory=0,menubar=0,width=470,height=650')" class="liste_agences_lien"><img class="imgbeforeahref" src="$$-$$images/agence/ecrire_agence.gif" alt="Ecrire &agrave; l'agence" />&nbsp;Ecrire &agrave; l'agence</a></li>
+<li><img class="imgbeforeahref" src="$$-$$images/agence/situer.gif" alt="Situer l'agence" /> 
+			$$E:IMMOBW:AGENCE$$
+			$$A:CARTE:CP=@@IMMOBW:AGENCE:CP@@$$
+			$$A:CARTE:VILLE=@@IMMOBW:AGENCE:VILLE@@$$
+			$$A:CARTE:ADRESSE=@@IMMOBW:AGENCE:ADRESSE alphanum +@@$$
+			&nbsp;$$INCL:LOCALISATION_AGENCE.HTM$$</li>
+<li><a href="/liste_agences_cp.htm?langue=$$LANGUE$$"><img class="imgbeforeahref" src="$$-$$images/agence/retour.gif" alt="Retour &agrave; la pr&eacute;liste" />&nbsp;$$LG:RETOUR2 pcase$$</a>
+</li>
+
+			</ul>
+		</div>
+	</div>
+
+	<img class="ph_agence" style="margin-right:25px;" src="$$_$$images/carte/$$IMMOBW:AGENCE:IDPUBLICATION urlencode$$.jpg" width="200"  alt="$$IMMOBW:AGENCE:VILLE ucase$$" />
+
+<!-- Coordonnees de l'agence -->    	
+<p>$$IMMOBW:AGENCE:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$</p>
+<p>$$IMMOBW:AGENCE:CP$$ $$IMMOBW:AGENCE:VILLE ncase$$</p>
+$$IF!:FR:LANGUE$$<p><span class="import">$$LG:MINITEL$$ :</span>&nbsp;$$IMMOBW:AGENCE:TEL tel2inter$$</p>$$END$$
+$$IF=:FR:LANGUE$$<p><span class="import">$$LG:MINITEL$$ :</span>&nbsp;$$IMMOBW:AGENCE:TEL formattel$$</p>$$END$$
+$$IF:IMMOBW:AGENCE:FAX$$<p><span class="import">Fax :</span>&nbsp;$$IMMOBW:AGENCE:FAX formattel$$</p>$$END$$ 
+$$IF:IMMOBW:AGENCE:EMAIL$$<p><span class="import">$$IMMOBW:AGENCE:EMAIL encodemail javascript full$$</span></p>$$END$$
+$$IF:IMMOBW:AGENCE:URL$$<p><span class="import">Site Web : </span><a href="$$IMMOBW:AGENCE:URL$$" target="_blank">$$IMMOBW:AGENCE:URL pcase$$</a>$$END$$
+<!-- Nom du responsable de l'agence -->
+<p><span class="import">$$LG:NOMRESP$$</span>&nbsp;$$IMMOBW:AGENCE:RESPAG$$</p>
+$$IF:IMMOBW:AGENCE:RCS_FULL$$ RCS : $$IMMOBW:AGENCE:RCS_FULL$$ <br /> $$END$$ 
+$$LG:ENTITEINDE$$<br />
+</div>
+
+<div class="spacer"></div>
+
+<div class="blanc"></div>
+<div id="detail-agence">
+	<div class="annonces" style="width:100% ;">
+		<h2>$$LG:LIEN:TOUTES pcase$$</h2>
+
+	</div>
+
+	<div class="spacer"></div>
+<!-- RECHERCHE PAR REFERENCES -->
+	<div class="annonces" style="width:100%;vertical-align:top;">
+		<div class="recherche-bien-reference"  style="margin-right:10%;">
+			<p class="import">$$LG:RECHERCHPAREF pcase$$<br />$$LG:BIENSVENTES lcase$$</p>
+			<!-- <p class="note">Entrez la r&eacute;f&eacute;rence ci-dessous</p> -->
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annonces">
+<input type="hidden" name="idtt" value="2" />
+<input class="Form" type="text" name="refannonce" size="15" id="ref_ann" value="$$FORM:REF$$" />
+<input type="submit" value="Ok" class="bouton" />
+</form>
+					
+		</div>
+		
+		<div class="trouver_annonces" style="margin-left:10%;">
+			<p class="import">$$LG:VOTREAGPROPOSE pcase$$</p>
+
+	<div>
+	<p>$$LG:TOUTESANNONC pcase$$ $$SUR$$ $$IMMOBW:AGENCE:VILLE pcase$$ $$LG:ETSAREGION$$.</p>
+	
+<ul>	
+ $$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:LISTRAN:REP:1$$
+			$$BIF:LISTRAN$$
+			$$DO:0:99$$
+			$$IF=:1:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- location -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=1&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:LOC pcase$$ </strong></a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:2:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- vente -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=2&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:VEN pcase$$ </strong> </a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:3:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- locations temporaires -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=3&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:LOCTMP pcase$$ </strong> </a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:4:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- locations vacances -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=4&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:LOCVAC pcase$$ </strong> </a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:5:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- viager -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=5&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong>$$LG:ANN:VIAGERS pcase$$ </strong> </a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:6:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- produits d'investissement -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=6&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:PRODINVEST pcase$$ </strong></a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+				
+			$$IF=:7:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- locations de prestige -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=7&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:LOCPST pcase$$</strong></a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			
+			$$IF=:8:LISTRAN:IDTYPETRANSACTION$$<br />
+			$$REM$$<!-- biens de prestige -->$$END$$
+					<a class="liste_agences_lien" href="/$$REP:1$$/recherche.htm?idtt=8&amp;idagence=$$IMMOBW:AGENCE:IDAGENCE$$&amp;lang=$$LANGUE$$"> <strong> $$LG:LIEN:VENPST pcase$$ </strong></a>
+					$$LISTRAN:NBANN$$
+					$$IF-:2:LISTRAN:NBANN$$$$LG:ANNONCE lcase$$$$END$$
+					$$IF+:2:LISTRAN:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$</a>
+				$$END$$
+			$$LOOP$$
+			$$BFIN$$
+	</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="spacer">&nbsp;</div>
+
+<!--#include virtual="incl_texte_equipe.htm"-->
+
+<div class="spacer">&nbsp;</div>
+
+<div class="detail-agence-equipe" ><h2>$$LG:LAGENCE pcase$$</h2></div>
+<div class="spacer"></div>
+<div>
+$$IF0:IMMOBW:AGENCE:TXT_PUBLIC$$
+<!--#include virtual="incl_texte_visite.htm"-->
+$$END$$
+$$IF:IMMOBW:AGENCE:TXT_PUBLIC$$
+$$IMMOBW:AGENCE:TXT_PUBLIC crlf2br$$
+$$END$$
+
+</div>
+
+<div id="C21_ML">
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:ML$$
+<!--#include virtual="/agence-immobiliere-mentions.htm" -->
+</div>
+
+<!--#include virtual="incl_bas.htm"-->
+

@@ -1,0 +1,270 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=COMMERCE$$
+<script language="javascript" type="text/javascript">
+<!--
+function openCodes_Postaux() {
+	window.open('/cp_frame.htm?lang=$$LANGUE$$' , 'cdp', ',height=330,width=360,scrollbars=yes, resizable=no, toolbar=no, status=no, menubar=no');
+}
+
+function checkPrices() {
+	for (i = 0; i < document.forms["annonces"].idtt.length; i++) {
+		o = document.forms["annonces"].idtt[i];
+		if (o.checked) {
+			idt = o.value;
+			if (idt == "10") {
+				if (document.getElementById("typecommerce") && document.getElementById("typebien")) {
+					document.getElementById("typecommerce").style.display = "inline";
+					document.getElementById("typebien").style.display = "none";
+				}
+				$$IF=:1:PAGE:LISTEVILLE$$
+				if (document.getElementById("fondscom") && document.getElementById("bails")) {
+					document.getElementById("fondscom").style.display = "";
+					document.getElementById("bails").style.display = "none";
+				}
+				$$END$$
+				idt="2";
+			} else {
+				$$IF=:1:PAGE:LISTEVILLE$$
+				if (idt == "11") {
+					if (document.getElementById("fondscom") && document.getElementById("bails")) {
+						document.getElementById("fondscom").style.display = "none";
+						document.getElementById("bails").style.display = "";
+					}
+				}
+				$$END$$
+				if (document.getElementById("typecommerce") && document.getElementById("typebien") ) {
+					document.getElementById("typecommerce").style.display = "none";
+					document.getElementById("typebien").style.display = "inline";
+				}
+			}
+		}
+	}
+}
+
+function dispacti( id ) {
+	var o = document.getElementById( id );
+	acti( o );
+}
+
+function reacti () {
+	for( i=0; i<document.forms["annonces"].idtypecommerce.length; i++ ) {
+		o = document.forms["annonces"].idtypecommerce[i];
+		if (o.checked) {
+			acti(o);
+		}
+	}
+}
+
+function acti (o) {
+	var elt;
+	if( o ) {
+		elt = document.getElementById("idta"+o.value)
+		if( elt ) {
+			if( o.checked ) {
+				elt.style.display="inline";
+			} else {
+				elt.style.display="none";
+			}
+		}
+	}
+}
+setTimeout('reacti()',10);
+
+
+function verifField(){
+var typebienfield = false;
+var doc = document.forms["annonces"];
+
+
+if(doc.elements["idtt1"].checked || doc.elements["idtt2"].checked){
+	for(var i = 0; i < doc.elements["idtypebien"].length;i++){
+		if(doc.elements["idtypebien"][i].checked == true){typebienfield = true;}
+	}
+	if(typebienfield == false){
+	for(var i = 0; i < doc.elements["idtypebien"].length;i++){
+			doc.elements["idtypebien"][i].checked = true;
+	}
+	}
+}
+
+}
+
+
+
+//-->
+</script>
+<!-- $$FORM:IDTT$$ -->
+<table width="95%" border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1">
+<tr>
+	<td>
+	<p class="selection"><b>$$LG:SELECTIONNEZ$$<a href="/liste_transactions.htm" class="selection"></a></b></p>
+	<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" name="annonces" id="annonces" onsubmit="return verifField();">
+
+	$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+    <input type="hidden" name="idtypebien" id="idtypebien99" value="" />
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<!-- TYPE DE COMMERCE -->
+	
+	$$IF!:0:PAGE:TYPEDECOM$$
+
+	<tr>
+		<td class="tabTitre"><b>$$LG:TYPEDETRANSACTION$$ :</b></td>
+	</tr>
+	<tr>
+		<td>
+		<input type="radio" id="idtt10" name="idtt" value="10" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:10:FORM:IDTT$$checked="checked"$$END$$ $$IF0:FORM:IDTT$$checked="checked"$$END$$ /><label for="idtt10"  value="10" name="idtt" onclick="javascript:checkPrices();">$$LG:MINIFONDSCOM$$</label>
+		<input type="radio" id="idtt11" name="idtt" value="11" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:11:FORM:IDTT$$checked="checked"$$END$$ /><label for="idtt11" value="11" name="idtt" onclick="javascript:checkPrices();">$$LG:MINIBAIL$$</label>
+		$$IF0:COM:LOCS$$<input type="radio" id="idtt1" name="idtt" value="1" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:1:FORM:IDTT$$checked="checked"$$END$$ /><label for="idtt1" value="1" name="idtt" onclick="javascript:checkPrices();">$$LG:LOCATION$$</label>$$END$$
+		$$IF0:COM:VENS$$<input type="radio" id="idtt2" name="idtt" value="2" onchange="javascript:checkPrices();" onclick="javascript:checkPrices();" $$IF=:2:FORM:IDTT$$checked="checked"$$END$$ /><label for="idtt2" value="2" name="idtt" onclick="javascript:checkPrices();">$$LG:VENTE$$</label>$$END$$
+		</td>
+	</tr>
+	<tr>
+		<td><br />
+		<div id="typebien" style="display:none;">
+			$$B:IMMOBW:TYPESBIENS:ALL:QRY:LANG:TTRET$$
+			$$BIF:IMMOBW:TYPESBIENS:ALL$$
+			
+		<table width="100%" border="0" cellspacing="0" cellpadding="2">	
+		<tr>
+		<td class="tabTitre"><b>$$LG:TYPEDEBIEN$$ :</b></td>
+		</tr>
+		</table>		
+					
+			$$DO$$
+			$$IF=:1$2:IMMOBW:TYPESBIENS:ALL:IDTYPETRANSACTION$$
+			$$IF!:1$2:IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$
+			$$A:CHECK:AFFICHAGE=1$$
+			<input $$IF=:4:IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$ onclick="showTerrain();" onchange="showTerrain();" $$END$$ type="checkbox" name="idtypebien" value="$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$" id="idtypebien$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$"$$IF(:FORM_IDTYPEBIEN:IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$ checked="checked"$$END$$ />&nbsp;<label for="idtypebien$$IMMOBW:TYPESBIENS:ALL:IDTYPEBIEN$$">$$IMMOBW:TYPESBIENS:ALL:DEF_LIBELLE sp2nbsp$$</label>
+			$$END$$
+			$$END$$
+			$$LOOP$$
+			$$IF0:CHECK:AFFICHAGE$$
+			<p>$$LG:NOBIENDISPO$$</p>
+			$$END$$
+			$$BFIN$$
+		</div>
+		<div id="typecommerce" $$IF:FORM:IDTT$$$$IF!:10:FORM:IDTT$$style="display:none;"$$END$$$$END$$>
+			$$B:IMMOBW:SOUSTYPESCOMMERCES$$
+			$$BIF:IMMOBW:SOUSTYPESCOMMERCES$$
+		<table width="100%" border="0" cellspacing="0" cellpadding="2">	
+		<tr>
+		<td class="tabTitre"><b>$$LG:TYPEDECOM$$ :</b></td>
+		</tr>
+		</table>
+			$$DO:1:999$$
+				$$IFPREV:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$
+				<input type="checkbox" $$IF0:COM:DETAILTYPECOM$$onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');"$$END$$ id="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" name="idtypecommerce" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" $$IF(:FORM_IDTYPECOMMERCE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$ checked="checked"$$END$$ />
+				&nbsp;<label for="idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" $$IF0:COM:DETAILTYPECOM$$onclick="dispacti('idtc$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$');"$$END$$ >$$IMMOBW:SOUSTYPESCOMMERCES:TYPECOMMERCE sp2nbsp$$</label><br />
+				$$IF0:COM:DETAILTYPECOM$$<div id="idta$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$" style="display:none;" class="coactiv">$$END$$
+				$$END$$
+				
+				$$IF0:COM:DETAILTYPECOM$$<input type="checkbox" id="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" name="idtypeactivite" value="$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$" $$IF(:FORM_IDTYPEACTIVITE:IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$checked="checked"$$END$$ />
+				&nbsp;<label for="idtca$$IMMOBW:SOUSTYPESCOMMERCES:IDTYPEACTIVITE$$">$$IMMOBW:SOUSTYPESCOMMERCES:LIBELLE pcase sp2nbsp$$</label>$$END$$
+				
+				$$IFNEXT:IMMOBW:SOUSTYPESCOMMERCES:IDTYPECOMMERCE$$$$IF0:COM:DETAILTYPECOM$$<br /></div>$$END$$$$END$$
+				
+			$$LOOP$$
+			$$BFIN$$
+		</div>
+		</td>
+	</tr>
+	$$END$$
+	<!-- Budget -->
+	$$IF=:1:PAGE:BUDGET$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="tabTitre"><b>$$LG:BUDGET$$</b></td>
+	</tr>
+	<tr>
+		<td valign="top"><b>$$LG:MINI$$&nbsp;:</b>&nbsp;<input class="imputForm" type="text" name="pxmin" size="10" value="" />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>$$LG:MAXI$$&nbsp;:</b>&nbsp;<input class="imputForm" type="text" name="pxmax" size="10" value="" />
+		<font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+		<select name="euro">
+			<option value="1">&euro;</option>
+			<option value="0">FF</option>
+		</select></font>
+		</td>
+	</tr>
+	$$END$$
+	<!-- Surface -->
+	$$IF=:1:PAGE:SURFACE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="tabTitre"><b>$$LG:SURFACE$$</b></td>
+	</tr>
+	<tr>
+		<td valign="top"><b>$$LG:MINI$$&nbsp;:</b>&nbsp;<input class="imputForm" type="text" name="surfacemin" size="10" />
+		m&sup2;&nbsp;&nbsp;<b>$$LG:MAXI$$&nbsp;:</b>&nbsp;<input class="imputForm" type="text" name="surfacemax" size="10" /> m&sup2;</td>
+	</tr>
+	$$END$$
+	<!-- Proximité -->
+	$$IF=:1:PAGE:PROXIMITE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+	<td class="tabTitre"><b>$$LG:VILLES$$</b></td></tr>
+	<tr>
+		<td><i>($$LG:ZONEDESAISIE$$)</i><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 1$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 2$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 3$$" /><br />
+		<input class="imputForm" type="text" name="cp" size="40" maxlength="50" value="$$FORM:CP field 4$$" /><br />
+		(<i><a href="javascript:openCodes_Postaux();">$$LG:RETROUVER$$</a></i>)
+		</td>
+	</tr>
+	$$END$$
+	<!-- Liste des villes ayant des annonces -->
+	$$IF=:1:PAGE:LISTEVILLES$$
+	<!--#include virtual="incl_cache_villesannonces_commerce.gen.htm" -->
+	$$END:PAGE:LISTEVILLES$$
+	<!-- Pays -->
+	$$IF=:1:PAGE:AFFICHEPAYS$$
+	<tr>
+		<td>$$INCL:PAYS.HTM$$</td>
+	</tr>
+	$$END$$
+	$$IF0:PAGE:AFFICHEPAYS$$
+		<input type="hidden" name="idpays" value="250" />
+	$$END$$
+	<!-- Annonces fraicheur -->
+	$$IF!:0:PAGE:FRAICHEUR$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top"><input type="checkbox" name="fraicheur" value="$$PAGE:FRAICHEUR$$" />&nbsp;$$LG:NOUV$$</td>
+	</tr>
+	$$END$$
+	<!-- Préliste -->
+	$$IF=:1:PAGE:PRELISTE$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top"><font size="1">$$LG:DETAILANN$$</font>&nbsp;
+		<input type="radio" name="preliste" value="/recherche.htm" checked onclick="javascript:document.forms['annonces'].action = '/prerecherche.htm';" /><br />
+		<font size="1">$$LG:PRELISTE$$</font>&nbsp;
+		<input type="radio" name="preliste" value="/preliste.htm" onclick="javascript:document.forms['annonces'].action = '/prerecherche_liste.htm';" />
+		</td>
+	</tr>
+	$$END$$
+	<!-- Validation Form -->
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="right"><input type="image" src="img/rechercher_$$LANGUE$$.gif" /></td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+<script language="javascript" type="text/javascript">checkPrices();</script>
+$$INCL:BAS.HTM$$

@@ -1,0 +1,120 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:TITR=$$
+$$SET:PAGE:IDT=CV$$
+$$E:IMMOBW:AGENCE:REP:1$$
+<script language="JavaScript">
+<!--
+function go2(ref) {
+window.open(ref,'visu3d','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550');}
+
+function go3(ref) {
+window.open(ref,'visu3d','margin=0,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=620,height=420');}
+
+function openBrWindow(theURL, winName, features) { //Fonction "Pop-Up"
+	window.open(theURL, winName, features);
+}
+
+//-->
+</script>
+<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2" valign="middle">
+      <table cellpadding="4" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td align="right">
+           $$IF=:1:MULTI$$ <a href="/cv/liste_agences_cp.htm?objet=annuaire&lang=$$LANGUE$$" class="liste_agences_lien">
+              <strong>$$LG:RETOURAGENCE$$</strong></a>$$END$$
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td height="10" align="left" valign="top">
+      $$E:IMMOBW:NBANN:REP:1$$
+      <strong>
+      	 $$IF=:ARTHUR  -:IMMOBW:AGENCE:NOM left 6$$$$IMMOBW:AGENCE:NOM mid 7 0$$<br />$$END$$
+       $$IF!:ARTHUR  -:IMMOBW:AGENCE:NOM left 6$$$$IMMOBW:AGENCE:NOM$$<br />$$END$$
+		$$IF!:PARIS:IMMOBW:AGENCE:VILLE$$
+			ARTHUR - $$IMMOBW:AGENCE:VILLE$$
+		$$END$$
+		$$IF=:PARIS:IMMOBW:AGENCE:VILLE$$
+			ARTHUR - $$IMMOBW:AGENCE:VILLE$$ $$IMMOBW:AGENCE:CP right 2$$
+		$$END$$
+     
+      </strong>
+      <br />
+      $$IMMOBW:AGENCE:ADRESSE$$
+      <br />      <strong>$$LG:MINITEL$$ :</strong>
+      $$IMMOBW:AGENCE:TEL formattel$$
+      <br />      <strong>Fax :</strong>
+      $$IMMOBW:AGENCE:FAX formattel$$
+      <br />
+      $$IF:IMMOBW:AGENCE:EMAIL$$
+      <strong>E-mail : </strong>
+     $$IMMOBW:AGENCE:EMAIL encodemail javascript full$$
+      
+      <br />
+      $$END$$
+      <strong>$$LG:NOMRESP$$</strong> $$IMMOBW:AGENCE:RESPAG ucase$$<br />
+      $$IF:IMMOBW:AGENCE:RCS_FULL$$ RCS : $$IMMOBW:AGENCE:RCS_FULL$$ <br /> $$END$$ 
+	      $$LG:ENTITEINDE$$
+	</td>
+    <td valign="top">
+      <div align="right">
+				<img src="images/agences/$$REP:1$$.jpg" class="image" title="$$EXP2$$" onerror="this.src='$$-$$img/sans_photo.gif';"/><br />
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td height="12" colspan="2" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+    
+     $$REM$$ $$E:IMMOBW:AGENCE$$
+			$$A:CARTE:CP=@@IMMOBW:AGENCE:CP@@$$
+			$$A:CARTE:VILLE=@@IMMOBW:AGENCE:VILLE@@$$
+			$$A:CARTE:ADRESSE=@@IMMOBW:AGENCE:ADRESSE alphanum +@@$$
+			$$INCL:LOCALISATION_AGENCE.HTM$$$$END$$
+			
+			$$A:FRANCHISECARTO=1$$
+			<!--#include virtual="/carto/incl_noussituer.htm" -->
+      -
+      <a class="liste_agences_lien" href="/$$REP:1$$/contact.htm?lang=$$LANGUE$$" title="$$EXP4$$">
+        <b>$$LG:LIEN:CTC pcase$$</b></a>
+       -
+      <a href="/$$REP:1$$/recherche.htm?lang=$$LANGUE$$&amp;si_coupdecoeur=1&amp;idtt=2" title="$$EXP4$$"><b>$$LG:TITRECOEUR pcase$$</b></a>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><hr /></td>
+  </tr>
+  <tr>
+    <td height="30" colspan="2" style="padding-left:25px; padding-bottom:15px;">
+	<br />
+    $$B:IMMOBW:AGENCETRANSACTIONS:REP:1$$
+	$$BIF:IMMOBW:AGENCETRANSACTIONS:REP$$
+	$$DO:0:99$$
+		<a href="/$$REP:1$$/recherche$$WAGSTYLE:RECHERCHE:URL$$.htm?idtt=$$IMMOBW:AGENCETRANSACTIONS:REP:IDTYPETRANSACTION$$&lang=$$LANGUE$$" class="menu" title="$$EXP5$$">$$IMMOBW:AGENCETRANSACTIONS:REP:DESCRIPTION pcase$$</a>&nbsp;$$IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$&nbsp;$$IF+:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:LIEN:ANN lcase$$$$END$$$$IF-:2:IMMOBW:AGENCETRANSACTIONS:REP:NBANN$$$$LG:ANNONCE lcase$$$$END$$<br />
+	$$LOOP$$
+	$$BFIN$$
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" height="1px"><hr height="1px" width="100%" /></td>
+  </tr> 
+  <tr>
+    <td colspan="2"> $$INCL:CONTENU_AGENCE.HTM$$</td>
+  </tr> 
+ 
+</table>
+<div id="Arthur_ML">
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:ML$$
+<!--#include virtual="/agence-immobiliere-mentions.htm" -->
+</div>
+
+$$INCL:BAS.HTM$$

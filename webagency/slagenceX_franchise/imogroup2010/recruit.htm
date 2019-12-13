@@ -1,0 +1,143 @@
+
+$$SET:PAGE:IDT=CTC$$
+$$E:IMMOBW:AGENCE:REP:1$$ 
+$$SET:AGENCE:EMAIL=info@imogroup.com$$
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+
+$$END$$ 
+$$END$$ 
+
+$$IF:AGENCE:EMAIL$$
+<table border="0" cellspacing="0" cellpadding="5" align="center" class="tabFond1bis">
+<tr> 
+<td align="center"> 
+	<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="idTypeVisu" value="1" />
+<input type="hidden" name="page_ok" value="validation_recruit.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="emailTemplate" value="mail_recruit.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. "" pcase$$" />
+<input type="hidden" name="idPublication" value="256474" />
+<input type="hidden" class="imputForm" name="message" value="Formulaire AGENT IMMOBILIER DE FAMILLE" />
+
+	<strong>$$ERRE$$</strong>
+
+	<!--vos coordonnées--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>  
+	<tr> 
+		<td width="30%" align="left">$$LG:CIVILITE pcase$$ :</td>
+		<td width="70%" align="left">
+			<select name="civilite">
+				<option value="M">M</option>
+				<option value="Mlle">Mlle</option>
+				<option value="Mme">Mme</option>
+			</select>
+			
+		</td>
+	</tr>	
+	<tr> 
+		<td width="30%" align="left">$$LG:AI5$$	 * :</td>
+		<td width="70%" align="left"><input class="imputForm" type="text" name="nomFamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+	</tr>	
+	<tr> 
+		<td align="left">$$LG:ADRESSE$$ :</td>
+		<td align="left">$$IF=:FR:LANGUE$$<input type="text" class="imputForm" name="adresse" size="25" value="$$FORM:ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="adresse" cols="20" Rows="3">$$FORM:ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:CODEP$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+	</tr>
+	<tr> 
+		<td align="left">$$LG:VILLE$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="ville" size="25" value="$$FORM:VILLE$$" /></td>
+	</tr>	
+	<tr> 
+		<td align="left">$$LG:PAYS$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="pays" size="25" value="$$FORM:PAYS$$" /></td>
+	</tr>
+	<tr> 
+		<td align="left">T&eacute;l. portable  * :</td>
+		<td align="left"><input class="imputForm" type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr> 
+		<td align="left">T&eacute;l. domicile :</td>
+		<td align="left"><input class="imputForm" type="text" name="telephonedom" size="15" value="$$FORM:TELEPHONEDOM$$" maxlength="20" /></td>
+	</tr>
+	<tr> 
+		<td align="left">T&eacute;l. bureau :</td>
+		<td align="left"><input class="imputForm" type="text" name="telephonebur" size="15" value="$$FORM:TELEPHONEBUR$$" maxlength="20" /></td>
+	</tr>
+	<tr> 
+		<td align="left">Date de naissance :</td>
+		<td align="left"><input class="imputForm" type="text" name="dtn" size="15" value="$$FORM:DTN$$" maxlength="20" /></td>
+	</tr>			
+
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<br />
+	<!--validation--> 
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+		<td align="right"><br />
+			
+			
+			
+			
+			<input type="image" src="$$-$$img/envoyer_$$LANGUE$$.gif" name="image" class="BoutonFormContact" />
+			
+		<!-- fin ancien code -->
+	
+		$$REM$$
+		<!-- 
+		18.12.2009 par Lisbonne
+		remplacement des input type = image par des input type submit
+		car généralisation des buggs IE6 et consors où les boutons sautent voire disparaissent
+		la solution sauvage mais de survie est de mutualiser ce code avant la mort par noyade du SAV
+		donc le style CSS est aussi mutualiser avec une grande marge de sécurité de 200x40px
+			-->
+		<input type="submit" value=""
+		style="background: url($$-$$img/envoyer_$$LANGUE$$.gif) 50% 50% no-repeat; border: none; cursor: pointer; margin: 20px 0; width: 200px; height: 40px;"
+		name="image" 
+		class="BoutonFormContact" />
+		$$END$$
+			
+			
+			
+			</td>
+	</tr>
+	</table> 
+	</form>
+	</td>
+</tr>
+</table>
+<br />
+$$INCL:CGU_FORMULAIRE.HTM$$
+$$END:EMAIL$$

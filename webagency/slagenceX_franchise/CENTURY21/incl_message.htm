@@ -1,0 +1,33 @@
+<script language="javascript" type="text/javascript">
+<!--
+function valider(id) {
+	document.location.href='/'+id+'/message.htm?$$REP:QRY$$';
+}
+// -->
+</script>
+<div id="MessageListe">
+<h1>$$LG:SELECTAG pcase$$</h1>	
+	
+$$REM$$<!--	<a href="/message.htm?lang=$$LANGUE$$&remail=$$BIF:IMMOBW:AGENCES$$
+$$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$$$IMMOBW:AGENCES:EMAIL$$
+$$IF!:IMMOBW_AGENCES_NBR:IMMOBW_AGENCES_I exec XX + 1$$>, <$$END$$
+$$END$$
+$$LOOP$$
+$$BFIN$$&agence_nom=%20">$$LG:LISTOUTES$$</a><br />
+	$$LG:OU$$-->$$END$$	<strong>$$LG:SELECTIONA$$</strong><br /><br />
+	
+	<form action="/message.htm" method="post" name="preestimation">
+	$$BIF:IMMOBW:AGENCES$$ 
+	$$DO:1:120$$
+	<input type="radio" name="idpub" value="$$IMMOBW:AGENCES:IDPUBLICATION$$" onclick="valider(this.value)"$$IF0:IMMOBW:AGENCES:EMAIL$$ disabled$$END$$>
+	<span class="intit_champ_contact">$$IMMOBW:AGENCES:NOM$$</span>
+	<span class="IntitContact">$$IF=:1:PAGE:CONTACT:AFFADRESS$$&nbsp;$$IMMOBW:AGENCES:ADRESSE$$$$END$$
+	$$IF!:0:PAGE:CONTACT:AFFVILLE$$&nbsp;$$IMMOBW:AGENCES:VILLE$$$$END$$
+	$$IF!:0:PAGE:CONTACT:CP$$&nbsp;($$IMMOBW:AGENCES:CP$$)$$END$$</span>
+   $$IF0:IMMOBW:AGENCES:EMAIL$$<font size="1"> - email indisponible -</font>$$END$$
+	<br />
+	$$LOOP$$ 
+	$$BFIN$$
+	</form>
+</div>

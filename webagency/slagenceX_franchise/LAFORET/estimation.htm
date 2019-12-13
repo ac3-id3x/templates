@@ -1,0 +1,189 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+
+$$E:IMMOBW:AGENCE:REP:1$$
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$$$BFIN$$
+
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:ESTIMATION.HTM$$
+$$END$$
+$$END$$
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+	<div align="center">
+	<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible. <br />
+	<br /><br /><br />
+	</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+
+<div id="FormEstimContact">
+<table border="0" cellspacing="0" cellpadding="5" align="center">
+<tr>
+	<td align="center">
+<form method="post" action="/$$REP:PAGE$$">
+<input type="hidden" name="u" value="immobw:send-agence-mail" />
+<input type="hidden" name="page_ok" value="page_ok_estimation.htm" />
+<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+<input type="hidden" name="idTypeVisu" value="8" />
+$$IF:REP:1$$<input type="hidden" name="idPublication" value="$$REP:1$$" /> $$END$$
+<input type="hidden" name="emailTemplate" value="mail_estimation.htm" />
+<input type="hidden" name="source" value="$$REP:SRV replace www. ""  pcase$$" />
+<strong>$$ERRE$$</strong><br />
+	<strong class="estimationNomAgence">$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$</strong>
+	<p align="center" id="$$FORM:ESTIMATION$$"><strong>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</strong></p>
+	$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:location:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="1" />$$ $$END$$
+	$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$IF=:vente:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="typetransaction" value="2" />$$ $$END$$
+	$$ESTIMATION:CHOIX$$
+	$$IF!:1$2:PAGE:ESTIMATION$$
+	$$IF0:FORM:ESTIMATION$$
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" class="tabTitre"><strong>$$LG:VOUSPOSSEDEZ2$$&nbsp;$$LG:ESTIMER lcase$$</strong></td>
+	</tr>
+	<tr>
+		<td align="center">
+		$$IF0:PAGE:IDTC1$$		
+		<input type="radio" name="typetransaction" value="1" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked="checked"$$END$$$$END$$ border="0" />
+		$$LG:LOCATION$$
+		$$END$$
+		$$IF0:PAGE:IDTC3$$&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="typetransaction" value="2" checked="checked" border="0" />
+		$$LG:VENTE$$
+		$$END$$
+		</td>
+	</tr>
+	</table>
+	<br />
+	$$END$$
+	$$END$$
+	<!--Vous possédez un bien-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:DESCRIPBIEN$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="left">
+		<table border="0" cellspacing="0" cellpadding="4">
+		<tr>
+			<td>$$LG:BIENPROP$$ :</td>
+			<td>
+				<input type="radio" name="typebien" value="1" border="0" />$$LG:APPARTEMENT$$&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="typebien" value="2" border="0"/>$$LG:MAISON$$
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>$$LG:SURFH$$</td>
+			<td><input class="imputForm" type="text" name="surface" size="10" value="$$FORM:SURFACE$$" /> m&sup2;</td>
+		</tr>
+		<tr>
+			<td>$$LG:SURFT$$</td>
+			<td><input class="imputForm" type="text" name="terrain" size="10" value="$$FORM:TERRAIN$$" /> m&sup2;</td>
+		</tr>
+		<tr>
+			<td>$$LG:NBRP$$</td>
+			<td><input class="imputForm" type="text" name="nombrepieces" size="10" value="$$FORM:NOMBREPIECES$$" /> $$LG:PIECES$$</td>
+		</tr>
+		<tr>
+			<td>$$LG:VILLE$$ :</td>
+			<td><input class="imputForm" type="text" name="villebien" size="25" value="$$FORM:VILLEBIEN$$" /></td>
+		</tr>
+		<tr>
+			<td>$$LG:CODEP$$ :</td>
+			<td><input class="imputForm" type="text" name="codepostalbien" size="25" value="$$FORM:CODEPOSTALBIEN$$" /></td>
+		</tr>
+		<tr>
+			<td valign="top">$$LG:PRECIS$$ :</td>
+			<td>	<textarea class="imputForm" name="message" cols="35" rows="3">$$FORM:MESSAGE$$</textarea></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	<br />
+	<!--vos coordonnées-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COORD$$</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="30%" align="left">$$LG:AI5$$ * :</td>
+		<td width="70%" align="left"><input class="imputForm" type="text" name="nomfamille" size="25" value="$$FORM:NOMFAMILLE$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:PRENOM$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="prenom" size="25" value="$$FORM:PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:ADRESSE$$ :</td>
+		<td align="left">$$IF=:FR:LANGUE$$<input class="imputForm" type="text" name="adresse" size="25" value="$$FORM:ADRESSE$$" />$$END$$
+		$$IF!:FR:LANGUE$$<textarea name="adresse" cols="20" Rows="3">$$FORM:ADRESSE$$</textarea>$$END$$</td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:VILLE$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="ville" size="25" value="$$FORM:VILLE$$" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:CODEP$$ :</td>
+		<td align="left"><input class="imputForm" type="text" name="codepostal" size="10" value="$$FORM:CODEPOSTAL$$" /></td>
+	</tr>
+	$$IF!:FR:LANGUE$$
+	<tr>
+		<td align="left">$$LG:PAYS$$ :</td>
+		<td align="left"><input type="text" name="pays" size="25" value="$$FORM:PAYS$$" /></td>
+	</tr>
+	$$END$$
+	<tr>
+		<td align="left">$$LG:TEL pcase$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="telephone" size="15" value="$$FORM:TELEPHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td align="left">$$LG:AI6$$ * :</td>
+		<td align="left"><input class="imputForm" type="text" name="email" size="25" value="$$FORM:EMAIL$$" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+	</tr>
+	</table>
+	<br />
+	<!--validation-->
+	<table width="95%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr>
+		<td align="right"><input class="Pbien" type="image" src="/img/envoyer_$$LANGUE$$.png" name="image"  width="129px" height="31px" /></td>
+	</tr>
+	<tr>
+		<td style="text-align:justify;padding-top:15px;">$$INCL:CGU_FORMULAIRE.HTM$$</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+</div>
+$$END:EMAIL$$
+$$INCL:BAS.HTM$$

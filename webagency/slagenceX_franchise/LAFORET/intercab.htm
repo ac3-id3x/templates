@@ -1,0 +1,154 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=INTERCAB$$
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:INTERCAB.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+<div id="FormEstimContact">
+<table width="95%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+	<td align="center">
+		<p align="justify" class="selection">			
+			$$IF=:FR:LANGUE$$
+				Cher(s) confr&egrave;re(s),<br /><br />
+				Pour vos clients qui ont un bien &agrave; mettre en location ou en vente, nous vous proposons de remplir la fiche technique ci-dessous et nous vous	recontacterons.
+			$$END$$
+			$$IF!:FR:LANGUE$$
+				Dear fellow-member(s),<br /><br />
+				For your customers who have to sell or to rent a real estate, we propose to you to fill out the chart below and we will recontact you.
+			$$END$$
+		</p>
+		<br />
+		<p style="color: #ff0000;"><strong>$$ERRE$$</strong></p>
+		<form method="post" action="Intercab_ok.htm">
+			<input type="hidden" name="u" value="id3:formmail">
+			<input type="hidden" name="page_ok" value="intercab_ok.htm">
+			<input type="hidden" name="page_err" value="intercab.htm">
+			<input type="hidden" name="cfg_form" value="intercab">
+			<input type="hidden" name="cfg_emails" value="intercab">
+			$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+			$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+			$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$">$$END$$
+			$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$">$$END$$
+			$$IF0:FORM:REMAIL$$ 
+			$$IF:IMMOBW:AGENCE:EMAIL$$ 
+			<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$">
+			<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$"> 
+			$$END$$
+			$$END$$
+				
+			<input type="hidden" name="SRV" value="$$SRV$$" />
+			<!--Description du bien-->
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+				<tr>
+					<td colspan="2" class="tabTitre"><strong>$$LG:DESCRIPBIEN pcase$$</strong></td>
+				</tr>
+			<tr>
+				<td width="30%" valign="top">$$LG:TYPEDETRANSACTION pcase$$</td>
+				<td width="70%" valign="top"><input type="radio" name="1Secteur" value="Vente" checked> $$LG:VENTE$$&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="1Secteur" value="Location"> $$LG:LOCATION$$</td>
+			</tr>
+			<tr>
+				<td valign="middle">$$LG:BIENPROP$$</td>
+				<td valign="middle"><input class="imputForm" type="text" name="1Bien" size="24" /> <span class="IntercabEx1">Ex: $$LG:APPARTEMENT$$ $$IF=:FR:LANGUE$$3/4 pi&egrave;ces$$END$$$$IF!:FR:LANGUE$$rooms$$END$$</span></td>
+			</tr>
+			<tr>
+		<td valign="middle">$$LG:DPTV$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1Ville" size="24" /></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:PRIXLOYER$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1prix" size="24" /> <span class="IntercabEx2">$$IF=:FR:LANGUE$$Ex: Entre 450 et 610 €/mois$$END$$$$IF!:FR:LANGUE$$Ex: Betw. 450 and 610 €/month$$END$$</span></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:SURFACE$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1Surface" size="24" /> <span class="IntercabEx3">Ex: $$LG:ENVIRON$$ 80m2</span></td>
+	</tr>
+	<tr>
+		<td valign="top">$$LG:PRECIS$$</td>
+		<td valign="top"><textarea name="1Precisions" cols="35"></textarea></td>
+	</tr>	
+	<!--vos coordonnées-->	
+	<tr>
+		<td colspan="2" class="tabTitre"><strong>$$LG:COORD$$</strong></td>
+	</tr>
+	<tr>
+		<td valign="middle"><strong>$$LG:NOM$$</strong></td>
+		<td valign="middle"><input class="imputForm" type="text" name="1nom" size="30" value="$$1NOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td valign="middle"><strong>$$LG:PRENOM$$</strong></td>
+		<td valign="middle"><input class="imputForm" type="text" name="1prenom" size="30" value="$$1PRENOM$$" maxlength="30" /></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:RAISONSOC$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1raison" size="30" value="$$1RAISON$$" /></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:ADRESSE$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1adresse" size="30" value="$$1ADRESSE$$" /></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:CODEP$$</td>
+		<td valign="middle"><input type="text" name="1codepostal" size="15" value="$$1CODEPOSTAL$$"></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:VILLE$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1Ville" size="30" value="$$1VILLE$$" /></td>
+	</tr>	
+	<tr>
+		<td valign="middle"><strong>$$LG:TEL$$</strong></td>
+		<td valign="middle"><input type="text" class="imputForm" name="1phone" size="30" value="$$1PHONE$$" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td valign="middle">$$LG:FAX$$</td>
+		<td valign="middle"><input class="imputForm" type="text" name="1fax" size="30" value="$$1FAX$$" /></td>
+	</tr>
+	<tr>
+		<td valign="middle"><strong>$$LG:EMAIL$$</strong></td>
+		<td valign="middle"><input class="imputForm" type="text" name="1Email" size="30" value="$$1EMAIL$$" /></td>
+	</tr>	
+	$$REM$$<!--validation-->$$END$$	
+	<tr> 
+		<td colspan="2" align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+	</tr>
+	<tr> 
+		<td colspan="2" align="right"><br /><input type="image" class="Pbien" src="img/envoyer_$$LANGUE$$.png" name="image" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:justify;padding-top:15px;">$$INCL:CGU_FORMULAIRE.HTM$$</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+</div>
+$$END:AGENCE:EMAIL$$
+$$INCL:BAS.HTM$$

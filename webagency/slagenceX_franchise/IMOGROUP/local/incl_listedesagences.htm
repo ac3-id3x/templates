@@ -1,0 +1,54 @@
+$$IF=:MESSAGE:PAGE:IDT$$
+<script language="javascript" type="text/javascript">
+<!--
+function valider(id) {
+	document.location.href='/'+id+'/message.htm?$$REP:QRY$$';
+}
+
+// -->
+</script>
+$$END$$
+
+$$IF=:CTC:PAGE:IDT$$
+<script language="javascript" type="text/javascript">
+<!--
+function valider(id) {
+	document.location.href='/'+id+'/vendeur.htm?$$REP:QRY$$';
+}
+// -->
+</script>
+$$END$$
+
+<br />
+	<form action="/message.htm" method="get" name="liste" >
+<table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+	<td align="center"><span class="trouvezAgence">$$LG:TROUVERAGEN ucase$$</span></td>
+</tr>
+<tr>
+	<td align="center">
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAGENCESTRIECP:::::CP$$ 
+$$BIF:LISTEAGENCESTRIECP$$ 
+   <select name="idpub" id="idpub" style="width:400px; font-size:10px;" onchange="valider(this.value);">
+				<option value="">-- $$LG:LIEN:LISTEAG pcase$$ --</option>
+					$$DO:1:120$$
+					$$IF:LISTEAGENCESTRIECP:EMAIL$$
+					<option value="$$LISTEAGENCESTRIECP:IDPUBLICATION$$">
+						$$LISTEAGENCESTRIECP:NOM$$
+						$$IF!:0:PAGE:CONTACT:AFFVILLE$$&nbsp;-&nbsp;$$LISTEAGENCESTRIECP:VILLE pcase$$$$END$$
+						$$IF!:0:PAGE:CONTACT:CP$$&nbsp;($$LISTEAGENCESTRIECP:CP$$)$$END$$
+					</option>
+						$$END$$
+					$$LOOP$$
+	</select>
+	<br />
+	$$BFIN$$
+</td>
+	</tr>
+	<!--<tr>
+		<td align="right"><br />
+			<input type="image" src="$$_$$img/envoyer_$$LANGUE$$.gif" border="0" onclick="valider(document.form.idpub.value);"/>
+		</td>
+	</tr>-->
+	</table>
+</form>

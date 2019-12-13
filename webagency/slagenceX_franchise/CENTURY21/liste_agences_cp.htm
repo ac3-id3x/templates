@@ -1,0 +1,71 @@
+$$SET:AGENCE=1$$
+$$SET:PAGE:IDT=LISTEAG$$ 
+<!--#include virtual="incl_haut.htm"-->
+
+<div class="PadContenu">  
+<h1><span>$$LG:NOSAGENCES pcase$$</span><img src="$$-$$images/fin_grand_titres.gif" alt="CENTURY 21 $$IMMOBW:AGENCE:NOM ucase$$" /></h1>
+
+<!-- $$REP:1$$ --> 
+ $$BIF:IMMOBW:AGENCES:CP$$
+   $$DO:1:120$$
+<div style="margin:10px;"> 
+  
+<div style="float:left; margin-top:10px;">	 
+<span class="liste_agences_nom"><strong>$$IMMOBW:AGENCES:CP:NOM$$</strong></span><br /> 
+      			$$IMMOBW:AGENCES:CP:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$<br />
+      			$$IMMOBW:AGENCES:CP:CP$$ $$IMMOBW:AGENCES:CP:VILLE ncase$$<br />
+      			$$IF!:FR:LANGUE$$<font class="liste_agences_info">$$LG:MINITEL$$ : </font> $$IMMOBW:AGENCES:CP:TEL tel2inter$$$$END$$
+       
+     				 $$IF=:FR:LANGUE$$<font class="liste_agences_info">$$LG:MINITEL$$ :</font> $$IMMOBW:AGENCES:CP:TEL formattel$$$$END$$ <br /> 
+     				 $$IF:IMMOBW:AGENCES:CP:FAX$$<span class="liste_agences_info">Fax :</span> $$IMMOBW:AGENCES:CP:FAX formattel$$<br />$$END$$ 
+      
+      			$$IF:IMMOBW:AGENCES:CP:EMAIL$$<font class="liste_agences_info"><strong>E-mail : </strong></font><span id="mail">$$IMMOBW:AGENCES:CP:EMAIL encodemail javascript full$$</span><br /> 
+      $$END$$ <font class="liste_agences_info">$$LG:NOMRESP$$ $$IMMOBW:AGENCES:CP:RESPAG$$</font><br /> 
+      $$IF:IMMOBW:AGENCES:CP:RCS_FULL$$ RCS : $$IMMOBW:AGENCES:CP:RCS_FULL$$ <br /> $$END$$ 
+	   $$LG:ENTITEINDE$$<br />
+    
+	 <div>
+				  <a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/agences.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:LIEN:PLUSDINFOS pcase$$</a> - 
+				     $$IF:IMMOBW:AGENCES:CP:SI_AFFURL$$ 
+				     $$IF:IMMOBW:AGENCES:CP:URL$$ 
+				     <a href="$$IMMOBW:AGENCES:CP:URL$$" target="_blank" class="liste_agences_lien"><strong>En un clic (!), vers le site de cette agence: $$IMMOBW:AGENCES:CP:NOM$$</strong></a><br /> 
+				    $$END:URL$$ $$END:SI_AFFURL$$
+				    
+				     $$IF0:IMMOBW:AGENCES:CP:SI_AFFURL$$
+				     $$IF=:CV:REP:1$$ 
+				     <strong><a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/agences.htm?lang=$$LANGUE$$"  class="liste_agences_lien">$$LG:VITRINE pcase$$</a><br /> 
+				     $$END$$ $$END:!SI_AFFURL$$ 
+				
+					  <a href="javascript:void(0)" onclick="popup('/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$','Contactez_nous','toolbar=0,location=0,directories=0,status=0,scrollbars=1,resizable=0,copyhistory=0,menubar=0,width=470,height=650')" class="liste_agences_lien">$$LG:NOUSCTC$$</a>&nbsp;-&nbsp;
+					  $$REM$$
+					  <a href="javascript:void(0)" onclick="popup('/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$/message.htm?lang=$$LANGUE$$','Contactez_nous','toolbar=0,location=0,directories=0,status=0,scrollbars=1,resizable=0,copyhistory=0,menubar=0,width=470,height=650')">$$LG:VOUSRECHERCHEZ pcase$$</a>&nbsp;-&nbsp;
+				    <a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/estimation.htm?lang=$$LANGUE$$" class="liste_agences_lien">$$LG:VENDEZBIEN$$</a>
+				    $$END$$
+				    
+				    <script language="JavaScript">				
+						  function go2(ref)				
+						{window.open(ref,'carte','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550');}			
+						</script> 
+						
+				<span class="liste_agences_lien">	
+				$$A:CARTE:CP=@@IMMOBW:AGENCES:CP:CP@@$$
+				$$A:CARTE:VILLE=@@IMMOBW:AGENCES:CP:VILLE@@$$
+				$$A:CARTE:ADRESSE=@@IMMOBW:AGENCES:CP:ADRESSE alphanum +@@$$
+			$$INCL:LOCALISATION_AGENCE.HTM$$</span>
+				<br /><br /></strong>
+		</div>	      
+      
+      
+</div>
+				  	
+<div style="float:right;">
+<a href="/$$IMMOBW:AGENCES:CP:IDPUBLICATION urlencode$$/agences.htm?lang=$$LANGUE$$" class="liste_agences_lien">				  	
+<img src="/images/carte/$$IMMOBW:AGENCES:CP:IDPUBLICATION$$.jpg" alt="$$IMMOBW:AGENCES:CP:VILLE$$" title="$$IMMOBW:AGENCES:CP:VILLE$$" /></a>	
+</div>
+<div class="spacer"></div>
+</div>				
+  $$LOOP$$
+$$BFIN$$
+
+</div>
+<!--#include virtual="incl_bas.htm"-->

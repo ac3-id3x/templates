@@ -1,0 +1,210 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=ESTIM$$
+$$SET:PAGE:INIT=init();$$
+
+<div id="Estimer">
+$$IF=:FR:LANGUE$$
+	<!-- paragraphe www.avis-immobilier.fr -->
+	<div id="TitrePage">
+		<h2>Estimer</h2>
+		<h3><a href="#formulaire" title="$$IMMOBW:AGENCE:NOM scase$$ $$IMMOBW:AGENCE:VILLE scase$$ ($$IMMOBW:AGENCE:CP$$)">Formulaire pour estimer votre bien</a></h3>
+	</div>	
+	<div id="TextePage">		
+		<h4>Pack Estissimo</h4>
+		<div class="spacer"><!-- --></div>
+			<p><strong>L'estimation professionnelle qui valorise votre bien dans son environnement</strong></p>
+			<p>Avec le Pack Estissimo AVIS-Immobilier, &eacute;valuez professionnellement votre bien et r&eacute;v&eacute;lez ses points forts afin d'obtenir un vrai prix de r&eacute;f&eacute;rence !</p>
+			<p>Nos experts immobiliers s'appuient sur une m&eacute;thode rationnelle et pr&egrave;s de 50 ans d'exp&eacute;rience (AVIS-Immobilier est le plus ancien r&eacute;seau immobilier de France). Pour estimer votre habitation &agrave; sa juste valeur, rien n'est laiss&eacute; au hasard !</p>
+			<p>Le Pack Estissimo se d&eacute;roule en 2 temps :</p>
+			<p>1. Le diagnostic du march&eacute; dans votre quartier</p>
+			<p>2. Le diagnostic de votre bien en 50 points</p>
+			<p class="MarkupText"><strong>Votre Pack Estissimo vous est offert. Contactez votre agence la plus proche.</strong></p>		
+		<h3><a href="/vendeur.htm?lang=$$LANGUE$$" title="$$IMMOBW:AGENCE:NOM scase$$ $$IMMOBW:AGENCE:VILLE scase$$ ($$IMMOBW:AGENCE:CP$$)">$$LG:LIEN:VENDRE pcase$$</a></h3>		
+	</div>
+	<div class="spacer"><!-- --></div>
+	<div id="VisuelAvis">		
+			<img border="0" src="images/a2a-9928.jpg" alt="$$IMMOBW:AGENCE:NOM scase$$ $$IMMOBW:AGENCE:VILLE scase$$ ($$IMMOBW:AGENCE:CP$$)" title="$$IMMOBW:AGENCE:NOM scase$$ $$IMMOBW:AGENCE:VILLE scase$$ ($$IMMOBW:AGENCE:CP$$)" />
+	</div>
+	<div id="TitreFormulaire">
+		<h4><a name="formulaire" title="$$IMMOBW:AGENCE:NOM scase$$ $$IMMOBW:AGENCE:VILLE scase$$ ($$IMMOBW:AGENCE:CP$$)"></a>Formulaire pour estimer votre bien</h4>
+		<div class="spacer"><!-- --></div>
+	</div>
+	<!-- fin paragraphe www.avis-immobilier.fr -->
+$$END$$
+
+	<!-- formulaire SeLoger -->
+	$$E:IMMOBW:AGENCE:REP:1$$
+	$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$  $$END$$
+	$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+	$$B:IMMOBW:AGENCES$$
+	$$BIF:IMMOBW:AGENCES$$ $$DO:1:120$$
+	$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+	$$LOOP$$$$BFIN$$
+
+	$$IF:MULTI_AGENCE:EMAIL$$
+	$$IF0:AGENCE:EMAIL$$
+	$$INCL:ESTIMATION.HTM$$
+	$$END$$
+	$$END$$
+
+	$$IF0:MULTI_AGENCE:EMAIL$$
+	$$IF0:AGENCE:EMAIL$$
+	<div class="NoMail">		
+		D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br />
+		L'adresse e-mail du destinataire n'est pas disponible.		
+	</div>
+	$$END$$
+	$$END$$
+
+	$$IF:AGENCE:EMAIL$$
+	<!-- début du formulaire -->
+	<div id="Formulaire">
+	
+		<form method="post" action="page_ok_estimation.htm?lang=$$LANGUE$$">
+			<input type="hidden" name="idtt" value="2" />
+			<input type="hidden" name="lang" value="$$LANGUE$$" />
+			<input type="hidden" name="u" value="id3:formmail" />
+			<input type="hidden" name="page_ok" value="page_ok_estimation.htm" />
+			<input type="hidden" name="page_err" value="estimation.htm" />
+			<input type="hidden" name="cfg_form" value="estimation$$LANGUE$$" />
+			<input type="hidden" name="cfg_emails" value="estimation" />
+			$$IF:PAGE:CFG_EMAILS_CC$$<input type="hidden" name="CC" value="$$PAGE:CFG_EMAILS_CC htmlencode$$" />$$END$$
+			$$IF:PAGE:CFG_EMAILS_BCC$$<input type="hidden" name="BCC" value="$$PAGE:CFG_EMAILS_BCC htmlencode$$" />$$END$$
+			$$IF0:IMMOBW:AGENCE:EMAIL$$
+			<input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />
+			$$END$$
+			$$IF:FORM:REMAIL$$
+			<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />
+			$$END$$
+			$$IF0:FORM:REMAIL$$
+			$$IF:IMMOBW:AGENCE:EMAIL$$
+			<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+			<input type="hidden" name="REMAIL" value="$$IMMOBW:AGENCE:EMAIL$$" />
+			$$END$$
+			$$END$$
+			<input type="hidden" name="SRV" value="$$SRV$$" />
+			<p class="HautFormulaire">
+				$$ERRE$$<br />
+				$$FORM:AGENCE_NOM$$ $$IF0:FORM:AGENCE_NOM$$ $$IMMOBW:AGENCE:NOM$$ $$END$$
+			</p>	
+			<p id="$$FORM:ESTIMATION$$">$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$AGENCE:NOM$$$$END$$</p>
+			$$IF=:1:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+			$$IF=:louer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Louer" />$$ $$END$$
+			$$IF=:2:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+			$$IF=:vendre:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Vendre" />$$ $$END$$
+			$$IF=:3:PAGE:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+			$$IF=:gerer:FORM:ESTIMATION$$ $$A:ESTIMATION:CHOIX=<input type="hidden" name="Rdesir" value="Gérer" />$$ $$END$$
+			$$ESTIMATION:CHOIX$$
+			$$IF!:1$2$3:PAGE:ESTIMATION$$
+			$$IF0:FORM:ESTIMATION$$
+			<!-- vous possédez un bien immobilier -->
+			<p class="tabTitre">$$LG:VOUSPOSSEDEZ$$&nbsp;$$LG:RUBRIQUE lcase$$</p>
+			<p class="radio">$$IF0:PAGE:IDTC1$$
+			$$LG:LOCATION$$
+			<input type="radio" name="Rdesir" value="Location" $$IF:PAGE:IDTC3$$$$IF0:PAGE:IDTC4$$checked$$END$$$$END$$ />
+			$$END$$
+			$$IF0:PAGE:IDTC3$$
+			$$LG:VENTE$$
+			<input type="radio" name="Rdesir" value="Vente" checked />
+			$$END$$
+			$$IF:PAGE:IDTC4$$
+			$$LG:GERER$$
+			<input type="radio" name="Rdesir" value="Gérer" checked />
+			$$END$$
+			</p>
+			$$END$$
+			$$END$$
+			<!-- descriptif du bien -->
+			<p class="tabTitre"><strong>$$LG:DESCRIPBIEN$$</strong></span>
+			<!-- bien proposé -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:BIENPROP$$ :</span>
+				<span class="rightForm"><input type="radio" name="Pbien" value="un appartement" />$$LG:APPARTEMENT$$ <input type="radio" name="Pbien" value="une maison" />$$LG:MAISON$$</span>
+			</div>
+			<!-- surface habitable -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:SURFH$$</span>
+				<span class="rightForm"><input class="imputForm" type="text" name="Psurf" size="10" value="$$FORM:PSURF$$" /> m&sup2;</span>
+			</div>
+			<!-- surface terrain -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:SURFT$$</span>
+				<span class="rightForm"><input class="imputForm" type="text" name="Pterre" size="10" value="$$FORM:PTERRE$$" /> m&sup2;</span>
+			</div>
+			<!-- nombre de pièces -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:NBRP$$</span>
+				<span class="rightForm"><input class="imputForm" type="text" name="Ppieces" size="10" value="$$FORM:PPIECES$$" /> $$LG:PIECES$$</span>
+			</div>
+			<!-- dpt/ville -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:DPTV$$ :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="Pville" size="45" value="$$FORM:PVILLE$$" /></span>
+			</div>
+			<!-- précisions -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:PRECIS$$ :</span> 
+				<span class="rightForm"><textarea class="imputForm" name="PPrecisions" cols="45" rows="3">$$FORM:PPRECISIONS$$</textarea></span>
+			</div>
+			<!-- vos coordonnées -->	
+			<p class="tabTitre"><strong>$$LG:COORD$$</strong></p>
+			<!-- nom -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:AI5$$ * :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2nom" size="45" value="$$FORM:2NOM$$" maxlength="35" /></span>
+			</div>
+			<!-- prénom -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:PRENOM$$ * :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2prenom" size="45" value="$$FORM:2PRENOM$$" maxlength="35" /></span>	
+			</div>
+			<!-- adresse -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:ADRESSE$$ :</span> 
+				<span class="rightForm">$$IF=:FR:LANGUE$$<input class="imputForm" type="text" name="2ADRESSE" size="45" value="$$FORM:2ADRESSE$$" />$$END$$
+				$$IF!:FR:LANGUE$$<textarea class="imputForm" name="2ADRESSE" size="45" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</span>	
+			</div>
+			<!-- ville -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:VILLE$$ :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2Ville" size="45" value="$$FORM:2VILLE$$" /></span>
+			</div>
+			<!-- code postal -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:CODEP$$ :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2codepostal" size="10" value="$$FORM:2CODEPOSTAL$$" /></span>
+			</div>
+			$$IF!:FR:LANGUE$$
+			<!-- pays -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:PAYS$$ :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2pays" size="45" value="$$FORM:2PAYS$$" /></span>
+			</div>
+			$$END$$
+			<!-- téléphone -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:TEL$$ * :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2phone" size="25" value="$$FORM:2PHONE$$" maxlength="20" /></span>
+			</div>
+			<!-- fax -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:FAX$$ :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2fax" size="25" value="$$FORM:2FAX$$" /></span>
+			</div>
+			<!-- e-mail -->
+			<div class="ligneformulaire">
+				<span class="leftForm">$$LG:AI6$$ * :</span> 
+				<span class="rightForm"><input class="imputForm" type="text" name="2Email" size="45" value="$$FORM:2EMAIL$$" /></span>	
+			</div>
+			<p class="ChampsObligatoire">$$LG:OBLIGATOIRE$$</p>
+			<!--validation-->
+			<p class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></p>
+			<p class="envoyer"><input type="image" src="img/envoyer_$$LANGUE$$.gif" name="image" /></p>
+		</form>
+		<p class="CGU_Form">$$INCL:CGU_FORMULAIRE.HTM$$</p>
+	</div>
+$$END:EMAIL$$
+<!-- fin du formulaire -->
+</div>
+$$INCL:BAS.HTM$$

@@ -1,0 +1,41 @@
+<!-- [ttl: 8h] -->
+££REM££
+==================================================================================================
+==			Ce bloc de code est caché en cache 'GEN'. LLA 02/09/2005																==
+==			Voir le fichier .src correspondant sur le rep de du site.																==
+==================================================================================================
+££END:REM££
+
+££INCL:DICO-FORM.HTM££
+
+	$$B:IMMOBW:VILLESANNONCES:::1$$
+	$$BIF:IMMOBW:VILLESANNONCES:$$
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="tabTitre"><img src="/img/4round.gif" width="11"  alt="laforet immobilier" /> <strong>££LG:CHOIXVILLES££</strong><br /><img src="img/separateur2.gif"  class="Bloc" alt="laforet immobilier" /></td>
+	</tr>
+	££IF=:1:PAGE:LISTEDEROULANT££
+	<tr>
+		<td>
+		<select name="ci">
+			<option value="">££LG:SELECVILLE££</option>
+			$$DO:1:999$$
+			<option value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$">$$IMMOBW:VILLESANNONCES::VILLEAFF$$ ££IF0:PAGE:LISTEVILLE:SANSCP££($$IMMOBW:VILLESANNONCES::CODEINSEE codeinsee2cps$$)££END:PAGE:LISTEVILLE:SANSCP££</option>
+			$$LOOP$$
+		</select>
+		</td>
+	</tr>
+	££END:PAGE:LISTEDEROULANT££
+	££IF!:1:PAGE:LISTEDEROULANT££
+	<tr>
+		<td>$$DO:2:999$$
+$$IF:IMMOBW:VILLESANNONCES::CODEINSEE$$
+		<input type="checkbox" name="ci" value="$$IMMOBW:VILLESANNONCES::CODEINSEE$$" /> <b>$$IMMOBW:VILLESANNONCES::VILLEAFF$$</b> ££IF0:PAGE:LISTEVILLE:SANSCP££ ($$IMMOBW:VILLESANNONCES::CODEINSEE codeinsee2cps$$) ££END:PAGE:LISTEVILLE:SANSCP££<br />
+		££IF0:PAGE:LISTEVILLE:SANSNBANN££&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>($$IMMOBW:VILLESANNONCES::NBANN$$ annonce$$IMMOBW:VILLESANNONCES::NBANN pluriel$$)</i><br />££END:PAGE:LISTEVILLE:SANSNBANN££
+$$END:IMMOBW:VILLESANNONCES::CODEINSEE$$
+		$$LOOP$$</td>
+	</tr>
+	££END:PAGE:LISTEDEROULANT££
+	$$BFIN$$

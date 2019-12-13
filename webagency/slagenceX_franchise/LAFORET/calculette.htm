@@ -1,0 +1,158 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=CALFINANC$$
+<script language="JavaScript" type="text/javascript">
+<!--
+function MM_findObjCalc(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObjCalc(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function calc(what)
+{
+	var T;
+switch(what) {
+	case 'mens':
+		T = MM_findObjCalc( "mens_taux" ).value.replace(',','.')/100;
+		if ((T<0.02) || (T>0.09))
+			alert('$$LG:CALCCTLMONTANT$$');
+		else {
+			t = T/12;
+			C = MM_findObjCalc( "mens_emprunt" ).value.replace(',','.');
+			n = MM_findObjCalc( "mens_nbmens" ).value.replace(',','.');
+			if (MM_findObjCalc( "mens_duree" )[1].checked) {
+				n *= 12;
+			}
+			if( n == 0 ){
+				alert("$$LG:CALCCTLDUREE$$");
+			} else {
+				MM_findObjCalc( "mens_mens" ).value = Math.round(100*C*(t/(1-(1/Math.pow(1+t,n)))))/100; }
+			}
+		break;
+	case 'emprunt':
+		T = MM_findObjCalc( "emprunt_taux" ).value.replace(',','.')/100;
+		if ((T<0.02) || (T>0.09))
+			alert('$$LG:CALCCTLMONTANT$$');
+		else {
+			t = T/12;
+			//n = MM_findObjCalc( "emprunt_nbmens" ).value.replace(',','.');
+			n = MM_findObjCalc( "emprunt_nbmens" ).value.replace(',','.');
+			if (MM_findObjCalc( "emprunt_duree" )[1].checked) {
+				n *= 12;
+			}
+			m = MM_findObjCalc( "emprunt_mens" ).value.replace(',','.');
+			MM_findObjCalc( "emprunt_emprunt" ).value = Math.round(m*((1-(1/Math.pow(1+t,n)))/t)); }
+		break;
+	case 'nbmens':
+		T = MM_findObjCalc( "nbmens_taux" ).value.replace(',','.')/100;
+		if ((T<0.02) || (T>0.09))
+			alert('$$LG:CALCCTLMONTANT$$');
+		else {
+			t = T/12;
+			C = MM_findObjCalc( "nbmens_emprunt" ).value.replace(',','.');
+			m = MM_findObjCalc( "nbmens_mens" ).value.replace(',','.');
+			MM_findObjCalc( "nbmens_nbmens" ).value = Math.round(Math.log(-1/(((C/m)*t)-1))/Math.log(1+t));
+			MM_findObjCalc( "nbmens_nbmens" ).value += ' mois (' + Math.round(MM_findObjCalc( "nbmens_nbmens" ).value/12) + ' an' + ((Math.round(MM_findObjCalc( "nbmens_nbmens" ).value/12)>1)?'s':'') + ')'; }
+		break;
+	};
+}
+// -->
+</script>
+<div id="Calculette">
+<table id="TableNotaire">
+<tr>
+	<td>
+		<h1 class="h1Jer">$$LG:LIEN:CALFINANC pcase$$</h1>
+		<br />
+	<span class="selection"><img src="/img/puce1.png" alt="" />&nbsp;$$LG:CALCULER2$$ <a href="#mensualites">$$LG:MENSU$$</a>, <a href="#duree">$$LG:DUREE$$</a>, $$LG:OU$$ <a href="#montant">$$LG:MONTANT$$</a> $$LG:VOTREPRET$$<br /></span>
+	<form method="get" action="" name="monform">
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<table width="100%" cellpadding="0" align="center">
+	<tr>
+		<td colspan="2" class="tabTitre"><strong>&nbsp;• <a name="mensualite"></a>$$LG:CALCEMPR$$</strong></td>
+	</tr>
+	<tr>
+		<td width="66%">&raquo; $$LG:SAISIEMENS$$<br />$$LG:SANSESP$$</td>
+		<td valign="top" width="34%" align="left">
+		<input class="imputForm" type="text" name="emprunt_mens" id="emprunt_mens" size="10" /> Euros</td>
+	</tr>
+	<tr>
+		<td width="66%">&raquo; $$LG:SAISIEDUREE$$<br />
+		$$LG:PRECISOBL$$&nbsp;<input type="radio" name="emprunt_duree" id="emprunt_duree" value="m" />
+		$$LG:MOIS$$&nbsp;<input type="radio" name="emprunt_duree" id="emprunt_duree" value="a" checked="checked" />
+		$$LG:ANNEE$$</td>
+		<td width="34%" align="left"><input class="imputForm" type="text" name="emprunt_nbmens" id="emprunt_nbmens" size="10" /></td>
+	</tr>
+	<tr>
+		<td width="66%">&raquo; $$LG:SAISIET$$<br />$$LG:EXSAISIET$$</td>
+		<td width="34%"><input class="imputForm" type="text" name="emprunt_taux" id="emprunt_taux" size="10" /> %</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="34">
+		<table width="100%" border="0" cellspacing="0" cellpadding="2" class="tabFond2">
+		<tr>
+			<td align="center"><input class="imputForm" type="button" name="emprunt_calculer" id="emprunt_calculer" value="$$LG:CALCEMPR$$" onclick="calc('emprunt')" /></td>
+			<td align="center">&nbsp; <input class="imputForm" type="text" name="emprunt_emprunt" id="emprunt_emprunt" size="10" /></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tabTitre"><strong>&nbsp;• <a name="montant"></a>$$LG:CALCREMB$$</strong></td>
+	</tr>
+	<tr>
+		<td width="66%"> &raquo; $$LG:SAISIEEMP$$<br />$$LG:SANSESP2$$<br /></td>
+		<td width="34%"><input class="imputForm" type="text" name="mens_emprunt" id="mens_emprunt" size="10" /> Euros</td>
+	</tr>
+	<tr>
+		<td width="66%"><p>&raquo; $$LG:DUREE$$<br />$$LG:PRECISOBL$$<input type="radio" name="mens_duree" id="mens_duree" value="m" />
+		$$LG:MOIS$$<input type="radio" name="mens_duree" id="mens_duree" value="a" checked="checked" />&nbsp;$$LG:ANNEE$$<br /></p></td>
+		<td width="34%"><input class="imputForm" type="text" name="mens_nbmens" id="mens_nbmens" size="10" /></td>
+	</tr>
+	<tr>
+		<td width="66%"><p>&raquo; $$LG:SAISIET$$<br />$$LG:EXSAISIET$$</p></td>
+		<td width="34%"><input class="imputForm" type="text" name="mens_taux" id="mens_taux" size="10" /> %</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="34" class="tabFond2">
+		<table border="0">
+		<tr>
+			<td align="center"><input class="imputForm" type="button" name="mens_calculer" id="mens_calculer" value="$$LG:CALCREMB2$$" onclick="calc('mens')" /></td>
+			<td align="center">&nbsp; <input class="imputForm" type="text" name="mens_mens" id="mens_mens" size="10" /></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tabTitre"> <strong>&nbsp;• <a name="duree"></a>$$LG:CALCDUREEEMP$$</strong> </td>
+	</tr>
+	<tr>
+		<td width="66%"> &raquo; $$LG:SAISIEEMP$$<br />$$LG:SANSESP2$$</td>
+		<td width="34%"><input class="imputForm" type="text" name="nbmens_emprunt" id="nbmens_emprunt" size="10" /> Euros</td>
+	</tr>
+	<tr>
+		<td width="66%"> &raquo; $$LG:SAISIEMENS$$<br />$$LG:SANSESP$$</td>
+		<td width="34%"><input class="imputForm" type="text" name="nbmens_mens" id="nbmens_mens" size="10" /> Euros</td>
+	</tr>
+	<tr>
+		<td width="66%"> &raquo; $$LG:SAISIET$$<br />$$LG:EXSAISIET$$</td>
+		<td width="34%"><input class="imputForm" type="text" name="nbmens_taux" id="nbmens_taux" size="10" /> %</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="34">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabFond2">
+		<tr>
+			<td width="76%" align="center"><input class="imputForm" type="button" name="nbmens_calculer" id="nbmens_calculer" value="$$LG:CALCDUREEEMP$$" onclick="calc('nbmens')" /></td>
+			<td width="24%" align="center">&nbsp; <input class="imputForm" type="text" name="nbmens_nbmens" id="nbmens_nbmens" size="10" /></td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+</table>
+</div>
+$$INCL:BAS.HTM$$

@@ -1,0 +1,408 @@
+$$SET:PAGE:IDT=MOTEUR$$
+$$SET:RESULTATS=1$$
+<!--#include virtual="incl_haut.htm"-->
+
+<!-- page ventes.htm -->
+$$IF=:1:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=1$$
+$$END$$
+$$IF=:2:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=0$$
+$$END$$
+$$IF=:3:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=1$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=1$$
+$$A:PAGE:VIDEMEUBLE=1$$
+$$END$$
+$$IF=:4:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=1$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=1$$
+$$A:PAGE:EQUIPEMENT=1$$
+$$A:PAGE:VIDEMEUBLE=1$$
+$$END$$
+$$IF=:5:FORM:IDTT$$
+$$A:PAGE:VIAGER=1$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=0$$
+$$END$$
+$$IF=:6:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=1$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=0$$
+$$END$$
+$$IF=:7:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=1$$
+$$END$$
+$$IF=:8:FORM:IDTT$$
+$$A:PAGE:VIAGER=0$$
+$$A:PAGE:NBPERSONNE=0$$
+$$A:PAGE:INVESTIR=0$$
+$$A:PAGE:BUDGETVAC=0$$
+$$A:PAGE:EQUIPEMENT=0$$
+$$A:PAGE:VIDEMEUBLE=0$$
+$$END$$
+<script type="text/javascript">
+function JumpMenu(nom){
+var chiffre = nom;
+window.location.href="/moteur.htm?idtt="+ chiffre + "&lang=$$LANGUE$$";
+}
+</script>
+
+
+<script language="javascript" type="text/javascript">
+				function Soustypes(){
+					var elt_typebien = document.getElementById("typebien");
+					var elt_biens = document.getElementById("biens");
+					var elt_maisons = document.getElementById("maisons");
+					var j = 0;
+					var listeinput = document.getElementsByTagName( "input" );
+					if( elt_typebien && elt_biens && elt_maisons ) {
+
+						if( elt_typebien.checked==true ) {
+
+							elt_biens.style.display="inline";
+							elt_maisons.style.display="none";
+
+							for( j=0; j< listeinput.length; j++ ) {
+								if( listeinput[j].id.substring( 0, 15 ) == "idsoustypebien_" ) {
+									listeinput[j].checked = false;
+								}
+							}
+
+						} else {
+							
+							elt_biens.style.display="none";
+							elt_maisons.style.display="inline";
+
+							for( j=0; j < listeinput.length; j++ ) {
+								if( listeinput[j].id.substring( 0, 11 ) == "idtypebien_" ) {
+									listeinput[j].checked = false;
+								}
+							}
+
+						}
+					} else {
+						alert("element d'id 'typebien' ou 'biens' ou 'maisons' non trouvé dans la page");
+					}
+				}
+				
+</script>
+
+<div id="intro">
+<img src="$$-$$images/trouver_logement/picto_tit_trouver_bien.jpg" alt="Trouver votre logement" />
+</div>
+
+<h1><img src="$$-$$images/depart_grand_titres.gif" alt="$$PAGE:KEYWORDS$$" /><span>$$LG:TROUVERLOGEMENT pcase$$</span><img src="$$-$$images/fin_grand_titres.gif" alt="$$PAGE:TITRE$$" /></h1>
+
+
+
+$$LG:SELECTIONNEZ pcase$$
+
+<!-- VOIR SI CES SCRIPTS SONT NECESSAIRES -->
+<script src="$$-$$js/xml_http_request.js" type="text/javascript"></script>
+<script src="js/lib_strings.js" type="text/javascript"></script>
+<script src="js/trouver_logement.js" type="text/javascript"></script>
+<!-- VOIR SI CES SCRIPTS SONT NECESSAIRES -->
+
+<div id="trouver-logement">
+<div id="moteur">
+	
+<form method="get" action="$$IF:REP:1$$/$$REP:1$$$$END$$/prerecherche.htm" id="annonces" name="annonces" onsubmit="">
+$$IF!:1:PAGE:PROXIMITE$$<input type="hidden" name="cp" value="" />$$END$$
+<input type="hidden" name="lang" value="$$LANGUE$$" />
+
+<div class="spacer"></div>
+
+<!-- Types de transaction -->
+<div id="b_type_transaction">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:DESCRIPTION$$" />$$LG:TYPEDETRANSACTION pcase$$ :</h2>
+<br />
+<div id="type_transaction">	
+		<select class="Form" name="idtt" size="1" onchange="JumpMenu(this.value);">
+			$$IF=:1:PAGE:IDTT2$$<option value="2" $$IF(:FORM_IDTT:2$$selected="selected"$$END$$ >$$LG:MINIVEN$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT1$$<option value="1" $$IF(:FORM_IDTT:1$$selected="selected"$$END$$>$$LG:MINILOC$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT4$$<option value="4" $$IF(:FORM_IDTT:4$$selected="selected"$$END$$>$$LG:MINILOCVAC$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT8$$<option value="8" $$IF(:FORM_IDTT:8$$selected="selected"$$END$$>$$LG:LIEN:VENPRES pcase$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT7$$<option value="7" $$IF(:FORM_IDTT:7$$selected="selected"$$END$$>$$LG:LIEN:LOCPST pcase$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT6$$<option value="6" $$IF(:FORM_IDTT:6$$selected="selected"$$END$$>$$LG:LIEN:PRODINVEST pcase$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT5$$<option value="5" $$IF(:FORM_IDTT:5$$selected="selected"$$END$$>$$LG:LIEN:VIAGER pcase$$</option>$$END$$
+			$$IF=:1:PAGE:IDTT3$$<option value="3" $$IF(:FORM_IDTT:3$$selected="selected"$$END$$>$$LG:LIEN:LOCTMP pcase$$</option>$$END$$						
+		</select>			
+</div>		
+<br />
+</div>
+<!-- FIN  Types de transaction Ajout code ici -->	
+
+		
+<!-- Types de biens -->
+<div id="b_type_bien">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:KEYWORDS$$" />$$LG:TYPEDEBIEN pcase$$ :</h2>
+
+<div id="b_input_b_type_bien">
+
+	<table width="95%" border="0" cellspacing="0" cellpadding="2">
+	<!-- TYPE DE BIEN -->
+	$$IF!:0:PAGE:TYPEDEBIEN$$
+	$$IF!:0:PAGE:SOUSTYPEDEBIEN$$
+	<tr>
+		<td class="tabTitre">$$IF!:0:PAGE:SOUSTYPEDEBIEN$$<input type="radio" name="type" value="" id="typebien" onclick="Soustypes();" checked="checked" />$$END$$<b>$$LG:TYPEDEBIEN$$</b></td>
+	</tr>
+	$$END$$
+	<tr>
+	<td class="tabcontenu">
+		<div id="biens" style="display:inline;">
+		$$IF=:1:PAGE:IDTB1$$<label  style="float: left" for="idtypebien_1" title="$$LG:APPARTEMENT$$"><input type="checkbox" name="idtypebien" id="idtypebien_1" value="1" $$IF(:FORM_IDTYPEBIEN:1$$ checked="checked"$$END$$ />&nbsp;$$LG:APPARTEMENT sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB9$$<label  style="float: left" for="idtypebien_9" title="$$LG:LOFT$$"><input type="checkbox" name="idtypebien" id="idtypebien_9" value="9" $$IF(:FORM_IDTYPEBIEN:9$$ checked="checked"$$END$$ />&nbsp;$$LG:LOFT$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB2$$<label  style="float: left" for="idtypebien_2" title="$$LG:MAISON$$"><input type="checkbox" name="idtypebien" id="idtypebien_2" value="2"$$IF(:FORM_IDTYPEBIEN:2$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISON sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB4$$<label  style="float: left" for="idtypebien_4" title="$$LG:TERRAIN$$"><input type="checkbox" name="idtypebien" id="idtypebien_4" value="4"$$IF(:FORM_IDTYPEBIEN:4$$ checked="checked"$$END$$ />&nbsp;$$LG:TERRAIN sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB6$$<label  style="float: left" for="idtypebien_6" title="$$LG:BOUTIQUE$$"><input type="checkbox" name="idtypebien" id="idtypebien_6" value="6"$$IF(:FORM_IDTYPEBIEN:6$$ checked="checked"$$END$$ />&nbsp;$$LG:BOUTIQUE sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB8$$<label  style="float: left" for="idtypebien_8" title="$$LG:BUREAUX$$"><input type="checkbox" name="idtypebien" id="idtypebien_8" value="8"$$IF(:FORM_IDTYPEBIEN:8$$ checked="checked"$$END$$ />&nbsp;$$LG:BUREAUX sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB3$$<label  style="float: left" for="idtypebien_3" title="$$LG:PARKING$$"><input type="checkbox" name="idtypebien" id="idtypebien_3" value="3"$$IF(:FORM_IDTYPEBIEN:3$$ checked="checked"$$END$$ />&nbsp;$$LG:PARKING sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB7$$<label  style="float: left" for="idtypebien_7" title="$$LG:LOCAL$$"><input type="checkbox" name="idtypebien" id="idtypebien_7" value="7"$$IF(:FORM_IDTYPEBIEN:7$$ checked="checked"$$END$$ />&nbsp;$$LG:LOCAL sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB11$$<label style="float: left" for="idtypebien_11" title="$$LG:IMMEUBLE$$"><input type="checkbox" name="idtypebien" id="idtypebien_11" value="11"$$IF(:FORM_IDTYPEBIEN:11$$ checked="checked"$$END$$ />&nbsp;$$LG:IMMEUBLE sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB12$$<label style="float: left" for="idtypebien_12" title="$$LG:BATIMENT$$"><input type="checkbox" name="idtypebien" id="idtypebien_12" value="12"$$IF(:FORM_IDTYPEBIEN:12$$ checked="checked"$$END$$ />&nbsp;$$LG:BATIMENT sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB13$$<label style="float: left" for="idtypebien_13" title="$$LG:CHATEAU$$"><input type="checkbox" name="idtypebien" id="idtypebien_13" value="13"$$IF(:FORM_IDTYPEBIEN:13$$ checked="checked"$$END$$ />&nbsp;$$LG:CHATEAU sp2nbsp$$</label>$$END$$
+		$$IF=:1:PAGE:IDTB14$$<label style="float: left" for="idtypebien_14" title="$$LG:HOTEL$$"><input type="checkbox" name="idtypebien" id="idtypebien_14" value="14"$$IF(:FORM_IDTYPEBIEN:14$$ checked="checked"$$END$$ />&nbsp;$$LG:HOTEL sp2nbsp$$</label>$$END$$	
+		$$IF=:1:PAGE:IDTB10$$<label style="float: left" for="idtypebien_10" title="$$LG:DIVERS$$"><input type="checkbox" name="idtypebien" id="idtypebien_10" value="10"$$IF(:FORM_IDTYPEBIEN:10$$ checked="checked"$$END$$ />&nbsp;$$LG:DIVERS sp2nbsp$$</label>$$END$$
+		</div>$$IF!:0:PAGE:SOUSTYPEDEBIEN$$<br /><br />$$END$$
+	</td>
+	</tr>
+	$$IF!:0:PAGE:SOUSTYPEDEBIEN$$
+	<tr>
+		<td class="tabTitre"><input type="radio" name="type" value="" id="typemaison" onclick="Soustypes();" /><b>$$LG:OU pcase$$ $$LG:TYPEMAISON$$</b></td>
+	</tr>
+	<tr>
+		<td>
+			<div id="maisons" style="display:none;">
+			$$IF=:1:PAGE:IDSSTB1$$<label for="idsoustypebien_1" title="$$LG:VILLA pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_1" value="1"$$IF(:FORM_IDSOUSTYPEBIEN:1$$ checked="checked"$$END$$ />&nbsp;$$LG:VILLA pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB2$$<label for="idsoustypebien_2" title="Mas"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_2" value="2"$$IF(:FORM_IDSOUSTYPEBIEN:2$$ checked="checked"$$END$$ />&nbsp;Mas</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB3$$<label for="idsoustypebien_3" title="$$LG:MAISVIL pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_3" value="3"$$IF(:FORM_IDSOUSTYPEBIEN:3$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISVIL pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB4$$<label for="idsoustypebien_4" title="$$LG:MAISONCONTEMPORAINE pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_4" value="4"$$IF(:FORM_IDSOUSTYPEBIEN:4$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISONCONTEMPORAINE pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB5$$<label for="idsoustypebien_5" title="Bergerie"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_5" value="5"$$IF(:FORM_IDSOUSTYPEBIEN:5$$ checked="checked"$$END$$ />&nbsp;Bergerie</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB6$$<label for="idsoustypebien_6" title="Maison longère"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_6" value="6"$$IF(:FORM_IDSOUSTYPEBIEN:6$$ checked="checked"$$END$$ />&nbsp;Maison longère</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB7$$<label for="idsoustypebien_7" title="Corps de ferme"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_7" value="7"$$IF(:FORM_IDSOUSTYPEBIEN:7$$ checked="checked"$$END$$ />&nbsp;Corps de ferme</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB8$$<label for="idsoustypebien_8" title="$$LG:PROPRIETES pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_8" value="8"$$IF(:FORM_IDSOUSTYPEBIEN:8$$ checked="checked"$$END$$ />&nbsp;$$LG:PROPRIETES pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB9$$<label for="idsoustypebien_9" title="Echoppe"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_9" value="9"$$IF(:FORM_IDSOUSTYPEBIEN:9$$ checked="checked"$$END$$ />&nbsp;Echoppe</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB10$$<label for="idsoustypebien_10" title="$$LG:FERME pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_10" value="10"$$IF(:FORM_IDSOUSTYPEBIEN:10$$ checked="checked"$$END$$ />&nbsp;$$LG:FERME pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB11$$<label for="idsoustypebien_11" title="Pavillon"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_11" value="11"$$IF(:FORM_IDSOUSTYPEBIEN:11$$ checked="checked"$$END$$ />&nbsp;Pavillon</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB12$$<label for="idsoustypebien_12" title="$$LG:MAISONVI pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_12" value="12"$$IF(:FORM_IDSOUSTYPEBIEN:12$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISONVI pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB13$$<label for="idsoustypebien_13" title="$$LG:MAISBASQUE pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_13" value="13"$$IF(:FORM_IDSOUSTYPEBIEN:13$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISBASQUE pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB14$$<label for="idsoustypebien_14" title="$$LG:MAISLANDAISE pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_14" value="14"$$IF(:FORM_IDSOUSTYPEBIEN:14$$ checked="checked"$$END$$ />&nbsp;$$LG:MAISLANDAISE pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB15$$<label for="idsoustypebien_15" title="Maison d'architecte"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_15" value="15"$$IF(:FORM_IDSOUSTYPEBIEN:15$$ checked="checked"$$END$$ />&nbsp;Maison d'architecte</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB16$$<label for="idsoustypebien_16" title="Maison charentaise"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_16" value="16"$$IF(:FORM_IDSOUSTYPEBIEN:16$$ checked="checked"$$END$$ />&nbsp;Maison charentaise</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB17$$<label for="idsoustypebien_17" title="Toulousaine"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_17" value="17"$$IF(:FORM_IDSOUSTYPEBIEN:17$$ checked="checked"$$END$$ />&nbsp;Toulousaine</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB18$$<label for="idsoustypebien_18" title="$$LG:REMISESGRANCE pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_18" value="18"$$IF(:FORM_IDSOUSTYPEBIEN:18$$ checked="checked"$$END$$ />&nbsp;$$LG:REMISESGRANCE pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB19$$<label for="idsoustypebien_19" title="Bastide"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_19" value="19"$$IF(:FORM_IDSOUSTYPEBIEN:19$$ checked="checked"$$END$$ />&nbsp;Bastide</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB20$$<label for="idsoustypebien_20" title="$$LG:CABANONS pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_20" value="20"$$IF(:FORM_IDSOUSTYPEBIEN:20$$ checked="checked"$$END$$ />&nbsp;$$LG:CABANONS pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB21$$<label for="idsoustypebien_21" title="$$LG:DEMEURES pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_21" value="21"$$IF(:FORM_IDSOUSTYPEBIEN:21$$ checked="checked"$$END$$ />&nbsp;$$LG:DEMEURES pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB24$$<label for="idsoustypebien_24" title="$$LG:DOMAINE pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_24" value="24"$$IF(:FORM_IDSOUSTYPEBIEN:24$$ checked="checked"$$END$$ />&nbsp;$$LG:DOMAINE pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB25$$<label for="idsoustypebien_25" title="Bastidon"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_25" value="25"$$IF(:FORM_IDSOUSTYPEBIEN:25$$ checked="checked"$$END$$ />&nbsp;Bastidon</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB26$$<label for="idsoustypebien_26" title="Mazet"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_26" value="26"$$IF(:FORM_IDSOUSTYPEBIEN:26$$ checked="checked"$$END$$ />&nbsp;Mazet</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB27$$<label for="idsoustypebien_27" title="$$LG:CHALETS pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_27" value="27"$$IF(:FORM_IDSOUSTYPEBIEN:27$$ checked="checked"$$END$$ />&nbsp;$$LG:CHALETS pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB28$$<label for="idsoustypebien_28" title="$$LG:MANOIR pcase$$"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_28" value="28"$$IF(:FORM_IDSOUSTYPEBIEN:28$$ checked="checked"$$END$$ />&nbsp;$$LG:MANOIR pcase$$</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB29$$<label for="idsoustypebien_29" title="Maison de maître"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_29" value="29"$$IF(:FORM_IDSOUSTYPEBIEN:29$$ checked="checked"$$END$$ />&nbsp;Maison de maître</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB30$$<label for="idsoustypebien_30" title="Moulin"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_30" value="30"$$IF(:FORM_IDSOUSTYPEBIEN:30$$ checked="checked"$$END$$ />&nbsp;Moulin</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB31$$<label for="idsoustypebien_31" title="Maison jumelée"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_31" value="31"$$IF(:FORM_IDSOUSTYPEBIEN:31$$ checked="checked"$$END$$ />&nbsp;Maison jumelée</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB32$$<label for="idsoustypebien_32" title="Maison ancienne"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_32" value="32"$$IF(:FORM_IDSOUSTYPEBIEN:32$$ checked="checked"$$END$$ />&nbsp;Maison ancienne</label>$$END$$
+		  $$IF=:1:PAGE:IDSSTB33$$<label for="idsoustypebien_33" title="Exploitation agricole"><input type="checkbox" name="idsoustypebien" id="idsoustypebien_33" value="33"$$IF(:FORM_IDSOUSTYPEBIEN:33$$ checked="checked"$$END$$ />&nbsp;Exploitation agricole</label>$$END$$
+			</div>
+		</td>
+	</tr>
+	
+	$$END$$
+	$$END$$
+</table>	
+</div>
+
+
+<br style="clear:both;"/>
+
+<!-- Lien vers Site FONDS DE COMMERCE -->
+<div id="lien-ent-commerce-trouver-logement"><a href="http://www.century21-pro.com/home/index.php" target="_blank">&gt;Biens Entreprise et Commerce</a>
+</div><!-- FIN  Lien vers Site FONDS DE COMMERCE -->
+
+<br />
+</div>
+<!-- FIN Types de biens -->
+
+<div class="spacer"></div>
+
+<!-- Nombre de pieces -->
+<div id="b_nb_piece">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:TITRE$$" />$$LG:NBRP pcase$$</h2>
+<div id="nb_piece">
+		<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*PIECES:1$$ checked="checked"$$END$$ />1&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*PIECES:2$$ checked="checked"$$END$$ />2&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*PIECES:3$$ checked="checked"$$END$$ />3&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*PIECES:4$$ checked="checked"$$END$$ />4&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*PIECES:+4$$ checked="checked"$$END$$ />5 $$LG:ETPLUS$$
+</div>
+</div>
+<!-- FIN Nombre de pieces -->
+
+<!-- SURFACE -->
+<div id="b_surface">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:DESCRIPTION$$" />$$LG:SURFACE pcase$$ :</h2>
+<div id="surface">
+$$LG:MINI$$&nbsp;:&nbsp;<input class="imputForm" type="text" name="surfacemin" size="10" value="$$FORM:SURFACEMIN$$" />&nbsp;&nbsp;m<sup>2</sup>
+<br />
+$$LG:MAXI$$&nbsp;:&nbsp;<input class="imputForm" type="text" name="surfacemax" size="10" value="$$FORM:SURFACEMAX$$" />&nbsp;&nbsp;m<sup>2</sup>
+<br /><br />
+</div></div>
+<!-- FIN SURFACE -->
+
+<!-- BUDGET -->
+
+<div id="b_budget">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:KEYWORDS$$" />$$LG:BUDGET pcase$$ :</h2>
+<div id="budget">
+$$LG:MINI$$&nbsp;:&nbsp;<input class="imputForm" type="text" name="pxmin" size="10" value="$$FORM:PXMIN$$" />
+<br  />
+$$LG:MAXI$$&nbsp;:&nbsp;<input class="imputForm" type="text" name="pxmax" size="10" value="$$FORM:PXMAX$$" />
+		<select name="euro">
+			<option value="1"$$IF=:1:FORM:EURO$$ selected="selected"$$END$$ class="euro">&euro;</option>
+			<option value="0"$$IF=:0:FORM:EURO$$ selected="selected"$$END$$ class="euro">ff</option>
+		</select>
+<br />
+</div>
+</div>
+<!-- FIN BUDGET -->
+	$$IF=:1:PAGE:BUDGETVAC$$
+	<div id="b_budgetvac">
+	<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:TITRE$$" />$$LG:BUDGETVAC$$</h2>
+	<div id="budgetvac">
+$$LG:MINI$$&nbsp;:&nbsp;<input type="text" name="px_bs_semainemin" size="10" value="" />&nbsp;&nbsp;<br />$$LG:MAXI$$&nbsp;:&nbsp;<input type="text" name="px_bs_semainemax" size="10" value="" />&nbsp;<select name="euro">
+			<option value="1">&euro;</option>
+			<option value="0">FF</option>
+		</select>
+	</div>
+	</div>
+
+$$END$$
+$$IF=:1:PAGE:VIAGER$$
+<div id="b_viager">
+	<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:DESCRIPTION$$" />$$LG:LIEN:VIAGER  pcase$$</h2>
+	<div id="viager">
+<label><input type="radio" name="si_libre" value="1" />$$LG:LIBRE$$</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio" name="si_libre" value="0" />$$LG:OCCUPE$$</label>
+</div>
+</div>
+$$END$$
+<div class="spacer"></div>
+<!-- PROXIMITE -->
+$$IF=:1:PAGE:PROXIMITE$$
+<div id="b_villes">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:KEYWORDS$$" />$$LG:CHOIXVILLES pcase$$ :</h2>
+<div id="villes">
+$$LG:VILLES pcase$$ :
+<input class="imputForm" type="text" name="cp" size="30" id="cp1" value="$$FORM:CP field 1$$" /> 
+(<i><a class="CpRetrouver" href="javascript:openCodes_Postaux();">$$LG:RETROUVER$$</a></i>)
+</div>
+</div>
+$$END:PAGE:PROXIMITE$$
+<!-- FIN PROXIMITE -->
+	<div class="spacer"></div>
+
+$$IF=:1:PAGE:EQUIPEMENT$$
+
+	<div id="b_equipement">
+	<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:DESCRIPTIONS$$"/>$$LG:EQUIPEMENTS$$</h2>
+	<div id="equipement">
+
+<span class="TitreMoteurEquipement">$$LG:EQUIPEMENTS$$ <i>($$LG:FACULTATIF$$)</i></span>
+		<label for="si_telephone" title="$$LG:TEL$$"><input type="checkbox" name="si_telephone" id="si_telephone" value="1" /> $$LG:TEL$$&nbsp;&nbsp;</label>
+		<label for="si_video" title="$$LG:VIDEO$$"><input type="checkbox" name="si_video" id="si_video" value="1" /> $$LG:VIDEO$$&nbsp;&nbsp;</label>
+		<label for="si_bebe" title="$$LG:BEBE$$"><input type="checkbox" name="si_bebe" id="si_bebe" value="1" /> $$LG:BEBE$$&nbsp;&nbsp;</label>
+		<label for="si_piscine" title="$$LG:PISCINE$$"><input type="checkbox" name="si_piscine" id="si_piscine" value="1" /> $$LG:PISCINE$$</label>
+		<label for="si_animaux" title="$$LG:ANIMAUX$$"><input type="checkbox" name="si_animaux" id="si_animaux" value="1" /> $$LG:ANIMAUX$$</label>
+</div>
+</div>
+
+$$END$$
+
+
+<div class="spacer"></div>
+
+<!-- Criteres supplementaires de recherche -->
+<div id="b_annonces">
+<h2><img src="$$-$$images/puce_moteur.gif" alt="$$PAGE:TITRE$$" />$$LG:ANNONCES pcase$$ :</h2>
+<div class="b_liste_option" id="b_liste_option">	
+$$IF:PAGE:VIDEMEUBLE$$
+		<label for="si_meuble0" class="MoteurMeuble"><input type="radio" id="si_meuble0" name="si_meuble" value="0" />$$LG:VIDE$$</label>
+		<label for="si_meuble1" class="MoteurMeuble"><input type="radio" id="si_meuble1" name="si_meuble" value="1" />$$LG:MEUBLE$$</label><br />
+$$END:PAGE:VIDEMEUBLE$$
+
+$$IF=:1:PAGE:RENOVE$$
+		<label for="si_travaux1" class="MoteurTravaux"><input type="checkbox" id="si_travaux1" name="si_travaux" value="1" />$$LG:RENOVERUNBIEN pcase$$</label><br />
+$$END:PAGE:RENOVE$$
+
+$$IF=:1:PAGE:PHOTO$$
+		<label for="MoteurPhoto" class="MoteurPhoto"><input id="MoteurPhoto" type="checkbox" name="photo" value="1" />&nbsp;$$LG:PHOTO pcase$$</label><br />
+$$END:PHOTO$$
+
+$$IF=:1:PAGE:VISITEVIRTUELLE$$
+		<label for="MoteurVisiteVirtuelle" class="MoteurVisiteVirtuelle"><input id="MoteurVisiteVirtuelle" type="checkbox" name="360" value="1" />&nbsp;$$LG:VISITEVIRT pcase$$</label><br />
+$$END:VISITEVIRTUELLE$$
+
+$$IF!:0:PAGE:FRAICHEUR$$
+		<label for="MoteurFraicheur" class="MoteurFraicheur"><input type="checkbox" id="MoteurFraicheur" name="fraicheur" value="$$PAGE:FRAICHEUR pcase$$" />&nbsp;$$LG:NOUV$$</label><br />
+$$END$$
+
+		<label for="MoteurHandicape" class="MoteurHandicape"><input type="checkbox" id="MoteurHandicape" name="si_handicape" value="1" />&nbsp;$$LG:SIHANDICAPE pcase$$</label><br />
+</div>
+</div>
+<!-- FIN Criteres supplementaires de recherche -->
+
+
+
+<div class="spacer"></div>
+
+<!-- Validation formulaire -->
+<div id="b_lancer">		
+<input type="submit" value="Lancer la recherche" class="bouton" />
+</div>
+<!-- Fin validation formulaire -->
+</form>
+</div>
+
+
+
+<!-- RECHERCHE PAR REFERENCE -->
+$$IF!:1:PAGE:REF$$
+<input type="hidden" name="idtt" value="2" />
+$$END$$
+$$IF=:1:PAGE:REF$$
+<input type="hidden" name="idtt" value="2" />
+$$LG:RECHREF$$</b>
+<input class="imputForm" type="text" name="refannonce" size="30" id="ref_ann" value="$$FORM:REF$$" />
+$$END$$
+
+</div>
+
+
+<!--#include virtual="incl_bas.htm"-->

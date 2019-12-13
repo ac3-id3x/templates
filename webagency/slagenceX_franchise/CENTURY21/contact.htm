@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--#include virtual="incl_dico-form.htm" -->
+<html xmlns="http://www.w3.org/1999/xhtml"$$IF:LANGUE$$ xml:lang="$$LANGUE lcase$$" lang="$$LANGUE lcase$$"$$END$$>
+<head>
+<title>Contactez-nous - CENTURY 21</title>
+<link rel="stylesheet" type="text/css" href="$$-$$css/century21.css" title="Default" />
+<script src="$$-$$scripts/lib_strings.js" type="text/javascript"></script>
+<script type="text/javascript"> 
+<!--
+
+function verif(form) {
+	for (var i = 0 ; i < form.contacter.length ; i++) {
+		if (form.contacter[i].checked == true) {
+			var tmp = form.contacter[i].value;
+			if ((tmp == "email") && !isValidEmail(form.sender.value)) {
+				alert('Merci d\'indiquer une adresse e-mail valide pour que nous puissions vous contacter');
+				return false;
+			} else if ((tmp == "tel") && (form.tel.value == "")) {
+				alert('Merci d\'indiquer votre numéro de téléphone pour que nous puissions vous contacter');
+				return false;
+			} else if ((tmp == "fax") && (form.fax.value == "")) {
+				alert('Merci d\'indiquer un numéro de fax pour que nous puissions vous joindre');
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//-->
+</script>
+</head>
+
+<body> 
+	
+
+
+	
+
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+<div id="FormEstimContact">
+<table width="95%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+	<td align="center"> 
+	<form method="post" action="page_message_ok.htm?lang=$$LANGUE$$">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_message_ok.htm" />
+	<input type="hidden" name="page_err" value="message.htm" />
+	<input type="hidden" name="cfg_form" value="message$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="message" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+	
+	
+<div id="contact">
+
+<h1><img src="$$-$$images/depart_grand_titres.gif" alt="$$PAGE:KEYWORDS$$" /><span>Contactez-nous</span><img src="$$-$$images/fin_grand_titres.gif" alt="$$PAGE:TITRE$$" /></h1>
+<p class="import">
+Merci de nous laisser vos coordonn&eacute;es.<br />
+Nous prendrons contact avec vous dans les meilleurs d&eacute;lais.</p>
+<div class="intit_champ_contact">&nbsp;</div>
+
+<div class="champ_contact" >
+<input type="radio" name="titre" value="Melle" checked="checked" /> Melle&nbsp; 
+<input type="radio" name="titre" value="Mme" /> Mme&nbsp;
+<input type="radio" name="titre" value="Mr" /> M.</div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="nom" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Nom </div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="prenom" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Pr&eacute;nom</div>
+
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="adresse" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Adresse</div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="cp" size="10" class="texte" /></div>
+<div class="intit_champ_contact">Code postal</div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="ville" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Ville</div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="pays" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Pays</div>
+<div  class="spacer_height">&nbsp;</div>
+
+<div class="champ_contact"><input name="tel" size="30" class="texte" /></div>
+<div class="intit_champ_contact">T&eacute;l&eacute;phone</div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="fax" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Fax</div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="sender" size="30" class="texte" /></div>
+<div class="intit_champ_contact">Email</div>
+<div  class="spacer_height">&nbsp;&nbsp;</div>
+<p>
+Vous souhaitez &ecirc;tre contact&eacute; par :<input type="radio" name="contacter" value="email" checked="checked" /> Email<input type="radio" name="contacter" value="tel" /> T&eacute;l&eacute;phone<input type="radio" name="contacter" value="fax" />Fax</p>
+
+<p>
+Votre message<br />
+<textarea name="message" cols="40" rows="4" ></textarea></p>
+<input type="submit" name="envoi" value="Envoyer" class="bouton" />
+<p class="note">
+Conform&eacute;ment &agrave; la loi informatique et libert&eacute; du 6 janvier 1978, les renseignements fournis sont strictement confidentiels et ne peuvent &ecirc;tre communiqu&eacute;s &agrave; des tiers sans votre autorisation. l'article 27 vous donne la possibilit&eacute; d'y avoir acc&egrave;s et de les faire rectifier si n&eacute;cessaire. si vous ne souhaitez pas que nous conservions ceux-ci, nous vous serions reconnaissants de nous en informer par &eacute;crit ou par mail.</p>
+
+</form>
+</div>
+$$END:EMAIL$$
+
+</body>
+</html>

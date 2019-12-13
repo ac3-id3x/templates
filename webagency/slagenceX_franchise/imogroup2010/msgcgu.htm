@@ -1,0 +1,110 @@
+$$INCL:HAUT.HTM$$
+$$SET:PAGE:IDT=MSGCGU$$
+
+<h6 class="titre2">$$LG:INFOSLEG pcase$$</h6>
+<hr class="txt_top" />
+
+<div id="FormEstimContact">
+	<form method="post" action="page_ok_msgcgu.htm?lang=$$LANGUE$$" />
+		<input type="hidden" name="u" value="id3:formmail" />
+		<input type="hidden" name="page_ok" value="page_ok_msgcgu.htm" />
+		<input type="hidden" name="page_err" value="msgcgu.htm" />
+		<input type="hidden" name="cfg_form" value="contact$$LANGUE$$" />
+		<input type="hidden" name="cfg_emails" value="msgcgu" />
+		<input type="hidden" name="REMAILNOM" value="Contact Seloger" />
+		<input type="hidden" name="SRV" value="$$SRV$$" />		
+		
+		$$B:IMMOBW:AGENCES:CP:QRY:CP$$
+		$$BIF0:IMMOBW:AGENCES:CP$$
+			$$E:IMMOBW:AGENCE$$
+			<input type="hidden" name="2AGENCE" value="$$IMMOBW:AGENCE:NOM$$" />
+		$$BFIN$$
+		
+		$$BIF:IMMOBW:AGENCES:CP$$
+		$$DO$$
+		$$LOOP$$
+			<input type="hidden" name="2AGENCE" value="$$1_IMMOBW:AGENCES:CP:NOM$$" />
+		$$BFIN$$
+		
+		<strong class="messageNomAgence messageTitre">$$IMMOBW:AGENCE:NOM ncase$$</strong>	
+		$$IF:ERRE$$
+		<p class="messageErre"><strong class="messageTitre">$$ERRE$$</strong></p>
+		$$END:ERRE$$
+		
+		<!--Votre message-->
+			<table cellspacing="0" cellpadding="5" class="tabFond1"> 
+			<tr> 
+				<td colspan="2">$$LG:MESSAGE$$ :</td>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea class="imputForm" name="2PRECISIONS" cols="35" rows="3">$$FORM:2PRECISIONS$$</textarea></td>
+			</tr>
+			</table>
+			<br />
+			<!--vos coordonnées--> 
+			<table width="95%" border="0" cellspacing="0" cellpadding="2">
+			<tr> 
+				<td colspan="2" align="center" class="tabTitre"><strong>$$LG:COORD$$</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr> 
+				<td width="30%" align="left">$$LG:NOM$$ * :</td>				
+				<td width="70%" align="left"><input class="imputForm" type="text" name="2NOM" size="25" value="$$FORM:2NOM$$" maxlength="40" /></td>
+			</tr>
+			<tr> 
+				<td align="left">$$LG:PRENOM$$ * :</td>				
+				<td align="left"><input class="imputForm" type="text" name="2PRENOM" size="25" value="$$FORM:2PRENOM$$" maxlength="40" /></td>
+			</tr>			
+			<tr> 
+				<td align="left">$$LG:RAISONSOC$$ :</td>				
+				<td align="left"><input class="imputForm" type="text" name="2RAISONSOCIALE" size="25" value="$$FORM:2RAISONSOCIALE$$" maxlength="40" /></td>
+			</tr>
+			<tr> 
+				<td align="left">$$LG:ADRESSE$$ :</td>
+				<td align="left">$$IF=:FR:LANGUE$$<input type="text" class="imputForm" name="2ADRESSE" size="25" value="$$FORM:2ADRESSE$$" />$$END$$
+				$$IF!:FR:LANGUE$$<textarea name="2ADRESSE" cols="20" Rows="3">$$FORM:2ADRESSE$$</textarea>$$END$$</td>
+			</tr>
+			<tr> 
+				<td align="left">$$LG:VILLE$$ :</td>
+				<td align="left"><input class="imputForm" type="text" name="2VILLE" size="25" value="$$FORM:2VILLE$$" /></td>
+			</tr>
+			<tr>
+				<td align="left">$$LG:CODEP$$ :</td>
+				<td align="left"><input class="imputForm" type="text" name="2CODEPOSTAL" size="10" value="$$FORM:2CODEPOSTAL$$" /></td>
+			</tr>		
+			<tr> 
+				<td align="left">$$LG:TEL pcase$$ * :</td>
+				<td align="left"><input class="imputForm" type="text" name="2PHONE" size="15" value="$$FORM:2PHONE$$" maxlength="20" /></td>
+			</tr>
+			<tr> 
+				<td align="left">$$LG:EMAIL$$ * :</td>
+				<td align="left"><input class="imputForm" type="text" name="2EMAIL" size="25" value="$$FORM:2EMAIL$$" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right">$$LG:OBLIGATOIRE$$</td>
+			</tr>
+			</table>
+			<br />
+			<!--validation--> 
+			<table width="95%" border="0" cellspacing="0" cellpadding="2">
+			<tr> 
+				<td align="center" class="tabTitre"><strong>$$LG:VERIFINFOS$$</strong></td>
+			</tr>
+			<tr> 
+				<td align="right"><br /><input type="image" class="Pbien" src="$$-$$img/envoyer_$$LANGUE$$.gif" name="image" /></td>
+			</tr>
+			</table> 
+			$$REM$$<!-- // conditions generales d'utilisation  // -->
+			<!--#include virtual="/incl_cgu_formulaire.htm" -->
+			$$END:REM$$
+		<!-- //////////////////////// -->		
+		
+	</form>
+</div><!-- fin #FormEstimContact -->
+
+$$INCL:BAS.HTM$$

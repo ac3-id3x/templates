@@ -1,0 +1,128 @@
+﻿$$A:REFERENCEMENT:IDPAGE=_MANUEL$$$$A:REFERENCEMENT:KEYWORD=Immobilier @@1_IMMOBW:ANN:QRY:VILLE@@ Agence immobiliere$$$$INCL:HAUT.HTM$$
+
+$$A:CREDIT:DUREEAN=20$$
+$$A:CREDIT:DUREE=@@CREDIT:DUREEAN exec XX*12@@$$
+$$A:CREDIT:COEFF=0.7$$
+$$IF=:1:PAGE:UCB$$
+	$$A:CREDIT:TAUX=0.06$$
+$$END:PAGE:UCB$$
+$$IF!:0:PAGE:UCB$$
+	$$IF!:1:PAGE:UCB$$
+		$$A:CREDIT:TAUX=0.0648$$
+	$$END:PAGE:UCB$$
+$$END:PAGE:UCB$$
+
+$$SET:PAGE:IDT=RESULTATS$$
+<a name="hautdepage"></a>
+$$A:PAGE:TITR=@@1_IMMOBW:ANN:QRY:IDTYPETRANSACTION gettypetransaction@@$$
+$$IF:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN getsoustypesbien@@$$
+$$END$$
+$$IF0:1_IMMOBW:ANN:QRY:IDSOUSTYPEBIEN$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:IDTYPEBIEN gettypebien@@$$
+$$END$$
+$$IF:1_IMMOBW:ANN:QRY:SURFACE$$
+	$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:SURFACE@@ m2$$
+$$END$$
+$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:VILLE htmlencode@@$$
+$$A:PAGE:TITR=@@PAGE:TITR@@ @@1_IMMOBW:ANN:QRY:DESCRIPTIF left 100 htmlencode@@$$
+
+<script language="javascript" type="text/javascript">
+<!--
+function go(url,n,w,h) {
+	window.open(url,n,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width='+w+',height='+h);
+}
+function go3(url,n,params) {
+	window.open(url,n,params);
+}
+
+function zoomer(id, src){
+	var elt = document.getElementById(id);
+	if( elt ) {
+		elt.innerHTML = "<img src='"+src+"' />";
+		elt.className = "montrer";
+	}
+}
+
+function dezoomer(id){
+	var elt = document.getElementById(id);
+	if( elt ) {
+		elt.className = "cacher";
+	}
+}
+
+// -->
+</script>
+
+<table width="95%" border="0" cellspacing="0" cellpadding="5" class="Table100" align="center" id="Table100">
+<tr>
+	<td>
+	<table width="100%" border="0" cellspacing="0" cellpadding="2" id="Legende" class="Legende">
+	<tr>
+		<td width="60%" valign="top">
+		<table border="0" cellspacing="2" cellpadding="2" class="BoitePhraseRecherche" id="BoitePhraseRecherche">
+		<tr>
+			<td>
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$<span class="Phrase">$$LG:PHRASE$$&nbsp;: $$IMMOBW:ANN:QRY:PHRASE htmlencode$$ $$IF:FORM:IDSOUSTYPEBIEN$$$$IF!:0$ALL:FORM:IDSOUSTYPEBIEN$$(style : $$FORM:IDSOUSTYPEBIEN getsoustypesbien$$)$$END:!FORM:IDSOUSTYPEBIEN$$$$END:FORM:IDSOUSTYPEBIEN$$ $$END:SIPANIER$$
+			</span>$$IF:ERRE$$<b><span class="TitreRouge">$$ERRE$$</span></b>$$END:ERRE$$
+		<br /><span class="NbAnnonces">$$IF:IMMOBW:ANN:QRY:SIPANIER$$
+			<b>»</b>&nbsp;
+			$$IF0:IMMOBW:ANN:QRY:NBR$$0 $$END:NBR$$$$IMMOBW:ANN:QRY:NBR$$&nbsp;
+			$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$&nbsp;
+			$$LG:TROUVE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+		$$END:SIPANIER$$	
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+			<b>»</b>&nbsp;
+			$$IF0:IMMOBW:ANN:QRY:NBR$$0 $$END:NBR$$
+			$$IF=:200:IMMOBW:ANN:QRY:NBR$$$$LG:PLUSDE$$$$END:200$$
+			$$IMMOBW:ANN:QRY:NBR$$&nbsp;
+			$$LG:ANNONCE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$&nbsp;
+			$$LG:TROUVE$$$$IF=:FR:LANGUE$$$$IMMOBW:ANN:QRY:NBR pluriel$$$$END:FR$$
+		$$END:SIPANIER$$
+		</span>
+			$$IF:IMMOBW:ANN:QRY:SIPANIER$$<br />
+			<b>&raquo; <a href="javascript:go('/print_panier.htm','panierv',685,500);">$$LG:IMPRIMER$$</a></b><br /><br />
+			<b>&raquo; <a href="javascript:go('/videpanier.htm','panierv',200,170);">$$LG:VIDERMONPANIER$$</a></b><br /><br />
+			<b>&raquo; <a href="javascript:history.go(-1);">$$LG:RETOURNER$$</a></b><br />
+			$$END:SIPANIER$$
+			</td>
+		</tr>
+		</table>
+		$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+		<!--#include virtual="/recherche/incl_recherche_tri.htm" -->
+		$$END:SIPANIER$$
+		<input type="button" value="$$LG:LEGENDE$$" onclick="javascript:go('/recherche,popup_legende.htm','legende',200,170);" />
+		</td>	
+	</tr>
+	$$IF0:IMMOBW:ANN:QRY:SIPANIER$$
+	<tr>
+		<td align="right">$$INCL:PANIER.HTM$$</td>
+	</tr>
+	$$END$$
+	</table>
+	
+	
+	$$IF:IMMOBW:ANN:QRY:NBRPAGES$$
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="BoiteNavigationHaut" id="BoiteNavigationHaut">
+	<tr>
+		<td valign="top" width="26%" ><b>&nbsp;&nbsp;$$IMMOBW:ANN:QRY:PAGE$$ / $$IMMOBW:ANN:QRY:NBRPAGES$$ $$LG:PAGES$$</b></td>
+		<td valign="middle" width="74%" align="right"><b>$$IF:IMMOBW:ANN:QRY:NBRPAGES$$ $$LG:PAGES$$ :$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+		$$IMMOBW:ANN:QRY:MULTIPAGE$$</b></td>
+	</tr>
+	</table>
+	$$END:IMMOBW:ANN:QRY:NBRPAGES$$
+
+	$$REM$$ test affichage vignette ou grand format $$PAGE:VIGNETTE$$ $$END$$
+	$$IF=:8:1_IMMOBW:ANN:QRY:IDTYPETRANSACTION$$ $$A:PAGE:VIGNETTE=0$$ $$END$$
+
+	$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:REP:1:QRY:URLONERROR$$
+
+	$$BIF:IMMOBW:ANN:QRY$$
+	$$DO:config:config$$
+
+	<br />
+	<a name="$$IMMOBW:ANN:QRY:IDANNONCE$$"></a>
+	
+	<!-- =================================== -->
+	<!-- =================================== -->
+	<!-- =================================== -->

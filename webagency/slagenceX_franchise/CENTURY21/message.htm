@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--#include virtual="incl_dico-form.htm" -->
+<html xmlns="http://www.w3.org/1999/xhtml"$$IF:LANGUE$$ xml:lang="$$LANGUE lcase$$" lang="$$LANGUE lcase$$"$$END$$>
+<head>
+<title>Contactez-nous - CENTURY 21</title>
+<link rel="stylesheet" type="text/css" href="$$-$$css/century21.css" title="Default" />
+<script src="$$-$$scripts/lib_strings.js" type="text/javascript"></script>
+</head>
+
+<body> 
+	
+$$E:IMMOBW:AGENCE:REP:1$$ 
+
+$$IF:FORM:REMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$
+$$IF0:FORM:REMAIL$$ $$IF:IMMOBW:AGENCE:EMAIL$$ $$A:AGENCE:EMAIL=1$$ $$END$$ $$END$$
+
+$$B:IMMOBW:AGENCES$$
+$$BIF:IMMOBW:AGENCES$$ 
+$$DO:1:120$$ 
+$$IF:IMMOBW:AGENCES:EMAIL$$ $$A:MULTI_AGENCE:EMAIL=1$$ $$END$$
+$$LOOP$$
+$$BFIN$$	
+	
+$$IF:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+$$INCL:MESSAGE.HTM$$
+$$END$$ 
+$$END$$ 
+
+$$IF0:MULTI_AGENCE:EMAIL$$
+$$IF0:AGENCE:EMAIL$$
+<div align="center">
+<br /><br /><br /><br />
+D&eacute;sol&eacute;, mais cette page de contact ne peut &ecirc;tre utilis&eacute;e actuellement.<br>
+L'adresse e-mail du destinataire n'est pas disponible.
+<br /><br /><br /><br />
+</div>
+$$END$$
+$$END$$
+
+$$IF:AGENCE:EMAIL$$
+<div id="contact">
+	
+	<form method="post" action="page_message_ok.htm?lang=$$LANGUE$$" target="_self">
+	<input type="hidden" name="idtt" value="2" />
+	<input type="hidden" name="lang" value="$$LANGUE$$" />
+	<input type="hidden" name="u" value="id3:formmail" />
+	<input type="hidden" name="page_ok" value="page_message_ok.htm" />
+	<input type="hidden" name="page_err" value="message.htm" />
+	<input type="hidden" name="cfg_form" value="message$$LANGUE$$" />
+	<input type="hidden" name="cfg_emails" value="message" />
+	$$IF:PAGE:CFG_EMAILS_CC$$
+	<script type="text/javascript">
+	var ccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"CC\" value=\"'+ccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF:PAGE:CFG_EMAILS_BCC$$
+	<script type="text/javascript">
+	var bccmailencode=unescape('$$PAGE:CFG_EMAILS_CC encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"BCC\" value=\"'+bccmailencode +' \" />');
+   </script>
+	$$END$$
+	$$IF0:IMMOBW:AGENCE:EMAIL$$ <input type="hidden" name="REMAILNOM" value="$$AGENCE:NOM$$" />$$END$$
+	$$IF:FORM:REMAIL$$<input type="hidden" name="REMAIL"  value="$$FORM:REMAIL$$" />$$END$$
+	$$IF0:FORM:REMAIL$$ 
+	$$IF:IMMOBW:AGENCE:EMAIL$$ 
+	<input type="hidden" name="REMAILNOM" value="$$IMMOBW:AGENCE:NOM$$" />
+	<script type="text/javascript">
+	var mailencode=unescape('$$IMMOBW:AGENCE:EMAIL encodemail hex $$');
+	document.write('<input type=\"hidden\" name=\"REMAIL\" value=\"'+mailencode +' \" />');
+   </script>
+	$$END$$
+	$$END$$
+		
+	<input type="hidden" name="SRV" value="$$SRV$$" />
+	<!-- Message d'erreur de remplissage clamps -->
+	<p class="erreur_form">$$ERRE$$</p>
+	
+	<h1>$$FORM:AGENCE_NOM$$$$IF0:FORM:AGENCE_NOM$$$$IMMOBW:AGENCE:NOM$$$$END$$</h1>			
+	
+<h1><img src="$$-$$images/depart_grand_titres.gif" alt="$$PAGE:KEYWORDS$$" /><span>$$LG:CONTACTEZNOUS pcase$$</span><img src="$$-$$images/fin_grand_titres.gif" alt="$$PAGE:TITRE$$" /></h1>
+<p class="import">
+$$LG:MERCICOORDS pcase$$<br />
+$$PRENDRONSCONTACT pcase$$</p>
+<div class="intit_champ_contact">&nbsp;</div>
+
+<div class="champ_contact" >
+<input type="radio" name="2CIV" value="Melle" checked="checked" /> Melle&nbsp; 
+<input type="radio" name="2CIV" value="Mme" /> Mme&nbsp;
+<input type="radio" name="2CIV" value="Mr" /> M.</div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2NOM" size="30" class="texte" value="$$FORM:2NOM$$" /></div>
+<div class="intit_champ_contact">$$LG:AI5$$ * : </div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2PRENOM" size="30" class="texte" value="$$FORM:2PRENOM$$" /></div>
+<div class="intit_champ_contact">$$LG:PRENOM$$ * : </div>
+
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2ADRESSE" size="30" class="texte" value="$$FORM:2ADRESSE$$" /></div>
+<div class="intit_champ_contact">$$LG:ADRESSE$$ : </div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2CODEPOSTAL" size="10" class="texte" value="$$FORM:2CODEPOSTAL$$" /></div>
+<div class="intit_champ_contact">$$LG:CODEP$$ : </div>
+<div class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2VILLE" size="30" class="texte" value="$$FORM:2VILLE$$" /></div>
+<div class="intit_champ_contact">$$LG:VILLE$$ : </div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2PAYS" size="30" class="texte" value="$$FORM:2PAYS$$" /></div>
+<div class="intit_champ_contact">$$LG:PAYS$$ * : </div>
+<div  class="spacer_height">&nbsp;</div>
+
+<div class="champ_contact"><input name="2PHONE" size="30" class="texte" value="$$FORM:2PHONE$$" /></div>
+<div class="intit_champ_contact">$$LG:TEL$$ * : </div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2FAX" size="30" class="texte" value="$$FORM:2FAX$$" /></div>
+<div class="intit_champ_contact">Fax</div>
+<div  class="spacer_height">&nbsp;</div>
+<div class="champ_contact"><input name="2EMAIL" size="30" class="texte" value="$$FORM:2EMAIL$$" /></div>
+<div class="intit_champ_contact">$$LG:AI6$$ * : </div>
+<div  class="spacer_height">&nbsp;&nbsp;</div>
+<p>
+$$LG:CONTACTPAR pcase$$<input type="radio" name="2CONTACT" value="email" checked="checked" /> Email<input type="radio" name="2CONTACT" value="tel" /> T&eacute;l&eacute;phone<input type="radio" name="2CONTACT" value="fax" />Fax</p>
+
+<p>
+$$LG:MESSAGE$$ :<br />
+<textarea name="Pmessage" cols="40" rows="4">$$FORM:PMESSAGE$$</textarea></p>
+<p>$$LG:VERIFINFOS$$</p>
+<input type="submit" name="envoi" value="Envoyer" class="bouton" />
+<p>$$LG:OBLIGATOIRE$$</p>
+<p class="note">
+Conform&eacute;ment &agrave; la loi informatique et libert&eacute; du 6 janvier 1978, les renseignements fournis sont strictement confidentiels et ne peuvent &ecirc;tre communiqu&eacute;s &agrave; des tiers sans votre autorisation. l'article 27 vous donne la possibilit&eacute; d'y avoir acc&egrave;s et de les faire rectifier si n&eacute;cessaire. si vous ne souhaitez pas que nous conservions ceux-ci, nous vous serions reconnaissants de nous en informer par &eacute;crit ou par mail.</p>
+
+</form>
+</div>
+$$END:EMAIL$$
+
+</body>
+</html>

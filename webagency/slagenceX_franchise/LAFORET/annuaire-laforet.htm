@@ -1,0 +1,187 @@
+$$REM$$
+====================================================================
+
+//// <summary>Annuaire agences Laforêt</summary>
+//// <remarks>
+//// <para>Utilise la macro B:IMMOBW:ANNUAIRE-EXTERNES-AGENCES</para>
+//// <para>Attention cette macro peut servir à afficher plusieurs annuaires différents.</para>
+//// <para>Afin de l'utiliser spécifiquement pour l'import Laforêt provenant du fichier Excell se trouvant chez eux (http://stockage-upload.laforet-intranet.com/annuaire-agences-laforet.xls) il faudra l'utiliser avec pour id 1</para>
+//// <para>De plus comme le précise la doc, seul les champs RaisonSociale, CP, Ville, Tel, Fax et URL seront remplis.</para>
+//// <para>Utilise le style css : slagenceX_Franchise/Laforet/styles/annuaire.css</para>
+//// </remarks>
+//// <update date="2008-02-17" author="lisbonne.siriphol">Création v1</update>
+//// <update date="2008-02-17" author="erick.barbant">Validation Id3x en attente</update>
+
+====================================================================
+$$END$$
+
+$$SET:PAGE:IDT=ANNUAIRELAFORET$$
+
+$$INCL:HAUT.HTM$$
+
+$$SET:PAGE:STYLE=<style type="text/css">
+	@import url( "styles,annuaire.css?lang=@@FORM:LANG@@@@IF:FORM:IDTT@@&idtt=@@FORM:IDTT@@@@END@@" );
+</style>$$
+
+<div id="Annuaire_Ctn">
+		
+	<div id="Annuaire_Haut_Ctn">
+		$$B:IMMOBW:ANNUAIRE-EXTERNES-AGENCES:~ID:1:ALIAS:VILLESLAFO:~TRI:VILLE$$
+		$$BIF:VILLESLAFO$$
+		<div id="Annuaire_Haut">
+			<h3>
+				$$IF=:FR:LANGUE$$Annuaire Laforêt Immobilier$$END$$
+				$$IF!:FR:LANGUE$$$$LG:ANNUAGENCES pcase$$$$END$$
+				<span>Trouvez votre agence Lafor&ecirc;t Immobilier&sup1; parmi un r&eacute;seau de plus de <!--#include virtual="/incl_nb_agences2.htm" --> points de vente</span>
+			</h3>
+			<form action="/$$REP:0$$?$$REP:QRY$$" method="get" style="display: none;">
+				<input type="hidden" name="rech" value="$$FORM:RECH$$" />
+				$$IF=:LIBRE$LISTE:FORM:RECH$$
+				<p>$$LG:OU2 pcase$$ ?</p>	
+				$$END:RECH$$
+				
+				$$IF=:LIBRE:FORM:RECH$$
+<!--/////////////////////////////// option 1 ///////////////////////////////-->
+				<input class="rechAgence" type="text" name="" value="$$LG:CP lcase$$" />
+				$$END:RECH$$
+				
+				$$IF=:LISTE:FORM:RECH$$
+<!--/////////////////////////////// option 2 ///////////////////////////////-->
+				<select name="cp" class="rechAgence">
+					$$IF:FORM:CP$$
+					<option value="$$IF0:REP:QRY removeqry cp$$$$END$$$$IF:REP:QRY removeqry cp$$$$END$$">$$LG:SELECTIONNEZ2 pcase$$</option>
+					$$END:FORM:CP$$	
+					
+					$$DO$$
+						$$IFNEXT:VILLESLAFO:VILLE$$
+						<option value="$$VILLESLAFO:CP$$" $$IF=:VILLESLAFO_CP:FORM:CP$$selected="selected"$$END$$>$$VILLESLAFO:VILLE ncase$$</option>
+						$$END$$
+					$$LOOP$$					
+				</select>				
+				$$END:RECH$$
+				
+				$$IF=:TRI:FORM:RECH$$
+				<p>$$LG:TRIERPAR pcase$$</p>	
+<!--/////////////////////////////// option 3 ///////////////////////////////-->
+				<select name="tri" class="rechAgence">
+					<option value="cp" $$IF=:CP:FORM:TRI$$selected="selected"$$END$$>$$LG:CODEP pcase$$</option>
+					<option value="ville" $$IF=:VILLE:FORM:TRI$$selected="selected"$$END$$>$$LG:VILLE pcase$$</option>				
+				</select>				
+				$$END:RECH$$
+				
+				<input class="valid" type="submit" value="" />
+				
+				<div class="clear"><!-- --></div>
+			</form>
+		</div><!-- fin #Annuaire_Haut -->
+		$$BFIN$$
+		
+	</div><!-- fin #Annuaire_Haut_Ctn -->
+	
+	
+
+	$$B:IMMOBW:ANNUAIRE-EXTERNES-AGENCES:~ID:1:ALIAS:ANNLAFO:~TRI:QRY:TRI$$
+	$$BIF:ANNLAFO$$
+	
+	<div id="Annuaire_Liste">
+		
+		$$IF:ANNLAFO:NBRPAGES$$
+		<div class="annuaire_NbPages pagesHaut">
+			
+			<div class="nbPages">$$LG:PAG pcase$$ $$ANNLAFO:PAGE$$ $$LG:SUR lcase$$ $$ANNLAFO:NBRPAGES$$</div>
+			
+			<div class="liensPages">
+				$$ANNLAFO:MULTIPAGE$$				
+			</div>
+			
+			<div class="clear"><!-- --></div>
+		</div><!-- fin #Annuaire_NbPages -->
+		$$END:NBRPAGES$$
+		
+					
+		$$DO:1:25$$
+		<div class="annLafo">
+			<span class="rs">$$ANNLAFO:RAISONSOCIALE$$</span> | <span class="ville">$$ANNLAFO:VILLE ncase$$ ($$ANNLAFO:CP$$)</span>
+			<div class="coords">
+				$$IF:ANNLAFO:TEL$$<div class="tel">$$ANNLAFO:TEL formattel$$</div>$$END$$
+				$$IF:ANNLAFO:FAX$$<div class="fax">$$ANNLAFO:FAX formattel$$</div>$$END$$
+				$$IF:ANNLAFO:URL$$
+				<a class="url" href="http://$$ANNLAFO:URL$$" title="$$LG:IMMOBILIER pcase$$ $$ANNLAFO:VILLE$$" onclick="this.target='_blank'">$$ANNLAFO:URL$$</a>
+				$$END:ANNLAFO:URL$$
+				<div class="clear"><!-- --></div>
+			</div>
+		</div>
+		$$LOOP$$
+		
+		$$IF:ANNLAFO:NBRPAGES$$
+		<div class="annuaire_NbPages pagesBas">
+			
+			<div class="nbPages">$$LG:PAG pcase$$ $$ANNLAFO:PAGE$$ $$LG:SUR lcase$$ $$ANNLAFO:NBRPAGES$$</div>
+			
+			<div class="liensPages">
+				$$ANNLAFO:MULTIPAGE$$				
+			</div>
+			
+			<div class="clear"><!-- --></div>
+		</div><!-- fin #Annuaire_NbPages -->
+		$$END:NBRPAGES$$		
+		
+		<div id="Entite">&sup1; : Chaque agence est une entité indépendante</div>
+		
+	</div><!-- fin #Annuaire_Liste -->
+	$$BFIN$$
+
+
+$$REM$$	
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<div id="Annuaire_Regions">
+		<h5>Annuaire par régions</h5>
+		
+		$$B:IMMOBW:ANNUAIRE-EXTERNES-AGENCES:~ID:1:ALIAS:REGIONSLAFO:~TRI:CP$$
+		$$BIF:REGIONSLAFO$$
+			$$DO:1:200$$
+				$$IFPREV:REGIONSLAFO:CP$$
+					<div class="dep">$$REGIONSLAFO:CP cp2dep$$</div>
+				$$END:IFPREV$$
+			$$LOOP$$
+		$$BFIN$$
+		
+		<div class="clear"><!-- --></div>
+	</div><!-- fin #Annuaire_Regions -->
+	
+	
+		
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+		<form id="TriAnnuaire" action="/$$REP:0$$?$$REP:QRY$$" method="post">
+			<div id="TriAnnuaire_Ctn">							
+				Trier les agences par :		
+				<select name="triAnn" id="TriAnn" onchange="Trier(this.id);">								
+					<option $$IF=:a_cp:FORM:TRI$$selected="selected"$$END$$ value="a_cp"> $$LG:CODEP pcase$$</option>
+					<option $$IF=:a_ville:FORM:TRI$$selected="selected"$$END$$ value="a_ville"> $$LG:VILLE pcase$$</option>
+				</select>
+				
+				$$REM$$
+				Affiner par :
+				<a class="affiner" href="#" title="">Type de bien</a>
+				<a class="affiner" href="#" title="">Prix</a>
+				<a class="affiner" href="#" title="">Surface</a>
+				$$END:REM$$				
+			</div>
+		</form>
+	<!-- fin #TriAnnuaire -->
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////// -->		
+	
+		
+			
+			
+			
+			
+$$END:REM$$			
+		
+
+</div><!-- fin #Annuaire_Ctn -->
+$$INCL:BAS.HTM$$
