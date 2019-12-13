@@ -1,0 +1,66 @@
+<script type="text/javascript">
+<!--
+function switchDiv(n)
+{  
+var id;
+    switch(n)
+    { 
+        case 0:
+        id = "";
+        break;
+        case 1:
+        id = "div_moteur";
+        break;
+        case 2:
+        id = "div_estimation";
+        break;      
+        case 3:
+        id = "div_suivi";
+        break;  
+    }  
+    if ($('#div_moteur')){
+        $('#div_moteur').hide(); 
+    }
+    if ($('#div_estimation')){
+        $('#div_estimation').hide();  
+    }
+    if ($('#div_suivi')){
+        $('#div_suivi').hide();
+    }
+    if (id!="")
+        $('#'+id).show();           
+    }
+//-->
+</script>
+
+
+$$REM$$
+    $$IF=:INDEX.HTM:REP:0$$
+    $$INIT:CSS_COLORBOX=1$$
+    <script src="$$~$$scripts/libs/jquery.colorbox.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".cboxElement").colorbox({
+                close: "fermer"
+            });
+            $(".cboxElement").eq(0).trigger('click');
+        });
+    </script>
+    <a class="cboxElement hidden" href="$$_$$images/popup-noel.jpg"></a>
+    $$END$$
+$$END$$
+
+
+
+$$IF=:RESULTATS:IDT$$
+<script type="text/javascript">
+    calculMensualite = function(taux,prix,nmensualite,dureeemprunt,idAnnonce){
+        prix = prix.replace(/\s/g,"");
+        prix = parseFloat(prix);
+        montantpret =  Math.floor(prix/1.2 * 100) / 100;
+        mensualite = montantpret*(taux/100)/(1-Math.pow((1+taux/100/12),(-nmensualite)))/12;
+        mensualite = Math.floor(mensualite * 100) / 100;
+        $('.mensualite-'+idAnnonce).html(mensualite);
+    };
+</script>
+$$END$$
