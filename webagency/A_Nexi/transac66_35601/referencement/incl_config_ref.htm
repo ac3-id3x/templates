@@ -1,0 +1,239 @@
+$$REM$$<!-- =========== FICHIER DE CONFIGURATION POUR LE REF =========== -->$$END:REM$$
+$$REM$$<!-- =========== FICHIER MODIFIE LE 24/10/2013 =========== -->$$END:REM$$
+
+$$REM$$<!-- =========== INDEXATION DES LANGUES =========== -->$$END:REM$$
+$$REM$$<!-- =========== SI =1 toutes les langues seront indexées, SI =0 pas indexées =========== -->$$END:REM$$
+$$A:INDEXATION_LANGUE=0$$
+
+$$REM$$<!-- =========== NOM DU SITE (MULTI-AGENCES UNIQUEMENT) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Cette variable est présente sur plusieurs pages du site (title de la page index, de la page agence liste...) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== Pour appeler cette variable ailleurs (dans du texte, une meta...) il faudra utiliser @@NOM_SITE_REF@@ =========== -->$$END:REM$$
+$$A:NOM_SITE_REF=$$
+
+$$REM$$<!-- =========== PAGE INDEX =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le title de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est le title de l'incl_ref mutualisé qui sera affiché  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_INDEX=$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser la meta description de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Si cette variable n'est pas renseignée, c'est la meta description de l'incl_ref mutualisé qui sera affichée  =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:DESCRIPTION_INDEX=$$
+$$END$$
+
+$$REM$$<!-- =========== Personnaliser le slogan de la page index (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+
+							$$B:IMMOBW:AGENCETRANSACTIONS:ALIAS:AGENCEANNONCES$$
+								$$BIF:AGENCEANNONCES$$	
+								$$DO$$	
+									$$IF=:2:AGENCEANNONCES:IDTYPETRANSACTION$$		
+										$$A:SLOGAN1=<a href="/recherche,basic.htm?idtt=2&tri=d_dt_crea" class="typo-white">@@AGENCEANNONCES:NBANN@@ ventes</a>   -  $$
+									$$END$$
+									$$IF=:8:AGENCEANNONCES:IDTYPETRANSACTION$$		
+										$$A:SLOGAN2=<a href="/recherche,basic.htm?idtt=8&tri=d_dt_crea" class="typo-white">@@AGENCEANNONCES:NBANN@@ ventes de prestige</a>$$
+									$$END$$
+								$$LOOP$$
+								$$BFIN$$
+
+	$$A:SLOGAN_INDEX=<span class="h2-like xbiggest">@@SLOGAN1@@@@SLOGAN2@@</span>$$
+$$END$$
+
+$$REM$$<!-- =========== Architecture (H1, H2...) de la page index =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H1 =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:H1_INDEX=<span class="big typo-white text-shadow-1">Votre spécialiste du marché immobilier de Thuir, Perpignan et sa région.</span>$$
+$$END$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Par défaut le texte est "Nos dernières annonces immobilières" =========== -->$$END:REM$$
+$$A:H2_INDEX_MODULE=@@LG:TITRECOEUR pcase@@$$
+
+$$REM$$<!-- =========== Personnaliser le module agence de la page index (pas toujours intégré à la template, voir avec le chef de projet) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Balise H2 =========== -->$$END:REM$$
+$$REM$$<!-- =========== Mono =========== -->$$END:REM$$
+$$IF=:0:MULTIAGENCES$$
+	$$A:H2_INDEX_AGENCE=@@LG:BIENVENUESUR pcase@@ @@AGENCE_NOM@@$$
+$$END$$
+$$REM$$<!-- =========== Multi =========== -->$$END:REM$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF=:FR:LANGUE$$
+		$$A:H2_INDEX_AGENCE=Notre expérience immobilière à votre service$$
+	$$END$$
+$$END$$
+$$REM$$<!-- =========== Ajout de texte personnalisé pour le module bloc agence de la page index (mono/multi) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masque (un texte par défaut sera affiché), SI =1 affichage du texte personnalisé ci-dessous -->$$END$$
+$$A:BLOC_AGENCE_INDEX=0$$
+$$IF=:FR:LANGUE$$
+	$$A:PHRASE_BLOCAGENCE_INDEX=Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in mauris non tellus rhoncus placerat. Vestibulum pharetra erat eu metus sollicitudin aliquet. Aliquam sit amet justo diam, nec rutrum ligula. Ut facilisis, velit ac ornare venenatis, risus tortor sollicitudin dui, et dictum lacus orci eget nisi. Praesent semper consequat mauris quis ultrices. Sed pulvinar tincidunt volutpat. Proin lacus magna, gravida non tempor a, sodales ut diam. Ut lobortis vehicula nibh et tempor. Morbi vel risus dui, vel placerat quam. Aliquam erat volutpat. Aliquam odio nisl, posuere a aliquet ut, tincidunt quis justo. Nullam sed nunc nec tortor vestibulum blandit in a nulla. Nulla facilisi. Nulla vel est urna. Nam viverra, arcu ac euismod sagittis, urna velit semper nulla, vel porta arcu ipsum ac neque. Nulla tempor commodo euismod.$$
+$$END$$
+
+$$REM$$<!-- =========== Ajout de contenu sur la page index =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 alors le texte sera masque, SI =1 affichage du texte-->$$END$$
+$$A:ENCART_TXT_HOME=1$$
+$$REM$$<!-- SI =1 le texte sera affiché au dessus des modules (alerte mail, réseaux sociaux...), SI =2 en dessous -->$$END$$
+$$A:POSITION_ENCART_TXT_HOME=1$$
+$$REM$$<!-- Ajout du texte personnalisé //
+Ancien text
+2 Agences immobilières proches de Perpignan, à Toulouges et Thuir, sont à votre disposition pour une étude personnalisée de votre projet immobilier sur <a class="typo-white bold" href="/immobilier/tout/immo-thuir-66/">Thuir</a> et sur un secteur immobilier étendu, de Saint Estève à Fourques et de Néfiach à Toulouges.<br />
+Découvrez sur ce site notre sélection d’annonces de vente de maisons, villas et appartements sur <a class="typo-white bold" href="/immobilier/tout/immo-toulouges-66/">Toulouges</a>, <a class="typo-white bold" href="/immobilier/tout/immo-Perpignan-66/">Perpignan</a> et sa région
+ -->$$END$$
+$$IF=:FR:LANGUE$$
+	$$A:ENCART_TXT_HOME_CONTENU=
+<p class="typo-white">
+Deux  Agences immobilières à <a class="typo-white" href="/agence-immobiliere/toulouges-66350/transaction-2000/212384.htm" title="Notre agence immobilière à Toulouges"><u>Toulouges</u></a> et <a class="typo-white" href="/agence-immobiliere/thuir-66300/transaction-2000/499518.htm" title="Notre agence immobilière à Thuir"><u>Thuir</u></a>, sont à votre disposition pour une <strong>étude personnalisée de votre projet immobilier</strong> sur un secteur qui s’étend de <a class="typo-white" href="/immobilier/tout/immo-saint-esteve-66/" title="Notre portefeuille d'annonces sur Saint Estève"><u>Saint Estève</u></a> au Boulou et de <a class="typo-white" href="/immobilier/tout/immo-cabestany-66/" title="Notre portefeuille d'annonces sur Cabestany"><u>Cabestany</u></a> à <a class="typo-white" href="/immobilier/tout/immo-millas-66/" title="Notre portefeuille d'annonces sur Millas"><u>Millas</u></a>. <br />
+Découvrez sur ce site notre sélection d’annonces de vente de maisons, villas, propriétés, appartements, dans le neuf ou l’ancien et notre sélection de terrains à bâtir sur <a class="typo-white" href="/immobilier/tout/immo-Toulouges-66/" title="Notre portefeuille d'annonces sur Toulouges"><u>Toulouges</u></a>, <a class="typo-white" href="/immobilier/tout/immo-Thuir-66/" title="Notre portefeuille d'annonces sur Thuir"><u>Thuir</u></a>, <a  class="typo-white" href="/immobilier/tout/immo-Perpignan-66/" title="Notre portefeuille d'annonces sur Perpignan"><u>Perpignan</u></a> et <a class="typo-white" href="/immobilier/languedoc-roussillon.htm" title="Notre portefeuille d'annonces sur la région Languedoc-Roussillon"><u>sa région</u></a>. Nos conseillers immobiliers, spécialistes de la transaction et du marché immobilier local vous accompagnent jusqu’à la réussite de votre projet.
+	 </p>
+	<div id="bouton-telephonez-nous-txt" class="@@TYPEBOUTON@@ @@TYPEBOUTONACTION@@ hidden-phone cursor-pointer">
+		<span id="texte-telephonez-nous-txt"><i class="icon-v5-phone"></i> @@LG:CNTCTPARTEL pcase@@</span>
+		<span id="numero-telephonez-nous-txt" class="display-none"><i class="icon-v5-phone"></i> @@AGENCE_TEL@@</span>
+	</div>
+	$$
+$$END$$
+
+$$REM$$<!-- =========== Rajout de liens personnalises dans le mini moteur de la page index =========== -->$$END:REM$$
+$$REM$$<!-- SI =1 les liens seront affichés, si =0 alors les liens seront masqués -->$$END$$
+$$A:MOTEUR_VILLES_REF=0$$
+$$REM$$<!-- Personnalisation des liens (ajout de 4 liens max) -->$$END$$
+$$A:MOTEUR_VILLE_1=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_2=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_3=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+$$A:MOTEUR_VILLE_4=<a href="http://v5-londres.urlprovisoire.com.x-ext.poliris.net/recherche,basic.htm?idqfix=1&idtt=8&idtypebien=1&pxmax=Max&pxmin=Min&tri=d_dt_crea&ci=&">Test</a>$$
+
+$$REM$$<!-- =========== PAGE DETAIL =========== -->$$END:REM$$
+$$REM$$<!-- Si =0 pas de micro donnes, si =1 microdonnes affichees dans les serps-->$$END$$
+$$A:MICRO_DONNES_PRIX=1$$
+
+$$REM$$<!-- =========== PAGE ESTIMATION (estimation,immobiliere.htm) =========== -->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_ESTIMATION=0$$
+$$REM$$<!-- =========== Récupérer l'idp agence, exemple : 471084 = http://www.cabinetstdenis.com/agence-immobiliere/thourotte-60150/cabinet-immobilier-st-denis/471084.htm =========== -->$$END:REM$$
+$$IF=:487807:REP:1$$
+$$REM$$<!-- Personnalisation du title -->$$END$$
+$$A:TITLE_ESTIMATION=$$
+$$REM$$<!-- Personnalisation de la meta description -->$$END$$
+$$A:DESCRIPTION_ESTIMATION=$$
+$$REM$$<!-- Personnalisation du H1 -->$$END$$
+$$A:H1_ESTIMATION=$$
+$$REM$$<!-- Ajout d'un texte personnalisé -->$$END$$
+$$A:PHRASE_ESTIMATION=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE OUTILS =========== -->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_OUTILS=0$$
+
+$$REM$$<!-- =========== PAGE REALISATION =========== -->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_REALISATION=0$$
+
+$$REM$$<!-- =========== PAGE RESPONSIVE =========== -->$$END:REM$$
+$$REM$$<!-- Si =0 pas d'indexation, si =1 indexation -->$$END$$
+$$A:INDEXATION_RESPONSIVE=0$$
+
+$$REM$$<!-- =========== PAGE GESTION, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_GESTION=$$
+	$$A:DESCRIPTION_GESTION=Notre gestion immobiliere$$
+	$$A:H1_GESTION=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE SYNDIC, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_SYNDIC=$$
+	$$A:DESCRIPTION_SYNDIC=$$
+	$$A:H1_SYNDIC=$$
+$$END$$
+
+$$REM$$<!-- =========== PAGE EXPERTISE, ATTENTION N'EXISTE PAS TOUT LE TEMPS =========== -->$$END:REM$$
+$$IF=:FR:LANGUE$$
+	$$A:TITLE_EXPERTISE=$$
+	$$A:DESCRIPTION_EXPERTISE=$$
+	$$A:H1_EXPERTISE=$$
+$$END$$
+
+$$REM$$<!-- =================================== PAGE AGENCE ============================= -->$$END:REM$$
+$$REM$$<!-- =========== http://www.transaction2000.fr/agence-immobiliere/thuir-66300/transaction-2000/499518.htm =========== -->$$END:REM$$
+$$IF=:499518:FORM:IDP$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+	$$A:SOCIAL_AGENCE_GOOGLE_PLUS=https://plus.google.com/114725158393611178895/about$$
+	$$A:SOCIAL_AGENCE_FACEBOOK=https://www.facebook.com/pages/Transaction-2000-Perpignan/138961779487310$$
+	$$A:SOCIAL_AGENCE_TWITTER=https://twitter.com/Transaction2000$$
+	$$A:SOCIAL_AGENCE_YOUTUBE=https://www.youtube.com/user/Transaction2000$$
+	$$A:SOCIAL_AGENCE_DAILYMOTION=http://www.dailymotion.com/Transaction2000$$
+	
+	$$A:BADGE_GOOGLE_AGENCE=1$$
+	$$A:SOCIAL_BADGE_GOOGLE_AGENCE=114725158393611178895$$
+	
+$$END$$
+$$REM$$<!-- =========== http://www.transaction2000.fr/agence-immobiliere/toulouges-66350/transaction-2000-toulouges/212384.htm =========== -->$$END:REM$$
+$$IF=:212384:FORM:IDP$$
+$$A:SOCIAL_AGENCE_DETAIL=1$$
+	$$A:SOCIAL_AGENCE_GOOGLE_PLUS=https://plus.google.com/102321517647775664910/about$$
+	
+	$$A:BADGE_GOOGLE_AGENCE=1$$
+	$$A:SOCIAL_BADGE_GOOGLE_AGENCE=102321517647775664910$$
+	
+	$$A:TXT_PUBLIC_PERSO=1$$
+    $$A:TXT_PUBLIC_PERSO_CONTENU=
+
+	Notre site Internet bénéficie de diverses actions en e-marketing afin d’optimiser sa visibilité sur les moteurs de recherche et de ce fait la visibilité de l’ensemble des annonces immobilières de nos 2 agences immobilières à <a href="/agence-immobiliere/thuir-66300/transaction-2000/499518.htm" title="Notre agence immobilière à Thuir">Thuir</a> et à <a  href="/agence-immobiliere/toulouges-66350/transaction-2000/212384.htm" title="Notre agence immobilière à Toulouges">Toulouges</a>. 
+	<br /><br />
+Nous développons également un plan de communication sur Internet, devenu aujourd’hui le meilleur vecteur de vente de biens immobiliers et nous utilisons pour cela les portails spécialistes de l’immobilier ainsi que les portails d’annonces classiques, parmi les plus fréquentés par les internautes. Notre action sera cependant complétée selon les cas par des actions commerciales, selon le type de bien et selon les engagements pris dans le cadre d’un mandat exclusif.$$
+	
+$$END$$
+
+
+$$REM$$<!-- =========== PAGE AGENCES,LISTE (MULTI UNIQUEMENT) =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnalisation du title =========== -->$$END:REM$$
+$$A:TITLE_AGENCES_LISTE=$$
+$$REM$$<!-- =========== Personnalisation de la meta description =========== -->$$END:REM$$
+$$A:DESCRIPTION_AGENCES_LISTE=$$ 
+$$REM$$<!-- =========== Personnalisation du h1 =========== -->$$END:REM$$
+$$A:H1_AGENCESLISTE=Transaction 2000: l'immobilier dans les Pyrénées Orientales$$
+$$REM$$<!-- =========== Rajout de texte sur la page agences,liste (multi-agences) =========== -->$$END:REM$$
+$$REM$$<!-- SI =0 le texte sera masqué, SI =1 affichage du texte//
+Ancien texte
+<p>Entre la frontière espagnole et les Corbières, le département des Pyrénées Orientales (66), est parmi les départements les plus touristiques de la Région Languedoc Roussillon, avec des possibilités d’évasions aussi variées que son paysage, entre mer et montagnes.</p>
+	<p>En pleine expansion démographique, la Région Languedoc Roussillon entraîne dans son élan les grandes villes du sud ouest, de Nîmes à Perpignan, avec un parc d’habitation en augmentation sur un marché immobilier restant attractif.</p>
+	<p><strong>Implantée à Perpignan depuis 1998</strong>, Transaction 2000 vous propose un service immobilier de transaction en habitat sur une large partie du 66, au nord de Perpignan, en pays de Rivesaltes, de Opoul-Périllos à Sainte Marie, au sud de Perpignan de Pollestre à Argelès et à l’ouest en pays Fenouillet, de Toulouges à Prades et Thuir et tous ses alentours .</p>
+	<p>Avec une large proportion de maisons, le paysage immobilier de la région de Perpignan se partage entre vieilles pierres du sud et immobilier moderne, avec des maisons de village et des maisons individuelles en lotissements récents.</p>
+	<p>Très recherché pour son cadre, sa proximité à l’Espagne et ses accès facilités aux axes routiers A7 et N114, le sud de Perpignan a vu ces dernières années de nombreux programmes immobiliers neufs voir le jour.</p>
+	<p>Le marché immobilier de la résidence principale demeure actif sur toute la périphérie de Perpignan, avec de nouvelles arrivées, dues à des mutations professionnelles, des projets de retraite ou des retours en Pays Catalan. Quant au marché immobilier du secondaire, il est surtout actif près des stations balnéaires proches de Perpignan.</p>
+ -->$$END:REM$$
+$$A:AGENCES_LISTE_TXT=1$$
+$$A:AGENCES_LISTE_CONTENU=
+	<p>
+		<h2>Deux agences immobilières au sud de Perpignan, à Thuir et Toulouges</h2>
+<br />
+Nos agences vous proposent <strong>depuis 1983</strong> un service spécialisé dans la transaction immobilière en habitat et terrain, sur une large partie du <a href="/immobilier/66/pyrenees-orientales.htm" title="Transaction immobilière dans le 66">66</a>, sur <a href="/immobilier/66/pyrenees-orientales.htm" title="Transaction immobilière à Perpignan">Perpignan</a> et sa région, au nord vers <a href="/immobilier/tout/immo-saint-esteve-66/" title="Transaction immobilière à Saint Estève">Saint Estève</a>, à l’est vers <a href="/immobilier/tout/immo-cabestany-66/" title="Transaction immobilière à Cabestany">Cabestany</a>, <a href="/immobilier/tout/immo-saleilles-66/" title="Transaction immobilière à Saleilles">Saleilles</a>, <a href="/immobilier/tout/immo-villeneuve-la-riviere-66/" title="Transaction immobilière à Villeneuve de la Raho">Villeneuve de la Raho</a>, le long de la N116, sur les communes du <a href="/immobilier/tout/immo-le-soler-66/" title="Transaction immobilière à Soler">Soler</a>, jusqu’à <a href="/immobilier/tout/immo-millas-66/" title="Transaction immobilière à Millas">Millas</a>, sur l’agglomération sud ouest, vers <a href="/immobilier/tout/immo-toulouges-66/" title="Transaction immobilière à Toulouges">Toulouges</a>, <a href="/immobilier/tout/immo-canohes-66/" title="Transaction immobilière à Canohès">Canohès</a>, <a href="/immobilier/tout/immo-thuir-66/" title="Transaction immobilière à Thuir">Thuir</a>, Trouillas et enfin vers le sud en direction du Boulou, vers Pollestre, Villemolaque, Saint Jean Lasseille.
+<br />
+<h3>Notre portefeuille immobilier sur le 66</h3>
+Notre site vous soumet une vaste sélection de biens, maisons traditionnelles, maisons de village en pierre, villas modernes, neuves, en diffus ou en résidences pavillonnaires, propriétés et belles demeures ainsi que des appartements, dans le neuf ou l’ancien.
+<br /><br />
+<h3>Estimation de votre bien à Perpignan, à Thuir et Toulouges</h3>
+<br />
+Dans le cadre de la vente de votre bien, nos conseillers immobiliers mettront leur savoir-faire et leur expérience du marché immobilier local à votre disposition pour vous donner un avis de valeur cohérent. <br />
+Ils vous proposeront une simulation financière ainsi que la mise en relation avec nos partenaires pour l’obtention de conditions avantageuses de prêt.
+Notre partenaire Habitat Sud, spécialiste de la rénovation et constructeur de villas individuelles vous permettra d’obtenir rapidement des informations sur les aspects techniques du bâtiment afin de réaliser votre projet de construction, de rénovation, ou de travaux d’aménagement, dans les meilleures conditions.
+
+
+	</p>$$
+$$REM$$<!-- =========== SLOGAN FOOTER =========== -->$$END:REM$$
+$$REM$$<!-- =========== En mono : si cette variable n'est pas renseignée c'est l'adresse de l'agence qui sera affichée =========== -->$$END:REM$$
+$$REM$$<!-- =========== En multi : si cette variable n'est pas renseignée c'est l'url du site qui sera affichée =========== -->$$END:REM$$
+$$A:SLOGAN_FOOTER=$$
+
+$$REM$$<!-- =========== FOOTER =========== -->$$END:REM$$
+$$REM$$<!-- =========== Personnaliser le titre de la rubrique "Plus d'infos" =========== -->$$END:REM$$
+$$A:TITLE_1_FOOTER=$$
+$$REM$$<!-- =========== Personnalisation des liens =========== -->$$END:REM$$
+$$A:LINK_PERSO_1_FOOTER_1=$$
+$$A:LINK_PERSO_2_FOOTER_1=$$
+$$A:LINK_PERSO_3_FOOTER_1=$$
+$$A:LINK_PERSO_4_FOOTER_1=$$
+
+$$REM$$<!-- =========== ID CATEGORIE BLOG WORDPRESS. ATTENTION : DOIT ETRE CREER AU PREALABLE (CF. WIKI) =========== -->$$END:REM$$
+$$INIT:CATWORDPRESS=29122$$
