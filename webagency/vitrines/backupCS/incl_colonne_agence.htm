@@ -1,0 +1,233 @@
+	<div id="blocOutils">
+		<div class="notreAgence">
+			<h4>Notre agence immobilière</h4>
+$$IF:AGENCE:SIPHOTOAGENCE$$
+			<img src="$$AGENCE:URLPHOTOAGENCE$$" alt="$$AGENCE:NOM$$" />
+$$END$$
+$$IF0:AGENCE:SIPHOTOAGENCE$$
+			<img src="/z/webagency/A_Pyxicom/lowcost/images/img_agence.jpg" alt="" />
+$$END$$
+			<p class="corrd">
+				$$AGENCE:NOM$$<br />
+				<br />
+				<span>$$AGENCE:ADRESSE crlf2br$$</span><br />
+				<br />
+				Tél. : $$AGENCE:TEL formattel$$<br />
+$$IF:AGENCE:FAX$$
+				<span>Fax : $$AGENCE:FAX formattel$$</span><br />
+$$END:FAX$$
+				<br />
+			</p>
+			<p>
+			</p>
+		</div>
+		<img src="/z/webagency/A_Pyxicom/lowcost/images/sepa.gif" alt="" />
+		<div id="geo">
+			<h2>Localisation de l'agence</h2>
+			<div class="cartGeo">
+<!-- http://dev.live.com/virtualearth/sdk/ -->
+<style type="text/css">
+	.MSVE_Dashboard_Small .MSVE_MapStyle { width:50px !important; } <!-- réduit la largeur des boutons de sélection du type de carte (plan/sat/hybride), si affiché -->
+</style>
+
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&mkt=fr-fr"></script>
+<script type="text/javascript">
+	var myMapId = 'myMap';
+	var map = null;
+	var address;
+	var zip;
+	var town;
+	var country;
+	var lat, lng;
+	var numResults = 1;
+	var index = 0;
+	var tabwhere = new Array();
+	var iCurrentAddress;
+	var results;
+	var icon = '<img src="/z/webagency/slagence_X_V2/carto/picto_carto.gif" alt="" title="" />';
+	function mapLoaded()
+	{
+		// cale les boutons de zooms dans le coin supérieur gauche
+		var dashboard = document.getElementById(myMapId+'_dashboard');
+		if (dashboard != null) {
+			dashboard.style.top = dashboard.style.left = dashboard.style.marginLeft	= dashboard.style.marginTop = "0px";
+		}
+	}
+	function GetMap()
+	{
+		map = new VEMap(myMapId);
+		var LA = new VELatLong(46.37725420510028, 3.164062500000014); //France
+		map.SetDashboardSize(VEDashboardSize.Tiny);
+		map.onLoadMap = mapLoaded;
+		map.LoadMap(LA,5);
+		map.SetMouseWheelZoomToCenter(false); // ne pas zoomer sur le centre de la carte mais sur le pointeur de la souris avec la molette
+		// Firefox 3.5 fix: zoom avec molette fait scroller la page ET la carte
+		if (navigator.userAgent.indexOf("Firefox/3.5") != -1) {
+			document.getElementById(myMapId).addEventListener('DOMMouseScroll', WindowMouseWheelHandler, false);
+		}
+		StartFindLoc();
+	}
+	function StartFindLoc()
+	{
+		var objAddress;
+		address = "$$AGENCE:ADRESSE crlf2br replace <br/> , field 1 escape$$";
+		zip = "$$AGENCE:CP$$";
+		town = "$$AGENCE:VILLE escape$$";
+		//country = "$$AGENCE:IDPAYS getpays escape$$";
+		country = "";
+		lat = "$$AGENCE:LATITUDE round 6 replace , .$$";
+		lng = "$$AGENCE:LONGITUDE round 6 replace , .$$";
+		idpub = "$$AGENCE:IDPUBLICATION$$";
+		objAddress = {address: address, zip: zip, town: town, country: country, lat: lat, lng: lng,idpub: idpub};
+		tabwhere.push(objAddress);
+		iCurrentAddress = 0;
+		results = new Array();
+		FindLoc();
+	}
+	function FindLoc()
+	{
+		if (iCurrentAddress < tabwhere.length)
+		{
+			 if ((tabwhere[iCurrentAddress].lat != "") && (tabwhere[iCurrentAddress].lng != ""))
+			 {
+				//map.SetCenterAndZoom(new VELatLong(tabwhere[iCurrentAddress].lat, tabwhere[iCurrentAddress].lng), 15);
+				AddPushpin(new VELatLong(tabwhere[iCurrentAddress].lat, tabwhere[iCurrentAddress].lng), "");
+				iCurrentAddress++;
+				FindLoc();
+			 }
+			 else
+			 {
+				map.Find(null,
+				tabwhere[iCurrentAddress].address + ', ' + tabwhere[iCurrentAddress].zip + ', ' + tabwhere[iCurrentAddress].town + ', ' + tabwhere[iCurrentAddress].country,
+				null,
+				null,
+				index,
+				numResults,
+				true,
+				true,
+				false,
+				false,
+				MoreResults
+				);
+			}
+		}
+		else
+		{
+			// on va centrer la carte sur toutes les punaises positionnées
+			map.SetMapView(results);
+			// on zoome si mono-agence. Niveau de zoom = param de macro CARTO_ZOOM (et non de conf)
+			if (results.length == 1)
+			{
+				// on vérifie que CARTO_ZOOM est un nombre entier
+				if (!isNaN(parseInt(15)))
+					map.SetZoomLevel(15);
+			}
+			document.getElementById("Loader").style.display = "none";
+		}
+	}
+	function MoreResults(layer, resultsArray, places, hasMore, veErrorMessage)
+	{
+		if(hasMore)
+		{
+		   var r = "<a href='#' onclick=\"javascript:FindLoc();\">" +
+				   "Cliquez pour + de résultats</a>";
+		}
+		else
+		{
+			var infos = "";
+			// Précision de la réponse
+			if (places[0].MatchConfidence != VEMatchConfidence.High)
+			{
+				infos = "<p style='text-align:left;font-size:10px;'>Localisation approximative de l'agence :</p>";
+			}else{
+				//map.SetZoomLevel(18);
+			}
+			AddPushpin(places[0].LatLong, infos);
+			index=0;
+			number=Number(numResults);
+			//document.getElementById('results').innerHTML = "Pas d'autres résultats disponibles.";
+			//document.getElementById("myMap").style.visibility = "visible";
+		}
+		//results.push(new VELatLong(places[0].LatLong.Latitude, places[0].LatLong.Longitude));
+		iCurrentAddress++;
+		FindLoc();
+	}
+	function AddPushpin(latlng, infos)
+	{
+		var shape = new VEShape(VEShapeType.Pushpin, latlng);
+		results.push(latlng);
+		//Set the icon
+		shape.SetCustomIcon(icon);
+		if (infos == "") {
+			shape.SetTitle("<p style='text-align:left;font-size:10px;'>Localisation de l'agence :</p>");
+		} else {
+			shape.SetTitle(infos );
+		}
+		shape.SetDescription("<p style='text-align:left;color: Black;font-size:11px;'>" + tabwhere[iCurrentAddress].address + '<br/>' + tabwhere[iCurrentAddress].zip + ' ' + tabwhere[iCurrentAddress].town + ' ' + tabwhere[iCurrentAddress].country + '<br/><a href="agence-immobiliere.htm?idp=' + tabwhere[iCurrentAddress].idpub + '&lang=" class="LienCartoAgences">En savoir plus</a></p>');
+		map.AddShape(shape);
+	}
+	// Fix (=correction) du pb de scroll de de Firefox
+	function WindowMouseWheelHandler(e)
+	{
+		e.stopPropagation();
+		e.preventDefault();
+		e.cancelBubble = false;
+		return false;
+	}
+	function UnloadMap()
+	{
+		if (map != null)
+		{
+			map.Dispose();
+		}
+	}
+</script>
+
+				<div id="Map" style="position:relative;width:100%;height:100%;">
+					<div id="myMap" style="position:relative;width:100%;height:100%;"></div>
+					<div id="Loader" style="z-index:100;width:100%;height:100%;position:absolute;top:0;left:0;background:url(z/webagency/slagence_X_V2/carto/loader.gif) no-repeat center center #FFF;"></div>
+				</div>
+
+<script type="text/javascript" defer="defer"> <!-- "defer" permet de différer l'exécution du script pour IE -->
+	//window.onload=GetMap; /// pas de onload, sinon on risque d'écraser ce qu'il y a déjà d'affecté à onLoad
+	//GetMap();
+	eventsManager.addLoadEvent("GetMap()");
+	eventsManager.addToEvent("UnloadMap()", "unload");
+	eventsManager.addLoadEvent("window.setTimeout('eventsManager.dbgListLoadEvents()', 2000)", 1000);
+</script>
+
+			</div>
+		</div><!-- fin #geo -->
+		<div id="Outils_Ctn">
+			<div id="Outils">
+				<h6>Outils</h6>
+			</div><!-- fin #Outils -->
+			<div id="Bookmark_Ctn">
+				<h6>Partagez</h6>
+				<div id="Bookmark" class="outils_bg">
+					<div id="Picto_Bookmark"></div>
+					<p>
+						$$A:CURRENTURL=http://@@REP:RSRV@@/@@REP:PAGE@@$$
+						<a id="Facebook" href="http://www.facebook.com/share.php?u=$$CURRENTURL urlencode$$" title="Facebook" onclick="window.open(this.href); return false;"></a>
+						<a id="Technorati" href="http://www.technorati.com/faves?add=$$CURRENTURL urlencode$$" title="Technorati" onclick="window.open(this.href); return false;"></a>
+						<a id="Google" href="http://www.google.com/bookmarks/mark?op=edit&bkmk=$$CURRENTURL urlencode$$" title="Google" onclick="window.open(this.href); return false;"></a>
+						<a id="MySpace" href="http://www.myspace.com/modules/postto/pages/?u=$$CURRENTURL urlencode$$" title="MySpace" onclick="window.open(this.href); return false;"></a>
+						<a id="Yahoo" href="http://myweb2.search.yahoo.com/myresults/bookmarklet?u=$$CURRENTURL urlencode$$" title="Yahoo" onclick="window.open(this.href); return false;"></a>
+						<a id="Twitter" href="http://twitter.com/home?status=add+this:+$$CURRENTURL urlencode$$" title="Twitter" onclick="window.open(this.href); return false;"></a>
+						<a id="Livespace" href="http://spaces.live.com/blogit.aspx?status=add+this:+$$CURRENTURL urlencode$$" title="Livespace" onclick="window.open(this.href); return false;"></a>
+						<a id="Scoopeo" href="http://www.scoopeo.com/scoop/new?newurl=$$CURRENTURL urlencode$$&title=$$SHARE-TITLE urlencode$$" title="Scoopeo" onclick="window.open(this.href); return false;"></a>
+						<a id="Mailto" href="mailto:?subject=$$SHARE-TITLE urlencode$$&body=$$CURRENTURL urlencode$$" title="Mail"></a>
+						<span class="clear"></span>
+					</p>
+				</div>
+			</div><!-- fin #Bookmarks_Ctn -->
+			<div id="fai">
+				<h6>Mentions légales</h6>
+				<p>
+					FAI : frais d'agence inclus<br />
+					* : prix net, hors frais notariés, d'enregistrement et de publicité foncière
+				</p>
+				<img src="/z/webagency/A_Pyxicom/lowcost/images/sepa.gif" alt="" />
+			</div>
+		</div><!-- fin #Outils_Ctn -->
+	</div><!-- fin #blocOutils -->

@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+$$E:IMMOBW:VITRINE-INFOS$$
+$$E:IMMOBW:ANNONCE:REP:1:::NOVISU:~afficheLocalisation:1:ALIAS:ANNONCE$$
+$$E:IMMOBW:AGENCE:ALIAS:AGENCE$$
+$$B:IMMOBW:AFFICHANNONCES:REP:1:ALIAS:DETAILS$$
+$$B:IMMOBW:PHOTOS:REP:1:ALIAS:PHOTOS$$
+
+$$A:TTTB=@@ANNONCE:IDTYPETRANSACTION gettypetransaction lcase@@ @@ANNONCE:IDTYPEBIEN gettypebien lcase@@$$
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<title>
+		$$TTTB pcase$$ -
+$$IF:ANNONCE:SURFACE$$
+		$$ANNONCE:SURFACE$$ m2 &agrave;
+$$END:SURFACE$$
+		$$ANNONCE:AVILLE$$ ($$ANNONCE:ACP$$)
+$$IF:ANNONCE:PRIX$$
+		- $$ANNONCE:PRIX$$ euros
+$$END:PRIX$$
+	</title>
+
+	<meta name="description" content="Annonce $$TTTB$$ - $$ANNONCE:AVILLE htmlencode$$ : $$ANNONCE:DESCRIPTIF htmlencode$$" />
+	<meta name="robots" content="index,follow,all" />
+	<meta name="keywords" content="$$TTTB$$ $$AGENCE:NOM$$ $$ANNONCE:AVILLE$$" />
+
+	<meta http-equiv="content-language" content="fr" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<meta http-equiv="content-style-type" content="text/css" />
+
+
+	<script type="text/javascript" src="$$_$$scripts/eventsManager-min.js"></script>
+	<script type="text/javascript" src="$$_$$scripts/prototype_1.6.js"></script>
+	<script type="text/javascript" src="$$_$$scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="$$_$$scripts/jquery.ad-gallery.js?rand=995"></script>
+	<script type="text/javascript" src="$$_$$scripts/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="$$_$$scripts/jquery.fancybox-1.3.1.js"></script>
+
+	<!--[if IE]><script type="text/javascript" src="/scripts/pngfix.js"></script><![endif]-->
+
+	<script type="text/javascript">
+		<!--
+			jQuery.noConflict();
+			jQuery(document).ready(function() {
+				jQuery("a[rel=photos_annonce]").fancybox({
+					'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					//return '<span id="fancybox-title-over">Photo ' + (currentIndex + 1) + '/' + currentArray.length + '<br /><strong>' + (title.length ? '' + title : '') + '</strong></span>';
+					return '<span id="fancybox-title-over"><strong>' + (title.length ? '' + title : '') + '</strong><br />Photo ' + (currentIndex + 1) + '/' + currentArray.length + '</span>';
+					}
+				});
+			});
+		//-->
+	</script>
+	
+
+	<link rel="stylesheet" type="text/css" href="$$_$$styles/$$IMMOBW:VITRINE-INFOS:CSS$$.css" />
+	<!-- macro définissant via Gestprod la couleur du site : $$IMMOBW:VITRINE-INFOS:CSS$$ -->
+	
+	<link rel="stylesheet" type="text/css" href="$$_$$styles/jquery.fancybox-1.3.1.css" media="screen" />
+
+
+</head>
+
+<body>
+$$INCL:TOP.HTM$$
+	<div id="contenu">
+		<div id="DetailAnnonce">
+			<table id="Annonce_Ctn">
+				<tr>
+					<td id="ColonneGauche">
+						<table class="infosannonce_ctn">
+							<tr>
+								<td class="col1">
+									<div class="photo_ctn">
+$$BIF0:PHOTOS$$
+										<div id="SansPhoto"></div>
+										<div class="clear"></div>	
+$$BFIN$$
+
+$$BIF:PHOTOS$$
+										<h4>$$PHOTOS:NBR$$ photo$$PHOTOS:NBR pluriel$$</h4>
+										<div id="FancyBox_Ctn">
+$$DO$$
+											$$A:PHOTOREF=@@ANNONCE:IDTYPETRANSACTION gettypetransaction@@ @@ANNONCE:IDTYPEBIEN gettypebien@@ @@ANNONCE:AVILLE@@ (@@ANNONCE:ACP@@)$$
+											<a rel="photos_annonce" class="fancyBox" id="FancyBox$$PHOTOS:I$$"
+												href="$$PHOTOS:URL$$"
+												title="$$PHOTOREF htmlencode$$">
+												<em class="fancyBoxPicto"><!-- picto fancybox --></em>
+												Afficher le diaporama
+											</a>
+$$LOOP$$
+											<div class="clear"></div>
+										</div><!-- #FancyBox_Ctn -->
+$$BFIN$$
+										<div class="clear"></div>
+$$BIF:PHOTOS$$
+<script type="text/javascript">
+<!--
+$(function() {
+$$DO$$
+$('img.image$$PHOTOS:I exec XX-1$$').data("ad-desc", "");
+$('img.image$$PHOTOS:I exec XX-1$$').data('ad-title', 'Photo $$PHOTOS:I$$/$$PHOTOS:NBR$$');
+$$LOOP$$
+var galleries = $('.ad-gallery').adGallery();
+$('#switch-effect').change(
+function() {
+galleries[0].settings.effect = $(this).val();
+return false;
+}
+);
+$('#toggle-slideshow').click(
+function() {
+galleries[0].slideshow.toggle();
+return false;
+}
+);
+});
+//-->
+</script>
+$$BFIN$$
+$$BIF:PHOTOS$$
+										<div id="container">
+											<div id="gallery" class="ad-gallery">
+												<div class="ad-image-wrapper" ></div>
+												<div class="ad-controls"></div>
+												<div class="ad-nav">
+													<div class="ad-thumbs">
+														<ul class="ad-thumb-list">
+$$DO$$
+														  <li><a href="$$PHOTOS:URL$$" title=""><img src="$$PHOTOS:CARRE_URL$$" class="image$$PHOTOS:I exec XX-1$$" alt="$$PHOTOS:DESCRIPTIF_FR htmlencode$$" title="$$PHOTOS:DESCRIPTIF_FR htmlencode$$" /></a></li>
+$$LOOP$$
+														</ul><!-- fin .ad-thumb-list -->
+													</div><!-- fin .ad-thumbs -->
+												</div><!-- fin .ad-nav -->
+											</div><!-- fin #gallery -->
+										</div><!-- fin #container -->
+$$BFIN$$
+									</div><!-- .photo_ctn -->
+
+									<div id="Descriptif">
+										<p class="titreDescriptif">Description de l'annonce</p>
+										<p class="txtDescriptif">
+											$$ANNONCE:DESCRIPTIF htmlencode$$
+										</p>
+									</div><!-- fin #Descriptif -->
+					</td><!-- .col1 -->
+					<td class="col2">
+
+						<div id="InfosPrincipales">
+
+								<h4>
+			    				
+											$$ANNONCE:IDTYPETRANSACTION gettypetransaction pcase$$
+										
+			    		</h4>
+
+							<h3 id="Libelle">$$ANNONCE:TITRE htmlencode$$</h3>
+							<p id="Transaction">$$ANNONCE:LIBELLE htmlencode$$ $$IF:ANNONCE:SURFACE$$$$ANNONCE:SURFACE$$ m²$$END$$</p>
+$$IF:ANNONCE:NB_PIECES$$
+							<p id="Transaction">$$ANNONCE:NB_PIECES$$ pièce$$ANNONCE:NB_PIECES pluriel$$</p>
+$$END:NB_PIECES$$
+							<br />
+							<h3 id="Ville">$$ANNONCE:AVILLE$$ ($$ANNONCE:ACP$$)</h3>
+<script type="text/javascript">dispMetro('');</script>
+$$IF:ANNONCE:PROX$$
+							<p id="Prox">Proximité : $$ANNONCE:PROX$$</p>
+$$END:PROX$$
+							<div class="clear"></div>
+							<br />
+$$IF:ANNONCE:PRIX$$
+							<h3 id="PrixAnn">$$ANNONCE:PRIX$$
+								<span class="unite">$$ANNONCE:PRIX_UNITE htmlencode$$</span>
+$$IF:ANNONCE:PRIX_PERIODEVAC$$
+								<span class="periodeVac">$$ANNONCE:PRIX_PERIODEVAC$$</span>
+$$END:PRIX_PERIODEVAC$$
+								<span class="fai">FAI</span>
+								<span class="sup1">&sup1;</span>
+							</h3>
+$$END:PRIX$$
+							<p id="Transaction"></p>
+							<br />
+							<h3 id="RefAnnonce" >Réf. : $$ANNONCE:REFANNONCE$$</h3>
+							<p id="MajAnn">Mise à jour : $$ANNONCE:DT_FRAICHEUR left 10$$</p>
+						</div><!-- #InfosPrincipales -->
+$$BIF:DETAILS$$
+						<div id="InfosComp_Ctn">
+							<h4>Informations complémentaires</h4>
+							<div id="InfosComp">
+$$DO$$
+									<p>$$DETAILS:VALEUR replace &bull; ¤ replace <br/> ¤$$</p>
+									
+$$LOOP$$
+							</div><!-- fin #InfosComp -->
+						</div><!-- fin #InfosComp_Ctn -->
+$$BFIN$$
+					</td><!-- .col2 -->
+				</tr>
+$$IF:ANNONCE:BILANCONSOENERGIE$$
+				<tr>
+					<td colspan="2">
+						<h4>Diagnostic de performance &eacute;nerg&eacute;tique</h4>
+						<table id="Dpe">
+							<tr>		
+								$$IF:ANNONCE:BILANCONSOENERGIE$$
+								<!-- consommation energetiques -->
+								<td id="ConsoEnergie">					
+									<h6>Consommations &eacute;nerg&eacute;tiques</h6>					
+									<div class="diagramme" id="DiagConso">
+										<strong class="diag$$ANNONCE:BILANCONSOENERGIE$$ diagLettre">$$ANNONCE:BILANCONSOENERGIE$$</strong>
+										<div class="bilanConso">
+											<p class="conso">$$ANNONCE:CONSOENERGIE formatnumber 0$$ kWhep/m&sup2;/an</p>
+											<p class="notes">Consommations &eacute;nerg&eacute;tiques (en &eacute;nergie primaire) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>
+										</div>
+									</div><!-- fin #DiagConso -->					
+							   </td><!-- fin #ConsoEnergie -->
+								$$END$$			
+								$$IF:ANNONCE:BILANEMISSIONGES$$
+								<!-- émissions de gaz à effet de serre -->
+								<td id="EmissionGES">					
+									<h6>&Eacute;missions de gaz &agrave; effet de serre</h6>					
+									<div class="diagramme" id="DiagGES">
+										<strong class="diag$$ANNONCE:BILANEMISSIONGES$$ diagLettre">$$ANNONCE:BILANEMISSIONGES$$</strong>
+										<div class="bilanConso">
+											<p class="conso">$$ANNONCE:EMISSIONGES formatnumber 0$$ kgeqCO2/m&sup2;/an</p>
+											<p class="notes">&Eacute;missions de gaz &agrave; effet de serre (GES) pour le chauffage, la production d’eau chaude sanitaire et le refroidissement.</p>
+										</div>
+									</div><!-- fin #DiagConso -->					
+							   </td><!-- fin #ConsoEnergie -->
+								$$END$$		
+							</tr>		
+						</table><!-- fin #Dpe -->
+					</td>
+				</tr>
+$$END:BILANCONSOENERGIE$$
+				
+$$REM$$<!-- ============================================ formulaire contact =================================================== -->$$END:REM$$
+				<tr>
+					<td colspan="2" id="AnnSimilaire">
+				
+				$$IF:ANNONCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				$$IF:AGENCE:EMAIL$$ $$A:CHECKMAIL=1$$ $$END$$
+				
+				
+				$$IF:CHECKMAIL$$
+				<a name="form_contact"></a>
+				<div id="FormContact">
+				<h4>Demande de renseignements</h4>
+
+					
+					$$IF:IMMOBW:AGENCEMAIL:OK$$
+					$$REM$$<!-- // confirmation formulaire envoye // -->	$$END:REM$$
+					<!--#include virtual="/incl_formulaire_detail_ok.htm" -->
+					$$END:AGENCEMAIL:OK$$
+							
+					$$IF0:IMMOBW:AGENCEMAIL:OK$$
+					<p class="obtenir">Vous souhaitez obtenir des renseignements sur ce bien ? <span>Merci de remplir le formulaire ci dessous :</span></p>
+					<!-- // formulaire de contact // -->
+					<form method="post" action="/$$REP:URI$$" onsubmit="return validate();">
+						<div id="Form_Ctn">
+							<input type="hidden" name="u" value="IMMOBW:AGENCEMAIL" />
+							<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+							<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+							<input type="hidden" name="PathTemplateMail" value="/detail_formulaire_envoi.htm" />
+							<input type="hidden" name="IDPUBLICATION" value="$$AGENCE:IDPUBLICATION$$" />
+							<input type="hidden" name="idannonce" value="$$ANNONCE:IDANNONCE$$" />
+							<table>
+							$$IF:IMMOBW:AGENCEMAIL:ERRE$$
+							<tr>
+								<td colspan="2">
+									<div class="attention">$$LG:ATTENTION pcase$$</div>
+									<div class="erre">$$ERRE$$</div>
+								</td>
+							</tr>
+							$$END:IMMOBW:AGENCEMAIL:ERRE$$
+								
+								
+								<tr>
+									<td id="ChampsNom">
+										<p>Votre nom <span>&sup2;</span></p>
+									</td>
+									<td id="ChampsTextNom">
+										<input class="inputText" type="text" name="cnom" value="" />
+									</td>
+									<td id="ChampsTelephone">
+										<p>Téléphone</p>
+									</td>
+									<td id="ChampsTextTelephone">
+										<input class="inputText" type="text" name="ctel" value="" />
+									</td>
+								</tr>
+								<tr>
+									<td id="ChampsPrenom">
+										<p>Prénom <span>&sup2;</span></p>
+									</td>
+									<td>
+										<input class="inputText" type="text" name="cprenom" value="" />
+									</td>
+									<td id="ChampsEmail">
+										<p>Email <span>&sup2;</span></p>
+									</td>
+									<td>
+										<input class="inputText" type="text" name="from" value="" />
+									</td>
+								</tr>
+								<tr>
+									<!--telephone-->
+								</tr>
+								<tr>
+									<!--Email-->
+								</tr>
+								<tr>
+									<td id="ChampsReference">
+										<p>Annonce&nbsp;n&deg;<span></span></p>
+									</td>
+										<td>
+											<input class="inputText" type="text" name="refann" value="$$ANNONCE:REFANNONCE$$" />$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+										</td>
+								</tr>
+								<tr>
+									<td id="ChampsMessage">
+										<p>Message <span>&sup2;</span></p>
+									</td>
+									<td colspan="3">
+										<textarea class="inputTextarea" name="message" cols="1" rows="5">Bonjour, 
+Je suis int&eacute;ress&eacute; par votre annonce num&eacute;ro : $$ANNONCE:REFANNONCE$$ 
+$$ANNONCE:IDTYPETRANSACTION gettypetransaction pcase$$ $$ANNONCE:TITRE htmlencode$$ situé à $$ANNONCE:AVILLE$$ ($$ANNONCE:ACP$$), au prix de $$IF:ANNONCE:PRIX$$ $$ANNONCE:PRIX$$ $$ANNONCE:PRIX_UNITE htmlencode$$ $$IF:ANNONCE:PRIX_PERIODEVAC$$ $$ANNONCE:PRIX_PERIODEVAC$$ $$END:PRIX_PERIODEVAC$$ FAI &sup1; $$END:PRIX$$
+Merci de bien vouloir me recontacter aux coordonnées ci-dessus.</textarea>$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+									</td>
+								</tr>
+								<tr>
+									<td id="ChampsBouton" colspan="4">
+										<input type="image" class="inputSubmit" src="$$_$$images/$$THEME$$/envoyer_fr.gif" />
+									</td>
+								</tr>
+							</table>
+						</div><!-- fin #Form_Ctn -->
+					</form>
+				
+					<div id="ChampsObligatoires">&sup2; : Champs obligatoires</div>
+					$$END:AGENCEMAIL:OK$$
+					
+					$$INCL:CGU.HTM$$
+					</div><!-- fin #FormContact -->
+					$$END:CHECKMAIL$$
+				
+						<div class="clear"></div>
+					</td>
+				</tr>
+			</table><!-- #infosannonce_ctn -->
+		</td><!-- #ColonneGauche -->
+		<td class="spacer"></td>
+		<td id="ColonneDroite">
+$$A:SHARE-TITLE=@@ANNONCE:TITRE@@$$
+$$INCL:COLONNE_AGENCE.HTM$$
+		</td><!-- #ColonneDroite -->
+	</tr>
+</table>
+<div class="clear"></div>
+</div><!-- #DetailAnnonce -->
+</div>
+$$INCL:BOTTOM.HTM$$
+</body>
+</html>

@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+$$E:IMMOBW:VITRINE-INFOS$$
+$$E:IMMOBW:AGENCE:ALIAS:AGENCE$$
+$$B:IMMOBW:ANN:QRY:IDTT::::QRY:QRYRECHERCHE:ALIAS:ANN$$
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+
+	<title>$$AGENCE:NOM htmlencode$$ - $$ANN:PHRASE pcase htmlencode$$</title>
+
+	<meta name="description" content="$$ANN:PHRASE htmlencode$$" />
+	<meta name="robots" content="index,follow,all" />
+
+	<meta http-equiv="content-language" content="fr" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<meta http-equiv="content-style-type" content="text/css" />
+
+
+	<script src="/z/webagency/slagence_X_V2/scripts/eventsManager-min.js"></script>
+	<script src="/z/webagency/slagence_X_V2/scripts/prototype_1.6.js"></script>
+	<!--[if IE]><script type="text/javascript" src="/scripts/pngfix.js"></script><![endif]-->
+
+	<link rel="stylesheet" type="text/css" href="$$_$$styles/$$IMMOBW:VITRINE-INFOS:CSS$$.css" />
+	<!-- macro définissant via Gestprod la couleur du site : $$IMMOBW:VITRINE-INFOS:CSS$$ -->
+	
+
+</head>
+
+<body>
+$$INCL:TOP.HTM$$
+   
+	<div id="contenu">
+<!--// =========================== haut recherche =========================== //-->
+<div id="RechercheWrap">
+<div id="RechercheContainer">
+<h3 class="nosAnnonces">Nos dernières annonces immobilières en ligne de <span>$$ANN:PHRASE$$</span></h3>
+
+	$$IF:ANN:MULTIPAGE$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/incl_nb_pages.htm" -->
+	</div>
+	$$END:ANN:MULTIPAGE$$
+	
+	<!-- fin #RechPagesHaut -->
+$$BIF:ANN$$
+	<div id="RechResultat">
+$$DO:1:9$$
+<!--// =========================== // début annonce // =========================== //-->
+		<div class="blocAnnonce_wrap" id="Annonce$$ANN:IDANNONCE$$">
+			<img src="$$_$$images/ann01_fd_01.png" alt="" class="photo-img" />
+			<div class="blocAnnonce">
+				<p class="typeBien">
+					$$ANN:TITRE$$
+				</p>
+				<div class="photo">
+					<!-- fraicheur ann = -1146 -->
+					<a href="/$$ANN:IDANNONCE$$/detail.htm" title="$$ANN:TITRE htmlencode$$">
+						<!-- infobulle -->
+						<em>
+							<span class="descriptif">
+								<strong class="ref">Réf. : $$ANN:REFANNONCE$$</strong>
+								$$ANN:DESCRIPTIF htmlencode left 120$$ ...
+							</span>
+							<span class="pointer"></span>
+						</em>
+$$IF:ANN:C175_URL$$
+						$$A:PHOTOREF=@@ANN:IDTYPETRANSACTION gettypetransaction@@ @@ANN:IDTYPEBIEN gettypebien@@ @@ANN:AVILLE@@ (@@ANN:ACP@@)$$
+						<img src="$$ANN:C175_URL$$" alt="$$PHOTOREF htmlencode$$" title="$$PHOTOREF htmlencode$$" />
+$$END:C175_URL$$
+					</a>
+				</div>
+				<!-- fin .photo -->
+				<div class="descr">
+				
+					<p class="libelle">
+						$$ANN:LIBELLE$$
+$$IF:ANN:SURFACE$$
+						<span class="surface">($$ANN:SURFACE$$ m²)</span>
+$$END:SURFACE$$
+					</p>
+					<p class="ville">$$ANN:AVILLE$$ ($$ANN:ACP$$)</p>
+$$IF:ANN:PRIX$$
+					<p class="prix ">
+						$$ANN:PRIX$$&nbsp;$$ANN:PRIX_UNITE htmlencode$$<sup>&nbsp;FAI</sup>
+					</p>
+$$END:PRIX$$
+				</div>
+			</div>
+			<!-- fin .blocAnnonce -->
+			
+				<div class="detail">
+				<a class="lienDetail" href="/$$ANN:IDANNONCE$$/detail.htm" title=""><img src="$$_$$images/$$THEME$$/ann01_picto_02.png" /></a>
+			</div>
+			
+			
+			
+		</div>
+		<!-- fin .blocAnnonce_wrap -->
+<!--// =========================== // fin annonce // =========================== //-->
+$$LOOP$$
+		<div class="clear"></div>
+	</div>
+	<!-- fin RechResultat -->
+$$BFIN$$
+<!--// =========================== //bas recherche // =========================== //-->
+	$$IF:ANN:MULTIPAGE$$
+	<div id="RechPagesHaut">
+		<!--#include virtual="/incl_nb_pages.htm" -->
+	</div>
+	$$END:ANN:MULTIPAGE$$
+
+
+<!--// =========================== // DEBUT : bloc formulaire // =========================== //-->
+	
+	<div id="RechercheAnnonce">
+		
+		<table>
+			<tr>
+				<td colspan="2" id="AnnSimilaire">
+					
+				
+$$IF:FORM:PAGE_OK$$
+	$$IF0:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+		$$A:FORMOK=1$$
+	$$END$$
+$$END$$
+				
+				
+			
+				
+				 
+				<a name="form_contact"></a>
+				<div id="FormContact">
+				<h4 style="width:650px;">Demande de renseignements</h4>
+				
+				$$IF:FORMOK$$
+					<!--#include virtual="/incl_formulaire_ok.htm" -->
+				$$END$$	
+				
+				$$IF0:FORMOK$$
+					<p class="obtenir">Vous souhaitez obtenir des renseignements sur notre agence immobilière et nos annonces ? <br /> <span>Merci de remplir le formulaire ci dessous :</span></p>
+
+					<!-- // formulaire de contact // -->
+					<form method="post" action="/$$REP:URI$$">
+
+						<div id="Form_Ctn">								
+							<input type="hidden" name="u" value="immobw:send-agence-mail" /> 
+							<input type="hidden" name="idTypeVisu" value="1" />$$REM$$<!--// [INPUT OBLIGATOIRE] 1 : WebAg Message | 2 : WebAg Contact | 3 : WebAg Propriétaire | 8 : WebAg Estimation (anciennement E) | 6 : OBSOLÈTE - webag alerte (anciennement O) | 9 : OBSOLÈTE - webag intercab (anciennement I) | 13 : OBSOLÈTE - webag cgu (anciennement U) //-->$$END$$
+							<input type="hidden" name="page_ok" value="/$$REP:URI$$" />
+							<input type="hidden" name="page_err" value="/$$REP:URI$$" />
+							<input type="hidden" name="emailTemplate" value="mail_message.htm" />$$REM$$<!--// [INPUT OBLIGATOIRE]  Nom du template HTML de l'email à envoyer à l'agence //-->$$END$$
+							<input type="hidden" name="source" value="$$REP:SRV$$" />$$REM$$<!--// [input non obligatoire]  stocke l'url du site  //-->$$END$$
+							<input type="hidden" name="IDPUBLICATION" value="$$AGENCE:IDPUBLICATION$$" />
+							<input type="hidden" name="qryRecherche" value="$$REP:QRY$$" />
+							
+				<table>
+							$$IF:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+							<tr>
+								<td colspan="2">
+									<div class="attention">$$LG:ATTENTION pcase$$</div>
+									<div class="erre">$$ERRE$$</div>
+								</td>
+							</tr>
+							$$END:IMMOBW:SEND-AGENCE-MAIL:ERRE$$
+
+								<tr>
+									<td id="ChampsNom">
+										<p>Votre nom <span>&sup2;</span></p>
+									</td>
+									<td id="ChampsTextNom">
+										<input class="inputText" type="text" name="nomFamille" value="$$FORM:NOMFAMILLE$$" />
+									</td>
+									<td id="ChampsTelephone">
+										<p>Téléphone</p>
+									</td>
+									<td id="ChampsTextTelephone">
+										<input class="inputText" type="text" name="telephone" value="$$FORM:TELEPHONE$$" />
+									</td>
+								</tr>
+								<tr>
+									<td id="ChampsPrenom" width="50">
+										<p>Prénom <span>&sup2;</span></p>
+									</td>
+									<td>
+										<input class="inputText" type="text" name="prenom" value="$$FORM:PRENOM$$" />
+									</td>
+									<td id="ChampsEmail" width="50">
+										<p>Email <span>&sup2;</span></p>
+									</td>
+									<td>
+										<input class="inputText" type="text" name="email" value="$$FORM:EMAIL$$" />
+									</td>
+								</tr>
+								<tr>
+									<!--telephone-->
+								</tr>
+								<tr>
+									<!--Email-->
+								</tr>
+								<tr>
+									<td id="ChampsMessage" width="50">
+										<p>Message <span>&sup2;</span></p>
+									</td>
+									<td colspan="3">
+										<textarea class="inputTextarea" name="message" cols="1" rows="5">$$FORM:MESSAGE$$ Bonjour, 
+Je recherche la typologie d'annonce suivante :  
+$$ANN:PHRASE pcase htmlencode$$
+Merci de bien vouloir me recontacter pour me proposer de nouvelles annonces.</textarea>$$REM$$<!--// [INPUT OBLIGATOIRE]  //-->$$END$$
+									</td>
+								</tr>
+								<tr>
+									<td id="ChampsBouton" colspan="4">
+										<input type="image" class="inputSubmit" src="$$_$$images/$$THEME$$/envoyer_fr.gif" />
+									</td>
+								</tr>
+							</table>
+						</div><!-- fin #Form_Ctn -->
+					</form>
+
+					<div id="ChampsObligatoires">&sup2; : Champs obligatoires</div>
+					$$END$$
+					
+								
+				$$INCL:CGU.HTM$$
+				</div><!-- fin #FormContact -->
+				
+				
+				
+				<!-- fin #AgenceMentions -->
+						<div class="clear"></div>
+					</td>
+				</tr>
+
+		</table>
+	</div>
+<!--// =========================== // FIN : bloc formulaire // =========================== //-->	
+
+</div>
+<!-- fin #RechercheContainer -->
+</div>
+<!-- fin #RechercheWrap -->
+
+<div id="right">
+$$A:SHARE-TITLE=@@ANN:PHRASE@@$$
+$$INCL:COLONNE_AGENCE.HTM$$
+</div><!-- fin #right -->
+</div>
+$$INCL:BOTTOM.HTM$$
+	</body>
+</html>
