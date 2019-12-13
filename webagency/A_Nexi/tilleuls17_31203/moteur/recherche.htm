@@ -1,0 +1,228 @@
+$$REM$$====================================================================
+//// <summary>Moteur de recherche annonces</summary>
+//// <remarks>
+//// <para>Fonctionne avec tous les idtt en querystring</para>
+//// <para>Utilise les paramètres de moteur/incl_moteur_param.htm (aussi utilisé par le mini moteur d'accueil)</para>
+//// <para>Les macros s'appellent A:MINIMOTEUR, ne pas faire attention ça marche aussi, c'est que je les ai mal nommés depuis le début</para>
+//// <para>Attention le moteur de l'alerte immo utilise les memes includes que le moteur d'annonces !</para>
+//// </remarks>
+//// <update date="2010-11-15" author="lisbonne.siriphol">Création</update>
+====================================================================$$END$$
+
+$$INIT:IDT=MOTEUR$$
+$$INIT:CSS_MOTEUR=1$$
+$$INIT:JS_MOTEUR=1$$
+
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:MOTRECH pcase@@ : @@LG:ANNONCES lcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:MOTRECH pcase@@ : @@LG:ANNONCES lcase@@ @@LG:DE lcase@@ @@FORM:IDTT gettypetransaction lcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_haut.htm" -->
+
+<form name="" method="get" action="moteur,mini,prevalidation.htm" onsubmit="Envoi();">
+	<div id="Moteur">
+		<input type="hidden" name="idtt" value="$$FORM:IDTT$$" />
+		<input type="hidden" name="lang" value="$$FORM:LANG$$" />
+		<!--#include virtual="moteur/incl_input_hidden.htm" -->
+
+$$REM$$<!-- ================================ titre page (IF:FORM:IDTT)  ================================ -->$$END:REM$$
+		<!--#include virtual="moteur/incl_moteur_titre.htm" -->
+		<h3>
+			$$LG:TROUVEZVOTREBIENPARMI pcase$$
+			
+			$$B:IMMOBW:ANN:QRY:IDTT:QRY:LANG:ALIAS:ANNLISTE:~NOSTAT:1$$
+			$$BIF:ANNLISTE$$
+			$$DO:1:2$$$$LOOP$$
+			<strong>$$ANNLISTE:NBRESULT formatnumber 0$$</strong>
+			$$BFIN$$
+			$$LG:ANNONCE lcase$$$$IF=:FR:LANGUE$$$$ANNLISTE:NBR pluriel$$$$END:FR$$
+			$$LG:DE lcase$$
+			$$FORM:IDTT gettypetransaction pcase$$$$IF!:1:ANNLISTE:NBR$$s$$END$$	
+		</h3>
+		<table class="moteurTable moteurMargin">
+			<tr>
+				<td colspan="3" id="ref_ann">
+					<h2>$$LG:RECHREF pcase$$</h2>
+					<input id="ref_ann_input" type="text" class="inputText" name="refannonce" value="$$FORM:REF$$" />
+						$$IF=:2:FORM:IDTT$$
+						<a href="$$URLBASE$$/moteur,recherche.htm?idtt=1&amp;lang=$$LANGUE$$" title="$$LG:RECHERCHERBIEN ucase$$" class="buttonrech2">$$LG:TROUVERUNELOC ucase$$</a>
+						$$END$$
+						$$IF=:1:FORM:IDTT$$
+						<a href="$$URLBASE$$/moteur,recherche.htm?idtt=2&amp;lang=$$LANGUE$$" title="$$LG:RECHERCHERBIEN ucase$$" class="buttonrech2">$$LG:RECHERCHERBIEN ucase$$</a>
+						$$END$$
+				</td>
+			</tr>
+			<tr id="RechDetaillee" style="display: block;">
+				<td class="col1">
+					<h2>$$LG:MINITYPEBIEN pcase$$ $$LG:EN lcase$$ $$FORM:IDTT gettypetransaction lcase$$</h2>
+					<p class="moteurComment">($$LG:UNOUPLUSIEURS lcase$$)</p>
+					<!--#include virtual="moteur/incl_moteur_inputperso.htm" -->
+					<!--#include virtual="moteur/incl_types_biens.htm" -->
+				</td><!-- .col1 -->
+				
+				<td class="col2">
+					$$IF!:4:FORM:IDTT$$
+						<!--$$REM$$$$$IF:MINIMOTEUR_BUDGET$$$$END$$-->
+						<h2>$$LG:BUDGET pcase$$ </h2>
+						<p>$$LG:MONTANTENTRE pcase$$</p>
+						<!--#include virtual="moteur/incl_budget.htm" -->
+						<!--$$REM$$$$$END:MINIMOTEUR_BUDGET$$$$END$$-->
+					$$END$$
+					
+					$$IF=:4:FORM:IDTT$$
+					<h2>$$LG:BUDGETVAC pcase$$ </h2>
+					<p>$$LG:MONTANTENTRE pcase$$</p>
+					<!--#include virtual="moteur/incl_budget_vacances.htm" -->
+					$$END$$
+					
+					<!--$$REM$$ $$IF:MINIMOTEUR_SURFACE$$ $$END$$-->
+					<!--$$REM$$ $$END:MINIMOTEUR_SURFACE$$ $$END$$-->
+					
+					<h2 class="moteurMargin">$$LG:SURFH2 pcase$$</h2>
+					<p>
+						$$IF=:FR:LANGUE$$Comprise entre$$END$$
+						$$IF!:FR:LANGUE$$$$LG:ENTRE pcase$$$$END$$
+					</p>
+					<!--#include virtual="moteur/incl_surface.htm" -->
+					
+					<h2 class="moteurMargin">$$LG:SURFT pcase$$</h2>
+					<p>
+						$$IF=:FR:LANGUE$$Comprise entre$$END$$
+						$$IF!:FR:LANGUE$$$$LG:ENTRE pcase$$$$END$$
+					</p>
+					<!--#include virtual="moteur/incl_surface_terrain.htm" -->
+					
+					$$IF=:4:FORM:IDTT$$
+					<h2 class="moteurMargin">$$LG:NBPERSONNES$$ (<i>$$LG:FACULTATIF$$</i>)</h2>
+					<!--#include virtual="moteur/incl_nombre_personnes.htm" -->
+					$$END$$
+					
+					$$IF=:4:FORM:IDTT$$
+					<h2 class="moteurMargin">$$LG:EQUIPEMENTS$$ (<i>$$LG:FACULTATIF$$</i>)</h2>
+					<!--#include virtual="moteur/incl_option_vacances.htm" -->
+					$$END$$					
+									
+					<!--$$REM$$$$IF:MOTEUR_CHAMPSVILLES$$$$END$$--><!--$$REM$$$$END:MOTEUR_CHAMPSVILLES$$$$END$$-->
+		
+					
+					
+					$$IF=:1:MOTEUR_VILLES$$
+					<h2 class="moteurMargin">
+					$$IF=:FR:LANGUE$$
+						Sélectionnez une ou plusieurs villes
+					$$END$$
+					$$IF!:FR:LANGUE$$
+						Select one or several towns
+					$$END$$
+						
+						
+					</h2>
+					<!-- <!--#include virtual="moteur/incl_villes_select.htm" --> -->
+					<ul>
+						<li><label for="ville1"><input type="checkbox" value="170306" id="ville1" name="ci" /> ROYAN, 17200 </label></li>
+						<li><label for="ville2"><input type="checkbox" value="170461" id="ville2" name="ci" /> VAUX SUR MER, 17640</label></li>
+						<li><label for="ville3"><input type="checkbox" value="170380" id="ville3" name="ci" /> ST PALAIS SUR MER, 17420</label></li>
+						<li><label for="ville4"><input type="checkbox" value="170333" id="ville4" name="ci" /> ST GEORGES DE DIDONNE 17110 </label></li>
+						<li><label for="ville5"><input type="checkbox" value="170230" id="ville5" name="ci" /> MESCHERS 17132</label></li>
+						<li><label for="ville6"><input type="checkbox" value="170409" id="ville6" name="ci" /> ST SULPICE DE ROYAN, 17200</label></li>
+						<li><label for="ville7"><input type="checkbox" value="170064" id="ville7" name="ci" /> BREUILLET, 17920</label></li>
+						<li><label for="ville8"><input type="checkbox" value="170228" id="ville8" name="ci" /> MEDIS, 17600</label></li>
+						<li><label for="ville9"><input type="checkbox" value="170421" id="ville9" name="ci" /> SAUJON 17600</label></li>
+					</ul>
+					$$END:MOTEUR_VILLES$$
+					
+					$$REM$$====================================================================
+					<!--$$REM$$$$IF:MINIMOTEUR_RAYON$$$$END$$--><!--$$REM$$$$END:MINIMOTEUR_RAYON$$$$END$$-->
+					<h2 class="moteurMargin">$$LG:ETENDRERECH pcase$$</h2>
+					<!--#include virtual="moteur/incl_rayon.htm" -->
+					====================================================================$$END$$
+				
+					$$IF=:6:FORM:IDTT$$
+					$$IF:TYPE_LOI$$
+					<h2 class="moteurMargin">$$LG:TYPEINVEST pcase$$</h2>
+					<!--#include virtual="moteur/incl_liste_loi.htm" -->
+					$$END:TYPE_LOI$$
+					$$END$$
+				</td><!-- .col2 -->
+				<!--$$REM$$$$IF:MOTEUR_CRITERESAVANCES$$$$END$$-->
+				<!--$$REM$$$$END:MOTEUR_CRITERESAVANCES$$$$END$$-->
+
+				<td class="col3">	
+					$$REM$$
+					<!-- 15.03.2011 on change de titre, mais je le laisse en REM on sait jamais (Lisbonne) -->		
+					<h2 class="moteurMargin">
+						$$IF=:FR:LANGUE$$Filtre$$END$$
+						$$IF!:FR:LANGUE$$$$LG:PLUSDECRITERES pcase$$$$END$$
+					</h2>
+					$$END$$
+					
+					<h2 class="moteurMargin">$$LG:CRITERESAVANCES pcase$$</h2>
+					<p class="moteurComment">($$LG:FACULTATIF lcase$$)</p>
+					<!--#include virtual="moteur/incl_criteres_avances.htm" -->
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$					
+					<h4 class="moteurMargin">$$LG:CHAUFF pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_chauffage.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CHAUFFAGE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_SITUATIONS$$					
+					<h4 class="moteurMargin">$$LG:SITUATION pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_situations.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_SITUATIONS$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_CUISINE$$					
+					<h4 class="moteurMargin">$$LG:CUISINE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_cuisine.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_CUISINE$$
+					
+					$$IF:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$					
+					<h4 class="moteurMargin">$$LG:ARCHITECTURE pcase$$</h4>
+					<!--#include virtual="moteur/incl_criteres_architecture.htm" -->
+					$$END:MOTEUR_CRITERESAVANCES_ARCHITECTURE$$
+					
+					<!--#include virtual="moteur/incl_filtres_perso.htm" -->
+				</td>
+				
+			</tr>
+			
+			$$REM$$
+			<!--
+			<tr>
+				<td colspan="3">
+					
+					$$B:IMMOBW:VILLESANNONCES:ALIAS:VILLESANNONCES:::QRY:IDTT$$
+					$$BIF:VILLESANNONCES$$
+					<ul id="MoteurVilles">
+						$$DO$$
+						<li>
+							<input type="checkbox" name="ci" value="$$VILLESANNONCES:CODEINSEE$$" />  $$VILLESANNONCES:VILLEAFF$$ 
+							($$VILLESANNONCES:CODEINSEE codeinsee2cps$$)<!--,
+							$$VILLESANNONCES:NBANN$$ annonce$$VILLESANNONCES:NBANN pluriel$$
+						</li>
+						$$LOOP$$
+					</ul>					
+					$$BFIN$$
+					
+					<div class="clear"></div>
+					
+				</td>
+				
+			</tr>
+			-->
+			$$END:REM$$
+		</table>
+		
+		<div id="MoteurBouton">			
+			<input type="submit" class="inputSubmit" value="$$LG:RECHERCHER pcase$$" />
+		</div>
+		
+	</div><!-- #Moteur -->
+</form>
+<!--#include virtual="footer/incl_bas.htm" -->
