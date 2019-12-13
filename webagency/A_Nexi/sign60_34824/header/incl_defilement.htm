@@ -1,0 +1,26 @@
+$$INIT:JS_DEFILEMENT=1$$
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+	$$BIF:AGS$$
+		$$DO$$
+			coord[$$AGS:I exec XX-1$$]="adr_$$AGS:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+	$(document).ready(function() {
+		Adresse();
+	});
+</script>
+$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+$$BIF:AGS$$
+	$$DO$$
+	<div id="adr_$$AGS:IDPUBLICATION$$" style="display:none; font-size: 15px; color: #fff;" class="blocAgenceDefilement">
+		<div class="coords">
+			<span>$$AGS:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1 $$ - 
+			$$AGS:CP$$ $$AGS:VILLE$$</span><br />
+			$$IF:AGS:TEL$$$$LG:MINITEL pcase$$: $$AGS:TEL$$$$END$$<br /> 
+			$$AGS:EMAIL encodemail javascript full$$
+		</div>
+	</div>
+	$$LOOP$$
+$$BFIN$$
