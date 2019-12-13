@@ -1,0 +1,115 @@
+$$REM$$====================================================================
+//// <summary>Types de biens page moteur</summary>
+//// <remarks>
+//// <para>On démutualise car include aussi utilisée sur moteur alerte immo</para>
+//// <para>Ainsi on reprend les memes conditionnements sur les types de biens</para>
+//// </remarks>
+//// <update date="2010-04-26" author="lisbonne.siriphol">Creation XV3</update>
+====================================================================$$END$$
+
+<h4 class="moteurMargin">$$LG:IMMOPARTICULIER pcase$$</h4>
+<ul>
+	$$IF=:1:TB_SITE_1$$
+	<li id="idtypebien_1">
+		<input type="checkbox" name="idtypebien" id="IdTypeBien1" value="1" $$IF(:FORM_IDTYPEBIEN:1$$ checked="checked"$$END$$ onclick="afficheCriteresAppart(this);" />&nbsp;$$LG:APPARTEMENT sp2nbsp$$
+	</li>
+	$$IF=:1:MOTEUR_PIECES$$
+	<li id="nb_pieces">
+		$$LG:NBRP pcase$$<br />
+		<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*PIECES:1$$ checked="checked"$$END$$ />&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*PIECES:2$$ checked="checked"$$END$$ />&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*PIECES:3$$ checked="checked"$$END$$ />&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*PIECES:4$$ checked="checked"$$END$$ />&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*PIECES:+4$$ checked="checked"$$END$$ />&nbsp;&nbsp;5 $$LG:ET lcase$$ +&nbsp;&nbsp;&nbsp;&nbsp;
+	</li>
+	$$END:MOTEUR_PIECES$$
+	$$IF=:4:FORM:IDTT$$
+	<li id="nb_pieces">
+		$$LG:NBRP pcase$$<br />
+		<input type="checkbox" name="nb_pieces" value="1"$$IF(:FORM_NB*PIECES:1$$ checked="checked"$$END$$ />&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="2"$$IF(:FORM_NB*PIECES:2$$ checked="checked"$$END$$ />&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="3"$$IF(:FORM_NB*PIECES:3$$ checked="checked"$$END$$ />&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="4"$$IF(:FORM_NB*PIECES:4$$ checked="checked"$$END$$ />&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_pieces" value="+4"$$IF(:FORM_NB*PIECES:+4$$ checked="checked"$$END$$ />&nbsp;&nbsp;5 $$LG:ET lcase$$ +&nbsp;&nbsp;&nbsp;&nbsp;
+	</li>
+	$$END$$
+	$$END:TB_SITE_1$$
+	$$IF:TB_SITE_2$$
+	<!-- -->
+	$$IF=:1:MOTEUR_CHAMBRES$$
+	<li id="nb_chambres">
+		$$LG:NBRC pcase$$<br />
+		<input type="checkbox" name="nb_chambres" value="1"$$IF(:FORM_NB*CHAMBRES:1$$ checked="checked"$$END$$ />&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_chambres" value="2"$$IF(:FORM_NB*CHAMBRES:2$$ checked="checked"$$END$$ />&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_chambres" value="3"$$IF(:FORM_NB*CHAMBRES:3$$ checked="checked"$$END$$ />&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_chambres" value="4"$$IF(:FORM_NB*CHAMBRES:4$$ checked="checked"$$END$$ />&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="nb_chambres" value="+4"$$IF(:FORM_NB*CHAMBRES:+4$$ checked="checked"$$END$$ />&nbsp;&nbsp;5 $$LG:ET lcase$$ +&nbsp;&nbsp;&nbsp;&nbsp;
+	</li>
+	<!-- -->
+	$$END:MOTEUR_CHAMBRES$$
+	$$END:TB_SITE_2$$
+	$$IF:TB_SITE_3$$<li id="idtypebien_3"><input type="checkbox" name="idtypebien" value="3"$$IF(:FORM_IDTYPEBIEN:3$$ checked="checked"$$END$$ />&nbsp;$$LG:PARKING sp2nbsp$$</li>$$END:TB_SITE_3$$
+	$$IF!:1:FORM:IDTT$$
+		$$IF:TB_SITE_4$$
+			<li id="idtypebien_4">
+				<input id="CheckBoxTerrain" type="checkbox" name="idtypebien" value="4"$$IF(:FORM_IDTYPEBIEN:4$$ checked="checked"$$END$$ onclick="disableTerrain(this);" />&nbsp;$$LG:TERRAIN sp2nbsp$$
+			</li>			
+			<li id="InputSurfaceTerrain" style="display: none;">				
+				<p>
+					$$LG:SURFTER pcase$$
+					$$IF=:FR:LANGUE$$comprise entre$$END$$
+					$$IF!:FR:LANGUE$$$$LG:ENTRE lcase$$$$END$$
+				</p>
+				<!--#include virtual="moteur/incl_surface_terrain.htm" -->
+				<p>
+					$$LG:TYPETERRAIN$$
+				</p>
+					<p><input type="checkbox" name="si_constructible" value="1"$$IF=:1:FORM:SI_CONSTRUCTIBLE$$ checked="checked"$$END$$ />&nbsp;$$LG:TERRAINSABAT$$</p>
+					<p><input type="checkbox" name="si_agricole" value="1"$$IF=:1:FORM:SI_AGRICOLE$$ checked="checked"$$END$$ />&nbsp;$$LG:TERAGRI$$</p>
+					<p><input type="checkbox" name="si_plan_deau" value="1"$$IF=:1:FORM:SI_PLAN_DEAU$$ checked="checked"$$END$$ />&nbsp;$$LG:TERRAINPLANDEAU$$</p>
+				
+			</li><!-- #InputSurfaceTerrain -->
+		$$END:TB_SITE_4$$
+	$$END:FORM:IDTT$$
+	$$IF:TB_SITE_9$$<li id="idtypebien_9"><input type="checkbox" name="idtypebien" value="9" $$IF(:FORM_IDTYPEBIEN:9$$ checked="checked"$$END$$ />&nbsp;$$LG:LOFT3 ncase$$</li>$$END:TB_SITE_1$$
+	$$IF:IMMEUBLEPARTICULIER$$
+		$$IF:TB_SITE_11$$<li id="idtypebien_11"><input type="checkbox" name="idtypebien" value="11"$$IF(:FORM_IDTYPEBIEN:11$$ checked="checked"$$END$$ />&nbsp;$$LG:IMMEUBLE sp2nbsp$$</li>$$END:TB_SITE_11$$
+	$$END$$
+</ul>
+
+$$IF!:4:FORM:IDTT$$
+	$$IF=:1:IMMOB_ENTR$$
+	<h4 class="moteurMargin typeBienImmoEntreprise">$$LG:LIEN:IMMOEN pcase$$</h4>
+	<ul class="typeBienImmoEntreprise">
+		$$IF:TB_SITE_6$$<li id="idtypebien_6"><input type="checkbox" name="idtypebien" value="6"$$IF(:FORM_IDTYPEBIEN:6$$ checked="checked"$$END$$ />&nbsp;$$LG:BOUTIQUE sp2nbsp$$</li>$$END:TB_SITE_6$$
+		$$IF:TB_SITE_8$$<li id="idtypebien_8"><input type="checkbox" name="idtypebien" value="8"$$IF(:FORM_IDTYPEBIEN:8$$ checked="checked"$$END$$ />&nbsp;$$LG:BUREAUX sp2nbsp$$</li>$$END:TB_SITE_8$$	
+		$$IF:TB_SITE_7$$<li id="idtypebien_7"><input type="checkbox" name="idtypebien" value="7"$$IF(:FORM_IDTYPEBIEN:7$$ checked="checked"$$END$$ />&nbsp;$$LG:LOCAL sp2nbsp$$</li>$$END:TB_SITE_7$$
+		$$IF!:1:FORM:IDTT$$
+			$$IF:TB_SITE_11$$<li id="idtypebien_11"><input type="checkbox" name="idtypebien" value="11"$$IF(:FORM_IDTYPEBIEN:11$$ checked="checked"$$END$$ />&nbsp;$$LG:IMMEUBLE sp2nbsp$$</li>$$END:TB_SITE_11$$
+			$$IF:TB_SITE_12$$<li id="idtypebien_12"><input type="checkbox" name="idtypebien" value="12"$$IF(:FORM_IDTYPEBIEN:12$$ checked="checked"$$END$$ />&nbsp;$$LG:BATIMENT sp2nbsp$$</li>$$END:TB_SITE_12$$
+		$$END:FORM:IDTT$$
+	</ul>
+	$$END$$
+$$END$$
+
+$$IF=:2$9:FORM:IDTT$$
+$$IF:TB_SITE_15$$
+<h4 class="moteurMargin">$$LG:IMMONEUF pcase$$</h4>
+<ul>
+	<li><input type="checkbox" name="idtypebien" id="idtypebien_15" value="15"$$IF(:FORM_IDTYPEBIEN:15$$ checked="checked"$$END$$ />&nbsp;$$LG:PRGNEUF sp2nbsp$$</li>
+</ul>
+$$END:TB_SITE_15$$
+$$END:FORM:IDTT$$
+
+
+$$IF=:1:IMMOB_AUTRE$$
+<h4 class="moteurMargin typeBienImmoAutre">$$LG:AUTRE pcase$$</h4>
+
+<ul class="typeBienImmoAutre">
+	$$IF!:1:FORM:IDTT$$				
+		$$IF:TB_SITE_13$$<li id="idtypebien_13"><input type="checkbox" name="idtypebien" value="13"$$IF(:FORM_IDTYPEBIEN:13$$ checked="checked"$$END$$ />&nbsp;$$LG:CHATEAU sp2nbsp$$</li>$$END:TB_SITE_13$$
+		$$IF:TB_SITE_14$$<li id="idtypebien_14"><input type="checkbox" name="idtypebien" value="14"$$IF(:FORM_IDTYPEBIEN:14$$ checked="checked"$$END$$ />&nbsp;$$LG:HOTEL sp2nbsp$$</li>$$END:TB_SITE_14$$
+	$$END:FORM:IDTT$$
+	$$IF:TB_SITE_10$$<li id="idtypebien_10"><input type="checkbox" name="idtypebien" value="10"$$IF(:FORM_IDTYPEBIEN:10$$ checked="checked"$$END$$ />&nbsp;$$LG:DIVERS sp2nbsp$$</li>$$END:TB_SITE_10$$
+</ul>
+$$END$$

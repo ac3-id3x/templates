@@ -1,0 +1,72 @@
+$$A:JS_ANNONCES=1$$
+$$DO:1:6$$
+$$IF!:REP_1:ANNLISTE:IDANNONCE$$
+	$$IF:PAGE:URLREWRITINGENABLED$$
+		$$IF:FORM:LANG$$
+			$$IF!:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@?lang=@@FORM:LANG@@$$
+			$$END$$
+			$$IF=:FR:FORM:LANG$$
+				$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+			$$END$$
+		$$END$$
+		$$IF0:FORM:LANG$$
+			$$A:LIEN_SIMILAIRE=@@ANNLISTE:URLVIRTUELLE@@$$
+		$$END$$
+	$$END$$
+	$$IF0:PAGE:URLREWRITINGENABLED$$
+		$$A:LIEN_SIMILAIRE=@@URLBASE@@/@@ANNLISTE:IDPUBLICATION@@/@@ANNLISTE:IDANNONCE@@/detail,@@PAGE:WAG_STYLE_DETAIL@@.htm?lang=@@LANGUE@@$$
+	$$END$$
+	$$A:TITLE_SIMILAIRE=$$
+	$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+		$$A:TITLE_SIMILAIRE=@@ANNLISTE:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNLISTE:IDTYPEBIEN gettypebien lcase@@ @@ANNLISTE:AVILLE ncase@@$$
+	$$END:WAGREF_IDDOSSIER_SITE$$
+
+
+
+	<a href="$$LIEN_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$">
+			<div class="on">
+				<span class="AnnonceTypeBien">
+					$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+						$$IF=:2:ANNLISTE:IDTYPEBIEN$$
+							$$LG:CHALET$$
+						$$END$$						
+						$$IF!:2:ANNLISTE:IDTYPEBIEN$$
+							$$ANNLISTE:IDTYPEBIEN gettypebien pcase$$
+						$$END$$
+					
+					$$END:WAGREF_IDDOSSIER_SITE$$
+					$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+							$$ANNLISTE:LIBELLE$$
+					$$END:WAGREF_IDDOSSIER_SITE$$	
+				</span>
+				<span class="AnnonceVille">$$ANNLISTE:AVILLE ncase$$</span>
+				<span class="AnnoncePrixBien">$$ANNLISTE:PRIX formatnumber 0$$ $$ANNLISTE:PRIX_UNITE htmlencode$$</span>
+			</div>
+			$$IF:ANNLISTE:IDPHOTO$$
+					<div class="photo">
+						<img src="$$ANNLISTE:C175URL0$$" alt="$$TITLE_SIMILAIRE$$" title="$$TITLE_SIMILAIRE$$" />
+					</div>
+				$$END:ANNLISTE:IDPHOTO$$
+				$$IF0:ANNLISTE:C175URL0$$
+				$$IF:ANNLISTE:SI_LOGO$$
+					<div class="silogo">
+						<img src="$$ANNLISTE:URLLOGO$$" alt="$$TITLE_ANN$$" title="$$TITLE_ANN$$" />
+					</div>
+				$$END$$
+			$$END$$
+			<div class="triangle"><span>+</span></div>
+		</a>
+
+
+
+
+
+
+
+$$END:IDANNONCE$$
+$$LOOP$$
+
+
+
+	

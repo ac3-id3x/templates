@@ -1,0 +1,250 @@
+$$INIT:CSS_CARTO=1$$
+$$INIT:CSS_DETAIL_COMPACT=1$$
+$$INIT:JS_GALERIE=1$$
+$$INIT:JS_DETAIL_COMPACT=1$$
+$$INIT:JS_UI=1$$
+$$INIT:JS_DETAIL=1$$
+$$INIT:JS_EVENT_GOOGLE=1$$
+
+$$IF:ANNDETAIL:COOR-CONTACT$$		
+	$$A:NOMAGENCE_DETAIL=@@ANNDETAIL:COOR-CONTACT@@$$
+$$END$$
+$$IF0:ANNDETAIL:COOR-CONTACT$$	
+	$$IF:ANNDETAIL:COOR-NOM$$		
+		$$A:NOMAGENCE_DETAIL=@@ANNDETAIL:COOR-NOM ucase@@$$
+	$$END$$
+$$END$$
+
+<!--#include virtual="/recherche/incl_fil_ariane.htm" -->
+
+<!--#include virtual="/detail/incl_variables_form.htm" -->	
+
+$$IF0:ANNDETAIL:IDTYPETRANSACTION$$
+	<p class="confirm">$$LG:DESOLE pcase$$.</p>
+	<p><strong>$$LG:ANNPLUSDISPO$$</strong></p>		
+	<p class="lien">
+		<a href="http://$$REP:RSRV$$" title="">$$LG:RETOURACC pcase$$</a>
+	</p>
+$$END$$
+
+$$IF:ANNDETAIL:IDTYPETRANSACTION$$
+<div id="WrapDetail" itemscope itemtype="http://schema.org/Product">
+	<a href="$$ANNDETAIL:URLVIRTUELLE$$" style="display:none;" itemprop="url"></a>
+	<div class="clear"></div>
+		
+	<div id="GalerieAnnonce">
+		<!--#include virtual="/detail/incl_galerie_compact.htm" -->				
+	</div>
+
+
+
+
+	<div id="InfosAnnonce">
+		
+		<div class="clear"></div>
+		<div id="OngAnnonces">
+			<h2 id="Description" class="Ong bgcolor1 open">$$LG:DESCRIPTIONANN pcase$$<span></span></h2>
+				<div class="OngAnnonceContent first">				
+					
+							
+						<p id="detail_ville">$$ANNDETAIL:AVILLE$$</p>
+						<p id="detail_pieces">
+						$$IF=:2:ANNDETAIL:IDTYPEBIEN$$
+							$$LG:CHALET$$
+						$$END$$				
+						$$IF!:2:ANNDETAIL:IDTYPEBIEN$$
+							$$ANNDETAIL:IDTYPEBIEN gettypebien pcase$$
+						$$END$$											
+						$$IF:ANNDETAIL:NB_PIECES$$
+							, $$ANNDETAIL:NB_PIECES$$						
+							$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+								$$IF+:2:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+									$$IF:ANNDETAIL:NB_CHAMBRES$$
+									($$ANNDETAIL:NB_CHAMBRES$$
+									$$IF=:1:ANNDETAIL:NB_CHAMBRES$$ $$LG:CHAMBRE lcase$$)$$END$$
+									$$IF!:0$1:ANNDETAIL:NB_CHAMBRES$$ $$LG:CHAMBRES lcase$$)$$END$$
+							$$END:QRY:NB_CHAMBRES$$						
+						$$END:ANNDETAIL:NB_PIECES$$</p>
+						
+			
+						$$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$
+							<div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><p itemprop="price" id="detail_px"><!--#include virtual="/detail/incl_prix.htm" --><meta itemprop="priceCurrency" content="EUR" /></p></div>
+						$$END$$
+											
+					
+						<!--#include virtual="/detail/incl_descriptif_compact.htm" -->
+					
+						
+						$$IF:ANNDETAIL:DT_DISPO$$
+							<div class="datedispo txtcolor2">$$LG:DISPOLE pcase$$ : $$ANNDETAIL:DT_DISPO date 2$$</div>
+						$$END$$
+												
+						$$IF=:4:ANNDETAIL:IDTYPETRANSACTION$$
+							$$IF=:1:IMMOBW:DISPOVAC:OK$$
+							<a href="#CalendrierDispo" title="$$LG:CALENDRIERDISPO pcase$$" class="FancyBox datedispo txtcolor2">$$LG:CALENDRIERDISPO pcase$$</a>
+							<div id="WrapCalendrierDispo" style="display: none;">
+								<div id="CalendrierDispo">
+										<!--#include virtual="/detail/incl_calendrier_locations_vacances.htm" -->
+								 </div>
+							</div>
+							$$END$$
+						$$END$$
+						
+						$$IF=:9:ANNDETAIL:IDTYPETRANSACTION$$
+							<a href="#LotsDispo" title="$$LG:LOTSDISPO pcase$$" class="FancyBox lotdispo txtcolor2">$$LG:LOTSDISPO pcase$$</a>
+							<div id="WrapLotsDispo" style="display: none;">
+								<div id="LotsDispo">
+									<!--#include virtual="/detail/incl_neuf.htm" -->
+								</div>           
+							</div>           
+						$$END$$
+						<div class="clear"></div>					
+				
+				</div>				
+		
+				$$IF!:4:ANNDETAIL:IDTYPETRANSACTION$$
+				<h2 class="Ong bgcolor1" title="$$LG:DPE pcase$$" id="DPE">$$LG:DPE pcase$$<span></span></h2>
+					<div class="OngAnnonceContent">
+						<!--#include virtual="/detail/incl_dpe.htm" -->
+					</div>		
+				$$END$$
+	
+				
+		</div>	
+	</div>
+	
+	<div class="clear"></div>
+	
+	
+
+	<div id="BtnWidget">
+	<div id="BtnWidgetinterne">
+		<!--#include virtual="/detail/incl_outil_ajout_selection.htm" --><!--
+		--><a class="AlertBtn" href="$$URLBASE$$/alerte,immo.htm?lang=$$LANGUE$$"><span class="Alert"></span>$$LG:ALERTEMAIL pcase$$</a><!--
+		--><a class="FancyBoxFriend iframe" href="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/contact,ami.htm?lang=$$LANGUE$$&popup=1"><span class="Msg"></span>$$LG:ENVOYERAMI pcase$$</a><!--
+		--><a class="FancyBox qrcodeBtn" href="#qrcode"><span class="Qr"></span>QR Code</a><!--
+		--><a class="FancyBoxPrint iframe" href="http://$$REP:RSRV$$/$$ANNDETAIL:IDPUBLICATION$$/$$ANNDETAIL:IDANNONCE$$/detail,fiche_visite.htm?lang=$$LANGUE$$" rel="nofollow"><span class="Print"></span>$$LG:IMPRIMER pcase$$</a><!--
+		--><div id="Wrapqrcode" style="display: none;">
+				<div id="qrcode">
+					<script type="text/javascript">
+						$(document).ready(function() {
+							var url = decodeURIComponent('http://$$REP:RSRV$$/$$REP:URI$$?$$REP:QRY$$');
+							var urlQR = 'http://chart.googleapis.com/chart?chs=300x300&cht=qr&chl='+url+'&chld=L|1';
+							$('#qrcode').html('<img src="'+urlQR+'" title="$$LG:IMPRIMER$$ QR Code" alt="$$LG:QRCODE pcase$$" />');
+						});
+					</script>
+				</div>
+		</div>
+	</div>	
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div id="detail_infoagence">		
+		$$E:IMMOBW:AGENCE:VAL:ANNDETAIL_IDPUBLICATION:ALIAS:AG$$
+		<h2>$$LG:CONTACTERAGENCE pcase$$</h2>
+		<div id="infoagence_img"><a href="$$URLBASE$$/agence,immobiliere.htm?idp=$$ANNDETAIL:IDPUBLICATION$$&amp;lang=$$LANGUE$$">
+			$$IF:AG:SIPHOTOAGENCE$$
+						<img src="$$AG:URL_PHOTOAGENCE$$" alt="" />
+			$$END$$
+			$$IF0:AG:SIPHOTOAGENCE$$			
+				<img src="$$_$$images/agences/$$ANNDETAIL:IDPUBLICATION$$.jpg" alt="" />
+			$$END$$	
+			</a></div>
+		<div id="infoagence_infos">
+			<!--#include virtual="detail/incl_agence_nom_adresse.htm" -->			
+			<!--#include virtual="detail/incl_agence_tel.htm" -->	
+			<!--#include virtual="detail/incl_agence_fax.htm" -->
+			<!--#include virtual="detail/incl_agence_email.htm" -->			
+			$$IF:AG:URL$$<p>Site : <a href="$$AG:URL$$" title="$$LG:IMMOBILIER pcase$$ $$AG:VILLE ncase$$" onclick="window.open(this.href); return false;">$$AG:URL$$</a><p>$$END$$
+			
+			<!--
+			<h3>ST GERVAIS LES BAINS</h3>
+			<p>AGENCE TRANSACTEL IMMOBILIER<br />
+			132 avenue Mont Arbois<br />
+			74170 ST GERVAIS LES BAINS<br />
+			Tél : 04 50 93 64 40<br />
+			Email : $$A:MAIL=info@transactel.com$$ $$MAIL encodemail javascript full$$<br /> 
+			Site : <a href="http://www.transactel.com" target="_blank">http://www.transactel.com</a></p>
+			-->
+			
+			<a class="infoagence_btn bgcolor1" href="$$IF0:PAGE:URLREWRITINGENABLED$$$$URLBASE$$/agence,immobiliere.htm?idp=$$AG:IDPUBLICATION$$&amp;lang=$$LANGUE$$$$END$$$$IF:PAGE:URLREWRITINGENABLED$$$$AG:URLVIRTUELLE$$$$END$$">$$IF=:FR:LANGUE$$Découvrir cette agence$$END$$$$IF!:FR:LANGUE$$Discover this agency$$END$$</a>
+			<a class="infoagence_btn bgcolor1" href="$$URLBASE$$/$$AG:IDPUBLICATION$$/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&amp;idtypebien=2&amp;lang=$$LANGUE$$">$$IF=:FR:LANGUE$$Voir les annonces de cette agence$$END$$$$IF!:FR:LANGUE$$See ads of this agency$$END$$</a>
+		</div>		
+		<div class="clear"></div>
+	</div>
+	
+	$$IF=:FR:LANGUE$$
+	<br />
+	<div id="WrapInfosAnnonce">
+		<div id="NavInfosAnnonce">
+			<h2 class="poiH2 activepoi bgcolor2">Points d'int&eacute;r&ecirc;ts</h2>
+			<h2 class="infosH2">$$LG:INFOSLOCALES pcase$$</h2>
+			<div class="clear"></div>
+		</div> 
+	</div>
+	
+	<div id="POI">
+		<a name="poi"></a>
+	  <!--#include virtual="/detail/incl_poi_compact.htm" -->
+	</div>
+	<div id="InfosLocales">
+		<a name="InfosLocales"></a>
+	  <!--#include virtual="/detail/ville.htm" -->
+	</div>
+	$$END$$
+
+	<div class="clear"></div>
+
+
+$$B:IMMOBW:ANN:ALIAS:ANNLISTE::QRY:LANG:::ADD:ci=+ANNDETAIL_CODEINSEE+&idtt=+ANNDETAIL_IDTYPETRANSACTION+&idtypebien=+ANNDETAIL_IDTYPEBIEN+&nb_pieces=+ANNDETAIL_NB*PIECES+&rayon=5::d_dt_crea:~NOSTAT:1$$
+			$$BIF:ANNLISTE$$
+				$$IF>:2:ANNLISTE:NBR$$
+								<div id="AnnonceSimi">
+										<h2>$$LG:ANNSIMILAIRESA$$
+														$$IF!:5$8:ANNDETAIL:IDTYPETRANSACTION$$
+	$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase$$
+$$END$$	
+$$IF!:2:ANNDETAIL:IDTYPEBIEN$$
+	$$ANNDETAIL:IDTYPEBIEN gettypebien lcase$$
+$$END$$
+$$IF=:2:ANNDETAIL:IDTYPEBIEN$$
+	$$LG:CHALET pcase$$
+$$END$$
+														
+														$$IF:ANNDETAIL:NB_PIECES$$
+														de $$ANNDETAIL:NB_PIECES$$
+														$$IF=:1:ANNDETAIL:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+														$$IF!:0$1:ANNDETAIL:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+														$$END:NB_PIECES$$
+														
+														$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$
+														$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+														$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+														$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+														$$END$$								
+														$$LG:A lcase$$ $$ANNDETAIL:VILLE$$ ($$ANNDETAIL:CP$$)
+														$$LG:ALENTOURSSIMILAIRES lcase$$</h2>
+										<!--#include virtual="/detail/incl_annonces_similaires_compact.htm" -->	
+										
+									</div>
+
+	$$END$$
+$$BFIN$$
+<div class="clear"></div>
+	<div id="Bookmarks">
+		<!--#include virtual="/detail/incl_bookmarks_compact.htm" -->	
+	</div>			
+	
+<div class="clear"></div>
+<div id="Glossaire_Ctn">
+
+</div><!-- fin .glossaire_ctn -->
+
+
+$$END$$
+
+
+
+
+<!--#include virtual="immo/incl_retour_haut.htm" -->

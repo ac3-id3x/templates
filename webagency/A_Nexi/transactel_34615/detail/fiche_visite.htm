@@ -1,0 +1,154 @@
+$$INIT:IDT=FICHEVISITE$$
+$$A:CSS_POPUP=1$$
+$$A:JS_METRO=1$$
+
+$$REM$$<!-- ====================== OPTIS REF ====================== -->$$END:REM$$
+$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@
+							@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@
+							@@ANNDETAIL:VILLE@@ (@@ANNDETAIL:CP@@) @@LG:DE lcase@@
+							@@ANNDETAIL:SURFACE replace , .@@ m²,							
+							@@ANNDETAIL:PRIX@@ euros
+							avec @@ANNDETAIL:COOR-NOM@@
+							$$
+				
+	$$A:DESCRIPTION=@@ANNDETAIL:DESCRIPTIF_GEN smalltextv2 150@@$$
+			
+	$$A:KEYWORDS=@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@,
+							@@LG:ANNONCEIMMO pcase@@ @@ANNDETAIL:VILLE@@,
+							@@ANNDETAIL:COOR-NOM@@,
+							@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction lcase@@,
+							@@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@,							
+							@@LG:IMMOBILIER lcase@@ @@ANNDETAIL:VILLE@@, 
+							@@ANNDETAIL:NB_PIECES@@ @@LG:PIECES lcase@@				
+							$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+$$REM$$<!-- ====================== OPTIS NO REF ====================== -->$$END:REM$$
+$$IF0:PAGE:WAGREF_IDDOSSIER_SITE$$
+	$$A:TITLE=@@LG:LIEN:FICHE pcase@@$$				
+	$$A:DESCRIPTION=Cette fiche vous sera très utile lors de la visite du bien que vous avez sélectionné$$			
+	$$A:KEYWORDS=@@LG:LIEN:FICHE pcase@@$$
+$$END:PAGE:WAGREF_IDDOSSIER_SITE$$
+
+<!--#include virtual="header/incl_doctype_strict.htm"-->
+<head>
+	<!--#include virtual="header/incl_variables.htm" -->
+	<!--#include virtual="header/incl_titre.htm" -->
+	<!--#include virtual="scripts/incl_init_scripts.htm" -->
+	<!--#include virtual="scripts/incl_scripts.htm" -->
+	<!--#include virtual="styles/incl_styles.htm" -->
+	<meta name="robots" content="noindex" />
+</head>
+$$E:IMMOBW:ANNONCE:REP:1:REP:2:ALIAS:ANNDETAIL$$
+<body>
+	<div id="WrapFiche">
+<!-- ======================================================================== -->
+		<div id="Header">		
+			<h1>
+				<img src="$$~$$images/visite/fiche_visite_picto.gif" alt="" title="" />
+				$$LG:LIEN:FICHE ucase$$
+			</h1>
+			<a class="fermer" href="javascript:window.close()" title="">$$LG:FERMER pcase$$</a>
+			<a class="retour" href="#"onclick="javascript:window.print();" title="">$$LG:IMPRIMER pcase$$</a>
+			<div class="clear"><!-- --></div>
+		</div><!-- #Header -->
+<!-- ======================================================================== -->
+		<div id="CtnFiche">
+			$$E:IMMOBW:AGENCE:REP:2:ALIAS:AG$$
+			<table id="Coords">
+				<tr>
+					$$IF:AG:SI_LOGO$$
+					<td class="col1">
+						<img src="$AG:URLLOGO$"	alt="" title="" />
+					</td>
+					$$END:AG:IDLOGO$$
+					<td class="col2">
+						<h1>$$AG:NOM ucase$$</h1>
+						<p>$$AG:ADRESSE$$</p>
+						<!--#include virtual="detail/incl_agence_tel.htm" -->
+						<!--#include virtual="detail/incl_agence_email.htm" -->
+						$$IF:AG:URL$$
+							<!--#include virtual="detail/incl_agence_url.htm" -->
+						$$END:URL$$
+					</td>
+					<td>
+						<img src="$$_$$images/skin/member.gif"	alt="" />
+					</td>
+			</table><!-- #Coords -->
+			<table id="Ann">
+				<tr>
+					
+					<td class="col1">
+						
+						<div class="photo_ctn">
+							$$IF0:ANNDETAIL:IDPHOTO$$
+								<div id="SansPhoto" style="background:url('$AG:URLLOGO$') no-repeat;background-position:50% 50%;"></div>
+							$$END$$
+							<!--#include virtual="/detail/incl_bandeau_coupdecoeur.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_sipromo.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_exclusif.htm" -->
+							<!--#include virtual="/detail/incl_bandeau_nouveau.htm" -->
+			
+							$$IF:ANNDETAIL:IDPHOTO$$
+							<img class="grandePhoto" src="$$ANNDETAIL:PHOTOURL0$$"
+							alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+							title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$" 
+							/>						
+							$$END:IDPHOTO$$
+						</div>
+						
+						$$REM$$
+						$$B:IMMOBW:PHOTOS:ALIAS:THUMBS:REP:1$$						
+						$$BIF:THUMBS$$
+						<!-- petites vignettes -->						
+						$$IF>:2:THUMBS:NBR$$
+							$$DO:1:4$$
+								$$IF>:2:THUMBS:I$$
+								<img class="petitePhoto" src="$$THUMBS:CARRE_URL$$" 
+								alt="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$" 
+								title="$$IF:PAGE:WAGREF_IDDOSSIER_SITE$$$$ANNDETAIL:LIBELLE htmlencode$$, $$ANNDETAIL:SURFACE$$ m&sup2; - $$ANNDETAIL:VILLE htmlencode$$ ($$ANNDETAIL:CP$$)$$END:REF$$"
+								 />
+								$$END:THUMBS:I$$
+							$$LOOP$$
+							<div class="clear"><!-- --></div>
+						$$END:THUMBS:NBR$$
+						$$BFIN$$
+						$$END:REM$$
+						
+					</td>
+					<td class="col2">
+						<h1>$$ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase$$ <!--#include virtual="/detail/incl_ville.htm" --></h1>
+						$$IF:ANNDETAIL:IDQUARTIER$$<p id="Quartier"><!--#include virtual="/detail/incl_quartier.htm" --></p>$$END:ANNDETAIL:IDQUARTIER$$
+						
+						<h1>$$ANNDETAIL:LIBELLE$$</h1>						
+						<!--#include virtual="/detail/incl_descriptif.htm" -->
+						
+						$$IF=:5:ANNDETAIL:IDTYPETRANSACTION$$			
+						<p>
+							$$IF=:TRUE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGERLIBRE2 pcase$$$$END$$
+							$$IF=:FALSE:ANNDETAIL:SI_LIBRE$$$$LG:VIAGEROCCUPE2 pcase$$$$END$$		
+							$$IFNULL:ANNDETAIL:SI_LIBRE$$$$LG:LIEN:VIAGER pcase$$$$END$$
+						</p>
+						$$END$$
+						
+						<script type="text/javascript">dispMetroFicheVisite('$$ANNDETAIL:IDANNONCE getlieux escape$$');</script>
+						<div class="clear"><!-- --></div>
+						
+						$$IF!:9:ANNDETAIL:IDTYPETRANSACTION$$<h1 id="PrixAnn"><!--#include virtual="/detail/incl_prix.htm" --></h1>$$END:IDTYPETRANSACTION$$
+						<!--#include virtual="/detail/incl_infoscomp_prix.htm" -->
+						<!--#include virtual="/detail/incl_viager_pxrente.htm" -->
+						<!--#include virtual="/detail/incl_dispo.htm" -->
+						
+						<p><strong><!--#include virtual="/detail/incl_refannonce.htm" --></strong> | <!--#include virtual="/detail/incl_maj.htm" --></p>
+												
+					</td>
+				</tr>
+			</table><!-- #Ann -->
+			
+		</div><!-- #Ctn -->
+		<!--#include virtual="detail/incl_glossaire.htm" -->
+<!-- ======================================================================== -->
+	</div><!-- #Wrap -->	
+</body>
+</html>
