@@ -1,0 +1,61 @@
+<!--#include virtual="header/incl_var_params.htm" -->	
+<!--#include virtual="header/incl_doctype_strict.htm"--><head>
+<!--#include virtual="header/incl_titre.htm" -->
+<!--#include virtual="scripts/incl_init_scripts.htm" -->
+<!--#include virtual="styles/incl_styles.htm" -->
+$$REM$$<!-- ========================== GOOGLE SCRIPTS ========================== -->$$END:REM$$
+<!--#include virtual="referencement/incl_script_google.htm" -->
+<!--#include virtual="referencement/incl_script_google_analytics.htm" -->
+$$IF:FAVICON$$
+<link rel="shortcut icon" type="image/x-icon" href="$$FAVICON$$" />
+$$END$$	
+
+<script src="$$~$$scripts/coord.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+	var coord=new Array();
+	$$B:IMMOBW:AGENCES:ALIAS:AGS$$
+	$$BIF:AGS$$
+		$$DO$$
+			coord[$$AGS:I exec XX-1$$]="adr_$$AGS:IDPUBLICATION$$";
+		$$LOOP$$
+	$$BFIN$$
+	$(document).ready(function() {
+		Adresse();
+	});
+</script>
+
+</head>
+
+<body>
+	<div id="Header"></div>
+	<div id="wrapper">
+		<div id="logo">
+			<a href="$$LIENACCUEIL$$"><img src="images/skin/logo.jpg" /></a><br />
+		</div><!--div#logo-->
+		<div id="left-top">			
+			<div id="flag">
+				$$IF=:EN:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=fr" title=""><img src="images/skin/flag_fr.gif" alt=""><br /></a>$$END$$
+				$$IF=:FR:LANGUE$$<a href="$$URLBASE$$/index.htm?lang=en" title=""><img src="images/skin/flag_en.gif" alt=""><br /></a>$$END$$
+			</div>
+			<div id="logo2">YANN VRANCKEN&nbsp;&nbsp; <span>Immobilier</span></div>
+			<div id="bloc-moteur">
+				<div class="ttl-search">$$LG:RECHERCHERAPIDE pcase$$</div>
+				<!--#include virtual="moteur/mini/moteur.htm" -->
+			</div><!--div#bloc-moteur-->
+			<div style="clear:right;"></div>
+		</div><!--div.left-top-->
+		<div class="clear1"></div>
+		<div id="hd-menu">
+			<ul id="nav" class="$$LANGUE$$">
+				<!--#include virtual="menu/incl_menu.htm" --> 
+			</ul>
+		</div><!--div#hd-menu-->
+		<div id="content">
+		$$IF!:INDEX.HTM:REP:0$$<div id="navigue">$$END$$
+		
+		$$IF=:immo,partenaires.htm:REP:0$$
+			$$A:TITRE_PAGE=@@LG:PARTENAIRES@@$$
+		$$END$$
+
+		$$IF:TITRE_PAGE$$<h1 class="ttl_page">$$TITRE_PAGE$$</h1>$$END$$
