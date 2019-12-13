@@ -1,0 +1,92 @@
+$$INIT:IDT=PUBLICATION$$
+$$INIT:CSS_AGENCE=1$$
+$$A:JS_AGENCE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+
+<h1>Publier une annonce</h1><hr>
+
+<p>
+    Vendez ou louez votre bien l’esprit tranquille avec les professionnels de l’immobilier partenaires de habiterlyon.com<br>
+    Vous êtes propriétaire d’un bien immobilier à vendre ou à louer ?<br>
+    Pour vous aider à réaliser votre transaction dans les meilleures conditions, habiterlyon.com met à votre disposition son service gratuit de mise en relation avec des professionnels de l’immobilier de votre région.
+</p>
+
+<div class="publiform margin-top-30">
+
+    $$IF:ERRE$$
+    <div class="publiform-error margin-bottom-30">
+        <span class="h2-like">$$LG:ERREUR$$</span>
+        <p class="small">$$ERRE$$</p>
+    </div>
+    $$END$$
+
+    <form method="post" action="/$$REP:0$$/" enctype="multipart/form-data" class="publiform-form">
+        <input type="hidden" name="u" value="ID3:FORMMAIL" />
+        <input type="hidden" name="page_ok" value="/immo,publication_envoi.htm" />
+        <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+        <input type="hidden" name="page_html" value="/immo,publication_email.htm" />
+        <input type="hidden" name="cfg_form" value="publication" />
+        <input type="hidden" name="cfg_emails" value="publication" />
+        <input type="hidden" name="subject" value="Demande de publication d'une annonce sur le site HabiterLyon"/>
+        <input type="hidden" name="email_to" value="contact@habiterlyon.com"/>
+        <input type="hidden" name="pb-type" id="pb-type" value="$$FORM:PB-TYPE$$">$$REM$$ <!-- 1 = pro, 2 = particulier --> $$END$$
+
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="row-fluid publiform-ttl">
+                    <div class="span2 margin-top-15">Je suis</div>
+                    <div class="span5"><button type="button" class="publiform-btn btn-block $$IF=:1:FORM:PB-TYPE$$active$$END$$" id="pb-btn-pro">Professionnel</button></div>
+                    <div class="span5"><button type="button" class="publiform-btn btn-block $$IF=:2:FORM:PB-TYPE$$active$$END$$" id="pb-btn-part">Particulier</button></div>
+                </div>
+                <select name="pb-idtt" required>
+                    <option value="" disabled selected>$$LG:TYPEDETRANSACTION pcase$$ *</option>
+                    $$A:VAL=@@LG:VENTE pcase@@$$
+                    <option value="$$VAL$$" $$IF=:VAL:FORM:PB-IDTT$$selected$$END$$>$$LG:VENTE pcase$$</option>
+                    $$A:VAL=@@LG:LOCATION pcase@@$$
+                    <option value="$$VAL$$" $$IF=:VAL:FORM:PB-IDTT$$selected$$END$$>$$LG:LOCATION pcase$$</option>
+                </select>
+                <select name="pb-idtb" required>
+                    <option value="" disabled selected>$$LG:TYPEDEBIEN pcase$$ *</option>
+                    $$A:VAL=@@LG:APPARTEMENT pcase@@$$
+                    <option value="$$VAL$$" $$IF=:VAL:FORM:PB-IDTB$$selected$$END$$>$$LG:APPARTEMENT pcase$$</option>
+                    $$A:VAL=@@LG:MAISON pcase@@$$
+                    <option value="$$VAL$$" $$IF=:VAL:FORM:PB-IDTB$$selected$$END$$>$$LG:MAISON pcase$$</option>
+                </select>
+                <input type="text" name="pb-surfh" placeholder="$$LG:SURFH2 pcase$$ (m²) *" value="$$FORM:PB-SURFH$$" required>
+                <input type="text" name="pb-surft" placeholder="$$LG:SURFTER pcase$$ (m²) *" value="$$FORM:PB-SURFT$$" required>
+                <input type="text" name="pb-piece" placeholder="$$LG:NBRP pcase$$ *" value="$$FORM:PB-PIECE$$" required>
+                <input type="text" name="pb-dpe" placeholder="DPE *" value="$$FORM:PB-DPE$$" required>
+                <input type="text" name="pb-ref" placeholder="$$LG:V5REFDUBIEN pcase$$ *" value="$$FORM:PB-REF$$" required>
+                <input type="text" name="pb-prix" placeholder="Prix du bien (€) *" value="$$FORM:PB-PRIX$$" required>
+                <input type="text" name="pb-charges" placeholder="Charges copropriété (€) *" value="$$FORM:PB-CHARGES$$" required>
+                <input type="text" name="pb-nbrlot" placeholder="Nombre de lots *" value="$$FORM:PB-NBRLOT$$" required>
+                <input type="text" name="pb-add" placeholder="Adresse du bien **" value="$$FORM:PB-ADD$$" required>
+                <input type="text" name="pb-loc" placeholder="$$LG:LOCALIS pcase$$ *" value="$$FORM:PB-LOC$$" required>
+                <textarea name="pb-msg" placeholder="$$LG:PRECIS pcase$$ *" rows="5" required>$$FORM:PB-MSG$$</textarea>
+            </div>
+            <div class="span6">
+                <div class="row-fluid publiform-ttl">
+                    <div class="span12 margin-top-15">$$LG:COORD3 pcase$$</div>
+                </div>
+                <input type="text" name="pb-nom" placeholder="$$LG:NOM pcase$$ *" value="$$FORM:PB-NOM$$" required>
+                <input type="text" name="pb-prenom" placeholder="$$LG:PRENOM pcase$$ *" value="$$FORM:PB-PRENOM$$" required>
+                <input type="text" name="pb-adresse" placeholder="$$LG:ADRESSE pcase$$ *" value="$$FORM:PB-ADRESSE$$" required>
+                <input type="text" name="pb-cp" placeholder="$$LG:CODEP pcase$$ *" value="$$FORM:PB-CP$$" required>
+                <input type="text" name="pb-ville" placeholder="$$LG:VILLE pcase$$ *" value="$$FORM:PB-VILLE$$" required>
+                <input type="text" name="pb-tel" placeholder="$$LG:TEL pcase$$ *" value="$$FORM:PB-TEL$$" required>
+                <input type="text" name="pb-fax" placeholder="$$LG:FAX pcase$$ *" value="$$FORM:PB-FAX$$" required>
+                <input type="text" name="email_from" placeholder="$$LG:EMAIL pcase$$ *" value="$$FORM:EMAIL_FROM$$" required>
+                <p class="smaller opacity-5 line-height-16 margin-top-10">
+                    * $$LG:CHAMPSOBLIGATOIRES pcase$$<br>
+                    ** L'adresse du bien ne sera pas affichée sur l'annonce
+                </p>
+                <input type="submit" value="$$LG:ENVOYER2 pcase$$" class="btn btn-action">
+            </div>
+        </div>
+        <div class="padding-10">
+            $$ID$$
+            <!--#include virtual="legal/incl_rgpd.htm" -->
+        </div>
+    </form>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->

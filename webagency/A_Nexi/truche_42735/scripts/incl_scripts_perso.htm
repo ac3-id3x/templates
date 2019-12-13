@@ -1,0 +1,188 @@
+$$IF=:1:JS_ANNONCES$$
+<script type="text/javascript">
+
+   $(window).load(function(){
+
+      var maxSize = 767;
+      function module(el) {
+         if(el.length > 0) {
+            // GET MAX HEIGHT
+            var getHeight = new Array();
+            el.find('.module-annonces-homepage').each(function() {
+               getHeight.push($(this).outerHeight());
+            });
+            getHeight.sort().reverse();
+            // GET SPEED + FX
+            var getSpeed = parseInt(el.attr('data-rotation'));
+            var fx = el.attr('data-fx');
+            // LAUNCH
+            el.css('height',getHeight[0]).cycle({
+               fx:fx,
+               timeout:getSpeed,
+               slideExpr: '.ligne-cycle',
+               pager:'.nav-rotation',
+               next:   '.next-module',
+               prev:   '.prev-module',
+               speed:1000,
+               slideResize: 0,
+               fit:1
+            });
+            // PAUSE + RESUME
+            el.each(function() {
+               $(this).hover(
+                  function() {
+                     el.cycle('pause');
+                  },
+                  function() {
+                     el.cycle('resume');
+                  }
+               )
+            });
+         }
+      }
+      function module2(el) {
+         if(el.length > 0) {
+            // GET MAX HEIGHT
+            var getHeight = new Array();
+            el.find('.module-annonces-homepage2').each(function() {
+               getHeight.push($(this).outerHeight());
+            });
+            getHeight.sort().reverse();
+            // GET SPEED + FX
+            var getSpeed = parseInt(el.attr('data-rotation2'));
+            var fx = el.attr('data-fx2');
+            // LAUNCH
+            el.css('height',getHeight[0]).cycle({
+               fx:fx,
+               timeout:getSpeed,
+               slideExpr: '.ligne-cycle2',
+               pager:'.nav-rotation2',
+               next:   '.next-module2',
+               prev:   '.prev-module2',
+               speed:1000,
+               slideResize: 0,
+               fit:1
+            });
+            // PAUSE + RESUME
+            el.each(function() {
+               $(this).hover(
+                  function() {
+                     el.cycle('pause');
+                  },
+                  function() {
+                     el.cycle('resume');
+                  }
+               )
+            });
+         }
+      }
+      function launchModule(){
+         if(winW > maxSize) {
+            var mod = $('.rotation-module');
+            if(mod.length > 1) {
+               $('.next-module, .prev-module').remove();
+            } else {
+               module(mod)
+               if (window.addEventListener) {
+                  window.addEventListener("orientationchange", function() {
+                     detectionWindow();
+                     if(winW > maxSize) {
+                        // MODULE ADS RESTART
+                        mod.cycle('destroy');
+                        module(mod);
+                     }
+                  }, false);
+               }
+            }
+         }
+         launched = 1 ;
+      }
+      function launchModule2(){
+         if(winW > maxSize) {
+            var mod = $('.rotation-module2');
+            if(mod.length > 1) {
+               $('.next-module2, .prev-module2').remove();
+            } else {
+               module2(mod)
+               if (window.addEventListener) {
+                  window.addEventListener("orientationchange", function() {
+                     detectionWindow();
+                     if(winW > maxSize) {
+                        // MODULE ADS RESTART
+                        mod.cycle('destroy');
+                        module2(mod);
+                     }
+                  }, false);
+               }
+            }
+         }
+         launched = 1 ;
+      }
+      launched = 0 ;
+      $(window).load(function() {
+         if (launched == 0) {
+            launchModule();
+            launchModule2();
+         };
+      });
+
+      $(document).ajaxComplete(function() {
+         if (launched == 0) {
+            launchModule();
+            launchModule2();
+         };
+      });
+
+      $(window).ready(function() {
+         if (launched == 0) {
+            launchModule();
+            launchModule2();
+         };
+      });
+
+
+
+      $('.module-annonces-hp').each(function() {
+         $(this).hover(
+            function() {
+               $(this).find('.hover-infos-bien').show();
+            },
+            function() {
+               $(this).find('.hover-infos-bien').hide();
+            }
+         )
+      });
+
+   });
+
+</script>
+$$END$$
+
+$$IF=:INDEX$PUBLICATION:IDT$$
+<script>
+   $("#pb-btn-pro").click(function(){
+      $("#pb-type").val(1);
+      $(this).addClass("active");
+      $("#pb-btn-part").removeClass("active");
+
+   });
+   $("#pb-btn-part").click(function(){
+      $("#pb-type").val(2);
+      $(this).addClass("active");
+      $("#pb-btn-pro").removeClass("active");
+   });
+</script>
+$$END$$
+
+<script>
+   $(window).load(function(){
+      $(".anchor-link").click(function(){
+         var cible = $(this).attr("href");
+         $("html, body").animate({
+            scrollTop:$(cible).offset().top - 110
+         }, "slow");
+         return false;
+      });
+   });
+</script>
+

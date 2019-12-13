@@ -1,0 +1,149 @@
+$$BIF:ANNONCESHOME$$
+$$A:TAILLESPANMODULE=span4$$
+<h2>Annonces immobilières sur Lyon et sa région </h2>
+<div class="hidden-phone box-module-home">
+   <div class="module-homepage">
+      <div class="row-fluid margin-bottom-10">
+         <div class="span12">
+            <div class="row-fluid ligne-titre">
+               <div class="span8">
+                  <div class="typo-black h2-like">
+                  	$$IF=:FR:LANGUE$$
+                     <span class="typo-action">Dernières annonces</span> mises en ligne
+                    $$END$$
+                    $$IF!:FR:LANGUE$$
+                     <span class="typo-action">Last online listings</span> posted
+                    $$END$$
+                  </div>
+                  $$IF=:FR:LANGUE$$
+                  	<p>Découvrez nos dernières annonces de <a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=$$TRI_MENU$$">ventes</a></p>
+                  $$END$$
+                  $$IF!:FR:LANGUE$$
+                  	<p>Find out about our last listings of properties for  <a href="/recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=2&tri=$$TRI_MENU$$">sale</a></p>
+                  $$END$$
+               </div>
+               <div class="span4 hidden-phone">
+                  <a href="recherche,$$PAGE:WAG_STYLE_RECHERCHE$$.htm?idtt=$$IDTTMODULE$$&amp;$$QUERYMODULE removeqry photo htmlencode$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ pull-right" title="$$LG:TOUTESNOSANNONCES2 pcase$$">$$BOUTON_MODULE$$</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <ul class="row-fluid relative ul-homepage-biens rotation-module" data-rotation="$$SPEED_MODULE$$" data-fx="$$EFFECT_MODULE$$">
+         <li class="prev-module left absolute pagination-centered hidden-phone">
+            $$CALARROW$$
+            <img src="$$~$$images/modules/angle-left.png" alt="$$LG:ANNONCESPRECEDENTES pcase$$" />
+            <div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+         </li>
+         $$DO$$
+         $$IF=:1:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+         <li class="ligne-cycle height-100-pourcent width-100-pourcent relative margin-bottom-10">
+            $$END$$
+            $$A:TITLE_ANNONCE=@@ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNONCESHOME:IDTYPEBIEN gettypebien lcase@@ @@ANNONCESHOME:AVILLE ncase@@$$
+            $$A:ALT_ANNONCE1=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 1$$
+            $$A:ALT_ANNONCE2=@@ANNONCESHOME:IDTYPEBIEN gettypebien@@ @@ANNONCESHOME:LIBELLE@@ - @@LG:PHOT pcase@@ 2$$
+            <div class="$$TAILLESPANMODULE$$ pagination-centered transition-bg relative module-annonces-hp module-annonces-homepage$$IF+:3:ANNONCESHOME:I$$ hidden-phone$$END$$">
+               <a href="$$ANNONCESHOME:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+                  <div class="img-homepage relative $$HEIGHTPICTURE5$$ overflow margin-bottom-10">
+                     $$IF!:1:PICTOANNONCELISTHOME$$
+                        $$IF:ANNONCESHOME:SI_EXCLUSIF$$
+                        <div class="module-hp-exclu">
+                           $$LG:EXCLUCOURT pcase$$
+                        </div>
+                        $$END$$
+
+                        $$IF:ANNONCESHOME:SI_COUPDECOEUR$$
+                        <div class="module-hp-cdc">
+                           <img src="$$_$$images/picto-cdc.png" alt="">
+                        </div>
+                        $$END$$
+                     $$END$$
+
+                     $$IF:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                        <div class="module-hp-px"><span id="prix$$ANNONCESHOME:IDANNONCE$$"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span></div>
+                     $$END$$
+                     $$IF0:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                        $$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                           <div class="module-hp-px">
+                              <span id="prix$$ANNONCESHOME:IDANNONCE$$">$$LG:BOUQUET pcase$$ : $$ANNONCESHOME:PRIX$$ $$ANNONCESHOME:PRIX_UNITE$$</span> - <span id="prix$$ANNONCESHOME:IDANNONCE$$">$$LG:RENTE pcase$$ : $$ANNONCESHOME:PX_RENTE$$ $$LG:EUROMOIS$$</span>
+                           </div>
+                        $$END$$
+                        $$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                           <div class="module-hp-px"><span id="prix$$ANNONCESHOME:IDANNONCE$$">$$ANNONCESHOME:PRIX$$ $$ANNONCESHOME:PRIX_UNITE$$</span></div>
+                        $$END$$
+                     $$END$$
+
+                     $$IF:ANNONCESHOME:PHOTOURL0$$
+                     <div style="background-image:url('$$ANNONCESHOME:PHOTOURL0$$');" class="picture-responsive"></div>
+                     $$END$$
+                     $$IF0:ANNONCESHOME:PHOTOURL0$$
+                     <!--#include virtual="modules/incl_no_photo_modules.htm" -->
+                     $$END$$
+                  </div>
+                  <div class="$$HEIGHTPICTURE5$$ width-100-pourcent absolute top left bottom$$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$ $$LINEHEIGHT$$$$END$$$$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$ line-height-40$$END$$ hover-infos-bien typo-white display-none">
+                     <div class="module-typebien-annonces">
+                        $$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                        $$IF:ANNONCESHOME:SI_LIBRE$$
+                         $$LG:VIAGERLIBRE2 pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase$$$$END$$
+                        $$END$$
+                        $$IF0:ANNONCESHOME:SI_LIBRE$$
+                         $$LG:VIAGEROCCUPE2 pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase$$$$END$$
+                         $$END$$
+                        $$END$$
+                        $$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                         $$ANNONCESHOME:IDTYPETRANSACTION gettypetransaction pcase$$ $$IF=:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase replace Maison¤/¤villa Maison$$$$END$$$$IF!:1:NOVILLA$$$$ANNONCESHOME:IDTYPEBIEN gettypebien pcase$$$$END$$
+                        $$END$$
+                     </div>
+                     <div class="hidden-phone module-caracteristiques-annonces">
+                        $$ANNONCESHOME:SURFACE$$ m²$$IF:ANNONCESHOME:SURFACE$$,$$END$$
+                        $$IF:ANNONCESHOME:NB_PIECES$$
+                            $$ANNONCESHOME:NB_PIECES$$
+                            $$IF=:1:ANNONCESHOME:NB_PIECES$$$$LG:PIECE lcase$$$$END$$
+                            $$IF!:0$1:ANNONCESHOME:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                        $$END$$
+                        $$IF:ANNONCESHOME:NB_CHAMBRES$$
+                            $$IF:ANNONCESHOME:NB_PIECES$$,$$END$$
+                                $$ANNONCESHOME:NB_CHAMBRES$$ $$IF=:1:ANNONCESHOME:NB_CHAMBRES$$$$LG:CHAMBRE lcase$$
+                            $$END$$
+                            $$IF!:0$1:ANNONCESHOME:NB_CHAMBRES$$$$LG:CHAMBRES lcase$$$$END$$
+                        $$END$$
+                     </div>
+                     <div class="h3-like module-villes-annonces ville">$$ANNONCESHOME:VILLE$$ $$REM$$<span class="hidden-phone">($$ANNONCESHOME:CP$$)</span>$$END$$</div>
+
+
+                     <div class="module-prix-annonces hidden-phone">
+                        $$IF:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                             <span id="prix$$ANNONCESHOME:IDANNONCE$$"><!--#include virtual="immo/incl_prix_nous_consulter.htm" --></span>
+                         $$END$$
+                         $$IF0:ANNONCESHOME:XML xml PRIX_NOUS_CONSULTER$$
+                              $$IF=:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                             <span id="prix$$ANNONCESHOME:IDANNONCE$$">$$LG:BOUQUET pcase$$ : $$ANNONCESHOME:PRIX$$ $$ANNONCESHOME:PRIX_UNITE$$</span> - <span id="prix$$ANNONCESHOME:IDANNONCE$$">$$LG:RENTE pcase$$ : $$ANNONCESHOME:PX_RENTE$$ $$LG:EUROMOIS$$</span>
+                         $$END$$
+                         $$IF!:5:ANNONCESHOME:IDTYPETRANSACTION$$
+                             <span id="prix$$ANNONCESHOME:IDANNONCE$$">$$ANNONCESHOME:PRIX$$ $$ANNONCESHOME:PRIX_UNITE$$</span>
+                         $$END$$
+                         $$END$$
+                     </div>
+                     <div class="hidden-phone"><span>$$IF:ANNONCESHOME:AGE_F$$ $$LG:FEMME pcase$$ : $$ANNONCESHOME:AGE_F$$ ans $$END$$
+                        $$IF:ANNONCESHOME:AGE_H$$$$IF!:0:ANNONCESHOME:AGE_F$$&nbsp;$$END$$$$LG:HOMME pcase$$ : $$ANNONCESHOME:AGE_H$$ ans$$END$$</span></div>
+                     <div class="bg-black opacity-8 absolute top right left bottom z-25"></div>
+                  </div>
+               </a>
+            </div>
+            $$IF=:0:ANNONCESHOME:I exec XX%@@SIZEMODULE@@$$
+            <div class="clear"></div>
+         </li>
+         $$END$$
+         $$LOOP$$
+         <li class="next-module right absolute pagination-centered hidden-phone">
+            <img src="$$~$$images/modules/angle-right.png" alt="$$LG:ANNONCESSUIVANTES pcase$$" />
+            <div class="absolute right top left bottom opacity-9 bg-black z-25"></div>
+         </li>
+      </ul>
+   </div>
+   <div class="clear"></div>
+   $$BFIN$$
+</div>
+
+<div class="hidden-tablet hidden-desktop">
+   <!--#include virtual="modules/incl_carousel_1.htm" -->
+</div>
