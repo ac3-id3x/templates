@@ -1,0 +1,134 @@
+$$INIT:IDT=BIENSVENDUS$$
+<!--#include virtual="header/incl_haut.htm" -->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="row-fluid">
+			<div class="span12">
+				<h1>
+					$$IF:H1BIENSVENDUS$$$$H1BIENSVENDUS$$$$END$$
+					$$IF0:H1BIENSVENDUS$$$$VENDU:NBRESULT formatnumber 0$$ $$LG:BIENVENDUS lcase$$$$END$$
+				</h1>
+				<hr>
+			</div>
+		</div>
+		$$B:IMMOBW:KA-BIENS-VENDUS:ALIAS:VENDU$$
+		$$BIF:VENDU$$
+			$$IF:VENDU:NBRPAGES$$
+			<div class="row-fluid">
+				<div class="span12 margin-bottom-10">
+					<div class="row-fluid">
+						<div class="span3">
+							<a href="javascript:history.go(-1);" class="$$TYPEBOUTON$$ btn-neutre margin-right-5">$$LG:RETOURANNONCES pcase$$</a>
+						</div>
+						<div class="span9">
+							<div class="pagination pagination-right">
+								<!--#include virtual="recherche/incl_nb_pages_vendus.htm" -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			$$END$$
+			$$DO:1:20$$
+			<div class="row-fluid">
+				<div class="span12 margin-bottom-10 padding-10 transition-bg recherche-annonces box-shadow">
+					<div class="row-fluid">
+						<!--#include virtual="recherche/incl_photo_vendus.htm" -->
+						<div class="span6">
+							$$IF0:HIDEPRIXVENDU$$
+								$$IF:VENDU:PRIXVENTEFAI$$
+								<div class="h2-like typo-action margin-top-30">
+									$$VENDU:TITRE pcase$$ $$IF=:2:VENDU:IDTYPEBIENVENDU$$$$LG:VENDUEA lcase$$$$END$$
+									$$IF!:2:VENDU:IDTYPEBIENVENDU$$
+								</div>
+								$$END:VENDU:PRIXVENTEFAI$$
+							$$END:HIDEPRIXVENDU$$
+							<div class="h2-like typo-action margin-top-30">$$VENDU:VILLE$$ ($$VENDU:CP$$)</div>
+							<ul class="nav nav-stacked nav-pills">
+								<li>
+									$$IF:VENDU:DTSAISIEVENTE$$$$LG:VENDUDEPUIS pcase$$ <strong>$$VENDU:DTSAISIEVENTE date dd_MMMM_yyyy$$</strong>$$END:VENDU:DTSAISIEVENTE$$
+								</li>
+								$$IF:VENDU:SURFACEHABITABLE$$
+									<li>
+										$$LG:SURFH2 pcase$$ : $$VENDU:SURFACEHABITABLE replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEHABITABLE exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+										$$IF:VENDU:SURFACECARREZ$$
+											($$LG:LOICARREZ ncase$$ : $$VENDU:SURFACECARREZ replace , .$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACECARREZ exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$)
+										$$END:VENDU:SURFACEHABITABLE$$
+									</li>
+								$$END:VENDU:SURFACEHABITABLE$$
+								$$IF:VENDU:SURFACETERRAIN$$
+									<li>
+										$$LG:SURFT pcase$$
+										$$VENDU:SURFACETERRAIN formatnumber 0$$ $$LG:M2 lcase$$
+										$$IF=:EN:LANGUE$$
+											(approx. $$VENDU:SURFACETERRAIN exec XX*10.763910 formatnumber 0$$ Sq Ft
+											$$VENDU:SURFACETERRAIN exec XX*0.0002471054 formatnumber 3$$ acres)
+										$$END:EN$$
+									</li>
+								$$END:VENDU:SURFACETERRAIN$$
+								$$IF:VENDU:NBPIECES$$
+									<li>
+										$$VENDU:NBPIECES$$
+											$$IF=:1:VENDU:NBPIECES$$$$LG:PIECE lcase$$$$END$$
+											$$IF+:2:VENDU:NBPIECES$$$$LG:PIECES2 lcase$$$$END$$
+									</li>
+								$$END:VENDU:NBPIECES$$
+								$$IF:VENDU:ETAGE$$
+									<li>
+										$$LG:ETAGE pcase$$ : $$VENDU:ETAGE$$ $$IF:VENDU:NBETAGES$$($$LG:SUR lcase$$ $$VENDU:NBETAGES$$ $$LG:ETAGES lcase$$)$$END:VENDU:NBETAGES$$
+									</li>
+								$$END:VENDU:NBPIECES$$
+								$$IF:VENDU:NBBOX$$<li>$$IF=:FR:LANGUE$$Box$$END$$$$IF!:FR:LANGUE$$$$LG:BOXES2 pcase$$$$END$$ : $$VENDU:NBBOX$$</li>$$END$$
+								$$IF:VENDU:NBPARKEXT$$<li>$$LG:PARKINGSOUV pcase$$ : $$VENDU:NBPARKEXT$$</li>$$END$$
+								$$IF:VENDU:NBPARKINT$$<li>Parkings interieurs : $$VENDU:NBPARKINT$$</li>$$END$$
+								$$IF:VENDU:SICAVE$$<li>$$LG:CAVE1 pcase$$</li>$$END$$
+								$$IF:VENDU:ANNEECONSTRUCTION$$<li>$$LG:DATECONSTRUC pcase$$ : $$VENDU:ANNEECONSTRUCTION$$</li>$$END$$
+								$$IF:VENDU:SIASCENSEUR$$<li>$$LG:ASCENC1 pcase$$</li>$$END$$
+								$$IF:VENDU:SURFACEJARDIN$$
+									<li>Jardin : $$VENDU:SURFACEJARDIN formatnumber 0$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEJARDIN exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$</li>
+								$$END$$
+								$$IF:VENDU:NBTERRASSES$$
+									<li>
+										$$VENDU:NBTERRASSES$$ $$LG:TERRASSE pcase$$$$VENDU:NBTERRASSES pluriel$$
+										$$IF:VENDU:SURFACETERRASSES$$
+											$$VENDU:SURFACETERRASSES$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACETERRASSES exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+										$$END:SURFACETERRASSES$$
+									</li>
+								$$END$$
+								$$IF:VENDU:NBBALCONS$$
+									<li>
+										$$VENDU:NBBALCONS$$ $$LG:BALCON pcase$$$$VENDU:NBBALCONS pluriel$$
+										$$IF:VENDU:SURFACEBALCONS$$
+											$$VENDU:SURFACEBALCONS$$ $$LG:M2 lcase$$$$IF=:EN:LANGUE$$ ($$VENDU:SURFACEBALCONS exec XX*10.763910 formatnumber 0$$ Sq Ft)$$END:EN$$
+										$$END:SURFACEBALCONS$$
+									</li>
+								$$END$$
+								$$IF:VENDU:SURFACEANNEXES$$<li>Surfaces annexes : $$VENDU:SURFACEANNEXES$$</li>$$END$$
+								$$IF=:true:VENDU:SITERRAINVIABILISE$$<li>Terrain viabilis&eacute;</li>$$END$$
+								$$IF=:true:VENDU:SITERRAINCONSTRUCTIBLE$$<li>Terrain constructible</li>$$END$$
+								$$IF=:true:VENDU:SIPISCINE$$<li>Piscine </li>$$END$$
+								$$IF:VENDU:IDTYPECHAUFFAGE$$<li>Type de chauffage : $$VENDU:IDTYPECHAUFFAGE gettypechauffage lcase$$</li>$$END$$
+								$$IF=:true:VENDU:SIOCCUPE$$<li>Bien vendu occup&eacute;$$IF:VENDU:LOYER$$, $$LG:LOYERMENSUEL lcase$$ : $$VENDU:LOYER formatnumber 0$$$$END$$</li>$$END$$
+								$$IF:VENDU:CONSOENERGIE$$
+									<li>$$LG:CONSOENERGIE pcase$$ : $$VENDU:EMISSIONGES formatnumber 0$$ kWhEP/m&sup2;/an - $$VENDU:BILANCONSOENERGIE$$</li>
+								$$END$$
+								$$IF:VENDU:EMISSIONGAZ$$
+									<li>$$LG:CONSOENERGIE pcase$$ : $$VENDU:EMISSIONGES formatnumber 0$$ kgeqCO2/m&sup2;/an - $$VENDU:BILANEMISSIONGES$$</li>
+								$$END$$
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			$$LOOP$$
+		$$BFIN$$
+		$$BIF0:VENDU$$
+			<div class="row-fluid">
+				<div class="span12">
+					$$LG:PASDEBIENSVENDUS pcase$$
+				</div>
+			</div>
+		$$BFIN$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
