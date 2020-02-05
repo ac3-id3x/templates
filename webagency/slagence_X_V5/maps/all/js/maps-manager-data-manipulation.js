@@ -110,6 +110,9 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		
 		{ customer: 'arthurim', idPublication: 738275, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
 		{ customer: 'arthurim', idPublication: 738424, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
+
+		{ customer: 'arthurim', idPublication: 1000958, latitude:  43.573020,  longitude:   6.999918 },  // le cannet
+		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
 		
 		{ customer: 'ageoppor', idPublication: 812681, latitude:  48.845752, longitude:   2.431946 }, // www.agencesopportunity.com
 
@@ -142,6 +145,8 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		// webagency\A_Nexi\belvia-immobilier
 		{ customer: '________', idPublication: 510336, latitude:  48.109133, longitude:  -1.6813031 },
 		{ customer: '________', idPublication: 503597, latitude:  43.771532, longitude:   1.688190 },
+
+		{ customer: '________', idPublication: 1007811, latitude:  46.157331, longitude:   6.667414 }, // webagency\A_ID3X\cwbk19_56801
 
 		// diverses
 		{ customer: '________', idPublication: 507430, latitude:  45.561798, longitude:   4.277082 }, // webagency\A_Nexi\reduron42_36074
