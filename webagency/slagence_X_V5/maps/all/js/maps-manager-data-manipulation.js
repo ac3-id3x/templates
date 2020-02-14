@@ -110,6 +110,9 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		
 		{ customer: 'arthurim', idPublication: 738275, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
 		{ customer: 'arthurim', idPublication: 738424, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
+
+		{ customer: 'arthurim', idPublication: 1000958, latitude:  43.573020,  longitude:   6.999918 },  // le cannet
+		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
 		
 		{ customer: 'ageoppor', idPublication: 812681, latitude:  48.845752, longitude:   2.431946 }, // www.agencesopportunity.com
 
@@ -142,6 +145,8 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		// webagency\A_Nexi\belvia-immobilier
 		{ customer: '________', idPublication: 510336, latitude:  48.109133, longitude:  -1.6813031 },
 		{ customer: '________', idPublication: 503597, latitude:  43.771532, longitude:   1.688190 },
+
+		{ customer: '________', idPublication: 1007811, latitude:  46.157331, longitude:   6.667414 }, // webagency\A_ID3X\cwbk19_56801
 
 		// diverses
 		{ customer: '________', idPublication: 507430, latitude:  45.561798, longitude:   4.277082 }, // webagency\A_Nexi\reduron42_36074
@@ -286,6 +291,7 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: '________', idPublication: 890726, latitude:  43.6719,   longitude:    7.19012 }, // webagency\A_ID3X\masson06_56674  
 		{ customer: '________', idPublication: 907364, latitude:  46.283694, longitude:   6.086146 }, // webagency\A_ID3X\or01200_56761
 		{ customer: '________', idPublication: 971246, latitude:  47.472122, longitude:   -0.55116 }, // webagency\A_ID3X\guyon_4788
+		{ customer: '________', idPublication: 1016475, latitude:  44.739937, longitude:   -0.680622 }, // webagency\A_ID3X\capdeviole_56716		
 		{ customer: '________', idPublication: 812554, latitude:  48.884652, longitude:   2.323058 }, // webagency\A_ID3X\france75017_55973
 		
 		
