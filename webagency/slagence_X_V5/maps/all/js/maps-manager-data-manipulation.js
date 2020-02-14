@@ -291,6 +291,7 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: '________', idPublication: 890726, latitude:  43.6719,   longitude:    7.19012 }, // webagency\A_ID3X\masson06_56674  
 		{ customer: '________', idPublication: 907364, latitude:  46.283694, longitude:   6.086146 }, // webagency\A_ID3X\or01200_56761
 		{ customer: '________', idPublication: 971246, latitude:  47.472122, longitude:   -0.55116 }, // webagency\A_ID3X\guyon_4788
+		{ customer: '________', idPublication: 1016475, latitude:  44.739937, longitude:   -0.680622 }, // webagency\A_ID3X\capdeviole_56716		
 		{ customer: '________', idPublication: 812554, latitude:  48.884652, longitude:   2.323058 }, // webagency\A_ID3X\france75017_55973
 		
 		
