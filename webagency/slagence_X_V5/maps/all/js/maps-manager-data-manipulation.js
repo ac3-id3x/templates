@@ -112,9 +112,14 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: 'arthurim', idPublication: 738424, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
 
 		{ customer: 'arthurim', idPublication: 1000958, latitude:  43.573020,  longitude:   6.999918 },  // le cannet
-		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
+		{ customer: 'arthurim', idPublication: 998600, latitude:  43.135209,  longitude:   6.365321 },  // le cannet
 		
-		{ customer: 'ageoppor', idPublication: 812681, latitude:  48.845752, longitude:   2.431946 }, // www.agencesopportunity.com
+		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
+
+		{ customer: 'arthurim', idPublication: 541280, latitude:  43.135209,  longitude:   6.365321 },  // le lavandou
+		{ customer: 'arthurim', idPublication: 542932, latitude:  43.135209,  longitude:   6.365321 },  // le lavandou		
+		
+		{ customer: 'ageoppor', idPublication: 812681, latitude:  43.573067, longitude:   6.999982 }, // www.agencesopportunity.com
 
 		// webagency\A_Nexi\primmo69250_34741
 		{ customer: '________', idPublication: 133776, latitude: 45.7731711, longitude:   4.8431206 },
