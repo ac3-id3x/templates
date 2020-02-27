@@ -115,6 +115,7 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: 'arthurim', idPublication: 998600, latitude:  43.135209,  longitude:   6.365321 },  // le cannet
 		
 		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
+		{ customer: 'arthurim', idPublication: 1005396, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
 
 		{ customer: 'arthurim', idPublication: 541280, latitude:  43.135209,  longitude:   6.365321 },  // le lavandou
 		{ customer: 'arthurim', idPublication: 542932, latitude:  43.135209,  longitude:   6.365321 },  // le lavandou		
