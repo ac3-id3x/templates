@@ -1814,7 +1814,7 @@ mapsManagerConstructor.prototype.sendRequestToGeolocationApi = function(p) {
 	var _address = p.address;
 	
 	if (_address.length > 2) {
-		var _this = this, ajaxUrl = this.api.geolocation.url, ajaxData = "q=" + _address;
+		var _this = this, ajaxUrl = this.api.geolocation.url, ajaxData = "q=" + _address + "&type=municipality";
 		if (p.postCode !== undefined) if (p.postCode != null) ajaxData += "&type=housenumber&postcode=" + p.postCode.toString();
 		
 		if (_this.outputDebug.api) console.log("\r\nAPI call : " + ajaxUrl + ajaxData);
