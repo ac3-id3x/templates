@@ -186,3 +186,84 @@ $$END$$
    });
 </script>
 
+
+$$REM$$
+$$IF=:NOSAGENCES:IDT$$
+<script>
+    // ===============================================
+    // == SELECT AGENCES ==
+    // ===============================================
+
+    function btnclick(deptreg){
+        console.log('deptreg');
+        console.log(deptreg);
+        $('.bloc-btn-agence').on('click','.btn',function(e){
+            e.preventDefault();
+            var newUrl = "/agences,liste.htm?dept="+deptreg;
+            document.location.href = newUrl;
+        });
+    }
+
+    $(window).load(function() {
+        $('.select-regions').val("");
+        $('.select-dept').val("");
+        $('.select-ville').val("");
+        $('.select-agence').val("");
+        $('.select-regions').on('change',function(){
+            var deptreg = $(this).val();
+            var xhr = $.ajax({
+                type: 'GET',
+                data:"region="+deptreg,
+                dataType: 'html',
+                url: '/scripts,ajax_dept.htm',
+                beforeSend: function() {
+                    $('.select-dept').html("<option>chargement</option>");
+                    $('.select-dept').addClass('opacity-2');
+                    $('.select-dept').prop('disabled', 'disabled');
+                },
+                success: function(data) {
+                    $('.select-dept').removeClass('opacity-2');
+                    $('.select-dept').prop('disabled', false);
+                    $('.select-dept').html(data);
+                },error:function() {
+                },complete:function() {
+                }
+            });
+            btnclick(deptreg);
+        });
+        $('.select-dept').on('change',function(){
+            var deptreg = 'µ' + $(this).find(':selected').data("cp");
+            btnclick(deptreg);
+            
+            var xhr = $.ajax({
+                type: 'GET',
+                data:"cp="+$(this).find(':selected').data("cp"),
+                dataType: 'html',
+                url: '/scripts,ajax_ville.htm',
+                beforeSend: function() {
+                    $('.select-ville').html("<option>chargement</option>");
+                    $('.select-ville').addClass('opacity-2');
+                    $('.select-ville').prop('disabled', 'disabled');
+                },
+                success: function(data) {
+                    $('.select-ville').removeClass('opacity-2');
+                    $('.select-ville').prop('disabled', false);
+                    $('.select-ville').html(data);
+                },error:function() {
+                },complete:function() {
+                }
+            });
+        });
+        
+        $('.select-ville').on('change',function(){
+            var deptreg = $(this).val();
+            btnclick(deptreg);
+        });
+        $('.select-agence').on('change',function(){
+            var deptreg = $(this).val();
+            btnclick(deptreg);
+        });
+    });
+</script>
+$$END$$
+$$END:REM$$
