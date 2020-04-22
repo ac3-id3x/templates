@@ -1807,15 +1807,22 @@ mapsManagerConstructor.prototype.newGeolocationSearch = function(p) {
 
 // Get geolocation coordinates from a given address
 mapsManagerConstructor.prototype.sendRequestToGeolocationApi = function(p) {
-	// p = { mapObject: mapObject, mapDataIndex: Integer, address: String, business: String }
+	// p = { mapObject: mapObject, mapDataIndex: Integer, address: String, business: String, searchType: string(municipality, ...) }
 	
 	if (this.outputDebug.api) this.showOutputDebug({ shortName: 'sendRequestToGeolocationApi()', objectValue: p });
 	
 	var _address = p.address;
 	
 	if (_address.length > 2) {
-		var _this = this, ajaxUrl = this.api.geolocation.url, ajaxData = "q=" + _address + "&type=municipality";
-		if (p.postCode !== undefined) if (p.postCode != null) ajaxData += "&type=housenumber&postcode=" + p.postCode.toString();
+		var _this = this, ajaxUrl = this.api.geolocation.url, ajaxData = "q=" + _address;
+		var reqType = null;
+
+		if (reqType == null && p.postCode !== undefined) if (p.postCode != null) reqType = "&type=housenumber&postcode=" + p.postCode.toString();
+		
+		if (reqType == null && p.searchType !== undefined) if (p.searchType != null  )reqType = "&type=" + p.searchType.toString();
+		
+		if (reqType != null)
+			ajaxData += reqType;
 		
 		if (_this.outputDebug.api) console.log("\r\nAPI call : " + ajaxUrl + ajaxData);
 		

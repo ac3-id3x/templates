@@ -81,17 +81,22 @@ function setLocationUserVal(value, list) {
     return searchString;
 }
 
-function updateGeoMap(searchString, postCode) {
+function updateGeoMap(searchString, postCode, searchType=null) {
 	if (geoMap == null) geoMap = id3xContent.getMap({ typeSearch: 1, search: geoMapId });
 	if (geoMap != null) {
 		var _postCode = null;
 		if (postCode != null) _postCode = (postCode.toString().match(/^(13500|25000|29200|29600|33480|40200|40600|45000|65100|67500|77300|80200|83170|83700|92000)$/) ? postCode : null);
 		
+		var _address = searchString.trim();
+		if (searchType == null)
+			_address =setLocationUserVal(searchString.trim(), regexesLocation);
+		
 		id3xContent.geolocation.manager.sendRequestToGeolocationApi({
-            address: setLocationUserVal(searchString.trim(), regexesLocation),
+            address: _address,
             business: '1',
             mapObject: geoMap,
-			postCode: _postCode
+			postCode: _postCode,
+			searchType: searchType
         });
     }
 }
@@ -244,7 +249,7 @@ $(document).ready(function () {
 			var deptreg = $(this).val();
 			//console.log("\r\ndeptreg");console.log(deptreg);
 			btnclick(deptreg);
-			updateGeoMap(deptreg, $(this).find(':selected').data("cp"));
+			updateGeoMap(deptreg, $(this).find(':selected').data("cp"), 'municipality');
 			
 			if ($('.select-agence').prop('selectedIndex') > 0) $('.select-agence').val('').trigger('change');
 			if ($('.select-dept').prop('selectedIndex') > 0) $('.select-dept').val('').trigger('change');
