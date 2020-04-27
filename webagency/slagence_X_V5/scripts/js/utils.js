@@ -236,8 +236,11 @@ function sendAjaxPost(p) {
                 p.btn.button('reset');
                 p.btn.addClass('bouton-envoyer-message-agence');
             } else {
-                p.btn.parent().parent().parent().parent().find('.message-erreur-alerte').html('✔ Message envoyé');
-                $('#nom-message' + idpublication).parent().removeClass('error').removeClass('success');
+				var msgOk = '✔ Message envoyé';
+				if(typeof messageOK !== 'undefined')
+					msgOk = messageOK;
+				p.btn.parent().parent().parent().parent().find('.message-erreur-alerte').html(msgOk);
+				$('#nom-message' + idpublication).parent().removeClass('error').removeClass('success');
                 $('#email-message' + idpublication).parent().removeClass('error').removeClass('success');
                 $('#telephone-message' + idpublication).parent().removeClass('error').removeClass('success');
                 $('#message-message' + idpublication).parent().removeClass('error').removeClass('success');
