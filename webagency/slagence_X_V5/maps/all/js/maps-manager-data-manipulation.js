@@ -121,7 +121,9 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: 'arthurim', idPublication: 542932, latitude:  43.135209,  longitude:   6.365321 },  // le lavandou		
 		
 		{ customer: 'ageoppor', idPublication: 812681, latitude:  43.573067, longitude:   6.999982 }, // www.agencesopportunity.com
-
+		
+		{ customer: 'arthurim', idPublication: 662096, latitude:  41.952223, longitude:   8.777187 }, // Ajaccio
+		
 		// webagency\A_Nexi\primmo69250_34741
 		{ customer: '________', idPublication: 133776, latitude: 45.7731711, longitude:   4.8431206 },
 		{ customer: '________', idPublication: 133721, latitude: 45.874618,  longitude:   4.748019 },
