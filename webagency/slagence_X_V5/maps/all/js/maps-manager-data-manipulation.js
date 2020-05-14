@@ -111,8 +111,7 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: 'arthurim', idPublication: 738275, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
 		{ customer: 'arthurim', idPublication: 738424, latitude:  45.87516,  longitude:   4.50126 },  // pontcharra-sur-turdine
 
-		{ customer: 'arthurim', idPublication: 1000958, latitude:  43.573020,  longitude:   6.999918 },  // le cannet
-		{ customer: 'arthurim', idPublication: 998600, latitude:  43.135209,  longitude:   6.365321 },  // le cannet
+		{ customer: 'arthurim', idPublication: 1000958, latitude:  43.573020,  longitude:   6.999918 },  // le cannet		
 		
 		{ customer: 'arthurim', idPublication: 1005700, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
 		{ customer: 'arthurim', idPublication: 1005396, latitude:  48.926856,  longitude:   2.545313 },  // livry gargant
