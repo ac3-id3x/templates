@@ -51,53 +51,88 @@ $$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VID
             $$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
             $$BIF:GALERIE$$
             <div class="detail-gallery">
-			
-				$$IF:ANNDETAIL:VIDEO_URL$$
 				<div class="row-fluid margin-bottom-10">
-						<div class="span4">
-							 <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="btn btn-block btn-small btn-important bouton-video-detail">
-								<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VIDEO pcase$$
-							 </a>
-							 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
-								$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
-								$$A:IDVIDEO=@@IDVIDEO trim@@$$
-								<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
-								<h2 itemprop="name">$$TITLE$$</h2>
-								<p itemprop="description">
-								   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
-								   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
-								</p>
-								<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
-							 </div>
-						 </div>
-						<div class="span4">
+					$$REM$$ <!-- BOUTON VISITE VIRTUELLE -->$$END$$
+					$$IF:ANNDETAIL:ANN_VV_ID$$
+					<div class="span4">
+							$$A:BT_VV_OK=0$$
+							
+							$$REM$$ <!-- CAS ID360 REMONTEE PAR LA MACRO -->$$END$$
 							$$IF:ANNDETAIL:ID360$$
+								$$A:BT_VV_OK=1$$
 								$$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
 									$$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
 								$$END$$
-							 <a href="$$LIEN_360$$" class="btn btn-block btn-small btn-important bouton-video-detail">
-								<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$IF=:FR:LANGUE$$VIDÉO DU BIEN$$END$$$$IF=:EN:LANGUE$$VIDEO OF THE PROPERTY$$END$$
-							 </a>
-							 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
-								$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
-								$$A:IDVIDEO=@@IDVIDEO trim@@$$
-								<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
-								<h2 itemprop="name">$$TITLE$$</h2>
-								<p itemprop="description">
-								   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
-								   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
-								</p>
-								<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
-							 </div>
+								 <a href="$$LIEN_360$$" class="btn btn-block btn-small btn-important bouton-video-detail">
+									<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VISITEVIRTUELLE pcase$$
+								 </a>
+								 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+									$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+									$$A:IDVIDEO=@@IDVIDEO trim@@$$
+									<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+									<h2 itemprop="name">$$TITLE$$</h2>
+									<p itemprop="description">
+									   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+									   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+									</p>
+									<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+								 </div>
 							$$END$$
+							
+							$$REM$$ <!-- CAS 360_URL REMONTEE PAR LA MACRO -->$$END$$
 							$$IF:ANNDETAIL:360_URL$$
-							 <a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" class="btn btn-block btn-small btn-important bouton-video-detail">
-								<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$IF=:FR:LANGUE$$VIDÉO DU BIEN$$END$$$$IF=:EN:LANGUE$$VIDEO OF THE PROPERTY$$END$$
+								$$A:BT_VV_OK=1$$
+								 <a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" class="btn btn-block btn-small btn-important bouton-video-detail">
+									<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VISITEVIRTUELLE pcase$$</a>
+								 </a>
+								 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+									$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+									$$A:IDVIDEO=@@IDVIDEO trim@@$$
+									<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+									<h2 itemprop="name">$$TITLE$$</h2>
+									<p itemprop="description">
+									   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+									   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+									</p>
+									<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+								 </div>
+							$$END$$		
+							
+							$$REM$$ <!-- AUTRES CAS -->$$END$$							
+							$$IF=:0:BT_VV_OK$$
+								 <a href="$$ANNDETAIL:ANN_VV_URL htmlencode$$" class="btn btn-block btn-small btn-important bouton-video-detail">
+									<img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VISITEVIRTUELLE pcase$$
+								 </a>
+								 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
+									$$A:IDVIDEO=@@ANNDETAIL:ANN_VV_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+									$$A:IDVIDEO=@@IDVIDEO trim@@$$
+									<iframe src="$$ANNDETAIL:ANN_VV_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+									<h2 itemprop="name">$$TITLE$$</h2>
+									<p itemprop="description">
+									   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+									   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+									</p>
+									<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+								 </div>
+						
+							$$END$$
+						
+					</div>						 
+					$$END$$
+					$$REM$$ <!-- FIN BOUTON VISITE VIRTUELLE -->$$END$$
+
+					$$REM$$ <!-- BOUTON VIDEO -->$$END$$
+					$$IF:ANNDETAIL:ANN_VIDEO_ID$$
+					<div class="span4">
+							 <a href="$$ANNDETAIL:ANN_VIDEO_URL htmlencode$$" class="btn btn-block btn-small btn-important bouton-video-detail">
+								<img src="$$-$$images/pictos/picto-video.png" alt="">&nbsp; $$LG:VIDEO pcase$$
 							 </a>
 							 <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
-								$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+								$$A:IDVIDEO=@@ANNDETAIL:ANN_VIDEO_URL replace https://www.youtube.com/watch_popup?v= ?@@$$
+								$$A:IDVIDEO=@@IDVIDEO  replace https://www.youtube.com/embed/ ?@@$$
+								$$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
 								$$A:IDVIDEO=@@IDVIDEO trim@@$$
-								<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+								<iframe src="$$ANNDETAIL:ANN_VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
 								<h2 itemprop="name">$$TITLE$$</h2>
 								<p itemprop="description">
 								   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
@@ -105,22 +140,12 @@ $$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VID
 								</p>
 								<meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
 							 </div>
-							$$END$$						
-						 </div>						 
-						 
-					 </div>
-				$$END$$			
-				$$REM$$
-                $$IF:ANNDETAIL:ID360$$
-                    $$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
-                        $$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
-                    $$END$$
-                    <a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ btn-important btn-small bouton-video-360">$$IF=:FR:LANGUE$$VIDÉO DU BIEN$$END$$$$IF=:EN:LANGUE$$VIDEO OF THE PROPERTY$$END$$</a>
-                $$END$$
-                $$IF:ANNDETAIL:360_URL$$
-                    <a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" class="$$TYPEBOUTON$$ btn-important btn-small bouton-video-360">$$IF=:FR:LANGUE$$VIDÉO DU BIEN$$END$$$$IF=:EN:LANGUE$$VIDEO OF THE PROPERTY$$END$$</a>
-                $$END$$
-				$$END$$
+					 </div>							 
+					$$END$$			
+				</div>
+				
+		
+			
 
                <div id="detail-gallery1" class="owl-carousel owl-theme">
                   $$DO$$
@@ -141,24 +166,8 @@ $$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VID
                <div id="detail-gallery2" class="owl-carousel owl-theme">
                   $$DO$$
                   $$A:ALT_GALERIE=@@ANNDETAIL:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNDETAIL:IDTYPEBIEN gettypebien lcase@@ @@ANNDETAIL:VILLE pcase@@ @@ANNDETAIL:PRIX@@@@ANNDETAIL:PRIX_UNITE@@ - @@LG:PHOT pcase@@ @@GALERIE:I@@$$
-                  <div class="item"><img src="$$GALERIE:C175_URL$$" alt="$$ALT_GALERIE$$"></div>
+                  <div class="item"><img src="$$GALERIE:C175_URL$$" alt="$$ALT_GALERIE$$"> </div>
                   $$LOOP$$
-
-                  $$BIF:VIDEO$$
-                  $$DO:1:1$$
-                  $$A:IDVIDEO=@@VIDEO:URL replace https://www.youtube.com/embed/ ?@@$$
-                  $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
-                  $$A:IDVIDEO=@@IDVIDEO trim@@$$
-                  <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="bouton-video-detail">
-                     <img src="$$-$$images/pictos/picto-video.png" alt="$$LG:VIDEO:360 pcase$$">
-                  </a>
-                  $$LOOP$$
-                  $$BFIN$$
-                  $$IF:ANNDETAIL:VIDEO_URL$$
-                      <a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" class="bouton-video-detail">
-                         <img src="$$-$$images/pictos/picto-360-big.png" alt="$$LG:VIDEO pcase$$">
-                      </a>
-                  $$END$$
 
                </div>
             </div>
@@ -170,33 +179,9 @@ $$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VID
                </div>
             </div>
             $$BFIN$$
-
-
-            $$BIF:VIDEO$$
-                <div class="row-fluid margin-top-10">
-                    <div class="span4">
-                        $$DO:1:1$$
-                             $$A:IDVIDEO=@@VIDEO:URL replace https://www.youtube.com/embed/ ?@@$$
-                             $$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
-                             $$A:IDVIDEO=@@IDVIDEO trim@@$$
-                             <a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" class="btn btn-block btn-small btn-important bouton-video-detail">
-                                <img src="$$-$$images/pictos/picto-360.png" alt="">&nbsp; $$LG:VIDEO pcase$$
-                             </a>
-                             <div itemprop="video" itemscope itemtype="https://schema.org/VideoObject" class="display-none">
-                                <iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
-                                <h2 itemprop="name">$$TITLE$$</h2>
-                                <p itemprop="description">
-                                   $$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
-                                   $$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
-                                </p>
-                                <meta itemprop="thumbnailURL" content="https://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
-                             </div>
-                        $$LOOP$$
-                    </div>
-                </div>
-            $$BFIN$$
-
          </div>
+		 
+		 
          <div class="span4">
             <img src="$$-$$images/pictos/picto-arthur.png" alt="Arthurimmo $$ANNDETAIL:AGVILLE$$" class="detail-agence-picto margin-bottom-20">
             <h2 class="detail-agence-nom" itemprop="name">
