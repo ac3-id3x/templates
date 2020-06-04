@@ -1,6 +1,71 @@
 $$B:IMMOBW:PHOTOS:ADD:ANNDETAIL_IDANNONCE:ALIAS:GALERIE$$
 <!--#include virtual="detail/incl_detail_selection_js.htm" -->
+<div class="row-fluid">
+	<div class="span12">
+		$$REM$$<!-- VIDEO -->$$END$$
+		$$B:IMMOBW:VISUELS:~idannonce:ADD:ANNDETAIL_IDANNONCE:~idTypeVisuel:21:ALIAS:VIDEO$$
+		$$BIF:VIDEO$$
+			$$DO:1:1$$
+				$$A:IDVIDEO=@@VIDEO:URL replace http://www.youtube.com/embed/ ?@@$$
+				$$A:IDVIDEO=@@IDVIDEO replace ?rel=0 ?@@$$
+				$$A:IDVIDEO=@@IDVIDEO trim@@$$
+				<p class="big">Découvrez notre visite virtuelle</p>
+				<a href="$$VIDEO:URL$$&autoplay=1&amp;wmode=transparent" target="_blank" class="$$TYPEBOUTON$$ btn-important bouton-video-detail btn-tooltip" data-placement="top" data-title="$$LG:VIDEO pcase$$">
+					<img src="$$~$$images/widget/$$PICTO_COULEUR$$/video.png" alt="$$LG:VIDEO:360 pcase$$" class="margin-right-5"> Cliquez-ici
+				</a>
+				<div itemprop="video" itemscope itemtype="" class="display-none"> 
+					<iframe src="$$VIDEO:URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+					<div class="h3-like" itemprop="name">$$TITLE$$</div>
+					<p itemprop="description">
+						$$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+						$$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+					</p>
+					<meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+					 <meta itemprop="uploadDate" content="" />
+				</div> 
+			$$LOOP$$
+		$$BFIN$$
+		$$IF:ANNDETAIL:VIDEO_URL$$
+			<p class="big">Découvrez notre visite virtuelle</p>
+			<a href="$$ANNDETAIL:VIDEO_URL htmlencode$$" target="_blank"  class="$$TYPEBOUTON$$ btn-important bouton-video-detail btn-tooltipest" data-placement="top" data-title="$$LG:VIDEO pcase$$">
+				 Cliquez-ici
+			</a>
+			<div itemprop="video" itemscope itemtype="" class="display-none"> 
+				$$A:IDVIDEO=@@ANNDETAIL:VIDEO_URL replace http://www.youtube.com/watch_popup?v= ?@@$$
+				$$A:IDVIDEO=@@IDVIDEO trim@@$$
+				<iframe src="$$ANNDETAIL:VIDEO_URL htmlencode$$" frameborder="0" allowfullscreen></iframe>
+				<div class="h3-like" itemprop="name">$$TITLE$$</div>
+				<p itemprop="description">
+					$$IF!:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF pcase$$$$END$$
+					$$IF=:1:DESCRIPTIFCLIENT$$$$ANNDETAIL:DESCRIPTIF crlf2br$$$$END$$
+				</p>
+				<meta itemprop="thumbnailURL" content="http://i.ytimg.com/vi/$$IDVIDEO$$/0.jpg" />
+				 <meta itemprop="uploadDate" content="" />
+		</div>
+		$$END$$
 
+		$$REM$$<!-- VISITE VIRTUELLE -->$$END$$
+		$$IF!:1:BIGVISITE$$
+			$$IF:ANNDETAIL:ID360$$
+				$$IF=:4:ANNDETAIL:IDTYPEVISUEL360$$
+					$$A:LIEN_360=@@IMMOBW:360PREVISITE:URLABS@@@@IMMOBW:360PREVISITE:URL@@$$
+				$$END$$
+				<p>
+					<a href="$$LIEN_360$$" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-video-360">
+						$$LG:VISITEVIRTUELLE pcase$$
+					</a>
+				</p>
+			$$END$$
+			$$IF:ANNDETAIL:360_URL$$
+				<p>
+					<a href="$$ANNDETAIL:360_URL replace youtu.be www.youtube.com/embed/$$" target="_blank" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ bouton-video-360">
+						$$LG:VISITEVIRTUELLE pcase$$
+					</a>
+				</p>
+			$$END$$
+		$$END$$
+	</div>
+</div>
 <div class="detail-galerie">
     <div class="detail-panier" data-idannonce="$$ANNDETAIL:IDANNONCE$$" data-idpublication="$$ANNDETAIL:IDPUBLICATION$$">
         <i class="mf-icon-star"></i>
