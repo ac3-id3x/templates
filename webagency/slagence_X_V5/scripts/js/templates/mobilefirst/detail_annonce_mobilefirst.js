@@ -149,11 +149,14 @@ $(window).load(function() {
                 submitButton.button('reset');
             }
         });
+		
+		
 
         $(".detail-form-close").click(function() {
             $('#detail-form').removeClass("is-active");
             $('.detail-form-nav .btn').removeClass("active");
             $('body').removeClass("has-modal");
+			$('.detail-form-content').addClass("display-none");
         });
    })();
    
