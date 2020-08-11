@@ -1,0 +1,128 @@
+$$INIT:QUERYESTIMATION=idtypebien=1,2&photo=10$$
+$$INIT:IDT=ESTIMATION$$
+
+$$E:IMMOBW:AGENCE:REP:1:ALIAS:CVESTIMATION$$
+$$E:OBSERVATOIRE:MELURL$$
+$$A:ESTIMATION-PAGE=1$$
+<!--#include virtual="header/incl_haut.htm" -->
+<!--#include virtual="estimation/incl_title_estimation.htm" -->
+$$A:ADRESSE_EEL_V3_OK=1$$
+$$A:ADRESSE_EEL_V3_CONCAT=$$
+
+
+$$REM$$<!-- Définition de l'adresse en monoagence -->$$END$$
+$$IF=:0:MULTIAGENCES$$
+	$$IF:AGENCE_ADRESSE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@AGENCE_ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1@@$$
+	$$END$$
+	$$IF0:AGENCE_ADRESSE$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+
+	$$IF:AGENCE_CP$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@ADRESSE_EEL_V3_CONCAT@@, @@AGENCE_CP@@$$
+	$$END$$
+
+	$$IF0:AGENCE_CP$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+
+	$$IF:AGENCE_VILLE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@ADRESSE_EEL_V3_CONCAT@@ @@AGENCE_VILLE@@$$
+	$$END$$
+	$$IF0:AGENCE_VILLE$$
+		$$A:ADRESSE_EEL_V3_OK=0$$
+	$$END$$
+$$END$$
+
+$$REM$$<!-- Définition de l'adresse en multi agences -->$$END$$
+$$IF=:1:MULTIAGENCES$$
+	$$IF:PAGE:MEL_CFG_ADR_SIGNATAIRE$$
+		$$A:ADRESSE_EEL_V3_CONCAT=@@PAGE:MEL_CFG_ADR_SIGNATAIRE@@$$
+	$$END$$
+$$END$$
+	<div class="row-fluid margin-bottom-10">
+		<div class="span4"><img src="images/seo/page-estimation.jpg" class="margin-top-10"></div>
+		<div class="span8">
+			<div class="margin-top-2"></div>
+			<p class="pagination-justify margin-top-10">Pour vendre un bien immobilier, il convient tout d'abord de l'estimer à son juste prix, au plus près de la valeur du marché local. Il ne sert à rien de surévaluer ou sous-évaluer une maison, un appartement, un local commercial ou un terrain. Bien au contraire, car une mauvaise estimation ne fera que retarder voire rendre impossible une vente. À l'agence ABC IMMOBILIER, nos professionnels justifient de compétences et d'une expertise de terrain reconnues. Un conseiller dédié s'occupera de votre dossier du début à la fin, vous libérant ainsi des contraintes administratives et techniques liées à toute vente immobilière. En nous confiant l'estimation et la vente de votre bien, vous faites confiance au savoir-faire de vrais professionnels de l'immobilier.</p>
+		</div>
+	</div>
+<!-- estim lead detection : $$ESTIMATIONLEAD$$ -->
+<div class="row-fluid">
+	<div class="span12">
+
+	$$IF=:1:PAGE:MEL_CFG_V1$$
+		<h1>$$H1_ESTIMATION$$</h1>
+	$$END$$
+
+	<hr class="hidden-phone">
+
+	$$IF=:FR:LANGUE$$
+        $$IF0:REP:1$$
+            $$IF=:1:ESTIMATIONLEAD$$
+                $$IF!:1:PAGE:MEL_CFG_V1$$
+                    <!--#include virtual="header/incl_text_estimation.htm" -->
+
+                    <link href="/z/webagency/slagence_X_V5/estimation/module_v3/assets/css/estimationForm.css" rel="stylesheet" />
+
+                    $$REM$$<!--FORMULAIRE-->$$END$$
+                    <div class="row-fluid">
+                        <estimation id="estimation-app" ng-app="estimationApp" ng-controller="EstimationController as $ec"></estimation>
+                    </div>
+
+                    $$IF!:1:HIDEFORMBOTTOM$$
+                        <!--#include virtual="estimation/incl_estimation_bottom.htm" -->
+                    $$END$$
+                    <script type="text/javascript">
+                        var _confEstimToken = "$$PAGE:MEL_CFG_JETON$$";
+						var _confContactMail = "$$PAGE:MEL_CFG_EMAIL$$";
+						var _confAgencyName = "$$PAGE:MEL_CFG_RAISON_SOCIALE$$";
+						var _confAffichagePrix = "$$PAGE:MEL_AFFICHAGE_PRIX$$";
+						var _confLocationPlaceholder = "$$IF=:1:ADRESSE_EEL_V3_OK$$$$IF:ADRESSE_EEL_V3_CONCAT$$$$ADRESSE_EEL_V3_CONCAT rxreplace (.*)\r\n(.*) $1¤$2 trim$$$$END$$$$END$$";
+						var _confPhoneRequired = $$IF=:true:PAGE:MEL_CFG_REQUIS_TELEPHONE$$1$$END$$$$IF!:true:PAGE:MEL_CFG_REQUIS_TELEPHONE$$0$$END$$;
+						var _idTypeBien = $$IF=:1:FORM:IDTYPEBIEN$$1$$END$$$$IF!:1:FORM:IDTYPEBIEN$$2$$END$$;
+                    </script>
+					
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationFormVendor.js"></script>
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationFormPoliris.js"></script>
+                    <script type="text/javascript" src="/z/webagency/slagence_X_V5/estimation/module_v3/assets/js/estimationForm.js"></script>
+
+                    <style>
+                        <!--#include virtual="estimation/module_v3/assets/css/estimationFormPoliris.htm" -->
+                    </style>
+                $$END$$
+                $$IF=:1:PAGE:MEL_CFG_V1$$
+                    $$IF=:1:FORM:IDTYPEBIEN$$
+                        $$A:TAILLE=700$$
+                    $$END$$
+                    $$IF=:2:FORM:IDTYPEBIEN$$
+                        $$A:TAILLE=920$$
+                    $$END$$
+                    $$IF:FORM:IDTYPEBIEN$$
+                        <!--#include virtual="estimation/incl_texte_estimation.htm" -->
+                        <iframe src="$$OBSERVATOIRE:MELURL:URL$$&o=INTP-0001&idtypebien=$$IF:FORM:IDTYPEBIEN$$$$FORM:IDTYPEBIEN$$$$END$$$$IF0:FORM:IDTYPEBIEN$$1$$END$$"  width="960" height="$$TAILLE$$" scrolling="no" style="overflow-y:hidden;border:0;" frameborder="0"></iframe>
+                    $$END$$
+                    $$IF0:FORM:IDTYPEBIEN$$
+                        <!--#include virtual="estimation/incl_select_estimation.htm" -->
+                    $$END$$
+                $$END$$
+    		$$END$$
+        $$END$$
+
+        $$IF:REP:1$$
+            $$IF:REP:1$$
+                <!--#include virtual="estimation/incl_formulaire_estimation.htm" -->
+            $$END$$
+            $$IF0:REP:1$$
+                <!--#include virtual="estimation/incl_agences_estimation.htm" -->
+            $$END$$
+        $$END$$
+	$$END$$
+
+	$$IF!:FR:LANGUE$$
+		<!--#include virtual="estimation/incl_construction_estimation.htm" -->
+	$$END$$
+	</div>
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
