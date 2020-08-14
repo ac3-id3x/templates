@@ -1,0 +1,136 @@
+<div class="row-fluid margin-bottom-10">
+	<div class="span4"><img src="images/seo/estimation.jpg" class="margin-top-10"></div>
+	<div class="span8">
+		<div class="margin-top-2"></div>
+		<p class="pagination-justify margin-top-10">Vous souhaitez faire estimer votre appartement, maison, parking, terrain ou boutique ? Pour connaître le prix auquel vous pouvez espérer vendre votre bien rapidement et sans perdre d’argent, bénéficiez de l’expertise de l’agence Mimizanaise arthurimmo.com. L’estimation d’un bien immobilier doit être confiée à des professionnels qui tiennent compte de sa localisation, de son environnement, de ses caractéristiques (état, superficie, exposition) et de la demande du marché local. Utilisez notre outil en ligne pour nous faire part du type de transaction et de bien que vous souhaitez faire estimer. Notre équipe de professionnels vous recontactera au plus vite.</p>
+	</div>
+</div>
+$$B:IMMOBW:ANN-ES:2:VAL:LANGUE:::ADD:ci=+FORM_CI+&idtypebien=+FORM_IDTYPEBIEN+&rayon=20&photo=10&tri=d_dt_crea:~nostat:1:~limit:6:ALIAS:ANNESTIM$$
+$$BIF:ANNESTIM$$
+	<div class="bloc-annonces-agence margin-top-40">
+		<h3 class="h2-like">$$LG:NOSDERNANN pcase$$$$IF:FORM:CI$$ $$LG:A lcase$$ $$FORM:CI codeinsee2ville pcase$$$$END$$</h3>
+		<hr class="margin-bottom-10">
+        <div class="row-fluid">
+		$$DO:1:3$$
+
+            $$A:TITLE_ANNONCE=@@ANNESTIM:IDTYPETRANSACTION gettypetransaction pcase@@ @@ANNESTIM:IDTYPEBIEN gettypebien lcase@@ @@ANNESTIM:AVILLE ncase@@$$
+            $$IF:ANNESTIM:PHOTOURL0$$
+                $$A:MODULEIMG=@@ANNESTIM:PHOTOURL0@@$$
+            $$END$$
+            $$IF0:ANNESTIM:PHOTOURL0$$
+                $$IF!:1:SANS_PHOTO_PERSO$$
+                    $$A:MODULEIMG=@@~@@images/recherche/sans_photo.jpg$$
+                $$END$$
+                $$IF=:1:SANS_PHOTO_PERSO$$
+                    $$A:MODULEIMG=@@_@@images/recherche/sans_photo.jpg$$
+                $$END$$
+            $$END$$
+
+            <div class="module-annonces-item span4">
+                <a href="$$ANNESTIM:URLVIRTUELLE$$" title="$$TITLE_ANNONCE$$">
+
+                    <div class="module-annonces-img" style="background-image: url($$MODULEIMG$$);">
+                        $$IF!:0:PICTOANNONCE$$
+                            <div class="module-tags">
+                                $$IF:ANNESTIM:SI_EXCLUSIF$$
+                                    <div class="module-tag module-tag-exclu">
+                                        $$LG:EXCLUSIVITE pcase$$
+                                    </div>
+                                $$END$$
+                                $$IF:ANNESTIM:SI_COUPDECOEUR$$
+                                    <div class="module-tag module-tag-cdc">
+                                        $$LG:COUPDECOEUR pcase$$
+                                    </div>
+                                $$END$$
+                                $$IF+:FRAICHEUR:ANNESTIM:DT_CREA datediff now timespan days$$
+                                    <div class="module-tag module-tag-new">
+                                        $$LG:NEWCOURT pcase$$
+                                    </div>
+                                $$END$$
+                            </div>
+                        $$END$$
+                        $$IF:ANNESTIM:ID360$$
+                            <div class="module-tag module-tag-360">
+                                $$LG:VISITEVIRTUELLE pcase$$
+                            </div>
+                        $$END$$
+                        $$IF:ANNESTIM:360_URL$$
+                            <div class="module-tag module-tag-360">
+                                $$LG:VISITEVIRTUELLE pcase$$
+                            </div>
+                        $$END$$
+                    </div>
+
+                    <div class="module-annonces-content">
+                        <div class="module-annonces-content-left">
+                            <div class="module-annonces-type">
+                                <span class="module-annonces-typetransaction">$$ANNESTIM:IDTYPETRANSACTION gettypetransaction pcase$$</span>
+                                $$ANNESTIM:IDTYPEBIEN gettypebien$$
+                            </div>
+                           <div class="module-annonces-specs">
+                                $$IF:ANNESTIM:SURFACE$$
+                                    <span class="module-annonces-surface">
+                                        $$IF!:EN:LANGUE$$$$ANNESTIM:SURFACE$$ m² $$END$$
+                                        $$IF=:EN:LANGUE$$ $$ANNESTIM:SURFACE exec XX*10.763910 formatnumber 0$$ Sq Ft$$END:EN$$
+                                    </span>
+                                $$END$$
+                                $$IF:ANNESTIM:NB_PIECES$$
+                                    <span class="module-annonces-pieces">
+                                        $$IF:ANNESTIM:SURFACE$$ - $$END$$
+                                        $$IF:ANNESTIM:NB_PIECES$$
+                                            $$ANNESTIM:NB_PIECES$$
+                                        $$END$$
+                                        $$IF0:ANNESTIM:NB_PIECES$$
+                                            N/A
+                                        $$END$$
+                                        $$IF=:1:ANNESTIM:NB_PIECES$$$$LG:PIECE lcase$$$$END$$$$IF+:2:ANNESTIM:NB_PIECES$$$$LG:PIECES2 lcase$$$$END$$
+                                    </span>
+                                $$END$$
+                            </div>
+                            <div class="module-annonces-ville">
+                                $$IF:ANNESTIM:VILLE$$
+                                    <i class="mf-icon-localisation typo-action"></i>&nbsp;
+                                    $$ANNESTIM:VILLE pcase$$
+                                $$END$$
+                                $$IF!:1:CPHIDDEN$$
+                                    $$IF:ANNESTIM:CP$$($$ANNESTIM:CP$$)$$END$$
+                                $$END$$
+                            </div>
+                        </div>
+                        <div class="module-annonces-content-right">
+                            $$IF=:0:PRIXMASQUE$$
+                                $$IF:ANNESTIM:XML xml PRIX_NOUS_CONSULTER$$
+                                    <div class="module-annonces-prix module-annonces-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                                $$END$$
+                                $$IF0:ANNESTIM:XML xml PRIX_NOUS_CONSULTER$$
+                                    $$IF:ANNESTIM:PRIX$$
+                                        <div class="module-annonces-prix">
+                                            $$ANNESTIM:PRIX formatnumber 0$$ $$ANNESTIM:PRIX_UNITE$$
+                                            $$IF=:1:HONORAIRESINCLUS$$
+                                                <abbr class="small" title="$$LG:HONORAIRESINCLUS pcase$$"><!--#include virtual="recherche/incl_honoraires.htm" --> <sup>1</sup></abbr>
+                                            $$END$$
+                                            $$IF:ANNESTIM:PX_RENTE$$
+                                                <br><span class="small">$$LG:RENTE pcase$$ : </span>$$ANNESTIM:PX_RENTE formatnumber 0$$ $$LG:EUROMOIS$$
+                                            $$END$$
+                                        </div>
+                                    $$END$$
+                                $$END$$
+                            $$END$$
+                            $$IF=:1:PRIXMASQUE$$
+                                <div class="module-annonces-prix annonce-prix-hidden">$$LG:PRIXNOUSCONSULTER pcase$$</div>
+                            $$END$$
+                            <div class="module-annonces-ref">
+                                $$IF=:1:RECHERCHE_REFANNONCE_LEGENDE$$
+                                    <span class="module-annonces-ref-lgd">$$LG:REFER pcase$$ </span>
+                                $$END$$
+                                $$ANNESTIM:REFANNONCE$$
+                            </div>
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+		$$LOOP$$
+
+	</div>
+$$BFIN$$
