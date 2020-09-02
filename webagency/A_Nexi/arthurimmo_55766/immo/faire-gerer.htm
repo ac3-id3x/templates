@@ -1,0 +1,133 @@
+$$INIT:IDT=GESTION$$
+
+<!--#include virtual="header/incl_boucle_index.htm" -->
+<!--#include virtual="header/incl_haut.htm"-->
+
+<h1>Vous désirez faire gérer votre bien immobilier</h1><hr>
+
+<form method="post" action="/$$REP:0$$" enctype="multipart/form-data">
+    <!--#include virtual="contact/incl_honeypot.htm" -->
+    <input type="hidden" name="u" value="ID3:FORMMAIL" />
+    <input type="hidden" name="page_ok" value="/immo,faire-gerer_envoi.htm" />
+    <input type="hidden" name="page_err" value="/$$REP:1$$/$$REP:0$$" />
+    <input type="hidden" name="page_html" value="/immo,faire-gerer_email.htm" />
+    <input type="hidden" name="cfg_form" value="gerer" />
+    <input type="hidden" name="cfg_emails" value="gerer" />
+    <input type="hidden" name="subject" value="Faire gérer un bien"/>
+    $$IF=:0:MULTIAGENCES$$
+        <input type="hidden" name="email_to" value="$$AGENCE_EMAIL$$"/>
+    $$END$$
+    $$IF:ERRE$$
+        <div class="margin-bottom-20">
+            <span class="h3-like typo-action bold uppercase">$$LG:ERREUR$$</span>
+            <p class="small">$$ERRE$$</p>
+        </div>
+    $$END$$
+    $$IF=:1:MULTIAGENCES$$
+        <div class="control-group">
+            <h2 class="h3-like typo-action bold uppercase">$$LG:CHOISISSEZAGENCE pcase$$</h3><hr>
+            <div class="has-select">
+                <select name="email_to" class="center">
+                    $$B:IMMOBW:AGENCES:ALIAS:AGS$$
+                    $$BIF:AGS$$
+                        $$DO$$
+                            <option value="$$AGS:EMAIL$$">$$AGS:NOM ucase$$ - $$AGS:ADRESSE htmlencode$$</option>
+                        $$LOOP$$
+                    $$BFIN$$
+                </select>
+            </div>
+        </div>
+    $$END$$
+
+    <div class="row-fluid margin-top-30">
+        <div class="span6 margin-top-15">
+            <h3 class="typo-action bold uppercase">Votre bien</h3><hr>
+            <div class="control-group">
+                <label>$$LG:BIENPROP pcase$$ :</label>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="1" $$IF=:1:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:APPARTEMENT pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="2" $$IF=:2:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:MAISON pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="4" $$IF=:4:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:TERRAIN pcase$$</label></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="3" $$IF=:3:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:PARKING pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="11" $$IF=:11:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:IMMEUBLE pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="gerer-typebien" value="5" $$IF=:5:FORM:GERER-TYPEBIEN$$checked$$END$$ required> $$LG:COMMERCE pcase$$</label></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gerer-surface">$$LG:SURFH2 pcase$$*</label>
+                <input type="text" id="gerer-surface" class="center" name="gerer-surface" value="$$FORM:GERER-SURFACE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-terrain">$$LG:TERRAIN pcase$$*</label>
+                <input type="text" id="gerer-terrain" class="center" name="gerer-terrain" value="$$FORM:GERER-TERRAIN$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-pieces">$$LG:NBRP pcase$$*</label>
+                <input type="text" id="gerer-pieces" class="center" name="gerer-pieces" value="$$FORM:GERER-PIECES$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-dpt">$$LG:DPTV pcase$$*</label>
+                <input type="text" id="gerer-dpt" class="center" name="gerer-dpt" value="$$FORM:GERER-DPT$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-prix">$$LG:PRIXLOYER pcase$$*</label>
+                <input type="text" id="gerer-prix" class="center" name="gerer-prix" value="$$FORM:GERER-PRIX$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-precisions">$$LG:PRECIS pcase$$</label>
+                <textarea id="gerer-precisions" class="center" rows="5" name="gerer-precisions">$$FORM:GERER-PRECISIONS$$</textarea>
+            </div>
+        </div>
+        <div class="span6 margin-top-15">
+            <h3 class="typo-action bold uppercase">$$LG:COORD3 pcase$$</h3><hr>
+            <div class="control-group">
+                <label>$$LG:CIVILITE pcase$$* :</label>
+                <div class="row-fluid">
+                    <div class="span4"><label><input type="radio" name="gerer-civil" value="1" $$IF=:1:FORM:GERER-CIVIL$$checked$$END$$ required> $$LG:MONSIEUR pcase$$</label></div>
+                    <div class="span4"><label><input type="radio" name="gerer-civil" value="2" $$IF=:2:FORM:GERER-CIVIL$$checked$$END$$ required> $$LG:MADAME pcase$$</label></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gerer-nom">$$LG:VOTRENOM pcase$$*</label>
+                <input type="text" id="gerer-nom" class="center" name="gerer-nom" value="$$FORM:GERER-NOM$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-adresse">$$LG:ADRESSE pcase$$*</label>
+                <input type="text" id="gerer-adresse" class="center" name="gerer-adresse" value="$$FORM:GERER-ADRESSE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-cp">$$LG:CODEP pcase$$*</label>
+                <input type="text" id="gerer-cp" class="center" name="gerer-cp" value="$$FORM:GERER-CP$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-ville">$$LG:VILLE pcase$$*</label>
+                <input type="text" id="gerer-ville" class="center" name="gerer-ville" value="$$FORM:GERER-VILLE$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-tel">$$LG:TEL pcase$$*</label>
+                <input type="tel" id="gerer-tel" class="center" name="gerer-tel" value="$$FORM:GERER-TEL$$" required>
+            </div>
+            <div class="control-group">
+                <label for="gerer-fax">$$LG:FAX pcase$$</label>
+                <input type="tel" id="gerer-fax" class="center" name="gerer-fax" value="$$FORM:GERER-FAX$$">
+            </div>
+            <div class="control-group">
+                <label for="email_from">$$LG:EMAIL pcase$$*</label>
+                <input type="email" id="email_from" class="center" name="email_from" value="$$FORM:EMAIL_FROM$$" required>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$">$$LG:ENVOYMES pcase$$</button>
+            </div>
+        </div>
+    </div>
+    <div class="margin-top-20">
+        <p class="smaller italic">* $$LG:CHAMPSOBLIGATOIRES pcase$$</p>
+        <!--#include virtual="legal/incl_rgpd.htm" -->
+    </div>
+
+</form>
+
+
+<!--#include virtual="footer/incl_bas.htm"-->
