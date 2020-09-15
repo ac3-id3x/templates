@@ -191,7 +191,6 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 		{ customer: '________', idPublication: 397253, latitude:  44.194125, longitude:   0.602399 }, // webagency\A_Nexi\cotegas_36513
 		{ customer: '________', idPublication: 452207, latitude:  49.649829, longitude:   1.731285 }, // webagency\A_Nexi\formerie_36098
 		{ customer: '________', idPublication: 514925, latitude: -21.338995, longitude:  55.479366 }, // webagency\A_Nexi\isautier_37263
-		{ customer: '________', idPublication: 497440, latitude:  48.842138, longitude:   2.321952 }, // webagency\A_Nexi\sp92_35430
 		{ customer: '________', idPublication: 508253, latitude: -20.950319, longitude:  55.317157 }, // webagency\A_Nexi\srcf97412_36578
 		{ customer: '________', idPublication: 510529, latitude: -21.355194, longitude:  55.565444 }, // webagency\A_Nexi\zoreol97_36898
 		{ customer: '________', idPublication: 511614, latitude:  48.704500, longitude:   2.037615 }, // webagency\A_Nexi\bimmo78460_37016
@@ -312,7 +311,6 @@ mapsManagerConstructor.prototype.getAgenciesForcedValues = function() {
 
 // The following is a feature to update some agency data
 mapsManagerConstructor.prototype.updateAgenciesData = function() {
-	
 	// a) update agency with new GPS coordinates (manual input in the current JS file).
 	var forcedValues = this.getAgenciesForcedValues();
 	if (forcedValues.length > 0) {
