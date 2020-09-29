@@ -147,8 +147,36 @@ $$END$$
         //    $('#TelShowRight').hide('slow');           
         //});
     });
+
+
+(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"56041247"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){
+		var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
+		window.uetq = window.uetq || [];
+
+		
+$(document).ready(function(){
+
+	$("#tel-ads,.btn-send-contact,#contact-ads").click(function() {
+		switch (true) {
+			case $(this).is('#tel-ads'):
+				window.uetq.push('event', 'clic', {'event_category': 'appel', 'event_label': 'website'});
+				break;
+			case $(this).is('.btn-send-contact'):
+				window.uetq.push('event', 'envoi', {'event_category': 'formulaire', 'event_label': 'pageannonce'});
+				break;
+			case $(this).is('#contact-ads'):
+			if($('p.message-erreur-alerte').css('display', 'none')){
+				window.uetq.push('event', 'envoi', {'event_category': 'formulaire', 'event_label': 'contact'});
+				}
+				break;				
+		};
+	});
+
+});
 </script>
+$$IF!:GESTION:IDT$$
 <div id="PopTelRight"><span class="tel-txt hidden-phone hidden-tablet margin-right-5" style="display: none;" id="TelShowRight">$$AGENCE_TEL$$</span><i class="icon-v5 icon-v5-mobile" id="TelIcoRight"></i><span class="smaller hidden-desktop" style="display: none !important;" id="TelShowDown">$$AGENCE_TEL$$</span></div>
+$$END$$
 
 $$IF=:DETAILANNONCE:IDT$$
     <script>
@@ -526,3 +554,205 @@ $$END:REM$$
 
     
 </script>
+
+$$IF=:GESTION:IDT$$
+<script>
+	// File#: _1_stacking-cards
+	// Usage: codyhouse.co/license
+	(function() {
+	  var StackCards = function(element) {
+		this.element = element;
+		this.items = this.element.getElementsByClassName('js-stack-cards__item');
+		this.scrollingFn = false;
+		this.scrolling = false;
+		initStackCardsEffect(this); 
+		initStackCardsResize(this); 
+	  };
+
+	  function initStackCardsEffect(element) { // use Intersection Observer to trigger animation
+		setStackCards(element); // store cards CSS properties
+		var observer = new IntersectionObserver(stackCardsCallback.bind(element), { threshold: [0, 1] });
+		observer.observe(element.element);
+	  };
+
+	  function initStackCardsResize(element) { // detect resize to reset gallery
+		element.element.addEventListener('resize-stack-cards', function(){
+		  setStackCards(element);
+		  animateStackCards.bind(element);
+		});
+	  };
+	  
+	  function stackCardsCallback(entries) { // Intersection Observer callback
+		if(entries[0].isIntersecting) {
+		  if(this.scrollingFn) return; // listener for scroll event already added
+		  stackCardsInitEvent(this);
+		} else {
+		  if(!this.scrollingFn) return; // listener for scroll event already removed
+		  window.removeEventListener('scroll', this.scrollingFn);
+		  this.scrollingFn = false;
+		}
+	  };
+	  
+	  function stackCardsInitEvent(element) {
+		element.scrollingFn = stackCardsScrolling.bind(element);
+		window.addEventListener('scroll', element.scrollingFn);
+	  };
+
+	  function stackCardsScrolling() {
+		if(this.scrolling) return;
+		this.scrolling = true;
+		window.requestAnimationFrame(animateStackCards.bind(this));
+	  };
+
+	  function setStackCards(element) {
+		// store wrapper properties
+		element.marginY = getComputedStyle(element.element).getPropertyValue('--stack-cards-gap');
+		getIntegerFromProperty(element); // convert element.marginY to integer (px value)
+		element.elementHeight = element.element.offsetHeight;
+
+		// store card properties
+		var cardStyle = getComputedStyle(element.items[0]);
+		element.cardTop = Math.floor(parseFloat(cardStyle.getPropertyValue('top')));
+		element.cardHeight = Math.floor(parseFloat(cardStyle.getPropertyValue('height')));
+
+		// store window property
+		element.windowHeight = window.innerHeight;
+
+		// reset margin + translate values
+		if(isNaN(element.marginY)) {
+		  element.element.style.paddingBottom = '0px';
+		} else {
+		  element.element.style.paddingBottom = (element.marginY*(element.items.length - 1))+'px';
+		}
+
+		for(var i = 0; i < element.items.length; i++) {
+		  if(isNaN(element.marginY)) {
+			element.items[i].style.transform = 'none;';
+		  } else {
+			element.items[i].style.transform = 'translateY('+element.marginY*i+'px)';
+		  }
+		}
+	  };
+
+	  function getIntegerFromProperty(element) {
+		var node = document.createElement('div');
+		node.setAttribute('style', 'opacity:0; visbility: hidden;position: absolute; height:'+element.marginY);
+		element.element.appendChild(node);
+		element.marginY = parseInt(getComputedStyle(node).getPropertyValue('height'));
+		element.element.removeChild(node);
+	  };
+
+	  function animateStackCards() {
+		if(isNaN(this.marginY)) { // --stack-cards-gap not defined - do not trigger the effect
+		  this.scrolling = false;
+		  return; 
+		}
+
+		var top = this.element.getBoundingClientRect().top;
+
+		if( this.cardTop - top + this.element.windowHeight - this.elementHeight - this.cardHeight + this.marginY + this.marginY*this.items.length > 0) { 
+		  this.scrolling = false;
+		  return;
+		}
+
+		for(var i = 0; i < this.items.length; i++) { // use only scale
+		  var scrolling = this.cardTop - top - i*(this.cardHeight+this.marginY);
+		  if(scrolling > 0) {  
+			var scaling = i == this.items.length - 1 ? 1 : (this.cardHeight - scrolling*0.05)/this.cardHeight;
+			this.items[i].style.transform = 'translateY('+this.marginY*i+'px) scale('+scaling+')';
+		  } else {
+			this.items[i].style.transform = 'translateY('+this.marginY*i+'px)';
+		  }
+		}
+
+		this.scrolling = false;
+	  };
+
+	  // initialize StackCards object
+	  var stackCards = document.getElementsByClassName('js-stack-cards'),
+		intersectionObserverSupported = ('IntersectionObserver' in window && 'IntersectionObserverEntry' in window && 'intersectionRatio' in window.IntersectionObserverEntry.prototype);
+		//reducedMotion = Util.osHasReducedMotion();
+		
+	  if(stackCards.length > 0 && intersectionObserverSupported ) { 
+		var stackCardsArray = [];
+		for(var i = 0; i < stackCards.length; i++) {
+		  (function(i){
+			stackCardsArray.push(new StackCards(stackCards[i]));
+		  })(i);
+		}
+		
+		var resizingId = false,
+		  customEvent = new CustomEvent('resize-stack-cards');
+		
+		window.addEventListener('resize', function() {
+		  clearTimeout(resizingId);
+		  resizingId = setTimeout(doneResizing, 500);
+		});
+
+		function doneResizing() {
+		  for( var i = 0; i < stackCardsArray.length; i++) {
+			(function(i){stackCardsArray[i].element.dispatchEvent(customEvent)})(i);
+		  };
+		};
+	  }
+	}());
+</script>
+
+
+<script>
+	// Select all links with hashes
+$('a[href*="#"]')
+  // Remove links that don't actually link to anything
+  .not('[href="#"]')
+  .not('[href="#0"]')
+  .click(function(event) {
+    // On-page links
+    if (
+      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
+      && 
+      location.hostname == this.hostname
+    ) {
+      // Figure out element to scroll to
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      // Does a scroll target exist?
+      if (target.length) {
+        // Only prevent default if animation is actually gonna happen
+        event.preventDefault();
+        $('html, body').animate({
+          scrollTop: target.offset().top
+        }, 1000, function() {
+          // Callback after animation
+          // Must change focus!
+          var $target = $(target);
+          // $target.focus();
+          if ($target.is(":focus")) { // Checking if the target was focused
+            return false;
+          } else {
+            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+            //$target.focus(); // Set focus again
+          };
+        });
+      }
+    }
+  });
+</script>
+
+<script>
+	$( ".bloc-partenaires" ).hover(
+	  function() {
+		$( this ).addClass( "box-shadow-bottom" );		
+	  }, function() {
+		$( this ).removeClass( "box-shadow-bottom" );
+	  }
+	);
+	$( ".bloc-os" ).hover(
+	  function() {
+		$( this ).addClass( "box-shadow-bottom" );
+	  }, function() {
+		$( this ).removeClass( "box-shadow-bottom" );
+	  }
+	);
+</script>
+
+$$END$$
