@@ -48,7 +48,7 @@ function mapsManagerConstructor(p) {
 		,OPENSTREETMAP: {
 			 genericName: 'OPENSTREETMAP'
 			,defaultOptions: {
-				 attribution: '&copy; <a href="http://www.ac3-groupe.com/">Groupe AC3</a>'
+				 attribution: '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a> | &copy; <a href="http://www.ac3-groupe.com/">Groupe AC3</a>'
 				,tilesServerUrl: 'https://osm.immo-facile.com/osm_tiles/{z}/{x}/{y}.png'
 				,zoomLevel: 15
 			}
