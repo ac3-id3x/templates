@@ -5,25 +5,23 @@
 				<div class="span3">
 					<div class="control-group margin-0$$IF:FORM:ALIERR$$$$IF0:FORM:NOM$$ error$$END$$$$END$$">
 						<label>$$LG:VOTRENOM pcase$$</label>
-						<input type="text" autocomplete="off" id="nom-alerte" name="nom" class="center" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$>
+						<input type="text" autocomplete="off" tag="nom_rgpd" id="nom-alerte" name="nom" class="center" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$>
 					</div>
 				</div>			
 				<div class="span3">
 					<div class="control-group margin-0$$IF:FORM:ALIERR$$$$IFNOTNULL:FORM:EMAIL$$ error$$END$$$$END$$">
 						<label>$$LG:VOTREMAIL pcase$$</label>
-						<input type="email" autocomplete="off" id="email-alerte" name="email" class="center" required>
+						<input type="email" autocomplete="off" tag="email_rgpd" id="email-alerte" name="email" class="center" required>
 					</div>
 				</div>					
-				<div class="span3">
-					<div class="control-group margin-0" id="zone-bouton-alerte">
-						<label>&nbsp;</label>
-						<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</div>
-						<div class="bouton-alerte-moteur-ga" style="display: none"></div>
-					</div>
-				</div>				
+								
 			</div>
-			<div class="margin-top-10">
-			<!--#include virtual="legal/incl_rgpd.htm" -->
+			<!--#include virtual="legal/incl_rgpd_form_new_version.htm" -->
+			<div class="span3">
+				<div class="control-group margin-0" id="zone-bouton-alerte">
+					<button id="btn_finish1" disabled class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</button>
+					<div class="bouton-alerte-moteur-ga" style="display: none"></div>
+				</div>
 			</div>
 			<div class="clear"></div>
 			<input type="hidden" name="qry" value="$$REP:QRY htmlencode$$" />
@@ -40,5 +38,48 @@
 		</div>
 	</form>
 </div>
+ <!-- RGPD FUNCTION -->
+ <script type="text/javascript">
+	$("#btn_finish1").click(function() {
+		if(document.getElementById('legelInfo1').checked){
+			if(document.querySelector("input[tag='email_rgpd']").value.length>0 && document.querySelector("input[tag='nom_rgpd']").value.length>0) {
+				var email = document.querySelector("input[tag='email_rgpd']").value;
+				var nom = document.querySelector("input[tag='nom_rgpd']").value;
+				var data_rgpd = {
+									"data": {
+										"type": "RgpdConsent",
+										"attributes": {
+											"email": email,
+											"form_type_id": "$$IDT$$"=="RESULTATS"?1:0,
+											"publication_ref": "$$RGPD_AGENCYID$$",
+											"last_name": nom 
+										}
+									}
+								};
+				
+				var baseUrl = "$$REP:RSRV$$";
+				var devSource = "dev.sites-ac3.com";
+				var source = baseUrl.includes(devSource) ? "tst/" : "";
+				var apiUrl = 'https://mgt-apim.pericles.fr/' + source + 'account/1.0.0/rgpdconsents';
+				
+				$.ajax({
+					contentType: 'application/json; charset=utf-8',
+					type: 'POST',
+					dataType: 'json',
+					url: apiUrl,
+					data:  JSON.stringify(data_rgpd),
+					success: function() {
+						console.log("Success rgpd");
+					},
+					error: function () {
+						console.log("Error rgpd");
+					}
+				});
+			}
+		} else {
+			return false;						
+		}
+	});
+</script>
 
 <!--#include virtual="alerte/popup.htm" -->

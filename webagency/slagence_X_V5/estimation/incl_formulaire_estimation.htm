@@ -11,7 +11,7 @@ $$A:JS_ESTIMATION=1$$
 <!--#include virtual="estimation/incl_input_estimation.htm" -->
 <!-- ETAPE 1 -->
 <div class="row-fluid margin-top-10 pagination-centered relative">
-	<!-- Début ETAPE 1 -->
+	<!-- Dï¿½but ETAPE 1 -->
 	<div id="etape-1" class="span12">
 		<div class="row-fluid">
 			<div class="span12 relative">
@@ -52,7 +52,7 @@ $$A:JS_ESTIMATION=1$$
 		<div class="absolute z25 bottom left width-100-pourcent margin-bottom-40"><hr class="hr-like"></div>
 	</div>
 </div>
-<!-- Début ETAPE 2 -->
+<!-- Dï¿½but ETAPE 2 -->
 <div id="etape-2" class="row-fluid pagination-centered display-none relative">
 	<div class="span12 relative">
 			<p class="margin-top-10 margin-bottom-15">
@@ -121,7 +121,7 @@ $$A:JS_ESTIMATION=1$$
 	</div>
 </div>
 <!-- Fin ETAPE 2 -->
-<!-- Début ETAPE 3 -->
+<!-- Dï¿½but ETAPE 3 -->
 <div id="etape-3" class="row-fluid margin-top-10 margin-bottom-10 pagination-centered display-none">
 	<div class="span12">
 		<p class="margin-bottom-15">$$LG:INTROETAPE3 pcase$$</p>
@@ -136,7 +136,7 @@ $$A:JS_ESTIMATION=1$$
 			<li class="span3">
 				<div class="control-group">
 					<label for="ville">$$LG:VILLE pcase$$ *</label>
-					<input type="text" id="ville" name="ville" value=$$FORM:VILLE$$"" class="center" autocomplete="off">
+					<input type="text" id="ville" name="ville" value="$$FORM:VILLE$$" class="center" autocomplete="off">
 				</div>
 			</li>
 			<li class="span3">
@@ -153,11 +153,54 @@ $$A:JS_ESTIMATION=1$$
 			</li>
 		</ul>
 		<!--#include virtual="estimation/incl_message_erreur_step_3.htm" -->
-		<!--#include virtual="estimation/incl_bouton_estimation.htm" -->
+		
 		<div class="margin-top-10">
-			<!--#include virtual="legal/incl_rgpd.htm" -->
+			<!--#include virtual="legal/incl_rgpd_form_new_version.htm" -->
+			<!--#include virtual="estimation/incl_bouton_estimation.htm" -->
 		</div>
 		<p class="display-none message-erreur-form margin-top-10 bold"></p>
+		 
+		<!-- RGPD FUNCTION -->
+		<script type="text/javascript">
+			$("#btn_finish").click(function() {
+				if(document.getElementById('legelInfo').checked){
+					if(document.getElementById('email').value.length>0 && document.getElementById('nom').value.length>0) {
+						var data_rgpd = {
+											"data": {
+												"type": "RgpdConsent",
+												"attributes": {
+													"email": document.getElementById('email').value,
+													"form_type_id": "$$IDT$$"=="ESTIMATION"?5:0,
+													"publication_ref": "$$RGPD_AGENCYID$$",
+													"last_name": document.getElementById('nom').value
+												}
+											}
+										};
+										
+					var baseUrl = "$$REP:RSRV$$";
+					var devSource = "dev.sites-ac3.com";
+					var source = baseUrl.includes(devSource) ? "tst/" : "";
+					var apiUrl = 'https://mgt-apim.pericles.fr/' + source + 'account/1.0.0/rgpdconsents';
+
+						$.ajax({
+							contentType: 'application/json; charset=utf-8',
+							type: 'POST',
+							dataType: 'json',
+							url: apiUrl,
+							data:  JSON.stringify(data_rgpd),
+							success: function() {
+								console.log("Success rgpd");
+							},
+							error: function () {
+								console.log("Error rgpd");
+							}
+						});
+					}
+				} else {
+					return false;						
+				}
+			});
+		</script>
 		<div class="clear clearfix"></div>
 	</div>
 </div>

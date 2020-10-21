@@ -13,29 +13,28 @@
 							<div class="row-fluid">
 								<div class="span4 margin-top-5">
 									<div class="control-group margin-0$$IF:FORM:ALIERR$$$$IF0:FORM:NOM$$ error$$END$$$$END$$">								
-										<input type="text" autocomplete="off" id="nom-alerte" name="nom" class="center" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$ placeholder="$$LG:VOTRENOM pcase$$">
+										<input type="text" autocomplete="off" id="nom-alerte" name="nom" tag="nom_rgpd_new" class="center" $$IF:FORM:NOM$$value="$$FORM:NOM$$"$$END$$ placeholder="$$LG:VOTRENOM pcase$$">
 									</div>
 								</div>			
 								<div class="span5 margin-top-5">
 									<div class="control-group margin-0$$IF:FORM:ALIERR$$$$IFNOTNULL:FORM:EMAIL$$ error$$END$$$$END$$">									
-										<input type="email" autocomplete="off" id="email-alerte" name="email" class="center" placeholder="$$LG:VOTREMAIL pcase$$">
+										<input type="email" autocomplete="off" id="email-alerte" name="email" tag="email_rgpd_new" class="center" placeholder="$$LG:VOTREMAIL pcase$$">
 									</div>
 								</div>					
+							</div>
+							<div class="margin-top-10">
+							<!--#include virtual="legal/incl_rgpd_form_new_version.htm" -->
 								<div class="span3 margin-top-5">
 									<div class="control-group margin-0" id="zone-bouton-alerte">
 										$$IF0:RGPDPLUS$$
-										<div class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur2 $$IF=:1:FORM:IDTT$$bouton-alerte-moteur2-location$$END$$$$IF=:2:FORM:IDTT$$bouton-alerte-moteur2-vente$$END$$$$IF=:3:FORM:IDTT$$bouton-alerte-moteur2-loc-temp$$END$$$$IF=:4:FORM:IDTT$$bouton-alerte-moteur2-loc-vac$$END$$$$IF=:5:FORM:IDTT$$bouton-alerte-moteur2-viager$$END$$$$IF=:6:FORM:IDTT$$bouton-alerte-moteur2-invest$$END$$$$IF=:7:FORM:IDTT$$bouton-alerte-moteur2-loc-prest$$END$$$$IF=:8:FORM:IDTT$$bouton-alerte-moteur2-vente-prest$$END$$$$IF=:9:FORM:IDTT$$bouton-alerte-moteur2-neuf$$END$$$$IF=:10:FORM:IDTT$$bouton-alerte-moteur2-fdc$$END$$$$IF=:11:FORM:IDTT$$bouton-alerte-moteur2-cession$$END$$ bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</div>
+										<button id="btn_finish2" disabled class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bouton-alerte-moteur2 $$IF=:1:FORM:IDTT$$bouton-alerte-moteur2-location$$END$$$$IF=:2:FORM:IDTT$$bouton-alerte-moteur2-vente$$END$$$$IF=:3:FORM:IDTT$$bouton-alerte-moteur2-loc-temp$$END$$$$IF=:4:FORM:IDTT$$bouton-alerte-moteur2-loc-vac$$END$$$$IF=:5:FORM:IDTT$$bouton-alerte-moteur2-viager$$END$$$$IF=:6:FORM:IDTT$$bouton-alerte-moteur2-invest$$END$$$$IF=:7:FORM:IDTT$$bouton-alerte-moteur2-loc-prest$$END$$$$IF=:8:FORM:IDTT$$bouton-alerte-moteur2-vente-prest$$END$$$$IF=:9:FORM:IDTT$$bouton-alerte-moteur2-neuf$$END$$$$IF=:10:FORM:IDTT$$bouton-alerte-moteur2-fdc$$END$$$$IF=:11:FORM:IDTT$$bouton-alerte-moteur2-cession$$END$$ bold" data-loading-text="$$LG:CREATIONALERTE pcase$$">$$LG:CREER pcase$$</button>
 										$$END$$
 										$$IF=:1:RGPDPLUS$$
 										<a href="#modalRgpdPlus" role="button" class="$$TYPEBOUTON$$ $$TYPEBOUTONACTION$$ btn-block bold" data-loading-text="$$LG:CREATIONALERTE pcase$$" data-toggle="modal">$$LG:CREER pcase$$</a>
-										<!--#include virtual="legal/incl_rgpd_plus.htm" -->
 										$$END$$
 										<div class="bouton-alerte-moteur2-ga" style="display: none"></div>
 									</div>
-								</div>				
-							</div>
-							<div class="margin-top-10">
-							<!--#include virtual="legal/incl_rgpd.htm" -->
+								</div>
 							</div>
 							<div class="clear"></div>
 							<input type="hidden" name="siOptinPoliris" value="1">
@@ -56,3 +55,47 @@
 		</div>	
 	</div>
 </div>
+
+<!-- RGPD FUNCTION -->
+<script type="text/javascript">
+	$("#btn_finish2").click(function() {
+		if(document.getElementById('legelInfo2').checked){
+			if(document.querySelector("input[tag='email_rgpd_new']").value.length>0 && document.querySelector("input[tag='nom_rgpd_new']").value.length>0) {
+				var email = document.querySelector("input[tag='email_rgpd_new']").value;
+				var nom = document.querySelector("input[tag='nom_rgpd_new']").value;
+				var data_rgpd = {
+									"data": {
+										"type": "RgpdConsent",
+										"attributes": {
+											"email": email,
+											"form_type_id": "$$IDT$$"=="RESULTATS"?1:0,
+											"publication_ref": "$$RGPD_AGENCYID$$",
+											"last_name": nom 
+										}
+									}
+								};
+				
+				var baseUrl = "$$REP:RSRV$$";
+				var devSource = "dev.sites-ac3.com";
+				var source = baseUrl.includes(devSource) ? "tst/" : "";
+				var apiUrl = 'https://mgt-apim.pericles.fr/' + source + 'account/1.0.0/rgpdconsents';
+				
+				$.ajax({
+					contentType: 'application/json; charset=utf-8',
+					type: 'POST',
+					dataType: 'json',
+					url: apiUrl,
+					data:  JSON.stringify(data_rgpd),
+					success: function() {
+						console.log("Success rgpd");
+					},
+					error: function () {
+						console.log("Error rgpd");
+					}
+				});
+			}
+		} else {
+			return false;						
+		}
+	});
+</script>				
