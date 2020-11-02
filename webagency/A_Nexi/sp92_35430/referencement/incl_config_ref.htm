@@ -29,11 +29,81 @@ $$REM$$<!-- =========== Personnaliser le slogan de la page index (pas toujours i
 $$A:SLOGAN_INDEX=<span class="typo-white text-shadow-1">Un accompagnement global<br>pour toutes vos recherches de solutions immobilières et patrimoniales</span>
 <p><a href="/immo,concept.htm" class="btn btn-important">En savoir plus</a></p>
 
+  <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="ytSellierContainer" style="width: 100%;z-index: 1000;top:0;left:0">
+		<div id="ytSellier"></div>
+	</div>
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('ytSellier', {
+          height: '134',
+          width: '195',
+          videoId: 'l2zO_oEWB4w',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+     //   event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING || event.data == YT.PlayerState.BUFFERING) {
+			$('#ytSellier').width(1280).height(720);
+			$("#ytSellierContainer").css("position", "fixed").css("text-align", "center");
+			$('header').hide();
+        }
+        if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.PAUSED) {
+			$('#ytSellier').width(195).height(134);
+			$('header').show();
+			$("#ytSellierContainer").css("position", "relative").css("text-align", "right");
+		}
+     }
+     
+     
+    </script>
+
+<!--
+<div id="videoSellier">
+	<iframe width="195" height="134" src="https://www.youtube.com/embed/l2zO_oEWB4w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<br/><a href="javascript:void(0)">Lire</a>
+	<script language="javascript">
+				function redimensionnerVideos() {
+				$('iframe').each(function() {
+						var elt = $(this);
+						var ratio = elt.width() / elt.height();
+						var limite = parseInt(elt.attr('width'));
+						var largeur = Math.min(elt.parent().width(), limite);
+						video.width(largeur).height(largeur / ratio);
+					});
+			}
+	</script>
+</div>
+-->
+<!--
 <div id="fond"></div>
 <div id="popup">
 	<iframe width="1280" height="720" src="https://www.youtube.com/embed/l2zO_oEWB4w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	<div id="close"></div>
 </div>
+-->
 
 $$
 $$IF=:EN:LANGUE$$
