@@ -11,8 +11,8 @@ $$END$$
 $$IF0:RGPD_AGENCYID$$
 $$A:RGPD_AGENCYID=@@AGENCE_IDPUBLICATION@@$$
 $$END$$
-
-
+​
+​
 <div class="row-fluid">
     <div>
         <p>Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par Le
@@ -20,7 +20,7 @@ $$END$$
             traitement est l’intérêt légitime.
         </p>
         <p>Les données collectées seront communiquées uniquement aux seuls destinataires suivants : 
-            <span id="nomAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:NOM$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:NOM$$ $$END$$</span>
+            <span id="nomAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:NOM$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:NOM$$ $$END$$  $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:COOR-NOM$$ $$END$$ </span>
             .
         </p>
         <p>Les données sont conservées pendant 5 ans avant anonymisation.</p>
@@ -29,9 +29,11 @@ $$END$$
             vos droits.
         </p>
         <p>Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce dispositif, vous
-            pouvez contacter  : <span id="emailAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:EMAIL$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:EMAIL$$ $$END$$</span>
+            pouvez contacter  : <span id="emailAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:EMAIL$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:EMAIL$$ $$END$$ $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:EMAIL$$ $$END$$</span>
             ,
-            <span id="contactAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$LISTEAG:CP$$ $$LISTEAG:VILLE$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$CV:CP$$ $$CV:VILLE$$ $$END$$</span>
+            <span id="contactAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$LISTEAG:CP$$ $$LISTEAG:VILLE$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$CV:CP$$ $$CV:VILLE$$ $$END$$ 
+                $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$ANNDETAIL:AGCP$$ $$ANNDETAIL:AGVILLE$$ $$END$$
+            </span>
             .
         </p>
         <div>
@@ -44,7 +46,7 @@ $$END$$
     </div>
 </div>
 <script type="text/javascript">
-
+​
 if("$$IDT$$"=="NOSAGENCES"){
     var checkbox = document.querySelector("input[id=legelInfo$$lcase$$$$LISTEAG:IDPUBLICATION$$]");
     checkbox.addEventListener('change', function () {
@@ -57,7 +59,7 @@ if("$$IDT$$"=="NOSAGENCES"){
         }
     });
     function check(event) {}
-
+​
     window.addEventListener('load', function () {
         document.getElementById('legelInfo$$lcase$$$$LISTEAG:IDPUBLICATION$$').checked = false;
         document.getElementById('btn_finish$$lcase$$$$LISTEAG:IDPUBLICATION$$').disabled = true;
@@ -82,7 +84,7 @@ if("$$IDT$$"=="NOSAGENCES"){
             document.querySelector("span[id=color"+event.srcElement.name+"]").style = "color:red;font-size: 18px;";
         }
     };
-
+​
     window.addEventListener('load', function () {
         document.getElementById('legelInfo1').checked = false;
         document.getElementById('btn_finish1').disabled = true;
@@ -91,9 +93,9 @@ if("$$IDT$$"=="NOSAGENCES"){
     });   
 }else {
     var checkbox = document.querySelector("input[id=legelInfo]");
-    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('nomAgence').innerHTML = "$$RGPD_NOMAGENCE$$";}
-    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('emailAgence').innerHTML = "$$RGPD_EMAIL$$";}
-    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('contactAgence').innerHTML = "$$RGPD_CONTACT$$";}
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('nomAgence').innerHTML = "$$RGPD_NOMAGENCE$$";}
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('emailAgence').innerHTML = "$$RGPD_EMAIL$$";}
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('contactAgence').innerHTML = "$$RGPD_CONTACT$$";}
     checkbox.addEventListener('change', function () {
         if (this.checked) {
             document.getElementById('btn_finish').disabled = false;
