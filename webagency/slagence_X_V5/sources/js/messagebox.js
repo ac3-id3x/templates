@@ -1,7 +1,7 @@
 
 
 window.addEventListener('load', (function() { 
-	if (typeof msgDate !== 'undefined')
+	if (typeof msgDate !== 'undefined' && msgDate != null)
 	{
 		var title = document.getElementById("popupMsgTitle");
 		
