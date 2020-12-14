@@ -46,6 +46,36 @@
 
 <!-- <p ng-if="$ec.formData.contact.refineWithPro === '' || $ec.formData.contact.refineWithPro === $ec.refineWithProValues.no">{{ text }}</p> -->
 <br />
+<div style="color:black!important">
+    <p>Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par Le responssable DPO de l'agence pour réaliser l’estimation en ligne de votre bien sur base des éléments transmis.</p>
+    <p>Les données collectées seront communiquées uniquement aux seuls destinataires suivants : <span id="name_agence"></span>.</p>
+    <p>Les données sont conservées pendant 5 ans.</p>
+    <p>Vous pouvez accéder aux données vous concernant, les rectifier, demander leur effacement ou exercer votre droit à la limitation du traitement de vos données. Consultez le site cnil.fr pour plus d’informations sur vos droits.</p>
+    <p>Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce dispositif, vous pouvez contacter  : <span id="email_agence"></span>, <span id="adresse_agence"></span>.</p>
+    <label for="legelInfo" style="color:black"><input type="checkbox" id="legelInfo" name="legelInfo"/>
+        Je confirme avoir bien pris connaissance des mentions d’information relatives à ce formulaire et au traitement des informations saisies. <span id="color" style="color:red;font-size:black;">*</span>
+    </label>
+        <br/><br/>
+    <label for="infoComp" style="color:black"><input type="checkbox" id="infoComp" name="infoComp"/>
+        J’accepte de recevoir des informations complémentaires. (réception alertes, envois de mailing, abonnement newsletter)
+    </label>    
+    <script>
+        document.getElementById('name_agence').innerHTML = localStorage.getItem("RGPD_NOMAGENCE");
+        document.getElementById('email_agence').innerHTML =localStorage.getItem("RGPD_EMAIL");
+        document.getElementById('adresse_agence').innerHTML =localStorage.getItem("RGPD_CONTACT");
+        var checkbox = document.querySelector("input[id=legelInfo]");
+            checkbox.addEventListener( 'change', function() {
+                if(this.checked) {
+                 document.getElementById('btn_finish').disabled = false;
+                 document.querySelector("span[id=color]").style = "color:black;font-size: 18px;";
+                } else {
+                 document.getElementById('btn_finish').disabled = true;
+                 document.querySelector("span[id=color]").style = "color:red;font-size: 18px;";
+                }
+            });   
+    </script>  
+</div>
+<br/><br/>
 
 <controls>
     <prev state="online.house.stateFinal" ng-if="$ec.formData.type !== 'apartment'"></prev>

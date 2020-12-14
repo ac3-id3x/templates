@@ -1,0 +1,60 @@
+﻿<text model="$ec.formData.contact.email" form="$ec.estimationForm"
+      label="Votre email"
+      placeholder="ex : me@example.com" class="required contact email"></text>
+
+<!-- Affiche Nom* ou Nom (Facultatif) -->
+<text model="$ec.formData.contact.name.last" form="$ec.estimationForm"
+      label="Nom"
+      placeholder="Votre nom de famille"
+      class="required contact name" format="name"></text>
+<!--  -->
+<!-- Affiche Téléphone* ou Téléphone (Facultatif) -->
+<text model="$ec.formData.contact.phone" form="$ec.estimationForm"
+      label="T&eacute;l&eacute;phone"
+      placeholder="06 12 34 59 78"
+      ng-if="!$ec.isPhoneRequired()" class="optional silent-optional contact phone" format="phone"></text>
+
+<text model="$ec.formData.contact.phone" form="$ec.estimationForm"
+      label="T&eacute;l&eacute;phone"
+      placeholder="06 12 34 59 78"
+      ng-if="$ec.isPhoneRequired()" class="required contact phone" format="phone"></text>
+<!--  -->
+
+
+<select-box name="project.who" model="$ec.formData.project.who"
+            label="Vous &ecirc;tes"
+            placeholder="Choisissez" class="required project who"
+            options="{
+                seller: 'Propri&eacute;taire vendeur',
+                owner: 'Propri&eacute;taire',
+				customer: 'Acheteur',
+				pro: 'Professionnel',
+				guest: 'Autres'
+            }"></select-box>
+
+<select-box name="project.when" model="$ec.formData.project.when"
+            label="Votre bien est"
+            placeholder="Choisissez" class="required project when"
+            options="{
+                now: 'D&eacute;j&agrave; en vente',
+				in3Months: 'A vendre dans les 3 mois',
+				in6Months: 'A vendre dans les 6 mois',
+				forSaleInLonger: 'A vendre dans plus longtemps',
+                notForSale: 'N\'est pas &agrave; vendre'
+            }"
+            ng-if="$ec.formData.project.who === 'seller'"></select-box>
+
+<!-- <p ng-if="$ec.formData.contact.refineWithPro === '' || $ec.formData.contact.refineWithPro === $ec.refineWithProValues.no">{{ text }}</p> -->
+<br />
+
+<controls>
+    <prev state="online.house.stateFinal" ng-if="$ec.formData.type !== 'apartment'"></prev>
+    <prev state="online.apartment.state" ng-if="$ec.formData.type === 'apartment'"></prev>
+    <next state="online.results" text="Recevoir l'estimation par email"></next>
+</controls>
+<br />
+<div id="estimation-mentions-legales" class="mentions-legales">
+	<p>Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par {{$ec.getAgencyName()}} pour gérer votre demande d'estimation. Elles sont conservées pour la durée nécessaire à la gestion de la relation client dans le respect des prescriptions légales applicables et sont destinées à nos conseillers. <br>Conformément à la loi « informatique et libertés », vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant <a ng-href="{{$ec.getRawMailToAgence()}}">{{$ec.getAgencyName()}}</a>{{$ec.getAgencyLocation()}}.</p>
+</div>
+<p id="CNILPart1" class="visible-xs cnil-text">Vos informations sont trait&eacute;es par notre soci&eacute;t&eacute; afin de vous contacter dans le but de r&eacute;aliser une estimation de votre bien. <a ng-click="$ec.printCNILText()">cliquez-ici</a></p>
+<p id="CNILPart2" class="cnil-text" style="display: none">Vous disposez d&#145;un droit d&#145;acc&egrave;s, de rectification et, pour des motifs l&eacute;gitimes, d&#145;opposition aux informations qui vous concernent que vous pouvez exercer <a ng-href="{{$ec.getMailToAgence()}}">en nous contactant</a>.</p>

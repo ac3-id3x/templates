@@ -40,7 +40,8 @@ $(document).ready(function () {
 	}
 
 	//UTILISATION DU TRI
-    $("#trierRefine").change(function(e){
+    $('body').on("change","#trierRefine", function(e){
+		console.log("Change");
         loadInfos();
     });
 
@@ -91,7 +92,7 @@ $(document).ready(function () {
 	$("#idtt").change(function(){
         ajaxGetMf("idtt",'Mini_Biens','type_biens','idtypebien='+$("#idtypebien-hidden").val(),true);
 		//ajaxGetMf('idtt','Mini_Villes','villes_ajax','ci='+$("#ciInput").val(),true);
-		ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst','pxmax='+$("#pxmax").val()+'&px_loyermax='+$("#pxmax").val(),true);
+		ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst','pxmax='+$("#pxmax").val()+'&px_loyermax='+$("#pxmax").val(),true);		
     });
 
 	function loadInfos() {
@@ -100,7 +101,7 @@ $(document).ready(function () {
 	        return;
 	    }
 
-	    var qry = serializemoteur();
+	    var qry = serializemoteur();		
 
 	    var xhr = $.ajax({
 	        type: 'GET',
@@ -150,7 +151,7 @@ $(document).ready(function () {
 			        data : qry,
 			        url: '/recherche,incl_recherche_mobilefirst_ajax.htm',
 			        success: function(data) {
-			            divcontent.html(data);
+			            divcontent.html(data);		
 						
 						// PLSIT-1152
 						// Developer's grudge : what do you do, when you reinject HTML code by Ajax request ?
@@ -158,10 +159,11 @@ $(document).ready(function () {
 						//                         Look at the HTML code from the «data» object to know which events are needed. Pff.
 						
 						// UTILISATION DU TRI
+						/*
 						$("#trierRefine").change(function(e) {
 							loadInfos();
 						});
-						
+						*/
 						// events reattached (frankly, stop doing that stuff)
 			        },
 			        complete: function(xhr,statusText) {
@@ -309,7 +311,7 @@ $(document).ready(function () {
 	        }
 
             ajaxGetMf('idtt','Mini_Biens','type_biens', 'idtypebien='+idtypebien,false);
-			ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst', 'pxmax='+pxmax+'&px_loyermax='+pxmax,false);
+			ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst', 'pxmax='+pxmax+'&px_loyermax='+pxmax,false);			
 			//ajaxGetMf('idtt','Mini_Villes','villes_ajax','ci='+$("#ciInput").val(),true);
 
 	        if (qry != undefined){
@@ -319,7 +321,7 @@ $(document).ready(function () {
 	    }else{
 			ajaxGetMf('idtt','Mini_Biens','type_biens','idtypebien='+$("#idtypebien-hidden").val(),true);
 			//ajaxGetMf('idtt','Mini_Villes','villes_ajax','ci='+$("#ciInput").val(),true);
-			ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst','pxmax='+$("#pxmax").val()+'&px_loyermax='+$("#pxmax").val(),true);
+			ajaxGetMf('idtt','Mini_Budget','budget_mobilefirst','pxmax='+$("#pxmax").val()+'&px_loyermax='+$("#pxmax").val(),true);			
 	    }
 	}
 

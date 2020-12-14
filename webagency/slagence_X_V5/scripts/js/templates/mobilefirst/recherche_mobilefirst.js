@@ -95,12 +95,12 @@ $(document).ready(function() {
     })
 
     /* TRI */
-    $('#form-tri').on("change","#trierAnnonce",function() {
+    /*$('#form-tri').on("change","#trierAnnonce",function() {
         var valTri = $(this).val();
         var lien = $('#form-tri').attr('action');
         lien += '&tri=' + valTri;
         window.location.href = lien;
-    });
+    });*/
 
     /* DELETE SELECT */
     $('.bouton-vider-selection').on('click',function(e) {

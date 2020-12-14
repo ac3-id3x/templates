@@ -1,7 +1,7 @@
 $$REM$$=========================================================================================
-//// <summary>Page intermédiaire 3/3 de creation d'Alerte Immo : envoi et coordonnees</summary>
+//// <summary>Page intermï¿½diaire 3/3 de creation d'Alerte Immo : envoi et coordonnees</summary>
 //// <remarks>
-//// <para>Utilise les mêmes includes et les même css que la page contact agence (formulaire du bas)</para>
+//// <para>Utilise les mï¿½mes includes et les mï¿½me css que la page contact agence (formulaire du bas)</para>
 //// <para>Pages reliees : immo.htm > prevalidation.htm > validation.htm > validation_ok.htm</para>
 //// <para>Trois etapes pour creer une Alerte Immo : 1 = choix IDTT, 2 = choix autres criteres, 3 = envoi coordonnees perso</para>
 //// <para>Apres validation on s'en va vers une page de confirmation</para>
@@ -102,12 +102,54 @@ $$DYN:ID3:NOCACHE:FULL$$	$$REM$$<!-- charles ? FILE -->$$END:REM$$
 					<label class="radio pagination-left"><input type="radio" name="idFrequenceAlerte" value="3" /> $$LG:AI8 pcase$$</label>
 				</div>
 				<div class="control-group">
-					<input type="submit" class="btn btn-important" value="$$LG:VALIDER pcase$$" />
+					<!--#include virtual="legal/incl_rgpd_form_new_version.htm" -->
+					<!-- exÃ©cution d'api rgpd si la mention lÃ©gale est confirmÃ©e -->
+					<input id="btn_finish" type="submit" class="btn btn-important" value="$$LG:VALIDER pcase$$" />
 				</div>		
-				<!--#include virtual="legal/incl_rgpd.htm" -->		
 			</div>				
 		</div>				
 	</div>		
 </form>
 
+<!-- RGPD FUNCTION -->
+<script type="text/javascript">
+	$("#btn_finish").click(function() {
+		if(document.getElementById('legelInfo').checked){
+            if(document.getElementById('email-alerte').value.length>0 && document.getElementById('nom-alerte').value.length>0) {
+				var data_rgpd = {
+									"data": {
+										"type": "RgpdConsent",
+										"attributes": {
+											"email": document.getElementById('email-alerte').value,
+											"form_type_id": "$$IDT$$"=="ALERTEIMMO"?1:0,
+											"publication_ref": "$$RGPD_AGENCYID$$",
+											"last_name": document.getElementById('nom-alerte').value
+										}
+									}
+								};
+				
+				var baseUrl = "$$REP:RSRV$$";
+				var devSource = "dev.sites-ac3.com";
+				var source = baseUrl.includes(devSource) ? "tst/" : "";
+				var apiUrl = 'https://mgt-apim.pericles.fr/' + source + 'account/1.0.0/rgpdconsents';
+
+				$.ajax({
+					contentType: 'application/json; charset=utf-8',
+					type: 'POST',
+					dataType: 'json',
+					url: apiUrl,
+					data:  JSON.stringify(data_rgpd),
+					success: function() {
+						console.log("Success rgpd");
+					},
+					error: function () {
+						console.log("Error rgpd");
+					}
+				});
+			}
+		} else {
+			return false;						
+		}
+	});
+</script>
 <!--#include virtual="footer/incl_bas.htm" -->

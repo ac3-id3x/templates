@@ -1141,7 +1141,7 @@ mapsManagerConstructor.prototype.initializeMapEvents = function(p) {
 				eval(onKeyUpExpr);
 				
 				var _as = document.getElementById('addressSuggestions');
-				if (_as != null) {
+				if (_as.length>0) {
 					onMouseEnterExpr  = "var _as = document.getElementById('addressSuggestions'); ";
 					onMouseEnterExpr += "if (_as.style.display == 'none' || _as.style.visibility == 'hidden') { ";
 					onMouseEnterExpr += "_as.style.cssText += 'display: inline; visibility: visible;'; ";

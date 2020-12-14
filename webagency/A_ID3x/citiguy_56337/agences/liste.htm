@@ -1,0 +1,136 @@
+$$INIT:IDT=NOSAGENCES$$
+$$A:JS_LISTINGAGENCES=1$$
+$$IF=:NOSAGENCES:IDT$$
+<!--#include virtual="agences/incl_ref_agences.htm" -->
+$$END$$
+<!--#include virtual="header/incl_haut.htm" -->
+$$B:IMMOBW:AGENCES:ALIAS:LISTEAG:QRY:TRI:QRY:CP$$
+$$BIF:COMPTE_AGENCES$$$$A:TOTAL_AGENCES=@@COMPTE_AGENCES:NBRESULT@@$$$$DO:1:1$$$$LOOP$$$$BFIN$$
+$$REM$$ <!-- viktor zoom? --> $$A:MAPPADDING=100$$ $$END:REM$$
+
+<div class="row-fluid">
+	<div class="span$$IF=:1:ENCART_PUB_AGENCES$$9$$END$$$$IF!:1:ENCART_PUB_AGENCES$$12$$END$$">
+		<!--#include virtual="agences/incl_phrase_agences.htm" -->
+		<div class="row-fluid margin-bottom-10">
+            <div class="span4"><img src="images/seo/page-d'estimation.jpg" class="margin-top-10"></div>
+            <div class="span8">
+                <div class="margin-top-2"></div>
+                <p class="pagination-justify margin-top-10">Projet de vente ou de location, succession ou point sur votre patrimoine immobilier, CITI GUY-HOQUET estime votre bien à son juste prix. Référence immobilière à la Réunion, CITI GUY-HOQUET met toute son expertise du marché réunionnais à votre service. Nos six agences à Saint-Pierre, Saint-Denis, Le Tampon, La Possession, Saint-Benoît et Saint-Gilles-les-Bains vous garantissent une analyse précise conforme aux réalités du marché dans votre commune. Contactez l’agence CITI GUY-HOQUET la plus proche. Le conseiller en transaction de votre secteur se rend sur place et analyse toutes les caractéristiques de votre maison, appartement, terrain ou local pour vous fournir un avis de valeur impartial. Un vrai travail d’expert, qui ne se résume pas à la simple multiplication d’un prix moyen au m² par la surface de votre bien ! Votre patrimoine immobilier mérite en effet une évaluation professionnelle en bonne et due forme. Situation, état de présentation, orientation, prestations particulières, vue, environnement et commodités : tout est pris en compte et rapporté aux conditions réelles du marché.</p>
+            </div>
+			<p>Votre agent immobilier CITI GUY-HOQUET, s’appuie sur son expertise de son secteur d’action pour évaluer atouts et faiblesse de votre bien et comparer ce dernier à sa base de données des prix de vente des transactions et des loyers des locations les plus récentes. CITI GUY-HOQUET vous garantit ainsi une fourchette de prix ou de loyers réaliste sur le marché immobilier réunionnais. Un service gratuit ! Notre bouton « estimer mon bien » vous permet de nous transmettre les éléments nécessaires à une prise de rendez-vous rapide. Quelques clics pour aborder le marché immobilier à la vente ou à la location au bon prix, fournir à votre notaire un avis de valeur certifié ou connaître précisément le montant de votre patrimoine immobilier. Simple, rapide et efficace !</p>
+        </div>
+		<div class="row-fluid txt-agence hidden-phone">
+			<div class="span12">		
+				$$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+					<p class="hidden-desktop hidden-tablet">$$LG:INTROAGENCES pcase$$</p>
+				$$END$$
+				$$IF!:ACQUERIR$ESTIMATION:IDT$$
+						$$IF=:1:AGENCES_LISTE_TXT$$
+							$$IF0:REP:QRY$$
+								<div class="row-fluid margin-top-10 margin-bottom-10">
+									<div class="span12">
+										<!--#include virtual="agences/incl_txt_perso.htm" -->
+									</div>
+								</div>
+							$$END$$
+						$$END$$
+				$$END$$
+				$$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+					<!--#include virtual="agences/incl_btn_geoloc.htm" -->
+				$$END$$
+			</div>
+		</div>
+		$$IF=:1$2:AFFICHAGE_AGENCES_LISTE$$
+			$$BIF:COMPTE_AGENCES$$
+				<div class="row-fluid margin-top-10">
+					<div class="span12">
+										
+						$$IF=:ESTIMATION:IDT$$
+							$$IF!:1:CARTO_ESTIMATION_CACHE$$
+								<!--#include virtual="agences/incl_search_geo_agences.htm" -->
+								<div class="row-fluid$$IF=:2:AFFICHAGE_AGENCES_LISTE$$ margin-bottom-10$$END$$" id="listing-agences">
+									<!--#include virtual="carto/incl_agences.htm" -->
+								</div>
+							$$END$$
+						$$END$$
+						$$IF!:ESTIMATION:IDT$$
+							<!--#include virtual="agences/incl_search_geo_agences.htm" -->
+							<div class="row-fluid$$IF=:2:AFFICHAGE_AGENCES_LISTE$$ margin-bottom-10$$END$$" id="listing-agences">
+								<!--#include virtual="carto/incl_agences.htm" -->
+							</div>
+						$$END$$
+						$$IF=:1:AFFICHAGE_AGENCES_LISTE$$
+							<div class="row-fluid display-none zone-agence-ajax"></div>
+						$$END$$
+					</div>
+				</div>
+			$$BFIN$$
+		$$END$$
+		$$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$
+			$$IF=:2:AFFICHAGE_AGENCES_LISTE$$
+				<hr class="margin-bottom-10">
+			$$END$$
+			<div class="row-fluid margin-top-10 margin-bottom-10">
+				$$IF!:1:AGENCES_NOTRI$$
+					<div class="span$$IF=:1:AGENCES_FILTRE$$2$$END$$$$IF!:1:AGENCES_FILTRE$$7$$END$$">
+						<!--#include virtual="agences/incl_tri_agences.htm" -->
+					</div>
+				$$END$$
+				$$IF=:1:AGENCES_FILTRE$$
+					<div class="span$$IF!:1:AGENCES_NOTRI$$5$$END$$$$IF=:1:AGENCES_NOTRI$$7$$END$$">
+						<!--#include virtual="agences/incl_filtre_agences.htm" -->
+					</div>
+				$$END$$
+				$$IF+:1:LISTEAG:NBRPAGES$$
+				<div class="span5">
+					<div class="pagination pull-right">
+						<!--#include virtual="agences/incl_nb_pages.htm" -->
+					</div>
+				</div>
+				$$END$$
+			</div>
+		$$END$$
+		
+		$$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$		
+			$$BIF:LISTEAG$$			
+				$$DO:1:10$$							
+					$$IF!:HIDDENAGENCE:COMPTE_AGENCES:IDPUBLICATION$$
+					<div class="row-fluid $$IF!:10:LISTEAG:I$$margin-bottom-20$$END$$ margin-left-0">
+						<!-- BLOC AGENCE TEST -->
+						<div class="span12 margin-left-0">
+							<div class="row-fluid">
+								<div class="span12 box-shadow detail-agence-liste hide-agence-$$LITSTEAG:IDPUBLICATION$$">
+									<!--#include virtual="agences/incl_liste_agences.htm" -->
+								</div>
+							</div>
+						</div>
+					<!-- END BLOC AGENCE -->
+					</div>
+					$$END$$				
+				$$LOOP$$
+					
+			$$BFIN$$		
+		$$END$$
+		
+		
+		$$IF=:0$2:AFFICHAGE_AGENCES_LISTE$$
+    		$$IF+:1:LISTEAG:NBRPAGES$$
+    		<div class="row-fluid">
+    		    <div class="span6 hidden-phone"></div>
+        		<div class="span6 margin-top-10">
+        			<div class="pagination pull-right">
+        				<!--#include virtual="agences/incl_nb_pages.htm" -->
+        			</div>
+        		</div>
+            </div>
+    		$$END$$
+		$$END$$
+	$$REM$$<!-- ZONE PUB -->$$END$$
+	</div>
+	$$IF=:1:ENCART_PUB_AGENCES$$
+	<div class="span3 hidden-phone">
+		<!--#include virtual="agences/incl_pub.htm" -->
+	</div>
+	$$END$$
+</div>
+<!--#include virtual="footer/incl_bas.htm" -->
