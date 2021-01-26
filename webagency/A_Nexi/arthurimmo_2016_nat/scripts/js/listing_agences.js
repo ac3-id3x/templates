@@ -61,6 +61,15 @@ var regexesLocation = [
 	,[ true,  new RegExp(/^(salles)$/), "33770 Salles" + _FRANCE ]
 ];
 
+
+var regexesOverrideLocation = [
+	 //[ Boolean (false concatane ..), new RegExp(), String « new value » , searchType ('Street', 'municipality', 'housenumber', 'locality' <=> lieu-dit]
+	 [ true, new RegExp('(Seynod)', 'i'), "Route des emognes", '74600', 'street' ]
+//	,[ false, new RegExp(/^(06200 nice|06200|nice)$/), "Cordier" ]
+
+];
+
+
 // FUNCTION GEO
 function setLocationUserVal(value, list) {
     var _value = decodeURI(value);
@@ -81,22 +90,53 @@ function setLocationUserVal(value, list) {
     return searchString;
 }
 
+function overrideLocation(value) {
+    var _value = decodeURI(value);
+	var _matched = false, searchString = value, lrValue = _value.toLowerCase(), searchType = '', postCode = '';
+	
+	for (v = 0; v < regexesOverrideLocation.length; v++) {
+		if (!_matched) {
+			if (lrValue.match(regexesOverrideLocation[v][1])) {
+				searchString = (regexesOverrideLocation[v][0] ? regexesOverrideLocation[v][2] : (searchString + " " + regexesOverrideLocation[v][2]) );
+				_matched = true;
+				postCode = regexesOverrideLocation[v][3]
+				searchType = regexesOverrideLocation[v][4]
+			}
+		}
+		else {
+			break;
+		}
+	}
+	
+    return {matched:_matched, address:searchString, postCode:postCode, searchType:searchType} ;
+}
+
 function updateGeoMap(searchString, postCode, searchType=null) {
 	if (geoMap == null) geoMap = id3xContent.getMap({ typeSearch: 1, search: geoMapId });
 	if (geoMap != null) {
+		var localSearchType = searchType;
 		var _postCode = null;
-		if (postCode != null) _postCode = (postCode.toString().match(/^(13500|25000|29200|29600|33480|40200|40600|45000|65100|67500|77300|80200|83170|83700|92000)$/) ? postCode : null);
-		
+		if (postCode != null) 
+			_postCode = (postCode.toString().match(/^(13500|25000|29200|29600|33480|40200|40600|45000|65100|67500|77300|80200|83170|83700|92000)$/) ? postCode : null);
+
 		var _address = searchString.trim();
 		if (searchType == null)
-			_address =setLocationUserVal(searchString.trim(), regexesLocation);
+			_address =setLocationUserVal(_address, regexesLocation);
+
+		var override = overrideLocation(_address);
+		if (override.matched) {
+			_address = override.address;
+			localSearchType = override.searchType;
+			_postCode = override.postCode;
+		}
+			
 		
 		id3xContent.geolocation.manager.sendRequestToGeolocationApi({
             address: _address,
             business: '1',
             mapObject: geoMap,
 			postCode: _postCode,
-			searchType: searchType
+			searchType: localSearchType
         });
     }
 }
