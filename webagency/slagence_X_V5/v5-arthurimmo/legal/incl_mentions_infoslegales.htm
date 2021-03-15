@@ -20,7 +20,6 @@ $$REM$$
 ====================================================================
 $$END$$
 
-
 <div class="h1-like">$$SRV$$</div>
 $$REM$$<p>
 	$$IF=:FR:LANGUE$$Ci-apr&egrave;s d&eacute;sign&eacute; par " le Site ", est &eacute;dit&eacute; par la soci&eacute;t&eacute; ci-apr&egrave;s d&eacute;nomm&eacute;e " l'Editeur ".$$END:FR$$
@@ -33,7 +32,21 @@ $$IF0:FORM:IDP$$
 		<ul>
 			<li><div class="h2-like margin-top-10 margin-bottom-10 titre-mention">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
 			$$DO$$
+
 				$$IF=:1:MENTIONS:IDTYPECARTEPRO$$
+				
+					$$REM$$<-- Recuperationdes infos mediateur pour le multiagence -->$$END$$
+					$$A:MEDIATEURPRENOM=@@MENTIONS:MEDIATEURPRENOM@@$$
+					$$A:MEDIATEURNOM=@@MENTIONS:MEDIATEURNOM@@$$
+					$$A:MEDIATEURCONSOADRESSE1=@@MENTIONS:MEDIATEURCONSOADRESSE1@@$$
+					$$A:MEDIATEURCONSOADRESSE2=@@MENTIONS:MEDIATEURCONSOADRESSE2@@$$
+					$$A:MEDIATEURCONSOCP=@@MENTIONS:MEDIATEURCONSOCP@@$$
+					$$A:MEDIATEURCONSOVILLE=@@MENTIONS:MEDIATEURCONSOVILLE@@$$
+					$$A:MEDIATEURCONSOURL=@@MENTIONS:MEDIATEURCONSOURL@@$$
+					$$A:MEDIATEURCONSOEMAIL=@@MENTIONS:MEDIATEURCONSOEMAIL@@$$
+					$$A:MEDIATEURCONSOTEL=@@MENTIONS:MEDIATEURCONSOTEL@@$$
+					$$REM$$<-- FIN Recuperationdes infos mediateur pour le multiagence -->$$END$$
+				
 					<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$</li>
 					<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$</li>
 					<li><strong>$$LG:RCS$$</strong> : $$IF:MENTIONS:RCS_FULL$$$$MENTIONS:RCS_FULL$$$$END$$ $$IF0:MENTIONS:RCS_FULL$$*$$END$$</li>
@@ -96,6 +109,19 @@ $$END:FORM:IDP:MENTIONS:IDTYPECARTEPRO$$
 
 $$IF:FORM:IDP$$
 	$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+	
+		$$REM$$<-- Recuperationdes infos mediateur pour le multiagence -->$$END$$
+		$$A:MEDIATEURPRENOM=@@ML:MEDIATEURPRENOM@@$$
+		$$A:MEDIATEURNOM=@@ML:MEDIATEURNOM@@$$
+		$$A:MEDIATEURCONSOADRESSE1=@@ML:MEDIATEURCONSOADRESSE1@@$$
+		$$A:MEDIATEURCONSOADRESSE2=@@ML:MEDIATEURCONSOADRESSE2@@$$
+		$$A:MEDIATEURCONSOCP=@@ML:MEDIATEURCONSOCP@@$$
+		$$A:MEDIATEURCONSOVILLE=@@ML:MEDIATEURCONSOVILLE@@$$
+		$$A:MEDIATEURCONSOURL=@@ML:MEDIATEURCONSOURL@@$$
+		$$A:MEDIATEURCONSOEMAIL=@@ML:MEDIATEURCONSOEMAIL@@$$
+		$$A:MEDIATEURCONSOTEL=@@ML:MEDIATEURCONSOTEL@@$$
+		$$REM$$<-- FIN Recuperationdes infos mediateur pour le multiagence -->$$END$$
+
 	<ul>
 		<li><div class="h2-like margin-top-10 margin-bottom-10">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
 		<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$IF0:ML:RAISONSOCIALE$$*$$END$$$$IF:ML:RAISONSOCIALE$$$$ML:RAISONSOCIALE$$$$END$$</li>
@@ -146,16 +172,16 @@ $$IF:FORM:IDP$$
 $$END$$
 
 <!--LEGALE MEDIATEUR -->
-$$IF:ML:MEDIATEURNOM$$
+$$IF:MEDIATEURNOM$$
 	<ul class="mention-gestion">					
 		<li><div class="h2-like margin-top-10 titre-mention">Médiateur à la consommation</div></li>
 		<p>Conformément à l'article L 611-1 du code de la consommation, le consommateur est informé qu'il a la possibilité de saisir un médiateur de la consommation dans les conditions prévues aux articles L 611-1 et suivants du code de la consommation, dont les coordonnées sont :</p>
 		
-			<li><strong>$$LG:NOM pcase$$</strong> : $$ML:MEDIATEURPRENOM$$ $$ML:MEDIATEURNOM$$</li>
-			<li><strong>$$LG:ADRESSE pcase$$</strong> : $$ML:MEDIATEURCONSOADRESSE1$$ $$ML:MEDIATEURCONSOADRESSE2$$ - $$ML:MEDIATEURCONSOCP$$ $$ML:MEDIATEURCONSOVILLE$$ </li>
-			<li><strong>$$LG:SITE pcase$$</strong> : <a href="//$$ML:MEDIATEURCONSOURL$$" target="_blank">$$ML:MEDIATEURCONSOURL$$</a> </li>
-			<li><strong>$$LG:EMAIL pcase$$</strong> : <a href="mailto:$$ML:MEDIATEURCONSOEMAIL$$">$$ML:MEDIATEURCONSOEMAIL$$</a> </li>	
-			<li><strong>$$LG:NTEL pcase$$</strong> : $$ML:MEDIATEURCONSOTEL$$ </li>
+			<li><strong>$$LG:NOM pcase$$</strong> : $$MEDIATEURPRENOM$$ $$MEDIATEURNOM$$</li>
+			<li><strong>$$LG:ADRESSE pcase$$</strong> : $$MEDIATEURCONSOADRESSE1$$ $$MEDIATEURCONSOADRESSE2$$ - $$MEDIATEURCONSOCP$$ $$MEDIATEURCONSOVILLE$$ </li>
+			<li><strong>$$LG:SITE pcase$$</strong> : <a href="//$$MEDIATEURCONSOURL$$" target="_blank">$$MEDIATEURCONSOURL$$</a> </li>
+			<li><strong>$$LG:EMAIL pcase$$</strong> : <a href="mailto:$$MEDIATEURCONSOEMAIL$$">$$MEDIATEURCONSOEMAIL$$</a> </li>	
+			<li><strong>$$LG:NTEL pcase$$</strong> : $$MEDIATEURCONSOTEL$$ </li>
 	</ul>
 	
 $$END$$
