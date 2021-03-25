@@ -33,7 +33,20 @@ $$IF0:FORM:IDP$$
 		<ul>
 			<li><div class="h2-like margin-top-10 margin-bottom-10 titre-mention">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
 			$$DO$$
-				$$IF=:1:MENTIONS:IDTYPECARTEPRO$$
+			
+				$$REM$$<-- Recuperationdes infos mediateur pour le multiagence -->$$END$$
+				$$A:MEDIATEURPRENOM=@@MENTIONS:MEDIATEURPRENOM@@$$
+				$$A:MEDIATEURNOM=@@MENTIONS:MEDIATEURNOM@@$$
+				$$A:MEDIATEURCONSOADRESSE1=@@MENTIONS:MEDIATEURCONSOADRESSE1@@$$
+				$$A:MEDIATEURCONSOADRESSE2=@@MENTIONS:MEDIATEURCONSOADRESSE2@@$$
+				$$A:MEDIATEURCONSOCP=@@MENTIONS:MEDIATEURCONSOCP@@$$
+				$$A:MEDIATEURCONSOVILLE=@@MENTIONS:MEDIATEURCONSOVILLE@@$$
+				$$A:MEDIATEURCONSOURL=@@MENTIONS:MEDIATEURCONSOURL@@$$
+				$$A:MEDIATEURCONSOEMAIL=@@MENTIONS:MEDIATEURCONSOEMAIL@@$$
+				$$A:MEDIATEURCONSOTEL=@@MENTIONS:MEDIATEURCONSOTEL@@$$
+				$$REM$$<-- FIN Recuperationdes infos mediateur pour le multiagence -->$$END$$
+				
+				$$IF=:1:MENTIONS:IDTYPECARTEPRO$$				
 					<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$MENTIONS:RAISONSOCIALE ucase$$$$IF0:MENTIONS:RAISONSOCIALE$$*$$END$$</li>
 					<li><strong>$$LG:SIEGESOCIAL pcase$$</strong> : $$IF0:MENTIONS:ADRESSESIEGE$$*$$END$$$$MENTIONS:ADRESSESIEGE$$ $$MENTIONS:ADRESSESIEGE2$$ $$MENTIONS:CPSIEGE$$ $$MENTIONS:VILLESIEGE ncase$$ $$MENTIONS:PAYSSIEGE ncase$$</li>
 					<li><strong>$$LG:RCS$$</strong> : $$IF:MENTIONS:RCS_FULL$$$$MENTIONS:RCS_FULL$$$$END$$ $$IF0:MENTIONS:RCS_FULL$$*$$END$$</li>
@@ -73,6 +86,18 @@ $$IF0:FORM:IDP$$
 						<li><strong>$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial guarantee amount$$END$$</strong> : $$IF:MENTIONS:GARANTIEFINANCIEREMONTANT$$$$MENTIONS:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:MENTIONS:GARANTIEFINANCIEREMONTANT$$*$$END$$</li>
 					</ul>
 				$$END:MENTIONS:IDTYPECARTEPRO$$
+				$$IF=:3:MENTIONS:IDTYPECARTEPRO$$
+					<ul class="mention-gestion">
+						<li><div class="h2-like margin-top-10 margin-bottom-10">Carte professionnelle syndic&deg;$$MENTIONS:NUMEROCARTEPRO$$</div></li>
+						<li>
+							$$IF!:1:CARTEPROCCI$$<strong>Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+							$$IF=:1:CARTEPROCCI$$<strong>$$IF=:FR:LANGUE$$Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle$$END$$ $$IF!:FR:LANGUE$$Chamber of Commerce and Industry issuing the professional card$$END$$</strong>$$END$$
+							 : $$IF:MENTIONS:PREFECTURECARTEPRO$$$$MENTIONS:PREFECTURECARTEPRO ncase$$$$END$$ $$IF0:MENTIONS:PREFECTURECARTEPRO$$*$$END$$</li>
+						<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:MENTIONS:CAPITALSOCIAL$$$$MENTIONS:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$ $$IF0:MENTIONS:CAPITALSOCIAL$$*$$END$$</li>
+						<li><strong>$$IF=:FR:LANGUE$$Caisse garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial Guarantee Fund$$END$$</strong> : $$IF:MENTIONS:GARANTIEFINANCIERECAISSE$$$$MENTIONS:GARANTIEFINANCIERECAISSE$$$$END$$$$IF0:MENTIONS:GARANTIEFINANCIERECAISSE$$*$$END$$</li>
+						<li><strong>$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial guarantee amount$$END$$</strong> : $$IF:MENTIONS:GARANTIEFINANCIEREMONTANT$$$$MENTIONS:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:MENTIONS:GARANTIEFINANCIEREMONTANT$$*$$END$$</li>
+					</ul>
+				$$END:MENTIONS:IDTYPECARTEPRO$$
 			$$END$$
 		$$LOOP$$
 	$$BFIN$$
@@ -96,6 +121,19 @@ $$END:FORM:IDP:MENTIONS:IDTYPECARTEPRO$$
 
 $$IF:FORM:IDP$$
 	$$E:IMMOBW:AGENCE:QRY:IDP:ALIAS:ML$$
+	
+		$$REM$$<-- Recuperationdes infos mediateur pour le multiagence -->$$END$$
+		$$A:MEDIATEURPRENOM=@@ML:MEDIATEURPRENOM@@$$
+		$$A:MEDIATEURNOM=@@ML:MEDIATEURNOM@@$$
+		$$A:MEDIATEURCONSOADRESSE1=@@ML:MEDIATEURCONSOADRESSE1@@$$
+		$$A:MEDIATEURCONSOADRESSE2=@@ML:MEDIATEURCONSOADRESSE2@@$$
+		$$A:MEDIATEURCONSOCP=@@ML:MEDIATEURCONSOCP@@$$
+		$$A:MEDIATEURCONSOVILLE=@@ML:MEDIATEURCONSOVILLE@@$$
+		$$A:MEDIATEURCONSOURL=@@ML:MEDIATEURCONSOURL@@$$
+		$$A:MEDIATEURCONSOEMAIL=@@ML:MEDIATEURCONSOEMAIL@@$$
+		$$A:MEDIATEURCONSOTEL=@@ML:MEDIATEURCONSOTEL@@$$
+		$$REM$$<-- FIN Recuperationdes infos mediateur pour le multiagence -->$$END$$
+
 	<ul>
 		<li><div class="h2-like margin-top-10 margin-bottom-10">$$IF=:FR:LANGUE$$L'Editeur$$END:FR$$$$IF!:FR:LANGUE$$The publisher$$END:LANGUE$$</div></li>
 		<li><strong>$$LG:RAISONSOC pcase$$</strong> : $$IF0:ML:RAISONSOCIALE$$*$$END$$$$IF:ML:RAISONSOCIALE$$$$ML:RAISONSOCIALE$$$$END$$</li>
@@ -141,31 +179,39 @@ $$IF:FORM:IDP$$
 		<li><strong>$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial guarantee amount$$END$$</strong> : $$IF:CARTEPROG:GARANTIEFINANCIEREMONTANT$$$$CARTEPROG:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROG:GARANTIEFINANCIEREMONTANT$$*$$END$$ $$IF=:1:NONDETENTIONG$$<span class="italic small">carte non-détention de fonds</span>$$END$$</li>
 	</ul>
 	$$END$$
-	$$END:1:IDTYPECARTEPRO$$	
+	$$END:1:IDTYPECARTEPRO$$
+
+	$$E:IMMOBW:CARTEPRO:~idpublication:QRY:IDP:~idtypecartepro:3:ALIAS:CARTEPROS$$
+	$$IF=:3:CARTEPROS:IDTYPECARTEPRO$$
+	<ul class="mention-gestion">
+		<li><div class="h2-like margin-top-10 margin-bottom-10 titre-mention">Carte professionnelle SYNDIC n&deg; $$CARTEPROS:NUMEROCARTEPRO$$</div></li>
+		<li>
+			$$IF!:1:CARTEPROCCI$$<strong>Pr&eacute;fecture de d&eacute;livrance de la carte professionnelle</strong>$$END$$
+			$$IF=:1:CARTEPROCCI$$<strong>$$IF=:FR:LANGUE$$Chambre des Commerces et de l'Industrie de d&eacute;livrance de la carte professionnelle$$END$$ $$IF!:FR:LANGUE$$Chamber of Commerce and Industry issuing the professional card$$END$$</strong>$$END$$
+			 : $$CARTEPROS:PREFECTURECARTEPRO$$$$IF0:CARTEPROS:PREFECTURECARTEPRO$$*$$END$$</li>
+		$$REM$$<li><strong>$$LG:CAPITAL pcase$$</strong> : $$IF:CARTEPROS:CAPITALSOCIAL$$$$CARTEPROS:CAPITALSOCIAL formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROS:CAPITALSOCIAL$$*$$END$$</li>$$END:REM$$
+		<li><strong>$$IF=:FR:LANGUE$$Caisse garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial Guarantee Fund$$END$$</strong> : $$CARTEPROS:GARANTIEFINANCIERECAISSE$$$$IF0:CARTEPROS:GARANTIEFINANCIERECAISSE$$*$$END$$</li>
+		<li><strong>$$IF=:FR:LANGUE$$Montant garantie financi&egrave;re$$END$$$$IF!:FR:LANGUE$$Financial guarantee amount$$END$$</strong> : $$IF:CARTEPROS:GARANTIEFINANCIEREMONTANT$$$$CARTEPROS:GARANTIEFINANCIEREMONTANT formatnumber 0$$ &euro;$$END$$$$IF0:CARTEPROS:GARANTIEFINANCIEREMONTANT$$*$$END$$ $$IF=:1:NONDETENTIONG$$<span class="italic small">carte non-détention de fonds</span>$$END$$</li>
+	</ul>
+	$$END:3:IDTYPECARTEPRO$$
+
 $$END$$
 
 
 <!--LEGALE MEDIATEUR -->
+$$IF:MEDIATEURNOM$$
 	<ul class="mention-gestion">					
 		<li><div class="h2-like margin-top-10 titre-mention">Médiateur à la consommation</div></li>
 		<p>Conformément à l'article L 611-1 du code de la consommation, le consommateur est informé qu'il a la possibilité de saisir un médiateur de la consommation dans les conditions prévues aux articles L 611-1 et suivants du code de la consommation, dont les coordonnées sont :</p>
-		<li><strong>$$LG:NOM pcase$$</strong> : $$IF0:ML:MEDIATEURPRENOM$$$$END:ML:MEDIATEURPRENOM$$$$IF:ML:MEDIATEURPRENOM$$$$ML:MEDIATEURPRENOM$$$$END:ML:MEDIATEURPRENOM$$
-		$$IF0:ML:MEDIATEURNOM$$*$$END:ML:MEDIATEURNOM$$$$IF:ML:MEDIATEURNOM$$$$ML:MEDIATEURNOM$$$$END:ML:MEDIATEURNOM$$</li>
-		<li><strong>$$LG:ADRESSE pcase$$</strong> :
-		$$IF0:ML:MEDIATEURCONSOADRESSE1$$*$$END:ML:MEDIATEURNOM$$$$IF:ML:MEDIATEURCONSOADRESSE1$$$$ML:MEDIATEURCONSOADRESSE1$$$$END:ML:MEDIATEURCONSOADRESSE1$$
-		$$IF0:ML:MEDIATEURCONSOADRESSE2$$$$END:ML:MEDIATEURCONSOADRESSE2$$$$IF:ML:MEDIATEURCONSOADRESSE2$$$$ML:MEDIATEURCONSOADRESSE2$$$$END:ML:MEDIATEURCONSOADRESSE2$$ - $$IF0:ML:MEDIATEURCONSOCP$$$$END:ML:MEDIATEURCONSOCP$$$$IF:ML:MEDIATEURCONSOCP$$$$ML:MEDIATEURCONSOCP$$$$END:ML:MEDIATEURCONSOCP$$
-		$$IF0:ML:MEDIATEURCONSOVILLE$$$$END:ML:MEDIATEURCONSOVILLE$$$$IF:ML:MEDIATEURCONSOVILLE$$$$ML:MEDIATEURCONSOVILLE$$$$END:ML:MEDIATEURCONSOVILLE$$			
-		</li>
-		<li><strong>$$LG:SITE pcase$$</strong> :
-		$$IF0:ML:MEDIATEURCONSOURL$$*$$END:ML:MEDIATEURCONSOURL$$$$IF:ML:MEDIATEURCONSOURL$$<a href="//$$ML:MEDIATEURCONSOURL$$" target="_blank">$$ML:MEDIATEURCONSOURL$$</a>$$END:ML:MEDIATEURCONSOURL$$
-		</li>
-		<li><strong>$$LG:EMAIL pcase$$</strong> :
-		$$IF0:ML:MEDIATEURCONSOEMAIL$$*$$END:ML:MEDIATEURCONSOEMAIL$$$$IF:ML:MEDIATEURCONSOEMAIL$$<a href="mailto:$$ML:MEDIATEURCONSOEMAIL$$">$$ML:MEDIATEURCONSOEMAIL$$</a></a>$$END:ML:MEDIATEURCONSOEMAIL$$
-		</li>	
-		<li><strong>$$LG:NTEL pcase$$</strong> : 
-		$$IF0:ML:MEDIATEURCONSOTEL$$*$$END:ML:MEDIATEURCONSOTEL$$$$IF:ML:MEDIATEURCONSOTEL$$$$ML:MEDIATEURCONSOTEL$$$$END:ML:MEDIATEURCONSOTEL$$
-		</li>
+		
+			<li><strong>$$LG:NOM pcase$$</strong> : $$MEDIATEURPRENOM$$ $$MEDIATEURNOM$$</li>
+			<li><strong>$$LG:ADRESSE pcase$$</strong> : $$MEDIATEURCONSOADRESSE1$$ $$MEDIATEURCONSOADRESSE2$$ - $$MEDIATEURCONSOCP$$ $$MEDIATEURCONSOVILLE$$ </li>
+			<li><strong>$$LG:SITE pcase$$</strong> : <a href="//$$MEDIATEURCONSOURL$$" target="_blank">$$MEDIATEURCONSOURL$$</a> </li>
+			<li><strong>$$LG:EMAIL pcase$$</strong> : <a href="mailto:$$MEDIATEURCONSOEMAIL$$">$$MEDIATEURCONSOEMAIL$$</a> </li>	
+			<li><strong>$$LG:NTEL pcase$$</strong> : $$MEDIATEURCONSOTEL$$ </li>
 	</ul>
+	
+$$END$$
 
 $$IF:INFO_MEDIATEUR$$
 	<ul class="mention-mediateur">
