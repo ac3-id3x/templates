@@ -65,7 +65,7 @@ var regexesLocation = [
 var regexesOverrideLocation = [
 	 //[ Boolean (false concatane ..), new RegExp(), String « new value » , searchType ('Street', 'municipality', 'housenumber', 'locality' <=> lieu-dit]
 	 [ true, new RegExp('(Seynod)', 'i'), "Route des emognes", '74600', 'street' ]
-	 ,[ true, new RegExp('(49570 Montjean)', 'i'), "Allée René Onillon Mauges-sur-Loire", '49570', 'street' ]
+	 ,[ true, new RegExp('(49570 Montjean)', 'i'), "rue de mailly Mauges-sur-Loire", '49570', 'street' ]
 
 ];
 
