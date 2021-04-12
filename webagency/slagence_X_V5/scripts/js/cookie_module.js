@@ -8,7 +8,8 @@ function setCookieModule(p) {
 		cookieName = "accept_cookie_" + p.repMsrv,
 		cookieNameIndex = "accept_cookie_" + p.repMsrv + "_previous";
 		
-	var cookieBanner = function() {   
+	var cookieBanner = function() {  
+		if (tarteaucitron) return;
 		var needBanner = self.getLocalStorage(cookieName);
 		
 		var previousPage, previousDate;
