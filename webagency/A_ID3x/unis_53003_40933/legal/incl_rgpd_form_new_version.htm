@@ -1,0 +1,117 @@
+<!-- RGPD CONTAINER -->
+$$IF0:RGPD_NOMAGENCE$$
+$$A:RGPD_NOMAGENCE=@@AGENCE_NOM@@$$
+$$END$$
+$$IF0:RGPD_EMAIL$$
+$$A:RGPD_EMAIL=@@AGENCE_EMAIL@@$$
+$$END$$
+$$IF0:RGPD_CONTACT$$
+$$A:RGPD_CONTACT=@@AGENCE_ADRESSE@@ @@AGENCE_CP@@ @@AGENCE_VILLE@@$$
+$$END$$
+$$IF0:RGPD_AGENCYID$$
+$$A:RGPD_AGENCYID=@@AGENCE_IDPUBLICATION@@$$
+$$END$$
+
+<div class="row-fluid">
+    <div>
+        <p>Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par Le
+            responssable DPO de l'agence pour gérer les inscriptions aux alertes immobilières. La base légale du
+            traitement est l’intérêt légitime.
+        </p>
+        <p>Les données collectées seront communiquées uniquement aux seuls destinataires suivants : 
+            <span id="nomAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:NOM$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:NOM$$ $$END$$  $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:COOR-NOM$$ $$END$$ </span>
+            .
+        </p>
+        <p>Les données sont conservées pendant 5 ans avant anonymisation.</p>
+        <p>Vous pouvez accéder aux données vous concernant, les rectifier, demander leur effacement ou exercer votre
+            droit à la limitation du traitement de vos données. Consultez le site cnil.fr pour plus d’informations sur
+            vos droits.
+        </p>
+        <p>Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce dispositif, vous
+            pouvez contacter  : <span id="emailAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:EMAIL$$ $$END$$ $$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:EMAIL$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:EMAIL$$ $$END$$ $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:EMAIL$$ $$END$$</span>
+            ,
+            <span id="contactAgence">$$IF=:NOSAGENCES:IDT$$ $$lcase$$ $$LISTEAG:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$LISTEAG:CP$$ $$LISTEAG:VILLE$$ $$END$$ $$IF=:NOTREAGENCE:IDT$$ $$CV:ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$CV:CP$$ $$CV:VILLE$$ $$END$$ 
+                $$IF=:DETAILANNONCE:IDT$$ $$ANNDETAIL:COOR-ADRESSE rxreplace (.*)\s(\d{5})\s(.*) $1$$ $$ANNDETAIL:AGCP$$ $$ANNDETAIL:AGVILLE$$ $$END$$
+            </span>
+            .
+        </p>
+        <div>
+            <label for="legelInfo">
+                <input onchange="check(event)" type="checkbox" id="legelInfo$$IF=:NOSAGENCES:IDT$$$$lcase$$$$LISTEAG:IDPUBLICATION$$$$END$$" name="legelInfo" />&nbsp;
+                Je confirme avoir bien pris connaissance des mentions d’information relatives à ce formulaire et au
+                traitement des informations saisies.
+            </label>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+if("$$IDT$$"=="NOSAGENCES"){
+    var checkbox = document.querySelector("input[id=legelInfo$$lcase$$$$LISTEAG:IDPUBLICATION$$]");
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById('btn_finish$$lcase$$$$LISTEAG:IDPUBLICATION$$').disabled = false;
+            document.querySelector("span[id=color$$lcase$$$$LISTEAG:IDPUBLICATION$$]").style = "color:black;font-size: 18px;";
+        } else {
+            document.getElementById('btn_finish$$lcase$$$$LISTEAG:IDPUBLICATION$$').disabled = true;
+            document.querySelector("span[id=color$$lcase$$$$LISTEAG:IDPUBLICATION$$]").style = "color:red;font-size: 18px;";
+        }
+    });
+    function check(event) {}
+    window.addEventListener('load', function () {
+        document.getElementById('legelInfo$$lcase$$$$LISTEAG:IDPUBLICATION$$').checked = false;
+        document.getElementById('btn_finish$$lcase$$$$LISTEAG:IDPUBLICATION$$').disabled = true;
+    });
+}else if("$$IDT$$"=="RESULTATS"){
+    var index =$(":input[id^=legelInfo]").length;
+    $('#nomAgence').prop('id', 'nomAgence'+index);
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('nomAgence'+index).innerHTML = "$$RGPD_NOMAGENCE$$";}
+    $('#emailAgence').prop('id', 'emailAgence'+index);
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('emailAgence'+index).innerHTML = "$$RGPD_EMAIL$$";}
+    $('#contactAgence').prop('id', 'contactAgence'+index);
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES"){document.getElementById('contactAgence'+index).innerHTML = "$$RGPD_CONTACT$$";}
+    $('#legelInfo').prop('name', index);
+    $('#legelInfo').prop('id', 'legelInfo'+index);
+    $('#color').prop('id', 'color'+index);
+   function check(event) {
+        if (event.srcElement.checked) {
+            document.getElementById('btn_finish'+event.srcElement.name).disabled = false;
+            document.querySelector("span[id=color"+event.srcElement.name+"]").style = "color:black;font-size: 18px;";
+        } else {
+            document.getElementById('btn_finish'+event.srcElement.name).disabled = true;
+            document.querySelector("span[id=color"+event.srcElement.name+"]").style = "color:red;font-size: 18px;";
+        }
+    };
+    window.addEventListener('load', function () {
+        document.getElementById('legelInfo1').checked = false;
+        document.getElementById('btn_finish1').disabled = true;
+        document.getElementById('legelInfo2').checked = false;
+        document.getElementById('btn_finish2').disabled = true;
+    });   
+}else {
+    var checkbox = document.querySelector("input[id=legelInfo]");
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('nomAgence').innerHTML = "$$RGPD_NOMAGENCE$$";}
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('emailAgence').innerHTML = "$$RGPD_EMAIL$$";}
+    if("$$IDT$$" !== "NOTREAGENCE" && "$$IDT$$"!== "NOSAGENCES" && "$$IDT$$"!== "DETAILANNONCE"){document.getElementById('contactAgence').innerHTML = "$$RGPD_CONTACT$$";}
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById('btn_finish').disabled = false;
+            document.querySelector("span[id=color]").style = "color:black;font-size: 18px;";
+        } else {
+            document.getElementById('btn_finish').disabled = true;
+            document.querySelector("span[id=color]").style = "color:red;font-size: 18px;";
+        }
+    });
+    function check(event) {}
+    window.addEventListener('load', function () {
+        document.getElementById('legelInfo').checked = false;
+        document.getElementById('btn_finish').disabled = true;
+    });   
+} 
+if(window.location.pathname == '/recherche,basic.htm'){
+    document.getElementById('nomAgence2').innerHTML = 'ORALIA PARTENAIRES';
+    document.getElementById('emailAgence2').innerHTML = 'info@oralia.fr';
+    document.getElementById('contactAgence2').innerHTML = '94 quai Charles de Gaulle 69006 LYON';
+
+}
+</script>
+<!-- END RGPD CONTAINER -->
