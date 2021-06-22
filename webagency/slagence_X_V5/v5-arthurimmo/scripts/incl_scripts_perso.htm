@@ -23,45 +23,81 @@
         });
 
 
-        /* -------------------------------------------*/
-        /* -- NEWSLETTER */
-        /* -------------------------------------------*/
+        // ===============================================
+    // == NEWSLETTER ==
+    // ===============================================
 
-        $(".form-nl").on("click",".btn-nl", function (e) {
-            e.preventDefault();
-            var bton = $(this);
-            $.ajax({
-                type: "POST",
-                data : bton.closest(".form-nl").serialize(),
-                dataType:"json",
-                url: "/footer,nl_email.htm",
-                beforeSend: function() {
-                    $(".form-nl-alert").html("");
-                },
-                success: function(data) {
-                    var idpublication = data.idpublication;
-                    if(data.message.length > 0) {
-                        $(".form-nl-alert").html(data.message);
-                        if(data.email.length <= 0 || regEmail.test(data.email) == false) {
-                            $("#email-message").addClass("error").removeClass("success");
-                        } else {
-                            $("#email-message").removeClass("error").addClass("success");
-                        }
+
+    $('.form-newsletter').on('click','.btn-envoi-newsletter', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message').addClass('error').removeClass('success');
                     } else {
-                        $(".form-nl-alert").html(messageOK);
-                        $("#email-message").val("");
-                        alert(messageOK);
-                        $("#email-message").removeClass("error").addClass("success");
+                        $('#email-message').removeClass('error').addClass('success');
                     }
-                },
-                error : function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR, textStatus, errorThrown);
-                },
-                complete: function() {
-                    $(".form-nl-alert").show("slow").delay(2500).hide("slow");
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message').val("");
+                    $('#email-message').removeClass('error').addClass('success');
                 }
-            });
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
         });
+    });
+
+    $('body').on('click','.btn-envoi-newsletter-mob', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $(this).parent('.form-newsletter').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error').html('');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message-mob').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message-mob').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error').html(messageOK);
+                    $('#email-message-mob').val("");
+                    alert(messageOK);
+                    $('#email-message-mob').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
 
         /* -------------------------------------------*/
         /* -- PARTENAIRES FOOTER */
