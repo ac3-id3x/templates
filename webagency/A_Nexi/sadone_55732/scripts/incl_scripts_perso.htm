@@ -190,7 +190,7 @@ $(document).ready(function(){
 });
 </script>
 $$IF!:GESTION:IDT$$
-<div id="PopTelRight"><span class="tel-txt hidden-phone hidden-tablet margin-right-5" style="display: none;" id="TelShowRight">$$AGENCE_TEL$$</span><i class="icon-v5 icon-v5-mobile" id="TelIcoRight"></i><span class="smaller hidden-desktop" style="display: none !important;" id="TelShowDown">$$AGENCE_TEL$$</span></div>
+<div id="PopTelRight"><span class="tel-txt hidden-phone hidden-tablet margin-right-5" style="display: none;" id="TelShowRight">+33147470830</span><i class="icon-v5 icon-v5-mobile" id="TelIcoRight"></i><span class="smaller hidden-desktop" style="display: none !important;" id="TelShowDown">+33147470830</span></div>
 $$END$$
 
 $$IF=:DETAILANNONCE:IDT$$
@@ -500,6 +500,7 @@ $$END:REM$$
     // ===============================================
 
 
+    // Newsletter footer
     $('.form-newsletter').on('click','.btn-envoi-newsletter', function (e) {
         e.preventDefault();
         var bton = $(this);
@@ -535,6 +536,43 @@ $$END:REM$$
         });
     });
 
+    // Newsletter box home presentation
+    $('.form-newsletter-presentation').on('click','.btn-envoi-newsletter-presentation', function (e) {
+        e.preventDefault();
+        var bton = $(this);
+        $.ajax({
+            type: "POST",
+            data : $('.form-newsletter-presentation').serialize(),
+            dataType:'json',
+            url: '/newsletter,newsletter_email.htm',
+            beforeSend: function() {
+                $('.newsletter-error-description').html('Inscription réussie');
+            },
+            success: function(data) {
+                var idpublication = data.idpublication;
+                if(data.message.length > 0) {
+                    $('.newsletter-error-description').html(data.message);
+                    if(data.email.length <= 0 || regEmail.test(data.email) == false) {
+                        $('#email-message').addClass('error').removeClass('success');
+                    } else {
+                        $('#email-message').removeClass('error').addClass('success');
+                    }
+                } else {
+                    $('.newsletter-error-description').html(messageOK);
+                    $('#email-message').val("");
+                    $('#email-message').removeClass('error').addClass('success');
+                }
+            },
+            error : function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                $('.newsletter-error-description').show('slow').delay(2500).hide('slow');
+            }
+        });
+    });
+
+    // Other newsletter
     $('body').on('click','.btn-envoi-newsletter-mob', function (e) {
         e.preventDefault();
         var bton = $(this);
