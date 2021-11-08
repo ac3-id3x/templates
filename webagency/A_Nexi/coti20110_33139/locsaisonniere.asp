@@ -1,1 +1,0 @@
-$$E:ID3:REDIRECT:ADD:/recherche,basic.htm?idtt=1:301$$
